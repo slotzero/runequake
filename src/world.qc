@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.36 2004/06/25 05:21:04 slotzero Exp $
+/*  $Id: world.qc,v 1.37 2004/06/26 05:25:09 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -329,6 +329,7 @@ StartFrame =
 	if (crosshair)
 	{
 		cvar_set_infokey ("crosshair", "0");
+		IN_POQ(if (!HUNK_CONTEXT_MAX)	crosshair = 0;)
 
 		&%IN_POQ(368,376) = crosshair;
 		s = impulse_to_map ();
