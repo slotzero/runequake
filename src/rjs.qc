@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.166 2005/01/21 01:06:22 slotzero Exp $
+/*  $Id: rjs.qc,v 1.167 2005/01/30 21:13:37 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1402,6 +1402,22 @@ common_impulses =
 			self.rqflags = self.rqflags | RQ_LOW_BANDWIDTH_CLIENT;
 			self.flags = self.flags | FL_LOW_BANDWIDTH_CLIENT;
 			sprint (self, "gibs and hook links disabled\n");
+		}
+	}
+
+	else if (self.impulse == IMP_CUSTOM_SOUNDS)
+	{
+		dprint_float (self.rqflags);
+		dprint ("\n");
+		if (self.rqflags & RQ_CUSTOM_SOUNDS)
+		{
+			self.rqflags = self.rqflags - RQ_CUSTOM_SOUNDS;
+			sprint (self, "custom sounds off\n");
+		}
+		else
+		{
+			self.rqflags = self.rqflags | RQ_CUSTOM_SOUNDS;
+			sprint (self, "custom sounds \bon\n");
 		}
 	}
 

@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.136 2005/01/23 04:03:56 slotzero Exp $
+/*  $Id: defs.qc,v 1.137 2005/01/30 21:13:37 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -541,7 +541,8 @@ float IMP_LEVELS		= 68;
 float IMP_LAST			= 67;
 float IMP_VOTE_COMMAND		= 66;
 float IMP_LAG			= 65;
-//				= 64 - 60	[free]
+float IMP_CUSTOM_SOUNDS		= 64;
+//				= 63 - 60	[free]
 float IMP_CYCLE_ALTERNATES	= 59;
 //				= 58;		[free]
 float IMP_SWITCHFIRE_BEST	= 57;
@@ -692,6 +693,7 @@ float AQ_QSMACK			= 2097152;
 // rqflags flags (saved across levels)
 float RQ_CYCLE_ALTERNATES	= 1;
 float RQ_LOW_BANDWIDTH_CLIENT	= 2;
+float RQ_CUSTOM_SOUNDS		= 4;
 
 // aqstate flags (not saved across levels)
 float AQS_MENU_MASK		= 31;

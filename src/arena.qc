@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.14 2005/01/18 00:54:29 slotzero Exp $
+/*  $Id: arena.qc,v 1.15 2005/01/30 21:13:36 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -71,10 +71,20 @@ arena_game_queue_announce =
 };
 
 void ()
+arena_fight =
+{
+	if (arena.owner.rqflags & RQ_CUSTOM_SOUNDS)
+		self_sound (arena.owner, "ra/fight.wav");
+	if (arena.runent.rqflags & RQ_CUSTOM_SOUNDS)
+		self_sound (arena.runent, "ra/fight.wav");
+};
+
+void ()
 arena_countdown =
 {
 	local float a, b;
 	local string s;
+	local entity e;
 
 	if (intermission_running)
 		return;
@@ -142,6 +152,30 @@ arena_countdown =
 			s = ftos (self.state);
 			self_centerprint (self.owner, self.runent.netname, "\n\n", s);
 			self_centerprint (self.runent, self.owner.netname, "\n\n", s);
+
+			// custom sounds
+			if (self.state < 4)
+			{
+				if (self.state == 3)
+					s = "ra/3.wav";
+				else if (self.state == 2)
+					s = "ra/2.wav";
+			       	else
+					s = "ra/1.wav";
+
+				if (self.owner.rqflags & RQ_CUSTOM_SOUNDS)
+					self_sound (self.owner, s);
+				if (self.runent.rqflags & RQ_CUSTOM_SOUNDS)
+					self_sound (self.runent, s);
+
+				// hack
+				if (self.state == 1)
+				{
+					e		= spawn ();
+					e.think		= arena_fight;
+					e.nextthink	= time + 0.65;
+				}
+			}
 		}
 	}
 	else
