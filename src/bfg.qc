@@ -1,4 +1,4 @@
-/*  $Id: bfg.qc,v 1.9 2003/10/10 23:20:12 slotzero Exp $
+/*  $Id: bfg.qc,v 1.10 2004/06/06 08:50:44 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -142,7 +142,7 @@ BFG_Warmup =
 	//	  number = number + 1;
 	//}
 
-	bigkick_e (self.owner, -10);
+	bigkick_e (self.owner);
 	self.owner.effects = self.owner.effects
 		- (self.owner.effects & EF_BRIGHTLIGHT);
 

@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.15 2004/06/06 08:25:45 slotzero Exp $
+/*  $Id: engine.qc,v 1.16 2004/06/06 08:50:44 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -248,7 +248,7 @@ bigkick =
 	-])
 };
 
-void (entity e, float kick_size)
+void (entity e)
 bigkick_e =
 {
 	local entity old_self;
