@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.44 2004/12/27 03:36:34 slotzero Exp $
+/*  $Id: vote.qc,v 1.45 2004/12/27 04:17:39 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -638,6 +638,7 @@ vote =
 		{
 			if (!cancel)
 				self_sprint (self, "Hook damage for this type of hook is disabled\n");
+			cancel = 1;
 		}
 	}
 	else
