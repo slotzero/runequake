@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.6 2003/05/26 02:35:38 slotzero Exp $
+/*  $Id: strman.qc,v 1.7 2003/06/06 01:05:51 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -118,9 +118,7 @@ strcat =
 
 	s = allocate_string_size (bytes);
 	strcpy (s, s1);
-
-	temp = @AddInt (&s, len1 * %1);
-	strcpy (temp, s2);
+	strcpy (s[len1 * %1], s2);
 
 	return s;
 };
