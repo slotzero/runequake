@@ -1,4 +1,4 @@
-/*  $Id: player.qc,v 1.9 2003/10/06 11:21:51 slotzero Exp $
+/*  $Id: player.qc,v 1.10 2004/02/21 09:00:41 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -600,21 +600,28 @@ PlayerDie =
 	if (self.velocity_z < 10)
 		self.velocity_z = self.velocity_z + random ()*300;
 
-	//RUNE SERV: Divine wind makes the guy explode if he dies.
-	if (self.runetype == RN_BOMB && self.runevar != 0)
+	if (self.runetype)
 	{
-		create_te_explosion (self.origin, 0);
-		T_RadiusDamage (RADIUS_NORMAL, self, self, 300, self, "kamikilled");
-		if (self.health > -41)
-			self.health = self.health - random ()*50+1;
-	}
-	else if (self.runetype == RN_MONK)
-		monk_trance_off ();
-	else if (self.runetype == RN_PACK_RAT)
-		pack_rat_rune_drop (0);
+		if (self.runetype == RN_BOMB && self.runevar != 0)
+		{
+			create_te_explosion (self.origin, 0);
+			T_RadiusDamage (RADIUS_NORMAL, self, self, 300, self, "kamikilled");
+			if (self.health > -41)
+				self.health = self.health - random ()*50+1;
+		}
+		else if (self.runetype == RN_MONK)
+			monk_trance_off ();
+		else if (self.runetype == RN_PACK_RAT)
+			pack_rat_rune_drop (0);
+		else if (self.runetype == RN_BETTY)
+		{
+			for (i = MAX_LAUNCH_BETTY; i >= 0; i = i - 1)
+				Launch_Betty ();
+		}
 
-	if (self.runetype != RN_PHOENIX && self.runetype != RN_VAMP)
-		self.runetype = 0;
+		if (self.runetype != RN_PHOENIX && self.runetype != RN_VAMP)
+			self.runetype = 0;
+	}
 
 	if (self.aqflags & AQ_HOOK)
 	{

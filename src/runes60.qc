@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.35 2003/12/04 01:40:38 slotzero Exp $
+/*  $Id: runes60.qc,v 1.36 2004/02/21 09:00:42 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -758,7 +758,12 @@ void ()
 Launch_Betty =
 {
 	newmis			= spawn ();
-	newmis.owner		= self.owner;
+
+	if (self.owner == world)
+		newmis.owner	= self;
+	else
+		newmis.owner	= self.owner;
+
 	newmis.movetype		= MOVETYPE_BOUNCE;
 	newmis.solid		= SOLID_BBOX;
 

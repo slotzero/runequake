@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.37 2004/02/21 08:06:20 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.38 2004/02/21 09:00:42 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -435,7 +435,8 @@ Rune_Tell_real =
 		desc_s = " Athlet";
 
 		d1 = "Jump Higher\n"
-			"Swim Farther";
+			"Swim Farther\n"
+			"Live Longer";
 	}
 	else if (type == RN_LUMBER)
 	{
