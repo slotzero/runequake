@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.26 2003/07/27 12:43:11 slotzero Exp $
+/*  $Id: items.qc,v 1.27 2003/10/02 15:18:34 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -638,6 +638,8 @@ weapon_touch =
 	}
 	else if (self.classname == "weapon_grenadelauncher")
 	{
+		// if (other.grenade_spam_time < 0)  // spam fix
+		//	return; // spam fix
 		if (leave && !charged && other.items & IT_GRENADE_LAUNCHER)
 			return;
 		hadammo = other.ammo_rockets;

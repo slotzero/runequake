@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.13 2003/10/02 04:14:42 slotzero Exp $
+/*  $Id: weapons.qc,v 1.14 2003/10/02 15:18:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -669,11 +669,13 @@ W_FireGrenade =
 			{
 				set_weapon (W_BestWeapon ());
 				self.items = self.items - self.items & IT_GRENADE_LAUNCHER;
+				// self.grenade_spam_time = -1; // spam fix
 				sprint (self, "\b\<Grenade Spam Protection Activated\>\b\n");
 			}
 		}
 
-		self.grenade_spam_time = time + spam_cnt + 1;
+		// if (self.grenade_spam_time >= 0) // spam fix
+			self.grenade_spam_time = time + spam_cnt + 1;
 	}
 
 	sound (self, CHAN_WEAPON, snd, 1, ATTN_NORM);
