@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.30 2003/08/03 00:48:14 slotzero Exp $
+/*  $Id: client.qc,v 1.31 2003/10/02 04:14:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1902,6 +1902,8 @@ ClientObituary =
 				bprint (" died of his own radioactivity\n");
 			else if (dt == "dspotdrop")
 				bprint (" placed one too many death spots\n");
+			else if (dt == "tornado")
+				bprint (" chased after his own tornado\n");
 			else if (dt == "admin-kill")
 			{
 				f = 0;
@@ -2120,6 +2122,11 @@ ClientObituary =
 			else
 				s1 = " rides ";
 			s2 = "'s rocket\n";
+		}
+		else if (dt == "tornado")
+		{
+			s1 = " couldn't outrun ";
+			s2 = "'s tornado\n";
 		}
 		else if (dt == "lavagun")
 		{

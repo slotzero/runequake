@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.21 2003/09/28 00:26:45 slotzero Exp $
+/*  $Id: runes30.qc,v 1.22 2003/10/02 04:14:41 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -497,6 +497,7 @@ Freeze_Frozen =
 			|| self.runent.health < 1
 			|| self.runent.runetype == RN_FREEZE
 			|| self.runent.runetype == RN_ENVIRO
+			|| self.runent.runetype == RN_BLIZZARD
 			|| self.runent.items & IT_SUIT)
 	{
 		self.runent.attack_finished = time + 1;
@@ -528,19 +529,21 @@ Freeze_Touch =
 
 	if (other.runetype == RN_ENVIRO
 			|| other.items & IT_SUIT
-			|| other.runetype == RN_FREEZE)
+			|| other.runetype == RN_FREEZE
+			|| other.runetype == RN_BLIZZARD)
 		return;
 
-	// RN_BLIZZARD XXX Fix me
+	// RN_BLIZZARD
 	/* if (other.runetype == RN_BLIZZARD && self.ltime < time)
 	{
 		centerprint (other, "Freeze Range increased\nhealth increased");
 		other.health = other.health + 25;
-		sound (other, CHAN_AUTO, "items/r_item2.wav", 1, ATTN_NORM);
+		T_Heal (other, 15, 1);
+		// sound (other, CHAN_AUTO, "items/r_item2.wav", 1, ATTN_NORM);
 		self.runetime = time;
 		self.ltime = time + 2;
 		return;
-	}*/
+	} */
 
 	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;

@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.61 2003/09/24 22:16:52 slotzero Exp $
+/*  $Id: rjs.qc,v 1.62 2003/10/02 04:14:41 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2062,6 +2062,7 @@ weapon_it_min_ammo =
 	else if (it == IT_ROCKET_LAUNCHER) 	return 1;
 	else if (it == IT_LIGHTNING)		return 1;
 	else if (it == WEAPON_HOOK)		return 0;
+	else if (it == WEAPON_TORNADO)		return AMMO_TORNADO;
 	else if (it == WEAPON_FLAMETHROWER)	return AMMO_FLAMETHROWER;
 	else if (it == WEAPON_LAVA)		return AMMO_LAVAGUN;
 	else if (it == WEAPON_BOMB)		return AMMO_BOMB;
@@ -2093,6 +2094,7 @@ weapon_it_ammo_type =
 	else if (it == IT_ROCKET_LAUNCHER) 	return IT_ROCKETS;
 	else if (it == IT_LIGHTNING)		return IT_CELLS;
 	else if (it == WEAPON_HOOK)		return 0;
+	else if (it == WEAPON_TORNADO)		return IT_ROCKETS;
 	else if (it == WEAPON_FLAMETHROWER)	return IT_SHELLS;
 	else if (it == WEAPON_LAVA)		return IT_NAILS;
 	else if (it == WEAPON_BOMB)		return IT_ROCKETS;
@@ -2168,6 +2170,7 @@ weapon_it_to_num =
 	else if (it == IT_ROCKET_LAUNCHER)	return 7;
 	else if (it == IT_LIGHTNING)		return 8;
 	else if (it == WEAPON_HOOK)		return 9;
+	else if (it == WEAPON_TORNADO)		return 10;
 	else if (it == WEAPON_FLAMETHROWER)	return 11;
 	else if (it == WEAPON_LAVA)		return 12;
 	else if (it == WEAPON_BOMB)		return 13;
@@ -2189,6 +2192,7 @@ weapon_it_to_name =
 	else if (it == IT_ROCKET_LAUNCHER)	return "Rocket    ";
 	else if (it == IT_LIGHTNING)		return "Lightning ";
 	else if (it == WEAPON_HOOK)		return "Hook      ";
+	else if (it == WEAPON_TORNADO)		return "Tornado   ";
 	else if (it == WEAPON_FLAMETHROWER)	return "Flame     ";
 	else if (it == WEAPON_LAVA)		return "Lava      ";
 	else if (it == WEAPON_BOMB)		return "Bomb      ";
@@ -2225,7 +2229,7 @@ weapon_it_to_alt_bit =
 {
 	if (deathmatch & DM_NO_ALT_WEAPONS)	return 0;
 	else if (it == IT_AXE)			return AQ_ALT_1;
-	//else if (it == IT_SHOTGUN)		return AQ_ALT_2;
+	else if (it == IT_SHOTGUN)		return AQ_ALT_2;
 	else if (it == IT_SUPER_SHOTGUN)	return AQ_ALT_3;
 	else if (it == IT_NAILGUN)		return AQ_ALT_4;
 	else if (it == IT_SUPER_NAILGUN)	return AQ_ALT_5;
@@ -2545,7 +2549,8 @@ CycleWeaponCommand =
 			else if (w == IT_GRENADE_LAUNCHER)	w = IT_ROCKET_LAUNCHER;
 			else if (w == IT_ROCKET_LAUNCHER)	w = IT_LIGHTNING;
 			else if (w == IT_LIGHTNING)		w = WEAPON_HOOK;
-			else if (w == WEAPON_HOOK)		w = WEAPON_FLAMETHROWER;
+			else if (w == WEAPON_HOOK)		w = WEAPON_TORNADO;
+			else if (w == WEAPON_TORNADO)		w = WEAPON_FLAMETHROWER;
 			else if (w == WEAPON_FLAMETHROWER)	w = WEAPON_LAVA;
 			else if (w == WEAPON_LAVA)		w = WEAPON_BOMB;
 			else if (w == WEAPON_BOMB)		w = WEAPON_FLASH_GRENADE;
@@ -2562,6 +2567,7 @@ CycleWeaponCommand =
 			else if (w == IT_SUPER_NAILGUN)		w = IT_GRENADE_LAUNCHER;
 			else if (w == IT_GRENADE_LAUNCHER)	w = IT_ROCKET_LAUNCHER;
 			else if (w == IT_ROCKET_LAUNCHER)	w = IT_LIGHTNING;
+			else if (w == WEAPON_TORNADO)		w = IT_SHOTGUN;
 			else if (w == WEAPON_FLAMETHROWER)	w = IT_SUPER_SHOTGUN;
 			else if (w == WEAPON_LAVA)		w = IT_NAILGUN;
 			else if (w == WEAPON_BOMB)		w = IT_SUPER_NAILGUN;
@@ -2594,7 +2600,8 @@ CycleWeaponReverseCommand =
 			else if (w == WEAPON_FLASH_GRENADE)	w = WEAPON_BOMB;
 			else if (w == WEAPON_BOMB)		w = WEAPON_LAVA;
 			else if (w == WEAPON_LAVA)		w = WEAPON_FLAMETHROWER;
-			else if (w == WEAPON_FLAMETHROWER)	w = WEAPON_HOOK;
+			else if (w == WEAPON_FLAMETHROWER)	w = WEAPON_TORNADO;
+			else if (w == WEAPON_TORNADO)		w = WEAPON_HOOK;
 			else if (w == WEAPON_HOOK)		w = IT_LIGHTNING;
 			else if (w == IT_LIGHTNING)		w = IT_ROCKET_LAUNCHER;
 			else if (w == IT_ROCKET_LAUNCHER)	w = IT_GRENADE_LAUNCHER;
@@ -2613,6 +2620,7 @@ CycleWeaponReverseCommand =
 			else if (w == WEAPON_BOMB)		w = IT_SUPER_NAILGUN;
 			else if (w == WEAPON_LAVA)		w = IT_NAILGUN;
 			else if (w == WEAPON_FLAMETHROWER)	w = IT_SUPER_SHOTGUN;
+			else if (w == WEAPON_TORNADO)		w = IT_SHOTGUN;
 			else if (w == IT_LIGHTNING)		w = IT_ROCKET_LAUNCHER;
 			else if (w == IT_ROCKET_LAUNCHER)	w = IT_GRENADE_LAUNCHER;
 			else if (w == IT_GRENADE_LAUNCHER)	w = IT_SUPER_NAILGUN;

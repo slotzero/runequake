@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.19 2003/09/28 01:08:59 slotzero Exp $
+/*  $Id: settings.qc,v 1.20 2003/10/02 04:14:42 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -391,6 +391,7 @@ float POWERUP_PICKUP_WARN	= 0;
 
 // These specify how much ammo it takes to shoot the corresponding weapon.
 
+float AMMO_TORNADO		= 30;
 float AMMO_FLAMETHROWER		= 1;
 float AMMO_LAVAGUN		= 1;
 float AMMO_BOMB			= 10;

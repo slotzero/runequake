@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.23 2003/09/28 17:16:45 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.24 2003/10/02 04:14:42 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -80,7 +80,6 @@ Rune_Button =
 	else if (self.runetype == RN_QUAD)	quad_activate ();
 	else if (self.runetype == RN_GLUE)	Rune_Glue ();
 	else if (self.runetype == RN_BLIZZARD)	Rune_Blizzard ();
-	else if (self.runetype == RN_TORNADO)	Rune_Tornado ();
 };
 
 // This doesn't always tell the riders because it can be triggered both
@@ -537,7 +536,7 @@ Rune_Tell_real =
 
 		d1 = "Activate to freeze everyone in sight";
 	}
-	else if (type == RN_TORNADO)
+	/* else if (type == RN_TORNADO)
 	{
 		desc_l = "Tornado Rune";
 		desc_s = " Trnado";
@@ -546,7 +545,7 @@ Rune_Tell_real =
 			"with super destructive winds\n";
 		d2 = ftos (MAX_TORNADO);
 		d3 = " maximum";
-	}
+	}*/
 	else if (type == RN_LITHIUM_HOOK)
 	{
 		desc_l = "Grappling Hook";
@@ -873,8 +872,19 @@ Rune_Activate =
 		}
 	}
 
-	else if (self.runetype == RN_TORNADO)
-		Hat_Spawn ("progs/w_spike.mdl", '0 0 35', '0 0 0');
+	else if (self.runetype == RN_GLUE)
+	{
+		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
+			self.runevar = count_class_own (self, "glue");
+		else
+			self.class_cnt = count_class_own (self, "glue");
+	}
+
+	else if (self.runetype == RN_BLIZZARD)
+		self.touch = Blizzard_Touch;
+
+	/* else if (self.runetype == RN_TORNADO)
+		Hat_Spawn ("progs/w_spike.mdl", '0 0 35', '0 0 0'); */
 
 	if (self.weapon == best)
 		set_weapon (W_BestWeapon ());
@@ -1173,7 +1183,7 @@ Rune_Type_Allowed =
 		if (type == RN_PHASE)				return 0;
 	-])
 
-	if (type == RN_TORNADO)	return 0;
+	/* if (type == RN_TORNADO)	return 0; */
 
 	return 1;
 };

@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.12 2003/07/27 13:18:07 slotzero Exp $
+/*  $Id: weapons.qc,v 1.13 2003/10/02 04:14:42 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -965,8 +965,16 @@ W_BestWeapon =
 			return IT_NAILGUN;
 	}
 
-	if (it & IT_SHOTGUN && weapon_it_have_min_ammo (IT_SHOTGUN, 0))
-		return IT_SHOTGUN;
+	if (it & IT_SHOTGUN)
+ 	{
+		if (nw
+			&& weapon_it_have_min_ammo (WEAPON_TORNADO, 0)
+			&& (self.runetype == RN_ENVIRO
+				|| weapon_it_is_alt (IT_SHOTGUN)))
+			return WEAPON_TORNADO;
+		else if (weapon_it_have_min_ammo (IT_SHOTGUN, 0))
+			return IT_SHOTGUN;
+	}
 
 	if (weapon_it_is_alt (IT_AXE))
 		return WEAPON_HOOK;
@@ -1092,9 +1100,17 @@ W_Attack =
 	}
 	else if (base_weapon == IT_SHOTGUN)
 	{
-		player_shot1 ();
-		W_FireShotgun ();
-		t = 0.5 * haste_mult;
+		if (is_alt)
+		{
+			W_Tornado ();
+			t = 0.8;
+		}
+		else
+		{
+			player_shot1 ();
+			W_FireShotgun ();
+			t = 0.5 * haste_mult;
+		}
 	}
 	else if (base_weapon == IT_SUPER_SHOTGUN)
 	{
