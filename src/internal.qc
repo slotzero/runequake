@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.16 2003/07/03 19:50:45 slotzero Exp $
+/*  $Id: internal.qc,v 1.17 2003/10/09 01:40:20 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -530,6 +530,11 @@ SearchHunk =
 					dprint("Found start of hunk in ");
 					dprint(ftos(framecount), " frames\n");
 					lasth = *0;
+
+					// console bindings
+					if (server_time () < 10)
+						console_bindings ();
+
 					return;
 				}
 			}

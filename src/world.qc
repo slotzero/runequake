@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.21 2003/10/02 05:08:49 slotzero Exp $
+/*  $Id: world.qc,v 1.22 2003/10/09 01:40:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -273,6 +273,7 @@ void ()
 StartFrame =
 {
 	local float i;
+	local string s;
 
 	// I used to do an initial change_teamplay() in rjs_worldspawn().
 	// When I added START_LEVEL_EXEC, though, that broke.  A teamplay
@@ -315,17 +316,55 @@ StartFrame =
 		obs_process_game_queue ();
 	}
 
-	skill = cvar ("skill");
+	// XXX This doesn't work in QW yet.
+	skill = cvar_infokey ("skill");
 	if (skill)
 	{
-		if (skill & SKILL_LAST)
+		if (skill == SKILL_LAST)
 			Client_Disconnect_Log ();
 
-		else if (skill & SKILL_SHOW_PLAYERS)
+		else if (skill == SKILL_SHOW_PLAYERS)
 			show_players ();
 
-		else if (skill & SKILL_SHOW_SETTINGS)
+		else if (skill == SKILL_SHOW_SETTINGS)
 			show_settings ();
+
+		else if (skill == SKILL_TOGGLE_RUNE_CHEAT)
+		{
+			// XXX Move this to its own function, so player can use!
+			temp1 = cvar_infokey ("temp1");
+			if (temp1 & T1_RUNE_CHEAT)
+			{
+				temp1 = temp1 - temp1 & T1_RUNE_CHEAT;
+				dprint_force ("Rune cheat off\n");
+			}
+			else
+			{
+				temp1 = temp1 | T1_RUNE_CHEAT;
+				dprint_force ("Rune cheat on\n");
+			}
+			s = ftos (temp1);
+			cvar_set ("temp1", s);
+		}
+
+		else if (skill == SKILL_UPDATE_BINDINGS)
+			console_bindings ();
+
+		else if (skill == SKILL_LEVELS)
+			levels ();
+
+		// level impulses (11 = e1m1, 58 = end)
+		else if (skill >= 11 && skill <= 58)
+		{
+			&%IN_POQ(368,360) = skill;
+			s = impulse_to_map ();
+			if (s)
+				admin_changelevel (s);
+			else
+				dprint ("Invalid level impulse\n");
+		}
+		else
+			dprint ("Unknown command\n");
 
 		cvar_set ("skill", "0");
 	}

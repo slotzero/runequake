@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.67 2003/10/07 02:18:12 slotzero Exp $
+/*  $Id: rjs.qc,v 1.68 2003/10/09 01:40:20 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -259,13 +259,8 @@ rjs_worldspawn =
 		localcmd ("\n");
 	}
 
-	// Must be zero of self_sprint() will always be dprint().
+	// Must be zero or self_sprint() will always be dprint().
 	cvar_set ("skill", "0");
-
-	// XXX This is done every level, but shouldn't it only be done once and elsewhere?
-	console_init_cvar_alias ("last",		"skill",	SKILL_LAST);
-	console_init_cvar_alias ("show-players",	"skill",	SKILL_SHOW_PLAYERS);
-	console_init_cvar_alias ("show-settings",	"skill",	SKILL_SHOW_SETTINGS);
 
 	// I used to do an initial change_teamplay() here to get the mod
 	// and version into the teamplay string.  See the comments in
@@ -1558,17 +1553,44 @@ levels =
 	);
 };
 
+void ()
+console_bindings =
+{
+	level_aliases ();
+
+	console_init_cvar_alias ("last",		"skill",	SKILL_LAST);
+	console_init_cvar_alias ("show-players",	"skill",	SKILL_SHOW_PLAYERS);
+	console_init_cvar_alias ("show-settings",	"skill",	SKILL_SHOW_SETTINGS);
+	console_init_cvar_alias ("rune-cheat",		"skill",	SKILL_TOGGLE_RUNE_CHEAT);
+	console_init_cvar_alias ("update-bindings",	"skill",	SKILL_UPDATE_BINDINGS);
+	console_init_cvar_alias ("levels",		"skill",	SKILL_LEVELS);
+
+	dprint ("Sending console bindings\n");
+};
+
 void (string level, float imp)
 player_init_level_alias =
 {
 	local string s;
 
-	self_stuffcmd (self, "alias ");
-	self_stuffcmd (self, level);
-	self_stuffcmd (self, " \"cl;w5;w5;impulse ");
-	s = ftos (imp);
-	self_stuffcmd (self, s);
-	self_stuffcmd (self, "\"\n");
+	if (self == world)
+	{
+		localcmd ("alias ");
+		localcmd (level);
+		localcmd (" \"skill ");
+		s = ftos (imp);
+		localcmd (s);
+		localcmd ("\"\n");
+	}
+	else
+	{
+		self_stuffcmd (self, "alias ");
+		self_stuffcmd (self, level);
+		self_stuffcmd (self, " \"cl;w5;w5;impulse ");
+		s = ftos (imp);
+		self_stuffcmd (self, s);
+		self_stuffcmd (self, "\"\n");
+	}
 };
 
 void ()
@@ -1576,11 +1598,14 @@ level_aliases =
 {
 	local string s;
 
-	self_stuffcmd (self, "alias w5 \"wait;wait;wait;wait;wait\"\n");
-	self_stuffcmd (self, "alias cl \"impulse ");
-	s = ftos (IMP_ADMIN_CHANGE_MAP);
-	self_stuffcmd (self, s);
-	self_stuffcmd (self, "\"\n");
+	if (self != world)
+	{
+		self_stuffcmd (self, "alias w5 \"wait;wait;wait;wait;wait\"\n");
+		self_stuffcmd (self, "alias cl \"impulse ");
+		s = ftos (IMP_ADMIN_CHANGE_MAP);
+		self_stuffcmd (self, s);
+		self_stuffcmd (self, "\"\n");
+	}
 
 	// XXX These should be scripted!! Add to map file.
 

@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.49 2003/10/06 11:21:51 slotzero Exp $
+/*  $Id: defs.qc,v 1.50 2003/10/09 01:40:20 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1022,7 +1022,11 @@ float	skill;
 
 float	SKILL_LAST			= 1;
 float	SKILL_SHOW_PLAYERS		= 2;
-float	SKILL_SHOW_SETTINGS		= 4;
+float	SKILL_SHOW_SETTINGS		= 3;
+float	SKILL_TOGGLE_RUNE_CHEAT		= 4;
+float	SKILL_UPDATE_BINDINGS		= 5;
+float	SKILL_LEVELS			= 6;
+// SKILL 11 - 58 (level impulses, 11 = e1m1, 58 = end)
 
 IN_QW([-
 //
