@@ -1,10 +1,8 @@
-// $Id: world.qc,v 1.1 2002/02/21 21:48:02 slotzero Exp $
+// $Id: world.qc,v 1.2 2002/02/22 03:24:44 slotzero Exp $
 
 void ()
 main =
 {
-	dprint ("main function\n");
-
 	// these are just commands the the prog compiler to copy these files
 
 	precache_file ("progs.dat");
@@ -205,7 +203,7 @@ worldspawn =
 	precache_sound ("player/gasp2.wav");		// taking breath
 	precache_sound ("player/h2odeath.wav");		// drowning death
 
-	precache_sound ("misc/talk.wav");			// talk
+	precache_sound ("misc/talk.wav");		// talk
 	precache_sound ("player/teledth1.wav");		// telefrag
 	precache_sound ("misc/r_tele1.wav");		// teleport sounds
 	precache_sound ("misc/r_tele2.wav");
@@ -244,7 +242,7 @@ worldspawn =
 	precache_sound ("player/death5.wav");
 
 	// ax sounds
-	precache_sound ("weapons/ax1.wav");			// ax swoosh
+	precache_sound ("weapons/ax1.wav");		// ax swoosh
 	precache_sound ("player/axhit1.wav");		// ax hit meat
 	precache_sound ("player/axhit2.wav");		// ax hit world
 
@@ -257,8 +255,8 @@ worldspawn =
 	precache_sound ("player/lburn1.wav");		// lava burn
 	precache_sound ("player/lburn2.wav");		// lava burn
 
-	precache_sound ("misc/water1.wav");			// swimming
-	precache_sound ("misc/water2.wav");			// swimming
+	precache_sound ("misc/water1.wav");		// swimming
+	precache_sound ("misc/water2.wav");		// swimming
 
 	precache_model ("progs/player.mdl");
 	precache_model ("progs/eyes.mdl");
@@ -267,8 +265,8 @@ worldspawn =
 	precache_model ("progs/gib2.mdl");
 	precache_model ("progs/gib3.mdl");
 
-	precache_model ("progs/s_bubble.spr");	// drowning bubbles
-	precache_model ("progs/s_explod.spr");	// sprite explosion
+	precache_model ("progs/s_bubble.spr");		// drowning bubbles
+	precache_model ("progs/s_explod.spr");		// sprite explosion
 
 	precache_model ("progs/v_axe.mdl");
 	precache_model ("progs/v_shot.mdl");
@@ -281,7 +279,7 @@ worldspawn =
 	precache_model ("progs/bolt.mdl");		// for lightning gun
 	precache_model ("progs/bolt2.mdl");		// for lightning gun
 	precache_model ("progs/bolt3.mdl");		// for boss shock
-	precache_model ("progs/lavaball.mdl");	// for testing
+	precache_model ("progs/lavaball.mdl");		// for testing
 
 	precache_model ("progs/missile.mdl");
 	precache_model ("progs/grenade.mdl");
@@ -298,43 +296,43 @@ worldspawn =
 	* Rune serv extra precaches *
 	\***************************/
 
-	precache_model ("progs/end1.mdl");	// for runes
-	precache_model ("progs/end2.mdl");	// for runes
-	precache_model ("progs/end3.mdl");	// for runes
-	precache_model ("progs/end4.mdl");	// for runes
-	precache_model ("progs/flame2.mdl");	// firewalk, burning
-	precache_model ("progs/bolt2.mdl");	// electric rune
-	precache_model ("progs/v_spike.mdl");	// Death spot
-	precache_model ("progs/oldone.mdl");	// For the Shub Hat!
-	precache_model ("progs/teleport.mdl");	// Big spiky ball
-	precache_model ("progs/armor.mdl");	// armor dropping on e1m7 &c
+	precache_model ("progs/end1.mdl");		// for runes
+	precache_model ("progs/end2.mdl");		// for runes
+	precache_model ("progs/end3.mdl");		// for runes
+	precache_model ("progs/end4.mdl");		// for runes
+	precache_model ("progs/flame2.mdl");		// firewalk, burning
+	precache_model ("progs/bolt2.mdl");		// electric rune
+	precache_model ("progs/v_spike.mdl");		// Death spot
+	precache_model ("progs/oldone.mdl");		// For the Shub Hat!
+	precache_model ("progs/teleport.mdl");		// Big spiky ball
+	precache_model ("progs/armor.mdl");		// armor dropping on e1m7 &c
 
-	precache_model ("progs/s_light.spr");	// Death orb and gravity well
+	precache_model ("progs/s_light.spr");		// Death orb and gravity well
 
-	precache_sound (SOUND_RUNE_PICKUP);	// You got a rune
-	precache_sound ("items/protect2.wav");	// shielding or resistance?
-	precache_sound ("items/protect3.wav");	// shielding or resistance?
-	precache_sound ("items/damage3.wav");	// strength
-	precache_sound ("items/damage.wav");	// radiation
-	precache_sound ("items/inv1.wav");	// deathspots become invis
-	precache_sound ("boss1/sight1.wav");	// haste rune
+	precache_sound (SOUND_RUNE_PICKUP);		// You got a rune
+	precache_sound ("items/protect2.wav");		// shielding or resistance?
+	precache_sound ("items/protect3.wav");		// shielding or resistance?
+	precache_sound ("items/damage3.wav");		// strength
+	precache_sound ("items/damage.wav");		// radiation
+	precache_sound ("items/inv1.wav");		// deathspots become invis
+	precache_sound ("boss1/sight1.wav");		// haste rune
 	precache_sound ("items/r_item1.wav");
-	precache_sound ("items/r_item2.wav");	// regeneration rune
-	precache_sound ("wizard/wpain.wav");	// vampiric rune
-	precache_sound ("fish/bite.wav");	// freeze activate
-	precache_sound ("blob/death1.wav");	// unfreeze!
-	precache_sound ("shambler/smack.wav");	// freeze!
-	precache_sound ("hknight/hit.wav");	// firewalk, flame missiles, fire trap
-	precache_sound ("boss1/throw.wav");	// trigger fire trap
-	precache_sound ("misc/basekey.wav");	// holorune activate
-	precache_sound ("enforcer/sight2.wav");	// drop ice trap
-	precache_sound ("buttons/switch04.wav");// drop death spots
-	precache_sound ("doors/airdoor2.wav");	// Enviro-jump
-	precache_sound ("zombie/z_miss.wav");	// Chaff hits someone.
-	precache_sound ("boss2/idle.wav");	// Blowing up in a Death Spot
-	precache_sound ("knight/sword1.wav");	// lumberjack axe
-	precache_sound ("knight/sword2.wav");	// lumberjack axe
-	precache_sound ("ambience/thunder1.wav"); // player connect
+	precache_sound ("items/r_item2.wav");		// regeneration rune
+	precache_sound ("wizard/wpain.wav");		// vampiric rune
+	precache_sound ("fish/bite.wav");		// freeze activate
+	precache_sound ("blob/death1.wav");		// unfreeze!
+	precache_sound ("shambler/smack.wav");		// freeze!
+	precache_sound ("hknight/hit.wav");		// firewalk, flame missiles, fire trap
+	precache_sound ("boss1/throw.wav");		// trigger fire trap
+	precache_sound ("misc/basekey.wav");		// holorune activate
+	precache_sound ("enforcer/sight2.wav");		// drop ice trap
+	precache_sound ("buttons/switch04.wav");	// drop death spots
+	precache_sound ("doors/airdoor2.wav");		// Enviro-jump
+	precache_sound ("zombie/z_miss.wav");		// Chaff hits someone.
+	precache_sound ("boss2/idle.wav");		// Blowing up in a Death Spot
+	precache_sound ("knight/sword1.wav");		// lumberjack axe
+	precache_sound ("knight/sword2.wav");		// lumberjack axe
+	precache_sound ("ambience/thunder1.wav"); 	// player connect
 
 	// For the Shambler Helper
 	precache_model ("progs/shambler.mdl");
@@ -373,50 +371,7 @@ worldspawn =
 	//RUNE SERV: Set current rune number at 0.
 	runecurrent = 0;
 
-	//
-	// Setup light animation tables. 'a' is total darkness, 'z' is maxbright.
-	//
-
-	// 0 normal
-	lightstyle (0, "m");
-
-	// 1 FLICKER (first variety)
-	lightstyle (1, "mmnmmommommnonmmonqnmmo");
-
-	// 2 SLOW STRONG PULSE
-	lightstyle (2, "abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba");
-
-	// 3 CANDLE (first variety)
-	lightstyle (3, "mmmmmaaaaammmmmaaaaaabcdefgabcdefg");
-
-	// 4 FAST STROBE
-	lightstyle (4, "mamamamamama");
-
-	// 5 GENTLE PULSE 1
-	lightstyle (5, "jklmnopqrstuvwxyzyxwvutsrqponmlkj");
-
-	// 6 FLICKER (second variety)
-	lightstyle (6, "nmonqnmomnmomomno");
-
-	// 7 CANDLE (second variety)
-	lightstyle (7, "mmmaaaabcdefgmmmmaaaammmaamm");
-
-	// 8 CANDLE (third variety)
-	lightstyle (8, "mmmaaammmaaammmabcdefaaaammmmabcdefmmmaaaa");
-
-	// 9 SLOW STROBE (fourth variety)
-	lightstyle (9, "aaaaaaaazzzzzzzz");
-
-	// 10 FLUORESCENT FLICKER
-	lightstyle (10, "mmamammmmammamamaaamammma");
-
-	// 11 SLOW PULSE NOT FADE TO BLACK
-	lightstyle (11, "abcdefghijklmnopqrrqponmlkjihgfedcba");
-
-	// styles 32-62 are assigned by the light program for switchable lights
-
-	// 63 testing
-	lightstyle (63, "a");
+	Light_Setup ();
 };
 
 float teamplay_set_state;
@@ -558,15 +513,17 @@ InitBodyQue =
 void (entity ent)
 CopyToBodyQue =
 {
-	bodyque_head.angles = ent.angles;
-	bodyque_head.model = ent.model;
-	bodyque_head.modelindex = ent.modelindex;
-	bodyque_head.frame = ent.frame;
-	bodyque_head.colormap = ent.colormap;
-	bodyque_head.movetype = ent.movetype;
-	bodyque_head.velocity = ent.velocity;
-	bodyque_head.flags = 0;
+	bodyque_head.angles	= ent.angles;
+	bodyque_head.model	= ent.model;
+	bodyque_head.modelindex	= ent.modelindex;
+	bodyque_head.frame	= ent.frame;
+	bodyque_head.colormap	= ent.colormap;
+	bodyque_head.movetype	= ent.movetype;
+	bodyque_head.velocity	= ent.velocity;
+	bodyque_head.flags	= 0;
+
 	setorigin (bodyque_head, ent.origin);
 	setsize (bodyque_head, ent.mins, ent.maxs);
-	bodyque_head = bodyque_head.owner;
+
+	bodyque_head		= bodyque_head.owner;
 };

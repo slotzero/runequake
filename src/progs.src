@@ -1,4 +1,4 @@
-// $Id: progs.src,v 1.1 2002/02/21 21:47:57 slotzero Exp $
+// $Id: progs.src,v 1.2 2002/02/22 03:24:44 slotzero Exp $
 
 PROGS_FILE
 
@@ -43,6 +43,7 @@ buttons.qc
 triggers.qc
 plats.qc
 misc.qc
+light.qc
 
 // The //nomonster comments are used by the Makefile to build the version
 // with monsters.
@@ -59,7 +60,7 @@ zombie.qc
 //nomonster boss.qc
 //nomonster tarbaby.qc		// registered
 //nomonster hknight.qc		// registered
-//nomonster fish.qc		// registered
+//nomonster fish.qc		    // registered
 //nomonster shalrath.qc		// registered
 //nomonster enforcer.qc		// registered
 //nomonster oldone.qc		// registered
