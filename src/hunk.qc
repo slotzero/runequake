@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.36 2004/12/25 02:13:52 slotzero Exp $
+/*  $Id: hunk.qc,v 1.37 2004/12/25 03:21:00 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -288,6 +288,9 @@ Write_Hunk_Float =
 	hunk[%0] = f;
 };
 
+// This is the fastest way to write string data to the hunk.  If you're not careful
+// though, you can easily overwrite unrelated data by supplying too large of a
+// string.  Termination is always present.
 void (entity hunk, string s)
 Write_Hunk_String_e =
 {
@@ -296,6 +299,9 @@ Write_Hunk_String_e =
 	strcpy (@AddInt(&hunk, PQUAKEC_TO_PSTRING), s);
 };
 
+// This is the fastest way to write string data to the hunk.  If you're not careful
+// though, you can easily overwrite unrelated data by supplying too large of a
+// string.  Termination is always present.
 void (float type, float offset, string s)
 Write_Hunk_String =
 {
@@ -305,8 +311,9 @@ Write_Hunk_String =
 	Write_Hunk_String_e (hunk, s);
 };
 
-// This is much faster than Write_Hunk_Max(), but it is
-// also less accurate.  Bytes should be equal to 4^X.
+// This is a safe and speedy way to write string data to the hunk, but it's not entirely
+// accurate; the value of bytes is rounded up to the nearest dword and if you supply a
+// a value that is equal to the size of the string, no termination will be present.
 void (float type, float offset, string data, float bytes)
 Write_Hunk_String_Max =
 {
@@ -324,33 +331,33 @@ Write_Hunk_String_Max =
 		hunk[i] = (*pdata)[i];
 };
 
-// This will always force a null termination.  The actual
-// size of bytes is bytes + one (data\0).
+// This is a slow but accurate way to write string data to the hunk.  The string
+// will always include termination, so bytes will be equal to bytes + one.
 void (entity hunk, string data, float bytes)
-Write_Hunk_Max_E =
+Write_Hunk_String_Exact_E =
 {
 	if (!hunk)
-		return dprint ("Write_Hunk_Max_E(): hunk is null\n");
+		return dprint ("Write_Hunk_String_Exact_E(): hunk is null\n");
 
 	if (bytes < 1)
-		return dprint ("Write_Hunk_Max_E(): bytes < 1\n");
+		return dprint ("Write_Hunk_String_Exact_E(): bytes < 1\n");
 
 	data = substr (data, 0, (bytes));
 	strcpy (@AddInt(&hunk, PQUAKEC_TO_PSTRING), data);
 };
 
-// When bytes is less than four, a null termination is written which
-// increases the actual size of bytes by one (1=2, 2=3, 3=4, 4=4, 5=5).
-// If bytes is larger than data, only data (including termination) is
-// written.  To write a string without termination, bytes must be equal
-// to the length of data and over 3 bytes.
+// This is a very slow but accurate way to write string data to the hunk.  When
+// bytes is less than four, a null termination is written which increases the
+// actual size of bytes by one (1=2, 2=3, 3=4, 4=4, 5=5).  If bytes is larger
+// than data, only data (including termination) is written.  To write a string
+// without termination, bytes must be equal to the length of data and over 3 bytes.
 void (entity hunk, string data, float bytes)
-Write_Hunk_Max_e =
+Write_Hunk_String_Exact_e =
 {
 	local float i, pdata, dword;
 
 	if (!hunk)
-		return dprint ("Write_Hunk_Max_e(): hunk is null\n");
+		return dprint ("Write_Hunk_String_Exact_e(): hunk is null\n");
 
 	i = strlen (data);
 	if (bytes > i)
@@ -358,7 +365,7 @@ Write_Hunk_Max_e =
 
 	dword	= floor (bytes / 4) * %1;
 	if (!dword)
-		return Write_Hunk_Max_E (hunk, data, bytes);
+		return Write_Hunk_String_Exact_E (hunk, data, bytes);
 
 	pdata = AddInt (&data, PSTRING_TO_PQUAKEC);
 
@@ -380,11 +387,16 @@ Write_Hunk_Max_e =
  	}
 };
 
+// This is a very slow but accurate way to write string data to the hunk.  When
+// bytes is less than four, a null termination is written which increases the
+// actual size of bytes by one (1=2, 2=3, 3=4, 4=4, 5=5).  If bytes is larger
+// than data, only data (including termination) is written.  To write a string
+// without termination, bytes must be equal to the length of data and over 3 bytes.
 void (float type, float offset, string data, float bytes)
-Write_Hunk_Max =
+Write_Hunk_String_Exact =
 {
 	local entity hunk;
 
 	hunk = Get_Hunk (type, offset);
-	Write_Hunk_Max_e (hunk, data, bytes);
+	Write_Hunk_String_Exact_e (hunk, data, bytes);
 };
