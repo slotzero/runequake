@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.20 2003/06/24 22:17:36 slotzero Exp $
+/*  $Id: develop.qc,v 1.21 2003/06/29 22:13:24 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -46,4 +46,20 @@ parse_time =
 	bprint (":");
 	if (seconds < 10) bprint ("0");
 	bprint_float (seconds);
+};
+
+void (float type, float offset, string ip)
+ban_ip =
+{
+	local float i;
+	local string s;
+
+	// shift one down
+	for (i = %14; i >= %0; i = i - %1)
+	{
+		s = Read_Hunk_Max (type, offset + (i * 16), 16);
+		Write_Hunk_Max (type, offset + ((i + %1) * 16), s, 16);
+		dprint (">", s, "<\n");
+	}
+	Write_Hunk_Max (type, offset, ip, 16);
 };
