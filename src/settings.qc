@@ -1,4 +1,4 @@
-// $Id: settings.qc,v 1.9 2002/09/28 00:55:47 slotzero Exp $
+// $Id: settings.qc,v 1.10 2002/09/28 17:19:28 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -601,9 +601,3 @@ float RN_JACK_REGEN_ARMOR	= 0.5;		// portion of max armor
 float RN_JACK_RESIST		= 0.8;		// saved damage
 float RN_JACK_STRENGTH		= 1.2;		// extra damage
 float RN_JACK_PIERCING		= 0.8;		// portion which hits armor
-
-//-----------------------------------------------------------------------------
-// internal use only - do not modify
-//-----------------------------------------------------------------------------
-
-float MOD_PROQUAKE		= 0;
