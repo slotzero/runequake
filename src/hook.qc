@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.21 2004/07/10 05:11:45 slotzero Exp $
+/*  $Id: hook.qc,v 1.22 2004/07/20 04:57:47 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -112,6 +112,8 @@ HookPull =
 
 	if (self.owner.runetype == RN_CLOAK)
 		self.owner.runetime = time + RECLOAK_DELAY;
+	else if (self.owner.runetype == RN_MONK)
+		self.owner.runetime = time + MONK_MOVE_DELAY;
 
 	if (MaybeDropHook ())
 		return;
