@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.12 2002/10/11 22:05:52 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.13 2002/10/13 16:56:27 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -545,8 +545,8 @@ Rune_Tell_real =
 		s2 = "Grappling hook, plus";
 	else
 		s2 = string_null;
-	s3 = "\nŸ\n ";
-	s4 = " \nŸ\n";
+	s3 = "\n\<\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\>\n\b\.\b ";
+	s4 = " \b\.\b\n\<\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\>\n";
 
 	if (riders)
 		centerprint7 (self, s2, s3, desc_l, s4, d1, d2, d3);
