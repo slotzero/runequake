@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.6 2003/06/26 23:11:30 slotzero Exp $
+/*  $Id: hunk.qc,v 1.7 2003/06/28 05:19:26 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -108,8 +108,26 @@ Read_Hunk_Max =
 	return Read_Hunk_Max_e (hunk, bytes);
 };
 
-// If bytes is larger than data, bytes will be equal to
-// data plus one to include the null termination.
+// This will always force a null termination.  The actual
+// size of bytes is bytes + one (data\0).
+void (entity hunk, string data, float bytes)
+Write_Hunk_Max_E =
+{
+	if (!hunk)
+		return dprint ("Write_Hunk_Max_E(): hunk is null\n");
+
+	if (bytes < 1)
+		return dprint ("Write_Hunk_Max_E(): bytes < 1\n");
+
+	data = substr (data, 0, (bytes));
+	strcpy (@AddInt(&hunk, PQUAKEC_TO_PSTRING), data);
+};
+
+// When bytes is less than four, a null termination is written which
+// increases the actual size of bytes by one (1=2, 2=3, 3=4, 4=4, 5=5).
+// If bytes is larger than data, only data (including termination) is
+// written.  To write a string without termination, bytes must be equal
+// to the length of data and over 3 bytes.
 void (entity hunk, string data, float bytes)
 Write_Hunk_Max_e =
 {
@@ -122,9 +140,12 @@ Write_Hunk_Max_e =
 	if (bytes > i)
 		bytes = i + 1;
 
+	dword	= floor (bytes / 4) * %1;
+	if (!dword)
+		return Write_Hunk_Max_E (hunk, data, bytes);
+
 	pdata = AddInt (&data, PSTRING_TO_PQUAKEC);
 
-	dword	= floor (bytes / 4) * %1;
 	while (bytes > 3)
 		bytes = bytes - 4;
 
