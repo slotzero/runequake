@@ -1,4 +1,4 @@
-/*  $Id: fish.qc,v 1.2 2002/10/11 22:05:46 slotzero Exp $
+/*  $Id: fish.qc,v 1.3 2002/10/11 23:35:52 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -178,11 +178,11 @@ monster_fish =
 		remove (self);
 		return;
 	}
-	precache_model2 ("progs/fish.mdl");
+	precache_model ("progs/fish.mdl");
 
-	precache_sound2 ("fish/death.wav");
-	precache_sound2 ("fish/bite.wav");
-	precache_sound2 ("fish/idle.wav");
+	precache_sound ("fish/death.wav");
+	precache_sound ("fish/bite.wav");
+	precache_sound ("fish/idle.wav");
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

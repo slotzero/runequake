@@ -1,4 +1,4 @@
-/*  $Id: hknight.qc,v 1.2 2002/10/11 22:05:47 slotzero Exp $
+/*  $Id: hknight.qc,v 1.3 2002/10/11 23:35:52 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -424,18 +424,18 @@ monster_hell_knight =
 		remove (self);
 		return;
 	}
-	precache_model2 ("progs/hknight.mdl");
-	precache_model2 ("progs/k_spike.mdl");
-	precache_model2 ("progs/h_hellkn.mdl");
+	precache_model ("progs/hknight.mdl");
+	precache_model ("progs/k_spike.mdl");
+	precache_model ("progs/h_hellkn.mdl");
 
-	precache_sound2 ("hknight/attack1.wav");
-	precache_sound2 ("hknight/death1.wav");
-	precache_sound2 ("hknight/pain1.wav");
-	precache_sound2 ("hknight/sight1.wav");
+	precache_sound ("hknight/attack1.wav");
+	precache_sound ("hknight/death1.wav");
+	precache_sound ("hknight/pain1.wav");
+	precache_sound ("hknight/sight1.wav");
 	precache_sound ("hknight/hit.wav");		// used by C code, so don't sound2
-	precache_sound2 ("hknight/slash1.wav");
-	precache_sound2 ("hknight/idle.wav");
-	precache_sound2 ("hknight/grunt.wav");
+	precache_sound ("hknight/slash1.wav");
+	precache_sound ("hknight/idle.wav");
+	precache_sound ("hknight/grunt.wav");
 
 	precache_sound ("knight/sword1.wav");
 	precache_sound ("knight/sword2.wav");

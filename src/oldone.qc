@@ -1,4 +1,4 @@
-/*  $Id: oldone.qc,v 1.3 2002/10/11 22:05:50 slotzero Exp $
+/*  $Id: oldone.qc,v 1.4 2002/10/11 23:35:52 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -268,12 +268,12 @@ monster_oldone =
 		return;
 	}
 
-	precache_model2 ("progs/oldone.mdl");
+	precache_model ("progs/oldone.mdl");
 
-	precache_sound2 ("boss2/death.wav");
-	precache_sound2 ("boss2/idle.wav");
-	precache_sound2 ("boss2/sight.wav");
-	precache_sound2 ("boss2/pop2.wav");
+	precache_sound ("boss2/death.wav");
+	precache_sound ("boss2/idle.wav");
+	precache_sound ("boss2/sight.wav");
+	precache_sound ("boss2/pop2.wav");
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

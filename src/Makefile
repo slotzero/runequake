@@ -1,4 +1,4 @@
-#   $Id: Makefile,v 1.7 2002/10/11 22:05:43 slotzero Exp $
+#   $Id: Makefile,v 1.8 2002/10/11 23:35:51 slotzero Exp $
 
 #    Copyright (C) 1998-2001  Roderick Schertler.
 #
@@ -63,8 +63,8 @@ progs_all	:= $(foreach type,$(types),$(progs_$(type)))
 M4		:= m4
 M4FLAGS		:= --prefix-builtins
 
-base_files	:= runequake.qst Changes Configuring Copying Playing \
-	    	    Todo aliases.cfg example.cfg
+base_files	:= Changes Configuring Copying Playing Todo \
+			aliases.cfg example.cfg gnu.txt runequake.qst
 base_files_src	:= Notes
 
 dist_version	:= runequake-$(shell \

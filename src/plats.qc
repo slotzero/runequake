@@ -1,4 +1,4 @@
-/*  $Id: plats.qc,v 1.5 2002/10/11 22:05:50 slotzero Exp $
+/*  $Id: plats.qc,v 1.6 2002/10/11 23:35:52 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -363,7 +363,7 @@ misc_teleporttrain =
 	precache_noise ("misc/null.wav");
 	self.noise1 = "misc/null.wav";
 
-	precache_model2 ("progs/teleport.mdl");
+	precache_model ("progs/teleport.mdl");
 	setmodel (self, "progs/teleport.mdl");
 	setsize (self, self.mins, self.maxs);
 	setorigin (self, self.origin);
