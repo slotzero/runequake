@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.132 2004/07/12 11:29:52 slotzero Exp $
+/*  $Id: rjs.qc,v 1.133 2004/07/13 10:08:50 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1176,7 +1176,7 @@ common_impulses =
 		vote_no ();
 
 	// XXX I hard coded the vote impulses to reduce the amount of impulse checks
-	else if (self.impulse >= 209 && self.impulse <= 219)
+	else if (self.impulse >= 206 && self.impulse <= 219)
 		vote ();
 
 	else if (self.impulse == IMP_LEVELS)

@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.26 2004/07/12 11:34:01 slotzero Exp $
+/*  $Id: vote.qc,v 1.27 2004/07/13 10:08:50 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -485,6 +485,38 @@ vote =
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
+	}
+	// no runes
+	else if (self.impulse == IMP_VOTE_ARMOR)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= setarmor;
+		e.noise2	= " armor ";
+
+		if (NO_ARMORS)
+			e.noise1	= "enable";
+		else
+			e.noise1	= "disable";
+	}
+	else if (self.impulse == IMP_VOTE_ROTATE)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= setrotate;
+		e.noise2	= " rotating armor ";
+
+		if (ROTATE)
+			e.noise1	= "disable";
+		else
+			e.noise1	= "enable";
+
+		if (NO_ARMORS)
+		{
+			if (!cancel)
+				self_sprint (self, "enable armor first\n");
+			cancel = 1;
+		}
 	}
 	else
 		cancel = -1;

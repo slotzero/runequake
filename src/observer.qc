@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.31 2004/07/09 07:45:40 slotzero Exp $
+/*  $Id: observer.qc,v 1.32 2004/07/13 10:08:50 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -281,7 +281,7 @@ obs_impulses =
 		else if (self.impulse == IMP_RUNE_TELL && self.owner != world)
 			rune_tell_toggle (0, self.owner);
 
-		else if (self.impulse >= 209 && self.impulse <= 219
+		else if (self.impulse >= 206 && self.impulse <= 219
 				|| self.impulse == IMP_VOTE_YES
 				|| self.impulse == IMP_VOTE_NO)
 			count_votes (2);

@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.3 2004/07/13 09:33:42 slotzero Exp $
+/*  $Id: toggle.qc,v 1.4 2004/07/13 10:08:50 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -212,7 +212,7 @@ Populate_Settings =
 		dprint_force ("Armors disabled\n");
 		toggle_armor (0);
 	}
-	if (ROTATE)
+	if (ROTATE && !NO_ARMORS)
 	{
 		dprint_force ("Rotating armors enabled\n");
 		toggle_armor (1);
