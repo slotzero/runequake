@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.34 2004/06/23 03:41:59 slotzero Exp $
+/*  $Id: weapons.qc,v 1.35 2004/06/24 02:07:10 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -557,14 +557,7 @@ LightningDamage =
 {
 	traceline (p1, p2, FALSE, self);
 	if (trace_ent.takedamage)
-	{
 		LightningHit (from, damage, dtype);
-		if (self.classname == "player")
-		{
-			if (other.classname == "player" && trace_ent != world)
-				trace_ent.velocity_z = trace_ent.velocity_z + 400;
-		}
-	}
 };
 
 void ()
