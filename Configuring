@@ -1,4 +1,4 @@
-$Id: Configuring,v 1.1 2002/02/21 21:47:40 slotzero Exp $
+$Id: Configuring,v 1.2 2002/03/05 21:26:01 slotzero Exp $
 
 Starting the server
 
@@ -355,7 +355,7 @@ temp1
        512  60 second rune drop delay		T1_RUNE_DROP_DELAY_60
     131584 120 second rune drop delay		T1_RUNE_DROP_DELAY_120
     196608 240 second rune drop delay		T1_RUNE_DROP_DELAY_240
-    197120 rune dropping disabled   		T1_RUNE_DROP_DELAY_INF
+    197120 rune dropping disabled		T1_RUNE_DROP_DELAY_INF
 
     	Choose one of these numbers to specify how long players have to
     	hold on to their runes before they can delete them.  The default
@@ -365,6 +365,30 @@ temp1
     	I think that an interesting variation on the game is to disable
     	rune deleting (or set it to a minute or more), set random rune
     	models, and set it so you don't drop your rune when you die.
+
+scratch1 [your must restart the level for these changes to work]
+
+    1 lightstyle() to max brightness		S1_LIGHT_SETUP_ALL_BRIGHT
+
+	You can set the light style of every light to maximum intensity.
+	Use this with bit S1_LIGHT_SETUP_ALL_DARK and you get a medium
+	intensity.
+
+    2 lightstyle() to max darkness		S1_LIGHT_SETUP_ALL_DARK
+
+	You can set the light style of every light to minimum intensity.
+	Use this with bit S1_LIGHT_SETUP_ALL_BRIGHT and you get a medium
+	intensity.
+
+    4 turn off all quakec ambient sounds	S1_AMBIENT_SOUND_OFF
+
+	Remove all quakec ambient sounds such as torch flares, teleporter,
+	crickets, light noises.
+
+    8 don't spawn any static lights		S1_LIGHT_MAKESTATIC_OFF
+
+	Remove all static lights from the level.  This will not change the
+	lighting of the level.
 
 
 samelevel
@@ -408,8 +432,7 @@ settings.qc
 
 	    unmodified Stooge bot:	ban_name ^SBot\x1c
 	    newline or CR in name:	ban_name [\r\n]
-	    blank-looking name:
-		ban_name ^[\x0a\x0c\x0d\x20\x22\x8a\x8c]+$
+	    blank-looking name:		ban_name ^[\x0a\x0c\x0d\x20\x22\x8a\x8c]+$
 
 
 Admin mode
