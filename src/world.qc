@@ -1,4 +1,4 @@
-// $Id: world.qc,v 1.7 2002/06/16 23:00:25 slotzero Exp $
+// $Id: world.qc,v 1.8 2002/06/17 03:20:49 slotzero Exp $
 
 void ()
 main =
@@ -187,7 +187,7 @@ worldspawn =
 	s = ftos (sv_gravity);
 	cvar_set ("sv_gravity", s);
 
-	scratch1 = cvar ("scratch1");
+	scratch1 = cvar_infokey ("scratch1");
 
 	// the area based ambient sounds MUST be the first precache_sounds
 

@@ -1,4 +1,4 @@
-// $Id: admin.qc,v 1.10 2002/06/17 01:22:15 slotzero Exp $
+// $Id: admin.qc,v 1.11 2002/06/17 03:20:48 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -75,7 +75,7 @@ admin_toggle =
 	}
 
 	ADMIN_PASSCODE_REAL = 0;
-	admin_passcode_cvar = cvar ("gamecfg");
+	admin_passcode_cvar = cvar_infokey ("gamecfg");
 
 	if (admin_passcode_cvar < 0)
 		ADMIN_PASSCODE_REAL = 123456;
