@@ -1,4 +1,4 @@
-/*  $Id: runes40.qc,v 1.15 2003/10/05 02:55:22 slotzero Exp $
+/*  $Id: runes40.qc,v 1.16 2004/02/29 23:15:08 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -510,6 +510,7 @@ Weird_AllOff =
 	stuffcmd (self, "v_idlescale 0\n");
 	stuffcmd (self, "fov 90\n");
 	stuffcmd (self, CSHIFT_NONE);
+	stuffcmd (self, "bf\n");
 	IN_POQ([-
 		self.punchangle = VEC_ORIGIN;
 	-])

@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.30 2004/02/29 06:12:51 slotzero Exp $
+/*  $Id: items.qc,v 1.31 2004/02/29 23:15:08 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1183,10 +1183,32 @@ POWERUPS
 */
 
 void ()
-powerup_touch =
+powerup_denied =
 {
 	local entity e;
-	local float dist, tell, n;
+	local float dist;
+
+	// q3 style denied
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (e != other && is_player_e (e))
+		{
+			dist = vlen (self.origin - e.origin);
+			if (dist < 125)
+			{
+				self_sprint (e, "\{141} \bdenied!\n");
+				self_sound (e, "misc/talk.wav");
+			}
+		}
+		e = find (e, classname, "player");
+	}
+};
+
+void ()
+powerup_touch =
+{
+	local float tell, n;
 
 	if (other.classname != "player")
 		return;
@@ -1256,19 +1278,6 @@ powerup_touch =
 		other.super_sound = time + 1;
 	}
 
-	// q3 style denied
-	e = find (world, classname, "player");
-	while (e)
-	{
-		dist = vlen (self.origin - e.origin);
-		if (dist < 125 && e != other)
-		{
-			centerprint (e, "\b\<denied\>\b");
-			self_sound (e, "misc/talk.wav");
-		}
-		e = find (e, classname, "player");
-	}
-
 	if (!deathmatch & DM_DM_MASK)
 	{
 		sprint (other, "You got the ");
@@ -1287,6 +1296,8 @@ powerup_touch =
 		sprint_obs2 (other.netname, " just picked up the ");
 		sprint_obs2 (self.netname, "\n");
 	}
+
+	powerup_denied ();
 
 	activator = other;
 	SUB_UseTargets (); // fire all targets / killtargets
@@ -1608,8 +1619,7 @@ drop_powerup =
 void ()
 drop_powerup_touch =
 {
-	local entity e;
-	local float it, dist, time_left;
+	local float it, time_left;
 
 	if (other.classname != "player")
 		return;
@@ -1680,19 +1690,6 @@ drop_powerup_touch =
 	other.items	= other.items | it;
 	self.model	= string_null;
 
-	// q3 style denied
-	e = find (world, classname, "player");
-	while (e)
-	{
-		dist = vlen (self.origin - e.origin);
-		if (dist < 125 && e != other)
-		{
-			centerprint (e, "\b\<denied\>\b");
-			self_sound (e, "misc/talk.wav");
-		}
-		e = find (e, classname, "player");
-	}
-
 	if (self.netname != "biosuit")
 	{
 		time_left = ceil (self.cnt - time);
@@ -1706,6 +1703,8 @@ drop_powerup_touch =
 			bprint ("s");
 		bprint (" remaining!\n");
 	}
+
+	powerup_denied ();
 
 	activator = other;
 	SUB_UseTargets (); // fire all targets / killtargets
