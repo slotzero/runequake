@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.73 2003/10/31 02:30:45 slotzero Exp $
+/*  $Id: rjs.qc,v 1.74 2003/11/01 01:42:54 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1112,6 +1112,9 @@ common_impulses =
 	else if (self.impulse == IMP_LEVELS)
 		levels ();
 
+	else if (self.impulse == IMP_CUSTOM)
+		custom ();
+
 	else if (self.impulse == IMP_LAST)
 		Client_Disconnect_Log ();
 
@@ -1339,6 +1342,48 @@ levels =
 		"\ndm1-dm6    \b(deathmatch)\n"
 		"\n"
 	);
+	if (total_customs ())
+		self_sprint (self, "\bType \bcustom\b for custom levels\n\n");
+};
+
+float (float levsize)
+custom_sprint =
+{
+	local float i, n, nmaps;
+	local string m;
+
+	nmaps = sized_custom_count (levsize);
+	for (i = n = 1; i < nmaps; i = i + 1)
+	{
+		m = sized_custom (levsize, i);
+		self_sprintf_len (self, m, -9);
+
+		if (n > 3)
+		{
+			self_sprint (self, "\n");
+			n = 0;
+		}
+		n = n + 1;
+	}
+	return nmaps;
+};
+
+void ()
+custom =
+{
+	if (!total_customs ())
+		return self_sprint (self, "No custom maps on this server\n");
+
+	self_sprint (self, "\bSmall\n\n");
+	if (!custom_sprint (1))
+		self_sprint (self, "None.");
+	self_sprint (self, "\n\n\bMedium\n\n");
+	if (!custom_sprint (2))
+		self_sprint (self, "None.");
+	self_sprint (self, "\n\n\bLarge\n\n");
+	if (!custom_sprint (2))
+		self_sprint (self, "None.");
+	self_sprint (self, "\n");
 };
 
 void ()

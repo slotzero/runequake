@@ -1,4 +1,4 @@
-/*  $Id: map.qc,v 1.13 2003/10/28 03:06:27 slotzero Exp $
+/*  $Id: map.qc,v 1.14 2003/11/01 01:42:53 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -278,7 +278,9 @@ select_map =
 	i = 0;
 	if (!noexit & NOEXIT_NO_CUSTOM_LEVELS)
 	{
-		if (noexit & NOEXIT_CUSTOM_LEVELS_ONLY)
+		if (!total_customs ())
+			i = 0;
+		else if (noexit & NOEXIT_CUSTOM_LEVELS_ONLY)
 			i = 2;
 		else if (use_lp)
 			i = floor (random () * 2);

@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.53 2003/10/31 02:30:44 slotzero Exp $
+/*  $Id: defs.qc,v 1.54 2003/11/01 01:42:53 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -493,6 +493,7 @@ float RN_MAX_ALL	= 55;
 //    255 quad cheat
 
 float IMP_SHOW_POS		= 192;
+float IMP_CUSTOM		= 179;
 float IMP_LEVELS		= 178;
 float IMP_LAST			= 177;
 //				= 176 - 161 [weapon aliases]

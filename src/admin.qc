@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.23 2003/10/30 11:25:52 slotzero Exp $
+/*  $Id: admin.qc,v 1.24 2003/11/01 01:42:52 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -546,6 +546,24 @@ admin_impulse_map =
 	impulse_override_cancel ();
 	aq_menu_set (0);
 	m = impulse_to_map ();
+
+	if (noexit & NOEXIT_NO_CUSTOM_LEVELS && self.impulse > 58)
+	{
+		if (custom_size (m))
+		{
+			self_sprint (self, "Custom map voting disabled\n");
+			return;
+		}
+	}
+	else if (noexit & NOEXIT_CUSTOM_LEVELS_ONLY && self.impulse < 59)
+	{
+		if (map_size (m))
+		{
+			self_sprint (self, "Standard map voting disabled\n");
+			return;
+		}
+	}
+
 	if (!m)
 	{
 		self_sprint (self, "Canceled, invalid map impulse ");

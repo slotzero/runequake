@@ -1,4 +1,4 @@
-/*  $Id: customap.qc,v 1.4 2003/10/28 03:06:27 slotzero Exp $
+/*  $Id: customap.qc,v 1.5 2003/11/01 01:42:53 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -43,6 +43,17 @@ customs_hunk_pos =
 	else if	(levsize == 2)	return %400;
 	else if	(levsize == 3)	return %600;
 	else			return %0;
+};
+
+float ()
+total_customs =
+{
+	local float i, total;
+
+	total = 0;
+	for (i = 1; i < 4; i = i + 1)
+		total = total + sized_custom_count (i);
+	return total;
 };
 
 float (float levsize)
@@ -155,6 +166,9 @@ custom_maps =
 	if (noexit & NOEXIT_NO_CUSTOM_LEVELS)
 		return;
 
+	if (!total_customs ())
+		return;
+
 	sized_customs_to_hunk (0);
 };
 
@@ -165,6 +179,9 @@ select_custom =
 	local string s;
 
 	randomly = noexit & NOEXIT_RANDOMIZE;
+
+	if (!total_customs ())
+		return string_null;
 
 	dprint ("select_custom()\n");
 
@@ -185,8 +202,7 @@ select_custom =
 	}
 	else
 	{
-		// XXX Do this with bitwise ops instead?
-		// XXX Check to make sure levels are defined in QC first.
+		// XXX Do the checking in another function?
 		i = ceil (random () * 3);
 		if (i == 1)
 		{
@@ -202,12 +218,7 @@ select_custom =
 				i = 3;
 			}
 			if (!nmaps)
-			{
-				// no maps left, populate hunk
-				sized_customs_to_hunk (0);
-				nmaps = sized_customs_count (1);
 				i = 1;
-			}
 		}
 		else if (i == 2)
 		{
@@ -223,12 +234,7 @@ select_custom =
 				i = 3;
 			}
 			if (!nmaps)
-			{
-				// no maps left, populate hunk
-				sized_customs_to_hunk (0);
-				nmaps = sized_customs_count (2);
 				i = 2;
-			}
 		}
 		else
 		{
@@ -245,13 +251,15 @@ select_custom =
 				i = 2;
 			}
 			if (!nmaps)
-			{
-				// no maps left, populate hunk
-				sized_customs_to_hunk (0);
-				nmaps = sized_customs_count (3);
 				i = 3;
-			}
 		}
+
+		if (!nmaps)
+		{
+			sized_customs_to_hunk (0);
+			nmaps = sized_customs_count (i);
+		}
+
 		randomly = ceil (random () * nmaps);
 		return remove_custom_from_hunk (i, randomly);
 	}
