@@ -1,8 +1,11 @@
-$Id: Changes,v 1.25 2002/07/09 12:28:00 slotzero Exp $
+$Id: Changes,v 1.26 2002/07/15 02:30:54 slotzero Exp $
 
 Version 0.5.1  Fri Jul 05 07:38:14 EST 2002
 
     - Bug Fixes
+
+        - If you die with the phoenix rune just before the level changes,
+          you no longer lose the rune.
 
         - The infamous
 

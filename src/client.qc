@@ -1,4 +1,4 @@
-// $Id: client.qc,v 1.7 2002/06/09 20:20:41 slotzero Exp $
+// $Id: client.qc,v 1.8 2002/07/15 02:31:02 slotzero Exp $
 
 float modelindex_eyes, modelindex_player;
 
@@ -34,6 +34,10 @@ persistent_parms =
 void ()
 SetChangeParms =
 {
+	// Prevent SetNewParms() for dead phoenix rune holders.
+	if (self.health <= 0 && self.runetype == RN_PHOENIX)
+		self.health = 100;
+
 	if (self.health <= 0 || SET_PARMS_WITH_NEW_LEVEL)
 	{
 		SetNewParms ();
