@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.30 2004/07/05 23:10:20 slotzero Exp $
+/*  $Id: bindings.qc,v 1.31 2004/07/06 07:21:15 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -150,6 +150,9 @@ player_aliases =
 
 	// A fix for CRMod users...
 	self_stuffcmd (self, "alias ignorethis \"echo Welcome Rune Quake player!\"\n");
+
+	// Prevent honest people from using cam.cfg.
+	self_stuffcmd (self, "alias chase_active \"echo chase_active has been disabled on this server.\"\n");
 
 	self_stuffcmd (self, "alias w5 \"wait;wait;wait;wait;wait;\"\n");
 	self_stuffcmd (self, "alias cl \"impulse ");
