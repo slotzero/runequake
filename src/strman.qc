@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.27 2004/06/27 06:59:24 slotzero Exp $
+/*  $Id: strman.qc,v 1.28 2004/06/27 07:44:07 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -78,16 +78,21 @@ strlen =
 // allocate_hunk holds the current position
 float ALLOCATE_HUNK_BASE	= %3000;
 float ALLOCATE_HUNK_MAX		= %4000;
-float ALLOCATE_HUNK;
+
+float ALLOCATE_HUNK, ALLOCATE_HUNK_NEXT;
 
 void (float bytes)
 allocate_hunk =
 {
-	if (ALLOCATE_HUNK)
-		ALLOCATE_HUNK = ALLOCATE_HUNK + (ceil (bytes / 4) * %1) + %1;
+	ALLOCATE_HUNK = ALLOCATE_HUNK_NEXT;
+	if (ALLOCATE_HUNK_NEXT)
+		ALLOCATE_HUNK_NEXT = ALLOCATE_HUNK_NEXT + (ceil (bytes / 4) * %1) + %1;
 
-	if (!ALLOCATE_HUNK || ALLOCATE_HUNK > ALLOCATE_HUNK_MAX)
+	if (!ALLOCATE_HUNK_NEXT || ALLOCATE_HUNK_NEXT > ALLOCATE_HUNK_MAX)
+	{
 		ALLOCATE_HUNK = ALLOCATE_HUNK_BASE;
+		ALLOCATE_HUNK_NEXT = ALLOCATE_HUNK_BASE + (ceil (bytes / 4) * %1) + %1;
+	}
 };
 
 string (float bytes)
@@ -102,8 +107,8 @@ allocate_string_size =
 		return string_null;
 	}
 
-	array = Get_Hunk (HUNK_CONTEXT, ALLOCATE_HUNK);
 	allocate_hunk (bytes);
+	array = Get_Hunk (HUNK_CONTEXT, ALLOCATE_HUNK);
 	p	= AddInt (&"    \{0}   ", PSTRING_TO_PQUAKEC);
 
 	dword	= floor (bytes / 4) * %1;
@@ -180,8 +185,8 @@ strcat7 =
 	total = L1 + L2 + L3 + L4 + L5 + L6 + L7;
 	if (!total) return string_null;
 
-	alloc_hunk = ALLOCATE_HUNK;
 	allocate_hunk (total);
+	alloc_hunk = ALLOCATE_HUNK;
 	hunk = Get_Hunk (HUNK_CONTEXT, alloc_hunk);
 	if (!hunk)
 		return string_null;
@@ -257,8 +262,8 @@ substr =
 	if (offset > i)
 		return expr;
 
-	hunk = Get_Hunk (HUNK_CONTEXT, ALLOCATE_HUNK);
 	allocate_hunk (i);
+	hunk = Get_Hunk (HUNK_CONTEXT, ALLOCATE_HUNK);
 	if (!hunk)
 		return string_null;
 
