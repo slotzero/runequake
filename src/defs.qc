@@ -1,4 +1,4 @@
-// $Id: defs.qc,v 1.13 2002/06/26 18:27:15 slotzero Exp $
+// $Id: defs.qc,v 1.14 2002/07/09 12:28:05 slotzero Exp $
 
 /*
 ==============================================================================
@@ -8,81 +8,96 @@
 ==============================================================================
 */
 
-//
-// system globals
-//
-entity		self;
-entity		other;
-entity		world;
-float		time;
-float		frametime;
+////////////////////
+/* system globals */
+////////////////////
+
+entity	self;
+entity	other;
+entity	world;
+float	time;
+float	frametime;
 
 IN_QW([-
-entity          newmis;                         // if this is set, the entity that just
-								// run created a new missile that should
-								// be simulated immediately
+// if this is set, the entity that just run created a new missile that should
+// be simulated immediately
+entity	newmis;
 -])
 
-float		force_retouch;		// force all entities to touch triggers
-								// next frame.  this is needed because
-								// non-moving things don't normally scan
-								// for triggers, and when a trigger is
-								// created (like a teleport trigger), it
-								// needs to catch everything.
-								// decremented each frame, so set to 2
-								// to guarantee everything is touched
-string		mapname;
+// force all entities to touch triggers next frame.  this is needed because
+// non-moving things don't normally scan for triggers, and when a trigger is
+// created (like a teleport trigger), it needs to catch everything.
+// decremented each frame, so set to 2 to guarantee everything is touched
+float	force_retouch;
+string	mapname;
 
 IN_POQ([-
-float		deathmatch;
-float		coop;
-float		teamplay;
+float	deathmatch;
+float	coop;
+float	teamplay;
 -])
 
-float		serverflags;		// propagated from level to level, used to
-								// keep track of completed episodes
+// propagated from level to level, used to keep track of completed episodes
+float	serverflags;
 
-float		total_secrets;
-float		total_monsters;
+float	total_secrets;
+float	total_monsters;
 
-float		found_secrets;		// number of secrets found
-float		killed_monsters;	// number of monsters killed
+float	found_secrets;		// number of secrets found
+float	killed_monsters;	// number of monsters killed
 
 // spawnparms are used to encode information about clients across server
 // level changes
-float		parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16;
+float	parm1;
+float	parm2;
+float	parm3;
+float	parm4;
+float	parm5;
+float	parm6;
+float	parm7;
+float	parm8;
+float	parm9;
+float	parm10;
+float	parm11;
+float	parm12;
+float	parm13;
+float	parm14;
+float	parm15;
+float	parm16;
 
-//
-// global variables set by built in functions
-//
-vector		v_forward, v_up, v_right;	// set by makevectors()
+////////////////////////////////////////////////
+/* global variables set by built in functions */
+////////////////////////////////////////////////
 
-// set by traceline / tracebox
-float		trace_allsolid;
-float		trace_startsolid;
-float		trace_fraction;
-vector		trace_endpos;
-vector		trace_plane_normal;
-float		trace_plane_dist;
-entity		trace_ent;
-float		trace_inopen;
-float		trace_inwater;
+// set by makevectors()
+vector	v_forward;
+vector	v_up;
+vector	v_right;
 
-entity		msg_entity;				// destination of single entity writes
+// set by traceline() / tracebox()
+float	trace_allsolid;
+float	trace_startsolid;
+float	trace_fraction;
+vector	trace_endpos;
+vector	trace_plane_normal;
+float	trace_plane_dist;
+entity	trace_ent;
+float	trace_inopen;
+float	trace_inwater;
 
-//
-// required prog functions
-//
-void () main;						// only for testing
+entity	msg_entity;	// destination of single entity writes
 
+/////////////////////////////
+/* required prog functions */
+/////////////////////////////
+
+void ()	main;			// only for testing
 void ()	StartFrame;
-
-void () PlayerPreThink;
-void () PlayerPostThink;
-
+void ()	PlayerPreThink;
+void ()	PlayerPostThink;
 void ()	ClientKill;
 void ()	ClientConnect;
-void () PutClientInServer;				// call after setting the parm1... parms
+void ()	PutClientInServer;	// call after setting the parm1... parms
 void ()	ClientDisconnect;
 
 // called when a client first connects to a server. sets parms so they
@@ -92,9 +107,8 @@ void ()	SetNewParms;
 // call to set parms for self so they can be saved for a level transition
 void ()	SetChangeParms;
 
-//================================================
-void		end_sys_globals;		// flag for structure dumping
-//================================================
+// flag for structure dumping
+void	end_sys_globals;
 
 /*
 ==============================================================================
@@ -104,124 +118,143 @@ void		end_sys_globals;		// flag for structure dumping
 ==============================================================================
 */
 
-//
-// system fields (*** = do not set in prog code, maintained by C code)
-//
-.float		modelindex;		// *** model index in the precached list
-.vector		absmin, absmax;	// *** origin + mins / maxs
+/////////////////////////////////////////////////////////////////////////
+/* system fields (*** = do not set in prog code, maintained by C code) */
+/////////////////////////////////////////////////////////////////////////
 
-.float		ltime;			// local time for entity
+.float	modelindex;	// *** model index in the precached list
+
+.vector	absmin;		// *** origin + mins
+.vector absmax;		// *** origin + maxs
+
+.float	ltime;		// local time for entity
+
 IN_QW([-
-.float          lastruntime;    // *** to allow entities to run out of sequence
+.float	lastruntime;	// *** to allow entities to run out of sequence
 -])
-.float		movetype;
-.float		solid;
 
-.vector		origin;			// ***
-.vector		oldorigin;		// ***
-.vector		velocity;
-.vector		angles;
-.vector		avelocity;
+.float	movetype;
+.float	solid;
+
+.vector	origin;		// ***
+.vector	oldorigin;	// ***
+.vector	velocity;
+.vector	angles;
+.vector	avelocity;
 
 IN_POQ([-
-.vector		punchangle;		// temp angle adjust from damage or recoil
+.vector	punchangle;	// temp angle adjust from damage or recoil
 -])
 
-.string		classname;		// spawn function
-.string		model;
-.float		frame;
-.float		skin;
-.float		effects;
+.string	classname;	// spawn function
+.string	model;
+.float	frame;
+.float	skin;
+.float	effects;
 
-.vector		mins, maxs;		// bounding box extents reletive to origin
-.vector		size;			// maxs - mins
+// bounding box extents reletive to origin
+.vector	mins;
+.vector	maxs;
 
-.void ()		touch;
-.void ()		use;
-.void ()		think;
-.void ()		blocked;		// for doors or plats, called when can't push other
+.vector	size;		// maxs - mins
 
-.float		nextthink;
-.entity		groundentity;
+.void()	touch;
+.void()	use;
+.void()	think;
+.void()	blocked;	// for doors or plats, called when can't push other
+
+.float	nextthink;
+.entity	groundentity;
 
 // stats
-.float		health;
-.float		frags;
-.float		weapon;			// one of the IT_SHOTGUN, etc flags
-.string		weaponmodel;
-.float		weaponframe;
-.float		currentammo;
-.float		ammo_shells, ammo_nails, ammo_rockets, ammo_cells;
+.float	health;
+.float	frags;
+.float	weapon;		// one of the IT_SHOTGUN, etc flags
+.string	weaponmodel;
+.float	weaponframe;
+.float	currentammo;
+.float	ammo_shells;
+.float	ammo_nails;
+.float	ammo_rockets;
+.float	ammo_cells;
 
-.float		items;			// bit flags
+.float	items;		// bit flags
 
-.float		takedamage;
-.entity		chain;
-.float		deadflag;
+.float	takedamage;
+.entity	chain;
+.float	deadflag;
 
-.vector		view_ofs;			// add to origin to get eye point
+.vector	view_ofs;	// add to origin to get eye point
 
-.float		button0;		// fire
-.float		button1;		// use
-.float		button2;		// jump
+.float	button0;	// fire
+.float	button1;	// use
+.float	button2;	// jump
 
-.float		impulse;		// weapon changes
+.float	impulse;	// weapon changes
 
-.float		fixangle;
-.vector		v_angle;		// view / targeting angle for players
+.float	fixangle;
+.vector	v_angle;	// view / targeting angle for players
+
 IN_POQ([-
-.float		idealpitch;		// calculated pitch angle for lookup up slopes
+.float	idealpitch;	// calculated pitch angle for lookup up slopes
 -])
 
-.string		netname;
+.string	netname;
 
-.entity 	enemy;
+.entity	enemy;
 
-.float		flags;
+.float	flags;
 
-.float		colormap;
-.float		team;
+.float	colormap;
+.float	team;
 
-.float		max_health;		// players maximum health is stored here
+.float	max_health;	// players maximum health is stored here
 
-.float		teleport_time;	// don't back up
+.float	teleport_time;	// don't back up
 
-.float		armortype;		// save this fraction of incoming damage
-.float		armorvalue;
+.float	armortype;	// save this fraction of incoming damage
+.float	armorvalue;
 
-.float		waterlevel;		// -1 = dead (?), 0 = not in, 1 = feet, 2 = wast, 3 = eyes
-.float		watertype;		// a contents value
+.float	waterlevel;	// -1 = dead (?), 0 = not in, 1 = feet, 2 = wast, 3 = eyes
+.float	watertype;	// a contents value
 
-.float		ideal_yaw;
-.float		yaw_speed;
+.float	ideal_yaw;
+.float	yaw_speed;
 
-.entity		aiment;
+.entity	aiment;
 
-.entity 	goalentity;		// a movetarget or an enemy
+.entity	goalentity;	// a movetarget or an enemy
 
-.float		spawnflags;
+.float	spawnflags;
 
-.string		target;
-.string		targetname;
+.string	target;
+.string	targetname;
 
 // damage is accumulated through a frame. and sent as one single
 // message, so the super shotgun doesn't generate huge messages
-.float		dmg_take;
-.float		dmg_save;
-.entity		dmg_inflictor;
+.float	dmg_take;
+.float	dmg_save;
+.entity	dmg_inflictor;
 
-.entity		owner;		// who launched a missile
-.vector		movedir;	// mostly for doors, but also used for waterjump
+.entity	owner;		// who launched a missile
+.vector	movedir;	// mostly for doors, but also used for waterjump
 
-.string		message;		// trigger messages
+.string	message;	// trigger messages
 
-.float		sounds;		// either a cd track number or sound number
+.float	sounds;		// either a cd track number or sound number
 
-.string		noise, noise1, noise2, noise3;	// contains names of wavs to play
+// contains names of wavs to play
+.string	noise;
+.string	noise1;
+.string	noise2;
+.string	noise3;
 
-//================================================
-void		end_sys_fields;			// flag for structure dumping
-//================================================
+// flag for structure dumping
+void	end_sys_fields;
+
+//////////////////////////////////////////////////////////////////////////////
+/*================> DO NOT ALTER ANYTHING ABOVE THIS POINT <================*/
+//////////////////////////////////////////////////////////////////////////////
 
 /*
 ==============================================================================

@@ -1,6 +1,23 @@
-$Id: Changes,v 1.24 2002/07/05 11:42:16 slotzero Exp $
+$Id: Changes,v 1.25 2002/07/09 12:28:00 slotzero Exp $
 
 Version 0.5.1  Fri Jul 05 07:38:14 EST 2002
+
+    - Bug Fixes
+
+        - The infamous
+
+              > CALL0      637(???)
+              >             : Killed
+              >             : T_Damage
+              >             : tdeath_touch
+              > <NO FUNCTION>
+              > NULL function
+              > Host_Error: Program error
+
+	  bug has been squashed!  Killed() was calling self.th_die() which
+	  when is NULL, crashes the server.  Thanks to JP Grossman for
+	  helping me understand the server crash and locating the NULL
+	  function.
 
     - Notable Internal Changes
 

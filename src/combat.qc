@@ -1,4 +1,4 @@
-// $Id: combat.qc,v 1.7 2002/06/26 18:27:15 slotzero Exp $
+// $Id: combat.qc,v 1.8 2002/07/09 12:28:05 slotzero Exp $
 
 /*
 ============
@@ -456,6 +456,11 @@ T_Damage =
 
 	if (take == 0)
 		return save > 0;
+
+	// Do not allow targets with a NULL .th_die field to die, or the
+	// server will crash!
+	if (!targ.th_die)
+		targ.health = take + 1;
 
 	// do the damage
 	targ.health = targ.health - take;
