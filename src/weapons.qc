@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.22 2003/11/30 07:41:45 slotzero Exp $
+/*  $Id: weapons.qc,v 1.23 2003/11/30 08:10:34 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -636,8 +636,6 @@ W_FireLightning =
 void (entity targ)
 GrenadeExplode_targ =
 {
-	local float d;
-
 	if (self.classname == "flashgrenade")
 		T_RadiusLight (self, 500);
 	else
