@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.73 2004/07/12 04:57:24 slotzero Exp $
+/*  $Id: develop.qc,v 1.74 2004/07/12 06:19:34 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -73,18 +73,6 @@ maxplayers =
 	return 16;
 };
 
-void ()
-ring_on =
-{
-	local entity e;
-
-	e = find (world, classname, "item_artifact_invisibility");
-	while (e)
-	{
-				e = find (e, #, #);
-	}
-};
-
 // types
 //
 // "item_artifact_super_damage"
@@ -121,43 +109,69 @@ float HUNK_NO_RINGS	= %1052;
 float HUNK_NO_SUITS	= %1053;
 
 float HUNK_NO_RUNES	= %1060;
+float NO_RUNES;
 
 void ()
 setquad =
 {
+	toggle_powerup ("item_artifact_super_damage", NO_QUADS);
 	NO_QUADS = !NO_QUADS;
-	toggle_powerup ("item_artifact_super_damage", !NO_QUADS);
 	fput (HUNK_NO_QUADS, NO_QUADS);
 };
 
 void ()
 setpent =
 {
+	toggle_powerup ("item_artifact_invulnerability", NO_PENTS);
 	NO_PENTS = !NO_PENTS;
-	toggle_powerup ("item_artifact_invulnerability", !NO_PENTS);
 	fput (HUNK_NO_PENTS, NO_PENTS);
 };
 
 void ()
 setring =
 {
+	toggle_powerup ("item_artifact_invisibility", NO_RINGS);
 	NO_RINGS = !NO_RINGS;
-	toggle_powerup ("item_artifact_invisibility", !NO_RINGS);
 	fput (HUNK_NO_RINGS, NO_RINGS);
 };
 
 void ()
 setsuit =
 {
+	toggle_powerup ("item_artifact_envirosuit", NO_SUITS);
 	NO_SUITS = !NO_SUITS;
-	toggle_powerup ("item_artifact_envirosuit", !NO_SUITS);
 	fput (HUNK_NO_SUITS, NO_SUITS);
 };
 
 void ()
 setrunes =
 {
+	NO_RUNES = !NO_RUNES;
+	fput (HUNK_NO_RUNES, NO_RUNES);
 
+	if (NO_RUNES)
+	{
+		runemax = 0;
+		remove_classname ("rune");
+		local entity e, os;
+		e = find (world, classname, "player");
+		while (e)
+		{
+			if (e.runetype)
+			{
+				os = self;
+				self = e;
+				Rune_Delete (0);
+				self = os;
+			}
+			e = find (e, classname, "player");
+		}
+	}
+	else
+	{
+		runemax = DEFAULT_RUNEMAX;
+		runespawntime = time;
+	}
 };
 
 void (float offset, float value)
@@ -188,7 +202,7 @@ Populate_Settings =
 	NO_PENTS		= fget (HUNK_NO_PENTS,		0);
 	NO_RINGS		= fget (HUNK_NO_RINGS,		0);
 	NO_SUITS		= fget (HUNK_NO_SUITS,		0);
-	// NO_RUNES		= fget (HUNK_NO_RUNES,		0);
+	NO_RUNES		= fget (HUNK_NO_RUNES,		0);
 
 	// After settings have been populated, there are some take action on
 	// those globals that require it.
