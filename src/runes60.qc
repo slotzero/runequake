@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.51 2004/11/06 00:26:49 slotzero Exp $
+/*  $Id: runes60.qc,v 1.52 2004/11/27 07:34:35 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -397,16 +397,6 @@ sonar_sprint =
 
 	if (is_next)
 		self_sprint (self, "\n");
-	else
-	{
-		s = ftos (self.runevar);
-		self_sprint (self, "\{141} ");
-		self_sprint (self, s);
-		self_sprint (self, " player");
-		if (self.runevar > 1)
-			self_sprint (self, "s");
-		self_sprint (self, " detected\n\n");
-  	}
 
 	self_sprintf_len (self, e.netname, -16);
 
@@ -435,17 +425,14 @@ sonar_sprint =
 void ()
 Rune_Sonar =
 {
-
+	local entity head, e1, e2, e3, e4;
+	local float d1, d2, d3, d4, dist;
 
 	if (self.runetime > time)
 		return;
 
-	self.runetime = time + 3;
-
-	local entity head, e1, e2, e3, e4;
-	local float d1, d2, d3, d4, dist;
-
-	self.runevar = 0;
+	self.runetime = time + 4;
+	// self.runevar = 0;
 
 	head = findradius (self.origin, 1600);
 	while (head)
@@ -457,7 +444,11 @@ Rune_Sonar =
 				if (!environmental (head) || head.runetype != RN_CLOAK)
 				{
 					// XXX Only sonar holder should hear this.
-					sound (head, CHAN_WEAPON, "enforcer/sight3.wav", 1, ATTN_NORM);
+					cloaked_sound (head, CHAN_WEAPON, "enforcer/sight3.wav", 1, ATTN_NORM);
+
+					// Pingee has cloak, make him visible.
+					if (head.runetype == RN_CLOAK)
+						head.runetime = time + 1;
 
 					dist = vlen (head.origin - self.origin);
 					dist = floor (dist / 32);
@@ -524,8 +515,6 @@ Rune_Sonar =
 						d4 = dist;
 						e4 = head;
 					}
-
-					self.runevar = self.runevar + 1;
 				}
 			}
 		}
@@ -547,11 +536,8 @@ Rune_Sonar =
 		}
 		self_sprint (self, "\n");
 	}
-
-	if (self.waterlevel > 1)
-		sound (self, CHAN_WEAPON, "fish/idle.wav", 1.0, ATTN_NORM);
 	else
-		sound (self, CHAN_WEAPON, "wizard/widle1.wav", 0.8, ATTN_NORM);
+		sprint (self, "\{141} Uncloaked.\n");
 };
 
 void (float riders, entity of_e)

@@ -1,4 +1,4 @@
-/*  $Id: runes10.qc,v 1.14 2004/05/21 22:54:49 slotzero Exp $
+/*  $Id: runes10.qc,v 1.15 2004/11/27 07:34:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -485,7 +485,8 @@ Rune_Cloak =
 	{
 		stuffcmd (self, CSHIFT_NONE);
 		cloaked_sound (self, CHAN_AUTO, "misc/r_tele4.wav", 1, ATTN_NORM);
-		sprint (self, "\{141} Uncloaked.\n");
+		if (self.runetime < time + 3)
+			sprint (self, "\{141} Uncloaked.\n");
 		self.runevar = 0;
 	}
 };

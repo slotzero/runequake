@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.54 2004/10/24 22:59:32 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.55 2004/11/27 07:34:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -87,7 +87,7 @@ Rune_Button =
 	else if (self.runetype == RN_GLUE)		Rune_Glue ();
 	else if (self.runetype == RN_BLIZZARD)		Rune_Blizzard ();
 	else if (self.runetype == RN_SNIPER)		Rune_Sniper ();
-	else if (self.runetype == RN_SONAR)		Rune_Sonar ();
+	else if (self.runetype == RN_CLOAK)		Rune_Sonar ();
 	else if (self.runetype == RN_ANTIPACK)		Rune_AntiPack ();
 	else if (self.runetype == RN_BETTY)		Rune_Betty ();
 	else if (self.runetype == RN_TORNADO)		Rune_Tornado ();
@@ -200,7 +200,8 @@ Rune_Tell_real =
 		desc_s = " Cloak ";
 
 		d1 = "You are always silent\n"
-			"You are invisible unless you fire";
+			"You are invisible unless you fire\n"
+			"Activate to detect nearby enemies";
    	}
 	else if (type == RN_BOMB)
 	{
@@ -546,7 +547,8 @@ Rune_Tell_real =
 		desc_l = "Blizzard Rune";
 		desc_s = " Blizrd";
 
-		d1 = "Activate to freeze everyone in sight";
+		d1 = "Activate to freeze everyone in sight\n"
+			"Walk over ice traps to deactivate them";
 	}
 	else if (type == RN_THOR)
 	{
@@ -567,14 +569,14 @@ Rune_Tell_real =
 			"Damage to self increases\n"
 			"with each kill";
 	}
-	else if (type == RN_SONAR)
+	/*else if (type == RN_SONAR)
 	{
 		desc_l = "Sonar Rune";
 		desc_s = " Sonar ";
 
 		d1 = "Emits a sonic wave which\n"
 			"detects nearby players";
-	}
+	}*/
 	else if (type == RN_ANTIPACK)
 	{
 		desc_l = "Anti-Pack Rune";
