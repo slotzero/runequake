@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.20 2003/06/24 22:17:35 slotzero Exp $
+/*  $Id: client.qc,v 1.21 2003/07/03 20:51:29 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -783,6 +783,8 @@ NextLevel =
 {
 	local entity o;
 	local float svrf;
+
+	elapsed_time ();
 
 	if (serverflags & SERVERFLAGS_RUNE_MASK == 0
 			&& orig_serverflags & SERVERFLAGS_RUNE_MASK == SERVERFLAGS_RUNE_MASK)
@@ -1688,6 +1690,7 @@ ClientDisconnect =
 	obs_process_game_queue ();
 	lose_riders ();
 	setmodel (self, string_null);
+	Log_Client ();
 };
 
 /*

@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.26 2003/07/02 09:25:35 slotzero Exp $
+/*  $Id: develop.qc,v 1.27 2003/07/03 20:51:30 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -38,23 +38,6 @@ Ban_Client_Level =
 	Write_Hunk_Max (HUNK_CONTEXT, offset, ip, 16);
 }; */
 
-float LAST_UPDATE_TIME;
-
-float ()
-update_time =
-{
-	local float i;
-	local string s;
-
-	i = stof (Read_Hunk_Max (HUNK_CONTEXT, %4, 8));
-	i = i + floor (time - LAST_UPDATE_TIME);
-	LAST_UPDATE_TIME = time;
-	s = ftos (i);
-	Write_Hunk_Max (HUNK_CONTEXT, %4, s, 8);
-
-	return i;
-};
-
 void ()
 Log_Client =
 {
@@ -64,6 +47,16 @@ Log_Client =
 	// hunk offset
 	offset = %100;
 
+	s = Read_Hunk_Max (HUNK_CONTEXT, offset, 16);
+	// check last entry for duplicate, update time only.
+	if (s == self.netname)
+	{
+		// dprint ("duplicate entry removed\n");
+		s = ftos (elapsed_time ());
+		Write_Hunk_Max (HUNK_CONTEXT, offset + %16, s, 8);
+		return;
+	}
+
 	for (i = %6; i >= %0; i = i - %1)
 	{
 		s = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 24), 16);
@@ -72,7 +65,7 @@ Log_Client =
 		Write_Hunk_Max (HUNK_CONTEXT, offset + %16 + ((i + %1) * 24), s, 16);
 	}
 	Write_Hunk_Max (HUNK_CONTEXT, offset, self.netname, 16);
-	s = ftos (update_time ());
+	s = ftos (elapsed_time ());
 	Write_Hunk_Max (HUNK_CONTEXT, offset + %16, s, 8);
 };
 
@@ -88,29 +81,34 @@ Read_Log =
 	self_sprint (self, "\n");
 	display = flen ("Name", -16);
 	self_sprint (self, display);
-	display = flen ("Time", 6);
+	display = flen ("Time", 8);
 	self_sprint (self, display);
-	self_sprint (self, "\n----              ----\n\n");
+	self_sprint (self, "\n----                ----\n\n");
 
 	for (i = %6; i >= %0; i = i - %1)
 	{
 		name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 24), 16);
 		last = stof (Read_Hunk_Max (HUNK_CONTEXT, offset + %16 + (i * 24), 8));
-		real = update_time ();
+		real = elapsed_time ();
 		real = real - last;
 
-		display = flen (name, -16);
-		self_sprint (self, display);
-		display = flen (parse_time (real), 6);
-		self_sprint (self, display);
-		self_sprint (self, "\n");
+		if (last)
+		{
+			display = flen (name, -16);
+			self_sprint (self, display);
+			display = flen (parse_time (real), 8);
+			self_sprint (self, display);
+			self_sprint (self, "\n");
+		}
 	}
+	if (!last)
+		self_sprint (self, "No entries found.\n");
 };
 
 void ()
 Test_Button =
 {
-	SUB_Null ();
+	Read_Log ();
 };
 
 string (float n)

@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.48 2003/06/24 22:17:42 slotzero Exp $
+/*  $Id: rjs.qc,v 1.49 2003/07/03 20:51:30 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1266,6 +1266,9 @@ common_impulses =
 	else if (self.impulse == IMP_ADMIN_TOGGLE)
 		admin_toggle (1, 1);
 
+	else if (self.impulse == IMP_LAST)
+		Read_Log ();
+
 	else if (self.impulse == IMP_RIDER_HIDE)
 	{
 		if (!ALLOW_RIDER_HIDE)
@@ -1312,7 +1315,7 @@ common_impulses =
 	else if (self.impulse == IMP_ADMIN_KILL)
 		admin_kill ();
 
-	if (self.impulse == IMP_ADMIN_VOTE_TEAM_TOGGLE)
+	else if (self.impulse == IMP_ADMIN_VOTE_TEAM_TOGGLE)
 		admin_vote_team_toggle ();
 
 	else if (self.impulse == IMP_ADMIN_TEAMPLAY_ZERO)
@@ -1560,6 +1563,7 @@ player_init =
 	player_init_impulse_alias ("weapon-toggles",		IMP_WEAPON_TOGGLES);
 	player_init_impulse_alias ("weapon-toggles-toggle",	IMP_WEAPON_TOGGLES);
 	player_init_impulse_alias ("cycle-alternates",		IMP_CYCLE_ALTERNATES);
+	player_init_impulse_alias ("last",			IMP_LAST);
 
 	// Disable client-side ambient sounds.
 	if (scratch1 & S1_AMBIENT_SOUND_OFF && !is_qsmack ())
@@ -2789,6 +2793,7 @@ count_votes =
 
 	vote_team_mode_default ();
 	vote_hook_mode_default ();
+	elapsed_time ();
 
 	if (vote_type == IMP_VOTE_EXIT)
 	{
