@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.6 2005/01/08 04:53:26 slotzero Exp $
+/*  $Id: arena.qc,v 1.7 2005/01/10 03:52:26 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -43,6 +43,30 @@ mode_arena =
 		return FALSE;
 
 	return TRUE;
+};
+
+void ()
+arena_game_queue_announce =
+{
+	local float next_in_line;
+	local entity e, e_next;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (is_observer_e (e) && e.runevar)
+		{
+			if (!next_in_line || next_in_line > e.runevar)
+			{
+				next_in_line = e.runevar;
+				e_next = e;
+			}
+		}
+		e = find (e, classname, "player");
+	}
+
+	if (e_next.classname == "player")
+		bprint2 (e_next.netname, " is next in line\n");
 };
 
 void ()
@@ -100,6 +124,8 @@ arena_countdown =
 			bprint (" vs ");
 			bprint (self.runent.netname);
 			bprint ("\n");
+
+			arena_game_queue_announce ();
 
 			self_centerprint (self.owner, "\n\bFIGHT!\n");
 			self_centerprint (self.runent, "\n\bFIGHT!\n");
