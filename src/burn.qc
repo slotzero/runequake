@@ -1,4 +1,4 @@
-/*  $Id: burn.qc,v 1.10 2004/12/30 01:21:27 slotzero Exp $
+/*  $Id: burn.qc,v 1.11 2005/02/10 22:23:29 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -39,6 +39,12 @@ weapon_bubble =
 	}
 	sound (self, CHAN_WEAPON, "misc/water2.wav", 1, ATTN_NORM);
 
+	// Prevent bubble spam.
+	if (self.bubble_count > time)
+		return;
+
+	self.bubble_count = time + 0.5;
+
 	e = spawn ();
 	setmodel (e, "progs/s_bubble.spr");
 	makevectors (self.v_angle);
@@ -61,6 +67,15 @@ void (float num_bubbles, vector o)
 bubbles =
 {
 	local entity e;
+
+	// Prevent massive bubble spam.
+	if (self.owner.classname == "player")
+	{
+		if (self.owner.bubble_count > time)
+			return;
+
+  		self.owner.bubble_count = time + 1;
+	}
 
 	e = spawn ();
 	// Normally the owner is the player, but these shouldn't move and
