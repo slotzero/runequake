@@ -1,5 +1,7 @@
-$Id: Changes,v 1.55 2004/02/29 08:22:39 slotzero Exp $
+$Id: Changes,v 1.56 2004/03/01 01:30:01 slotzero Exp $
 
+added custom sound, denied.wav for q3 style message
+added command custom-sounds
 telefrag deflect locks you down as you exit the teleporter
 added q3 style denied message
 anti-pack rune doesn't change weapon weapon of same type is removed
