@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.38 2004/06/28 05:12:11 slotzero Exp $
+/*  $Id: world.qc,v 1.39 2004/06/28 05:17:57 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -342,16 +342,16 @@ StartFrame =
 	scratch4 = cvar_infokey ("scratch4");
 	if (scratch4)
 	{
-		if (scratch4 == SKILL_LAST)
+		if (scratch4 == S4_LAST)
 			Client_Disconnect_Log ();
 
-		else if (scratch4 == SKILL_SHOW_PLAYERS)
+		else if (scratch4 == S4_SHOW_PLAYERS)
 			show_players ();
 
-		else if (scratch4 == SKILL_SHOW_SETTINGS)
+		else if (scratch4 == S4_SHOW_SETTINGS)
 			show_settings ();
 
-		else if (scratch4 == SKILL_TOGGLE_RUNE_CHEAT)
+		else if (scratch4 == S4_TOGGLE_RUNE_CHEAT)
 		{
 			// XXX Move this to its own function, for in-game use.
 			temp1 = cvar_infokey ("temp1");
@@ -369,32 +369,32 @@ StartFrame =
 			cvar_set_infokey ("temp1", s);
 		}
 
-		else if (scratch4 == SKILL_UPDATE_BINDINGS)
+		else if (scratch4 == S4_UPDATE_BINDINGS)
 			console_aliases ();
 
-		else if (scratch4 == SKILL_LEVELS)
+		else if (scratch4 == S4_LEVELS)
 			levels ();
 
-		else if (scratch4 == SKILL_CUSTOM)
+		else if (scratch4 == S4_CUSTOM)
 			custom ();
 
-		else if (scratch4 == SKILL_COMMANDS)
+		else if (scratch4 == S4_COMMANDS)
 			commands ();
 
-		else if (scratch4 == SKILL_LEVEL_TIME)
+		else if (scratch4 == S4_LEVEL_TIME)
 		{
 			dprint_force (parse_time (time));
 			dprint_force ("\n");
 		}
 
-		else if (scratch4 == SKILL_MODE_PRACTICE)
+		else if (scratch4 == S4_MODE_PRACTICE)
 			change_practice_mode (1);
 
-		else if (scratch4 == SKILL_MODE_NORMAL)
+		else if (scratch4 == S4_MODE_NORMAL)
 			change_practice_mode (0);
 
 		else
-			dprint ("skill: unknown command\n");
+			dprint ("scratch4: unknown command\n");
 
 		cvar_set_infokey ("scratch4", "0");
 	}
