@@ -1,4 +1,4 @@
-/*  $Id: runes10.qc,v 1.13 2003/11/23 06:25:33 slotzero Exp $
+/*  $Id: runes10.qc,v 1.14 2004/05/21 22:54:49 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -121,6 +121,12 @@ Rune_Regen =
 	{
 		if (self.runetime > time)
 			return;
+		if (0) // (!self.runevar)
+		{
+			self.runevar = 1;
+			self.armortype = ARMOR_TYPE_3;
+			self.items = self.items - (self.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + IT_ARMOR3;
+		}
 		self.runetime = time + 0.5;
 	}
 
