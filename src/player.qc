@@ -1,4 +1,4 @@
-/*  $Id: player.qc,v 1.13 2004/09/16 01:00:50 slotzero Exp $
+/*  $Id: player.qc,v 1.14 2004/12/11 23:01:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -330,7 +330,7 @@ PainSound =
 
 	if (s == string_null)
 	{
-		n = rint ((random () * 5) + 1);
+		n = rint (random () * 6);
 
 		if	(n == 1)
 			s = "player/pain1.wav";
@@ -444,7 +444,7 @@ DeathSound =
 	}
 	else
 	{
-		n = rint ((random () * 4) + 1);
+		n = rint (random () * 5);
 
 		if 	(n == 1)
 			s = "player/death1.wav";
