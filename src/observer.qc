@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.20 2003/07/26 03:44:39 slotzero Exp $
+/*  $Id: observer.qc,v 1.21 2004/02/21 07:40:08 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -203,6 +203,8 @@ obs_impulses =
 			self.impulse = IMP_ADMIN_TEAMPLAY_ZERO;
 		else if (self.impulse == 5)
 			self.impulse = IMP_ADMIN_TEAM_CHANGE;
+		else if (self.impulse == 6)
+			change_practice_mode (!deathmatch & DM_MODE_PRACTICE);
 
 		if (self.impulse)
 			common_impulses ();
