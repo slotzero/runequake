@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.10 2005/01/17 06:51:26 slotzero Exp $
+/*  $Id: arena.qc,v 1.11 2005/01/17 07:45:23 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -164,8 +164,13 @@ arena_results =
 	if (self.runent)
 		self.runent.takedamage = DAMAGE_NO;
 
+	winner = world;
+
+	// draw (dual suicides)
+	if (self.oldenemy != world && self.enemy == self.aiment && self.oldenemy == self.goalentity)
+		draw = 1;
 	// suicider always loses
-	if (self.enemy == self.oldenemy || self.enemy == self.aiment)
+	else if (self.enemy == self.oldenemy || self.enemy == self.aiment)
 	{
 		if (self.owner == self.enemy)
 			winner = self.runent;
@@ -174,10 +179,7 @@ arena_results =
 	}
 	// draw
 	else if (self.oldenemy)
-	{
 		draw = 1;
-		winner = world;
-	}
 	// last man standing
 	else
 		winner = self.enemy;
