@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.58 2004/12/18 17:31:31 slotzero Exp $
+/*  $Id: runes60.qc,v 1.59 2004/12/18 23:50:15 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -68,12 +68,12 @@ Glue_Stuck =
 
 	if (release)
 	{
-		self.runent.effects = self.runent.effects - self.runent.effects & EF_ZERO_VELOCITY;
+		self.runent.effects = self.runent.effects - self.runent.effects & EF_FROZEN;
 		remove (self);
 		return;
 	}
 
-	self.runent.effects	= self.runent.effects | EF_ZERO_VELOCITY;
+	self.runent.effects	= self.runent.effects | EF_FROZEN;
 	setorigin (self.runent, self.origin);
 
 	self.runent.velocity	= VEC_ORIGIN;
@@ -95,13 +95,13 @@ Glue_Touch =
 	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;
 
-	if (other.effects & EF_ZERO_VELOCITY)
+	if (other.effects & EF_FROZEN)
 		return;
 
 	if (!self.runevar)
 		return;
 
-	other.effects = other.effects | EF_ZERO_VELOCITY;
+	other.effects = other.effects | EF_FROZEN;
 	maybe_update_trap_count (self.owner, RN_GLUE);
 
 	self.solid	= SOLID_NOT;
@@ -210,7 +210,7 @@ Rune_Blizzard =
 					&& e.runetype != RN_BLIZZARD
 					&& e.runetype != RN_FREEZE
 					&& !(isfriend2 (self, e) && self != e)
-					&& !e.effects & EF_ZERO_VELOCITY)
+					&& !e.effects & EF_FROZEN)
 			{
 				if (e.health > 0 && e != self && e.owner != self)
 				{
@@ -320,10 +320,10 @@ Blizzard_Touch =
 		return;
 	if (isfriend (other) && self != other)
 		return;
-	if (other.effects & EF_ZERO_VELOCITY)
+	if (other.effects & EF_FROZEN)
 		return;
 
-	other.effects = other.effects | EF_ZERO_VELOCITY;
+	other.effects = other.effects | EF_FROZEN;
 	self.runetime = time + 3;
 	Blizzard_Freeze (other, 1);
 };

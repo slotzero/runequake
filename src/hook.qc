@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.25 2004/12/10 23:20:24 slotzero Exp $
+/*  $Id: hook.qc,v 1.26 2004/12/18 23:50:15 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -92,7 +92,7 @@ MaybeDropHook =
 		dropit = 1;
 
 	// weirded with shootphobia
-	else if (self.owner.reffects & REF_WEIRD)
+	else if (self.owner.effects & EF_WEIRD)
 		dropit = 1;
 
 	// active button

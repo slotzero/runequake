@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.40 2004/12/18 17:31:31 slotzero Exp $
+/*  $Id: runes30.qc,v 1.41 2004/12/18 23:50:15 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -432,7 +432,7 @@ Unfreeze =
 	{
 		if (freeze.runent == wanted)
 		{
-			freeze.runent.effects		= freeze.runent.effects - freeze.runent.effects & EF_ZERO_VELOCITY;
+			freeze.runent.effects		= freeze.runent.effects - freeze.runent.effects & EF_FROZEN;
 			freeze.runent.attack_finished	= time + sys_ticrate;
 
 			sound (freeze.runent, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
@@ -446,8 +446,8 @@ Unfreeze =
 void ()
 Freeze_Frozen =
 {
-	if (!self.runent.effects & EF_ZERO_VELOCITY)
-		self.runent.effects = self.runent.effects | EF_ZERO_VELOCITY;
+	if (!self.runent.effects & EF_FROZEN)
+		self.runent.effects = self.runent.effects | EF_FROZEN;
 
 	setorigin (self.runent, self.origin);
 
@@ -489,7 +489,7 @@ Freeze_Frozen =
 			|| (self.runent.runetype == RN_BLIZZARD && self.runent.runevector_x < time)
 			|| self.runent.items & IT_SUIT)
 	{
-		self.runent.effects		= self.runent.effects - self.runent.effects & EF_ZERO_VELOCITY;
+		self.runent.effects		= self.runent.effects - self.runent.effects & EF_FROZEN;
 		self.runent.attack_finished	= time + sys_ticrate;
 
 		if (self.runent.classname == "player")
@@ -547,10 +547,10 @@ Freeze_Touch =
 		return;
 	}
 
-	if (other.effects & EF_ZERO_VELOCITY)
+	if (other.effects & EF_FROZEN)
 		return;
 
-	other.effects = other.effects | EF_ZERO_VELOCITY;
+	other.effects = other.effects | EF_FROZEN;
 	maybe_update_trap_count (self.owner, RN_FREEZE);
 
 	if (other.classname == "player")

@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.69 2004/12/16 00:22:31 slotzero Exp $
+/*  $Id: client.qc,v 1.70 2004/12/18 23:50:15 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -686,7 +686,6 @@ PutClientInServer =
 	self.runetime = time;
 	self.runevar = 0;
 	self.runevector = VEC_ORIGIN;
-	self.reffects = 0;
 	self.grenade_spam_time = 0;
 
 	DecodeLevelParms ();
