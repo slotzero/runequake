@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.6 2004/07/16 12:02:11 slotzero Exp $
+/*  $Id: toggle.qc,v 1.7 2004/07/16 12:11:47 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -147,6 +147,7 @@ setrunes =
 	if (voteflags & C3_NO_RUNES)
 	{
 		runemax		= 0;
+		runecurrent	= 0;
 		remove_classname ("rune");
 
 		e = find (world, classname, "player");
