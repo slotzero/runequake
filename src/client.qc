@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.76 2005/01/02 23:18:21 slotzero Exp $
+/*  $Id: client.qc,v 1.77 2005/01/02 23:22:10 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -622,7 +622,7 @@ SelectSpawnPoint =
 		// I would eventually like to create spawn spots for standard maps,
 		// and modify the map to restrict certain areaa.  For now, I will
 		// use the RA method of info_teleport_destinations.
-		if (mode_arena ())
+		if (mode_arena () && MAP_IS_CUSTOM)
 		{
 			spot = find_spawn_point_class ("info_teleport_destination", lastspawn);
 			if (spot)
