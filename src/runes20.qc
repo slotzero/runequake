@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.12 2003/06/24 22:17:43 slotzero Exp $
+/*  $Id: runes20.qc,v 1.13 2003/07/11 04:23:38 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -151,6 +151,13 @@ DSpot_Think =
 	self.nextthink = time + 0.6;
 	IN_POQ([-
 	particle (self.origin, VEC_ORIGIN, PARTICLE_DEATH_SPOT, 40);
+	if (teamplay & TEAM_TEAM_MASK)
+	{
+		local float particle_team;
+
+		particle_team = team_to_particle (self.owner.team);
+		particle (self.origin, '0 0 -10', particle_team, 10);
+	}
 	-], [-
 	create_te_gunshot (self.origin, 20);
 	-])
