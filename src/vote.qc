@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.27 2004/07/13 10:08:50 slotzero Exp $
+/*  $Id: vote.qc,v 1.28 2004/07/14 12:23:34 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -248,7 +248,7 @@ vote_think =
 		}
 	-])
 
-	if (!count_votes (0))
+	if (count_votes (0) <= 0)
 	{
 		vote_action (self);
 		return;
@@ -570,7 +570,7 @@ vote_yes =
 
 	self.vote_flags = self.vote_flags | VOTE_YES;
 
-	if (!count_votes (1))
+	if (count_votes (1) <= 0)
 		vote_action (vip);
 };
 
