@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.20 2004/05/01 03:13:28 slotzero Exp $
+/*  $Id: team.qc,v 1.21 2004/06/25 02:42:20 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -576,6 +576,15 @@ change_practice_mode =
 	{
 		if (new_deathmatch & DM_MODE_PRACTICE)
 			new_deathmatch = new_deathmatch - new_deathmatch & bits;
+	}
+
+	if (new_deathmatch == deathmatch)
+	{
+		if (mode)
+			self_sprint (self, "Already in Practice mode\n");
+		else
+			self_sprint (self, "Already in Normal mode\n");
+		return;
 	}
 
 	s = ftos (new_deathmatch);

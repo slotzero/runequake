@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.78 2004/06/20 21:51:26 slotzero Exp $
+/*  $Id: defs.qc,v 1.79 2004/06/25 02:42:20 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1057,6 +1057,8 @@ float	SKILL_LEVELS			= 6;
 float	SKILL_CUSTOM			= 7;
 float	SKILL_COMMANDS			= 8;
 float	SKILL_LEVEL_TIME		= 9;
+float	SKILL_MODE_PRACTICE		= 10;
+float	SKILL_MODE_NORMAL		= 11;
 
 // levels
 float	crosshair;
