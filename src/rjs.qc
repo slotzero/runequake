@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.75 2003/11/03 00:42:26 slotzero Exp $
+/*  $Id: rjs.qc,v 1.76 2003/11/03 12:00:09 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1353,7 +1353,7 @@ custom_sprint =
 	local string m;
 
 	nmaps = sized_custom_count (levsize);
-	for (i = n = 1; i < nmaps; i = i + 1)
+	for (i = n = 1; i <= nmaps; i = i + 1)
 	{
 		m = sized_custom (levsize, i);
 		self_sprintf_len (self, m, -9);
