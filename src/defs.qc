@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.70 2004/04/05 22:24:50 slotzero Exp $
+/*  $Id: defs.qc,v 1.71 2004/04/11 02:28:23 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -664,7 +664,7 @@ float AQ_QSMACK			= 2097152;
 
 // rqflags
 float RQ_CYCLE_ALTERNATES	= 1;
-float RQ_CUSTOM_SOUNDS		= 1;
+float RQ_CUSTOM_SOUNDS		= 2;
 
 // aqstate flags (not saved accross levels)
 float AQS_MENU_MASK		= 31;
