@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.29 2004/07/05 11:20:34 slotzero Exp $
+/*  $Id: bindings.qc,v 1.30 2004/07/05 23:10:20 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -108,7 +108,7 @@ player_bindings_think =
 		custom_aliases ();
 
 		// XXX I want to put this in settings.qc, but I'm thinking this can be done
-		// more effeciently with internals.qc or just modified the engine.
+		// more effeciently with internal.qc or just modified the engine.
 		if (MAP_IS_CUSTOM)
 		{
 			self_sprint (self, "\nDon't have the map?\n");
@@ -223,10 +223,9 @@ admin_aliases =
 	player_admin_impulse_alias ("admin-vote-team-toggle",	IMP_ADMIN_VOTE_TEAM_TOGGLE);
 	player_admin_impulse_alias ("admin-teamplay-zero",	IMP_ADMIN_TEAMPLAY_ZERO);
 	player_admin_impulse_alias ("admin-unbind",		IMP_ADMIN_UNBIND);
+	player_admin_impulse_alias ("change-level",		IMP_ADMIN_CHANGE_MAP);
 	player_admin_impulse_alias ("exit-level",		IMP_EXIT_LEVEL);
 	player_admin_impulse_alias ("qsmack",			IMP_QSMACK_COMMAND);
-
-	player_init_impulse_alias  ("change-level",		IMP_ADMIN_CHANGE_MAP);
 };
 
 void (string level, float imp)
