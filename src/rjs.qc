@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.81 2003/11/30 02:08:41 slotzero Exp $
+/*  $Id: rjs.qc,v 1.82 2003/12/25 01:56:01 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1443,7 +1443,7 @@ player_init =
 		bprint (self.netname);
 		bprint (" connected to the server");
 
-		sprint_admin (ProQuake_Version ());
+		sprint_admin (PQ_Version ());
 		bprint ("\n");
 
 		sound (self, CHAN_BODY, "shalrath/sight.wav", 1, ATTN_NONE);
