@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.33 2004/09/28 19:34:37 slotzero Exp $
+/*  $Id: runes30.qc,v 1.34 2004/11/06 00:10:06 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -432,6 +432,7 @@ Unfreeze =
 	{
 		if (freeze.runent == wanted)
 		{
+			freeze.runent.effects		= freeze.runent.effects - freeze.runent.effects & EF_ICE;
 			freeze.runent.attack_finished	= time + sys_ticrate;
 
 			sound (freeze.runent, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
@@ -480,14 +481,15 @@ Freeze_Frozen =
 
 	// remove if time is out or dead
 	if (self.runetime < time
-			|| self.runent.health < 1
+			|| self.runent.health <= 0
 			|| self.runent.runetype == RN_FREEZE
 			|| self.runent.runetype == RN_ENVIRO
-			|| (self.runent.runetype == RN_BLIZZARD
-				&& self.runent.runevector_x < time)
-				|| self.runent.items & IT_SUIT)
+			|| (self.runent.runetype == RN_BLIZZARD && self.runent.runevector_x < time)
+			|| self.runent.items & IT_SUIT)
 	{
-		self.runent.attack_finished = time + sys_ticrate;
+		self.runent.effects		= self.runent.effects - self.runent.effects & EF_ICE;
+		self.runent.attack_finished	= time + sys_ticrate;
+
 		if (self.runent.classname == "player")
 		{
 			if (self.runent.health > 0)
@@ -525,21 +527,15 @@ Freeze_Touch =
 	if (environmental (other) || other.runetype == RN_FREEZE)
 		return;
 
-	if (other.aqstate & AQS_SPAWN_PROTECT)
-		return;
-
 	if (other.runetype == RN_BLIZZARD)
 	{
-		if (self.owner.runetype == RN_FREEZE && self.owner.runevar > 0)
+		sprint (other, "you deactivated an ice trap\n");
+		if (maybe_update_trap_count (self.owner, RN_FREEZE))
 		{
 			sprint (self.owner, other.netname);
 			sprint (self.owner, " deactivated your ice trap\n");
-			self.owner.runevar = self.owner.runevar - 1;
 		}
-
-		sprint (other, "Freeze power increased!\n");
 		sound (self, CHAN_BODY, "fish/bite.wav", 1, ATTN_NORM);
-		other.runevector_z = other.runevector_z + 1;
 		remove (self);
 		return;
 	}
@@ -547,6 +543,10 @@ Freeze_Touch =
 	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;
 
+	if (other.effects & EF_ICE)
+		return;
+
+	other.effects = other.effects | EF_ICE;
 	maybe_update_trap_count (self.owner, RN_FREEZE);
 
 	if (other.classname == "player")

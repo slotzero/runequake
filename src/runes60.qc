@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.49 2004/09/18 04:09:05 slotzero Exp $
+/*  $Id: runes60.qc,v 1.50 2004/11/06 00:10:06 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -181,8 +181,6 @@ Rune_Blizzard_sprint =
 {
 	if (self.runevar)
 		rprint (self, riders, "Recharging...\n");
-	else if (self.runevector_z)
-		rprint (self, riders, "Super charged\n");
 	else
 		rprint (self, riders, "Charged\n");
 };
@@ -242,12 +240,6 @@ void (entity tofreeze, float freeze_time)
 Blizzard_Freeze =
 {
 	local entity freeze;
-
-	if (self.runevector_z)
-	{
-		freeze_time = freeze_time + (self.runevector_z * 0.5);
-		self.runevector_z = 0;
-	}
 
 	if (tofreeze.classname == "player")
 	{
