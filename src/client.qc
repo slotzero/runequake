@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.56 2004/07/08 01:32:55 slotzero Exp $
+/*  $Id: client.qc,v 1.57 2004/07/09 05:23:06 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -253,7 +253,9 @@ FindIntermission =
 	return world;
 };
 
+entity intermission_pos;
 string nextmap;
+
 void ()
 GotoNextMap =
 {
@@ -288,6 +290,12 @@ GotoNextMap =
 			}
 		}
 	-])
+
+	if (world.impulse)
+	{
+		makevectors (intermission_pos.angles);
+		spawn_tfog (intermission_pos.origin + 16 * v_forward);
+	}
 
 	if (forced_nextmap)
 		changelevel (forced_nextmap);
@@ -330,14 +338,19 @@ IntermissionThink =
 
 	spawn_protect_off ();
 
+	// Console exited level.
+	if (world.impulse)
+	{
+		GotoNextMap ();
+		return;
+	}
+
 	if (time < intermission_exittime)
 		return;
 
 	if (self.button0 || self.button1 || self.button2)
 		ExitIntermission ();
 };
-
-entity intermission_pos;
 
 // XXX People who connect during intermission don't get their angles set.
 
@@ -352,9 +365,6 @@ move_to_intermission =
 			if (lastspawn)
 				intermission_pos 	= lastspawn;
 			e.angles			= intermission_pos.angles;
-
-			makevectors (intermission_pos.angles);
-			spawn_tfog (intermission_pos.origin + 16 * v_forward);
 		}
 		else
 			e.angles			= e.v_angle = intermission_pos.mangle;
@@ -877,10 +887,6 @@ NextLevel =
 	local float svrf;
 
 	update_server_time ();
-
-	// Console exited level.
-	if (world.impulse)
-		GotoNextMap ();
 
 	if (serverflags & SERVERFLAGS_RUNE_MASK == 0
 			&& orig_serverflags & SERVERFLAGS_RUNE_MASK == SERVERFLAGS_RUNE_MASK)
