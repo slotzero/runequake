@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.22 2003/07/05 21:33:40 slotzero Exp $
+/*  $Id: client.qc,v 1.23 2003/07/08 05:12:33 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -784,7 +784,7 @@ NextLevel =
 	local entity o;
 	local float svrf;
 
-	elapsed_time ();
+	update_server_time ();
 
 	if (serverflags & SERVERFLAGS_RUNE_MASK == 0
 			&& orig_serverflags & SERVERFLAGS_RUNE_MASK == SERVERFLAGS_RUNE_MASK)

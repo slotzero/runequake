@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.3 2003/07/03 23:07:31 slotzero Exp $
+/*  $Id: hunked.qc,v 1.4 2003/07/08 05:12:34 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -23,23 +23,23 @@
 
 float LAST_TIME_UPDATE;
 
-// elapsed_time		= %4
-
 float ()
-elapsed_time =
+server_time =
 {
-	IN_QW(return FALSE;)
-	local float i, max, offset;
-	local string s;
+	local float i;
 
-	offset = %4;
-	max = 8;
-
-	i = stof (Read_Hunk_Max (HUNK_CONTEXT, offset, max));
+	i = stof (Read_Hunk_Max (HUNK_CONTEXT, %10, 8));
 	i = i + floor (time - LAST_TIME_UPDATE);
-	LAST_TIME_UPDATE = time;
-	s = ftos (i);
-	Write_Hunk_Max (HUNK_CONTEXT, offset, s, max);
 
 	return i;
+};
+
+void ()
+update_server_time =
+{
+	local string s;
+
+	s = ftos (server_time ());
+	Write_Hunk_Max (HUNK_CONTEXT, %10, s, 8);
+	LAST_TIME_UPDATE = time;
 };

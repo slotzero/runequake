@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.50 2003/07/05 21:33:41 slotzero Exp $
+/*  $Id: rjs.qc,v 1.51 2003/07/08 05:12:34 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2797,7 +2797,7 @@ count_votes =
 
 	vote_team_mode_default ();
 	vote_hook_mode_default ();
-	elapsed_time ();
+	update_server_time ();
 
 	if (vote_type == IMP_VOTE_EXIT)
 	{
