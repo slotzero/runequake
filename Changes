@@ -1,4 +1,11 @@
-$Id: Changes,v 1.64 2004/05/01 03:21:08 slotzero Exp $
+$Id: Changes,v 1.65 2004/05/23 02:06:27 slotzero Exp $
+
+telefrag deflect doesn't remove itself (no limit)
+tornado uses 30 cells instead of removing itself
+betty uses 10 rockets instead of removing itself
+regen gives/converts your armor to red.. I eventually want to wein from using rune-use
+added some basic reflect code, not implemented
+bugfix: using rcon <map> while infokey_maps is set will crash the server (reward mr happy)
 
 Version 1.0  Fri Apr 30 23:19:17 EST 2004
 
