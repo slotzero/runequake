@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.13 2003/06/07 00:29:24 slotzero Exp $
+/*  $Id: develop.qc,v 1.14 2003/06/08 02:34:06 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -169,6 +169,12 @@ Get_Hunk =
 		dprint ("Write_Hunk(): hunk != HUNK_SENTINAL\n");
 
 	return *AddInt(&hunk, 4 * offset);
+};
+
+string (entity hunk)
+Read_Hunk_e =
+{
+	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
 };
 
 string (float type, float offset)
