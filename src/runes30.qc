@@ -1,4 +1,4 @@
-// $Id: runes30.qc,v 1.10 2002/07/05 11:42:21 slotzero Exp $
+// $Id: runes30.qc,v 1.11 2002/07/06 21:46:40 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -1005,7 +1005,7 @@ Rune_Repel =
 			pushdir		= self.origin - pushee.origin;
 			pushdist	= vlen (pushdir);
 			pushdir		= normalize (pushdir);
-			pushforce	= pushdir * 0.65 * (dist - pushdist);
+			pushforce	= pushdir * PUSH_FORCE * (dist - pushdist);
 			pushee.velocity	= pushee.velocity - pushforce;
 		}
 		pushee = pushee.chain;
