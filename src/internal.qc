@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.6 2003/04/14 00:56:13 slotzero Exp $
+/*  $Id: internal.qc,v 1.7 2003/05/24 21:00:54 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -278,6 +278,18 @@ NegInt =
 	&%544 = low;
 	&B546L542 = high;
 	return world[%112];
+};
+
+//
+// O P P  I N T
+//
+float (float i)
+OppInt =
+{
+	if (i > %0)
+		return NegInt (SubInt (i, i * %2));
+	else
+		return NegInt (i * %2);
 };
 
 //-------------------------------------------------------------------
