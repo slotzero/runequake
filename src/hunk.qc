@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.25 2004/07/03 09:26:50 slotzero Exp $
+/*  $Id: hunk.qc,v 1.26 2004/07/03 19:49:34 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -126,14 +126,12 @@ Read_Hunk_Float =
 	return hunk[%0];
 };
 
-// Very fast, but dangerous.
 string (entity hunk)
 Read_Hunk_e =
 {
 	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
 };
 
-// Very fast, but dangerous.
 string (float type, float offset)
 Read_Hunk =
 {
@@ -149,8 +147,7 @@ Read_Hunk =
 	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
 };
 
-// The value of bytes is rounded up to the closest dword.  While this
-// isn't as accurate Read_Hunk_Max_e(), it's much faster.
+// The value of bytes is rounded up to the closest dword.
 string (entity hunk, float bytes)
 Read_Hunk_String_Max_e =
 {
@@ -181,8 +178,7 @@ Read_Hunk_String_Max_e =
  	return (@AddInt (pdata, PQUAKEC_TO_PSTRING));
 };
 
-// The value of bytes is rounded up to the closest dword.  While this
-// isn't as accurate Read_Hunk_Max(), it's much faster.
+// The value of bytes is rounded up to the closest dword.
 string (float type, float offset, float bytes)
 Read_Hunk_String_Max =
 {
@@ -193,7 +189,6 @@ Read_Hunk_String_Max =
 	return Read_Hunk_String_Max_e (hunk, bytes);
 };
 
-// Accurate, but very slow.
 string (entity hunk, float bytes)
 Read_Hunk_Max_e =
 {
@@ -236,7 +231,6 @@ Read_Hunk_Max_e =
 	return (@AddInt (pdata, PQUAKEC_TO_PSTRING));
 };
 
-// Accurate, but very slow.
 string (float type, float offset, float bytes)
 Read_Hunk_Max =
 {
@@ -277,7 +271,6 @@ Write_Hunk_Float =
 	hunk[%0] = f;
 };
 
-// Very fast, but careless.
 void (entity hunk, string s)
 Write_Hunk_e =
 {
@@ -286,7 +279,6 @@ Write_Hunk_e =
 	strcpy (@AddInt(&hunk, PQUAKEC_TO_PSTRING), s);
 };
 
-// Very fast, but careless.
 void (float type, float offset, string s)
 Write_Hunk =
 {
