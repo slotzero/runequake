@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.17 2004/02/21 07:08:28 slotzero Exp $
+/*  $Id: combat.qc,v 1.18 2004/02/21 09:03:05 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -275,7 +275,7 @@ T_Damage =
 		}
 	}
 
-	if (DM_MODE_PRACTICE)
+	if (deathmatch & DM_MODE_PRACTICE)
 	{
 		if (attacker != targ)
 		{
