@@ -1,4 +1,4 @@
-// $Id: client.qc,v 1.2 2002/03/02 20:12:16 slotzero Exp $
+// $Id: client.qc,v 1.3 2002/03/13 02:25:07 slotzero Exp $
 
 float modelindex_eyes, modelindex_player;
 
@@ -1166,7 +1166,7 @@ WaterMove =
 			return;
 		}
 		// environmental protection rune: heal in liquids
-		else if (environmental (self))
+		else if (self.runetype == RN_ENVIRO)
 		{
 			self.next_breath = time + 1;
 			self.dmgtime = time + 1;
