@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.36 2005/01/08 04:03:15 slotzero Exp $
+/*  $Id: team.qc,v 1.37 2005/04/02 07:35:35 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -549,6 +549,29 @@ sprint_team =
 	tm = team_to_color (tm);
 	s = color_to_name (tm);
 	sprint (e, s);
+};
+
+void ()
+team_fraglimit =
+{
+	if (fraglimit && (tf_1 >= fraglimit
+			|| tf_2 >= fraglimit
+			|| tf_3 >= fraglimit
+			|| tf_4 >= fraglimit
+			|| tf_5 >= fraglimit
+			|| tf_6 >= fraglimit
+			|| tf_7 >= fraglimit
+			|| tf_8 >= fraglimit
+			|| tf_9 >= fraglimit
+			|| tf_10 >= fraglimit
+			|| tf_11 >= fraglimit
+			|| tf_12 >= fraglimit
+			|| tf_13 >= fraglimit
+			|| tf_14 >= fraglimit))
+	{
+		forced_nextmap = string_null;
+		NextLevel ();
+	}
 };
 
 void (float is_end)
