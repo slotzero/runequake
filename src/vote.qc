@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.42 2004/12/23 18:29:06 slotzero Exp $
+/*  $Id: vote.qc,v 1.43 2004/12/26 05:08:44 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -38,6 +38,23 @@
 	* a command to toggle the amount of bprints (from 3 to 1).
 	* limit the number of votes per given time
 */
+
+void ()
+vote_impulse_commands =
+{
+	// XXX I hard coded the vote impulses to reduce the amount of impulse checks
+	if (self.impulse >= 1 && self.impulse <= 16)
+		vote ();
+
+	impulse_override_cancel ();
+};
+
+void ()
+vote_command =
+{
+	self.state	= 0;
+	self.aqstate	= self.aqstate | AQS_IMPOVER_VOTE_COMMANDS;
+};
 
 float (float tell)
 vote_team_disabled =

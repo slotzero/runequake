@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.48 2004/11/13 00:35:57 slotzero Exp $
+/*  $Id: bindings.qc,v 1.49 2004/12/26 05:08:44 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -96,6 +96,20 @@ player_admin_impulse_alias =
 	self_stuffcmd (self, ";w5\"\n");
 };
 
+void (string cmd, float imp)
+player_vote_impulse_alias =
+{
+	local string s;
+
+	self_stuffcmd (self, "alias ");
+	self_stuffcmd (self, cmd);
+	self_stuffcmd (self, " \"");
+	self_stuffcmd (self, "vc;w5;w5;impulse ");
+	s = ftos (imp);
+	self_stuffcmd (self, s);
+	self_stuffcmd (self, ";w5\"\n");
+};
+
 void ()
 player_bindings_think =
 {
@@ -169,7 +183,6 @@ player_aliases =
 	player_init_impulse_alias ("cycle-alternates",		IMP_CYCLE_ALTERNATES);
 	player_init_impulse_alias ("disp-info",			IMP_DISP_INFO);
 	player_init_impulse_alias ("disp-info-all",		IMP_DISP_INFO_ALL);
-	player_init_impulse_alias ("ffa",			IMP_VOTE_NORMAL);	// CRMod
 	player_init_impulse_alias ("fix-angles",		IMP_FIX_BATMAN);
 	player_init_impulse_alias ("help-levels",		IMP_HELP_LEVELS);
 	player_init_impulse_alias ("help-vote",			IMP_HELP_VOTE);
@@ -182,18 +195,12 @@ player_aliases =
 	player_init_impulse_alias ("last",			IMP_LAST);
 	player_init_impulse_alias ("levels",			IMP_LEVELS);
 	player_init_impulse_alias ("no",			IMP_VOTE_NO);
-	player_init_impulse_alias ("normal",			IMP_VOTE_NORMAL);	// CRMod
-	player_init_impulse_alias ("practice",			IMP_VOTE_PRACTICE);	// CRMod
 	player_init_impulse_alias ("quiet-toggle",		IMP_QUIET_TOGGLE);
 	player_init_impulse_alias ("remove-frags",		IMP_REMOVE_FRAGS);
 	player_init_impulse_alias ("rider-hide",		IMP_RIDER_HIDE);
 	player_init_impulse_alias ("rune-delete",		IMP_RUNE_DELETE);
 	player_init_impulse_alias ("rune-tell",			IMP_RUNE_TELL);
 	player_init_impulse_alias ("rune-use",			IMP_RUNE_USE);
-	player_init_impulse_alias ("setpent",			IMP_VOTE_PENT);		// CRMod
-	player_init_impulse_alias ("setquad",			IMP_VOTE_QUAD);		// CRMod
-	player_init_impulse_alias ("setring",			IMP_VOTE_RING);		// CRMod
-	player_init_impulse_alias ("setsuit",			IMP_VOTE_SUIT);		// CRMod
 	player_init_impulse_alias ("show-players",		IMP_SHOW_PLAYERS);
 	player_init_impulse_alias ("show-pos",			IMP_SHOW_POS);
 	player_init_impulse_alias ("show-riders",		IMP_SHOW_RIDERS);
@@ -201,30 +208,15 @@ player_aliases =
 	player_init_impulse_alias ("show-votes",		IMP_SHOW_VOTES);
 	player_init_impulse_alias ("team-change",		IMP_TEAM_ROTATE);
 	player_init_impulse_alias ("team-stats",		IMP_TEAM_STATS);
-	player_init_impulse_alias ("vote-alts",			IMP_VOTE_ALTS);
-	player_init_impulse_alias ("vote-armor",		IMP_VOTE_ARMOR);
-	player_init_impulse_alias ("vote-exit",			IMP_VOTE_EXIT);
-	player_init_impulse_alias ("vote-free",			IMP_VOTE_FREE);
 	player_init_impulse_alias ("vote-help",			IMP_HELP_VOTE);
 	player_init_impulse_alias ("vote-level",		IMP_LEVELS);
-	player_init_impulse_alias ("vote-lithium",		IMP_VOTE_LITHIUM);
-	player_init_impulse_alias ("vote-normal",		IMP_VOTE_NORMAL);
-	player_init_impulse_alias ("vote-pent",			IMP_VOTE_PENT);
-	player_init_impulse_alias ("vote-practice",		IMP_VOTE_PRACTICE);
-	player_init_impulse_alias ("vote-quad",			IMP_VOTE_QUAD);
-	player_init_impulse_alias ("vote-ring",			IMP_VOTE_RING);
-	player_init_impulse_alias ("vote-runes",		IMP_VOTE_RUNES);
-	player_init_impulse_alias ("vote-rotate",		IMP_VOTE_ROTATE);
-	player_init_impulse_alias ("vote-shields",		IMP_VOTE_SHIELDS);
-	player_init_impulse_alias ("vote-suit",			IMP_VOTE_SUIT);
-	player_init_impulse_alias ("vote-team",			IMP_VOTE_TEAM);
-	player_init_impulse_alias ("vote-hook",			IMP_VOTE_HOOK);
 	player_init_impulse_alias ("weapon-mode",		IMP_WEAPON_MODE);
 	player_init_impulse_alias ("weapon-toggles",		IMP_WEAPON_TOGGLES);
 	player_init_impulse_alias ("weapon-toggles-toggle",	IMP_WEAPON_TOGGLES);
 	player_init_impulse_alias ("yes",			IMP_VOTE_YES);
 
 	switchfire_aliases ();
+	vote_aliases ();
 	level_aliases ();
 };
 
@@ -254,6 +246,41 @@ admin_aliases =
 	player_admin_impulse_alias ("change-level",		IMP_ADMIN_CHANGE_MAP);
 	player_admin_impulse_alias ("exit-level",		IMP_EXIT_LEVEL);
 	player_admin_impulse_alias ("qsmack",			IMP_QSMACK_COMMAND);
+};
+
+void ()
+vote_aliases =
+{
+	local string s;
+
+	self_stuffcmd (self, "alias vc \"impulse ");
+	s = ftos (IMP_VOTE_COMMAND);
+	self_stuffcmd (self, s);
+	self_stuffcmd (self, "\"\n");
+
+	player_vote_impulse_alias ("ffa",			IMP_VOTE_NORMAL);	// CRMod
+	player_vote_impulse_alias ("normal",			IMP_VOTE_NORMAL);	// CRMod
+	player_vote_impulse_alias ("practice",			IMP_VOTE_PRACTICE);	// CRMod
+	player_vote_impulse_alias ("setpent",			IMP_VOTE_PENT);		// CRMod
+	player_vote_impulse_alias ("setquad",			IMP_VOTE_QUAD);		// CRMod
+	player_vote_impulse_alias ("setring",			IMP_VOTE_RING);		// CRMod
+	player_vote_impulse_alias ("setsuit",			IMP_VOTE_SUIT);		// CRMod
+	player_vote_impulse_alias ("vote-alts",			IMP_VOTE_ALTS);
+	player_vote_impulse_alias ("vote-armor",		IMP_VOTE_ARMOR);
+	player_vote_impulse_alias ("vote-exit",			IMP_VOTE_EXIT);
+	player_vote_impulse_alias ("vote-free",			IMP_VOTE_FREE);
+	player_vote_impulse_alias ("vote-lithium",		IMP_VOTE_LITHIUM);
+	player_vote_impulse_alias ("vote-normal",		IMP_VOTE_NORMAL);
+	player_vote_impulse_alias ("vote-pent",			IMP_VOTE_PENT);
+	player_vote_impulse_alias ("vote-practice",		IMP_VOTE_PRACTICE);
+	player_vote_impulse_alias ("vote-quad",			IMP_VOTE_QUAD);
+	player_vote_impulse_alias ("vote-ring",			IMP_VOTE_RING);
+	player_vote_impulse_alias ("vote-runes",		IMP_VOTE_RUNES);
+	player_vote_impulse_alias ("vote-rotate",		IMP_VOTE_ROTATE);
+	player_vote_impulse_alias ("vote-shields",		IMP_VOTE_SHIELDS);
+	player_vote_impulse_alias ("vote-suit",			IMP_VOTE_SUIT);
+	player_vote_impulse_alias ("vote-team",			IMP_VOTE_TEAM);
+	player_vote_impulse_alias ("vote-hook",			IMP_VOTE_HOOK);
 };
 
 void (string level, float imp)

@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.128 2004/12/18 23:50:15 slotzero Exp $
+/*  $Id: defs.qc,v 1.129 2004/12/26 05:08:44 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -502,23 +502,7 @@ float IMP_VOTE_YES		= 255;
 float IMP_VOTE_NO		= 254;
 //				= 238 - 253	[weapon aliases]
 //				= 220 - 237	[qsmack]
-float IMP_VOTE_EXIT		= 219;
-float IMP_VOTE_TEAM		= 218;
-float IMP_VOTE_HOOK		= 217;
-float IMP_VOTE_FREE		= 216;
-float IMP_VOTE_LITHIUM		= 215;
-float IMP_VOTE_PRACTICE		= 214;
-float IMP_VOTE_NORMAL		= 213;
-float IMP_VOTE_QUAD		= 212;
-float IMP_VOTE_PENT		= 211;
-float IMP_VOTE_RING		= 210;
-float IMP_VOTE_SUIT		= 209;
-float IMP_VOTE_ARMOR		= 208;
-float IMP_VOTE_ROTATE		= 207;
-float IMP_VOTE_RUNES		= 206;
-float IMP_VOTE_ALTS		= 205;
-float IMP_VOTE_SHIELDS		= 204;
-//				= 203 - 201	[free]
+//				= 219 - 201	[free]
 //				= 200 - 101	[cheat impulses]
 float IMP_RUNE_CHEAT_BASE	= 101;
 float IMP_RUNE_USE		= 100;
@@ -555,7 +539,8 @@ float IMP_CHANGE_MAP		= 70;
 float IMP_CUSTOM		= 69;
 float IMP_LEVELS		= 68;
 float IMP_LAST			= 67;
-//				= 66 - 60	[free]
+float IMP_VOTE_COMMAND		= 66;
+//				= 65 - 60	[free]
 float IMP_CYCLE_ALTERNATES	= 59;
 //				= 58;		[free]
 float IMP_SWITCHFIRE_BEST	= 57;
@@ -588,6 +573,24 @@ float IMP_ADMIN_TEAMPLAY_ZERO	= 11;
 float IMP_ADMIN_CYCLE		= 12;
 float IMP_ADMIN_CYCLE_SHOW	= 13;
 float IMP_ADMIN_CHANGE_MAP	= 14;
+
+// vote impulse commands
+float IMP_VOTE_EXIT		= 1;
+float IMP_VOTE_TEAM		= 2;
+float IMP_VOTE_HOOK		= 3;
+float IMP_VOTE_FREE		= 4;
+float IMP_VOTE_LITHIUM		= 5;
+float IMP_VOTE_PRACTICE		= 6;
+float IMP_VOTE_NORMAL		= 7;
+float IMP_VOTE_QUAD		= 8;
+float IMP_VOTE_PENT		= 9;
+float IMP_VOTE_RING		= 10;
+float IMP_VOTE_SUIT		= 11;
+float IMP_VOTE_ARMOR		= 12;
+float IMP_VOTE_ROTATE		= 13;
+float IMP_VOTE_RUNES		= 14;
+float IMP_VOTE_ALTS		= 15;
+float IMP_VOTE_SHIELDS		= 16;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;
@@ -722,7 +725,7 @@ float AQS_IMPOVER_PASSWORD	= 4096;
 float AQS_IMPOVER_QSMACK_PASSWORD = 8192;
 float AQS_IMPOVER_MAP		= 12288;
 float AQS_IMPOVER_ADMIN_COMMANDS = 16384;
-//				= 20480;
+float AQS_IMPOVER_VOTE_COMMANDS	= 20480;
 //				= 24576
 //				= 28672
 

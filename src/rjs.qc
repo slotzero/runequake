@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.157 2004/12/25 02:30:08 slotzero Exp $
+/*  $Id: rjs.qc,v 1.158 2004/12/26 05:08:44 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1168,6 +1168,9 @@ impulse_override =
 	else if (self.aqstate & AQS_IMPOVER_MASK == AQS_IMPOVER_ADMIN_COMMANDS)
 		admin_impulse_commands ();
 
+	else if (self.aqstate & AQS_IMPOVER_MASK == AQS_IMPOVER_VOTE_COMMANDS)
+		vote_impulse_commands ();
+
 	else
 		impulse_override_cancel ();
 
@@ -1206,10 +1209,6 @@ common_impulses =
 
 	else if (self.impulse == IMP_VOTE_NO)
 		vote_no ();
-
-	// XXX I hard coded the vote impulses to reduce the amount of impulse checks
-	else if (self.impulse >= 201 && self.impulse <= 219)
-		vote ();
 
 	else if (self.impulse == IMP_LEVELS)
 		levels ();
@@ -1251,6 +1250,9 @@ common_impulses =
 
 	else if (self.impulse == IMP_ADMIN_COMMAND)
 		admin_command ();
+
+	else if (self.impulse == IMP_VOTE_COMMAND)
+		vote_command ();
 
 	else if (self.impulse == IMP_REMOVE_FRAGS)
 	{
