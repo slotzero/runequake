@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.134 2004/07/14 12:42:53 slotzero Exp $
+/*  $Id: rjs.qc,v 1.135 2004/07/15 04:06:00 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1189,6 +1189,9 @@ common_impulses =
 
 	else if (self.impulse == IMP_HELP_LEVELS)
 		help_levels ();
+
+	else if (self.impulse == IMP_HELP_VOTE)
+		help_vote ();
 
 	else if (self.impulse == IMP_CUSTOM)
 		custom ();

@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.39 2004/07/13 10:36:15 slotzero Exp $
+/*  $Id: bindings.qc,v 1.40 2004/07/15 04:06:00 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -171,6 +171,7 @@ player_aliases =
 	player_init_impulse_alias ("ffa",			IMP_VOTE_NORMAL);	// CRMod
 	player_init_impulse_alias ("fix-angles",		IMP_FIX_BATMAN);
 	player_init_impulse_alias ("help-levels",		IMP_HELP_LEVELS);
+	player_init_impulse_alias ("help-vote",			IMP_HELP_VOTE);
 	player_init_impulse_alias ("+hook",			IMP_HOOK_ON);
 	player_init_impulse_alias ("-hook",			IMP_HOOK_OFF);
 	player_init_impulse_alias ("hook-off",			IMP_HOOK_OFF);
@@ -321,30 +322,26 @@ console_aliases =
 void ()
 commands =
 {
-       local float i;
-
-	i = -14;
-
-	//                                                              12345678901234567890123456789012345\n
-	self_sprint (self, "\ncommands\n\n");
-	self_sprintf_len (self, "\brune-delete", i);		self_sprint (self, "delete your rune\n");
-	self_sprintf_len (self, "\brune-tell", i);		self_sprint (self, "rune description\n");
-	self_sprintf_len (self, "\brune-use", i);		self_sprint (self, "activate rune\n");
-	self_sprintf_len (self, "\bweapon-mode", i);		self_sprint (self, "switch weapon to alt\n");
-	self_sprintf_len (self, "\bshow-riders", i);		self_sprint (self, "show players riding you\n");
-	self_sprintf_len (self, "\bfix-angles", i);		self_sprint (self, "fix frozen screen tilt\n");
-	self_sprintf_len (self, "\bshow-players", i);		self_sprint (self, "status of all players\n");
-	self_sprintf_len (self, "\bshow-settings", i);		self_sprint (self, "show mod settings\n");
-	self_sprintf_len (self, "\blevels", i);			self_sprint (self, "list standard levels\n");
-	self_sprintf_len (self, "\bhelp-levels", i);		self_sprint (self, "levels with full name\n");
-	self_sprintf_len (self, "\bcustom", i);			self_sprint (self, "custom levels on server\n");
-	self_sprintf_len (self, "\bvote-exit", i);		self_sprint (self, "vote to exit the level\n");
-	self_sprintf_len (self, "\bvote-team", i);		self_sprint (self, "vote to toggle teams\n");
-	self_sprintf_len (self, "\bvote-hook", i);		self_sprint (self, "vote to toggle hook\n");
-	self_sprintf_len (self, "\bremove-frags", i);		self_sprint (self, "zero out positive frags\n");
-	self_sprintf_len (self, "\bhud-toggle", i);		self_sprint (self, "toggle hud display\n");
-	self_sprintf_len (self, "\b+hook", i);			self_sprint (self, "use hook\n");
-	self_sprintf_len (self, "\bquiet-toggle", i);		self_sprint (self, "mute many game messages\n");
+	//                      1234567890123456789012345678901234567\n
+	self_sprint (self, "\n        \b\<important commands\>\b\n\n");
+	self_sprint (self, "\brune-delete\b   delete your rune\n");
+	self_sprint (self, "\brune-tell\b     rune description\n");
+	self_sprint (self, "\brune-use\b      activate rune\n");
+	self_sprint (self, "\bweapon-mode\b   switch weapon to alt\n");
+	self_sprint (self, "\bshow-riders\b   show players riding you\n");
+	self_sprint (self, "\bfix-angles\b    fix frozen screen tilt\n");
+	self_sprint (self, "\bshow-players\b  status of all players\n");
+	self_sprint (self, "\bshow-settings\b show mod settings\n");
+	self_sprint (self, "\blevels\b        list standard levels\n");
+	self_sprint (self, "\bhelp-levels\b   levels with full name\n");
+	self_sprint (self, "\bhelp-vote\b     vote descriptions\n");
+	self_sprint (self, "\bcustom\b        custom levels on server\n");
+	self_sprint (self, "\bvote-exit\b     vote to exit the level\n");
+	self_sprint (self, "\bvote-team\b     vote to toggle teams\n");
+	self_sprint (self, "\bvote-hook\b     vote to toggle hook\n");
+	self_sprint (self, "\bremove-frags\b  toggle hud display\n");
+	self_sprint (self, "\b+hook\b         use hook\n");
+	self_sprint (self, "\bquiet-toggle\b  mute many game messages\n");
 	self_sprint (self, "\n");
 
 /*
@@ -424,4 +421,27 @@ help_levels =
 		"dm5   - The Cistern\n"
 		"dm6   - The Dark Zone\n\n"
 	);
+};
+
+void ()
+help_vote =
+{
+	//                      1234567890123456789012345678901234567\n
+	self_sprint (self, "\n          \b\<vote commands\>\b\n\n");
+	self_sprint (self, "\bvote-exit\b     vote for random map\n");
+	self_sprint (self, "\b<mapname>\b     vote for specific map\n");
+	self_sprint (self, "\bvote-hook\b     vote to toggle hook\n");
+	self_sprint (self, "\bvote-free\b     vote for free hook\n");
+	self_sprint (self, "\bvote-lithium\b  vote for lithium hook\n");
+	self_sprint (self, "\bvote-practice\b vote for practice mode\n");
+	self_sprint (self, "\bvote-normal\b   vote for normal mode\n");
+	self_sprint (self, "\bvote-quad\b     vote to toggle quad\n");
+	self_sprint (self, "\bvote-pent\b     vote to toggle pent\n");
+	self_sprint (self, "\bvote-ring\b     vote to toggle ring\n");
+	self_sprint (self, "\bvote-suit\b     vote to toggle suit\n");
+	self_sprint (self, "\bvote-runes\b    vote to toggle runes\n");
+	self_sprint (self, "\bvote-armor\b    vote to toggle armor\n");
+	self_sprint (self, "\bvote-rotate\b   toggle rotating armors\n");
+	self_sprint (self, "\bvote-alts\b     toggle alt weapons\n");
+	self_sprint (self, "\n");
 };
