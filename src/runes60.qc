@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.16 2003/11/09 04:44:00 slotzero Exp $
+/*  $Id: runes60.qc,v 1.17 2003/11/09 09:20:58 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -700,22 +700,47 @@ Rune_Deflect_Telefrag_sprint =
 	rprint (self, riders, " left\n");
 };
 
+
+// Deflect telefrag can't be dropped directly after a deflect because tdeath_touch()
+// is still looping and will telefrag you as soon as it detects your rune is gone.
+// This function puts the delay just outside, but the more I think about what could
+// go wrong the more I just want to call it quits.
 void ()
-Rune_Deflect_Telefrag =
+delayed_rune_removal =
 {
 	local entity os;
 
-	centerprint (other, "You deflected a telefrag!");
-
-	if (other.runevar)
-		other.runevar = other.runevar - 1;
-
-	if (other.runevar <= 0)
+	if (self.owner.runetype == RN_DEFLECT)
 	{
-		sprint (other, "Max telefrags deflected, rune removed.\n");
+		sprint (self.owner, "Max telefrags deflected, rune removed.\n");
+
 		os = self;
-		self = other;
+		self = self.owner;
 		Rune_Delete (0);
 		self = os;
+	}
+	remove (self);
+};
+
+void ()
+Rune_Deflect_Telefrag =
+{
+	local entity rune_delete;
+
+	if (other.health <= 0)
+		return;
+
+	if (other.runevar > 0)
+	{
+		other.runevar		= other.runevar - 1;
+		centerprint (other, "You deflected a telefrag!");
+	}
+
+	if (!other.runevar)
+	{
+		rune_delete		= spawn ();
+		rune_delete.owner	= other;
+		rune_delete.nextthink	= time + sys_ticrate * 2;
+		rune_delete.think	= delayed_rune_removal;
 	}
 };

@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.30 2003/11/09 04:44:00 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.31 2003/11/09 09:20:59 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -579,8 +579,7 @@ Rune_Tell_real =
 		desc_l = "Telefrag Deflect Rune";
 		desc_s = " TelDef";
 
-		d1 = "Deflect most telefrags\n"
-			"Watch out for other deflect holders\n";
+		d1 = "Deflects most telefrags\n";
 		d2 = ftos (MAX_DEFLECT);
 		d3 = " maximum";
 	}

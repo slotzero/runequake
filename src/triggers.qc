@@ -1,4 +1,4 @@
-/*  $Id: triggers.qc,v 1.13 2003/11/09 04:44:01 slotzero Exp $
+/*  $Id: triggers.qc,v 1.14 2003/11/09 09:20:59 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -334,19 +334,18 @@ he is toast (telefragged)!  However, what happens in the case when someone has p
 When a player cannot be telefragged, tdeath_touch() continues to be called (looping) until 'teledeath' stops
 thinking (0.2 seconds).  Because of this, and if your timing is that of a machine, you can deflect a
 telefrag and yet still managed to get telefragged!  This only happens when your pent has less than 0.2
-seconds left when you enter a teleporter.
+seconds left when you enter a teleporter.  But what if I shorten the length of the think?
 
-I try to prevent this by removing the entity right after a pent/deflect holder triggers the touch, this
-might prevent a normal telefrag though.  What if I shorten the length of the think?
-
-If your think isn't long enough, you don't telefrag the player but rather you are locked into position.  I
+If your think() isn't long enough, you don't telefrag the player but rather you are locked into position.  I
 was thinking that if I made the think() twice the tick rate, maybe this wouldn't happen.
 
-Another interesting enomally is that if someone follows you into a teleporter at just the right time,
-he'll wind up being telefragged but you'll be safe.  This happens because you're just outside the
+Another interesting anomaly is that if someone follows you into a teleporter at just the right time,
+he'll wind up being telefragged, but you'll be safe.  This happens because you're just outside the
 entity's touch, but your spawn_tdeath() is still active.  Again, perhaps if the nextthink() was shorter
 than 0.2 this might be avoidable.  I hesitate to say this because lag/ping does seem to play a big factor
 on who gets telefragged first, or at least that is the way it appears.
+
+UPDATE: I changed nextthink to sys_ticrate * 2, lets see what happens!
 */
 void ()
 tdeath_touch =
@@ -363,21 +362,20 @@ tdeath_touch =
 		if (other.invincible_finished > time)
 		{
 			T_Damage (self.owner, self, other, 50000, "teledeath2");
-			remove (self);
 			return;
 		}
 
 		if (other.runetype == RN_DEFLECT)
 		{
-			if (self.owner.runetype == RN_DEFLECT)
-				T_Damage (other, self, self.owner, 50000, "teledeath3");
-			if (T_Damage (self.owner, self, other, 50000, "teledeath3"))
+			if (self.owner.invincible_finished > time || self.owner.runetype == RN_DEFLECT)
+				T_Damage (other, self, self.owner, 50000, "teledeath2");
+
+			if (T_Damage (self.owner, self, other, 50000, "teledeath2") && other.health > 0)
 				Rune_Deflect_Telefrag ();
-			remove (self);
 			return;
 		}
 
-		// frag monster who try to telefrag players
+		// frag monsters who try to telefrag players
 		if (self.owner.classname != "player")
 		{
 			T_Damage (self.owner, self, other, 50000, self.classname);
@@ -403,7 +401,7 @@ spawn_tdeath =
 	setorigin (death, org);
 
 	death.touch	= tdeath_touch;
-	death.nextthink	= time + 0.2;
+	death.nextthink	= time + (sys_ticrate * 2);
 	death.think	= SUB_Remove;
 	death.owner	= death_owner;
 
