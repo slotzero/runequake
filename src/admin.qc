@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.16 2002/10/14 18:57:01 slotzero Exp $
+/*  MERGE COMPLETE
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -22,33 +22,30 @@ admin_init =
 {
 	if (is_admin ())
 	{
-		sprint (self, "Admin mode already active\n");
+		self_sprint (self, "Admin mode already active\n");
 		return;
 	}
 
 	sprint_admin2 (self.netname, " activated admin mode\n");
 	self.aqflags = self.aqflags | AQ_ADMIN;
-	player_init_impulse_alias ("admin-eyes",	IMP_ADMIN_EYES);
-	player_init_impulse_alias ("admin-cycle",	IMP_ADMIN_CYCLE);
-	player_init_impulse_alias ("admin-cycle-show",	IMP_ADMIN_CYCLE_SHOW);
-	player_init_impulse_alias ("admin-join",	IMP_ADMIN_JOIN);
-	player_init_impulse_alias ("admin-kick",	IMP_ADMIN_KICK);
-	player_init_impulse_alias ("admin-kill",	IMP_ADMIN_KILL);
-	player_init_impulse_alias ("admin-rename",	IMP_ADMIN_RENAME);
-	player_init_impulse_alias ("admin-rune-delete",	IMP_ADMIN_RUNE_DELETE);
-	player_init_impulse_alias ("admin-team-change",	IMP_ADMIN_TEAM_CHANGE);
-	player_init_impulse_alias ("admin-team-change-toggle",
-							IMP_ADMIN_TEAM_CHANGE_TOGGLE);
-	player_init_impulse_alias ("admin-vote-team-toggle",
-							IMP_ADMIN_VOTE_TEAM_TOGGLE);
-	player_init_impulse_alias ("admin-teamplay-zero",
-							IMP_ADMIN_TEAMPLAY_ZERO);
-	player_init_impulse_alias ("admin-unbind",	IMP_ADMIN_UNBIND);
-	player_init_impulse_alias ("change-level",	IMP_ADMIN_CHANGE_MAP);
-	player_init_impulse_alias ("exit-level",	IMP_EXIT_LEVEL);
-	player_init_impulse_alias ("qsmack",		IMP_QSMACK_COMMAND);
-	self_stuffcmd (self, "bind 9 \"impulse 9\"\n");
-	sprint (self, "Admin mode activated\n");
+	player_init_impulse_alias ("admin-eyes",		IMP_ADMIN_EYES);
+	player_init_impulse_alias ("admin-cycle",		IMP_ADMIN_CYCLE);
+	player_init_impulse_alias ("admin-cycle-show",		IMP_ADMIN_CYCLE_SHOW);
+	player_init_impulse_alias ("admin-join",		IMP_ADMIN_JOIN);
+	player_init_impulse_alias ("admin-kick",		IMP_ADMIN_KICK);
+	player_init_impulse_alias ("admin-kill",		IMP_ADMIN_KILL);
+	player_init_impulse_alias ("admin-rename",		IMP_ADMIN_RENAME);
+	player_init_impulse_alias ("admin-rune-delete",		IMP_ADMIN_RUNE_DELETE);
+	player_init_impulse_alias ("admin-team-change",		IMP_ADMIN_TEAM_CHANGE);
+	player_init_impulse_alias ("admin-team-change-toggle",	IMP_ADMIN_TEAM_CHANGE_TOGGLE);
+	player_init_impulse_alias ("admin-vote-team-toggle",	IMP_ADMIN_VOTE_TEAM_TOGGLE);
+	player_init_impulse_alias ("admin-teamplay-zero",	IMP_ADMIN_TEAMPLAY_ZERO);
+	player_init_impulse_alias ("admin-unbind",		IMP_ADMIN_UNBIND);
+	player_init_impulse_alias ("change-level",		IMP_ADMIN_CHANGE_MAP);
+	player_init_impulse_alias ("exit-level",		IMP_EXIT_LEVEL);
+	player_init_impulse_alias ("qsmack",			IMP_QSMACK_COMMAND);
+	self_sprint (self, "Admin mode activated\n");
+	admin_sound ("misc/medkey.wav");
 };
 
 void (string msg, float passcode)
@@ -62,10 +59,10 @@ admin_wrong_passcode =
 	else
 	{
 		sprint_admin2 (self.netname, " used the wrong admin passcode\n");
-		sprint (self, "Invalid passcode ");
+		self_sprint (self, "Invalid passcode ");
 		if (passcode)
 			self_sprint_float (self, passcode);
-		sprint (self, "\n");
+		self_sprint (self, "\n");
 		self.aqstate = self.aqstate + AQS_ADMIN_ATTEMPTS_MULT;
 	}
 };
@@ -77,7 +74,7 @@ admin_toggle =
 
 	if (is_admin ())
 	{
-		sprint (self, "Admin mode disabled\n");
+		self_sprint (self, "Admin mode disabled\n");
 		self.aqflags = self.aqflags - AQ_ADMIN;
 		return;
 	}
@@ -98,7 +95,7 @@ admin_toggle =
 		IN_POQ([-
 			ADMIN_PASSCODE_REAL = admin_passcode_cvar;
 	    	-], [-
-			sprint (self, "This feature is disabled in Quakeworld\n");
+			self_sprint (self, "This feature is disabled in Quakeworld\n");
 			return;
 		-])
 	}
@@ -108,7 +105,7 @@ admin_toggle =
 	if (ADMIN_PASSCODE_REAL == 123456)
 	{
 		if (tell)
-			sprint (self, "Admin passcode not configured\n");
+			self_sprint (self, "Admin passcode not configured\n");
 		return;
 	}
 
@@ -116,11 +113,11 @@ admin_toggle =
 	{
 		if (tell)
 		{
-			sprint (self, "Invalid admin passcode in");
+			self_sprint (self, "Invalid admin passcode in");
 			if (admin_passcode_cvar > 0)
-				sprint (self, " gamecfg\n");
+				self_sprint (self, " gamecfg\n");
 			else
-				sprint (self, " settings.qc\n");
+				self_sprint (self, " settings.qc\n");
 		}
 		return;
 	}
@@ -128,10 +125,10 @@ admin_toggle =
 	if (tell)
 	{
 		if (mention_console)
-			sprint (self, "Close console and e");
+			self_sprint (self, "Close console and e");
 		else
-			sprint (self, "E");
-		sprint (self, "nter admin passcode now\n");
+			self_sprint (self, "E");
+		self_sprint (self, "nter admin passcode now\n");
 	}
 	self.aqstate = self.aqstate | AQS_IMPOVER_PASSWORD;
 	self.state = 0;
@@ -142,16 +139,16 @@ admin_impulse_password =
 {
 	if (self.impulse < 1 || self.impulse > 8)
 	{
-		sprint (self, "Canceled, invalid passcode impulse ");
-		sprint_float (self, self.impulse);
-		sprint (self, "\n");
+		self_sprint (self, "Canceled, invalid passcode impulse ");
+		self_sprint_float (self, self.impulse);
+		self_sprint (self, "\n");
 		impulse_override_cancel ();
 		return;
 	}
 
-	self_sprint (self, "ê");
+	self_sprint (self, "\[");
 	self_sprint_float (self, self.impulse);
-	self_sprint (self, "ë\n");
+	self_sprint (self, "\]\n");
 	self.state = self.state * 10 + self.impulse;
 	self.impulse = 0;
 	if (self.state > 99999)
@@ -238,7 +235,7 @@ admin_player_pick =
 
 	if (is_admin_e (e))
 	{
-		sprint (self, "This client is an admin\n");
+		self_sprint (self, "This client is an admin\n");
 		return world;
 	}
 
@@ -246,7 +243,7 @@ admin_player_pick =
 	{
 		if (!is_player_e (e))
 		{
-			sprint (self, "This client isn't playing\n");
+			self_sprint (self, "This client isn't playing\n");
 			return world;
 		}
 	}
@@ -254,15 +251,15 @@ admin_player_pick =
 	{
 		if (!is_observer_e (e))
 		{
-			sprint (self, "This client isn't observing\n");
+			self_sprint (self, "This client isn't observing\n");
 			return world;
 		}
 	}
 	else if (pt != ADMIN_PLAYER_TYPE_ANY)
 	{
-		sprint (self, "Bug, invalid player type ");
-		sprint_float (self,  pt);
-		sprint (self, "\n");
+		self_sprint (self, "Bug, invalid player type ");
+		self_sprint_float (self,  pt);
+		self_sprint (self, "\n");
 		return world;
 	}
 
@@ -285,14 +282,14 @@ admin_eyes =
 	if (self.model == string_null)
 	{
 		s = "progs/eyes.mdl";
-		s1 = "ç Visible eyes.\n";
+		s1 = "\{13} Visible eyes.\n";
 		n = modelindex_eyes;
 		self.items = self.items | IT_KEY1;
 	}
 	else
 	{
 		s = string_null;
-		s1 = "ç Normal.\n";
+		s1 = "\{13} Normal.\n";
 		n = 0;
 		self.items = self.items - self.items & IT_KEY1;
 	}
@@ -304,7 +301,7 @@ admin_eyes =
 		self.modelindex = n;
 	-])
 
-	sprint (self, s1);
+	self_sprint (self, s1);
 };
 
 void (float cycle_show)
@@ -336,15 +333,15 @@ admin_cycle =
 	if (!e)
 	{
 		if (cycle_show)
-			self_sprint (self, "ç Nobody selected\n");
+			self_sprint (self, "\{13} Nobody selected\n");
 		else
-			self_sprint (self, "ç Nobody to select\n");
+			self_sprint (self, "\{13} Nobody to select\n");
 	}
 	else
 	{
-		self_sprint (self, "ç ê#");
+		self_sprint (self, "\{13} \[#");
 		self_sprint (self, s);
-		self_sprint (self, "ë ");
+		self_sprint (self, "\] ");
 		self_sprint (self, e.netname);
 		self_sprint (self, " selected\n");
 	}
@@ -566,9 +563,9 @@ admin_impulse_map =
 	m = impulse_to_map ();
 	if (!m)
 	{
-		sprint (self, "Canceled, invalid map impulse ");
-		sprint_float (self, self.impulse);
-		sprint (self, "\n");
+		self_sprint (self, "Canceled, invalid map impulse ");
+		self_sprint_float (self, self.impulse);
+		self_sprint (self, "\n");
 	}
 	else
 		admin_changelevel (m);
