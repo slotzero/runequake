@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.133 2004/07/13 10:08:50 slotzero Exp $
+/*  $Id: rjs.qc,v 1.134 2004/07/14 12:42:53 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -319,6 +319,11 @@ process_misc =
 		setring ();
 	if (NO_SUITS)
 		setsuit ();
+	// no runes
+	if (NO_ARMORS)
+		setarmor ();
+	if (!ROTATE && !NO_ARMORS)
+		setrotate ();
 
 	// vote-practice (always do this last)
 	// XXX move to settings or something
