@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.45 2004/06/30 23:42:22 slotzero Exp $
+/*  $Id: world.qc,v 1.46 2004/07/01 02:43:38 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -45,10 +45,6 @@ worldspawn =
 	InternalInit ();
 	InitBodyQue ();
 	rjs_worldspawn ();
-
-	sys_ticrate = cvar_infokey ("sys_ticrate");
-	if (!sys_ticrate)
-		sys_ticrate = 0.1;
 
 	// I can't read the gravity from sv_gravity in rjs_worldspawn()
 	// (for the same reason I have to wait before reading teamplay,

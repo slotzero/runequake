@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.106 2004/06/30 07:54:28 slotzero Exp $
+/*  $Id: rjs.qc,v 1.107 2004/07/01 02:43:38 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -233,6 +233,8 @@ rjs_worldspawn =
 	local entity e;
 
 	sys_ticrate = cvar ("sys_ticrate");
+	if (!sys_ticrate) sys_ticrate = 0.1;
+
 	vote_counter_spawn ();
 	frag_init ();
 	orig_serverflags = serverflags;
