@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.44 2004/05/23 05:05:35 slotzero Exp $
+/*  $Id: items.qc,v 1.45 2004/06/28 02:04:45 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1317,7 +1317,7 @@ powerup_denied =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		if (e != other && is_player_e (e))
+		if (e != other && is_player_e (e) && e.health > 0)
 		{
 			dist = vlen (self.origin - e.origin);
 			if (dist < 125)
