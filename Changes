@@ -1,4 +1,13 @@
-$Id: Changes,v 1.4 2002/03/05 21:26:01 slotzero Exp $
+$Id: Changes,v 1.5 2002/03/13 02:34:43 slotzero Exp $
+
+Version 0.2.1  Tue Mar 12 21:33:50 EST 2002
+
+    - Bug Fixes
+
+        - Oops!  My recent changes to the environmental protection suit allowed
+	  players to regenerate their health.  Since Rune_Enviro() uses .runetime,
+	  this created problems for other rune types and would crash the server!
+	  For now, I've disabled this feature.
 
 Version 0.2  Tue Mar 05 15:44:01 EST 2002
 
