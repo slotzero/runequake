@@ -1,4 +1,4 @@
-/*  $Id: print.qc,v 1.11 2003/06/24 22:17:42 slotzero Exp $
+/*  $Id: print.qc,v 1.12 2003/07/10 05:17:43 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -570,4 +570,40 @@ self_sprint_bitfield =
 	i = i / 2; if (i & 536870912)	self_sprint (e, " 43 (4398046511104)");
 
 	self_sprint (e, "\n");
+};
+
+void (entity e, string s, float len)
+self_sprintf_len =
+{
+	local float i, left_j;
+	local string space = "                              ";	// 30
+
+	if (len < 0)
+	{
+		left_j = 1;
+		len = fabs (len);
+	}
+
+	i = strlen (s);
+
+	// Shortening s isn't support yet, so prevent it from happening.
+	//if (i > len)
+	//	return i;	// XXX FIX ME!
+
+	len = (30 - (len - i)) * %1;
+
+	// Make sure len doesn't exceed the s array.
+	//if (fabs (len) > i)
+	//	return i;
+
+	if (left_j)
+	{
+		self_sprint (e, s);
+		self_sprint (e, space[len]);
+	}
+	else
+	{
+		self_sprint (e, space[len]);
+		self_sprint (e, s);
+	}
 };
