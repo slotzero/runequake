@@ -1,12 +1,22 @@
-$Id: Changes,v 1.76 2004/09/18 22:01:20 slotzero Exp $
+$Id: Changes,v 1.77 2004/11/27 07:35:22 slotzero Exp $
 
 ideas... user allow map via the console (PK)
 use skill isntead of gamecfg to set password (via command)
 make sure you inform of new cvars saved1 and saved2 internals.
+start teleport in haunted halls e3m7? should have telepor/dest, use exit one at top
+fix tornado out of level bug
+prevent teleporters from being too close.. i tried this and it's kind of tricky.
+phased through players.. i looked at this an I need to figure out a better way, actually
+i need to improve phased so that looking down slightly won't create error.
 
 latest changes:
 
+fire walking doesn't damage you in low levels of lava
+hook activates buttons (zop)
+shootphobia no longer allows you to throw hook
+sonar was merged with cloaking
 blue stuff victims can't use rune button and can only get stuck in 1 traps at a time
+ice traps work justlike blue stuff.
 thor best weapon fires lg in water
 
 customizable cvars for console related aliases
