@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.52 2004/07/17 07:48:53 slotzero Exp $
+/*  $Id: world.qc,v 1.53 2004/07/17 09:09:04 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -459,6 +459,78 @@ StartFrame =
 			{
 				dprint_force ("Environmental protection suit disabled\n");
 				setsuit ();
+			}
+		}
+
+		else if (i == C2_ARMORON)
+		{
+			if (voteflags & C3_NO_ARMOR)
+			{
+				dprint_force ("Armor enabled\n");
+				setarmor ();
+			}
+		}
+
+		else if (i == C2_ARMOROFF)
+		{
+			if (!voteflags & C3_NO_ARMOR)
+			{
+				dprint_force ("Armor disabled\n");
+				setarmor ();
+			}
+		}
+
+		else if (i == C2_ROTATEON)
+		{
+			if (!voteflags & C3_ROTATE)
+			{
+				dprint_force ("Rotating armors enabled\n");
+				setrotate ();
+			}
+		}
+
+		else if (i == C2_ROTATEOFF)
+		{
+			if (voteflags & C3_ROTATE)
+			{
+				dprint_force ("Rotating armors disabled\n");
+				setrotate ();
+			}
+		}
+
+		else if (i == C2_RUNESON)
+		{
+			if (voteflags & C3_NO_RUNES)
+			{
+				dprint_force ("Runes enabled\n");
+				setrunes ();
+			}
+		}
+
+		else if (i == C2_RUNESOFF)
+		{
+			if (!voteflags & C3_NO_RUNES)
+			{
+				dprint_force ("Runes disabled\n");
+				setrunes ();
+			}
+		}
+
+		else if (i == C2_ALTSON)
+		{
+			if (voteflags & C3_NO_ALTS)
+			{
+				dprint_force ("Alternate weapons enabled\n");
+				setalts ();
+			}
+		}
+
+		else if (i == C2_ALTSOFF)
+		{
+			if (!voteflags & C3_NO_ALTS)
+			{
+				dprint_force ("Alternate weapons disabled\n");
+				setalts ();
 			}
 		}
 

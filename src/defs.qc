@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.108 2004/07/17 07:48:52 slotzero Exp $
+/*  $Id: defs.qc,v 1.109 2004/07/17 09:09:04 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1093,6 +1093,14 @@ float	C2_RINGON		= 17;
 float	C2_RINGOFF		= 18;
 float	C2_SUITON		= 19;
 float	C2_SUITOFF		= 20;
+float	C2_ARMORON		= 21;
+float	C2_ARMOROFF		= 22;
+float	C2_ROTATEON		= 23;
+float	C2_ROTATEOFF		= 24;
+float	C2_RUNESON		= 25;
+float	C2_RUNESOFF		= 26;
+float	C2_ALTSON		= 27;
+float	C2_ALTSOFF		= 28;
 
 // server vote flags
 float	voteflags;
