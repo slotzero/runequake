@@ -1,4 +1,4 @@
-/*  $Id: customap.qc,v 1.5 2003/11/01 01:42:53 slotzero Exp $
+/*  $Id: customap.qc,v 1.6 2003/11/04 00:30:58 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -92,6 +92,7 @@ void (float levsize)
 sized_customs_to_hunk =
 {	IN_QW(return;)
 	local float total;
+	local string s;
 
 	total = 0;
 
@@ -110,13 +111,14 @@ sized_customs_to_hunk =
 	if (!total)
 		return;
 
-	dprint_float (total);
+	s = ftos (total);
+	dprint_force (s);
 	if (levsize)
 	{
-		dprint (" ");
-		dprint (levsize_to_name (levsize));
+		dprint_force (" ");
+		dprint_force (levsize_to_name (levsize));
 	}
-	dprint (" custom maps added to hunk\n");
+	dprint_force (" custom maps added to hunk\n");
 };
 
 string (float levsize, float pos)
