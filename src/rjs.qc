@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.142 2004/07/17 11:25:45 slotzero Exp $
+/*  $Id: rjs.qc,v 1.143 2004/07/18 09:43:20 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -311,12 +311,6 @@ process_misc =
 		}
 	}
 
-	if (deathmatch & DM_ROTATING_ARMORS)
-	{
-		if (!voteflags & C3_ROTATE)
-			setrotate ();
-	}
-
 	// XXX All of code below is hard coded and should be fixed.
 	if (voteflags & C3_NO_QUAD)
 		setquad ();
@@ -328,6 +322,8 @@ process_misc =
 		setsuit ();
 	if (voteflags & C3_NO_ARMOR)
 		setarmor ();
+	if (!voteflags & C3_ROTATE)
+		setrotate ();
 	if (voteflags & C3_NO_RUNES)
 		setrunes ();
 	if (voteflags & C3_NO_ALTS)
@@ -2966,7 +2962,7 @@ toggle_cvar_bit =
 	local float bits;
 	local string new;
 
-	bits = cvar (c_var);
+	bits = cvar_infokey (c_var);
 
 	if (bits & bit)
 		bits = bits - bits & bit;
