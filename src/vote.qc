@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.33 2004/07/16 12:46:36 slotzero Exp $
+/*  $Id: vote.qc,v 1.34 2004/07/17 09:45:29 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -530,7 +530,7 @@ vote =
 		e.think1	= setalts;
 		e.noise2	= " alternate weapons ";
 
-		if (deathmatch & DM_NO_ALT_WEAPONS)
+		if (voteflags & C3_NO_ALTS)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";

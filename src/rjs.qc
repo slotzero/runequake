@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.140 2004/07/16 13:19:20 slotzero Exp $
+/*  $Id: rjs.qc,v 1.141 2004/07/17 09:45:29 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1289,7 +1289,7 @@ common_impulses =
 			self.rqflags = self.rqflags - RQ_CYCLE_ALTERNATES;
 			sprint (self, "Alternate weapons do not cycle\n");
 		}
-		else if (deathmatch & DM_NO_ALT_WEAPONS)
+		else if (voteflags & C3_NO_ALTS)
 			sprint (self, "Alternate weapons are disabled\n");
 		else
 		{
@@ -1823,7 +1823,7 @@ show_settings =
 	self_sprint (self, "\n  quad replace   ");	self_sprint_boolean (self, deathmatch & DM_QUAD_REPLACEMENT);
 	self_sprint (self, "  no dischrg  ");		self_sprint_boolean (self, deathmatch & DM_NO_DISCHARGE);
 	self_sprint (self, "\n  no drop powup  ");	self_sprint_boolean (self, deathmatch & DM_NO_DROP_POWERUP);
-	self_sprint (self, "  no altweap  ");		self_sprint_boolean (self, deathmatch & DM_NO_ALT_WEAPONS);
+	self_sprint (self, "  no altweap  ");		self_sprint_boolean (self, voteflags & C3_NO_ALTS);
 	self_sprint (self, "\n  no drop armor  ");	self_sprint_boolean (self, deathmatch & DM_NO_DROP_ARMOR);
 	self_sprint (self, "  dmg frags   ");		self_sprint_boolean (self, deathmatch & DM_DAMAGE_MATCH);
 	self_sprint (self, "\n  sv_maxspeed    ");
@@ -2114,7 +2114,7 @@ float (float it)
 weapon_it_to_alt_bit =
 {
 	if (it == IT_AXE)			return AQ_ALT_1;
-	if (deathmatch & DM_NO_ALT_WEAPONS)	return 0;
+	if (voteflags & C3_NO_ALTS)		return 0;
 	if (it == IT_SHOTGUN)			return AQ_ALT_2;
 	if (it == IT_SUPER_SHOTGUN)		return AQ_ALT_3;
 	if (it == IT_NAILGUN)			return AQ_ALT_4;
@@ -2334,7 +2334,7 @@ weapon_mode =
 {
 	local float bit;
 
-	if (deathmatch & DM_NO_ALT_WEAPONS)
+	if (voteflags & C3_NO_ALTS)
 	{
 		sprint (self, "Alternate weapons are disabled\n");
 		return;
@@ -2382,7 +2382,7 @@ W_ChangeWeapon =
 		return FALSE;
 	}
 
-	if (use_alt && (!deathmatch & DM_NO_ALT_WEAPONS || it & IT_AXE))
+	if (use_alt && (!voteflags & C3_NO_ALTS || it & IT_AXE))
 	{
 		if (!self.aqflags & AQ_NO_WEAPON_TOGGLE
 				&& self.weapon | WEAPON_ALT == it | WEAPON_ALT
@@ -2397,7 +2397,7 @@ W_ChangeWeapon =
 			it = it + WEAPON_ALT;
 	}
 
-	if (it & WEAPON_ALT && deathmatch & DM_NO_ALT_WEAPONS && it != WEAPON_HOOK)
+	if (it & WEAPON_ALT && voteflags & C3_NO_ALTS && it != WEAPON_HOOK)
 	{
 		sprint (self, "Alternate weapons are disabled\n");
 		return FALSE;
@@ -2440,7 +2440,7 @@ CycleWeaponCommand =
 	w = self.weapon;
 	while (1)
 	{
-		if (self.rqflags & RQ_CYCLE_ALTERNATES && !deathmatch & DM_NO_ALT_WEAPONS)
+		if (self.rqflags & RQ_CYCLE_ALTERNATES && !voteflags & C3_NO_ALTS)
 		{
 			if (w == IT_AXE)			w = IT_SHOTGUN;
 			else if (w == IT_SHOTGUN)		w = IT_SUPER_SHOTGUN;
@@ -2494,7 +2494,7 @@ CycleWeaponReverseCommand =
 	w = self.weapon;
 	while (1)
 	{
-		if (self.rqflags & RQ_CYCLE_ALTERNATES && !deathmatch & DM_NO_ALT_WEAPONS)
+		if (self.rqflags & RQ_CYCLE_ALTERNATES && !voteflags & C3_NO_ALTS)
 		{
 			if (w == WEAPON_BFG)			w = WEAPON_MORTAR;
 			else if (w == WEAPON_MORTAR)		w = WEAPON_FLASH_GRENADE;

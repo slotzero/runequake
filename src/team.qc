@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.31 2004/07/13 07:50:42 slotzero Exp $
+/*  $Id: team.qc,v 1.32 2004/07/17 09:45:29 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -580,16 +580,20 @@ change_practice_mode =
 	local float new_deathmatch, bits;
 	local string s;
 
-	bits = DM_MODE_PRACTICE | DM_NO_ALT_WEAPONS;
+	bits = DM_MODE_PRACTICE;
 	new_deathmatch = cvar ("deathmatch");
 
 	if (mode)
 	{
+		if (!voteflags & C3_NO_ALTS)
+			toggle_cvar_bit (CVAR_C3, C3_NO_ALTS);
 		if (!new_deathmatch & DM_MODE_PRACTICE)
 			new_deathmatch = new_deathmatch | bits;
 	}
 	else
 	{
+		if (voteflags & C3_NO_ALTS)
+			toggle_cvar_bit (CVAR_C3, C3_NO_ALTS);
 		if (new_deathmatch & DM_MODE_PRACTICE)
 			new_deathmatch = new_deathmatch - new_deathmatch & bits;
 	}

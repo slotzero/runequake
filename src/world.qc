@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.53 2004/07/17 09:09:04 slotzero Exp $
+/*  $Id: world.qc,v 1.54 2004/07/17 09:45:29 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -387,8 +387,7 @@ StartFrame =
 		else if (i == C2_MODE_NORMAL)
 			change_practice_mode (0);
 
-		else if (i == C2_TOGGLE_NOALTS)
-			toggle_cvar_bit ("deathmatch", DM_NO_ALT_WEAPONS);
+		// removed
 
 		else if (i == C2_QUADON)
 		{
@@ -518,7 +517,9 @@ StartFrame =
 
 		else if (i == C2_ALTSON)
 		{
-			if (voteflags & C3_NO_ALTS)
+			if (deathmatch & DM_MODE_PRACTICE)
+				dprint_force ("Alternate weapons disabled in practice mode\n");
+			else if (voteflags & C3_NO_ALTS)
 			{
 				dprint_force ("Alternate weapons enabled\n");
 				setalts ();

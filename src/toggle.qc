@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.8 2004/07/16 12:46:36 slotzero Exp $
+/*  $Id: toggle.qc,v 1.9 2004/07/17 09:45:29 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -177,5 +177,5 @@ setrunes =
 void ()
 setalts =
 {
-	deathmatch = toggle_cvar_bit ("deathmatch", DM_NO_ALT_WEAPONS);
+	voteflags = toggle_cvar_bit (CVAR_C3, C3_NO_ALTS);
 };
