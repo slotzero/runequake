@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.51 2004/09/18 04:09:05 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.52 2004/10/11 00:36:25 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -752,6 +752,12 @@ Rune_Activate =
 		decay_armor_spawn (self, ARMOR_DECAY_RATE);
 		set_armor_items_e (self);
 	}
+	else if (old_rune == RN_REQUIEM)
+	{
+		decay_health_spawn (self, 1);
+		decay_armor_spawn (self, ARMOR_DECAY_RATE);
+		set_armor_items_e (self);
+	}
 	else if (old_rune == RN_SHIELD)
 	{
 		if (self.effects & EF_BRIGHTFIELD)
@@ -1013,6 +1019,8 @@ Rune_Activate =
 			self.ammo_cells = MAX_CELLS;
 		set_current_ammo ();
  	}
+	else if (self.runetype == RN_REQUIEM)
+		self.max_health = MAX_HEALTH_REQUIEM;
 
 	if (self.weapon == best)
 		set_weapon (W_BestWeapon ());

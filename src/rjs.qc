@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.148 2004/07/24 03:09:22 slotzero Exp $
+/*  $Id: rjs.qc,v 1.149 2004/10/11 00:36:25 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -892,13 +892,17 @@ set_armor_items_e =
 float (entity e)
 get_max_armor_e =
 {
-	local float it;
+	local float it, requiem;
 
 	it = armor_type_to_it (e.armortype);
+
+	requiem = 0;
+	if (e.runetype == RN_REQUIEM)	requiem = 50;
+
 	if (e.runetype == RN_ARMOR)	return MAX_ARMOR_GOOD_ARMOR;
-	else if (it == IT_ARMOR1)	return MAX_ARMOR_1;
-	else if (it == IT_ARMOR2)	return MAX_ARMOR_2;
-	else if (it == IT_ARMOR3)	return MAX_ARMOR_3;
+	else if (it == IT_ARMOR1)	return MAX_ARMOR_1 + requiem;
+	else if (it == IT_ARMOR2)	return MAX_ARMOR_2 + requiem;
+	else if (it == IT_ARMOR3)	return MAX_ARMOR_3 + requiem;
 	else				return 0;
 };
 
