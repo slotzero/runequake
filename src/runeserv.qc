@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.36 2003/11/27 06:52:44 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.37 2004/02/21 08:06:20 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -736,7 +736,8 @@ Rune_Activate =
 	// will take place.
 	if (old_rune == RN_HEALTH
 			|| old_rune == RN_LUMBER
-			|| old_rune == RN_JACK)
+			|| old_rune == RN_JACK
+			|| old_rune == RN_ATHLETE)
 		decay_health_spawn (self, 1);
 	else if (old_rune == RN_ARMOR)
 	{
@@ -932,6 +933,17 @@ Rune_Activate =
 		{
 			self.armortype = ARMOR_TYPE_3;
 			good_armor_set_armor_items_e (self);
+		}
+	}
+
+	else if (self.runetype == RN_ATHLETE)
+	{
+		self.max_health = MAX_HEALTH_ATHLETE;
+		if (tell && self.health < self.max_health)
+		{
+			self.health = self.health + HEALTH_BONUS_ATHLETE;
+			if (self.health > self.max_health)
+				self.health = self.max_health;
 		}
 	}
 

@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.28 2003/11/27 00:13:43 slotzero Exp $
+/*  $Id: settings.qc,v 1.29 2004/02/21 08:06:20 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -391,7 +391,7 @@ float POWERUP_PICKUP_WARN	= 0;
 
 // These specify how much ammo it takes to shoot the corresponding weapon.
 
-float AMMO_MAGIC_SHOTGUN		= 5;
+float AMMO_MAGIC_SHOTGUN	= 5;
 float AMMO_FLAMETHROWER		= 1;
 float AMMO_LAVAGUN		= 1;
 float AMMO_BOMB			= 10;
@@ -413,7 +413,7 @@ float HOOK_MAX_CHAIN_LEN	= 1600;
 
 // Various other hook constants.
 
-float HOOK_TRAVEL_SPEED		= 1000;
+float HOOK_TRAVEL_SPEED		= 2500;
 float HOOK_LINK_COUNT		= 8;
 
 // Release hook when weapon fires.  Set this value to anything other than
@@ -508,10 +508,12 @@ float MAX_HEALTH_NORMAL		= 100;
 float MAX_HEALTH_LUMBER		= 250;
 float MAX_HEALTH_GOOD_HEALTH	= 666;
 float MAX_HEALTH_JACK		= 150;
+float MAX_HEALTH_ATHLETE	= 125;
 
 float HEALTH_BONUS_GOOD_HEALTH	= 100;
 float HEALTH_BONUS_GOOD_LUMBER	= 150;
 float HEALTH_BONUS_JACK		= 50;
+float HEALTH_BONUS_ATHLETE	= 25;
 
 // Flight rune
 
