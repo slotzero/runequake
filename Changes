@@ -1,4 +1,4 @@
-$Id: Changes,v 1.70 2004/06/26 04:27:55 slotzero Exp $
+$Id: Changes,v 1.71 2004/06/27 08:31:05 slotzero Exp $
 
 // developer stuff
 fix the tornado rune
@@ -8,9 +8,11 @@ add option for pain to hook camp instead of releasing...
 regen gives/converts your armor to red.. I eventually want to wein from using rune-use
 added some basic reflect code, not implemented
 
-Version 1.1  Sat Jun 12 14:39:35 EST 2004
+Version 1.1  Sun Jun 27 04:30:50 EST 2004
 
     - Bug Fixes
+
+        - Potentially hazardous bug fixed with the hunk allocation code.
 
         - All of the hunk specific commands (ex: last, level-time), now check to make sure
           HUNK_CONTEXT_MAX exists before proceeding.  This prevents massive dprint() messages
