@@ -1,4 +1,4 @@
-// $Id: menu.qc,v 1.2 2002/06/09 20:20:42 slotzero Exp $
+// $Id: menu.qc,v 1.3 2002/07/16 06:28:53 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -310,7 +310,7 @@ aq_menu_print_n =
 			"\n",
 			"This command toggles some guns    \n",
 			"between normal and alternate      \n",
-			"modes.  If the gold key is lit the\n",
+			"modes.  If the blue key is lit the\n",
 			"gun is in alternate mode.         \n\n");
 	}
 
