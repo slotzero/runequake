@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.22 2004/07/03 07:54:29 slotzero Exp $
+/*  $Id: hunk.qc,v 1.23 2004/07/03 08:36:09 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -126,12 +126,14 @@ Read_Hunk_Float =
 	return hunk[%0];
 };
 
+// Very fast, but dangerous.
 string (entity hunk)
 Read_Hunk_e =
 {
 	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
 };
 
+// Very fast, but dangerous.
 string (float type, float offset)
 Read_Hunk =
 {
@@ -147,52 +149,6 @@ Read_Hunk =
 	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
 };
 
-string (entity hunk, float bytes)
-Read_Hunk_Max_e =
-{
-	local float i, pdata, dword;
-	local string data;
-
-	if (!hunk)
-	{
-		dprint ("Read_Hunk_Max_e: hunk is null\n");
-		return string_null;
-	}
-
-	data = allocate_string_size (bytes);
-	pdata = AddInt (&data, PSTRING_TO_PQUAKEC);
-
-	dword	= floor (bytes / 4) * %1;
-	while (bytes > 3)
-		bytes = bytes - 4;
-
-	for (i = %0; i < dword; i = i + %1)
-		(*pdata)[i] = hunk[i];
-
- 	if (bytes)
-	{
-		bytes = NegInt ((4 - bytes) * %1);
-		hunk = *AddInt (&hunk, bytes);
-		pdata = AddInt (pdata, bytes);
-		(*pdata)[i] = hunk[i];
-		bytes = NegInt (bytes);
-		hunk = *AddInt (&hunk, bytes);
-		pdata = AddInt (pdata, bytes);
- 	}
-
-	return (@AddInt (pdata, PQUAKEC_TO_PSTRING));
-};
-
-string (float type, float offset, float bytes)
-Read_Hunk_Max =
-{
-	local entity hunk;
-
-	hunk = Get_Hunk (type, offset);
-
-	return Read_Hunk_Max_e (hunk, bytes);
-};
-
 // The value of bytes is rounded up to the closest dword.  While this
 // isn't as accurate Read_Hunk_Max_e(), it's much faster.
 string (entity hunk, float bytes)
@@ -203,7 +159,7 @@ Read_Hunk_String_Max_e =
 
 	if (!hunk)
 	{
-		dprint ("Read_Hunk_Max_e: hunk is null\n");
+		dprint ("Read_Hunk_String_Max_e: hunk is null\n");
 		return string_null;
 	}
 
@@ -213,7 +169,7 @@ Read_Hunk_String_Max_e =
 	data	= allocate_string_size (bytes);
 	if (!data)
 	{
-		dprint ("Read_Hunk_Max_e: bytes is too large\n");
+		dprint ("Read_Hunk_String_Max_e: bytes is too large\n");
 		return string_null;
 	}
 
@@ -235,6 +191,60 @@ Read_Hunk_String_Max =
 	hunk = Get_Hunk (type, offset);
 
 	return Read_Hunk_String_Max_e (hunk, bytes);
+};
+
+// Accurate, but very slow.
+string (entity hunk, float bytes)
+Read_Hunk_Max_e =
+{
+	local float i, pdata, dword;
+	local string data;
+
+	if (!hunk)
+	{
+		dprint ("Read_Hunk_Max_e: hunk is null\n");
+		return string_null;
+	}
+
+	data = allocate_string_size (bytes);
+	if (!data)
+	{
+		dprint ("Read_Hunk_Max_e: bytes is too large\n");
+		return string_null;
+	}
+
+	pdata	= AddInt (&data, PSTRING_TO_PQUAKEC);
+	dword	= floor (bytes / 4) * %1;
+
+	while (bytes > 3)
+		bytes = bytes - 4;
+
+	for (i = %0; i < dword; i = i + %1)
+		(*pdata)[i] = hunk[i];
+
+ 	if (bytes)
+	{
+		bytes = NegInt ((4 - bytes) * %1);
+		hunk = *AddInt (&hunk, bytes);
+		pdata = AddInt (pdata, bytes);
+		(*pdata)[i] = hunk[i];
+		bytes = NegInt (bytes);
+		hunk = *AddInt (&hunk, bytes);
+		pdata = AddInt (pdata, bytes);
+ 	}
+
+	return (@AddInt (pdata, PQUAKEC_TO_PSTRING));
+};
+
+// Accurate, but very slow.
+string (float type, float offset, float bytes)
+Read_Hunk_Max =
+{
+	local entity hunk;
+
+	hunk = Get_Hunk (type, offset);
+
+	return Read_Hunk_Max_e (hunk, bytes);
 };
 
 //-------------------------------------------------------------------
@@ -267,6 +277,7 @@ Write_Hunk_Float =
 	hunk[%0] = f;
 };
 
+// Very fast, but careless.
 void (entity hunk, string s)
 Write_Hunk_e =
 {
@@ -275,6 +286,7 @@ Write_Hunk_e =
 	strcpy (@AddInt(&hunk, PQUAKEC_TO_PSTRING), s);
 };
 
+// Very fast, but careless.
 void (float type, float offset, string s)
 Write_Hunk =
 {
@@ -286,8 +298,7 @@ Write_Hunk =
 
 // This function uses the smallest dword possible to fit the string
 // into the hunk, not the exact bytes.  While this is less accurate
-// thank Write_Hunk_Max(), it's much faster.  A null termination is
-// included as well.
+// than Write_Hunk_Max(), it's much faster.
 void (float type, float offset, string s)
 Write_Hunk_String =
 {
