@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.29 2003/07/05 21:33:41 slotzero Exp $
+/*  $Id: develop.qc,v 1.30 2003/07/06 10:19:38 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -130,7 +130,7 @@ Read_Client_Disconnect_Log =
 
 	for (i = %6; i >= %0; i = i - %1)
 	{
-		e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 24), 16);
+		e_name = Read_Hunk (HUNK_CONTEXT, offset + (i * 24));
 		e_time = stof (Read_Hunk_Max (HUNK_CONTEXT, offset + %16 + (i * 24), 8));
 		e_away = elapsed_time () - e_time;
 
@@ -151,7 +151,7 @@ string (float n)
 parse_time =
 {
 	local float hours, minutes, seconds;
-	local string s, x;
+	local string cat1, cat2, cat3, cat4, cat5, cat6, cat7;
 
 	seconds	= floor (n);
 	minutes	= floor (seconds / 60);
@@ -161,32 +161,16 @@ parse_time =
 
 	if (hours)
 	{
-		s = ftos (hours);
-		s = strcat (s, ":");
-		if (minutes < 10) s = strcat (s, "0");
+		cat1 = ftos (hours);
+		cat2 = ":";
+		if (minutes < 10) cat3 = "0";
 	}
-	x = ftos (minutes);
-	s = strcat (s, x);
-	s = strcat (s, ":");
-	if (seconds < 10) s = strcat (s, "0");
-	x = ftos (seconds);
-	return strcat (s, x);
-};
+	cat4 = ftos (minutes);
+	cat5 = ":";
+	if (seconds < 10) cat6 = "0";
+	cat7 = ftos (seconds);
 
-void (float type, float offset, string ip)
-ban_ip =
-{
-	local float i;
-	local string s;
-
-	// shift one down
-	for (i = %14; i >= %0; i = i - %1)
-	{
-		s = Read_Hunk_Max (type, offset + (i * 16), 16);
-		Write_Hunk_Max (type, offset + ((i + %1) * 16), s, 16);
-		dprint (">", s, "<\n");
-	}
-	Write_Hunk_Max (type, offset, ip, 16);
+	return strcat7 (cat1, cat2, cat3, cat4, cat5, cat6, cat7);
 };
 
 string ()
@@ -194,20 +178,19 @@ ProQuake_Version =
 {
 	local entity cl;
 	local float i, d, sum;
-	local string v, x;
+	local string cat1, cat2, cat3, cat4, cat5, cat6, cat7;
 
 	cl = *SubInt(AddInt(PSTRING_TO_PQUAKEC, &self.netname), 4 * CL_NAME);
 	cl = *AddInt(cl[CL_NETCONNECTION], PC_TO_PQUAKEC);
 	i = cl[QS_MOD] / %1;
 
 	if (!i)
-		return " with a non-proquake client";
-	// XXX Mod version hasn't always been present, I forget what version
-	// it was introduced, so I'm using 3.00 until I research it.
+		return " with an unrecognized client";
+	// mod_version < 3.02
 	else if (i == 1)
-		return " with proquake version \b<\b 3.00";
+		return " with a proquake client";
 
-	v = " with proquake version ";
+	cat1 = " with proquake client version ";
 
 	d = floor (i / 4096);
 	i = i - d * 4096;
@@ -216,11 +199,11 @@ ProQuake_Version =
 	i = i - d * 256;
 	sum = sum + hex_ctof (hex[d * %2]);
 	d = floor (sum / 10);
-	x = ftos (d);
-	v = strcat (v, x);
-	v = strcat (v, ".");
+	cat2 = ftos (d);
+	cat3 = ".";
 	sum = sum - (d * 10);
-	x = ftos (sum);
-	v = strcat (v, x);
-	return strcat (v, "0");
+	cat4 = ftos (sum);
+	cat5 = "0";
+
+	return strcat5 (cat1, cat2, cat3, cat4, cat5);
 };

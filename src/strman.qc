@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.17 2003/07/06 01:02:30 slotzero Exp $
+/*  $Id: strman.qc,v 1.18 2003/07/06 10:19:38 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -20,6 +20,10 @@
 //-------------------------------------------------------------------
 // STRING MANIPULATION FUNCTIONS
 //-------------------------------------------------------------------
+
+float HUNK_SUBRPL = %3800;
+float HUNK_SUBSTR = %3900;
+float HUNK_STRCAT = %4000;
 
 //
 //  S T R L E N
@@ -54,7 +58,7 @@ strlen =
 string (float bytes)
 allocate_string_size =
 {
-	local entity e, array;
+	local entity e, data;
 	local float p, i, dword;
 
 	if (bytes < 1 || bytes > 255)
@@ -64,7 +68,7 @@ allocate_string_size =
 	}
 
 	e	= spawn ();
-	array	= *(&e + %600);
+	data	= *(&e + %600);
 	p	= AddInt (&"    ", PSTRING_TO_PQUAKEC);
 
 	dword	= floor (bytes / 4) * %1;
@@ -72,16 +76,16 @@ allocate_string_size =
 		bytes = bytes - 4;
 
 	for (i = %0; i < dword; i = i + %1)
-		array[i] = (*p)[%0];
+		data[i] = (*p)[%0];
 
  	if (bytes)
 	{
 		p = AddInt (p, (4 - bytes) * %1);
-		array[i] = (*p)[%0];
+		data[i] = (*p)[%0];
  	}
 
 	remove (e);
-	return (@AddInt (&array, PQUAKEC_TO_PSTRING));
+	return (@AddInt (&data, PQUAKEC_TO_PSTRING));
 };
 
 string (string s)
@@ -98,11 +102,9 @@ string (string s1, string s2, string s3, string s4, string s5, string s6, string
 strcat7 =
 {
 	local entity hunk;
-	local float max;
 
-	max = %16200;
-
-	if (!(hunk = Get_Hunk (HUNK_CONTEXT, max)))
+	hunk = Get_Hunk (HUNK_CONTEXT, HUNK_STRCAT);
+	if (!hunk)
 		return string_null;
 
 	if (s1) { Write_Hunk_e (hunk, s1); hunk = *AddInt (strlen (s1) * %1, &hunk);}
@@ -115,7 +117,7 @@ strcat7 =
 
 	Write_Hunk_e (hunk, string_null);
 
-	return Read_Hunk (HUNK_CONTEXT, max);
+	return Read_Hunk (HUNK_CONTEXT, HUNK_STRCAT);
 };
 
 string (string s1, string s2, string s3, string s4, string s5, string s6)
@@ -159,25 +161,39 @@ strcat =
 string (string expr, float offset, float length)
 substr =
 {
-	local float sub_length;
-	local string s, sub;
+	local entity hunk;
+	local float i;
+	local string s;
 
-	if (offset < 0)
+	if (!length)
+		return string_null;
+	else if (offset < 0)
+		offset = fabs (offset);
+
+	i = strlen (expr);
+	if (offset > i)
 		return expr;
 
-	s = allocate_string (expr);
-	strcpy (s, expr);
-	sub = s[offset * %1];
-	if (length < 1)
-		return sub;
+	hunk = Get_Hunk (HUNK_CONTEXT, HUNK_SUBSTR);
+	if (!hunk)
+		return string_null;
 
-	sub_length = strlen (sub);
-	if (length >= sub_length)
-		return sub;
+	Write_Hunk_e (hunk, expr);
 
-	strcpy (s[(length + offset) * %1], string_null);
+	hunk = *AddInt (&hunk, offset * %1);
+	s = Read_Hunk_e (hunk);
 
-	return sub;
+	if (length < 0)
+		length = fabs (length);
+
+	i = i - offset;
+	if (length >= i)
+		return s;
+
+ 	hunk = *AddInt (&hunk, length * %1);
+	Write_Hunk_e (hunk, string_null);
+
+	return s;
 };
 
 //
@@ -190,13 +206,47 @@ substr =
 string (string expr, float offset, float length, string replace)
 substr_replace =
 {
-	local string cat1, cat3;
+	local entity hunk;
+	local float i;
+	local string s;
 
-	cat1 = substr (expr, 0, offset);
-	offset = offset + length;
-	cat3 = substr (expr, offset, 0);
+	hunk = Get_Hunk (HUNK_CONTEXT, HUNK_SUBRPL);
+	if (!hunk)
+		return string_null;
 
-	return strcat3 (cat1, replace, cat3);
+	Write_Hunk_e (hunk, expr);
+
+	i = strlen (expr);
+	if (offset)
+	{
+		if (offset < 0)
+			offset = fabs (offset);
+		if (offset > i)
+			offset = i;
+		hunk = *AddInt (&hunk, offset * %1);
+	}
+
+	if (replace)
+	{
+		Write_Hunk_e (hunk, replace);
+		hunk = *AddInt (strlen (replace) * %1, &hunk);
+	}
+
+	if (length)
+	{
+		if (length < 0)
+			length = fabs (length);
+		if (length > i)
+			length = i;
+	}
+
+	if (offset + length <= i)
+		i = offset + length;
+
+ 	s = @AddInt (AddInt (AddInt (&expr, PSTRING_TO_PQUAKEC), i * %1), PQUAKEC_TO_PSTRING);
+	Write_Hunk_e (hunk, s);
+
+	return Read_Hunk (HUNK_CONTEXT, HUNK_SUBRPL);
 };
 
 //
