@@ -1,9 +1,13 @@
-$Id: Changes,v 1.75 2004/07/01 10:27:10 slotzero Exp $
+$Id: Changes,v 1.76 2004/09/18 22:01:20 slotzero Exp $
 
 ideas... user allow map via the console (PK)
 use skill isntead of gamecfg to set password (via command)
 make sure you inform of new cvars saved1 and saved2 internals.
 
+latest changes:
+
+blue stuff victims can't use rune button and can only get stuck in 1 traps at a time
+thor best weapon fires lg in water
 
 customizable cvars for console related aliases
 // developer stuff
@@ -12,11 +16,21 @@ remove notification for riders
 victim_address command
 add option for pain to hook camp instead of releasing...
 regen gives/converts your armor to red.. I eventually want to wein from using rune-use
-added some basic reflect code, not implemented
 
 Version 1.1  Sun Jun 27 04:30:50 EST 2004
 
     - Bug Fixes
+
+        - A hooking monk is now vulnerable to attacks as if he was walking.
+
+        - When I added a wider BFG Zap radius to Thor and Electric rune, I made a
+          a typo which prevented zapping under normal circumstances.  This is fixed.
+
+        - In Quakeworld, when the level changes and team mode is on, you are no longer
+          killed.
+
+        - When a player disconnected during intermission, the player entity now gets
+          reset properly.
 
         - Vampire no longer rots twice as fast when picked up after rotting health.
 
@@ -40,22 +54,25 @@ Version 1.1  Sun Jun 27 04:30:50 EST 2004
 
         - Using rcon <map> while infokey_maps is set will no longer crash the server.
 
+        - The cvars skill and crosshair are no longer used to store information about the
+          server's new console commands.  These commands were conflicting with valid commands
+          only used when the server is run in listen mode.
+
     - Changes
 
-        - New server commands, 'alternates' (continued)XXX
+        - The mortar (alt-7) has been replaced with reflecting rockets.
 
-        - New server commands, 'practice' and 'normal'.  These will switch the mode that the server
-          is in much like how CRMod does it.
+        - The vote system had a complete overhaul and created dozens of new player and
+          server commands.  See files Playing and Configuring for more details.
 
-        - CRMod style intermisson_pos when level change is immediate.
+        - CRMod style intermisson_pos when level change is done by admin or by server
+          console.
 
-        - Punchangle is no longer used in weapons attacks.
+        - Punchangle is no longer used in weapons attacks eliminating weapon jitter.
 
-        - Genuine QSmack clients don't receive updates from the engine.
+        - Genuine QSmack clients don't receive entity updates from the engine.
 
         - Quakeworld particles for death spots are now smaller (normal).
-
-        - New command, help-levels, lists the full name of all of the standard levels.
 
         - Added requiem rune.
 
