@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.49 2003/10/26 08:04:45 slotzero Exp $
+/*  $Id: develop.qc,v 1.50 2003/12/25 01:52:41 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -136,38 +136,4 @@ Client_Disconnect_Log =
 	}
 	if (!e_time)
 		self_sprint (self, "No entries found.\n");
-};
-
-string ()
-ProQuake_Version =
-{
-	local float i, d, sum;
-	local string s1, s2, s3;
-
-	i = self.netconnection[QS_MOD] / %1;
-
-	if (!i)
-		return " with a non-proquake client";
-	// XXX Mod version hasn't always been present, I forget what version
-	// it was introduced, so I'm using 3.00 until I research it.
-	else if (i == 1)
-		return " with proquake version \b<\b 3.00";
-
-	s1 = " with proquake version ";
-
-	d = floor (i / 4096);
-	i = i - d * 4096;
-	sum = hex_ctof (hex[d * %2]) * 16;
-	d = floor (i / 256);
-	i = i - d * 256;
-	sum = sum + hex_ctof (hex[d * %2]);
-	d = floor (sum / 10);
-	s2 = ftos (d);
-	s3 = ".";
-
-	s1 = strcat3 (s1, s2, s3);
-	sum = sum - (d * 10);
-	s2 = ftos (sum);
-	s3 = "0";
-	return strcat3 (s1, s2, s3);
 };
