@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.38 2004/07/12 04:12:43 slotzero Exp $
+/*  $Id: bindings.qc,v 1.39 2004/07/13 10:36:15 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -199,6 +199,7 @@ player_aliases =
 	player_init_impulse_alias ("show-votes",		IMP_SHOW_VOTES);
 	player_init_impulse_alias ("team-change",		IMP_TEAM_ROTATE);
 	player_init_impulse_alias ("team-stats",		IMP_TEAM_STATS);
+	player_init_impulse_alias ("vote-armor",		IMP_VOTE_ARMOR);
 	player_init_impulse_alias ("vote-exit",			IMP_VOTE_EXIT);
 	player_init_impulse_alias ("vote-free",			IMP_VOTE_FREE);
 	player_init_impulse_alias ("vote-level",		IMP_LEVELS);
@@ -208,6 +209,7 @@ player_aliases =
 	player_init_impulse_alias ("vote-practice",		IMP_VOTE_PRACTICE);
 	player_init_impulse_alias ("vote-quad",			IMP_VOTE_QUAD);
 	player_init_impulse_alias ("vote-ring",			IMP_VOTE_RING);
+	player_init_impulse_alias ("vote-rotate",		IMP_VOTE_ROTATE);
 	player_init_impulse_alias ("vote-suit",			IMP_VOTE_SUIT);
 	player_init_impulse_alias ("vote-team",			IMP_VOTE_TEAM);
 	player_init_impulse_alias ("vote-hook",			IMP_VOTE_HOOK);
