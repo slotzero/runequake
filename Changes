@@ -1,11 +1,13 @@
-$Id: Changes,v 1.53 2004/02/26 01:16:03 slotzero Exp $
+$Id: Changes,v 1.54 2004/02/27 20:58:24 slotzero Exp $
 
-The unfreeze code holds you for an extra tick because the release time was hard coded.
 added practice mode to admin menu.
 
 Version 1.0  Wed Feb 25 18:41:36 EST 2004
 
     - Bug Fixes
+
+        - The blizzard and ice trap code was adding an extra 0.5 second firing delay after
+          the release of a frozen victim.
 
         - The vote-hook command doesn't reset the hook when update_cvars() is called.
 
