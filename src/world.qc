@@ -1,4 +1,4 @@
-// $Id: world.qc,v 1.9 2002/09/29 01:34:44 slotzero Exp $
+// $Id: world.qc,v 1.10 2002/10/05 04:33:10 slotzero Exp $
 
 void ()
 main =
@@ -170,7 +170,6 @@ worldspawn =
 	local string s;
 
 	lastspawn = world;
-	InternalInit ();
 	InitBodyQue ();
 	rjs_worldspawn ();
 
