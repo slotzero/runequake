@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.45 2004/05/23 00:03:41 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.46 2004/05/23 01:48:05 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -600,8 +600,6 @@ Rune_Tell_real =
 
 		d1 = "Lets you toss tornados\n"
 			"with super destructive winds\n";
-		d2 = ftos (MAX_TORNADO);
-		d3 = " maximum";
 	}
 	else if (type == RN_LITHIUM_HOOK)
 	{
@@ -988,8 +986,12 @@ Rune_Activate =
 
 	else if (self.runetype == RN_TORNADO)
 	{
-		self.runevar = MAX_TORNADO;
 		Hat_Spawn (self, "progs/w_spike.mdl", '0 0 35', VEC_ORIGIN, 0);
+		if (self.ammo_cells < 60)
+			self.ammo_cells = 60;
+		if (self.ammo_cells >= MAX_CELLS)
+			self.ammo_cells = MAX_CELLS;
+		set_current_ammo ();
  	}
 
 	if (self.weapon == best)

@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.42 2004/05/23 00:03:41 slotzero Exp $
+/*  $Id: runes60.qc,v 1.43 2004/05/23 01:48:05 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -930,14 +930,19 @@ Rune_Tornado =
 
 	if (self.runevector_x > time)
 		return;
- 	self.runevector_x = time + 1.5;
 
-	self.runevar		= self.runevar - 1;
-	if (self.runevar <= 0)
+	if (self.ammo_cells >= AMMO_TORNADO)
 	{
-		sprint (self, "Max tornados spawned, rune deleted\n");
-		Rune_Delete (0);
+		self.ammo_cells = self.ammo_cells - AMMO_TORNADO;
+		set_current_ammo ();
 	}
+	else
+	{
+		sprint (self, "Not enough ammo\n");
+		return;
+	}
+
+ 	self.runevector_x	= time + 1.5;
 
 	// create a tornado object
 	tornado			= spawn();

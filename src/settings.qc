@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.35 2004/05/22 23:08:11 slotzero Exp $
+/*  $Id: settings.qc,v 1.36 2004/05/23 01:48:06 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -631,7 +631,7 @@ float MAX_LAUNCH_BETTY		= 5;
 
 // Tornado Rune
 
-float MAX_TORNADO		= 5;
+float AMMO_TORNADO		= 30;
 
 // red, green, blue, scale
 
