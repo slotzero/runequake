@@ -1,4 +1,4 @@
-/*  $Id: runes50.qc,v 1.17 2004/07/26 08:57:15 slotzero Exp $
+/*  $Id: runes50.qc,v 1.18 2005/02/09 11:07:36 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -730,11 +730,23 @@ jack_think =
 	if (self.runevar > 3)
 		self.runevar = 0;
 
-	self.runevector_x = self.runevector_x + 1;
-
-	if (rint (self.runevector_x / 10) == self.runevector_x / 10)
+	if (self.runevector_x < time)
+	{
 		Rune_Regen ();
+		self.runevector_x = time + 0.6;
+	}
 
-	if (rint (self.runevector_x / 30) == self.runevector_x / 30)
-		Rune_Ammo_1 (rint (self.runevector_x / 90) == self.runevector_x / 90);
+	if (self.runevector_y < time)
+	{
+		if (self.runevector_z == 2)
+			Rune_Ammo_1 (1);
+		else
+			Rune_Ammo_1 (0);
+
+		self.runevector_y = time + 1.6;
+		self.runevector_z = self.runevector_z + 1;
+
+		if (self.runevector_z > 2)
+			self.runevector_z = 0;
+	}
 };
