@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.28 2005/01/02 08:38:48 slotzero Exp $
+/*  $Id: combat.qc,v 1.29 2005/01/02 23:18:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -80,6 +80,7 @@ void (entity targ, entity attacker, string dtype)
 Killed =
 {
 	local entity old_self, old_other;
+	local string x;
 
 	old_self	= self;
 	self		= targ;
@@ -115,7 +116,29 @@ Killed =
 	}
 
 	if (mode_arena ())
+	{
 		arena_death (targ, attacker);
+
+		if (attacker != targ)
+		{
+			if (attacker.classname == "player" && targ.classname == "player")
+			{
+				x = ftos (attacker.health);
+				self_sprint (targ, attacker.netname);
+				self_sprint (targ, " had ");
+				self_sprint (targ, x);
+				self_sprint (targ, " health and ");
+				if (attacker.armorvalue)
+				{
+					x = ftos (attacker.armorvalue);
+					self_sprint (targ, x);
+					self_sprint (targ, " armor\n");
+				}
+				else
+					self_sprint (targ, "no armor\n");
+			}
+		}
+	}
 	else
 		ClientObituary (self, attacker, dtype);
 
@@ -125,8 +148,6 @@ Killed =
 		{
 			if (attacker.classname == "player" && targ.classname == "player")
 			{
-				local string x;
-
 				x = ftos (attacker.health);
 				centerprint5 (targ, "\n\n\n", attacker.netname, " has ", x, " health");
 				self_sprint (targ, attacker.netname);

@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.75 2005/01/02 10:08:48 slotzero Exp $
+/*  $Id: client.qc,v 1.76 2005/01/02 23:18:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -618,6 +618,20 @@ SelectSpawnPoint =
 		// in that some of these are in rooms which start out
 		// closed.  I use weapons first because I suspect there
 		// are fewer of these with that problem.
+
+		// I would eventually like to create spawn spots for standard maps,
+		// and modify the map to restrict certain areaa.  For now, I will
+		// use the RA method of info_teleport_destinations.
+		if (mode_arena ())
+		{
+			spot = find_spawn_point_class ("info_teleport_destination", lastspawn);
+			if (spot)
+			{
+				lastspawn = spot;
+				return spot;
+			}
+		}
+
 		spot = find_spawn_point_class ("info_player_deathmatch", lastspawn);
 		if (!spot)
 			spot = find_spawn_point_class ("weapon_supershotgun", lastspawn);
@@ -731,7 +745,12 @@ PutClientInServer =
 		self.origin = spot.origin + SPAWN_ITEM_OFFSET;
 	else
 		self.origin = spot.origin + '0 0 1';
-	self.angles = spot.angles;
+
+	if (spot.classname == "info_teleport_destination")
+		self.angles = spot.mangle;
+	else
+		self.angles = spot.angles;
+
 	self.fixangle = TRUE;		// turn this way immediately
 
 	// oh, this is a hack!

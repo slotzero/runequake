@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.54 2005/01/01 04:52:25 slotzero Exp $
+/*  $Id: items.qc,v 1.55 2005/01/02 23:18:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -120,6 +120,12 @@ plants the object on the floor
 void ()
 PlaceItem =
 {
+	if (mode_arena ())
+	{
+		remove (self);
+		return;
+	}
+
 	self.mdl	= self.model;	// so it can be restored on respawn
 	self.flags	= FL_ITEM;	// make extra wide
 	self.solid	= SOLID_TRIGGER;
@@ -1670,6 +1676,9 @@ void ()
 DropBackpack =
 {
 	local entity item;
+
+	if (mode_arena ())
+		return;
 
 	if (!deathmatch & DM_NO_DROP_ARMOR && self.armorvalue > 0)
 		drop_armor ();
