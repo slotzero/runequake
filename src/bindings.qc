@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.61 2005/02/14 23:41:18 slotzero Exp $
+/*  $Id: bindings.qc,v 1.62 2005/02/19 00:56:40 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -416,7 +416,7 @@ commands =
 	self_sprint (self, "\bvote-exit\b     vote to exit the level\n");
 	self_sprint (self, "\bvote-team\b     vote to toggle teams\n");
 	self_sprint (self, "\bvote-hook\b     vote to toggle hook\n");
-	self_sprint (self, "\bremove-frags\b  toggle hud display\n");
+	self_sprint (self, "\bremove-frags\b  reset frags to zero\n");
 	self_sprint (self, "\b+hook\b         use hook\n");
 	self_sprint (self, "\bquiet-toggle\b  mute many game messages\n");
 	self_sprint (self, "\n");
