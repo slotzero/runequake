@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.15 2005/01/30 21:13:36 slotzero Exp $
+/*  $Id: arena.qc,v 1.16 2005/01/30 22:38:51 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -73,10 +73,8 @@ arena_game_queue_announce =
 void ()
 arena_fight =
 {
-	if (arena.owner.rqflags & RQ_CUSTOM_SOUNDS)
-		self_sound (arena.owner, "ra/fight.wav");
-	if (arena.runent.rqflags & RQ_CUSTOM_SOUNDS)
-		self_sound (arena.runent, "ra/fight.wav");
+	self_custom_sound (arena.owner, "ra/fight.wav", string_null);
+	self_custom_sound (arena.runent, "ra/fight.wav", string_null);
 };
 
 void ()
@@ -106,7 +104,7 @@ arena_countdown =
 			bprint (self.runent.netname);
 			bprint (" is the new challenger\n");
 
-			self.state = 4;
+			self.state = 6;
 		}
    		else
 		{
@@ -163,10 +161,8 @@ arena_countdown =
 			       	else
 					s = "ra/1.wav";
 
-				if (self.owner.rqflags & RQ_CUSTOM_SOUNDS)
-					self_sound (self.owner, s);
-				if (self.runent.rqflags & RQ_CUSTOM_SOUNDS)
-					self_sound (self.runent, s);
+				self_custom_sound (self.owner, s, string_null);
+				self_custom_sound (self.runent, s, string_null);
 
 				// hack
 				if (self.state == 1)
@@ -238,10 +234,17 @@ arena_results =
 		if (winner == self.enemy || winner == self.oldenemy)
 		{
 			bprint ("\n");
+
 			if (winner.health >= 100 && winner.armorvalue >= 200)
+			{
+				self_custom_sound (world, "ra/flawless.wav", string_null);
 				bprint ("\bFLAWLESS VICTORY!\n");
+			}
 			else
 			{
+				if (winner.health >= 75 && winner.armorvalue >= 100)
+					self_custom_sound (world, "ra/excelent.wav\n", string_null);
+
 				x = ftos (winner.health);
 				bprint (winner.netname);
 				bprint (" had ");

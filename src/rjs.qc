@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.167 2005/01/30 21:13:37 slotzero Exp $
+/*  $Id: rjs.qc,v 1.168 2005/01/30 22:38:51 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -92,9 +92,47 @@ cloaked_sound =
 void (entity e, string samp)
 self_sound =
 {
+	if (e.classname != "player")
+		return;
+
 	self_stuffcmd (e, "play ");
 	self_stuffcmd (e, samp);
 	self_stuffcmd (e, "\n");
+};
+
+void (entity e, string samp, string samp2)
+self_custom_sound =
+{
+	local string s;
+
+	if (e)
+	{
+		if (e.rqflags & RQ_CUSTOM_SOUNDS)
+			s = samp;
+		else if (samp2)
+			s = samp2;
+
+		if (s)
+			self_sound (e, s);
+	}
+	else
+	{
+		e = find (world, classname, "player");
+		while (e)
+		{
+			s = string_null;
+
+			if (e.rqflags & RQ_CUSTOM_SOUNDS)
+				s = samp;
+			else if (samp2)
+				s = samp2;
+
+			if (s)
+				self_sound (e, s);
+
+			e = find (e, classname, "player");
+		}
+	}
 };
 
 void (string samp)
@@ -1407,8 +1445,6 @@ common_impulses =
 
 	else if (self.impulse == IMP_CUSTOM_SOUNDS)
 	{
-		dprint_float (self.rqflags);
-		dprint ("\n");
 		if (self.rqflags & RQ_CUSTOM_SOUNDS)
 		{
 			self.rqflags = self.rqflags - RQ_CUSTOM_SOUNDS;
