@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.12 2003/06/12 20:17:14 slotzero Exp $
+/*  $Id: strman.qc,v 1.13 2003/06/12 20:47:44 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -232,7 +232,7 @@ ctof =
 };
 
 string (float n)
-ftoc =
+atoc =
 {
 	local float i, asc;
 
@@ -262,7 +262,7 @@ atof =
 		i = i + 1;
 	}
 
-	return -1;
+	return 0;
 };
 
 float (float n)
@@ -300,7 +300,7 @@ stof_any =
 				frac = tot;
 		}
 
-		ch = ftoc (world[%5] / %1);
+		ch = atoc (world[%5] / %1);
 		if (ch)
 		{
 			clean = strcat (clean, ch);
