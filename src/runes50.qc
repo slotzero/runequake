@@ -1,4 +1,4 @@
-/*  $Id: runes50.qc,v 1.10 2002/10/14 18:57:11 slotzero Exp $
+/*  MERGE COMPLETE
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -490,7 +490,7 @@ pack_rat_rune_touch =
 	local entity old_self;
 	local string s;
 
-	s = Rune_Description (self.runetype, 0);
+	s = Rune_Tell_real (0, self.runetype, 0, 2);
 	sprint3 (other, "You've picked up", s, "\n");
 	old_self = self;
 	self = other;

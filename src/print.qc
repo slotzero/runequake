@@ -1,4 +1,4 @@
-/*  $Id: print.qc,v 1.8 2002/10/14 18:57:09 slotzero Exp $
+/*  MERGE COMPLETE
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -52,12 +52,9 @@ bprint_vec =
 void (string s)
 bprint_timestamp =
 {
-	local string sx;
-
-	sx = s;
 	bprint_float (time);
 	bprint (" ");
-	bprint (sx);
+	bprint (s);
 	bprint ("\n");
 };
 
@@ -83,7 +80,7 @@ dprint_vec =
 };
 
 void (string s)
-force_dprint =
+dprint_force =
 {
 	local float developer;
 
@@ -103,8 +100,7 @@ dprint_bitfield =
 {
 	dprint (s);
 	dprint (": ");
-	if (i < 0)
-		dprint ("negative ");
+	if (i < 0)		dprint ("negative ");
 	dprint_float (i);
 
 	if (i & 0.5)		dprint (" -1 (0.5)");

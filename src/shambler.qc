@@ -1,4 +1,4 @@
-/*  $Id: shambler.qc,v 1.8 2002/10/14 18:57:12 slotzero Exp $
+/*  MERGE COMPLETE
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -316,6 +316,8 @@ void ()	sham_pain6	= [$pain6,	sham_run1]	{};
 void (entity attacker, float damage)
 sham_pain =
 {
+	if (0) attacker = attacker;	// prevent frikqcc compiler warning
+
 	sound (self, CHAN_VOICE, "shambler/shurt2.wav", 1, ATTN_NORM);
 
 	if (self.health <= 0)

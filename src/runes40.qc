@@ -1,4 +1,4 @@
-/*  $Id: runes40.qc,v 1.10 2002/10/14 18:57:10 slotzero Exp $
+/*  MERGE COMPLETE
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -711,8 +711,8 @@ Weird_Touch =
 		other_desc = "I'M BLIND! I'M BLIND!";
 	}
 
-	centerprint3 (other, " Hit by weirdness! \n",
-		"Ÿ\n",
+	centerprint3 (other, "\b\.\b Hit by weirdness! \b\.\b\n",
+		"\<\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\>\n",
 		other_desc);
 
 	sprint (self.owner, "You weirded out ");
@@ -849,7 +849,7 @@ Resurrect =
 	self.view_ofs = PLAYER_VIEW_OFFSET;
 	self.state = 0;
 
-	player_stand1 ();
+	player_stand ();
 
 	spawn_tdeath (self.origin, self);
 

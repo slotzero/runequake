@@ -1,4 +1,4 @@
-/*  $Id: runes10.qc,v 1.7 2002/10/14 18:57:10 slotzero Exp $
+/*  MERGE COMPLETE
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -154,9 +154,9 @@ void (float riders, entity of_e)
 Rune_Fly_sprint =
 {
 	if (self.runevar)
-		rprint (self, riders, "ç flight on");
+		rprint (self, riders, "\{13} flight on");
 	else
-		rprint (self, riders, "ç flight off");
+		rprint (self, riders, "\{13} flight off");
 
 	if (FLY_TIMER_ON)
 	{
@@ -291,7 +291,7 @@ recall_point_erase =
 void (float riders, entity of_e)
 Rune_Recall_sprint =
 {
-	if (self.runevar)
+	if (of_e.runevar)
 		rprint (self, riders, "Recall point is set\n");
 	else
 		rprint (self, riders, "Recall point is not set\n");
@@ -457,14 +457,14 @@ Rune_Cloak =
 	{
 		stuffcmd (self, CSHIFT_CLOAK);
 		cloaked_sound (self, CHAN_AUTO, "items/inv1.wav", 1, ATTN_NORM);
-		sprint (self, "ç Cloaked.\n");
+		sprint (self, "\{13} Cloaked.\n");
 		self.runevar = 1;
 	}
 	if (self.runevar > 0 && self.runetime > time)
 	{
 		stuffcmd (self, CSHIFT_NONE);
 		cloaked_sound (self, CHAN_AUTO, "misc/r_tele4.wav", 1, ATTN_NORM);
-		sprint (self, "ç Uncloaked.\n");
+		sprint (self, "\{13} Uncloaked.\n");
 		self.runevar = 0;
 	}
 };

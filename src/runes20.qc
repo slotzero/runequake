@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.9 2002/10/14 18:57:10 slotzero Exp $
+/*  MERGE COMPLETE
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -39,9 +39,9 @@ Rune_Bomb =
 
 	if (self.runevar > 0)
 	{
-		sprint (self, "Ž");
+		sprint (self, "\{133}");
 		sprint_float (self, self.runevar);
-		sprint (self, "Ž ");
+		sprint (self, "\{133} ");
 
 		self.runetime = time + 0.5;
 		self.runevar = self.runevar - 1;
@@ -326,7 +326,7 @@ Orb_Think =
 
 		// Only do bouncies if you get killed with orb. Not
 		// dropping runes.
-		if (self.owner.health < 1) { self.runetime = time + 20; }
+		if (self.owner.health < 1) self.runetime = time + 20;
 
 		self.movetype = MOVETYPE_BOUNCE;
 		self.nextthink = time;
@@ -536,7 +536,7 @@ maybe_reblink =
 	if (0)
 	{
 		if (reblink)
-			bprint ("");
+			bprint ("\{13}");
 		else
 			bprint (" ");
 		sprint_int_f (world, time * 10, 4);

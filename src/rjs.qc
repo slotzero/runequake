@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.43 2002/10/14 18:57:10 slotzero Exp $
+/*  MERGE COMPLETE
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -17,18 +17,12 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-void (float timer)
-countdown_timer =
+void ()
+timelimit_countdown =
 {
 	local float timelimit, seconds, minutes, n;
-	local string s, s2, s3;
+	local string s1, s2;
 
-	if (!timer)
-		return;
-	if (!deathmatch)
-		return;
-	if (gameover)
-		return;
 	timelimit = cvar ("timelimit") * 60;
 	if (!timelimit)
 		return;
@@ -37,7 +31,7 @@ countdown_timer =
 	minutes = ceil (seconds / 60);
 
 	n = 1;
-	s3 = "s";
+	s2 = "s";
 
 	if ((minutes == 25 || minutes == 20 || minutes == 15 || minutes == 10
 			|| minutes == 5) && countdown != minutes)
@@ -45,7 +39,7 @@ countdown_timer =
 	else if (minutes == 1 && countdown != minutes && seconds >= 60)
 	{
 		countdown = minutes;
-		s3 = "";
+		s2 = "";
 	}
 	else if ((seconds == 30 || seconds == 15 || seconds == 5)
 			&& countdown != seconds)
@@ -55,19 +49,18 @@ countdown_timer =
 
 	if (n)
 	{
-		s = ftos (countdown);
 		if (seconds < 60)
-			s2 = " second";
+			s1 = " second";
 		else
-			s2 = " minute";
+			s1 = " minute";
 
-		bprint (" ");
-		bprint (s);
+		bprint ("\{13} ");
+		bprint_float (countdown);
+		bprint (s1);
 		bprint (s2);
-		bprint (s3);
 		bprint (" remaining\n");
 
-		if (timer == 2)
+		if (TIMELIMIT_COUNTDOWN == 2)
 			sound (self, CHAN_BODY, "misc/talk.wav", 1, ATTN_NONE);
 	}
 };
@@ -105,6 +98,21 @@ self_sound =
 };
 
 void (string samp)
+admin_sound =
+{
+	local entity e;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (is_admin_e (e))
+			self_sound (e, samp);
+
+		e = find (e, classname, "player");
+	}
+};
+
+void (string samp)
 observer_sound =
 {
 	local entity e;
@@ -112,12 +120,7 @@ observer_sound =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		// XXX I check for null name here because qsmack
-		// rejects play as a valid command.  I should add
-		// a bit setting to aqflags to distinguish qsmack
-		// init_* from the manual self.impulses.
-
-		if (is_observer_e (e) && e.netname != string_null)
+		if (is_observer_e (e))
 			self_sound (e, samp);
 
 		e = find (e, classname, "player");
@@ -231,8 +234,6 @@ rjs_worldspawn =
 
 	set_version ();
 	sys_ticrate = cvar ("sys_ticrate");
-	string_init ();
-	string_init_2 ();
 	vote_counter_spawn ();
 	frag_init ();
 	orig_serverflags = serverflags;
@@ -274,7 +275,9 @@ process_cvars =
 	noexit = cvar_infokey ("noexit");
 	i = noexit & NOEXIT_FORWARD_MASK;
 	if (i)
-		FORWARD_MAX_PLAYERS = i / NOEXIT_FORWARD_MULT;
+		FORWARD_MAX_PLAYERS_REAL = i / NOEXIT_FORWARD_MULT;
+	else
+		FORWARD_MAX_PLAYERS_REAL = FORWARD_MAX_PLAYERS;
 
 	temp1 = cvar_infokey ("temp1");
 	runemax = temp1 & T1_NRUNES_MASK;
@@ -765,6 +768,7 @@ disp_info =
 	{
 		count_votes (IMP_VOTE_TEAM, 3);
 		count_votes (IMP_VOTE_EXIT, 3);
+		count_votes (IMP_VOTE_HOOK, 3);
 	}
 
 	// damage
@@ -953,7 +957,7 @@ count_players =
 	return players;
 };
 
-float ()
+float (float count_qsmack)
 count_players_by_ent =
 {
 	local entity e;
@@ -964,7 +968,10 @@ count_players_by_ent =
 	while (e != world && e.classname != "bodyque" && players < 100)
 	{
 		if (is_valid_player_e (e))
+		{
+			if (!is_qsmack_e (e) || count_qsmack)
 			players = players + 1;
+		}
 		e = nextent (e);
 	}
 	return players;
@@ -1366,6 +1373,20 @@ common_impulses =
 		}
 	}
 
+	else if (self.impulse == IMP_CYCLE_ALTERNATES)
+	{
+		if (self.rqflags & RQ_CYCLE_ALTERNATES)
+		{
+			self.rqflags = self.rqflags - RQ_CYCLE_ALTERNATES;
+			sprint (self, "Alternate weapons do not cycle\n");
+		}
+		else
+		{
+			self.rqflags = self.rqflags | RQ_CYCLE_ALTERNATES;
+			sprint (self, "Alternate weapons cycle\n");
+		}
+	}
+
 	else if (self.impulse == IMP_SHOW_POS)
 	{
 		local string s;
@@ -1493,42 +1514,53 @@ player_init_switchfire_alias =
 void ()
 player_init =
 {
+	local entity e, cl;
 	local float i;
 	local string s;
-	local entity e;
 
-	player_init_impulse_alias ("admin-toggle",	IMP_ADMIN_TOGGLE);
-	player_init_impulse_alias ("best-weapon",	IMP_BEST_WEAPON);
-	player_init_impulse_alias ("disp-info",		IMP_DISP_INFO);
-	player_init_impulse_alias ("disp-info-all",	IMP_DISP_INFO_ALL);
-	player_init_impulse_alias ("fix-angles",	IMP_FIX_BATMAN);
-	player_init_impulse_alias ("+hook",		IMP_HOOK_ON);
-	player_init_impulse_alias ("-hook",		IMP_HOOK_OFF);
-	player_init_impulse_alias ("hook-off",		IMP_HOOK_OFF);
-	player_init_impulse_alias ("hook-on",		IMP_HOOK_ON);
-	player_init_impulse_alias ("hook-toggle",	IMP_HOOK_TOGGLE);
-	player_init_impulse_alias ("hud-toggle",	IMP_HUD_TOGGLE);
-	player_init_impulse_alias ("quiet-toggle",	IMP_QUIET_TOGGLE);
-	player_init_impulse_alias ("remove-frags",	IMP_REMOVE_FRAGS);
-	player_init_impulse_alias ("rider-hide",	IMP_RIDER_HIDE);
-	player_init_impulse_alias ("rune-delete",	IMP_RUNE_DELETE);
-	player_init_impulse_alias ("rune-tell",		IMP_RUNE_TELL);
-	player_init_impulse_alias ("rune-use",		IMP_RUNE_USE);
-	player_init_impulse_alias ("show-players",	IMP_SHOW_PLAYERS);
-	player_init_impulse_alias ("show-pos",		IMP_SHOW_POS);
-	player_init_impulse_alias ("show-riders",	IMP_SHOW_RIDERS);
-	player_init_impulse_alias ("show-settings",	IMP_SHOW_SETTINGS);
-	player_init_impulse_alias ("team-change",	IMP_TEAM_ROTATE);
-	player_init_impulse_alias ("team-stats",	IMP_TEAM_STATS);
-	player_init_impulse_alias ("vote-exit",		IMP_VOTE_EXIT);
-	player_init_impulse_alias ("vote-team",		IMP_VOTE_TEAM);
-	player_init_impulse_alias ("weapon-mode",	IMP_WEAPON_MODE);
-	player_init_impulse_alias ("weapon-toggles",	IMP_WEAPON_TOGGLES);
-	player_init_impulse_alias ("weapon-toggles-toggle",
-							IMP_WEAPON_TOGGLES);
+	// This is only useful for ProQuake servers version 3.1 or later.
+	cl = *SubInt(AddInt(PSTRING_TO_PQUAKEC, &self.netname), 4 * CL_NAME);
+	cl = *AddInt(cl[CL_NETCONNECTION], PC_TO_PQUAKEC);
+
+	if (*cl[QS_MOD] == *MOD_QSMACK)
+	{
+		if (!is_qsmack ())
+			self.aqflags = self.aqflags | AQ_QSMACK;
+ 	}
+
+	player_init_impulse_alias ("admin-toggle",		IMP_ADMIN_TOGGLE);
+	player_init_impulse_alias ("best-weapon",		IMP_BEST_WEAPON);
+	player_init_impulse_alias ("disp-info",			IMP_DISP_INFO);
+	player_init_impulse_alias ("disp-info-all",		IMP_DISP_INFO_ALL);
+	player_init_impulse_alias ("fix-angles",		IMP_FIX_BATMAN);
+	player_init_impulse_alias ("+hook",			IMP_HOOK_ON);
+	player_init_impulse_alias ("-hook",			IMP_HOOK_OFF);
+	player_init_impulse_alias ("hook-off",			IMP_HOOK_OFF);
+	player_init_impulse_alias ("hook-on",			IMP_HOOK_ON);
+	player_init_impulse_alias ("hook-toggle",		IMP_HOOK_TOGGLE);
+	player_init_impulse_alias ("hud-toggle",		IMP_HUD_TOGGLE);
+	player_init_impulse_alias ("quiet-toggle",		IMP_QUIET_TOGGLE);
+	player_init_impulse_alias ("remove-frags",		IMP_REMOVE_FRAGS);
+	player_init_impulse_alias ("rider-hide",		IMP_RIDER_HIDE);
+	player_init_impulse_alias ("rune-delete",		IMP_RUNE_DELETE);
+	player_init_impulse_alias ("rune-tell",			IMP_RUNE_TELL);
+	player_init_impulse_alias ("rune-use",			IMP_RUNE_USE);
+	player_init_impulse_alias ("show-players",		IMP_SHOW_PLAYERS);
+	player_init_impulse_alias ("show-pos",			IMP_SHOW_POS);
+	player_init_impulse_alias ("show-riders",		IMP_SHOW_RIDERS);
+	player_init_impulse_alias ("show-settings",		IMP_SHOW_SETTINGS);
+	player_init_impulse_alias ("team-change",		IMP_TEAM_ROTATE);
+	player_init_impulse_alias ("team-stats",		IMP_TEAM_STATS);
+	player_init_impulse_alias ("vote-exit",			IMP_VOTE_EXIT);
+	player_init_impulse_alias ("vote-team",			IMP_VOTE_TEAM);
+	player_init_impulse_alias ("vote-hook",			IMP_VOTE_HOOK);
+	player_init_impulse_alias ("weapon-mode",		IMP_WEAPON_MODE);
+	player_init_impulse_alias ("weapon-toggles",		IMP_WEAPON_TOGGLES);
+	player_init_impulse_alias ("weapon-toggles-toggle",	IMP_WEAPON_TOGGLES);
+	player_init_impulse_alias ("cycle-alternates",		IMP_CYCLE_ALTERNATES);
 
 	// Disable client-side ambient sounds.
-	if (scratch1 & S1_AMBIENT_SOUND_OFF)
+	if (scratch1 & S1_AMBIENT_SOUND_OFF && !is_qsmack ())
 		self_stuffcmd (self, "ambient_level 0\n");
 
 	i = 1;
@@ -1557,13 +1589,19 @@ player_init =
 	aq_menu_set (AQS_MENU_SPLASH);
 
 	i = 0;
-	if (FORWARD_MAX_PLAYERS > 0)
+	if (FORWARD_MAX_PLAYERS_REAL)
 	{
-		i = count_players_by_ent ();
-		if (i <= FORWARD_MAX_PLAYERS)
-			i = 0;
+		if (FORWARD_MAX_PLAYERS_REAL < 0)
+			i = 1;
+		else
+		{
+			i = count_players_by_ent (1);
+			if (i <= FORWARD_MAX_PLAYERS_REAL)
+				i = 0;
+		}
 	}
-	if (i)
+
+	if (i && !is_qsmack ())
 	{
 		self_sprint (self, "The game is full, forwarding to ");
 		self_sprint (self, FORWARD_NAME);
@@ -1752,6 +1790,8 @@ show_players =
 					self_sprint (self, " (exit vote)");
 				if (e.aqflags & AQ_VOTE_TEAM)
 					self_sprint (self, " (team vote)");
+				if (e.aqflags & AQ_VOTE_HOOK)
+					self_sprint (self, " (hook vote)");
 			}
 
 			if (e.aqflags & AQ_ADMIN && self.aqflags & AQ_ADMIN)
@@ -1810,7 +1850,7 @@ show_settings =
 	self_sprint (self, "\n  randomize      ");	self_sprint_boolean (self, noexit & NOEXIT_RANDOMIZE);
 	self_sprint (self, "  no dm loop  ");		self_sprint_boolean (self, noexit & NOEXIT_DM_NO_LOOP);
 	self_sprint (self, "\n  samelevel      ");	self_sprint_boolean (self, i & 1);
-	self_sprint (self, "  forward max ");		self_sprint_float (self, FORWARD_MAX_PLAYERS);
+	self_sprint (self, "  forward max ");		self_sprint_float (self, FORWARD_MAX_PLAYERS_REAL);
 	self_sprint (self, "\n");
 
 	self_sprint (self, "Teamplay:");
@@ -1885,62 +1925,26 @@ show_settings =
 		self_sprint (self, "lith");
 	else
 		self_sprint (self, "rune");
+	i = vote_hook_disabled (0);
+	self_sprint (self, " hook vote  ");		self_sprint_boolean (self, !i);
+		self_sprint (self, "\n  hook default   ");
+	if (VOTE_HOOK_MODE_DEFAULT
+			&& temp1 & T1_HOOK_MODE_DEFAULT_ON
+			&& (VOTE_HOOK_MODE == T1_FREE_HOOK
+				|| VOTE_HOOK_MODE == T1_LITHIUM_HOOK))
+	{
+		if (temp1 & T1_HOOK_MASK == VOTE_HOOK_MODE_DEFAULT)
+			self_sprint (self, "free");
+		else if (temp1 & T1_HOOK_MASK == VOTE_HOOK_MODE_DEFAULT)
+			self_sprint (self, "lith");
+		else
+			self_sprint (self, "rune");
+	}
+	else
+		self_sprint (self, "off ");
+
 	self_sprint (self, "\n");
-
 };
-
-// At one point this was called to calculate which spawn point to choose,
-// but it caused problems as it fixed them.  It's annoying always to
-// respawn as far away from everything as possible.
-//
-// I tried several algorithms for this before giving up on this idea.
-// This algorithm is to return the distance from this point to the
-// closest player, the caller would maximize this value in choosing the
-// spawn point.
-
-/*float (entity for_e, vector pos)
-player_spawn_distance =
-{
-	local entity e;
-	local float this_dist, min_dist;
-	local vector v;
-
-	if (0)
-	{
-		dprint ("player_spawn_distance ");
-		dprint_vec (pos);
-		dprint (":\n");
-	}
-	min_dist = -1;
-	e = find (world, classname, "player");
-	while (e)
-	{
-		if (e != for_e && !is_observer_e (e) && e.health >= 0)
-		{
-			v = pos - e.origin;
-			this_dist = vlen (v);
-			if (0)
-			{
-				dprint (" ");
-				dprint_vec (e.origin);
-				dprint (" yields ");
-				dprint_float (this_dist);
-				dprint ("\n");
-			}
-			if (min_dist == -1 || this_dist < min_dist)
-				min_dist = this_dist;
-		}
-		e = find (e, classname, "player");
-	}
-	if (0)
-	{
-		dprint (" returning ");
-		dprint_float (min_dist);
-		dprint ("\n");
-	}
-	return min_dist;
-};
-*/
 
 // Only the first 15 chars of a name work in Quake.
 
@@ -2479,21 +2483,41 @@ CycleWeaponCommand =
 	w = self.weapon;
 	while (1)
 	{
-		if (w == IT_AXE)			w = IT_SHOTGUN;
-		else if (w == IT_SHOTGUN)		w = IT_SUPER_SHOTGUN;
-		else if (w == IT_SUPER_SHOTGUN)		w = IT_NAILGUN;
-		else if (w == IT_NAILGUN)		w = IT_SUPER_NAILGUN;
-		else if (w == IT_SUPER_NAILGUN)		w = IT_GRENADE_LAUNCHER;
-		else if (w == IT_GRENADE_LAUNCHER)	w = IT_ROCKET_LAUNCHER;
-		else if (w == IT_ROCKET_LAUNCHER)	w = IT_LIGHTNING;
-		else if (w == IT_LIGHTNING)		w = WEAPON_HOOK;
-		else if (w == WEAPON_HOOK)		w = WEAPON_FLAMETHROWER;
-		else if (w == WEAPON_FLAMETHROWER)	w = WEAPON_LAVA;
-		else if (w == WEAPON_LAVA)		w = WEAPON_BOMB;
-		else if (w == WEAPON_BOMB)		w = WEAPON_FLASH_GRENADE;
-		else if (w == WEAPON_FLASH_GRENADE)	w = WEAPON_MORTAR;
-		else if (w == WEAPON_MORTAR)		w = WEAPON_BFG;
-		else					w = IT_AXE;
+		if (self.rqflags & RQ_CYCLE_ALTERNATES)
+		{
+			if (w == IT_AXE)			w = IT_SHOTGUN;
+			else if (w == IT_SHOTGUN)		w = IT_SUPER_SHOTGUN;
+			else if (w == IT_SUPER_SHOTGUN)		w = IT_NAILGUN;
+			else if (w == IT_NAILGUN)		w = IT_SUPER_NAILGUN;
+			else if (w == IT_SUPER_NAILGUN)		w = IT_GRENADE_LAUNCHER;
+			else if (w == IT_GRENADE_LAUNCHER)	w = IT_ROCKET_LAUNCHER;
+			else if (w == IT_ROCKET_LAUNCHER)	w = IT_LIGHTNING;
+			else if (w == IT_LIGHTNING)		w = WEAPON_HOOK;
+			else if (w == WEAPON_HOOK)		w = WEAPON_FLAMETHROWER;
+			else if (w == WEAPON_FLAMETHROWER)	w = WEAPON_LAVA;
+			else if (w == WEAPON_LAVA)		w = WEAPON_BOMB;
+			else if (w == WEAPON_BOMB)		w = WEAPON_FLASH_GRENADE;
+			else if (w == WEAPON_FLASH_GRENADE)	w = WEAPON_MORTAR;
+			else if (w == WEAPON_MORTAR)		w = WEAPON_BFG;
+			else					w = IT_AXE;
+		}
+		else
+		{
+			if (w == IT_AXE)			w = IT_SHOTGUN;
+			else if (w == IT_SHOTGUN)		w = IT_SUPER_SHOTGUN;
+			else if (w == IT_SUPER_SHOTGUN)		w = IT_NAILGUN;
+			else if (w == IT_NAILGUN)		w = IT_SUPER_NAILGUN;
+			else if (w == IT_SUPER_NAILGUN)		w = IT_GRENADE_LAUNCHER;
+			else if (w == IT_GRENADE_LAUNCHER)	w = IT_ROCKET_LAUNCHER;
+			else if (w == IT_ROCKET_LAUNCHER)	w = IT_LIGHTNING;
+			else if (w == WEAPON_FLAMETHROWER)	w = IT_SUPER_SHOTGUN;
+			else if (w == WEAPON_LAVA)		w = IT_NAILGUN;
+			else if (w == WEAPON_BOMB)		w = IT_SUPER_NAILGUN;
+			else if (w == WEAPON_FLASH_GRENADE)	w = IT_GRENADE_LAUNCHER;
+			else if (w == WEAPON_MORTAR)		w = IT_ROCKET_LAUNCHER;
+			else if (w == WEAPON_BFG)		w = IT_LIGHTNING;
+			else					w = IT_AXE;
+		}
 
 		if (self.items & w && weapon_it_have_min_ammo (w, 0))
 		{
@@ -2511,21 +2535,41 @@ CycleWeaponReverseCommand =
 	w = self.weapon;
 	while (1)
 	{
-		if (w == WEAPON_BFG)			w = WEAPON_MORTAR;
-		else if (w == WEAPON_MORTAR)		w = WEAPON_FLASH_GRENADE;
-		else if (w == WEAPON_FLASH_GRENADE)	w = WEAPON_BOMB;
-		else if (w == WEAPON_BOMB)		w = WEAPON_LAVA;
-		else if (w == WEAPON_LAVA)		w = WEAPON_FLAMETHROWER;
-		else if (w == WEAPON_FLAMETHROWER)	w = WEAPON_HOOK;
-		else if (w == WEAPON_HOOK)		w = IT_LIGHTNING;
-		else if (w == IT_LIGHTNING)		w = IT_ROCKET_LAUNCHER;
-		else if (w == IT_ROCKET_LAUNCHER)	w = IT_GRENADE_LAUNCHER;
-		else if (w == IT_GRENADE_LAUNCHER)	w = IT_SUPER_NAILGUN;
-		else if (w == IT_SUPER_NAILGUN)		w = IT_NAILGUN;
-		else if (w == IT_NAILGUN)		w = IT_SUPER_SHOTGUN;
-		else if (w == IT_SUPER_SHOTGUN)		w = IT_SHOTGUN;
-		else if (w == IT_SHOTGUN)		w = IT_AXE;
+		if (self.rqflags & RQ_CYCLE_ALTERNATES)
+		{
+			if (w == WEAPON_BFG)			w = WEAPON_MORTAR;
+			else if (w == WEAPON_MORTAR)		w = WEAPON_FLASH_GRENADE;
+			else if (w == WEAPON_FLASH_GRENADE)	w = WEAPON_BOMB;
+			else if (w == WEAPON_BOMB)		w = WEAPON_LAVA;
+			else if (w == WEAPON_LAVA)		w = WEAPON_FLAMETHROWER;
+			else if (w == WEAPON_FLAMETHROWER)	w = WEAPON_HOOK;
+			else if (w == WEAPON_HOOK)		w = IT_LIGHTNING;
+			else if (w == IT_LIGHTNING)		w = IT_ROCKET_LAUNCHER;
+			else if (w == IT_ROCKET_LAUNCHER)	w = IT_GRENADE_LAUNCHER;
+			else if (w == IT_GRENADE_LAUNCHER)	w = IT_SUPER_NAILGUN;
+			else if (w == IT_SUPER_NAILGUN)		w = IT_NAILGUN;
+			else if (w == IT_NAILGUN)		w = IT_SUPER_SHOTGUN;
+			else if (w == IT_SUPER_SHOTGUN)		w = IT_SHOTGUN;
+			else if (w == IT_SHOTGUN)		w = IT_AXE;
 		else					w = WEAPON_BFG;
+		}
+		else
+		{
+			if (w == WEAPON_BFG)			w = IT_LIGHTNING;
+			else if (w == WEAPON_MORTAR)		w = IT_ROCKET_LAUNCHER;
+			else if (w == WEAPON_FLASH_GRENADE)	w = IT_GRENADE_LAUNCHER;
+			else if (w == WEAPON_BOMB)		w = IT_SUPER_NAILGUN;
+			else if (w == WEAPON_LAVA)		w = IT_NAILGUN;
+			else if (w == WEAPON_FLAMETHROWER)	w = IT_SUPER_SHOTGUN;
+			else if (w == IT_LIGHTNING)		w = IT_ROCKET_LAUNCHER;
+			else if (w == IT_ROCKET_LAUNCHER)	w = IT_GRENADE_LAUNCHER;
+			else if (w == IT_GRENADE_LAUNCHER)	w = IT_SUPER_NAILGUN;
+			else if (w == IT_SUPER_NAILGUN)		w = IT_NAILGUN;
+			else if (w == IT_NAILGUN)		w = IT_SUPER_SHOTGUN;
+			else if (w == IT_SUPER_SHOTGUN)		w = IT_SHOTGUN;
+			else if (w == IT_AXE)			w = IT_LIGHTNING;
+			else					w = IT_AXE;
+		}
 
 		if (self.items & w && weapon_it_have_min_ammo (w, 0))
 		{
@@ -2574,7 +2618,7 @@ draw_hud =
 			willdrop = "Ä";
 		else
 			willdrop = " ";
-		runedesc = Rune_Description (self.runetype, 0);
+		runedesc = Rune_Tell_real (0, self.runetype, 0, 2);
 		in_hud_hack = 1;
 		centerprint6 (self, "\n\n\n\n\n\n\n\n\n\n\n\n",
 			weap, "                 ",
@@ -2687,6 +2731,46 @@ vote_team_disabled =
 	return 0;
 };
 
+void ()
+vote_team_mode_default =
+{
+	if (!VOTE_TEAM_MODE_DEFAULT)
+		return;
+
+	if (count_players_by_ent (0))
+		return;
+
+	toggle_teamplay (VOTE_TEAM_MODE_DEFAULT);
+};
+
+float (float tell)
+vote_hook_disabled =
+{
+	if (temp1 & T1_HOOK_NO_VOTE
+			|| VOTE_HOOK_PERCENTAGE	<= 0
+			|| VOTE_HOOK_PERCENTAGE > 1)
+	{
+		if (tell)
+			sprint (self, "Hook voting is disabled\n");
+		return 1;
+	}
+	return 0;
+};
+
+void ()
+vote_hook_mode_default =
+{
+	if (!VOTE_HOOK_MODE_DEFAULT
+			|| !temp1 & T1_HOOK_MODE_DEFAULT_ON
+			|| (VOTE_HOOK_MODE != T1_FREE_HOOK
+				&& VOTE_HOOK_MODE != T1_LITHIUM_HOOK))
+		return;
+	if (count_players_by_ent (0))
+		return;
+
+	toggle_hook_mode (VOTE_HOOK_MODE_DEFAULT);
+};
+
 // type 0 is for self's information only
 // type 1 is when a new vote is registered
 // type 2 is by the vote counting entity
@@ -2700,6 +2784,9 @@ count_votes =
 	local float tot, voted, need, lack;
 	local entity e;
 	local string s;
+
+	vote_team_mode_default ();
+	vote_hook_mode_default ();
 
 	if (vote_type == IMP_VOTE_EXIT)
 	{
@@ -2721,6 +2808,19 @@ count_votes =
 		use_state	= 0;
 		bit		= AQ_VOTE_TEAM;
 		pct		= VOTE_TEAM_PERCENTAGE;
+	}
+	else if (vote_type == IMP_VOTE_HOOK)
+	{
+		if (vote_hook_disabled (count_type !=2))
+			return;
+		cmd		= "vote-hook";
+		if (temp1 & T1_HOOK_MASK)
+			desc	= "disable hook";
+		else
+			desc	= "enable hook";
+		use_state	= 0;
+		bit		= AQ_VOTE_HOOK;
+		pct		= VOTE_HOOK_PERCENTAGE;
 	}
 	else
 	{
@@ -2771,13 +2871,10 @@ count_votes =
 		}
 		if (vote_type == IMP_VOTE_EXIT)
 			NextLevel ();
-		else
-		{
-			if (teamplay & TEAM_TEAM_MASK)
-				change_teamplay (0, 1);
-			else
-				change_teamplay (VOTE_TEAM_MODE, 1);
-		}
+		else if (vote_type == IMP_VOTE_TEAM)
+			toggle_teamplay (0);
+		else if (vote_type == IMP_VOTE_HOOK)
+			toggle_hook_mode (0);
 	}
 	else if (count_type == 0)
 	{
@@ -2829,7 +2926,10 @@ vote_counter_think =
 	if (self.runevar)
 		count_votes (IMP_VOTE_EXIT, 2);
 	else
+	{
 		count_votes (IMP_VOTE_TEAM, 2);
+		count_votes (IMP_VOTE_HOOK, 2);
+	}
 	self.runevar = !self.runevar;
 	self.nextthink = time + VOTE_COUNT_PERIOD / 2;
 };
@@ -2867,6 +2967,15 @@ vote =
 		use_state	= 0;
 		bit		= AQ_VOTE_TEAM;
 		pct		= VOTE_TEAM_PERCENTAGE;
+	}
+	else if (self.impulse == IMP_VOTE_HOOK)
+	{
+		if (vote_hook_disabled (1))
+			return;
+		name		= "Hook";
+		use_state	= 0;
+		bit		= AQ_VOTE_HOOK;
+		pct		= VOTE_HOOK_PERCENTAGE;
 	}
 	else
 	{
@@ -2929,7 +3038,7 @@ Rune_Tell =
 	// If this is a simple "no rune" message, don't refresh it.
 	if (!type && !also_hook)
 	{
-		Rune_Tell_real (riders, type, also_hook);
+		Rune_Tell_real (riders, type, also_hook, 0);
 		rune_tell_stop (1);
 		return;
 	}
@@ -2953,7 +3062,7 @@ rune_tell_refresh =
 	in_runedesc_hack = 1;
 	Rune_Tell_real (self.waitmin & 8,
 			(self.waitmin - self.waitmin & 31) / 32,
-			self.waitmin & 16);
+			self.waitmin & 16, 0);
 	in_runedesc_hack = 0;
 
 	// Increment number of times I've shown it.

@@ -1,4 +1,4 @@
-/*  $Id: subs.qc,v 1.9 2002/10/14 18:57:12 slotzero Exp $
+/*  MERGE COMPLETE
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 

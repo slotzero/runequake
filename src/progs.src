@@ -1,10 +1,12 @@
-// $Id: progs.src,v 1.6 2002/10/14 18:57:09 slotzero Exp $
+// MERGE COMPLETE
 
 PROGS_FILE
 
 defs.qc
 settings.qc
 func.qc
+internal.qc
+// strman.qc
 version.qc
 subs.qc
 fight.qc
