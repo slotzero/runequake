@@ -1,4 +1,4 @@
-/*  $Id: customap.qc,v 1.10 2004/04/09 20:33:49 slotzero Exp $
+/*  $Id: customap.qc,v 1.11 2004/04/10 02:26:42 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -38,8 +38,8 @@ float (float levsize)
 customs_hunk_pos =
 {
 	if	(levsize == 1)	return %200;
-	else if	(levsize == 2)	return %400;
-	else if	(levsize == 3)	return %600;
+	else if	(levsize == 2)	return %300;
+	else if	(levsize == 3)	return %400;
 	else			return %0;
 };
 

@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.14 2004/04/09 07:26:36 slotzero Exp $
+/*  $Id: hunk.qc,v 1.15 2004/04/10 02:26:42 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -28,6 +28,7 @@
 	%21		= float small levels left in map rotation
 	%22		= float medium levels left in map rotation
 	%23		= float large levels left in map rotation
+	%30		= XXX temp value / is this needed???
 
 	// Log_Client_Disconnect(), Client_Disconnect_Log()
 	%100 - %103	= string netname	%104	= float elapsed
@@ -40,11 +41,26 @@
 	%135 - %138	= string netname	%139	= float elapsed
 	%140 - %143	= string netname	%144	= float elapsed
 	%145 - %148	= string netname	%149	= float elapsed
+	// 10
+	%150 - %153	= string netname	%154	= float elapsed
+	%155 - %158	= string netname	%159	= float elapsed
+	%160 - %163	= string netname	%164	= float elapsed
+	%165 - %168	= string netname	%169	= float elapsed
+	%170 - %173	= string netname	%174	= float elapsed
+	%175 - %178	= string netname	%179	= float elapsed
+	%180 - %183	= string netname	%184	= float elapsed
+	%185 - %188	= string netname	%189	= float elapsed
+	%190 - %193	= string netname	%194	= float elapsed
+	%195 - %198	= string netname	%199	= float elapsed
+	// 20
 
 	// custom_hunk_pos()
-	%200 - %399	= string (12 bytes) containing small level names
-	%400 - %599	= string (12 bytes) containing medium level names
-	%600 - %799	= string (12 bytes) containing large level names
+	%200 - %298	= float details about small levels
+	%299		= float float small levels left in map rotation
+	%300 - %398	= float details about medium levels
+	%399		= float medium levels left in map rotation
+	%400 - %498	= float details about large levels
+	%499		= float large levels left in map rotation
 
 	// strman.qc
 	%3000 - %4000	= memory for string manipulation functions

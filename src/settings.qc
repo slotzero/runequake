@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.32 2004/04/09 01:15:58 slotzero Exp $
+/*  $Id: settings.qc,v 1.33 2004/04/10 02:26:42 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -385,8 +385,8 @@ float TIMELIMIT_COUNTDOWN	= 0;
 
 float POWERUP_PICKUP_WARN	= 0;
 
-// Set the number the maximum number of entries to log when using
-// the 'last' command.  Use 0 to disable.
+// Set the total amount of clients to log with the 'last'
+// command.  Use 0 to disable.
 
 float MAX_CLIENT_DISCONNECT_LOG	= 10;
 

@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.56 2004/04/09 07:18:48 slotzero Exp $
+/*  $Id: develop.qc,v 1.57 2004/04/10 02:26:42 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -96,7 +96,7 @@ Log_Client_Disconnect =
 	local float i, n, max, offset, e_time, elapsed;
 	local string e_name;
 
-	if (MAX_CLIENT_DISCONNECT_LOG < 1)
+	if (MAX_CLIENT_DISCONNECT_LOG < 1 || MAX_CLIENT_DISCONNECT_LOG > 20)
 		return;
 
 	offset	= HUNK_CLIENT_DISCONNECT;
@@ -134,7 +134,7 @@ Client_Disconnect_Log =
 	local float i, max, offset, e_time, e_away, server_t;
 	local string e_name;
 
-	if (MAX_CLIENT_DISCONNECT_LOG < 1)
+	if (MAX_CLIENT_DISCONNECT_LOG < 1 || MAX_CLIENT_DISCONNECT_LOG > 20)
 	{
 		self_sprint (self, "The \blast\b command has been disabled.\n");
 		return;
