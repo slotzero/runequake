@@ -1,4 +1,4 @@
-/*  $Id: triggers.qc,v 1.17 2003/12/07 02:27:41 slotzero Exp $
+/*  $Id: triggers.qc,v 1.18 2003/12/07 04:50:03 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -179,6 +179,9 @@ set "message" to text string
 void ()
 trigger_once =
 {
+	if (mapname == "e1m7")
+		remove (self);
+
 	self.wait = -1;
 
 	trigger_multiple ();

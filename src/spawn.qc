@@ -1,4 +1,4 @@
-/*  $Id: spawn.qc,v 1.5 2003/12/07 02:27:41 slotzero Exp $
+/*  $Id: spawn.qc,v 1.6 2003/12/07 04:50:03 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -67,20 +67,21 @@ spawn_item =
 
 	o = self;
 	self = e;
-	     if (e.classname == "item_armor1")		item_armor1 ();
-	else if (e.classname == "item_armor2")		item_armor2 ();
-	else if (e.classname == "item_armorInv")	item_armorInv ();
-	else if (e.classname == "item_cells")		item_cells ();
-	else if (e.classname == "item_health")		item_health ();
-	else if (e.classname == "item_rockets")		item_rockets ();
-	else if (e.classname == "item_shells")		item_shells ();
-	else if (e.classname == "item_spikes")		item_spikes ();
-	else if (e.classname == "weapon_grenadelauncher") weapon_grenadelauncher ();
-	else if (e.classname == "weapon_lightning")	weapon_lightning ();
-	else if (e.classname == "weapon_nailgun")	weapon_nailgun ();
-	else if (e.classname == "weapon_rocketlauncher")weapon_rocketlauncher ();
-	else if (e.classname == "weapon_supernailgun")	weapon_supernailgun ();
-	else if (e.classname == "weapon_supershotgun")	weapon_supershotgun ();
+	     if (e.classname == "item_armor1")			item_armor1 ();
+	else if (e.classname == "item_armor2")			item_armor2 ();
+	else if (e.classname == "item_armorInv")		item_armorInv ();
+	else if (e.classname == "item_cells")			item_cells ();
+	else if (e.classname == "item_health")			item_health ();
+	else if (e.classname == "item_rockets")			item_rockets ();
+	else if (e.classname == "item_shells")			item_shells ();
+	else if (e.classname == "item_spikes")			item_spikes ();
+	else if (e.classname == "weapon_grenadelauncher")	weapon_grenadelauncher ();
+	else if (e.classname == "weapon_lightning")		weapon_lightning ();
+	else if (e.classname == "weapon_nailgun")		weapon_nailgun ();
+	else if (e.classname == "weapon_rocketlauncher")	weapon_rocketlauncher ();
+	else if (e.classname == "weapon_supernailgun")		weapon_supernailgun ();
+	else if (e.classname == "weapon_supershotgun")		weapon_supershotgun ();
+	else if (e.classname == "item_artifact_invulnerability")item_artifact_invulnerability ();
 	self = o;
 };
 
@@ -119,7 +120,7 @@ spawn_info_player_deathmatch =
 	e.origin	= e_origin;
 	e.angles_y	= e_angle;
 
-	e.nextthink	= time + 1;
+	e.nextthink	= time + IN_QW(5, 1);
 	e.think		= spawn_info_player_deathmatch_real;
 };
 
@@ -141,6 +142,7 @@ spawn_trigger_teleport =
 	e.classname	= "trigger_teleport";
 	e.target	= e_target;
 	e.origin	= e_origin;
+	e.flags		= FL_ITEM;
 
 	o = self;
 	self = e;
@@ -231,6 +233,12 @@ place_my_items =
 		spawn_item ("item_health", 0, '848 46 -1064', 0);
 
 		// Dark room that holds single player monsters.
+		spawn_item ("item_cells", 0, '1526 338 24', 0);
+		spawn_item ("item_cells", 0, '1842 338 24', 0);
+		spawn_item ("weapon_lightning", 0, '1842 -274 24', 0);
+		spawn_item ("item_artifact_invulnerability", 0, '1550 -274 24', 0);
+
+		// Dark room that holds single player monsters.
 		spawn_effects_model ('1520 32 96', EF_DIMLIGHT, "progs/flame.mdl");
 		spawn_effects_model ('1872 32 96', EF_DIMLIGHT, "progs/flame.mdl");
 		spawn_effects_model ('1696 -304 96', EF_DIMLIGHT, "progs/flame.mdl");
@@ -238,9 +246,8 @@ place_my_items =
 
 		// Dark room that holds single player monsters.
 		spawn_trigger_teleport ('1696 -250 24', "progs/s_light.spr", "T2");
-
-		// Dark room that holds single player monsters.
 		spawn_info_teleport_destination ('1696 314 24', -90, "T1");
+
 		// Ceiling of GL room.
 		spawn_info_teleport_destination ('-450 64 366', 0, "T2");
 	}
