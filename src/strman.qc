@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.24 2004/04/06 22:33:22 slotzero Exp $
+/*  $Id: strman.qc,v 1.25 2004/04/11 05:11:12 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -140,49 +140,48 @@ string (string s1, string s2, string s3, string s4, string s5, string s6, string
 strcat7 =
 {
 	local entity hunk;
-	local float i, L1, L2, L3, L4, L5, L6, L7, alloc_hunk;
+	local float L1, L2, L3, L4, L5, L6, L7, total, alloc_hunk;
 
-	// XXX Clean this up.
 	if (s1)
 	{
 		L1 = strlen (s1);
-		if (!L1) { dprint ("strcat7(): s1 > 255\n"); s1 = string_null; }
+		if (!L1) s1 = string_null;
 	}
 	if (s2)
 	{
 		L2 = strlen (s2);
-		if (!L2) { dprint ("strcat7(): s2 > 255\n"); s2 = string_null; }
+		if (!L2) s2 = string_null;
 	}
 	if (s3)
 	{
 		L3 = strlen (s3);
-		if (!L3) { dprint ("strcat7(): s3 > 255\n"); s3 = string_null; }
+		if (!L3) s3 = string_null;
 	}
 	if (s4)
 	{
 		L4 = strlen (s4);
-		if (!L4) { dprint ("strcat7(): s4 > 255\n"); s4 = string_null; }
+		if (!L4) s4 = string_null;
 	}
 	if (s5)
 	{
 		L5 = strlen (s5);
-		if (!L5) { dprint ("strcat7(): s5 > 255\n"); s5 = string_null; }
+		if (!L5) s5 = string_null;
 	}
 	if (s6)
 	{
 		L6 = strlen (s6);
-		if (!L6) { dprint ("strcat7(): s6 > 255\n"); s6 = string_null; }
+		if (!L6) s6 = string_null;
 	}
 	if (s7)
 	{
 		L7 = strlen (s7);
-		if (!L7) { dprint ("strcat7(): s7 > 255\n"); s7 = string_null; }
+		if (!L7) s7 = string_null;
 	}
 
-	i = L1 + L2 + L3 + L4 + L5 + L6 + L7;
-	if (!i) return string_null;
+	total = L1 + L2 + L3 + L4 + L5 + L6 + L7;
+	if (!total) return string_null;
 
-	allocate_hunk (i);
+	allocate_hunk (total);
 	alloc_hunk = ALLOCATE_HUNK;
 	hunk = Get_Hunk (HUNK_CONTEXT, alloc_hunk);
 	if (!hunk)
@@ -195,9 +194,6 @@ strcat7 =
 	if (s5) { Write_Hunk_e (hunk, s5); hunk = *AddInt (L5 * %1, &hunk); }
 	if (s6) { Write_Hunk_e (hunk, s6); hunk = *AddInt (L6 * %1, &hunk); }
 	if (s7) { Write_Hunk_e (hunk, s7); hunk = *AddInt (L7 * %1, &hunk); }
-
-	// Needed?
-	Write_Hunk_e (hunk, string_null);
 
 	return Read_Hunk (HUNK_CONTEXT, alloc_hunk);
 };
