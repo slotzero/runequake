@@ -1,4 +1,4 @@
-// $Id: runes30.qc,v 1.8 2002/06/23 17:47:27 slotzero Exp $
+// $Id: runes30.qc,v 1.9 2002/06/24 23:06:32 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -993,21 +993,20 @@ Rune_Repel =
 	{
 		if ((pushee.health > 0 || !pushee.flags & FL_ONGROUND)
 				&& pushee.solid != SOLID_BSP
+				&& !environmental (pushee)
 				&& (!is_player_e(pushee)
 					|| !isfriend (pushee)))
 		{
 			// XXX This only affects non-players things with
 			// health.  Does that make sense?
 			if (pushee.classname != "player")
-			{
-				pushee.flags = pushee.flags
-						- pushee.flags & FL_ONGROUND;
-			}
-			pushdir = self.origin - pushee.origin;
-			pushdist = vlen (pushdir);
-			pushdir = normalize (pushdir);
-			pushforce = pushdir * 0.65 * (dist - pushdist);
-			pushee.velocity = pushee.velocity - pushforce;
+				pushee.flags = pushee.flags - pushee.flags & FL_ONGROUND;
+
+			pushdir		= self.origin - pushee.origin;
+			pushdist	= vlen (pushdir);
+			pushdir		= normalize (pushdir);
+			pushforce	= pushdir * 0.65 * (dist - pushdist);
+			pushee.velocity	= pushee.velocity - pushforce;
 		}
 		pushee = pushee.chain;
 	}

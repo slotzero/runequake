@@ -1,4 +1,4 @@
-$Id: Changes,v 1.20 2002/06/23 17:47:23 slotzero Exp $
+$Id: Changes,v 1.21 2002/06/24 23:06:26 slotzero Exp $
 
 Version 0.4.0  Sun Jun 09 16:09:20 EST 2002
 
@@ -7,6 +7,11 @@ Version 0.4.0  Sun Jun 09 16:09:20 EST 2002
         - You can no longer cripple (healthy) doors by freezing them.
 
 	- Your radiation no longer heals you without the rune.
+
+    - Rune Changes
+
+        - Environmental protection suit/rune protects against death spot
+	  explosions, fire trap explosions, and repulsion.
 
     - Admin Changes
 
