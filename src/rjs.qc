@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.25 2002/06/17 01:22:16 slotzero Exp $
+// $Id: rjs.qc,v 1.26 2002/06/29 20:45:07 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -1168,7 +1168,7 @@ set_viewport =
 		//WriteAngle (MSG_ONE, targ.angles_y);
 		//WriteAngle (MSG_ONE, targ.angles_z);
 	-], [-
-		0;
+		SUB_Null ();
 	-])
 };
 

@@ -1,6 +1,6 @@
-$Id: Changes,v 1.22 2002/06/26 18:27:05 slotzero Exp $
+$Id: Changes,v 1.23 2002/06/29 20:45:02 slotzero Exp $
 
-Version 0.5.0  Sun Jun 09 16:09:20 EST 2002
+Version 0.5  Sat Jun 29 16:42:54 EST 2002
 
     - Bug Fixes
 
@@ -18,7 +18,7 @@ Version 0.5.0  Sun Jun 09 16:09:20 EST 2002
 
     - Admin Changes
 
-        - I removed admin-forward.
+        - The admin-forward command was removed.
 
     - CVAR Changes
 
@@ -47,8 +47,7 @@ Version 0.5.0  Sun Jun 09 16:09:20 EST 2002
 
     - Notable Internal Changes
 
-        - I am (yet again) preparing the mod for use with only the qccx
-            and compatible compilers.
+        - The mod will only compile with qccx and compatible compilers.
 
         - I worked on some more warnings produced by the frikqcc compiler.
 

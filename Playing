@@ -1,4 +1,4 @@
-$Id: Playing,v 1.2 2002/03/05 21:26:02 slotzero Exp $
+$Id: Playing,v 1.3 2002/06/29 20:45:03 slotzero Exp $
 
 This is the user documentation for Rune Quake.  You can learn
 more about Rune Quake at http://www.runequake.com.
@@ -515,9 +515,8 @@ Rune Descriptions
 
 	The most obvious effect of this rune is that water, slime and
 	lava, which normally hurt you, heal you instead.  It also
-	protects you from many of the other runes, however, which can
-	be at least as useful.  You're impervious to death spots, ice
-	traps, death orbs, weirdness, radiation, and other things.
+	protects you from many of the other runes and various conditions
+	which normally would be harmful.
 
 	If you've got this rune then the rune-use button acts as a super
 	jump if you're in a liquid.  This can be used to get out of lava

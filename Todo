@@ -1,13 +1,15 @@
-$Id: Todo,v 1.7 2002/06/26 18:27:06 slotzero Exp $
+$Id: Todo,v 1.8 2002/06/29 20:45:03 slotzero Exp $
 
-    - Unsorted
+    - unsorted
 
         - a frozen shambler can still attack you.
-    	- before latest release, please look over Changes and example.cfg and
-	  all other related information files!
-        - document gamecfg, providing you decide to use it.
 	- sort through the Artifact-RJS Todo file.
-	- do riders carry across levels when not in high/fast track?
+	- do riders carry across levels when not in high/fast track? yes,
+	  but not if the player leaves (or is dead?) during intermission.
 	- investigate function to check for healthy enemy, not just player.
-	- lg does damange to ep holder doing a discharge.. and a dischage period? (baker)
-	- problem with switch rune and fix-angles, how?
+	- lg discharge does damange to ep holder. (baker)
+	- problem with switch rune and fix-angles (rjs)
+	- phoenix death loses rune (rjs)
+
+If you've found a bug or would like to make a suggestion, please e-mail
+Slot Zero <slotzero@runequake.com>

@@ -1,4 +1,4 @@
-$Id: Notes,v 1.1 2002/02/21 21:47:40 slotzero Exp $
+$Id: Notes,v 1.2 2002/06/29 20:45:02 slotzero Exp $
 
 Source editing and compilation
 
@@ -10,6 +10,9 @@ Source editing and compilation
     with Cygwin).  Otherwise, if you just want to make some simple
     changes and recompile for your server, you should edit the files in
     the poq or qw directories and compile from there.
+
+    As of version 0.5, the poq and qw source can only be compiled with qccx
+    and compatible compilers.
 
 DM_WEAPONS_STAY
 
@@ -113,5 +116,6 @@ rint()
 
 URLs
 
-    ftp://ftp.runequake.com/quake/idstuff/wq100.zip
-    ftp://ftp.runequake.com/quake/idstuff/quakeworld/qw230.exe
+    ftp://ftp.runequake.com/
+    http://planetquake.com/qccx/
+    http://www-vlsi.stanford.edu/~jsolomon/clan9/qsmack/

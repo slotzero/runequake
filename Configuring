@@ -1,11 +1,11 @@
-$Id: Configuring,v 1.3 2002/06/09 20:20:31 slotzero Exp $
+$Id: Configuring,v 1.4 2002/06/29 20:45:02 slotzero Exp $
 
 Starting the server
 
     To set up a server under Windows:
 
-    	- Get Winquake from www.quakeworld.net, unpack it in your Quake
-    	  directory,
+    	- Get ProQuake from planetquake.com/proquake/, unpack it in your
+    	  Quake directory,
 
     	- unzip this distribution into a directory called runequake
     	  in your Quake directory (this is the name it unpacks into by
@@ -17,22 +17,20 @@ Starting the server
 
     	- run
 
-	    winquake -game runes -dedicated 16
+	    wqpro -game runes -dedicated 16
 
     	  for a dedicated server, or
 
-	    winquake -game runes -listen 16
+	    wqpro -game runes -listen 16
 
 	  if you just want to play against some friends.
 
     Under other OSes it's mostly the same, but the game executable
-    differs.  Under Unix systems use unixded, it's also available at
-    www.quakeworld.net.
+    differs.  Under Unix systems use sqpro, it's also available at
+    planetquake.com/proquake/.
 
-    This doesn't address re-starting the server if it crashes.  I don't
-    know how to do that under Windows (a simplistic batch file doesn't
-    work because the server detaches itself).  Under Unix I use a short
-    script which guards against a server which is crashing repeatedly
+    This doesn't address re-starting the server if it crashes.  I use a
+    short script which guards against a server which is crashing repeatedly
     (and mails me when it crashes).  Mail me if you'd like a copy.
 
     If you're setting up a permanant public server, the last step is to
@@ -530,11 +528,6 @@ Admin mode commands
 
     	As a non-riding observer, toggle your model eyes to be visible
 	by all players.
-
-    command admin-forward
-
-	If you set the ADMIN_FORWARD address in settings.qc, you can
-	manually forward players to that address with this command.
 
     command admin-join
 

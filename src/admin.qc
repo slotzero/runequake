@@ -1,4 +1,4 @@
-// $Id: admin.qc,v 1.11 2002/06/17 03:20:48 slotzero Exp $
+// $Id: admin.qc,v 1.12 2002/06/29 20:45:07 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -80,7 +80,14 @@ admin_toggle =
 	if (admin_passcode_cvar < 0)
 		ADMIN_PASSCODE_REAL = 123456;
 	else if (admin_passcode_cvar > 0)
-		ADMIN_PASSCODE_REAL = admin_passcode_cvar;
+	{
+		IN_POQ([-
+			ADMIN_PASSCODE_REAL = admin_passcode_cvar;
+	    	-], [-
+			sprint (self, "This feature is disabled in Quakeworld\n");
+			return;
+		-])
+	}
 	else
 		ADMIN_PASSCODE_REAL = ADMIN_PASSCODE;
 
