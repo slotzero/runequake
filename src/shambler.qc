@@ -1,4 +1,4 @@
-// $Id: shambler.qc,v 1.3 2002/07/15 14:44:46 slotzero Exp $
+// $Id: shambler.qc,v 1.4 2002/07/17 19:35:04 slotzero Exp $
 
 /*
 ==============================================================================
@@ -19,7 +19,7 @@ $frame stand10 stand11 stand12 stand13 stand14 stand15 stand16 stand17
 $frame walk1 walk2 walk3 walk4 walk5 walk6 walk7
 $frame walk8 walk9 walk10 walk11 walk12
 
-$frame	run1 run2 run3 run4 run5 run6
+$frame run1 run2 run3 run4 run5 run6
 
 $frame smash1 smash2 smash3 smash4 smash5 smash6 smash7
 $frame smash8 smash9 smash10 smash11 smash12
@@ -368,7 +368,7 @@ monster_shambler =
 	monster_shambler_1 (1);
 };
 
-// 1 is normal, 0 is helper
+// 1 is normal, 2 is helper
 void (float type)
 monster_shambler_1 =
 {
