@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#    $Id: map,v 1.22 2004/02/22 04:42:26 slotzero Exp $
+#    $Id: map,v 1.23 2005/01/10 23:20:15 slotzero Exp $
 
 use strict;
 use warnings;
@@ -216,6 +216,71 @@ my @custom_lev = (
 );
 
 @custom_lev = ();
+
+my @arena_lev = (
+	[], # unused
+
+	[ # small
+		'23ar-a',
+		'2pyramid',
+		'2towers',
+		'arenarg2',
+		'arenarg4',
+		'arenarg5',
+		'arenarg6',
+		'arenax',
+		'arenazap',
+		'arendm1a',
+		'arenrg3a',
+		'arma4',
+		'barena1',
+		'basarena',
+		'bbarena2',
+		'bunmoo3',
+		'bunski',
+		'chamber1',
+		'crandome',
+		'dm2arena',
+		'dom2_1ra',
+		'egyptra',
+		'football',
+		'gear8',
+		'gearpr0n',
+		'gnurena',
+		'hill20',
+		'iarena2',
+		'id3',
+		'lowgrav',
+		'marena2',
+		'marena3',
+		'marena4',
+		'mayan1',
+		'nilsrar3',
+		'pen2',
+		'pitarena',
+		'ptucket',
+		'ra_funkf',
+		'rarena3',
+		'rgarden',
+		'soyarena',
+		'terrain2',
+		'uarena1',
+		'unholy',
+		'xarena3',
+		'yard1',
+	],
+
+	[ # medium
+
+	],
+
+	[ # large
+
+	],
+);
+
+# Uncomment if you want arena maps.
+#@custom_lev = @arena_lev;
 
 # Construct %wan, the list of levels which aren't in %lan.
 my %wan;
