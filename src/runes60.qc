@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.54 2004/12/10 23:20:24 slotzero Exp $
+/*  $Id: runes60.qc,v 1.55 2004/12/14 21:37:20 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -600,55 +600,58 @@ AntiPack_Touch =
 	local entity os;
 	local float i, it;
 
-	if (other.health <= 0 || other == world)
+	if (other == world)
 		return;
 
-	if (environmental (other))
+	if (other.classname != "player")
+		return;
+
+	if (other.health <= 0)
 		return;
 
 	if (isfriend2 (self.owner, other))
 		return;
 
+	if (environmental (other))
+		return;
+
 	maybe_update_trap_count (self.owner, RN_ANTIPACK);
 
-	if (other.classname == "player")
+	centerprint (other, "You picked up an anti-pack!");
+	bprint (other.netname);
+	bprint (" picked up ");
+	bprint (self.owner.netname);
+	bprint ("'s anti-pack!\n");
+
+	sound (other, CHAN_ITEM, "weapons/lock4.wav", 1, ATTN_NORM);
+	sound (other, CHAN_BODY, "demon/ddeath.wav", 1, ATTN_NORM);
+
+	stuffcmd (other, "bf\n");
+
+	antipack_maybe_remove_ammo (ammo_shells);
+	antipack_maybe_remove_ammo (ammo_nails);
+	antipack_maybe_remove_ammo (ammo_rockets);
+	antipack_maybe_remove_ammo (ammo_cells);
+
+	for (i = 8; i > 2; i = i - 1)
 	{
-		centerprint (other, "You picked up an anti-pack!");
-		bprint (other.netname);
-		bprint (" picked up ");
-		bprint (self.owner.netname);
-		bprint ("'s anti-pack!\n");
-
-		sound (other, CHAN_ITEM, "weapons/lock4.wav", 1, ATTN_NORM);
-		sound (other, CHAN_BODY, "demon/ddeath.wav", 1, ATTN_NORM);
-
-		stuffcmd (other, "bf\n");
-
-		antipack_maybe_remove_ammo (ammo_shells);
-		antipack_maybe_remove_ammo (ammo_nails);
-		antipack_maybe_remove_ammo (ammo_rockets);
-		antipack_maybe_remove_ammo (ammo_cells);
-
-		for (i = 8; i > 2; i = i - 1)
+		it = weapon_num_to_it (i);
+		if (other.items & it)
 		{
-			it = weapon_num_to_it (i);
-			if (other.items & it)
-			{
-				other.items = other.items - other.items & it;
-				i = -1;
-			}
+			other.items = other.items - other.items & it;
+			i = -1;
 		}
-
-		if (other.weapon == it)
-		{
-			os = self;
-			self = other;
-			set_weapon (W_BestWeapon ());
-			self = os;
-		}
-
-		remove (self);
 	}
+
+	if (other.weapon & it)
+	{
+		os = self;
+		self = other;
+		set_weapon (W_BestWeapon ());
+		self = os;
+	}
+
+	remove (self);
 };
 
 void ()
