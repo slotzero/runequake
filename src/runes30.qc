@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.35 2004/11/28 05:33:40 slotzero Exp $
+/*  $Id: runes30.qc,v 1.36 2004/12/10 23:20:24 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -432,7 +432,7 @@ Unfreeze =
 	{
 		if (freeze.runent == wanted)
 		{
-			freeze.runent.effects		= freeze.runent.effects - freeze.runent.effects & EF_ICE;
+			freeze.runent.reffects		= freeze.runent.reffects - freeze.runent.reffects & REF_ICE;
 			freeze.runent.attack_finished	= time + sys_ticrate;
 
 			sound (freeze.runent, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
@@ -487,7 +487,7 @@ Freeze_Frozen =
 			|| (self.runent.runetype == RN_BLIZZARD && self.runent.runevector_x < time)
 			|| self.runent.items & IT_SUIT)
 	{
-		self.runent.effects		= self.runent.effects - self.runent.effects & EF_ICE;
+		self.runent.reffects		= self.runent.reffects - self.runent.reffects & REF_ICE;
 		self.runent.attack_finished	= time + sys_ticrate;
 
 		if (self.runent.classname == "player")
@@ -546,10 +546,10 @@ Freeze_Touch =
 		return;
 	}
 
-	if (other.effects & EF_ICE)
+	if (other.reffects & REF_ICE)
 		return;
 
-	other.effects = other.effects | EF_ICE;
+	other.reffects = other.reffects | REF_ICE;
 	maybe_update_trap_count (self.owner, RN_FREEZE);
 
 	if (other.classname == "player")

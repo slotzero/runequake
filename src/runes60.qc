@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.53 2004/11/28 00:21:23 slotzero Exp $
+/*  $Id: runes60.qc,v 1.54 2004/12/10 23:20:24 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -68,7 +68,7 @@ Glue_Stuck =
 
 	if (release)
 	{
-		self.runent.effects = self.runent.effects - self.runent.effects & EF_GLUE;
+		self.runent.reffects = self.runent.reffects - self.runent.reffects & REF_GLUE;
 		remove (self);
 		return;
 	}
@@ -94,7 +94,7 @@ Glue_Touch =
 	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;
 
-	if (other.effects & EF_GLUE)
+	if (other.reffects & REF_GLUE)
 		return;
 
 	if (!self.runevar)
@@ -116,7 +116,7 @@ Glue_Touch =
 	setmodel (self, "progs/tarbaby.mdl");
 	sound (self, CHAN_WEAPON, "blob/hit1.wav", 1, ATTN_NORM);
 
-	other.effects	= other.effects | EF_GLUE;
+	other.reffects	= other.reffects | REF_GLUE;
 
 	centerprint(other, "You are stuck!");
 
@@ -210,7 +210,7 @@ Rune_Blizzard =
 					&& e.runetype != RN_BLIZZARD
 					&& e.runetype != RN_FREEZE
 					&& !(isfriend2 (self, e) && self != e)
-					&& !e.effects & EF_ICE)
+					&& !e.reffects & REF_ICE)
 			{
 				if (e.health > 0 && e != self && e.owner != self)
 				{
@@ -320,7 +320,7 @@ Blizzard_Touch =
 		return;
 	if (isfriend (other) && self != other)
 		return;
-	if (other.effects & EF_ICE)
+	if (other.reffects & REF_ICE)
 		return;
 
 	self.runetime = time + 3;

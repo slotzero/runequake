@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.56 2004/12/02 20:38:01 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.57 2004/12/10 23:20:24 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -56,7 +56,7 @@ Rune_Button =
 	if (!self.runetype)
 		return;
 
-	if (self.effects & EF_GLUE)
+	if (self.reffects & REF_GLUE)
 		return;
 
 	spawn_protect_off ();

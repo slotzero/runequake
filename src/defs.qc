@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.125 2004/11/27 07:34:35 slotzero Exp $
+/*  $Id: defs.qc,v 1.126 2004/12/10 23:20:24 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1023,9 +1023,6 @@ float	EF_MUZZLEFLASH 			= 2;
 -])
 float	EF_BRIGHTLIGHT 			= 4;
 float	EF_DIMLIGHT 			= 8;
-float	EF_GLUE				= 16;
-float	EF_ICE				= 32;
-float	EF_WEIRD			= 64;
 
 // messages
 float	MSG_BROADCAST			= IN_POQ(0, 4);	// unreliable to all
@@ -1442,3 +1439,9 @@ string	VICTIM_ADDRESS;
 
 float	LAST_VOTE_IMPULSE;
 string	LAST_VOTE_LEVEL;
+
+.float	reffects;
+
+float	REF_GLUE			= 1;
+float	REF_ICE				= 2;
+float	REF_WEIRD			= 4;

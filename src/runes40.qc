@@ -1,4 +1,4 @@
-/*  $Id: runes40.qc,v 1.21 2004/11/28 05:33:40 slotzero Exp $
+/*  $Id: runes40.qc,v 1.22 2004/12/10 23:20:24 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -532,7 +532,7 @@ Weird_Think =
 	// Remove the weirder
 	if (self.runent.health < 1 || self.runetime < time || intermission_running)
 	{
-		self.runent.effects = self.runent.effects - self.runent.effects & EF_WEIRD;
+		self.runent.reffects = self.runent.reffects - self.runent.reffects & REF_WEIRD;
 		if (self.runevar == WEIRD_SHROOMS) stuffcmd (self.runent, "v_idlescale 0\n"); else
 		if (self.runevar == WEIRD_VERTIGO) stuffcmd (self.runent, "fov 90\n"); else
 		if (self.runevar == WEIRD_BLIND) stuffcmd (self.runent, CSHIFT_NONE); else
@@ -619,7 +619,7 @@ Weird_Think =
 	}
 	else if (self.runevar == WEIRD_SHOOTPHOB)
 	{
-		self.runent.effects = self.runent.effects | EF_WEIRD;
+		self.runent.reffects = self.runent.reffects | REF_WEIRD;
 		self.runent.attack_finished = time + 0.5;
 	}
 	else if (self.runevar == WEIRD_VERTIGO)
