@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.66 2003/12/30 09:59:11 slotzero Exp $
+/*  $Id: defs.qc,v 1.67 2004/03/01 01:27:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -502,6 +502,7 @@ float RN_MAX_ALL	= 59;
 float IMP_SHOW_POS		= 254;
 //				= 238 - 253 [weapon aliases]
 //				= 220 - 237 [qsmack]
+float IMP_CUSTOM_SOUNDS		= 210;
 float IMP_COMMANDS		= 204;
 float IMP_CUSTOM		= 203;
 float IMP_LEVELS		= 202;
@@ -661,7 +662,9 @@ float AQ_NO_HUD			= 524288;
 float AQ_HOOK			= 1048576;
 float AQ_QSMACK			= 2097152;
 
+// rqflags
 float RQ_CYCLE_ALTERNATES	= 1;
+float RQ_CUSTOM_SOUNDS		= 1;
 
 // aqstate flags (not saved accross levels)
 float AQS_MENU_MASK		= 31;

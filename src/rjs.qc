@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.88 2004/02/21 07:31:35 slotzero Exp $
+/*  $Id: rjs.qc,v 1.89 2004/03/01 01:27:48 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1138,6 +1138,20 @@ common_impulses =
 				self.aqflags = self.aqflags | AQ_RIDER_HIDE;
 				sprint (self, "Rider hide mode enabled\n");
 			}
+		}
+	}
+
+	else if (self.impulse == IMP_CUSTOM_SOUNDS)
+	{
+		if (self.rqflags & RQ_CUSTOM_SOUNDS)
+		{
+			self.rqflags = self.rqflags - self.rqflags & RQ_CUSTOM_SOUNDS;
+			self_sprint (self, "Custom sounds off\n");
+		}
+		else
+		{
+			self.rqflags = self.rqflags | RQ_CUSTOM_SOUNDS;
+			self_sprint (self, "Custom sounds \bon\n");
 		}
 	}
 

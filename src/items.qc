@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.31 2004/02/29 23:15:08 slotzero Exp $
+/*  $Id: items.qc,v 1.32 2004/03/01 01:27:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1197,8 +1197,10 @@ powerup_denied =
 			dist = vlen (self.origin - e.origin);
 			if (dist < 125)
 			{
-				self_sprint (e, "\{141} \bdenied!\n");
-				self_sound (e, "misc/talk.wav");
+				if (e.rqflags & RQ_CUSTOM_SOUNDS)
+					self_sound (e, "denied.wav");
+				else
+					self_sprint (e, "\{141} \bdenied!\n");
 			}
 		}
 		e = find (e, classname, "player");
