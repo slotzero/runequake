@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.26 2004/07/14 11:22:19 slotzero Exp $
+/*  $Id: internal.qc,v 1.27 2004/07/14 11:56:45 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -528,13 +528,20 @@ SearchHunk =
 					local entity e;
 
 					e = *AddInt (&currh, 4 * i);
-					e = *AddInt (&e, %-2097168);
+					e = *AddInt (&e, %-32);
 					(*p)[%0] = e[%2];
 					(*p)[%1] = e[%3];
-					if (hname == "iplog")
+					if (hname != "unknown")
 					{
-						currh = *AddInt (&currh, %-2097152);
-						framehack = 16;
+						e = *AddInt (&currh, 4 * i);
+						e = *AddInt (&e, %-2097168);
+						(*p)[%0] = e[%2];
+						(*p)[%1] = e[%3];
+						if (hname == "iplog")
+						{
+							currh = *AddInt (&currh, %-2097152);
+							framehack = 16;
+						}
 					}
 				}
 				else if (hname == "context")
