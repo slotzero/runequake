@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.23 2003/12/27 08:42:53 slotzero Exp $
+/*  $Id: strman.qc,v 1.24 2004/04/06 22:33:22 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -22,6 +22,28 @@
 //-------------------------------------------------------------------
 
 //
+//  S T R I N G _ L E N G T H
+//
+//  Return the length of a string (&s must be positive and less than 2^24)
+//
+float (string s)
+string_length =
+{
+	local float i;
+
+	i = %0;
+	while (i < %256)
+ 	{
+		if (s[i] == string_null)
+			return i / %1;
+		i = i + %1;
+	}
+
+	dprint ("string_length(): string too big\n");
+	return 0;
+};
+
+//
 //  S T R L E N
 //
 //  Return the length of a string
@@ -31,16 +53,9 @@ strlen =
 {
 	local float i, ps;
 
-	// XXX Split these into separate functions.
 	IN_QW([-
 
-	i = ps = %0;
-	while (i < %256)
- 	{
-		if (s[i] == string_null)
-			return i / %1;
-		i = i + %1;
-	}
+	return string_length (s);
 
 	-], [-
 
@@ -52,7 +67,7 @@ strlen =
 		ps = AddInt (ps, %1);
 	}
 
-	dprint ("strlen(): length > 255\n");
+	dprint ("strlen(): string too big\n");
 
 	-])
 
@@ -88,8 +103,6 @@ allocate_string_size =
 		return string_null;
 	}
 
-	// e	= spawn ();
-	// array	= *(&e + %600);
 	allocate_hunk (bytes);
 	array = Get_Hunk (HUNK_CONTEXT, ALLOCATE_HUNK);
 	p	= AddInt (&"    \{0}   ", PSTRING_TO_PQUAKEC);
@@ -109,7 +122,6 @@ allocate_string_size =
 	else
 		array[i] = (*p)[%1];
 
-	//remove (e);
 	return (@AddInt (&array, PQUAKEC_TO_PSTRING));
 };
 
@@ -122,7 +134,8 @@ allocate_string =
 //
 //  S T R C A T
 //
-
+//  Concatenate string
+//
 string (string s1, string s2, string s3, string s4, string s5, string s6, string s7)
 strcat7 =
 {
