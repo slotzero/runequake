@@ -1,4 +1,4 @@
-// $Id: print.qc,v 1.3 2002/06/01 03:24:33 slotzero Exp $
+// $Id: print.qc,v 1.4 2002/06/15 19:27:29 slotzero Exp $
 
 //=============================================================================
 // bprint
@@ -137,7 +137,7 @@ centerprint7 =
 {
 	local entity o;
 
-	self_centerprint7 (e, s1, s2, s3, s4, s5, s6, s7);
+	self_centerprint (e, s1, s2, s3, s4, s5, s6, s7);
 	if (!in_hud_hack && e.classname == "player")
 		e.cnt = time + CENTERPRINT_TIME;
 	if (!in_runedesc_hack && e.classname == "player" && e.waitmax)
@@ -153,7 +153,7 @@ centerprint7 =
 	while (o)
 	{
 		if (ridee_e (o) == e && !aq_menu_get_e (o))
-			self_centerprint7 (o, s1, s2, s3, s4, s5, s6, s7);
+			self_centerprint (o, s1, s2, s3, s4, s5, s6, s7);
 		o = find (o, classname, "player");
 	}
 };

@@ -1,4 +1,4 @@
-// $Id: runeserv.qc,v 1.3 2002/03/03 00:24:57 slotzero Exp $
+// $Id: runeserv.qc,v 1.4 2002/06/15 19:27:29 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -457,7 +457,7 @@ Rune_Tell_real =
 		if (riders)
 			centerprint7 (self, s2, s3, s, s4, d1, d2, d3);
 		else
-			self_centerprint7 (self, s2, s3, s, s4, d1, d2, d3);
+			self_centerprint (self, s2, s3, s, s4, d1, d2, d3);
 	}
 };
 
