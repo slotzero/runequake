@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.35 2003/07/16 04:03:28 slotzero Exp $
+/*  $Id: defs.qc,v 1.36 2003/07/19 00:58:58 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -470,7 +470,7 @@ float RN_MAX		= 49;
 float RN_LITHIUM_HOOK	= 50;
 float RN_MAX_ALL	= 50;
 
-float IMP_LAST		= 60;
+float IMP_LAST		= 160;
 
 // impulses
 

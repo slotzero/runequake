@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.8 2003/07/16 09:56:10 slotzero Exp $
+/*  $Id: hunk.qc,v 1.9 2003/07/19 00:58:58 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -59,6 +59,11 @@ Read_Hunk_Float =
 	local entity hunk;
 
 	hunk = Get_Hunk (type, offset);
+	if (!hunk)
+	{
+		dprint ("Read_Hunk_Float: hunk is null\n");
+		return 0;
+	}
 
 	return hunk[%0];
 };
@@ -84,6 +89,9 @@ Write_Hunk_Float =
 	local entity hunk;
 
 	hunk = Get_Hunk (type, offset);
+	if (!hunk)
+		return dprint ("Write_Hunk_Float: hunk is null\n");
+
 	hunk[%0] = f;
 };
 
