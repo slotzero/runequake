@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.39 2004/05/03 10:38:29 slotzero Exp $
+/*  $Id: runes60.qc,v 1.40 2004/05/15 04:29:52 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -688,54 +688,13 @@ Rune_AntiPack =
 	centerprint (self, "Anti-pack dropped!");
 };
 
-void (float riders, entity of_e)
-Rune_Deflect_Telefrag_sprint =
-{
-	rprint_numdesc (self, riders, of_e.runevar, "telefrag deflect");
-	rprint (self, riders, " left\n");
-};
-
-// Deflect telefrag can't be dropped directly after a deflect because tdeath_touch()
-// is still looping and will telefrag you as soon as it detects your rune is gone.
-// This function drops the rune at the same time tdeath_expires.
-void ()
-deflect_rune_removal =
-{
-	local entity os;
-
-	if (self.owner.runetype == RN_DEFLECT)
-	{
-		sprint (self.owner, "Max telefrags deflected, rune removed.\n");
-
-		os = self;
-		self = self.owner;
-		Rune_Delete (0);
-		self = os;
-	}
-	remove (self);
-};
-
 void ()
 Rune_Deflect_Telefrag =
 {
-	local entity rune_delete;
-
 	if (other.health <= 0)
 		return;
 
-	if (other.runevar > 0)
-	{
-		other.runevar		= other.runevar - 1;
-		centerprint (other, "You deflected a telefrag!");
-	}
-
-	if (other.runevar <= 0)
-	{
-		rune_delete		= spawn ();
-		rune_delete.owner	= other;
-		rune_delete.nextthink	= time + sys_ticrate * 2;
-		rune_delete.think	= deflect_rune_removal;
-	}
+	centerprint (other, "You deflected a telefrag!");
 };
 
 void ()

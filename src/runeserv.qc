@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.41 2004/04/30 00:15:36 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.42 2004/05/15 04:29:52 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -685,7 +685,6 @@ Rune_Tell_sprint =
 	else if (of_e.runetype == RN_GLUE)	Rune_Glue_sprint (r, of_e);
 	else if (of_e.runetype == RN_BLIZZARD)	Rune_Blizzard_sprint (r, of_e);
 	else if (of_e.runetype == RN_ANTIPACK)	Rune_AntiPack_sprint (r, of_e);
-	else if (of_e.runetype == RN_DEFLECT)	Rune_Deflect_Telefrag_sprint (r, of_e);
 	else if (of_e.runetype == RN_BETTY)	Rune_Betty_sprint (r, of_e);
 	else if (of_e.runetype == RN_TORNADO)	Rune_Tornado_sprint (r, of_e);
 };
