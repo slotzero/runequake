@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.19 2004/02/24 23:57:08 slotzero Exp $
+/*  $Id: combat.qc,v 1.20 2004/02/25 20:31:05 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -143,7 +143,7 @@ float (entity targ, entity inflictor, entity attacker, float damage, string dtyp
 T_Damage =
 {
 	local vector dir;
-	local entity oldself;
+	local entity old_self;
 	local float save, take, real_take;
 
 	if (!targ.takedamage)
@@ -219,7 +219,18 @@ T_Damage =
 		else if (targ.runetype == RN_ZAP)
 		{
 			if (dtype == "zapped" || dtype == "lightning")
+			{
 				damage = damage * 0.5;
+
+				old_self = self;
+				self = targ;
+				if (self.ammo_cells < MAX_CELLS)
+				{
+					self.ammo_cells = self.ammo_cells + 1;
+					set_current_ammo ();
+				}
+				self = old_self;
+			}
 		}
 
 		else if (targ.runetype == RN_CLOAK)
@@ -537,7 +548,7 @@ T_Damage =
 			//RUNE SERV: Weird bubbles when killed
 			else if (targ.runetype == RN_WEIRD)
 			{
-				oldself = self;
+				old_self = self;
 				self = targ;
 				self.runevar = 0;
 				while (self.runevar < 7)
@@ -546,7 +557,7 @@ T_Damage =
 					Spawn_Weird ();
 					self.runent.nextthink = self.runent.nextthink + 5;
 				}
-				self = oldself;
+				self = old_self;
 			}
 
 			else if (targ.runetype == RN_SHAMB)
@@ -586,7 +597,7 @@ T_Damage =
 	// REACT TO THE DAMAGE
 	//
 
-	oldself = self;
+	old_self = self;
 	self = targ;
 
 	// monsters: get mad unless of the same class (except for soldiers)
@@ -609,7 +620,7 @@ T_Damage =
 	if (self.th_pain)
 		self.th_pain (attacker, take);
 
-	self = oldself;
+	self = old_self;
 	return 1;
 };
 

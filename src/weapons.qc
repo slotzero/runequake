@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.28 2004/02/24 23:39:41 slotzero Exp $
+/*  $Id: weapons.qc,v 1.29 2004/02/25 20:31:05 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -588,7 +588,7 @@ W_FireLightning =
 		return;
 
 	// explode if under water
-	if (self.waterlevel > SAFE_DISCHARGE_WATERLEVEL)
+	if (self.runetype != RN_THOR && self.waterlevel > SAFE_DISCHARGE_WATERLEVEL)
 	{
 		cells = self.ammo_cells;
 		self.ammo_cells = 0;
