@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.163 2005/01/09 22:39:51 slotzero Exp $
+/*  $Id: rjs.qc,v 1.164 2005/01/11 00:13:34 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -312,6 +312,7 @@ process_misc =
 	if (intermission_running)
 		return;
 
+ 	// superceeds all other mode defaults
 	if (scratch1 & S1_NO_DEFAULT)
 		return;
 
@@ -351,19 +352,94 @@ process_misc =
 		setarmor ();
 	else if (!ROTATE)
 		setrotate ();
-	if (NO_RUNES)
-		setrunes ();
-	if (NO_ALT_WEAPONS)
-		setalts ();
-	if (NO_SPAWN_SHIELDS)
-		setshields ();
 	if (NO_HOOK_DAMAGE)
 		sethookdamage ();
 
-	// vote-practice (always do this last)
+ 	if (scratch1 & S1_ARENA_DEFAULT)
+	{
+		wanted = hook_type (0);
+		if (wanted != hook_type (temp1))
+		{
+			if (wanted == 0)
+				toggle_free_hook ();
+			else if (wanted == 1)
+				free_hook ();
+			else if (wanted == 2)
+				lithium_hook ();
+		}
 
-	if (!mode_normal ())
-		change_mode_to_normal ();
+		if (!NO_RUNES)
+			setrunes ();
+		if (!NO_ALT_WEAPONS)
+			setalts ();
+		if (!NO_SPAWN_SHIELDS)
+			setshields ();
+
+		// instead of setting setting deathmatch here,
+		// i just reset to normal and in the next process
+		// it will get set to practice. (I'm lazy)
+		if (mode_practice ())
+			change_mode_to_arena ();
+		else if (mode_normal ())
+			change_mode_to_arena ();
+	}
+	else if (scratch1 & S1_PRACTICE_DEFAULT)
+	{
+		wanted = hook_type (0);
+		if (wanted != hook_type (temp1))
+		{
+			if (wanted == 0)
+				toggle_free_hook ();
+			else if (wanted == 1)
+				free_hook ();
+			else if (wanted == 2)
+				lithium_hook ();
+		}
+
+		if (!NO_RUNES)
+			setrunes ();
+		if (!NO_ALT_WEAPONS)
+			setalts ();
+		if (!NO_SPAWN_SHIELDS)
+			setshields ();
+		if (ROTATE && !NO_ARMOR)
+			setrotate ();
+
+		// instead of setting setting deathmatch here,
+		// i just reset to normal and in the next process
+		// it will get set to practice. (I'm lazy)
+		if (mode_arena ())
+			change_mode_to_normal ();
+		else if (mode_normal ())
+			change_mode_to_practice ();
+	}
+	else
+	{
+		// vote-hook
+		if (temp1 & T1_HOOK_DEFAULT_ON)
+		{
+			wanted = hook_type (HOOK_DEFAULT);
+			if (wanted != hook_type (temp1))
+			{
+				if (wanted == 0)
+					toggle_free_hook ();
+				else if (wanted == 1)
+					free_hook ();
+				else if (wanted == 2)
+					lithium_hook ();
+			}
+		}
+
+		if (NO_RUNES)
+			setrunes ();
+		if (NO_ALT_WEAPONS)
+			setalts ();
+		if (NO_SPAWN_SHIELDS)
+			setshields ();
+
+		if (!mode_normal ())
+			change_mode_to_normal ();
+	}
 };
 
 void ()
