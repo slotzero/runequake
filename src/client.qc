@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.61 2004/07/20 12:27:59 slotzero Exp $
+/*  $Id: client.qc,v 1.62 2004/07/26 18:59:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1412,8 +1412,10 @@ PlayerPreThink =
 		}
 		else if (self.aqflags & AQ_TEAM_MASK && !obs)
 		{
-			sure_kill ("teamchange");
-			kick_suicider ();
+			IN_POQ([-
+				sure_kill ("teamchange");
+				kick_suicider ();
+			-])
 			i = correct_team ();
 			set_team_e (self, i);
 		}
