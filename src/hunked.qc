@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.14 2004/04/11 06:29:50 slotzero Exp $
+/*  $Id: hunked.qc,v 1.15 2004/04/30 06:39:50 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -22,7 +22,8 @@
 //-------------------------------------------------------------------
 
 float LAST_TIME_UPDATE;
-float HUNK_SERVER_TIME	= %10;
+float HUNK_SERVER_TIME		= %10;
+float HUNK_CLIENT_DISCONNECT	= %100;
 
 float ()
 server_time =
@@ -124,4 +125,81 @@ PQ_Version =
 	strcpy (format[i], "0");
 
 	return format;
+};
+
+void ()
+Log_Client_Disconnect =
+{	IN_QW(return;)
+	local float i, n, max, offset, e_time, elapsed;
+	local string e_name;
+
+	if (MAX_CLIENT_DISCONNECT_LOG < 1 || MAX_CLIENT_DISCONNECT_LOG > 20)
+		return;
+
+	offset	= HUNK_CLIENT_DISCONNECT;
+	max 	= n = (MAX_CLIENT_DISCONNECT_LOG - 1) * %1;
+	elapsed	= server_time ();
+
+	for (i = max; i >= %0; i = i - %1)
+	{
+		e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 5), 16);
+		if (e_name == self.netname)
+			n = i;
+	}
+
+	if (n != max)
+		max = n;
+
+	for (i = max; i >= %0; i = i - %1)
+	{
+		if (i != max)
+		{
+			e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 5), 16);
+			Write_Hunk_Max (HUNK_CONTEXT, offset + ((i + %1) * 5), e_name, 16);
+			e_time = Read_Hunk_Float (HUNK_CONTEXT, offset + %4 + (i * 5));
+			Write_Hunk_Float (HUNK_CONTEXT, offset + %4 + ((i + %1) * 5), e_time);
+		}
+	}
+
+	Write_Hunk_Max (HUNK_CONTEXT, offset, self.netname, 16);
+	Write_Hunk_Float (HUNK_CONTEXT, offset + %4, elapsed);
+};
+
+void ()
+Client_Disconnect_Log =
+{	IN_QW(return;)
+	local float i, max, offset, e_time, e_away, server_t;
+	local string e_name;
+
+	if (MAX_CLIENT_DISCONNECT_LOG < 1 || MAX_CLIENT_DISCONNECT_LOG > 20)
+	{
+		self_sprint (self, "The \blast\b command has been disabled.\n");
+		return;
+	}
+
+	offset	= HUNK_CLIENT_DISCONNECT;
+	max 	= (MAX_CLIENT_DISCONNECT_LOG - 1) * %1;
+
+	self_sprint (self, "\n");
+	self_sprintf_len (self, "Name", -16);
+	self_sprintf_len (self, "Time", 10);
+	self_sprint (self, "\n----                  ----\n\n");
+
+	server_t = server_time ();
+	for (i = max; i >= %0; i = i - %1)
+	{
+		e_time = floor (Read_Hunk_Float (HUNK_CONTEXT, offset + %4 + (i * 5)));
+		e_away = server_t - e_time;
+
+		if (e_time)
+		{
+			e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 5), 16);
+			self_sprintf_len (self, e_name, -16);
+			e_name = parse_time (e_away);
+			self_sprintf_len (self, e_name, 10);
+			self_sprint (self, "\n");
+		}
+	}
+	if (!e_time)
+		self_sprint (self, "No entries found.\n");
 };

@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.17 2004/04/28 01:32:08 slotzero Exp $
+/*  $Id: team.qc,v 1.18 2004/04/30 06:39:50 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -557,4 +557,29 @@ team_stats =
 		}
 	}
 	sprint (pe, "\n");
+};
+
+void (float mode)
+change_practice_mode =
+{
+	local float new_deathmatch, bits;
+	local string s;
+
+	bits = DM_MODE_PRACTICE | DM_NO_ALT_WEAPONS;
+	new_deathmatch = cvar ("deathmatch");
+
+	if (mode)
+	{
+		if (!new_deathmatch & DM_MODE_PRACTICE)
+			new_deathmatch = new_deathmatch | bits;
+	}
+	else
+	{
+		if (new_deathmatch & DM_MODE_PRACTICE)
+			new_deathmatch = new_deathmatch - new_deathmatch & bits;
+	}
+
+	s = ftos (new_deathmatch);
+	cvar_set ("deathmatch", s);
+	admin_changelevel (mapname);
 };
