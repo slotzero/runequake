@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.168 2005/01/30 22:38:51 slotzero Exp $
+/*  $Id: rjs.qc,v 1.169 2005/02/01 11:25:13 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -402,7 +402,7 @@ process_misc =
 		// i just reset to normal and in the next process
 		// it will get set to practice. (I'm lazy)
 		if (mode_practice ())
-			change_mode_to_arena ();
+			change_mode_to_normal ();
 		else if (mode_normal ())
 			change_mode_to_arena ();
 	}
