@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.11 2003/06/12 00:43:46 slotzero Exp $
+/*  $Id: strman.qc,v 1.12 2003/06/12 20:17:14 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -275,3 +275,84 @@ eval_exponent =
 
 	return i;
 };
+
+float (string s)
+stof_any =
+{
+	local float n, ps, cmp, frac, tot, neg;
+	local string ch, clean;
+
+	&%116 = 0;
+	ps = AddInt(AddInt(&s, PSTRING_TO_PQUAKEC), %-3);
+
+	cmp = strlen (s);
+	for (n = 0; n < cmp; n = n + 1)
+	{
+		&%113 = (*ps)[0];
+
+		if (world[%5] == '-' && !tot)
+			neg = 1;
+		else if (world[%5] == '.')
+		{
+			if (!tot)
+				frac = -1;
+			else
+				frac = tot;
+		}
+
+		ch = ftoc (world[%5] / %1);
+		if (ch)
+		{
+			clean = strcat (clean, ch);
+			tot = tot + 1;
+		}
+
+		ps = AddInt (ps, %1);
+	}
+	ps = AddInt (ps, %3);
+
+	if (frac)
+	{
+		if (frac < 0)
+			frac = 0;
+
+		frac = tot - frac;
+		frac = eval_exponent (frac + 1);
+	}
+
+	n = stof (clean);
+
+	if (frac)
+		n = n / frac;
+
+	if (neg)
+		n = n - n * 2;
+
+	return n;
+};
+
+IN_POQ([-
+float (string s)
+stof =
+{
+	local float f, i, ps, cmp, sum;
+
+	&%116 = 0;
+	ps = AddInt(AddInt(&s, PSTRING_TO_PQUAKEC), %-3);
+
+	cmp = strlen (s);
+	for (i = 0; i < cmp; i = i + 1)
+	{
+		&%113 = (*ps)[0];
+
+		f = atof (world[%5] / %1);
+		f = f * (eval_exponent (cmp - i));
+		sum = sum + f;
+
+		ps = AddInt (ps, %1);
+	}
+	ps = AddInt (ps, %3);
+
+	return sum;
+};
+-])
