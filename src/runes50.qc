@@ -1,4 +1,4 @@
-/*  $Id: runes50.qc,v 1.16 2004/04/04 09:44:47 slotzero Exp $
+/*  $Id: runes50.qc,v 1.17 2004/07/26 08:57:15 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -438,7 +438,12 @@ pack_rat_frag_bonus_e =
 
 	f = 0;
 	while (e.runevar >= (f+1) * PACK_RAT_BONUS_PERCENT * runemax)
+	{
 		f = f + 1;
+		// prevent loop crashes
+		if (f > 16)
+			return 0;
+	}
 
 	// She can have > runemax runes for several reasons, so cap the
 	// bonus.
