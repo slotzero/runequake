@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.52 2005/01/02 08:38:48 slotzero Exp $
+/*  $Id: weapons.qc,v 1.53 2005/04/01 00:51:34 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -364,8 +364,6 @@ W_MagicShotgun =
 	monk_radius_hack = 1;
 	T_RadiusDamage (RADIUS_NORMAL, bomb, self, 35, other, "magic-shotgun");
 	monk_radius_hack = 0;
-
-	self.attack_finished	= time + 0.5;
 };
 
 /*
