@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.15 2003/06/10 01:52:20 slotzero Exp $
+/*  $Id: develop.qc,v 1.16 2003/06/10 20:24:38 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -28,7 +28,7 @@ Test_Button =
 float (string s)
 stof1 =
 {
-	local float n, ps, cmp, frac, tot, neg, dot;
+	local float n, ps, cmp, frac, tot, neg;
 	local string ch, clean;
 
 	&%116 = 0;
@@ -83,8 +83,8 @@ stof1 =
 float (string s)
 stof2 =
 {
-	local float i, cmp, ps, pch, n, n_tot, n_frac, neg;
-	local string s_clean, ch;
+	local float i, cmp, ps, pch, n, tot, frac, neg;
+	local string clean, ch;
 
 	ps = AddInt (AddInt (&s, PSTRING_TO_PQUAKEC), %-3);
 	pch = AddInt (&"xxxx", PSTRING_TO_PQUAKEC);
@@ -99,10 +99,10 @@ stof2 =
 		ch = @AddInt (pch, PQUAKEC_TO_PSTRING);
 		if (ch == ".")
 		{
-			if (!n_tot)
-				n_frac = -1;
+			if (!tot)
+				frac = -1;
 			else
-				n_frac = n_tot;
+				frac = tot;
 		}
 		else if (ch == "-" && !i)
 			neg = 1;
@@ -111,32 +111,32 @@ stof2 =
 
 		if (n > -1)
 		{
-			s_clean = strcat (s_clean, ch);
-			n_tot = n_tot + 1;
+			clean = strcat (clean, ch);
+			tot = tot + 1;
 		}
 
 		pch = AddInt (pch, %-3);
 		ps = AddInt (ps, %1);
 	}
 
-	if (n_frac)
+	if (frac)
 	{
-		if (n_frac < 0)
-			n_frac = 0;
+		if (frac < 0)
+			frac = 0;
 
-		n_frac = n_tot - n_frac;
-		n_frac = eval_exponent (n_frac + 1);
+		frac = tot - frac;
+		frac = eval_exponent (frac + 1);
 	}
 
-	n_tot = stof (s_clean);
+	tot = stof (clean);
 
-	if (n_frac)
-		n_tot = n_tot / n_frac;
+	if (frac)
+		tot = tot / frac;
 
 	if (neg)
-		n_tot = n_tot - n_tot * 2;
+		tot = tot - tot * 2;
 
-	return n_tot;
+	return tot;
 };
 
 IN_POQ([-
