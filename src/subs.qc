@@ -1,4 +1,4 @@
-// $Id: subs.qc,v 1.4 2002/05/05 22:19:10 slotzero Exp $
+// $Id: subs.qc,v 1.5 2002/05/10 03:09:23 slotzero Exp $
 
 void ()
 SUB_Null =
@@ -15,7 +15,7 @@ SUB_Remove =
 QuakeEd only writes a single float for angles (bad idea), so up and down are
 just constant angles.
 */
-vector ()
+void ()
 SetMovedir =
 {
 	if (self.angles == '0 -1 0')

@@ -1,4 +1,4 @@
-// $Id: team.qc,v 1.1 2002/02/21 21:48:01 slotzero Exp $
+// $Id: team.qc,v 1.2 2002/05/10 03:09:23 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -237,8 +237,8 @@ is_allowable_team =
 	return 0;
 };
 
-float (entity e, float n_teams, float n1, float n2, float n3, float n4)
-pick_team_e =
+float (float n_teams, float n1, float n2, float n3, float n4)
+pick_team =
 {
 	if (n_teams > 3 && n4 <= n1 && n4 <= n2 && n4 <= n3)	return TEAM_4;
 	if (n_teams > 2 && n3 <= n1 && n3 <= n2)		return TEAM_3;
@@ -291,7 +291,7 @@ assign_teams =
 		{
 			if (just_one || (is_valid_player_e (e) && !is_valid_team (e.team)))
 			{
-				new_team = pick_team_e (e, n_teams, n1, n2, n3, n4);
+				new_team = pick_team (n_teams, n1, n2, n3, n4);
 				if (new_team == TEAM_1)		n1 = n1 + 1;
 				else if (new_team == TEAM_2)	n2 = n2 + 1;
 				else if (new_team == TEAM_3)	n3 = n3 + 1;

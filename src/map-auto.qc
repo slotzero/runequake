@@ -8,6 +8,7 @@ sized_map_count =
 	if (levsize == 2) return 19;
 	if (levsize == 3) return 8;
 	error ("invalid arg");
+	return FALSE;
 };
 
 string (float levsize, float n)
@@ -58,6 +59,7 @@ sized_map =
 		if (n == 8) return "e4m7";
 	}
 	error ("invalid arg");
+	return "invalid arg";
 };
 
 float (string m)
@@ -153,6 +155,7 @@ rand_map =
 	if (i == 37) return "e1m7";
 	if (i >= 38) return "e1m8";
 	error ("invalid map number");
+	return "invalid map number";
 };
 
 string ()

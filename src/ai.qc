@@ -1,4 +1,4 @@
-// $Id: ai.qc,v 1.1 2002/02/21 21:47:47 slotzero Exp $
+// $Id: ai.qc,v 1.2 2002/05/10 03:09:20 slotzero Exp $
 
 /*
 
@@ -605,7 +605,7 @@ float ()
 CheckAnyAttack =
 {
 	if (!enemy_vis)
-		return;
+		return FALSE;
 //nomonster	if (self.classname == "monster_army")
 //nomonster		return SoldierCheckAttack ();
 //nomonster	if (self.classname == "monster_ogre")

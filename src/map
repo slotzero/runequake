@@ -1,7 +1,7 @@
 #!/usr/bin/perl5 -w
 use strict;
 
-# $Id: map,v 1.1 2002/02/21 21:47:54 slotzero Exp $
+# $Id: map,v 1.2 2002/05/10 03:09:21 slotzero Exp $
 #
 # Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 # See the file `Copying' in the distribution for terms.
@@ -92,6 +92,7 @@ for my $size (1..$#lev)
 	print "\tif (levsize == $size) return $max;\n";
 }
 print "\terror (\"invalid arg\");\n";
+print "\treturn FALSE;\n";
 print "};\n";
 
 print "\n";
@@ -110,7 +111,9 @@ for my $size (1..$#lev)
 	print "\t}\n";
 }
 print "\terror (\"invalid arg\");\n";
+print "\treturn \"invalid arg\";\n";
 print "};\n";
+
 
 print "\n";
 print "float (string m)\n";
@@ -149,6 +152,7 @@ for my $map (keys %wan, keys %lan)
 	print "\tif (i $cmp $i) return \"$map\";\n";
 }
 print "\terror (\"invalid map number\");\n";
+print "\treturn \"invalid map number\";\n";
 print "};\n";
 
 print "\n";

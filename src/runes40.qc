@@ -1,4 +1,4 @@
-// $Id: runes40.qc,v 1.5 2002/04/26 01:40:03 slotzero Exp $
+// $Id: runes40.qc,v 1.6 2002/05/10 03:09:23 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -76,7 +76,7 @@ Ball_Move =
 };
 
 // For the final balls
-void (vector org, entity master)
+void (entity master)
 Ball_Spawn =
 {
 	local entity temp;
@@ -146,7 +146,7 @@ Cloud_Bye =
 	n = 0;
 	while (n < 15)
 	{
-		Ball_Spawn (self.origin, self.owner);
+		Ball_Spawn (self.owner);
 		n = n + 1;
 	}
 
@@ -501,8 +501,10 @@ Weird_AllOff =
 void ()
 Weird_Think =
 {
-	local float r;
-	local vector o;
+	IN_QW([-
+		local float r;
+		local vector o;
+	-])
 
 	// Stop EP suit and rune from burning.
 	if (environmental (self.runent))
@@ -695,8 +697,8 @@ Weird_Touch =
 		other_desc = "I'M BLIND! I'M BLIND!";
 	}
 
-	centerprint3 (other, " Hit by weirdness! \n",
-		"žžžžžžžžžžžžžžžžžžžžŸ\n",
+	centerprint3 (other, "Å Hit by weirdness! Å\n",
+		"¥PPPPPPPPPPPPPPPPPPPPƒ\n",
 		other_desc);
 
 	sprint (self.owner, "You weirded out ");

@@ -1,4 +1,4 @@
-// $Id: runes30.qc,v 1.4 2002/04/22 02:45:13 slotzero Exp $
+// $Id: runes30.qc,v 1.5 2002/05/10 03:09:23 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -68,9 +68,9 @@ Radio_Think =
 					}
 				}
 				else if (head.runetype == RN_RADIO)
-					0; // do nothing
+					SUB_Null ();
 				else if (head.radsuit_finished > time)
-					0; // do nothing
+					SUB_Null ();
 				else
 				{
 					if (T_Damage (head, self, self.owner,
@@ -78,7 +78,7 @@ Radio_Think =
 							"radioactive")
 							&& head.classname
 								== "player")
-						sprint (head, "ç This area is radioactive!\n");
+						sprint (head, "Ï This area is radioactive!\n");
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-// $Id: client.qc,v 1.3 2002/03/13 02:25:07 slotzero Exp $
+// $Id: client.qc,v 1.4 2002/05/10 03:09:21 slotzero Exp $
 
 float modelindex_eyes, modelindex_player;
 
@@ -194,6 +194,7 @@ FindIntermission =
 		return spot;
 
 	objerror ("FindIntermission: no spot");
+	return world;
 };
 
 string nextmap;
@@ -520,6 +521,9 @@ ClientKill =
 float (vector v)
 CheckSpawnPoint =
 {
+	dprint_vec (v);
+	dprint ("\n");
+
 	return FALSE;
 };
 
@@ -610,9 +614,9 @@ SelectSpawnPoint =
 ValidateUser
 ============
 */
-float(entity e) ValidateUser =
+/* float(entity e) ValidateUser =
 {
-/*
+
 	local string    s;
 	local string    userclan;
 	local float     rank, rankmin, rankmax;
@@ -656,8 +660,8 @@ float(entity e) ValidateUser =
 	}
 
 	return true;
-*/
 };
+*/
 
 /*
 ===========
@@ -998,7 +1002,7 @@ PlayerDeathThink =
 
 	// Warn phoenix users.
 	if (self.runetype == RN_PHOENIX)
-		centerprint (self, "ù˜·ÚÓÈÓÁü\nphoenix rune detected\nuse jump to respawn");
+		centerprint (self, "•òﬂ=eTetÉ\nphoenix rune detected\nuse jump to respawn");
 
 	if (self.flags & FL_ONGROUND)
 	{
@@ -1017,7 +1021,7 @@ PlayerDeathThink =
 		if (!self.volume)
 			self.volume = time + AUTO_CORPSE_OBSERVER;
 		else if (time <= self.volume)
-			0;
+			SUB_Null ();
 		else
 		{
 			if (corpse_to_observer (2))

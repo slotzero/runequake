@@ -1,4 +1,4 @@
-// $Id: observer.qc,v 1.6 2002/04/27 00:51:03 slotzero Exp $
+// $Id: observer.qc,v 1.7 2002/05/10 03:09:22 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -300,11 +300,7 @@ obs_pre_think =
 	// XXX server-modules does this, I don't know why
 	self.flags = self.flags | FL_ONGROUND;
 
-	if (self.owner)
-	{
-		0;
-	}
-	else
+	if (!self.owner)
 	{
 		if (self.button2)
 			self.velocity_z = self.velocity_z + 270;
@@ -575,7 +571,7 @@ obs_player_detect =
 	local float area, refresh;
 	local vector vec;
 	local string s, s1, s2, s3;
-	
+
 	if (self.model != string_null)
 		s3 = "\nvisible eyes";
 	else

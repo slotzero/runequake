@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.12 2002/04/27 03:15:45 slotzero Exp $
+// $Id: rjs.qc,v 1.13 2002/05/10 03:09:22 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -47,7 +47,7 @@ countdown_timer =
 		else
 			s2 = " minute";
 
-		bprint5 (" ", s, s2, s3, " remaining\n");
+		bprint5 ("8 ", s, s2, s3, " remaining\n");
 		if (timer == 2)
 			sound (self, CHAN_BODY, "misc/talk.wav", 1, ATTN_NONE);
 	}
@@ -96,7 +96,7 @@ observer_sound =
 		// rejects play as a valid command.  I should add
 		// a bit setting to aqflags to distinguish qsmack
 		// init_* from the manual self.impulses.
-	
+
 		if (is_observer_e (e) && e.netname != string_null)
 			self_sound (e, samp);
 
@@ -291,7 +291,7 @@ process_cvars =
 // If E's health is > E.max_health, decay it by up to AMOUNT and return
 // true.  Else, return false.  XXX Assumes you're doing 1 decay a second.
 
-void (entity e, float amt)
+float (entity e, float amt)
 decay_health =
 {
 	if (e.health <= e.max_health)
@@ -309,24 +309,27 @@ decay_health =
 
 // Decay E's health down to E.max_health at RATE points per second.
 
-float (entity e, float rate)
+void (entity e, float rate)
 decay_health_spawn =
 {
 	local entity this;
 
 	if (e.runetype == RN_VAMP)
 		return;
+
 	if (e.health <= e.max_health)
 		return;
+
 	if (e.items & IT_SUPERHEALTH)
 		return;
-	e.items = e.items | IT_SUPERHEALTH;
 
-	this = spawn ();
-	this.owner = e;
-	this.runevar = rate;
-	this.think = decay_health_think;
-	this.nextthink = time + 1;
+	e.items		= e.items | IT_SUPERHEALTH;
+
+	this		= spawn ();
+	this.owner	= e;
+	this.runevar	= rate;
+	this.think	= decay_health_think;
+	this.nextthink	= time + 1;
 };
 
 void ()
@@ -440,12 +443,13 @@ string (float n)
 weaponnum_to_class =
 {
 	if (n == 3) return "weapon_supershotgun";
-	if (n == 4) return "weapon_nailgun";
-	if (n == 5) return "weapon_supernailgun";
-	if (n == 6) return "weapon_grenadelauncher";
-	if (n == 7) return "weapon_rocketlauncher";
-	if (n == 8) return "weapon_lightning";
+	else if (n == 4) return "weapon_nailgun";
+	else if (n == 5) return "weapon_supernailgun";
+	else if (n == 6) return "weapon_grenadelauncher";
+	else if (n == 7) return "weapon_rocketlauncher";
+	else if (n == 8) return "weapon_lightning";
 	error ("invalid weapon number");
+	return "invalid_weapon_number";
 };
 
 void (float n)
@@ -2349,6 +2353,7 @@ find_spawn_point_class =
 		}
 		e = find (e, classname, targ_class);
 	}
+	return world;
 };
 
 void ()
@@ -2508,7 +2513,6 @@ CycleWeaponReverseCommand =
 void (float force)
 draw_hud =
 {
-	local vector p1, p2;
 	local string weap, willdrop, lithhook, runedesc;
 
 	if (self.aqflags & AQ_NO_HUD)
@@ -2542,7 +2546,7 @@ draw_hud =
 		else
 			lithhook = "     ";
 		if (self.runetype != 0 && self.dropdelay < 0)
-			willdrop = "Ä";
+			willdrop = "-";
 		else
 			willdrop = " ";
 		runedesc = Rune_Tell_real (0, self.runetype, 0, 1);
@@ -3068,7 +3072,7 @@ is_pet =
 	return is_pet_e (self);
 };
 
-float (entity attacker, entity targ, float d)
+void (entity attacker, entity targ, float d)
 see_damage =
 {
 	local float idir;

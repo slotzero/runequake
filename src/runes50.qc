@@ -1,4 +1,4 @@
-// $Id: runes50.qc,v 1.2 2002/03/02 20:12:18 slotzero Exp $
+// $Id: runes50.qc,v 1.3 2002/05/10 03:09:23 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -348,7 +348,7 @@ Torch_Trap_Touch =
 				self.owner.netname,
 				// fastqcc chokes on "!"
 				"! ");
-	
+
 		if (other.health > 0)
 		{
 			sprint (self.owner, other.netname);
@@ -602,7 +602,7 @@ good_armor_set_armor_items_e =
 			+ bit;
 };
 
-void (entity e, float amt)
+float (entity e, float amt)
 decay_armor =
 {
 	local float max;
@@ -623,7 +623,7 @@ decay_armor =
 
 // Decay E's armor down to her max at RATE points per second.
 
-float (entity e, float rate)
+void (entity e, float rate)
 decay_armor_spawn =
 {
 	local float max;

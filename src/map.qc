@@ -1,4 +1,4 @@
-// $Id: map.qc,v 1.1 2002/02/21 21:47:55 slotzero Exp $
+// $Id: map.qc,v 1.2 2002/05/10 03:09:22 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -236,7 +236,7 @@ allowed_map =
 	return i;
 };
 
-string ()
+float ()
 select_map_ignores_serverflags =
 {
 	return noexit & (NOEXIT_CHOOSE_BY_NPLAYERS | NOEXIT_RANDOMIZE);

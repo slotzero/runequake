@@ -1,4 +1,4 @@
-// $Id: combat.qc,v 1.3 2002/04/24 02:10:57 slotzero Exp $
+// $Id: combat.qc,v 1.4 2002/05/10 03:09:21 slotzero Exp $
 
 /*
 ============
@@ -246,7 +246,8 @@ T_Damage =
 		}
 	}
 
-	if (0)
+	// debug
+	/* if (0)
 	{
 		bprint_float (time);
 		bprint (" ");
@@ -260,6 +261,7 @@ T_Damage =
 		bprint ("\n");
 		return;
 	}
+	*/
 
 	damage_inflictor = inflictor;
 
@@ -298,14 +300,14 @@ T_Damage =
 			&& targ.team > 0
 			&& targ.team == attacker.team
 			&& dtype != "kamiself")
-		0;
+		SUB_Null ();
 	else if (teamplay & TEAM_ARMOR_PROT
 			&& targ.team > 0
 			&& targ.team == attacker.team
 			&& targ != attacker)
-		0;
+		SUB_Null ();
 	else if (targ.armorvalue == 0)
-		0;
+		SUB_Null ();
 	else if (attacker.runetype == RN_PIERCING)
 		sound (targ, CHAN_AUTO, "weapons/ric1.wav", 1, ATTN_NORM);
 	else
@@ -340,7 +342,7 @@ T_Damage =
 			else
 				save = save - 1;
 		}
-	
+
 		targ.armorvalue = targ.armorvalue - save;
 		if (targ.runetype == RN_ARMOR)
 			good_armor_set_armor_items_e (targ);
