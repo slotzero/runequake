@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.103 2004/06/28 05:33:43 slotzero Exp $
+/*  $Id: rjs.qc,v 1.104 2004/06/28 09:04:01 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -356,6 +356,7 @@ decay_health_spawn =
 
 	this		= spawn ();
 	this.owner	= e;
+	this.classname	= "decay_health";
 	this.runevar	= rate;
 	this.think	= decay_health_think;
 	this.nextthink	= time + 1;

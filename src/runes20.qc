@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.20 2004/06/23 03:39:55 slotzero Exp $
+/*  $Id: runes20.qc,v 1.21 2004/06/28 09:04:02 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -761,11 +761,23 @@ Vamp_Spawn =
 {
 	local entity e;
 
-	e = spawn ();
-	e.owner = self;
-	e.classname = "vampthink";
-	e.think = Vamp_Think;
-	e.nextthink = time;
+	e = find (world, classname, "decay_health");
+	while (e)
+	{
+		if (e.owner == self)
+		{
+			if (e.owner.items & IT_SUPERHEALTH)
+				e.owner.items = e.owner.items - e.owner.items & IT_SUPERHEALTH;
+			remove (e);
+		}
+		e = find (e, classname, "decay_health");
+	}
+
+	e		= spawn ();
+	e.owner		= self;
+	e.classname	= "vampthink";
+	e.think		= Vamp_Think;
+	e.nextthink	= time;
 };
 
 void (entity vamp, entity victim, float damage)
