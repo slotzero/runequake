@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.69 2004/07/09 06:54:55 slotzero Exp $
+/*  $Id: develop.qc,v 1.70 2004/07/11 09:24:48 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -71,6 +71,47 @@ maxplayers =
 		e = nextent (e);
 	}
 	return 16;
+};
+
+void ()
+ring_on =
+{
+	local entity e;
+
+	e = find (world, classname, "item_artifact_invisibility");
+	while (e)
+	{
+				e = find (e, #, #);
+	}
+};
+
+void (string type, float mode)
+toggle_powerup =
+{
+	local entity e;
+
+	e = find (world, classname, type);
+	while (e)
+	{
+		if (mode)
+		{
+			e.nextthink	= time;
+			e.think		= SUB_regen;
+		}
+		else
+		{
+			e.solid		= SOLID_NOT;
+			e.model		= string_null;
+			e.nextthink	= -1;
+		}
+		e = find (e, classname, type);
+	}
+};
+
+void ()
+setquad =
+{
+	// Find out what mode quad is in...
 };
 
 void ()
