@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.10 2003/06/01 08:51:18 slotzero Exp $
+/*  $Id: develop.qc,v 1.11 2003/06/03 20:53:17 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -24,6 +24,108 @@ Test_Button =
 {
 	SUB_Null ();
 };
+
+float (string ch)
+ctof =
+{
+	local float i;
+
+	for (i = %0; i < %10; i = i + %1)
+	{
+		if (ch == hex[i * 2])
+			return i / %1;
+	}
+
+	return -1;
+};
+
+float (float n)
+eval_exponent =
+{
+	local float i;
+
+	for (i = 1; n > 1; n = n - 1)
+		i = i * 10;
+
+	return i;
+};
+
+float (string s)
+prepare_stof =
+{
+	local float i, cmp, ps, pch, n, n_tot, n_frac;
+	local string s_clean, ch;
+
+	ps = AddInt (AddInt (&s, PSTRING_TO_PQUAKEC), %-3);
+	pch = AddInt (&"xxxx", PSTRING_TO_PQUAKEC);
+
+	cmp = strlen (s);
+	for (i = 0; i < cmp; i = i + 1)
+	{
+		(*pch)[%0] = (*ps)[%0];
+		pch = AddInt (pch, %3);
+
+		ch = @AddInt (pch, PQUAKEC_TO_PSTRING);
+		if (ch == ".")
+		{
+			n_frac = n_tot;
+			n = -1;
+		}
+		else
+			n = ctof (ch);
+
+		if (n != -1)
+		{
+			ch = @AddInt (pch, PQUAKEC_TO_PSTRING);
+			s_clean = strcat (s_clean, ch);
+			n_tot = n_tot + 1;
+		}
+
+		pch = AddInt (pch, %-3);
+		ps = AddInt (ps, %1);
+	}
+
+	if (n_frac)
+	{
+		n_frac = n_tot - n_frac;
+		n_frac = eval_exponent (n_frac + 1);
+	}
+
+	n_tot = stof (s_clean);
+
+	if (n_frac)
+		n_tot = n_tot / n_frac;
+
+	return n_tot;
+};
+
+IN_POQ([-
+float (string s)
+stof =
+{
+	local float i, ps, pch, cmp, x, n, sum;
+
+	ps = AddInt (AddInt (&s, PSTRING_TO_PQUAKEC), %-3);
+	pch = AddInt (&"xxxx", PSTRING_TO_PQUAKEC);
+
+	cmp = x = strlen (s);
+	for (i = 0; i < cmp; i = i + 1)
+	{
+		(*pch)[%0] = (*ps)[%0];
+		pch = AddInt (pch, %3);
+
+		n = ctof (@AddInt (pch, PQUAKEC_TO_PSTRING));
+		n = n * (eval_exponent (x));
+		sum = sum + n;
+
+		pch = AddInt (pch, %-3);
+		ps = AddInt (ps, %1);
+		x = x - 1;
+	}
+
+	return sum;
+};
+-])
 
 string (float type, float offset)
 Read_Hunk =
