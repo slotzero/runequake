@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.32 2005/01/17 22:07:33 slotzero Exp $
+/*  $Id: combat.qc,v 1.33 2005/04/04 20:41:15 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -217,7 +217,8 @@ T_Damage =
 				dtype == "lavagun" ||
 				dtype == "flamethrower" ||
 				dtype == "kamikaze" ||
-				// dtype == "teledeath" ||
+				dtype == "kamikilled" ||
+				dtype == "spikeball" ||
 				dtype == "dspotexplode" ||
 				dtype == "ftrapexplode"))
 			damage = 0;
