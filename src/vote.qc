@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.51 2005/01/08 04:20:12 slotzero Exp $
+/*  $Id: vote.qc,v 1.52 2005/01/31 02:14:48 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -40,7 +40,13 @@ void ()
 vote_impulse_commands =
 {
 	if (is_observer ())
-		count_votes (2);
+	{
+		// allow in-game queued players to vote in arena mode
+		if (mode_arena () && self.runevar)
+			vote ();
+		else
+			count_votes (2);
+	}
 	else if (self.impulse >= 1 && self.impulse <= 18)
 		vote ();
 
@@ -170,7 +176,7 @@ float (float type)
 count_votes =
 {
 	local entity e, vip;
-	local float tot, lack, need, voted, no, is_queue;
+	local float i, tot, lack, need, voted, no, is_queue;
 
 	vip = find_vip ();
 	if (!vip)
@@ -188,7 +194,15 @@ count_votes =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		if (is_player_e (e))
+		i = 0;
+		// count in-game queued players in arena mode
+		if (mode_arena ())
+		{
+			if (is_observer_e (e) && e.runevar)
+				i = 1;
+		}
+
+		if (is_player_e (e) || i)
 		{
 			tot = tot + 1;
 			if (e.vote_flags & VOTE_YES)
