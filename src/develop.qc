@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.27 2003/07/03 20:51:30 slotzero Exp $
+/*  $Id: develop.qc,v 1.28 2003/07/03 23:04:32 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -41,6 +41,7 @@ Ban_Client_Level =
 void ()
 Log_Client =
 {
+	IN_QW(return;)
 	local float i, offset;
 	local string s;
 
@@ -72,6 +73,7 @@ Log_Client =
 void ()
 Read_Log =
 {
+	IN_QW(return;)
 	local float i, offset, last, real;
 	local string name, display;
 

@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.1 2003/07/03 20:50:00 slotzero Exp $
+/*  $Id: hunked.qc,v 1.2 2003/07/03 23:04:32 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -28,6 +28,7 @@ float LAST_TIME_UPDATE;
 float ()
 elapsed_time =
 {
+	IN_QW(return;)
 	local float i, max, offset;
 	local string s;
 
