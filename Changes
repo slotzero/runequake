@@ -1,12 +1,15 @@
-$Id: Changes,v 1.34 2002/08/23 23:55:09 slotzero Exp $
+$Id: Changes,v 1.35 2002/09/07 16:20:12 slotzero Exp $
 
-Version 0.5.3  Fri Aug 23 14:58:07 EST 2002
+Version 0.5.3  Sat Sep 07 09:18:36 EST 2002
 
     - Bug Fixes
 
+        - [QUAKEWORLD] "The electric rune would occasionally crash the server
+          when killing an opponent." [fixed]
+
         - I added misc_touch() which checks players, monsters, and radioactive
           containers for players on its surface.  This allows players to stand
-          on or jump instead of just sliding with no ability to move.
+          on or jump instead of sliding with no ability to move.
 
         - There are times when a zombie can't get up.  If this occurs for
           longer than 30 seconds, I force zombie_die().
