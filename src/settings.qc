@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.31 2004/04/05 20:43:08 slotzero Exp $
+/*  $Id: settings.qc,v 1.32 2004/04/09 01:15:58 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -384,6 +384,11 @@ float TIMELIMIT_COUNTDOWN	= 0;
 // For all powerups, add 1 + 2 + 4 + 8 = 15.
 
 float POWERUP_PICKUP_WARN	= 0;
+
+// Set the number the maximum number of entries to log when using
+// the 'last' command.  Use 0 to disable.
+
+float MAX_CLIENT_DISCONNECT_LOG	= 10;
 
 //-----------------------------------------------------------------------------
 // Weapons

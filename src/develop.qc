@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.52 2004/02/29 02:46:25 slotzero Exp $
+/*  $Id: develop.qc,v 1.53 2004/04/09 01:15:57 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -94,21 +94,18 @@ Log_Client_Disconnect =
 	local float i, n, max, offset, e_time, elapsed;
 	local string e_name;
 
-	// hunk offset [must match Client_Disconnect_Log]
-	offset = %100;	// position in hunk
-	max = n = %9;	// length of list (actual length is + 1)
+	if (MAX_CLIENT_DISCONNECT_LOG < 1)
+		return;
 
-	elapsed = server_time ();
+	offset	= HUNK_CLIENT_DISCONNECT;
+	max 	= n = (MAX_CLIENT_DISCONNECT_LOG - 1) * %1;
+	elapsed	= server_time ();
 
 	for (i = max; i >= %0; i = i - %1)
 	{
 		e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 6), 16);
 		if (e_name == self.netname)
-		{
-			Write_Hunk_Max (HUNK_CONTEXT, offset + (i * 6), "removed", 8);
-			Write_Hunk_Float (HUNK_CONTEXT, offset + %4 + (i * 6), 0);
 			n = i;
-		}
 	}
 
 	if (n != max)
@@ -135,9 +132,14 @@ Client_Disconnect_Log =
 	local float i, max, offset, e_time, e_away, server_t;
 	local string e_name;
 
-	// hunk offset [must match Log_Client_Disconnect]
-	offset = %100;	// position in hunk
-	max = %9;	// length of list (actual length is + 1)
+	if (MAX_CLIENT_DISCONNECT_LOG < 1)
+	{
+		self_sprint (self, "The \blast\b command has been disabled.\n");
+		return;
+	}
+
+	offset	= HUNK_CLIENT_DISCONNECT;
+	max 	= (MAX_CLIENT_DISCONNECT_LOG - 1) * %1;
 
 	self_sprint (self, "\n");
 	self_sprintf_len (self, "Name", -16);
