@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.29 2004/07/09 01:16:57 slotzero Exp $
+/*  $Id: observer.qc,v 1.30 2004/07/09 07:15:07 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -109,8 +109,10 @@ dead_impulses =
 {
 	if (self.aqstate & AQS_IMPOVER_MASK)
 		impulse_override ();
+
 	else if (self.impulse == 4)
 		corpse_to_observer (1);
+
 	// Allow dead people to remove a phoenix rune, to avoid somebody
 	// waiting for them to spawn.
 	else if (self.impulse == IMP_RUNE_DELETE && self.runetype == RN_PHOENIX)
@@ -118,12 +120,10 @@ dead_impulses =
 		self.runetype = 0;
 		centerprint (self, "Rune Removed");
 	}
-	else if (self.impulse == IMP_VOTE_YES)
-		vote_yes ();
-	else if (self.impulse >= 209 && self.impulse <= 219)
-		vote ();
+
 	else
 		common_impulses ();
+
 	self.impulse = 0;
 };
 
@@ -233,6 +233,7 @@ obs_impulses =
 			else
 				aq_menu_set (AQS_MENU_MAIN);
 		}
+
 		// This command, which would more naturally come after the
 		// credits, is purposefully left on key 2.  This is to cater
 		// to people who have weapons sensing commands bound to the
@@ -241,13 +242,16 @@ obs_impulses =
 		// selects the shotgun.
 		else if (self.impulse == 2)
 			obs_join_game (self.aqflags & AQ_ADMIN);
+
 		else if (self.impulse == 3)
 			aq_menu_set (AQS_MENU_CREDITS);
+
 		else if (self.impulse == 4)
 		{
 			aq_menu_set (0);
 			obs_rider_off (1);
 		}
+
 		else if (self.impulse == 5)
 		{
 			aq_menu_set (0);
@@ -256,6 +260,7 @@ obs_impulses =
 			if (!m || self.owner == world)
 				obs_rider_next ();
 		}
+
 		else if (self.impulse == 6)
 		{
 			if (self.aqflags & AQ_ADMIN)
@@ -263,19 +268,24 @@ obs_impulses =
 			else
 				admin_toggle (1, 0);
 		}
+
 		else if (self.impulse == 7)
 		{
 			self.impulse = IMP_WEAPON_TOGGLES;
 			common_impulses ();
 		}
+
 		else if (self.impulse == 8)
 			bind_keys ();
+
 		else if (self.impulse == IMP_RUNE_TELL && self.owner != world)
 			rune_tell_toggle (0, self.owner);
+
 		else if (self.impulse >= 209 && self.impulse <= 219
 				|| self.impulse == IMP_VOTE_YES
 				|| self.impulse == IMP_VOTE_NO)
 			count_votes (2);
+
 		else
 			common_impulses ();
 	}

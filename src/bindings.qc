@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.35 2004/07/09 06:10:02 slotzero Exp $
+/*  $Id: bindings.qc,v 1.36 2004/07/09 07:15:06 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -193,6 +193,7 @@ player_aliases =
 	player_init_impulse_alias ("show-pos",			IMP_SHOW_POS);
 	player_init_impulse_alias ("show-riders",		IMP_SHOW_RIDERS);
 	player_init_impulse_alias ("show-settings",		IMP_SHOW_SETTINGS);
+	player_init_impulse_alias ("show-votes",		IMP_SHOW_VOTES);
 	player_init_impulse_alias ("team-change",		IMP_TEAM_ROTATE);
 	player_init_impulse_alias ("team-stats",		IMP_TEAM_STATS);
 	player_init_impulse_alias ("vote-exit",			IMP_VOTE_EXIT);

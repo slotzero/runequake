@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.97 2004/07/09 06:10:02 slotzero Exp $
+/*  $Id: defs.qc,v 1.98 2004/07/09 07:15:06 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -535,7 +535,7 @@ float IMP_HOOK_ON		= 88;
 float IMP_HOOK_OFF		= 87;
 float IMP_WEAPON_MODE		= 86;
 float IMP_ADMIN_COMMAND		= 85;
-//				= 84;		[free]
+float IMP_SHOW_VOTES		= 84;
 float IMP_DISP_INFO_ALL		= 83;
 float IMP_REMOVE_FRAGS		= 82;
 float IMP_HUD_TOGGLE		= 81;

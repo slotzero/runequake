@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.126 2004/07/09 06:47:07 slotzero Exp $
+/*  $Id: rjs.qc,v 1.127 2004/07/09 07:15:07 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1112,6 +1112,16 @@ common_impulses =
 	else if (self.impulse == IMP_COMMANDS)
 		commands ();
 
+	else if (self.impulse == IMP_VOTE_YES)
+		vote_yes ();
+
+	else if (self.impulse == IMP_VOTE_NO)
+		vote_no ();
+
+	// XXX I hard coded the vote impulses to reduce the amount of impulse checks
+	else if (self.impulse >= 209 && self.impulse <= 219)
+		vote ();
+
 	else if (self.impulse == IMP_LEVELS)
 		levels ();
 
@@ -1123,6 +1133,9 @@ common_impulses =
 
 	else if (self.impulse == IMP_LAST)
 		Client_Disconnect_Log ();
+
+	else if (self.impulse == IMP_SHOW_VOTES)
+		show_votes ();
 
 	else if (self.impulse == IMP_RIDER_HIDE)
 	{

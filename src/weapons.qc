@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.41 2004/07/09 06:10:02 slotzero Exp $
+/*  $Id: weapons.qc,v 1.42 2004/07/09 07:15:07 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1390,16 +1390,6 @@ ImpulseCommands =
 		self.impulse = self.impulse - IMP_WEAPON_BASE + IMP_WEAPON_START;
 		W_ChangeWeapon (0, 1);
 	}
-
-	else if (self.impulse == IMP_VOTE_YES)
-		vote_yes ();
-
-	else if (self.impulse == IMP_VOTE_NO)
-		vote_no ();
-
-	// I hard coded the vote impulses to reduce the amount of impulse checks
-	else if (self.impulse >= 209 && self.impulse <= 219)
-		vote ();
 
 	else
 		common_impulses ();
