@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.46 2004/12/27 05:01:37 slotzero Exp $
+/*  $Id: vote.qc,v 1.47 2004/12/28 08:18:28 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -244,6 +244,8 @@ toyo_bot =
 void ()
 vote_think =
 {
+	local entity e;
+
 	IN_POQ([-
 		local string s;
 		// poq prevent crashing error
@@ -263,7 +265,7 @@ vote_think =
 	if (self.runevar)
 	{
 		IN_POQ([-
-			// poq broadcast
+			// poq
 			s = allocate_string_size (64);
 			s = "\{1}Request to ";
 			if (self.noise1)
@@ -272,22 +274,38 @@ vote_think =
 				s = strcat (s, self.noise2);
 			if (self.noise3)
 				s = strcat (s, self.noise3);
-
-			bprint (s);
-		-], [-
-			// qw broadcast
-			bprint ("\{1}");
-			bprint ("Request to ");
-			if (self.noise1)
-				bprint (self.noise1);
-			if (self.noise2)
-				bprint (self.noise2);
-			if (self.noise3)
-				bprint (self.noise3);
 		-])
-
-		// all
-		bprint ("\ntype 'yes' or 'no' in console to vote\n");
+			e = find (world, classname, "player");
+			while (e)
+			{
+				if (!e.vote_flags & (VOTE_LAST_YES | VOTE_LAST_NO) || self.runevar == 3)
+				{
+				IN_POQ([-
+					// poq
+					self_sprint (e, s);
+				-], [-
+					// qw
+					self_sprint (e, "\{1}");
+					self_sprint (e, "Request to ");
+					if (self.noise1)
+						self_sprint (e, self.noise1);
+					if (self.noise2)
+						self_sprint (e, self.noise2);
+					if (self.noise3)
+						self_sprint (e, self.noise3);
+				-])
+					// all
+					if (e == self.owner)
+						self_sprint (e, "\ntype 'no' to recall your vote\n");
+					else if (e.vote_flags & VOTE_LAST_YES)
+						self_sprint (e, "\nauto vote 'yes', type 'no' to recall\n");
+					else if (e.vote_flags & VOTE_LAST_NO)
+						self_sprint (e, "\nauto vote 'no', type 'yes' to recall\n");
+					else
+						self_sprint (e, "\ntype 'yes' or 'no' in console to vote\n");
+				}
+				e = find (e, classname, "player");
+			}
 
 		// Feature request for Toyo.  XXX Remove this at some point?
 		if (self.impulse == IMP_VOTE_EXIT && !forced_nextmap && self.runevar == 3)
