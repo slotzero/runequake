@@ -1,4 +1,4 @@
-// $Id: combat.qc,v 1.2 2002/03/02 20:12:16 slotzero Exp $
+// $Id: combat.qc,v 1.3 2002/04/24 02:10:57 slotzero Exp $
 
 /*
 ============
@@ -23,20 +23,31 @@ CanDamage =
 		return FALSE;
 	}
 
+	// XXX If traceline() doesn't encounter an obstacle,
+	// trace_fraction is suppose to return 1; however;
+	// when an entity is forced inside a platform,
+	// trace_traction always returns 1 and causes
+	// all entites (within the radius) to be affected.
+	//
+	// Under the assumption that trace_ent should always
+	// return world when no obstacle is encountered, I've
+	// worked around the problem by checking trace_ent for
+	// world when trace_fraction is 1.
+
 	traceline (inflictor.origin, targ.origin, TRUE, self);
-	if (trace_fraction == 1)
+	if (trace_fraction == 1 && trace_ent == world)
 		return TRUE;
 	traceline (inflictor.origin, targ.origin + '15 15 0', TRUE, self);
-	if (trace_fraction == 1)
+	if (trace_fraction == 1 && trace_ent == world)
 		return TRUE;
 	traceline (inflictor.origin, targ.origin + '-15 -15 0', TRUE, self);
-	if (trace_fraction == 1)
+	if (trace_fraction == 1 && trace_ent == world)
 		return TRUE;
 	traceline (inflictor.origin, targ.origin + '-15 15 0', TRUE, self);
-	if (trace_fraction == 1)
+	if (trace_fraction == 1 && trace_ent == world)
 		return TRUE;
 	traceline (inflictor.origin, targ.origin + '15 -15 0', TRUE, self);
-	if (trace_fraction == 1)
+	if (trace_fraction == 1 && trace_ent == world)
 		return TRUE;
 
 	return FALSE;

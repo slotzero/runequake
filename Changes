@@ -1,8 +1,12 @@
-$Id: Changes,v 1.7 2002/04/22 02:45:00 slotzero Exp $
+$Id: Changes,v 1.8 2002/04/24 02:10:36 slotzero Exp $
 
 Version 0.3  Sat Apr 20 21:44:23 EST 2002
 
     - Bug Fixes
+
+    	- Bombs placed under a lift while the lift is down causes the
+	  explosion to be felt on a good portion of the level.  This
+	  is fixed.
 
     	- When a frozen shambler has exhausted its health, Freeze_Frozen()
 	  forces her origin back to the freeze trap.  This is fixed.
