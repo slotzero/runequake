@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.54 2004/06/26 05:25:50 slotzero Exp $
+/*  $Id: client.qc,v 1.55 2004/07/03 03:00:08 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1783,11 +1783,6 @@ void ()
 ClientDisconnect =
 {
 	qsmack_status_valid = 0;
-
-	if (gameover)
-		return;
-	// if the level end trigger has been activated, just return
-	// since they aren't *really* leaving
 
 	// let everyone else know
 	if (!self.aqstate & AQS_FORWARDED)
