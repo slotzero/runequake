@@ -1,4 +1,4 @@
-/*  $Id: attic.qc,v 1.4 2003/06/24 22:17:34 slotzero Exp $
+/*  $Id: attic.qc,v 1.5 2004/06/24 23:51:11 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -273,3 +273,59 @@ player_spawn_distance =
 	}
 	return min_dist;
 };
+
+//============================================================================
+
+/*
+===========
+ChangeYaw
+
+Turns towards self.ideal_yaw at self.yaw_speed
+Sets the global variable current_yaw
+Called every sys_ticrate sec by monsters
+============
+*/
+/*
+
+void ()
+ChangeYaw =
+{
+	local floa ideal, move;
+
+	//current_yaw = self.ideal_yaw;
+	// mod down the current angle
+	current_yaw = anglemod (self.angles_y);
+	ideal = self.ideal_yaw;
+
+	if (current_yaw == ideal)
+		return;
+
+	move = ideal - current_yaw;
+	if (ideal > current_yaw)
+	{
+		if (move > 180)
+			move = move - 360;
+	}
+	else
+	{
+		if (move < -180)
+			move = move + 360;
+	}
+
+	if (move > 0)
+	{
+		if (move > self.yaw_speed)
+			move = self.yaw_speed;
+	}
+	else
+	{
+		if (move < 0-self.yaw_speed)
+			move = 0-self.yaw_speed;
+	}
+
+	current_yaw = anglemod (current_yaw + move);
+
+	self.angles_y = current_yaw;
+};
+
+*/
