@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.146 2004/07/18 16:29:10 slotzero Exp $
+/*  $Id: rjs.qc,v 1.147 2004/07/20 12:46:48 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -344,6 +344,8 @@ process_misc =
 		setrunes ();
 	if (NO_ALT_WEAPONS)
 		setalts ();
+	if (NO_SPAWN_SHIELDS)
+		setshields ();
 
 	// vote-practice (always do this last)
 	if (deathmatch & DM_MODE_PRACTICE)
