@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.21 2003/07/11 03:58:10 slotzero Exp $
+/*  $Id: strman.qc,v 1.22 2003/12/27 06:47:33 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -31,13 +31,18 @@ strlen =
 {
 	local float i, ps;
 
-	/* i = %0;
+	// XXX Split these into separate functions.
+	IN_QW([-
+
+	i = %0;
 	while (i < %256)
  	{
 		if (s[i] == string_null)
 			return i / %1;
 		i = i + %1;
-	} */
+	}
+
+	-], [-
 
 	ps = AddInt (&s, PSTRING_TO_PQUAKEC);
 	for (i = 0; i < 256; i = i + 1)
@@ -48,6 +53,9 @@ strlen =
 	}
 
 	dprint ("strlen(): length > 255\n");
+
+	-])
+
 	return 0;
 };
 
