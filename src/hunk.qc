@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.27 2004/07/11 05:07:39 slotzero Exp $
+/*  $Id: hunk.qc,v 1.28 2004/07/12 06:47:37 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -105,7 +105,10 @@ Read_Hunk_Vector =
 		return VEC_ORIGIN;
 	}
 
-	v = hunk^[%0];
+	// XXX hunk^[0]	dies in frikqcc
+	v_x = hunk[%0];
+	v_y = hunk[%1];
+	v_z = hunk[%2];
 
 	return v;
 };
@@ -254,7 +257,10 @@ Write_Hunk_Vector =
 	if (!hunk)
 		return dprint ("Write_Hunk_Vector: hunk is null\n");
 
-	hunk^[%0] = v;
+	// XXX hunk^[0] dies in frikqcc
+	hunk[%0] = v_x;
+	hunk[%1] = v_y;
+	hunk[%2] = v_z;
 };
 
 void (float type, float offset, float f)
