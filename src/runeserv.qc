@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.52 2004/10/11 00:36:25 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.53 2004/10/17 16:54:04 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -150,7 +150,8 @@ Rune_Tell_real =
 		desc_s = " Enviro";
 
 		d1 = "Protection from some runes\n"
-			"Slime and lava give health";
+			"Slime and lava give health\n"
+			"Gravity reduced";
 	}
 	else if (type == RN_FLY)
 	{
@@ -726,6 +727,8 @@ Rune_Activate =
 		HookOff ();
 	else if (self.runetype == RN_MONK)
 		monk_trance_off ();
+	else if (self.runetype == RN_ENVIRO)
+		self.flags = self.flags - self.flags & FL_LIGHT;
 
 	self.max_health	= MAX_HEALTH_NORMAL;
 	self.movetype	= MOVETYPE_WALK;
@@ -813,6 +816,9 @@ Rune_Activate =
 				self.health = self.max_health;
 		}
 	}
+	else if (self.runetype == RN_ENVIRO)
+		self.flags = self.flags | FL_LIGHT;
+
 	else if (self.runetype == RN_FLY)
 	{
 		self.class_cnt = FLY_TIMER_DURATION;
