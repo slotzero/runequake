@@ -1,10 +1,6 @@
-$Id: Copying,v 1.2 2002/05/26 17:54:21 slotzero Exp $
+    $Id: Copying,v 1.3 2002/10/11 23:34:40 slotzero Exp $
 
-This distribution contains code from id software, and the Rune Quake
-Development Team.  Those parts which were not written by id software come
-under the following terms, where possible:
-
-    Copyright (C) 2001, 2002 Rune Quake Development Team.  All Rights Reserved.
+    Copyright (C) 2001, 2002 David G. Roberts.  All Rights Reserved.
 
     Permission is hereby granted, free of charge, to any person
     obtaining a copy of this software and associated documentation files
@@ -20,12 +16,12 @@ under the following terms, where possible:
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-    NONINFRINGEMENT.  IN NO EVENT SHALL SLOT ZERO BE LIABLE FOR
+    NONINFRINGEMENT.  IN NO EVENT SHALL DAVID G. ROBERTS BE LIABLE FOR
     ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
     CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-    Except as contained in this notice, the name Rune Quake Development Team
-    shall not be used in advertising or otherwise to promote the sale, use or
+    Except as contained in this notice, the name David G. Roberts shall
+    not be used in advertising or otherwise to promote the sale, use or
     other dealings in this Software without prior written authorization from
-    Slot Zero.
+    David G. Roberts.
