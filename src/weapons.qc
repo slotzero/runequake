@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.47 2004/07/19 05:58:26 slotzero Exp $
+/*  $Id: weapons.qc,v 1.48 2004/07/19 06:11:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -426,7 +426,7 @@ RocketDamageExplosion =
 void ()
 reflect_projectile =
 {
-	local entity os;
+	// local entity os;
 
 	if (self.velocity == VEC_ORIGIN)
 	{
@@ -436,7 +436,7 @@ reflect_projectile =
 	else
 		self.angles = vectoangles (self.velocity);
 
-	os = self;
+	/* os = self;
 	self = self.owner;
 	if (!W_CheckNoAmmo ())
 	{
@@ -445,7 +445,7 @@ reflect_projectile =
 		return;
 	}
 	use_ammo ();
-	self = os;
+	self = os; */
 
 	random_sound2 (self, CHAN_WEAPON, "weapons/ric2.wav", "weapons/ric3.wav", 1, ATTN_NORM);
 	create_te_explosion (self.origin, 0);
