@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.52 2003/07/09 04:07:04 slotzero Exp $
+/*  $Id: rjs.qc,v 1.53 2003/07/24 03:38:22 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2098,6 +2098,9 @@ void ()
 use_ammo =
 {
 	local float ammo_type, ammo;
+
+	if (deathmatch & DM_MODE_PRACTICE)
+		return;
 
 	ammo_type	= weapon_it_ammo_type (self.weapon);
 	ammo		= weapon_it_min_ammo (self.weapon);

@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.24 2003/06/24 22:17:39 slotzero Exp $
+/*  $Id: items.qc,v 1.25 2003/07/24 03:38:22 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -730,6 +730,9 @@ weapon_set =
 	if (!spawn_no_precache)
 		precache_model (it_model);
 
+	if (deathmatch & DM_MODE_PRACTICE)
+		return;
+
 	self.touch	= weapon_touch;
 	self.weapon	= it_weapon;
 	self.netname	= it_netname;
@@ -888,6 +891,9 @@ void (string it_model, float it_aflag, float it_weapon, string it_netname)
 ammo_set =
 {
 	precache_model (it_model);
+
+	if (deathmatch & DM_MODE_PRACTICE)
+		return;
 
 	self.touch	= ammo_touch;
 	self.aflag	= it_aflag;

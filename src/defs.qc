@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.36 2003/07/19 00:58:58 slotzero Exp $
+/*  $Id: defs.qc,v 1.37 2003/07/24 03:38:22 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -561,6 +561,7 @@ float DM_NO_ALT_WEAPONS		= 512;
 float DM_NO_DROP_ARMOR		= 1024;
 float DM_DAMAGE_MATCH		= 2048;
 float DM_RANDOM_POWERUP_RESPAWN	= 4096;
+float DM_MODE_PRACTICE		= 8192;
 
 // This mask includes the DM_* bits which indicates that the game is in
 // an actual deathmatch mode.  Bits other than these make sense in

@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.23 2003/07/08 05:12:33 slotzero Exp $
+/*  $Id: client.qc,v 1.24 2003/07/24 03:38:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -139,8 +139,45 @@ SetNewParms =
 };
 
 void ()
+DecodePracticeParms =
+{
+	self.items		= parm1 = IT_AXE | IT_SHOTGUN | IT_SUPER_SHOTGUN | IT_NAILGUN | IT_SUPER_NAILGUN
+						| IT_GRENADE_LAUNCHER | IT_ROCKET_LAUNCHER | IT_LIGHTNING
+						| IT_ARMOR3;
+	self.health		= MAX_HEALTH_NORMAL;
+	self.armorvalue		= MAX_ARMOR_3;
+	self.ammo_shells	= MAX_SHELLS;
+	self.ammo_nails		= MAX_NAILS;
+	self.ammo_rockets	= MAX_ROCKETS;
+	self.ammo_cells		= MAX_CELLS;
+
+	// Setting self.weapon is necessary because you retain your
+	// weapon setting across deaths.  If you die with the single
+	// shotgun set_weapon() won't do anything when this tries to set
+	// your weapon because it thinks you're already wielding that.
+	self.weapon = 0;
+	set_weapon (IT_ROCKET_LAUNCHER);
+
+	// XXX For some strange reason, multiplying parm9 by 0.01 returns
+	// the wrong value for red armor (0.79 instead of 0.80).  The result
+	// is picking up red armor when you don't need it.  I work around it
+	// by dividing by 100 instead.
+	self.armortype = ARMOR_TYPE_3;
+
+	Rune_Activate (parm10, 0);
+	self.aqflags		= parm11;
+	self.rqflags		= parm14;
+};
+
+void ()
 DecodeLevelParms =
 {
+	if (deathmatch & DM_MODE_PRACTICE)
+	{
+		DecodePracticeParms ();
+		return;
+	}
+
 	self.items		= parm1;
 	self.health		= parm2;
 	self.armorvalue		= parm3;
