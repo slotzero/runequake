@@ -1,6 +1,6 @@
-$Id: Changes,v 1.11 2002/05/05 00:52:23 slotzero Exp $
+$Id: Changes,v 1.12 2002/05/12 03:43:35 slotzero Exp $
 
-Version 0.3  Sat May 04 21:44:23 EST 2002
+Version 0.3  Sat May 11 21:44:23 EST 2002
 
     - Bug Fixes
 
@@ -25,6 +25,12 @@ Version 0.3  Sat May 04 21:44:23 EST 2002
     - Rune Changes
 
 	- The EP suit/rune is protected against hooks.
+
+    - Notable Internal Changes
+
+        - The map script checks your mod's maps directory for any custom
+          maps.  The custom maps can only be played automatically when the
+          server's noexit setting is configured for randomized levels.
 
     - Other Changes
 
@@ -51,7 +57,7 @@ Version 0.2  Tue Mar 05 15:44:01 EST 2002
     - Level Changes
 
         - I increased the default intensity for the "normal" lightstyle().
- 
+
         - There are now two rocket launchers on E1M2; the original one has been
           replaced with red armor.
 
