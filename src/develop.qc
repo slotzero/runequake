@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.63 2004/07/05 07:11:56 slotzero Exp $
+/*  $Id: develop.qc,v 1.64 2004/07/05 09:34:20 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -71,6 +71,64 @@ maxplayers =
 		e = nextent (e);
 	}
 	return 16;
+};
+
+float VOTE_IN_PROGRESS;
+
+float (float vote_type)
+vote_type_valid =
+{
+	if (vote_type == 1)
+		return TRUE;
+	if (vote_type == 2)
+		return TRUE;
+	if (vote_type == 3)
+		return TRUE;
+
+	return FALSE;
+};
+
+void ()
+xvote_think =
+{
+	if (self.runevar)
+	{
+		// XXX Check each entity to see bit flags and msg only those who didn't vote
+		bprint ("Request to ");
+		bprint (self.classname);
+		self.runevar = self.runevar - 1;
+	}
+	else
+	{
+		bprint ("Vote cancelled\n");
+		VOTE_IN_PROGRESS = 0;
+		remove (self);
+		return;
+	}
+	self.nextthink = time + 5;
+};
+
+void (string class, string net)
+xvote =
+{
+	local entity e;
+
+	if (VOTE_IN_PROGRESS)
+		return self_sprint (self, "a vote is already in progress!\n");
+
+   	if (!vote_type_valid)
+		return dprint ("vote: invalid vote type\n");
+
+	VOTE_IN_PROGRESS = 1;
+
+	//self.vote_flags = 1;	// move this to something else and remove it
+
+	e		= spawn ();
+	e.classname	= class;
+	e.netname	= net; // levels
+	e.runevar	= 3;
+	e.think		= xvote_think;
+	e.nextthink	= time + sys_ticrate;
 };
 
 void ()
