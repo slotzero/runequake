@@ -1,4 +1,4 @@
-/*  $Id: runes10.qc,v 1.15 2004/11/27 07:34:35 slotzero Exp $
+/*  $Id: runes10.qc,v 1.16 2004/11/28 04:18:20 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -222,30 +222,27 @@ Rune_Fly =
 void ()
 GFire_Touch =
 {
-	if (other.takedamage != DAMAGE_AIM)
-		return;
-	if (other == self.owner)
-		return;
-	if (other.solid == SOLID_BSP)
-		return;
-	if (other.health < 1)
+	if (other == world)
 		return;
 
-	if (isfriend2 (self.owner, other) && self.owner != other)
+	if (other.classname != "player" && !is_pet_e (other))
 		return;
 
-	if (!other.health
-		|| other == world
-		|| !other.takedamage
-		|| other.runetype == RN_ENVIRO
-		|| other.items & IT_SUIT
-		|| other.runetype == RN_TORCH
-		|| other.runetype == RN_FIREWALK)
+	if (!other.takedamage)
+		return;
 
+	if (other.health <= 0)
+		return;
+
+	if (isfriend2 (self.owner, other))
+		return;
+
+	if (environmental (other)
+			|| other.runetype == RN_FIREWALK
+			|| other.runetype == RN_TORCH)
 		return;
 
 	T_Damage (other, self, self.owner, 25, "gfire");
-
 	remove (self);
 };
 
