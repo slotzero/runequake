@@ -1,4 +1,4 @@
-/*  $Id: runes40.qc,v 1.13 2003/06/24 22:17:43 slotzero Exp $
+/*  $Id: runes40.qc,v 1.14 2003/09/27 05:32:07 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -128,7 +128,7 @@ Balls_Spawn =
 	n = 0;
 	while (n <= 3)
 	{
-		n = n + 0.3;
+		n = n + 1;
 
 		temp = spawn ();
 		temp.movetype = MOVETYPE_BOUNCE;

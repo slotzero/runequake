@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.19 2003/09/27 02:22:09 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.20 2003/09/27 05:32:08 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -522,8 +522,8 @@ Rune_Tell_real =
                 desc_s = " Glue  ";
 
                 d1 = "Launch sticky traps which\n"
-			"immobilize when touched\n"
-			"You can still attack\n";
+			"prevent your opponent from moving\n"
+			"for a few seconds\n";
 		d2 = ftos (MAX_GLUE);
 		d3 = " maximum";
 	}

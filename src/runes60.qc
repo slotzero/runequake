@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.1 2003/09/27 02:22:09 slotzero Exp $
+/*  $Id: runes60.qc,v 1.2 2003/09/27 05:32:08 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -86,7 +86,7 @@ Glue_Touch =
 	if (other.health < 1)
 		return;
 
-	if (environmental (other))
+	if (environmental (other) || other.runetype == RN_FREEZE)
 		return;
 
 	if (isfriend2 (self.owner, other) && self.owner != other)
@@ -104,7 +104,7 @@ Glue_Touch =
 	self.think	= Glue_Stuck;
 	self.nextthink	= time;
 	self.runent	= other;
-	self.runetime	= time + 10;
+	self.runetime	= time + 5;
 
 	setorigin(self, other.origin);
 	self.frame	= 60;

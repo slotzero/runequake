@@ -1,4 +1,4 @@
-/*  $Id: runes10.qc,v 1.11 2003/06/24 22:17:42 slotzero Exp $
+/*  $Id: runes10.qc,v 1.12 2003/09/27 05:32:06 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -225,6 +225,19 @@ GFire_Touch =
 	if (other.health < 1)
 		return;
 
+	if (isfriend2 (self.owner, other) && self.owner != other)
+		return;
+
+	if (!other.health
+		|| other == world
+		|| !other.takedamage
+		|| other.runetype == RN_ENVIRO
+		|| other.items & IT_SUIT
+		|| other.runetype == RN_TORCH
+		|| other.runetype == RN_FIREWALK)
+
+		return;
+
 	T_Damage (other, self, self.owner, 25, "gfire");
 
 	remove (self);
@@ -278,7 +291,7 @@ Rune_Firewalk =
 {
 	if (self.runetime > time)
 		return;
-	self.runetime = time + sys_ticrate;
+	self.runetime = time + 0.3;
 
 	GFire_Spawn ();
 };
