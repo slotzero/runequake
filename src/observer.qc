@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.39 2005/02/01 01:16:58 slotzero Exp $
+/*  $Id: observer.qc,v 1.40 2005/02/06 21:28:04 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -695,8 +695,12 @@ obs_player_detect =
 						s2 = string_null;
 					}
 
-					if (!self.aqstate & AQS_MENU_MASK)
+					if (!self.aqstate & AQS_MENU_MASK && (self.class_cnt < time || wanted != self.aiment))
+					{
 						centerprint5 (self, s, s1, "\n\n", s2, s3);
+						self.class_cnt = time + 1.5;
+						self.aiment = wanted;
+					}
 
 					if (!wanted.aqflags & AQ_RIDER_HIDE)
 					{
@@ -719,26 +723,32 @@ obs_player_detect =
 						if (self.armorvalue != wanted.armorvalue)
 							self.armorvalue = wanted.armorvalue;
 					}
-					self.class_cnt = time + 1.5;
-					refresh = 1;
+					return;
 				}
 			}
 		}
 		wanted = wanted.chain;
 	}
+
 	if (!refresh)
 	{
-		if (self.class_cnt > time)
+		if (self.class_cnt < 0 || self.class_cnt > time)
 			return;
+
 		if (self.health != 999)
 		{
+			self.aiment = world;
 			self.items = 0;
 			obs_init_hidables ();
 			if (s3)
 				self.items = self.items | IT_KEY1;
 		}
+
 		if (!self.aqstate & AQS_MENU_MASK)
+		{
 			centerprint (self, string_null);
+			self.class_cnt = -1;
+		}
 	}
 };
 
