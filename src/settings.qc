@@ -1,4 +1,4 @@
-// $Id: settings.qc,v 1.1 2002/02/21 21:47:59 slotzero Exp $
+// $Id: settings.qc,v 1.2 2002/06/01 03:24:33 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -78,9 +78,19 @@ string_init =
 	// will work for people who don't have their resolver configured
 	// properly (bletch).
 
-	FORWARD_MAX_PLAYERS	= 0;			// 0 = disabled
-	FORWARD_DEST		= IN_POQ("quake.runequake.com", "qw.runequake.com");
-	FORWARD_NAME		= "Marlinspike"; // shown on screen
+	FORWARD_MAX_PLAYERS	= 0;	// 0 = disabled
+
+	FORWARD_DEST_1		= "D1";
+	FORWARD_NAME_1		= string_null;
+
+	FORWARD_DEST_2		= "D2";
+	FORWARD_NAME_2		= string_null;
+
+	FORWARD_DEST_3		= "D3";
+	FORWARD_NAME_3		= string_null;
+
+	FORWARD_DEST_4		= "D4";
+	FORWARD_NAME_4		= string_null;
 
 	// If you want admins to be able to forward players manually, as
 	// to rid annoying players.  Replace 'string_null' with the server
@@ -602,5 +612,3 @@ float RN_JACK_REGEN_ARMOR	= 0.5;		// portion of max armor
 float RN_JACK_RESIST		= 0.8;		// saved damage
 float RN_JACK_STRENGTH		= 1.2;		// extra damage
 float RN_JACK_PIERCING		= 0.8;		// portion which hits armor
-
-

@@ -1,4 +1,4 @@
-// $Id: print.qc,v 1.2 2002/04/27 03:15:45 slotzero Exp $
+// $Id: print.qc,v 1.3 2002/06/01 03:24:33 slotzero Exp $
 
 //=============================================================================
 // bprint
@@ -353,6 +353,12 @@ sprint_admin2 =
 			self_sprint2 (e, s1, s2);
 		e = find (e, classname, "player");
 	}
+};
+
+void (string s1)
+sprint_admin =
+{
+	sprint_admin2 (s1, string_null);
 };
 
 void (string s1, string s2)

@@ -1,4 +1,4 @@
-// $Id: defs.qc,v 1.5 2002/05/29 03:34:33 slotzero Exp $
+// $Id: defs.qc,v 1.6 2002/06/01 03:24:32 slotzero Exp $
 
 /*
 ==============================================================================
@@ -668,6 +668,14 @@ float S1_LIGHT_SETUP_ALL_DARK	= 2;
 float S1_AMBIENT_SOUND_OFF	= 4;
 float S1_LIGHT_MAKESTATIC_OFF	= 8;
 
+// scratch2 bit settings
+float scratch2;
+float S2_FORWARD_1		= 1;
+float S2_FORWARD_2		= 2;
+float S2_FORWARD_3		= 4;
+float S2_FORWARD_4		= 8;
+float S2_RANDOM_FORWARD		= 16;
+
 // Bit settings for POWERUP_PICKUP_WARN in settings.qc.
 float ITEM_PENT = 1;
 float ITEM_QUAD = 2;
@@ -678,6 +686,8 @@ float ITEM_SUIT = 8;
 // I'm declaring them here to keep it less confusing there.
 float FORWARD_MAX_PLAYERS, ADMIN_PASSCODE_REAL;
 string FORWARD_DEST, FORWARD_NAME;
+string FORWARD_DEST_1, FORWARD_DEST_2, FORWARD_DEST_3, FORWARD_DEST_4;
+string FORWARD_NAME_1, FORWARD_NAME_2, FORWARD_NAME_3, FORWARD_NAME_4;
 string ADMIN_DEST, ADMIN_FORWARD;
 string START_LEVEL_EXEC;
 string SPLASH_1, SPLASH_2, SPLASH_3, SPLASH_4;
