@@ -1,4 +1,4 @@
-// $Id: combat.qc,v 1.5 2002/06/23 22:29:38 slotzero Exp $
+// $Id: combat.qc,v 1.6 2002/06/23 23:18:08 slotzero Exp $
 
 /*
 ============
@@ -172,7 +172,7 @@ T_Damage =
 			dtype == "lavagun" ||
 			dtype == "flamethrower" ||
 			dtype == "kamikaze" ||
-			dtype == "teledeath" ||
+			// dtype == "teledeath" ||
 			dtype == "dspotexplode" ||
 			dtype == "ftrapexplode"))
 		damage = 0;
