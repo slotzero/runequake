@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.18 2002/06/02 05:45:38 slotzero Exp $
+// $Id: rjs.qc,v 1.19 2002/06/02 09:45:46 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -766,11 +766,11 @@ disp_info =
 	// forward dest
 	if (all || 0)
 	{
-		self_sprint (self, "forward_dest:");
+		self_sprint (self, "forward dest:");
 		self_sprint2 (self, "\n 1 ", FORWARD_DEST_1);
 		self_sprint2 (self, "\n 2 ", FORWARD_DEST_2);
-		self_sprint2 (self, "\n 2 ", FORWARD_DEST_3);
-		self_sprint3 (self, "\n 3 ", FORWARD_DEST_4, "\n");
+		self_sprint2 (self, "\n 3 ", FORWARD_DEST_3);
+		self_sprint3 (self, "\n 4 ", FORWARD_DEST_4, "\n");
 	}
 };
 
@@ -1408,42 +1408,13 @@ admin_forward_player =
 	e.nextthink = time;
 };
 
-/*
-
-cvar settings
--------------
-
-forward & 1  = use forward 1
-forward & 2  = use forward 2
-forward & 4  = use forward 3
-forward & 8  = use forward 4
-forward & 16 = use random server
-
-*/
-
-string (float num, string f1, string f2, string f3, string f4)
+string (float num, string s1, string s2, string s3, string s4)
 forward_dest =
 {
-	if (num == 1)
-	{
-		FORWARD_NAME = FORWARD_DEST_1;
-		return f1;
-	}
-	else if (num == 2)
-	{
-		FORWARD_NAME = FORWARD_DEST_2;
-		return f2;
-	}
-	else if (num == 3)
-	{
-		FORWARD_NAME = FORWARD_DEST_3;
-		return f3;
-	}
-	else if (num == 4)
-	{
-		FORWARD_NAME = FORWARD_DEST_4;
-		return f4;
-	}
+	if	(num == 1)	{ FORWARD_NAME = FORWARD_DEST_1; return s1; }
+	else if	(num == 2)	{ FORWARD_NAME = FORWARD_DEST_2; return s2; }
+	else if	(num == 3)	{ FORWARD_NAME = FORWARD_DEST_3; return s3; }
+	else if	(num == 4)	{ FORWARD_NAME = FORWARD_DEST_4; return s4; }
 
 	return string_null;
 };
@@ -1451,89 +1422,37 @@ forward_dest =
 void ()
 select_forward_server =
 {
-	local float random_forward, rnd, num, b1, b2, b3, b4;
+	local float random_forward, r, n, b1, b2, b3, b4;
 	local string f1, f2, f3, f4, t1, t2, t3, t4;
 
 	scratch2	= cvar ("scratch2");
 	random_forward	= scratch2 & S2_RANDOM_FORWARD;
 
 	// bit settings
-	b1		= scratch2 & S2_FORWARD_1;
-	b2		= scratch2 & S2_FORWARD_2;
-	b3		= scratch2 & S2_FORWARD_3;
-	b4		= scratch2 & S2_FORWARD_4;
+	b1 = scratch2 & S2_FORWARD_1; b2 = scratch2 & S2_FORWARD_2;
+	b3 = scratch2 & S2_FORWARD_3; b4 = scratch2 & S2_FORWARD_4;
 
 	// forward strings
-	f1		= FORWARD_DEST_1;
-	f2		= FORWARD_DEST_2;
-	f3		= FORWARD_DEST_3;
-	f4		= FORWARD_DEST_4;
+	f1 = FORWARD_DEST_1; f2 = FORWARD_DEST_2; f3 = FORWARD_DEST_3; f4 = FORWARD_DEST_4;
 
 	// temp strings
 	t1 = t2 = t3 = t4 = string_null;
 
-	rnd		= 0;
-	num		= 0;
+	// random and normal
+	r = 0; n = 0;
 
 	if (random_forward)
 	{
-		if (b1)
+		if (b1)	{ t1 = f1; r = 1; }
+		if (b2)	{ if (!t1) t1 = f2; else t2 = f2; r = r + 1; }
+		if (b3) { if (!t2) if (!t1) t1 = f3; else t2 = f3; else t3 = f3; r = r + 1; }
+		if (b4) { if (!t3) if (!t2) if (!t1) t1 = f4; else t2 = f4; else t3 = f4; else t4 = f4; r = r + 1; }
+
+		if (r)
 		{
-			t1	= f1;
-			rnd	= 1;
-		}
+			r = ceil (r * random ());
 
-		if (b2)
-		{
-			if (!t1)
-				t1 = f2;
-			else
-				t2 = f2;
-
- 			rnd = rnd + 1;
-		}
-
-		if (b3)
-		{
-			if (!t2)
-			{
-				if (!t1)
-					t1 = f3;
-				else
-					t2 = f3;
-			}
-			else
-				t3 = f3;
-
-			rnd = rnd + 1;
-		}
-
-		if (b4)
-		{
-			if (!t3)
-			{
-				if (!t2)
-				{
-					if (!t1)
-						t1 = f4;
-					else
-						t2 = f4;
-				}
-				else
-					t3 = f4;
-			}
-			else
-				t4 = f4;
-		}
-
-		rnd = rnd + 1;
-
-		if (rnd)
-		{
-			rnd = rnd * random ();
-			rnd = ceil (rnd);
-
-			FORWARD_DEST = forward_dest (rnd, t1, t2, t3, t4);
+			FORWARD_DEST = forward_dest (r, t1, t2, t3, t4);
 			FORWARD_NAME = "a random server";
 		}
 		else
@@ -1541,12 +1460,12 @@ select_forward_server =
 	}
 	else
 	{
-		if (b1)	num = 1;
-		if (b2)	num = 2;
-		if (b3)	num = 3;
-		if (b4)	num = 4;
+		if (b1)	n = 1;
+		if (b2)	n = 2;
+		if (b3)	n = 3;
+		if (b4)	n = 4;
 
-		FORWARD_DEST = forward_dest (num, f1, f2, f3, f4);
+		FORWARD_DEST = forward_dest (n, f1, f2, f3, f4);
 	}
 };
 
@@ -1688,6 +1607,8 @@ player_init =
 	if (i)
 	{
 		select_forward_server ();
+		if (!FORWARD_DEST)
+			sprint_admin ("WARNING: NULL forward address\n");
 		check_forward = 0;
 		self_sprint (self, "The game is full, forwarding to ");
 		self_sprint (self, FORWARD_NAME);
