@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.24 2004/07/03 09:25:55 slotzero Exp $
+/*  $Id: hunk.qc,v 1.25 2004/07/03 09:26:50 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -312,10 +312,7 @@ Write_Hunk_String_Max =
 	pdata = AddInt (&data, PSTRING_TO_PQUAKEC);
 
 	for (i = %0; i < dword; i = i + %1)
-	{
-		hex32 (i);
 		hunk[i] = (*pdata)[i];
-	}
 };
 
 // This will always force a null termination.  The actual
