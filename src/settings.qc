@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.23 2003/11/08 05:46:17 slotzero Exp $
+/*  $Id: settings.qc,v 1.24 2003/11/08 05:51:49 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -525,7 +525,7 @@ float ZAP_RUNE_SAFE_IN_WATER	= 0;
 
 // The number of death spots to place.
 
-float MAX_DSPOTS		= 5;
+float MAX_DSPOTS		= 3;
 
 // The number of holograms to place.
 
@@ -570,7 +570,7 @@ float MONK_ATTACK_DELAY		= 4;
 
 // Torch rune
 
-float MAX_TORCH			= 6;
+float MAX_TORCH			= 3;
 float TORCH_BURN_TOUCH_CHANCE	= 0.1;		// artificially lower
 float TORCH_BURN_TOUCH_DURATION	= 15;
 float TORCH_BURN_ATTACK_CHANCE	= 0.15;		// per 100 points of damage
