@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.8 2003/10/05 02:55:22 slotzero Exp $
+/*  $Id: runes60.qc,v 1.9 2003/10/05 05:25:11 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -181,7 +181,11 @@ void (float riders, entity of_e)
 Rune_Blizzard_sprint =
 {
 	if (self.runevar)
-		rprint (self, riders, "\{13} Recharging...\n");
+		rprint (self, riders, "Recharging...\n");
+	else if (self.runevector_z)
+		rprint (self, riders, "Super charged\n");
+	else
+		rprint (self, riders, "Charged\n");
 };
 
 void ()
@@ -197,17 +201,21 @@ Rune_Blizzard =
 		return;
 	}
 
-	e = findradius (self.origin, 1000);
+	e = findradius (self.origin, 1500);
 	while (e)
 	{
-		if (e.health && CanDamage (e, self) && e != self && e.owner != self)
+		if (e.classname == "player" || is_pet_e (e))
 		{
-			if (e.classname == "player"
-					|| e.classname == "shambler_slave"
-					|| e.classname == "zombie_camper")
+			if (!environmental (e) && e.runetype != RN_BLIZZARD && e.runetype != RN_FREEZE)
 			{
-				Blizzard_Freeze (e, 1.2);
-				i = i + 1;
+				if (e.health > 0 && e != self && e.owner != self)
+				{
+					if (CanDamage (e, self))
+					{
+						Blizzard_Freeze (e, 1.2);
+						i = i + 1;
+					}
+				}
 			}
 		}
 		e = e.chain;
@@ -222,10 +230,10 @@ Rune_Blizzard =
 			sprint (self, "s");
 		sprint (self, "\n");
 
-		self.runetime = time + RN_BLIZZARD_RECHARGE + (i * 5);
+		self.runetime = time + (RN_BLIZZARD_RECHARGE * i);
 	}
 	else
-		self.runetime = time + 2;
+		self.runetime = time + 3;
 
 	self.runevar = 1;
 	sound (self, CHAN_AUTO, "enforcer/sight2.wav", 1, ATTN_NORM);
@@ -236,8 +244,19 @@ Blizzard_Freeze =
 {
 	local entity freeze;
 
+	if (self.runevector_z)
+	{
+		freeze_time = freeze_time + (self.runevector_z * 0.5);
+		self.runevector_z = 0;
+	}
+
 	if (tofreeze.classname == "player")
-		sprint (tofreeze, "You're caught in a blizzard!\n");
+	{
+		if (tofreeze == self)
+			sprint (tofreeze, "Ice crystals are forming around you!");
+		else
+			sprint (tofreeze, "You're caught in a blizzard!\n");
+	}
 
 	freeze			= spawn ();
 	freeze.movetype		= MOVETYPE_FLY;
@@ -279,7 +298,7 @@ Blizzard_Think =
 		sprint (self, "\{13} Blizzard recharged\n");
 	}
 
-	if (self.watertype == CONTENT_WATER && self.runevector_x < time)
+	if (self.watertype == CONTENT_WATER && self.runevector_x < time && !environmental (self))
 	{
 		self.runevector_x = time + 3;
 		Blizzard_Freeze (self, 1);
@@ -296,11 +315,11 @@ Blizzard_Touch =
 {
 	if (self.runetime > time)
 		return;
- 	if (other.health <= 1)
+ 	if (other.health <= 0)
 		return;
-	if (other.classname != "player"
-			&& other.classname != "shambler_slave"
-			&& other.classname != "zombie_camper")
+	if (other.classname != "player" && !is_pet_e (other))
+		return;
+	if (environmental (other) || other.runetype == RN_BLIZZARD || other.runetype == RN_FREEZE)
 		return;
 
 	self.runetime = time + 3;

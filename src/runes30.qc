@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.22 2003/10/02 04:14:41 slotzero Exp $
+/*  $Id: runes30.qc,v 1.23 2003/10/05 05:25:11 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -497,14 +497,25 @@ Freeze_Frozen =
 			|| self.runent.health < 1
 			|| self.runent.runetype == RN_FREEZE
 			|| self.runent.runetype == RN_ENVIRO
-			|| self.runent.runetype == RN_BLIZZARD
-			|| self.runent.items & IT_SUIT)
+			|| (self.runent.runetype == RN_BLIZZARD
+				&& self.runent.runevector_x < time)
+				|| self.runent.items & IT_SUIT)
 	{
 		self.runent.attack_finished = time + 1;
 		if (self.runent.classname == "player")
 		{
-			if (self.runent.health >= 1)
-				centerprint (self.runent, "Released from ice trap");
+			if (self.runent.health > 0)
+			{
+				if (self.owner.runetype == RN_BLIZZARD)
+				{
+					if (self.owner == self.runent)
+						centerprint (self.runent, "You've broken free!");
+					else
+						centerprint (self.runent, "The storm has passed");
+				}
+				else
+					centerprint (self.runent, "Released from ice trap");
+			}
 			stuffcmd (self.runent, CSHIFT_NONE);
 		}
 		else if (self.runent.classname == "shambler_slave")
@@ -519,31 +530,30 @@ Freeze_Frozen =
 void ()
 Freeze_Touch =
 {
-	if (!other.health || other == world)
+	if (other.health <= 0 || other == world)
 		return;
 
-	if (other.classname != "player"
-			&& other.classname != "shambler_slave"
-			&& other.classname != "zombie_camper")
+	if (other.classname != "player" && !is_pet_e (other))
 		return;
 
-	if (other.runetype == RN_ENVIRO
-			|| other.items & IT_SUIT
-			|| other.runetype == RN_FREEZE
-			|| other.runetype == RN_BLIZZARD)
+	if (environmental (other) || other.runetype == RN_FREEZE)
 		return;
 
-	// RN_BLIZZARD
-	/* if (other.runetype == RN_BLIZZARD && self.ltime < time)
+	if (other.runetype == RN_BLIZZARD)
 	{
-		centerprint (other, "Freeze Range increased\nhealth increased");
-		other.health = other.health + 25;
-		T_Heal (other, 15, 1);
-		// sound (other, CHAN_AUTO, "items/r_item2.wav", 1, ATTN_NORM);
-		self.runetime = time;
-		self.ltime = time + 2;
+		if (self.owner.runetype == RN_FREEZE && self.owner.runevar > 0)
+		{
+			sprint (self.owner, other.netname);
+			sprint (self.owner, " deactivated your ice trap\n");
+			self.owner.runevar = self.owner.runevar - 1;
+		}
+
+		sprint (other, "Freeze power increased!\n");
+		sound (self, CHAN_BODY, "fish/bite.wav", 1, ATTN_NORM);
+		other.runevector_z = other.runevector_z + 1;
+		remove (self);
 		return;
-	} */
+	}
 
 	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;
@@ -580,22 +590,25 @@ Freeze_Touch =
 
 	sound (self, CHAN_BODY, "shambler/smack.wav", 1, ATTN_NORM);
 
-	self.runent = other;
-	self.runevar = other.frame;
+	self.runent	= other;
+	self.runevar	= other.frame;
+
 	// If you use angles here you get batman villain syndrome if you're
 	// frozen while in the middle of a roll.
-	self.angles = other.v_angle;
-	self.fixangle = 1;
+	self.angles	= other.v_angle;
+	self.fixangle	= 1;
+
 	setorigin (self, other.origin);
-	self.touch = SUB_Null;
+
+	self.touch	= SUB_Null;
 	IN_QW([-
 	setmodel (self, string_null);
 	-])
 
 	// how long frozen
-	self.runetime = time + 13;
-	self.nextthink = time;
-	self.think = Freeze_Frozen;
+	self.runetime	= time + 13;
+	self.nextthink	= time;
+	self.think	= Freeze_Frozen;
 };
 
 void ()

@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.64 2003/10/04 04:25:07 slotzero Exp $
+/*  $Id: rjs.qc,v 1.65 2003/10/05 05:25:10 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -3029,12 +3029,16 @@ count_votes =
 	else if (count_type == 1)
 	{
 		bprint (self.netname);
-		bprint (" voted to ");
-		bprint (desc);
+
 		if (force)
 		{
-			bprint (" to map ");
+			bprint (" voted level ");
 			bprint (forced_nextmap);
+		}
+		else
+		{
+			bprint (" voted to ");
+			bprint (desc);
 		}
 		bprint (", ");
 		bprint (s);
