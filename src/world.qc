@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.28 2003/12/27 05:49:45 slotzero Exp $
+/*  $Id: world.qc,v 1.29 2003/12/27 08:32:41 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -327,14 +327,14 @@ StartFrame =
 	crosshair = cvar_infokey ("crosshair");
 	if (crosshair)
 	{
+		cvar_set_infokey ("crosshair", "0");
+
 		&%IN_POQ(368,376) = crosshair;
 		s = impulse_to_map ();
 		if (s)
 			admin_changelevel (s);
 		else
 			dprint ("Invalid level impulse\n");
-
-		cvar_set_infokey ("crosshair", "0");
 	}
 
 	// XXX This doesn't work in QW yet.
