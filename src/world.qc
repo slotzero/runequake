@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.33 2004/04/05 22:24:51 slotzero Exp $
+/*  $Id: world.qc,v 1.34 2004/04/06 00:26:31 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -381,7 +381,10 @@ StartFrame =
 			commands ();
 
 		else if (skill == SKILL_LEVEL_TIME)
-			dprint (parse_time (time), "\n");
+		{
+			dprint_force (parse_time (time));
+			dprint_force ("\n");
+		}
 
 		else
 			dprint ("skill: unknown command\n");
