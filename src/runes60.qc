@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.2 2003/09/27 05:32:08 slotzero Exp $
+/*  $Id: runes60.qc,v 1.3 2003/09/28 00:26:45 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -168,4 +168,132 @@ Rune_Glue =
 	glue.touch		= Glue_Touch;
 	glue.think		= Glue_Think;
 	glue.nextthink		= time;
+};
+
+void ()
+Rune_Blizzard =
+{
+	local entity e;
+	local float i;
+
+	i = 0;
+	if (self.runevar == 0)
+	{
+		if (self.runetime > time)
+		{
+			centerprint (self, "Blizzard recharging");
+			self.runevar = 2;
+			return;
+		}
+
+		e = findradius (self.origin, 1000);
+		while (e)
+		{
+			if (e.health && CanDamage (e, self) && e != self && e.owner != self)
+			{
+				Blizzard_Freeze (e, 2.5);
+				if (e.classname == "player")
+					sprint (e, "You're caught in a blizzard!\n");
+				i = i + 1;
+			}
+			e = e.chain;
+		}
+
+		if (i)
+		{
+			sprint (self, "You froze ");
+			sprint_float (self, i);
+			sprint (self, " player");
+			if (i > 1)
+				sprint (self, "s");
+			sprint (self, "\n");
+
+			self.runetime = time + RN_BLIZZARD_RECHARGE + (i * 5);
+		}
+		else
+			self.runetime = time + 2;
+
+		sound (self, CHAN_AUTO, "enforcer/sight2.wav", 1, ATTN_NORM);
+	}
+	else if (self.runevar == 2)
+	{
+		centerprint (self, "Pending recharge canceled");
+		self.runevar = 0;
+	}
+};
+
+void (entity tofreeze, float freeze_time)
+Blizzard_Freeze =
+{
+	local entity freeze;
+
+	freeze			= spawn ();
+	freeze.movetype		= MOVETYPE_FLY;
+	freeze.solid		= SOLID_TRIGGER;
+	freeze.owner		= self;
+	freeze.classname	= "freeze";
+	freeze.angles		= tofreeze.angles;
+	freeze.v_angle		= tofreeze.v_angle;
+
+	setorigin (freeze, tofreeze.origin + '0 0 10');
+	setmodel (freeze, string_null);
+	setsize (freeze, VEC_ORIGIN, VEC_ORIGIN);
+
+	sound (freeze, CHAN_BODY, "shambler/smack.wav", 1, ATTN_NORM);
+
+	freeze.runent		= tofreeze;
+	freeze.runevar		= tofreeze.frame;
+	freeze.angles		= tofreeze.v_angle;
+	freeze.fixangle		= 1;
+
+	setorigin (freeze, tofreeze.origin);
+
+	freeze.touch		= SUB_Null;
+
+	// how long frozen
+	freeze.runetime		= time + freeze_time;
+	freeze.nextthink	= time;
+	freeze.think		= Freeze_Frozen;
+
+};
+
+void ()
+Blizzard_Think =
+{
+	if (self.runevar == 2 && self.runetime <= time)
+	{
+		self.runevar = 0;
+		centerprint (self, string_null);
+		sprint (self, "\> Blizzard recharged\n");
+	}
+
+	// This needs to be fixed?
+	if (self.waterlevel && self.runetime < time && self.watertype != CONTENT_LAVA)
+	{
+		self.runetime = time + 3;
+		Blizzard_Freeze (self, 1);
+	}
+
+	self.touch = Blizzard_Touch;
+	IN_POQ([-
+		particle (self.origin + '0 0 23', '0 0 -0.05', PARTICLE_FREEZE_TRAP, 1);
+		particle (self.origin + '0 0 10', '0 0 -0.05', PARTICLE_FREEZE_TRAP, 1);
+	-])
+};
+
+void ()
+Blizzard_Touch =
+{
+	if (other == world)
+		return;
+	if (other.owner == self)
+		return;
+	if (!other.health)
+		return;
+	if (self.runetime > time)
+		return;
+
+	self.runetime = time + 3;
+
+	Blizzard_Freeze (other, 1.5);
 };

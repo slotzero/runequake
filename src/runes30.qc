@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.20 2003/06/28 00:15:52 slotzero Exp $
+/*  $Id: runes30.qc,v 1.21 2003/09/28 00:26:45 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -530,6 +530,17 @@ Freeze_Touch =
 			|| other.items & IT_SUIT
 			|| other.runetype == RN_FREEZE)
 		return;
+
+	// RN_BLIZZARD XXX Fix me
+	/* if (other.runetype == RN_BLIZZARD && self.ltime < time)
+	{
+		centerprint (other, "Freeze Range increased\nhealth increased");
+		other.health = other.health + 25;
+		sound (other, CHAN_AUTO, "items/r_item2.wav", 1, ATTN_NORM);
+		self.runetime = time;
+		self.ltime = time + 2;
+		return;
+	}*/
 
 	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;

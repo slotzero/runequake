@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.17 2003/09/27 02:22:10 slotzero Exp $
+/*  $Id: settings.qc,v 1.18 2003/09/28 00:26:46 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -597,6 +597,10 @@ float PACK_RAT_BONUS_PERCENT	= 0.33;
 // Glue Gun Rune
 
 float MAX_GLUE			= 3;
+
+// Blizzard Rune
+
+float RN_BLIZZARD_RECHARGE	= 10;
 
 // red, green, blue, scale
 
