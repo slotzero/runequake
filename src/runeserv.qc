@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.22 2003/09/28 04:05:37 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.23 2003/09/28 17:16:45 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -521,8 +521,8 @@ Rune_Tell_real =
 	}
 	else if (type == RN_GLUE)
 	{
-                desc_l = "Glue Rune";
-                desc_s = " Glue  ";
+                desc_l = "Super Blue Stuff";
+                desc_s = " BluStf";
 
                 d1 = "Launch sticky traps which\n"
 			"prevent your opponent from\n"
