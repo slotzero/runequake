@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.150 2004/10/23 21:42:06 slotzero Exp $
+/*  $Id: rjs.qc,v 1.151 2004/11/05 23:27:37 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2869,7 +2869,7 @@ is_topdog =
 float (entity e)
 environmental =
 {
-	return e.items & IT_SUIT || e.runetype == RN_ENVIRO;
+	return e.items & IT_SUIT || e.runetype == RN_ENVIRO || e.aqstate & AQS_SPAWN_PROTECT;
 };
 
 float (entity e)
