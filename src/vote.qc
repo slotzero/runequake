@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.23 2004/07/12 04:12:43 slotzero Exp $
+/*  $Id: vote.qc,v 1.24 2004/07/12 09:30:32 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -85,7 +85,7 @@ vote_action =
 	if (!vip)
 		dprint ("vote_action: vip is null\n");
 
-	if (self.classname == "player")
+	/* if (self.classname == "player")
 		bprint (self.netname);
 	else if (vip.owner.classname == "player")
 		bprint (vip.owner.netname);
@@ -98,8 +98,21 @@ vote_action =
 	if (vip.noise2)
 		bprint (vip.noise2);
 	if (vip.noise3)
+		bprint (vip.noise3); */
+
+	if (vip.noise1 == "enable" || vip.noise1 == "disable")
+	{
+		bprint (vip.noise2[%1]);
+		bprint (vip.noise1);
+		bprint ("d\n");
+	}
+	else if (vip.noise1 == "change")
+	{
+		bprint ("changing");
+		bprint (vip.noise2);
 		bprint (vip.noise3);
-	bprint ("\n");
+		bprint ("...\n");
+	}
 
 	if (vip.think1)
 		vip.think1 ();
@@ -294,7 +307,7 @@ void ()
 vote =
 {
 	local entity e, vip;
-	local float cancel;
+	local float i, cancel;
 
 	vip = find_vip ();
 	if (vip)
@@ -326,48 +339,56 @@ vote =
 	{
 		e.frag_rate	= VOTE_EXIT_PERCENTAGE;
 		e.think1	= NextLevel;
+		e.noise1	= "change";
 
 		if (forced_nextmap)
 		{
-			e.noise1	= "change map to ";
-			e.noise2	= forced_nextmap;
+			e.noise2	= " map to ";
+			e.noise3	= forced_nextmap;
 		}
 		else
-			e.noise1	= "change to a random map";
+			e.noise2	= " to a random map";
 	}
 	else if (self.impulse == IMP_VOTE_TEAM)
 	{
 		cancel		= vote_team_disabled (1);
 		e.frag_rate	= VOTE_TEAM_PERCENTAGE;
-		e.think1	= toggle_teamplay;	// XXX Fix me, cause I predict this will create
-							// compile errors in Frikqcc.
+		e.think1	= toggle_teamplay;
+		e.noise2	= " team mode ";
+
 		if (teamplay & TEAM_TEAM_MASK)
-			e.noise1	= "disable teams";
+			e.noise1	= "disable";
 		else
-			e.noise1	= "enable teams";
+			e.noise1	= "enable";
 	}
 	else if (self.impulse == IMP_VOTE_HOOK)
 	{
 		cancel		= vote_hook_disabled (1);
 		e.frag_rate	= VOTE_HOOK_PERCENTAGE;
 		e.think1	= toggle_free_hook;
+		e.noise2	= " free hook ";
 
-		if (hook_type (temp1))
-			e.noise1	= "disable hook";
+		if (i = hook_type (temp1))
+		{
+			if (i == 2)
+			e.noise2	= " lithium hook ";
+			e.noise1	= "disable";
+		}
 		else
-			e.noise1	= "enable free hook";
+			e.noise1	= "enable";
 	}
 	else if (self.impulse == IMP_VOTE_FREE)
 	{
 		cancel		= vote_hook_disabled (1);
 		e.frag_rate	= VOTE_HOOK_PERCENTAGE;
 		e.think1	= free_hook;
-		e.noise1	= "enable free hook";
+		e.noise1	= "enable";
+		e.noise2	= " free hook ";
 
 		if (hook_type (temp1) == 1)
 		{
 			if (!cancel)
-				self_sprint (self, "Free hook already enabled\n");
+				self_sprint (self, "free hook already enabled\n");
 			cancel	= 1;
 		}
 	}
@@ -376,12 +397,13 @@ vote =
 		cancel		= vote_hook_disabled (1);
 		e.frag_rate	= VOTE_HOOK_PERCENTAGE;
 		e.think1	= lithium_hook;
-		e.noise1	= "enable lithium hook";
+		e.noise1	= "enable";
+		e.noise2	= " lithium hook ";
 
 		if (hook_type (temp1) == 2)
 		{
 			if (!cancel)
-				self_sprint (self, "Lithium hook already enabled\n");
+				self_sprint (self, "lithium hook already enabled\n");
 			cancel	= 1;
 		}
 	}
@@ -390,12 +412,13 @@ vote =
 		// cancel	= 1;	//
 		e.frag_rate	= 0.51;	// XXX move to settings.
 		e.think1	= mode_practice;
-		e.noise1	= "change mode to practice";
+		e.noise1	= "change";
+		e.noise2	= " mode to practice";
 
 		if (deathmatch & DM_MODE_PRACTICE)
 		{
 			if (!cancel)
-				self_sprint (self, "Already in Practice mode\n");
+				self_sprint (self, "already in practice mode\n");
 			cancel = 1;
 		}
 	}
@@ -404,12 +427,13 @@ vote =
 		// cancel	= 1;
 		e.frag_rate	= 0.51; // XXX move to settings (share with practice?)
 		e.think1	= mode_normal;
-		e.noise1	= "change mode to normal";
+		e.noise1	= "change";
+		e.noise2	= " mode to normal";
 
 		if (!deathmatch & DM_MODE_PRACTICE)
 		{
 			if (!cancel)
-				self_sprint (self, "Already in Normal mode\n");
+				self_sprint (self, "already in normal mode\n");
 			cancel = 1;
 		}
 	}
@@ -418,44 +442,48 @@ vote =
 		// cancel	= 1;
 		e.frag_rate	= 0.51; // XXX
 		e.think1	= setquad;
+		e.noise2	= " quad ";
 
 		if (NO_QUADS)
-			e.noise1	= "enable quad";
+			e.noise1	= "enable";
 		else
-			e.noise1	= "disable quad";
+			e.noise1	= "disable";
 	}
 	else if (self.impulse == IMP_VOTE_PENT)
 	{
 		// cancel	= 1;
 		e.frag_rate	= 0.51; // XXX
 		e.think1	= setpent;
+		e.noise2	= " pentagram ";
 
 		if (NO_PENTS)
-			e.noise1	= "enable pentagram";
+			e.noise1	= "enable";
 		else
-			e.noise1	= "disable pentagram";
+			e.noise1	= "disable";
 	}
 	else if (self.impulse == IMP_VOTE_RING)
 	{
 		// cancel	= 1;
 		e.frag_rate	= 0.51; // XXX
 		e.think1	= setring;
+		e.noise2	= " ring of shadows ";
 
 		if (NO_RINGS)
-			e.noise1	= "enable ring of shadows";
+			e.noise1	= "enable";
 		else
-			e.noise1	= "disable ring of shadows";
+			e.noise1	= "disable";
 	}
 	else if (self.impulse == IMP_VOTE_SUIT)
 	{
 		// cancel	= 1;
 		e.frag_rate	= 0.51; // XXX
 		e.think1	= setsuit;
+		e.noise2	= " environmental suit ";
 
 		if (NO_SUITS)
-			e.noise1	= "enable environmental suit";
+			e.noise1	= "enable";
 		else
-			e.noise1	= "disable environmental suit";
+			e.noise1	= "disable";
 	}
 	else
 		cancel = -1;

@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.28 2004/07/12 04:57:24 slotzero Exp $
+/*  $Id: team.qc,v 1.29 2004/07/12 09:30:32 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -582,16 +582,16 @@ change_practice_mode =
 	if (new_deathmatch == deathmatch)
 	{
 		if (mode)
-			self_sprint (self, "Already in Practice mode\n");
+			self_sprint (self, "Already in practice mode\n");
 		else
-			self_sprint (self, "Already in Normal mode\n");
+			self_sprint (self, "Already in normal mode\n");
 		return;
 	}
 
 	&%IN_POQ(368,376) = -1;
 	s = ftos (new_deathmatch);
 	cvar_set ("deathmatch", s);
-	changelevel (mapname);
+	admin_changelevel (mapname);
 };
 
 void ()
