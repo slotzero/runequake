@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.23 2004/04/05 03:30:36 slotzero Exp $
+/*  $Id: observer.qc,v 1.24 2004/07/05 11:20:35 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -164,7 +164,11 @@ obs_impulses =
 		else if (self.impulse == 4)
 			self.impulse = IMP_ADMIN_CHANGE_MAP;
 		else if (self.impulse == 5)
+		{
 			self.impulse = IMP_ADMIN_EYES;
+			admin_impulse_commands ();
+			self.impulse = 0;
+		}
 
 		if (self.impulse)
 			common_impulses ();
@@ -173,7 +177,10 @@ obs_impulses =
 	else if (m == AQS_MENU_ADMIN_ACTION)
 	{
 		if (self.impulse == 1)
+		{
 			aq_menu_set (AQS_MENU_ADMIN);
+			self.impulse = 0;
+		}
 		else if (self.impulse == 2)
 			self.impulse = IMP_ADMIN_KILL;
 		else if (self.impulse == 3)
@@ -188,13 +195,16 @@ obs_impulses =
 			self.impulse = IMP_ADMIN_JOIN;
 
 		if (self.impulse)
-			common_impulses ();
+			admin_impulse_commands ();
 	}
 
 	else if (m == AQS_MENU_ADMIN_TEAMPLAY)
 	{
 		if (self.impulse == 1)
+		{
 			aq_menu_set (AQS_MENU_ADMIN);
+			self.impulse = 0;
+		}
 		else if (self.impulse == 2)
 			self.impulse = IMP_ADMIN_VOTE_TEAM_TOGGLE;
 		else if (self.impulse == 3)
@@ -204,10 +214,13 @@ obs_impulses =
 		else if (self.impulse == 5)
 			self.impulse = IMP_ADMIN_TEAM_CHANGE;
 		else if (self.impulse == 6)
+		{
 			change_practice_mode (!deathmatch & DM_MODE_PRACTICE);
+			self.impulse = 0; // just in case
+		}
 
 		if (self.impulse)
-			common_impulses ();
+			admin_impulse_commands ();
 	}
 
 	// observer/rider impulses

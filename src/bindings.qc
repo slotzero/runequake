@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.28 2004/07/05 08:06:44 slotzero Exp $
+/*  $Id: bindings.qc,v 1.29 2004/07/05 11:20:34 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -223,9 +223,10 @@ admin_aliases =
 	player_admin_impulse_alias ("admin-vote-team-toggle",	IMP_ADMIN_VOTE_TEAM_TOGGLE);
 	player_admin_impulse_alias ("admin-teamplay-zero",	IMP_ADMIN_TEAMPLAY_ZERO);
 	player_admin_impulse_alias ("admin-unbind",		IMP_ADMIN_UNBIND);
-	player_admin_impulse_alias ("change-level",		IMP_ADMIN_CHANGE_MAP);
 	player_admin_impulse_alias ("exit-level",		IMP_EXIT_LEVEL);
 	player_admin_impulse_alias ("qsmack",			IMP_QSMACK_COMMAND);
+
+	player_init_impulse_alias  ("change-level",		IMP_ADMIN_CHANGE_MAP);
 };
 
 void (string level, float imp)
