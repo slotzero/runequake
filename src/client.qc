@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.72 2004/12/30 07:55:04 slotzero Exp $
+/*  $Id: client.qc,v 1.73 2005/01/01 04:52:24 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -172,7 +172,7 @@ DecodePracticeParms =
 void ()
 DecodeLevelParms =
 {
-	if (deathmatch & DM_MODE_PRACTICE || deathmatch & DM_MODE_ROCKET_ARENA)
+	if (deathmatch & DM_MODE_PRACTICE)
 	{
 		DecodePracticeParms ();
 		return;

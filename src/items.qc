@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.53 2004/12/30 08:46:27 slotzero Exp $
+/*  $Id: items.qc,v 1.54 2005/01/01 04:52:25 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -120,11 +120,6 @@ plants the object on the floor
 void ()
 PlaceItem =
 {
-	if (deathmatch & DM_MODE_ROCKET_ARENA)
-	{
-		remove (self);
-		return;
-	}
 	self.mdl	= self.model;	// so it can be restored on respawn
 	self.flags	= FL_ITEM;	// make extra wide
 	self.solid	= SOLID_TRIGGER;
@@ -1682,7 +1677,7 @@ DropBackpack =
 	if (!(self.ammo_shells + self.ammo_nails + self.ammo_rockets + self.ammo_cells))
 		return;	// nothing in it
 
-	if (deathmatch & DM_MODE_PRACTICE || deathmatch & DM_MODE_ROCKET_ARENA)
+	if (deathmatch & DM_MODE_PRACTICE)
 		return;
 
 	item		= spawn ();
