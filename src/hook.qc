@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.27 2004/12/27 03:36:34 slotzero Exp $
+/*  $Id: hook.qc,v 1.28 2004/12/27 05:01:37 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -390,6 +390,27 @@ HookToggle =
 };
 
 void ()
+remove_hook_rune_from_players =
+{
+	local entity e, os;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (e.runetype == RN_HOOK)
+		{
+			os	= self;
+			self	= e;
+
+			Rune_Delete (0);
+
+			self	= os;
+		}
+		e = find (e, classname, "player");
+	}
+};
+
+void ()
 toggle_free_hook =
 {
 	local string new;
@@ -414,6 +435,9 @@ toggle_free_hook =
 
 	// remove lithium hook from players
 	remove_bit_from_players (aqflags, AQ_HOOK);
+
+	// remove rune
+	remove_hook_rune_from_players ();
 
 	dprint ("new_temp1(");
 	dprint_float (temp1);
@@ -445,6 +469,8 @@ lithium_hook =
 
 	if (!temp1 & T1_LITHIUM_HOOK)
 		temp1 = temp1 | T1_LITHIUM_HOOK;
+
+	remove_hook_rune_from_players ();
 
 	dprint ("new_temp1(");
 	dprint_float (temp1);

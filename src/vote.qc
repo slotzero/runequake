@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.45 2004/12/27 04:17:39 slotzero Exp $
+/*  $Id: vote.qc,v 1.46 2004/12/27 05:01:37 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -19,9 +19,6 @@
 
 // VOTE TODO (DEV)
 /*
-	// hook
-	* hook as rune can still exist in lithium
-
 	// practice
 	* add disabled for practice mode
 	* decide specifics on practice.. should alts be allowed, should runes be allowed, hook, etc.
@@ -637,7 +634,7 @@ vote =
 				|| (!i && !HOOK_DAMAGE_RUNE))
 		{
 			if (!cancel)
-				self_sprint (self, "Hook damage for this type of hook is disabled\n");
+				self_sprint (self, "Hook damage voting disabled\n");
 			cancel = 1;
 		}
 	}
