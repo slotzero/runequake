@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.34 2003/07/03 20:51:30 slotzero Exp $
+/*  $Id: defs.qc,v 1.35 2003/07/16 04:03:28 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1204,7 +1204,7 @@ void	(vector ang)				makevectors	= #1;	// sets v_forward, etc globals
 void	(entity e, vector o)			setorigin	= #2;
 void	(entity e, string m)			setmodel	= #3;	// set movetype and solid first
 void	(entity e, vector min, vector max)	setsize		= #4;
-//								= #5;	[removed]
+string	(string format)				strftime	= #5;	// requires runequake engine
 //void	()					break		= #6;	[disabled]
 float	()					random		= #7;	// returns 0 - 1
 void	(entity e, float chan, string samp,
@@ -1227,25 +1227,23 @@ void	(entity client, string s)		self_stuffcmd	= #21;
 entity	(vector org, float rad)			findradius	= #22;
 
 IN_POQ([-
-void (string s, ...) xbprint			= #23;
-void (string s, string s2) bprint2				= #23;
-void (string s, string s2, string s3) bprint3				= #23;
-void (string s, string s2, string s3, string s4) bprint4				= #23;
-void (string s, string s2, string s3, string s4, string s5) bprint5				= #23;
-void (string s, string s2, string s3, string s4, string s5, string s6) bprint6				= #23;
-void (string s, string s2, string s3, string s4, string s5, string s6, string s7) bprint7				= #23;
-void (entity client, string s) self_sprint	= #24;
-void (entity client, string s, string s2) self_sprint2	= #24;
-void (entity client, string s, string s2, string s3) self_sprint3	= #24;
-void (entity client, string s, string s2, string s3, string s4) self_sprint4	= #24;
-void (entity client, string s, string s2, string s3, string s4, string s5) self_sprint5	= #24;
-void (entity client, string s, string s2, string s3, string s4, string s5, string s6) self_sprint6	= #24;
-void (entity client, string s, string s2, string s3, string s4, string s5, string s6, string s7) self_sprint7	= #24;
--])
-
-IN_QW([-
-void (float level, string s, string s2, string s3, string s4, string s5, string s6, string s7) xbprint7				= #23;
-void (entity client, float level, string s, string s2, string s3, string s4, string s5, string s6) xself_sprint6	= #24;
+void (string s, ...)				xbprint		= #23;
+void (string s, ...)				bprint2		= #23;
+void (string s, ...)				bprint3		= #23;
+void (string s, ...)				bprint4		= #23;
+void (string s, ...)				bprint5		= #23;
+void (string s, ...)				bprint6		= #23;
+void (string s, ...)				bprint7		= #23;
+void (entity client, string s)			self_sprint	= #24;
+void (entity client, string s, ...)		self_sprint2	= #24;
+void (entity client, string s, ...)		self_sprint3	= #24;
+void (entity client, string s, ...)		self_sprint4	= #24;
+void (entity client, string s, ...)		self_sprint5	= #24;
+void (entity client, string s, ...)		self_sprint6	= #24;
+void (entity client, string s, ...)		self_sprint7	= #24;
+-],[-
+void (float level, string s, ...)		xbprint7	= #23;
+void (entity client, float level, string s, ...)xself_sprint6	= #24;
 -])
 
 void	(string s, ...)				dprint		= #25;
