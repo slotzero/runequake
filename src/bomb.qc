@@ -1,4 +1,4 @@
-/*  $Id: bomb.qc,v 1.9 2003/11/30 07:41:43 slotzero Exp $
+/*  $Id: bomb.qc,v 1.10 2003/11/30 08:08:39 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -213,7 +213,7 @@ Gas_Cloud_Damage =
 
 			damage = ceil (damage);
 			if (damage)
-				T_Damage (head, self, self.owner, damage, "gasbomb");
+				T_Damage (head, self, self.owner, damage, "gas");
 		}
 		head = head.chain;
 	}

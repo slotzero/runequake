@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.40 2003/11/27 06:31:35 slotzero Exp $
+/*  $Id: client.qc,v 1.41 2003/11/30 08:08:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1960,11 +1960,13 @@ ClientObituary =
 				bprint (" was attached to his own bomb\n");
 			else if (dt == "bomb")
 				bprint (" was there when his own bomb blew\n");
+			else if (dt == "gas")
+				bprint (" likes the smell of his own gas\n");
 			else if (dt == "mortar")
 				bprint (" shelled himself\n");
 			else if (dt == "bfgblast")
 				bprint (" was too close to his own BFG\n");
-			else if (dt == "grenade")
+			else if (dt == "grenade" || dt == "gasbomb")
 				bprint (" tries to put the pin back in\n");
 			else if (dt == "lavagun")
 				bprint (" sizzled himself\n");
@@ -2082,7 +2084,7 @@ ClientObituary =
 		}
 		else if (dt == "tornado")
 		{
-			s1 = " couldn't outrun ";
+			s1 = " was torn apart in ";
 			s2 = "'s tornado\n";
 		}
 		else if (dt == "hook")
@@ -2182,6 +2184,16 @@ ClientObituary =
 		{
 			s1 = " was there when ";
 			s2 = "'s bomb blew\n";
+		}
+		else if (dt == "gas")
+		{
+			s1 = " took a deep breath of ";
+			s2 = "'s gas\n";
+		}
+		else if (dt == "gasbomb")
+		{
+			s1 = " exploded along with ";
+			s2 = "'s gas grenade\n";
 		}
 		else if (dt == "mortar")
 		{
