@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.10 2003/10/10 20:43:38 slotzero Exp $
+/*  $Id: hunk.qc,v 1.11 2003/10/23 23:37:44 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -17,10 +17,29 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
+/*	HUNK CONTEXT ALLOCATION
+
+	%0 - %9		= [DO NOT USE]
+
+	// server_time(), update_server_time()
+	%10  - ?	= float time
+
+	// Log_Client_Disconnect(), Client_Disconnect_Log()
+	%100 - %103	= string netname	%104 - %105	= float elapsed
+	%106 - %109	= string netname	%110 - %111	= float elapsed
+	%112 - %115	= string netname	%116 - %117	= float elapsed
+	%118 - %121	= string netname	%122 - %123	= float elapsed
+	%124 - %127	= string netname	%128 - %129	= float elapsed
+	%130 - %133	= string netname	%134 - %135	= float elapsed
+	%136 - %139	= string netname	%140 - %141	= float elapsed
+	%142 - %145	= string netname	%146 - %147	= float elapsed
+	%148 - %151	= string netname	%152 - %153	= float elapsed
+	%154 - %157	= string netname	%158 - %159	= float elapsed
+*/
+
 //-------------------------------------------------------------------
 // HUNK MANIPULATION FUNCTIONS
 //-------------------------------------------------------------------
-
 
 entity (float type, float offset)
 Get_Hunk =
