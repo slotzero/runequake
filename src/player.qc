@@ -1,4 +1,4 @@
-// $Id: player.qc,v 1.2 2002/06/08 05:42:35 slotzero Exp $
+// $Id: player.qc,v 1.3 2002/06/27 00:04:01 slotzero Exp $
 
 /*
 ==============================================================================
@@ -126,13 +126,13 @@ void () player_run	= [ $rockrun1,	player_run	]
 
 	if (self.weapon & WEAPON_NONALT_MASK == IT_AXE)
 	{
-		if (self.walkframe == 6)
+		if (self.walkframe >= 6)
 			self.walkframe = 0;
 		self.frame = $axrun1 + self.walkframe;
 	}
 	else
 	{
-		if (self.walkframe == 6)
+		if (self.walkframe >= 6)
 			self.walkframe = 0;
 		self.frame = self.frame + self.walkframe;
 	}
@@ -395,16 +395,16 @@ DeathBubbles =
 {
 	local entity bubble_spawner;
 
-	bubble_spawner = spawn ();
+	bubble_spawner			= spawn ();
+	bubble_spawner.movetype		= MOVETYPE_NONE;
+	bubble_spawner.solid		= SOLID_NOT;
+	bubble_spawner.nextthink	= time + sys_ticrate;
+	bubble_spawner.think		= DeathBubblesSpawn;
+	bubble_spawner.air_finished	= 0;
+	bubble_spawner.owner		= self;
+	bubble_spawner.bubble_count	= num_bubbles;
+
 	setorigin (bubble_spawner, self.origin);
-	bubble_spawner.movetype = MOVETYPE_NONE;
-	bubble_spawner.solid = SOLID_NOT;
-	bubble_spawner.nextthink = time + sys_ticrate;
-	bubble_spawner.think = DeathBubblesSpawn;
-	bubble_spawner.air_finished = 0;
-	bubble_spawner.owner = self;
-	bubble_spawner.bubble_count = num_bubbles;
-	return;
 };
 
 void ()
