@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.1 2003/06/10 22:18:34 slotzero Exp $
+/*  $Id: hunk.qc,v 1.2 2003/06/11 21:23:56 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -71,7 +71,7 @@ Write_Hunk =
 string (entity hunk, float bytes)
 Read_Hunk_Bytes =
 {
-	local float i, pdata, mask, dword;
+	local float i, pdata, dword;
 	local string data;
 
 	data = allocate_string_size (bytes);
