@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.32 2003/11/30 07:41:44 slotzero Exp $
+/*  $Id: runes60.qc,v 1.33 2003/12/03 23:34:12 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -745,7 +745,7 @@ Rune_Deflect_Telefrag =
 		centerprint (other, "You deflected a telefrag!");
 	}
 
-	if (!other.runevar)
+	if (other.runevar <= 0)
 	{
 		rune_delete		= spawn ();
 		rune_delete.owner	= other;
@@ -958,7 +958,7 @@ void() tornado_pull =
 
 void() tornado_touch =
 {
-	if (other.health < 0)
+	if (other.health <= 0)
 		return;
 
 	if (environmental (other))
@@ -996,7 +996,7 @@ Rune_Tornado =
  	self.runevector_x = time + 1.5;
 
 	self.runevar		= self.runevar - 1;
-	if (!self.runevar)
+	if (self.runevar <= 0)
 	{
 		sprint (self, "Max tornados spawned, rune deleted\n");
 		Rune_Delete (0);
