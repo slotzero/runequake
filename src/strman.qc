@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.7 2003/06/06 01:05:51 slotzero Exp $
+/*  $Id: strman.qc,v 1.8 2003/06/06 22:48:06 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -99,7 +99,7 @@ string (string s1, string s2)
 strcat =
 {
 	local float len1, len2, bytes;
-	local string s, temp;
+	local string s;
 
 	len1 = strlen (s1);
 	if (!len1)
