@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.29 2003/11/08 05:46:16 slotzero Exp $
+/*  $Id: items.qc,v 1.30 2004/02/29 06:12:51 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1185,7 +1185,8 @@ POWERUPS
 void ()
 powerup_touch =
 {
-	local float tell, n;
+	local entity e;
+	local float dist, tell, n;
 
 	if (other.classname != "player")
 		return;
@@ -1253,6 +1254,19 @@ powerup_touch =
 		other.super_time = -1;
 		other.super_damage_finished = time + 30;
 		other.super_sound = time + 1;
+	}
+
+	// q3 style denied
+	e = find (world, classname, "player");
+	while (e)
+	{
+		dist = vlen (self.origin - e.origin);
+		if (dist < 125 && e != other)
+		{
+			centerprint (e, "\b\<denied\>\b");
+			self_sound (e, "misc/talk.wav");
+		}
+		e = find (e, classname, "player");
 	}
 
 	if (!deathmatch & DM_DM_MASK)
@@ -1594,7 +1608,8 @@ drop_powerup =
 void ()
 drop_powerup_touch =
 {
-	local float it, time_left;
+	local entity e;
+	local float it, dist, time_left;
 
 	if (other.classname != "player")
 		return;
@@ -1664,6 +1679,19 @@ drop_powerup_touch =
 	self.solid	= SOLID_NOT;
 	other.items	= other.items | it;
 	self.model	= string_null;
+
+	// q3 style denied
+	e = find (world, classname, "player");
+	while (e)
+	{
+		dist = vlen (self.origin - e.origin);
+		if (dist < 125 && e != other)
+		{
+			centerprint (e, "\b\<denied\>\b");
+			self_sound (e, "misc/talk.wav");
+		}
+		e = find (e, classname, "player");
+	}
 
 	if (self.netname != "biosuit")
 	{
