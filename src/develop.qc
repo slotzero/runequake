@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.21 2003/06/29 22:13:24 slotzero Exp $
+/*  $Id: develop.qc,v 1.22 2003/07/01 22:29:28 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -62,4 +62,31 @@ ban_ip =
 		dprint (">", s, "<\n");
 	}
 	Write_Hunk_Max (type, offset, ip, 16);
+};
+
+string ()
+ProQuake_Version =
+{
+	local entity cl;
+	local float i, d, sum;
+	local string v, x;
+
+	cl = *SubInt(AddInt(PSTRING_TO_PQUAKEC, &self.netname), 4 * CL_NAME);
+	cl = *AddInt(cl[CL_NETCONNECTION], PC_TO_PQUAKEC);
+	i = cl[QS_MOD] / %1;
+	hex32 (cl[QS_MOD]);
+
+	d = floor (i / 4096);
+	i = i - d * 4096;
+	sum = ctof (hex[d * %2]) * 16;
+	d = floor (i / 256);
+	i = i - d * 256;
+	sum = sum + ctof (hex[d * %2]);
+	d = floor (sum / 10);
+	v = ftos (d);
+	v = strcat (v, ".");
+	sum = sum - (d * 10);
+	x = ftos (sum);
+	v = strcat (v, x);
+	return strcat (v, "0");
 };
