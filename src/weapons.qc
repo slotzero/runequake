@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.31 2004/05/09 00:58:25 slotzero Exp $
+/*  $Id: weapons.qc,v 1.32 2004/06/06 08:25:45 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -394,7 +394,7 @@ W_FireSuperShotgun =
 
 	sound (self, CHAN_WEAPON, "weapons/shotgn2.wav", 1, ATTN_NORM);
 
-	bigkick (0);
+	bigkick ();
 
 	dir = aim (self, 100000);
 	FireBullets (14, dir, '0.14 0.08 0', "supershotgun");

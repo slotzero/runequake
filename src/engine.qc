@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.14 2004/05/23 01:12:14 slotzero Exp $
+/*  $Id: engine.qc,v 1.15 2004/06/06 08:25:45 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -233,23 +233,16 @@ muzzleflash =
 void ()
 smallkick =
 {
-	IN_POQ([-
-		self.punchangle_x = -2;
-	-], [-
+	IN_QW([-
 		msg_entity = self;
 		WriteByte (MSG_ONE, SVC_SMALLKICK);
 	-])
 };
 
-void (float kick_size)
+void ()
 bigkick =
 {
-	IN_POQ([-
-		if (!kick_size)
-			kick_size = -4;
-		self.punchangle_x = kick_size;
-	-], [-
-		if (0) kick_size = kick_size;	// prevent frikqcc compiler warning
+	IN_QW([-
 		msg_entity = self;
 		WriteByte (MSG_ONE, SVC_SMALLKICK);
 	-])
@@ -262,7 +255,7 @@ bigkick_e =
 
 	old_self = self;
 	self = e;
-	bigkick (kick_size);
+	bigkick ();
 	self = old_self;
 };
 
