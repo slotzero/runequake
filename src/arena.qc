@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.18 2005/02/01 01:16:58 slotzero Exp $
+/*  $Id: arena.qc,v 1.19 2005/03/28 23:02:06 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -33,6 +33,8 @@
 // arena.aiment		= last person to die
 // arena.goalentity	= first person to die, if both death
 // arena.movetarget	= winner
+// arena.dmg_inflictor	= current streaker
+// arena.dmg_take	= streak amount
 
 float ()
 mode_arena =
@@ -173,8 +175,20 @@ arena_countdown =
 		if (self.state == 0)
 		{
 			bprint (self.owner.netname);
+			if (self.owner == self.dmg_inflictor)
+			{
+				bprint (" \[");
+				bprint_float (self.dmg_take);
+				bprint ("\]");
+			}
 			bprint (" vs ");
 			bprint (self.runent.netname);
+			if (self.runent == self.dmg_inflictor)
+			{
+				bprint (" \[");
+				bprint_float (self.dmg_take);
+				bprint ("\]");
+			}
 			bprint ("\n");
 
 			arena_game_queue_announce ();
@@ -265,6 +279,14 @@ arena_results =
 			os = self.owner;
 			self.owner = winner;
 			self.runent = os;
+		}
+
+		if (self.dmg_inflictor == winner)
+			self.dmg_take = self.dmg_take + 1;
+		else
+		{
+			self.dmg_inflictor = winner;
+			self.dmg_take = 1;
 		}
 
 		add_frag (winner, 1);
