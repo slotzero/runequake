@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.38 2004/04/04 21:41:18 slotzero Exp $
+/*  $Id: items.qc,v 1.39 2004/04/05 10:34:52 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -322,6 +322,7 @@ armor_touch =
 	if (other.classname != "player")
 		return;
 
+	// Someone touched me, so don't cycle if configured.
 	self.runetype	= time + 5;
 
 	if (self.runevar)
