@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.53 2004/06/25 05:21:04 slotzero Exp $
+/*  $Id: client.qc,v 1.54 2004/06/26 05:25:50 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -349,14 +349,15 @@ move_to_intermission =
 
 		if (world.impulse)
 		{
-			intermission_pos	= find (world, classname, "info_player_deathmatch");
-			e.angles		= intermission_pos.angles;
+			if (lastspawn)
+				intermission_pos 	= lastspawn;
+			e.angles			= intermission_pos.angles;
 
 			makevectors (intermission_pos.angles);
 			spawn_tfog (intermission_pos.origin + 16 * v_forward);
 		}
 		else
-			e.angles		= e.v_angle = intermission_pos.mangle;
+			e.angles			= e.v_angle = intermission_pos.mangle;
 
 		e.fixangle	 = TRUE;		// turn this way immediately
 		e.nextthink	 = time + 0.5;
