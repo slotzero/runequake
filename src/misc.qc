@@ -1,4 +1,4 @@
-// $Id: misc.qc,v 1.2 2002/02/22 03:24:44 slotzero Exp $
+// $Id: misc.qc,v 1.3 2002/03/02 15:02:39 slotzero Exp $
 
 /*QUAKED info_null (0 0.5 0) (-4 -4 -4) (4 4 4)
 Used as a positional target for spotlights, etc.
@@ -27,11 +27,9 @@ Lava Balls
 void ()
 misc_fireball =
 {
-
-	precache_model ("progs/lavaball.mdl");
-	self.classname = "fireball";
-	self.nextthink = time + 0.1 + (random () * 5);
-	self.think = fireball_think;
+	self.classname	= "fireball";
+	self.nextthink	= time + 0.1 + (random () * 5);
+	self.think	= fireball_think;
 	if (!self.speed)
 		self.speed = 1000;
 };
@@ -41,7 +39,7 @@ fireball_think =
 {
 	local entity e;
 
-	e = spawn ();
+	e		= spawn ();
 	e.solid		= SOLID_TRIGGER;
 	e.movetype	= MOVETYPE_TOSS;
 	e.velocity	= '0 0 1000';
@@ -49,9 +47,11 @@ fireball_think =
 	e.velocity_y	= (random () * 100) - 50;
 	e.velocity_z	= self.speed + (random () * 200);
 	e.classname	= "fireball";
+
 	setmodel (e, "progs/lavaball.mdl");
 	setsize (e, VEC_ORIGIN, VEC_ORIGIN);
 	setorigin (e, self.origin);
+
 	e.nextthink	= time + 5;
 	e.think		= SUB_Remove;
 	e.touch		= fireball_touch;
@@ -77,6 +77,7 @@ respawn_barrel =
 		self.nextthink = time + 5;
 		return;
 	}
+
 	self.health	= self.max_health;
 	self.takedamage	= DAMAGE_AIM;
 	self.solid	= SOLID_BBOX;
@@ -124,12 +125,14 @@ misc_explobox =
 	self.solid	= SOLID_BBOX;
 	self.movetype	= MOVETYPE_NONE;
 	self.mdl	= "maps/b_explob.bsp";
+
 	precache_model (self.mdl);
 	setmodel (self, self.mdl);
 	IN_QW([-
 		setsize (self, '0 0 0', '32 32 64');
 	-])
 	precache_sound ("weapons/r_exp3.wav");
+
 	self.health	= self.max_health = 20;
 	self.th_die	= barrel_explode;
 	self.takedamage	= DAMAGE_AIM;
@@ -157,12 +160,14 @@ misc_explobox2 =
 	self.solid	= SOLID_BBOX;
 	self.movetype	= MOVETYPE_NONE;
 	self.mdl	= "maps/b_exbox2.bsp";
+
 	precache_model2 (self.mdl);
 	setmodel (self, self.mdl);
 	IN_QW([-
 		setsize (self, '0 0 0', '32 32 32');
 	-])
 	precache_sound ("weapons/r_exp3.wav");
+
 	self.health	= self.max_health = 20;
 	self.th_die	= barrel_explode;
 	self.takedamage	= DAMAGE_AIM;
@@ -220,7 +225,7 @@ LaunchLaser =
 	if (self.classname == "monster_enforcer")
 		sound (self, CHAN_WEAPON, "enforcer/enfire.wav", 1, ATTN_NORM);
 
-	vec = normalize (vec);
+	vec		= normalize (vec);
 
 	newmis		= spawn ();
 	newmis.owner	= self;
@@ -281,7 +286,6 @@ trap_spikeshooter =
 	if (self.spawnflags & SPAWNFLAG_LASER)
 	{
 		precache_model2 ("progs/laser.mdl");
-
 		precache_sound2 ("enforcer/enfire.wav");
 		precache_sound2 ("enforcer/enfstop.wav");
 	}
@@ -298,7 +302,6 @@ void ()
 trap_shooter =
 {
 	trap_spikeshooter ();
-
 	if (self.wait == 0)
 		self.wait = 1;
 	self.nextthink	= self.nextthink + self.wait + self.ltime;
@@ -323,7 +326,6 @@ air_bubbles =
 		return;
 	}
 
-	precache_model ("progs/s_bubble.spr");
 	self.nextthink	= time + 1;
 	self.think	= make_bubbles;
 };
@@ -422,8 +424,8 @@ bubble_bob =
 	self.velocity_y = rnd2;
 	self.velocity_z = rnd3;
 
-	self.nextthink = time + 0.5;
-	self.think = bubble_bob;
+	self.nextthink	= time + 0.5;
+	self.think	= bubble_bob;
 };
 
 /*~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>
@@ -435,8 +437,8 @@ Just for the debugging level.  Don't use
 void ()
 viewthing =
 {
-	self.movetype = MOVETYPE_NONE;
-	self.solid = SOLID_NOT;
+	self.movetype	= MOVETYPE_NONE;
+	self.solid	= SOLID_NOT;
 	precache_model ("progs/player.mdl");
 	setmodel (self, "progs/player.mdl");
 };
