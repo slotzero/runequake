@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.47 2003/10/25 01:08:21 slotzero Exp $
+/*  $Id: develop.qc,v 1.48 2003/10/25 01:18:40 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -109,7 +109,7 @@ Read_Levels_From_Hunk =
 float (float pos)
 pop_level_from_hunk =
 {
-	local float i, max, tot;
+	local float max, tot;
 	local string new;
 
 	tot = num_levels_in_hunk ();
