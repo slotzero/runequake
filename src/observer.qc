@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.41 2005/02/06 22:09:07 slotzero Exp $
+/*  $Id: observer.qc,v 1.42 2005/02/18 05:41:57 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -711,7 +711,7 @@ obs_player_detect =
 
 		if (!self.aqstate & AQS_MENU_MASK && (self.class_cnt < time || wanted != self.aiment))
 		{
-			centerprint5 (self, s, s1, "\n\n", s2, s3);
+			centerprint5 (self, s, s1, "\n\n", s2[%1], s3);
 			self.class_cnt = time + CENTERPRINT_REFRESH;
 			self.aiment = wanted;
 		}

@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.169 2005/02/01 11:25:13 slotzero Exp $
+/*  $Id: rjs.qc,v 1.170 2005/02/18 05:41:57 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2716,7 +2716,8 @@ CycleWeaponReverseCommand =
 void (float force)
 draw_hud =
 {
-	local string weap, willdrop, lithhook, runedesc;
+	local float i;
+	local string s, weap, willdrop, lithhook, runedesc;
 
 	if (self.aqflags & AQ_NO_HUD)
 		return;
@@ -2752,11 +2753,22 @@ draw_hud =
 			willdrop = "Ä";
 		else
 			willdrop = " ";
+
 		runedesc = Rune_Tell_real (0, self.runetype, 0, 2);
+
+		s = string_null;
+		i = strlen (runedesc);
+
+		if (i == 4)
+			s = "   ";
+		else if (i == 5)
+			s = "  ";
+		else if (i == 6)
+			s = " ";
+
 		in_hud_hack = 1;
-		centerprint6 (self, "\n\n\n\n\n\n\n\n\n\n\n\n",
-			weap, "                 ",
-			lithhook, willdrop, runedesc);
+		centerprint7 (self, "\n\n\n\n\n\n\n\n\n\n\n\n",
+				weap, "                 ", lithhook, willdrop, runedesc, s);
 		in_hud_hack = 0;
 	}
 };

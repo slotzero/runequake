@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.59 2004/12/18 23:50:15 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.60 2005/02/18 05:41:57 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -123,7 +123,7 @@ Rune_Tell_real =
 	else if (type == RN_REGEN)
 	{
 		desc_l = "Rune of Regeneration";
-		desc_s = " Regen ";
+		desc_s = " Regen";
 
 		d1 = "Health and armor regenerate\n"
 			"Activate to instantly\n"
@@ -140,7 +140,7 @@ Rune_Tell_real =
 	else if (type == RN_HASTE)
 	{
 		desc_l = "Rune of Haste";
-		desc_s = " Haste ";
+		desc_s = " Haste";
 
 		d1 = "Shoot weapons faster";
 	}
@@ -188,7 +188,7 @@ Rune_Tell_real =
 	else if (type == RN_ZAP)
 	{
 		desc_l = "Electric Rune";
-		desc_s = " Elec  ";
+		desc_s = " Elec";
 
 		d1 = "Enemies attacked with electricity\n"
 			"when they get too close\n"
@@ -197,7 +197,7 @@ Rune_Tell_real =
 	else if (type == RN_CLOAK)
 	{
 		desc_l = "Rune of Cloaking";
-		desc_s = " Cloak ";
+		desc_s = " Cloak";
 
 		d1 = "You are always silent\n"
 			"You are invisible unless you fire\n"
@@ -224,7 +224,7 @@ Rune_Tell_real =
 	else if (type == RN_HOLO)
 	{
 		desc_l = "Holorune";
-		desc_s = " Holo  ";
+		desc_s = " Holo";
 
 		d1 = "Duke Nukem-style holograms\n";
 		d2 = ftos (MAX_HOLO);
@@ -233,7 +233,7 @@ Rune_Tell_real =
 	else if (type == RN_ORB)
 	{
 		desc_l = "Orb of Death";
-		desc_s = " Orb   ";
+		desc_s = " Orb";
 
 		d1 = "Sphere of death circles you and\n"
 			"damages enemies upon contact";
@@ -241,14 +241,14 @@ Rune_Tell_real =
 	else if (type == RN_BLINK)
 	{
 		desc_l = "Blink Rune";
-		desc_s = " Blink ";
+		desc_s = " Blink";
 
 		d1 = "\"Random\" teleportation";
 	}
 	else if (type == RN_CAMO)
 	{
 		desc_l = "Rune of Camouflage";
-		desc_s = " Camo  ";
+		desc_s = " Camo";
 
 		d1 = "Full invisibility when still";
 	}
@@ -270,7 +270,7 @@ Rune_Tell_real =
 	else if (type == RN_VAMP)
 	{
 		desc_l = "Vampiric Rune";
-		desc_s = " Vamp  ";
+		desc_s = " Vamp";
 
 		d1 = "Damage other players to\n"
 			"get their health";
@@ -294,7 +294,7 @@ Rune_Tell_real =
 	else if (type == RN_RADIO)
 	{
 		desc_l = "Rune of Radioactivity";
-		desc_s = " Radio ";
+		desc_s = " Radio";
 
 		d1 = "Irradiate areas, opponents die\n"
 			"slowly but you are healed\n";
@@ -312,7 +312,7 @@ Rune_Tell_real =
 	else if (type == RN_FREEZE)
 	{
 		desc_l = "Ice Traps";
-		desc_s = " Ice   ";
+		desc_s = " Ice";
 
 		d1 = "Leave icy traps which\n"
 			"immobilize when touched\n";
@@ -322,7 +322,7 @@ Rune_Tell_real =
 	else if (type == RN_SUCK)
 	{
 		desc_l = "Gravity Rune";
-		desc_s = " Grav  ";
+		desc_s = " Grav";
 
 		d1 = "Sphere of gravity sucks\n"
 			"in enemies and items";
@@ -355,7 +355,7 @@ Rune_Tell_real =
 	else if (type == RN_SHUB)
 	{
 		desc_l = "Shub Hat";
-		desc_s = " Shub  ";
+		desc_s = " Shub";
 
 		d1 = "A hologram of Shub-Niggurath\n"
 			"surrounds you, most people\n"
@@ -398,7 +398,7 @@ Rune_Tell_real =
 	else if (type == RN_WEIRD)
 	{
 		desc_l = "Rune of Weirdness";
-		desc_s = " Weird ";
+		desc_s = " Weird";
 
 		d1 = "Small blue balls induce\n"
 			"drug-like effects in foes";
@@ -422,7 +422,7 @@ Rune_Tell_real =
 	else if (type == RN_PHASE)
 	{
 		desc_l = "Phasing Rune";
-		desc_s = " Phase ";
+		desc_s = " Phase";
 
 		d1 = "Activate to walk through walls";
 	}
@@ -478,7 +478,7 @@ Rune_Tell_real =
 	else if (type == RN_MONK)
 	{
 		desc_l = "Zen Monk";
-		desc_s = " Monk  ";
+		desc_s = " Monk";
 
 		d1 = "Mostly invulnerable when\n"
 			"not moving or shooting";
@@ -486,7 +486,7 @@ Rune_Tell_real =
 	else if (type == RN_TORCH)
 	{
 		desc_l = "Human Torch";
-		desc_s = " Torch ";
+		desc_s = " Torch";
 
 		d1 = "Better flame weapons\n";
 		d2 = ftos (MAX_TORCH);
@@ -504,7 +504,7 @@ Rune_Tell_real =
 	else if (type == RN_ARMOR)
 	{
 		desc_l = "Rune of Good Armor";
-		desc_s = " Armor ";
+		desc_s = " Armor";
 
 		d1 = "All armor is red armor\n"
 			"Collect lots\n"
@@ -513,7 +513,7 @@ Rune_Tell_real =
 	else if (type == RN_QUAD)
 	{
 		desc_l = "Rune of Quad Damage";
-		desc_s = " Quad  ";
+		desc_s = " Quad";
 
 		d1 = "Quad damage for ";
 		d2 = ftos (RN_QUAD_DURATION);
@@ -525,7 +525,7 @@ Rune_Tell_real =
 	else if (type == RN_JACK)
 	{
 		desc_l = "Jack of All Runes";
-		desc_s = " Jack  ";
+		desc_s = " Jack";
 
 		d1 = "A smattering of other\n"
 			"runes' abilities\n"
@@ -553,7 +553,7 @@ Rune_Tell_real =
 	else if (type == RN_THOR)
 	{
 		desc_l = "Rune of Thor";
-		desc_s = " Thor  ";
+		desc_s = " Thor";
 
 		d1 = "Lightning gun and constant\n"
 			"supply of ammo\n"
@@ -572,7 +572,7 @@ Rune_Tell_real =
 	/*else if (type == RN_SONAR)
 	{
 		desc_l = "Sonar Rune";
-		desc_s = " Sonar ";
+		desc_s = " Sonar";
 
 		d1 = "Emits a sonic wave which\n"
 			"detects nearby players";
@@ -595,7 +595,7 @@ Rune_Tell_real =
 	else if (type == RN_BETTY)
 	{
 		desc_l = "Bouncing Betty";
-		desc_s = " Betty ";
+		desc_s = " Betty";
 
 		d1 = "Launch a cluster of grenades\n"
 			"(requires rockets)";
