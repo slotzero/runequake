@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.19 2004/07/02 05:21:03 slotzero Exp $
+/*  $Id: hunk.qc,v 1.20 2004/07/03 03:53:24 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -158,7 +158,6 @@ Write_Hunk =
 	Write_Hunk_e (hunk, s);
 };
 
-// requires 3 dwords (12 bytes)
 void (float type, float offset, vector v)
 Write_Hunk_Vector =
 {
@@ -183,6 +182,24 @@ Write_Hunk_Float =
 		return dprint ("Write_Hunk_Float: hunk is null\n");
 
 	hunk[%0] = f;
+};
+
+// in development.
+void (float type, float offset, string s)
+Write_Hunk_String =
+{
+	local entity hunk;
+	local float i, ps, max;
+
+	hunk = Get_Hunk (type, offset);
+	if (!hunk)
+		return dprint ("Write_Hunk_String: hunk is null\n");
+
+	max = ceil ((strlen (s) + 1) / 4) * %1;
+	ps = AddInt (&s, PSTRING_TO_PQUAKEC);
+
+	for (i = %0; i < max; i = i + %1)
+		hunk[i] = (*ps)[i];
 };
 
 string (entity hunk, float bytes)
