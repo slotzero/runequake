@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.48 2004/12/28 08:19:47 slotzero Exp $
+/*  $Id: vote.qc,v 1.49 2005/01/08 04:03:16 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -477,11 +477,11 @@ vote =
 	{
 		// cancel	= 1;	//
 		e.frag_rate	= 0.51;	// XXX move to settings.
-		e.think1	= mode_practice;
+		e.think1	= change_mode_to_practice;
 		e.noise1	= "change";
 		e.noise2	= " mode to practice";
 
-		if (deathmatch & DM_MODE_PRACTICE)
+		if (mode_practice ())
 		{
 			if (!cancel)
 				self_sprint (self, "already in practice mode\n");
@@ -492,11 +492,11 @@ vote =
 	{
 		// cancel	= 1;
 		e.frag_rate	= 0.51; // XXX move to settings (share with practice?)
-		e.think1	= mode_normal;
+		e.think1	= change_mode_to_normal;
 		e.noise1	= "change";
 		e.noise2	= " mode to normal";
 
-		if (!deathmatch & DM_MODE_PRACTICE)
+		if (mode_normal ())
 		{
 			if (!cancel)
 				self_sprint (self, "already in normal mode\n");
@@ -606,7 +606,7 @@ vote =
 		else
 			e.noise1	= "disable";
 
-		if (deathmatch & DM_MODE_PRACTICE)
+		if (mode_practice ())
 		{
 			if (!cancel)
 				self_sprint (self, "disable practice mode first\n");

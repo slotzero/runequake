@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.35 2004/11/28 08:22:00 slotzero Exp $
+/*  $Id: team.qc,v 1.36 2005/01/08 04:03:15 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -583,40 +583,24 @@ team_stats =
 	sprint (pe, "\n");
 };
 
-void (float mode)
-change_practice_mode =
+void ()
+change_mode_to_practice =
 {
-	local float new_deathmatch, bits;
+	local float new_deathmatch;
 	local string s;
 
-	bits = DM_MODE_PRACTICE;
 	new_deathmatch = cvar ("deathmatch");
 
-	if (mode)
-	{
-		if (!NO_SPAWN_SHIELDS)
-			NO_SPAWN_SHIELDS = fput (HUNK_NO_SPAWN_SHIELDS, !NO_SPAWN_SHIELDS);
-		if (!NO_ALT_WEAPONS)
-			NO_ALT_WEAPONS = fput (HUNK_NO_ALT_WEAPONS, !NO_ALT_WEAPONS);
-		if (!new_deathmatch & DM_MODE_PRACTICE)
-			new_deathmatch = new_deathmatch | bits;
-	}
-	else
-	{
-		if (NO_ALT_WEAPONS)
-			NO_ALT_WEAPONS = fput (HUNK_NO_ALT_WEAPONS, !NO_ALT_WEAPONS);
-		if (NO_SPAWN_SHIELDS)
-			NO_SPAWN_SHIELDS = fput (HUNK_NO_SPAWN_SHIELDS, !NO_SPAWN_SHIELDS);
-		if (new_deathmatch & DM_MODE_PRACTICE)
-			new_deathmatch = new_deathmatch - new_deathmatch & bits;
-	}
+	if (!NO_SPAWN_SHIELDS)
+		NO_SPAWN_SHIELDS = fput (HUNK_NO_SPAWN_SHIELDS, !NO_SPAWN_SHIELDS);
+	if (!NO_ALT_WEAPONS)
+		NO_ALT_WEAPONS = fput (HUNK_NO_ALT_WEAPONS, !NO_ALT_WEAPONS);
+	if (!new_deathmatch & DM_MODE_PRACTICE)
+		new_deathmatch = new_deathmatch | DM_MODE_PRACTICE;
 
 	if (new_deathmatch == deathmatch)
 	{
-		if (mode)
-			self_sprint (self, "Already in practice mode\n");
-		else
-			self_sprint (self, "Already in normal mode\n");
+		self_sprint (self, "Already in practice mode\n");
 		return;
 	}
 
@@ -627,14 +611,82 @@ change_practice_mode =
 };
 
 void ()
-mode_practice =
+change_mode_to_arena =
 {
-	change_practice_mode (1);
+	local float new_deathmatch;
+	local string s;
+
+	new_deathmatch = cvar ("deathmatch");
+
+	if (!NO_SPAWN_SHIELDS)
+		NO_SPAWN_SHIELDS = fput (HUNK_NO_SPAWN_SHIELDS, !NO_SPAWN_SHIELDS);
+	if (!NO_ALT_WEAPONS)
+		NO_ALT_WEAPONS = fput (HUNK_NO_ALT_WEAPONS, !NO_ALT_WEAPONS);
+	if (!NO_RUNES)
+		NO_RUNES = fput (HUNK_NO_RUNES, !NO_RUNES);
+	if (!new_deathmatch & DM_MODE_ROCKET_ARENA)
+		new_deathmatch = new_deathmatch | DM_MODE_ROCKET_ARENA;
+
+	if (new_deathmatch == deathmatch)
+	{
+		self_sprint (self, "Already in arena mode\n");
+		return;
+	}
+
+	&%IN_POQ(368,376) = -1;
+	s = ftos (new_deathmatch);
+	cvar_set ("deathmatch", s);
+	admin_changelevel (mapname);
 };
 
-// XXX When more modes are added, make sure to redo this.
 void ()
+change_mode_to_normal =
+{
+	local float new_deathmatch;
+	local string s;
+
+	new_deathmatch = cvar ("deathmatch");
+
+	// XXX I would like these to be configured via a config file.
+	if (NO_ALT_WEAPONS)
+		NO_ALT_WEAPONS = fput (HUNK_NO_ALT_WEAPONS, !NO_ALT_WEAPONS);
+	if (NO_SPAWN_SHIELDS)
+		NO_SPAWN_SHIELDS = fput (HUNK_NO_SPAWN_SHIELDS, !NO_SPAWN_SHIELDS);
+	if (NO_RUNES)
+		NO_RUNES = fput (HUNK_NO_RUNES, !NO_RUNES);
+	if (new_deathmatch & DM_MODE_PRACTICE)
+		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_PRACTICE;
+	if (new_deathmatch & DM_MODE_ROCKET_ARENA)
+		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_ROCKET_ARENA;
+
+	if (new_deathmatch == deathmatch)
+	{
+		self_sprint (self, "Already in normal mode\n");
+		return;
+	}
+
+	&%IN_POQ(368,376) = -1;
+	s = ftos (new_deathmatch);
+	cvar_set ("deathmatch", s);
+	admin_changelevel (mapname);
+};
+
+float ()
 mode_normal =
 {
-	change_practice_mode (0);
+	if (deathmatch & DM_MODE_PRACTICE)
+		return FALSE;
+	if (deathmatch & DM_MODE_ROCKET_ARENA)
+		return FALSE;
+
+	return TRUE;
+};
+
+float ()
+mode_practice =
+{
+	if (deathmatch & DM_MODE_PRACTICE)
+		return TRUE;
+
+	return FALSE;
 };

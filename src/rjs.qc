@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.161 2005/01/02 08:38:48 slotzero Exp $
+/*  $Id: rjs.qc,v 1.162 2005/01/08 04:03:15 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -361,8 +361,9 @@ process_misc =
 		sethookdamage ();
 
 	// vote-practice (always do this last)
-	if (deathmatch & DM_MODE_PRACTICE)
-		mode_normal ();
+
+	if (!mode_normal ())
+		change_mode_to_normal ();
 };
 
 void ()

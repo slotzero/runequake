@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.55 2004/07/18 14:17:28 slotzero Exp $
+/*  $Id: world.qc,v 1.56 2005/01/08 04:03:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -382,10 +382,10 @@ StartFrame =
 		}
 
 		else if (i == C2_MODE_PRACTICE)
-			change_practice_mode (1);
+			change_mode_to_practice ();
 
 		else if (i == C2_MODE_NORMAL)
-			change_practice_mode (0);
+			change_mode_to_normal ();
 
 		// removed
 
