@@ -1,19 +1,31 @@
-// $Id: items.qc,v 1.15 2002/05/06 02:13:00 slotzero Exp $
+// $Id: items.qc,v 1.16 2002/05/10 19:57:42 slotzero Exp $
 
 /* ALL LIGHTS SHOULD BE 0 1 0 IN COLOR ALL OTHER ITEMS SHOULD
 BE .8 .3 .4 IN COLOR */
 
+void ()
+SUB_regen =
+{
+	self.model = self.mdl; // restore original model
+	self.solid = SOLID_TRIGGER; // allow it to be touched again
+
+	sound (self, CHAN_VOICE, "items/itembk2.wav", 1, ATTN_NORM); // play respawn sound
+
+	setorigin (self, self.origin);
+};
+
 /* QUAKED noclass (0 0 0) (-8 -8 -8) (8 8 8)
 prints a warning message when spawned
 */
-/* void () noclass =
+void ()
+noclass =
 {
 	dprint ("noclass spawned at");
-	dprint (vtos (self.origin));
+	dprint_vec (self.origin);
 	dprint ("\n");
+
 	remove (self);
 };
-*/
 
 void (entity e, float chan, string samp, float vol, float atten)
 item_sound =
@@ -71,9 +83,11 @@ PlaceItem =
 	self.velocity	= VEC_ORIGIN;
 	self.origin_z	= self.origin_z + 6;
 
-	if (!droptofloor (0, 0))
+	if (!droptofloor(0,0))
 	{
-		dprint ("Bonus item fell out of level at ");
+		dprint ("Bonus item \"");
+		dprint (self.classname);
+		dprint ("\" fell out of level at ");
 		dprint_vec (self.origin);
 		dprint ("\n");
 
@@ -898,76 +912,49 @@ item_cells =
 DO NOT USE THIS!!!! IT WILL BE REMOVED!
 */
 
-/*
 float WEAPON_SHOTGUN	= 1;
 float WEAPON_ROCKET	= 2;
 float WEAPON_SPIKES	= 4;
 float WEAPON_BIG	= 8;
-*/
 
-/* void ()
+
+void ()
 item_weapon =
 {
-	self.touch = ammo_touch;
-
 	if (self.spawnflags & WEAPON_SHOTGUN)
 	{
+		self.spawnflags = self.spawnflags - WEAPON_SHOTGUN;	// remove old flag
 		if (self.spawnflags & WEAPON_BIG)
 		{
-			precache_model ("maps/b_shell1.bsp");
-			setmodel (self, "maps/b_shell1.bsp");
-			self.aflag = 40;
-		}
-		else
-		{
-			precache_model ("maps/b_shell0.bsp");
-			setmodel (self, "maps/b_shell0.bsp");
-			self.aflag = 20;
-		}
-		self.weapon = 1;
-		self.netname = "shells";
+			self.spawnflags = self.spawnflags - WEAPON_BIG;	//remove old flag
+			self.spawnflags = self.spawnflags | WEAPON_BIG2;
+                }
+		self.classname = "item_shells";
+		item_shells();
 	}
-
-	if (self.spawnflags & WEAPON_SPIKES)
+	else if (self.spawnflags & WEAPON_ROCKET)
 	{
+		self.spawnflags = self.spawnflags - WEAPON_ROCKET;	// remove old flag
 		if (self.spawnflags & WEAPON_BIG)
 		{
-			precache_model ("maps/b_nail1.bsp");
-			setmodel (self, "maps/b_nail1.bsp");
-			self.aflag = 40;
-		}
-		else
-		{
-			precache_model ("maps/b_nail0.bsp");
-			setmodel (self, "maps/b_nail0.bsp");
-			self.aflag = 20;
-		}
-		self.weapon = 2;
-		self.netname = "spikes";
+			self.spawnflags = self.spawnflags - WEAPON_BIG;	//remove old flag
+			self.spawnflags = self.spawnflags | WEAPON_BIG2;
+                }
+		self.classname = "item_rockets";
+		item_rockets();
 	}
-
-	if (self.spawnflags & WEAPON_ROCKET)
+	else if (self.spawnflags & WEAPON_SPIKES)
 	{
+		self.spawnflags = self.spawnflags - WEAPON_SPIKES;	// remove old flag
 		if (self.spawnflags & WEAPON_BIG)
 		{
-			precache_model ("maps/b_rock1.bsp");
-			setmodel (self, "maps/b_rock1.bsp");
-			self.aflag = 10;
-		}
-		else
-		{
-			precache_model ("maps/b_rock0.bsp");
-			setmodel (self, "maps/b_rock0.bsp");
-			self.aflag = 5;
-		}
-		self.weapon = 3;
-		self.netname = "rockets";
+			self.spawnflags = self.spawnflags - WEAPON_BIG;	//remove old flag
+			self.spawnflags = self.spawnflags | WEAPON_BIG2;
+                }
+		self.classname = "item_spikes";
+		item_spikes();
 	}
-
-	setsize (self, VEC_ORIGIN, '32 32 56');
-	StartItem ();
 };
-*/
 
 /*
 ===============================================================================
