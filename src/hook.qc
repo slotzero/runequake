@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.22 2004/07/20 04:57:47 slotzero Exp $
+/*  $Id: hook.qc,v 1.23 2004/11/27 04:25:19 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -89,6 +89,9 @@ MaybeDropHook =
 
 	// player picked up ep suit/rune
 	else if (environmental (self.enemy))
+		dropit = 1;
+
+	else if (self.enemy.classname == "func_button" && self.enemy.state)
 		dropit = 1;
 
 	if (HOOK_CAMP_PROT)

@@ -1,4 +1,4 @@
-/*  $Id: buttons.qc,v 1.10 2003/06/24 22:17:35 slotzero Exp $
+/*  $Id: buttons.qc,v 1.11 2004/11/27 04:25:18 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -81,11 +81,11 @@ button_use =
 void ()
 button_touch =
 {
-	if (other.classname != "player")
+	if (other.classname != "player" && other.classname != "hook-head")
 		return;
 
     	// don't trigger when dead
-	if (other.health <= 0)
+	if (other.health <= 0 && other.classname != "hook-head")
 		return;
 
 	self.enemy = other;
