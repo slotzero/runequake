@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.105 2004/07/16 12:02:11 slotzero Exp $
+/*  $Id: defs.qc,v 1.106 2004/07/16 12:19:37 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -517,12 +517,8 @@ float IMP_VOTE_SUIT		= 209;
 float IMP_VOTE_ARMOR		= 208;
 float IMP_VOTE_ROTATE		= 207;
 float IMP_VOTE_RUNES		= 206;
-
-float IMP_HELP_LEVELS		= 205;
-float IMP_COMMANDS		= 204;
-float IMP_CUSTOM		= 203;
-float IMP_LEVELS		= 202;
-float IMP_LAST			= 201;
+float IMP_VOTE_ALTS		= 205;
+//				= 204 - 201	[free]
 //				= 200 - 101	[cheat impulses]
 float IMP_RUNE_CHEAT_BASE	= 101;
 float IMP_RUNE_USE		= 100;
@@ -550,13 +546,16 @@ float IMP_SHOW_POS		= 79;
 float IMP_HELP_VOTE		= 78;
 float IMP_QUIET_TOGGLE		= 77;
 float IMP_HOOK_TOGGLE		= 76;
-//				= 75;		[free]
+float IMP_HELP_LEVELS		= 75;
 float IMP_WEAPON_TOGGLES	= 74;
 // reserve 73 for QSMACK_IMPULSE_1
-//				= 72;		[free]
+float IMP_COMMANDS		= 72;
 float IMP_TEAM_STATS		= 71;
 float IMP_CHANGE_MAP		= 70;
-//				= 69 - 60	[free]
+float IMP_CUSTOM		= 69;
+float IMP_LEVELS		= 68;
+float IMP_LAST			= 67;
+//				= 66 - 60	[free]
 float IMP_CYCLE_ALTERNATES	= 59;
 //				= 58;		[free]
 float IMP_SWITCHFIRE_BEST	= 57;
