@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.6 2003/07/16 09:56:10 slotzero Exp $
+/*  $Id: hunked.qc,v 1.7 2003/07/17 00:41:21 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -25,7 +25,7 @@ float LAST_TIME_UPDATE;
 
 float ()
 server_time =
-{
+{	IN_QW(return 0;)
 	local float i;
 
 	i = Read_Hunk_Float (HUNK_CONTEXT, %10);
@@ -36,7 +36,7 @@ server_time =
 
 void ()
 update_server_time =
-{
+{	IN_QW(return;)
 	local float i;
 
 	i = server_time ();

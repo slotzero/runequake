@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.37 2003/07/16 09:56:09 slotzero Exp $
+/*  $Id: develop.qc,v 1.38 2003/07/17 00:41:20 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -31,8 +31,7 @@ Test_Button =
 
 void ()
 Log_Client_Disconnect =
-{
-	IN_QW(return;)
+{	IN_QW(return;)
 	local float i, n, max, offset, e_time, elapsed;
 	local string e_name;
 
@@ -73,8 +72,7 @@ Log_Client_Disconnect =
 
 void ()
 Client_Disconnect_Log =
-{
-	IN_QW(return;)
+{	IN_QW(return;)
 	local float i, max, offset, e_time, e_away, server_t;
 	local string e_name;
 
