@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.91 2004/07/05 08:06:44 slotzero Exp $
+/*  $Id: defs.qc,v 1.92 2004/07/05 23:09:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -503,7 +503,6 @@ float RN_MAX_ALL	= 60;
 float IMP_SHOW_POS		= 254;
 //				= 238 - 253 [weapon aliases]
 //				= 220 - 237 [qsmack]
-float IMP_ADMIN_CHANGE_MAP	= 211;
 float IMP_CUSTOM_SOUNDS		= 210;
 float IMP_HELP_LEVELS		= 205;
 float IMP_COMMANDS		= 204;
@@ -575,6 +574,7 @@ float IMP_ADMIN_VOTE_TEAM_TOGGLE = 10;
 float IMP_ADMIN_TEAMPLAY_ZERO	= 11;
 float IMP_ADMIN_CYCLE		= 12;
 float IMP_ADMIN_CYCLE_SHOW	= 13;
+float IMP_ADMIN_CHANGE_MAP	= 14;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;
