@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.13 2005/01/18 00:48:39 slotzero Exp $
+/*  $Id: arena.qc,v 1.14 2005/01/18 00:54:29 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -345,6 +345,7 @@ arena_client_disconnect =
 	{
 		os = self;
 		self = arena.owner;
+		self.takedamage = DAMAGE_NO;
 		SetArenaParms ();
 		self = os;
 	}
