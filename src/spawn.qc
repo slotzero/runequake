@@ -1,4 +1,4 @@
-/*  $Id: spawn.qc,v 1.3 2003/11/22 05:56:13 slotzero Exp $
+/*  $Id: spawn.qc,v 1.4 2003/11/30 23:29:04 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -202,11 +202,10 @@ place_my_spots =
 	}
 	else if (mapname == "e1m1")
 	{
+		// Near bridge by SSG.
 		spawn_info_player_deathmatch ('647 1675 -200', -159);
 		// Teleporter to pent.
 		spawn_info_player_deathmatch ('1216 841 -408', 90);
-		// Top of crate next to level exit.
-		spawn_info_player_deathmatch ('1184 568 -128', 33);
 
 		spawn_info_teleport_destination ('480.4 -351.4 88', 90, "T1");
 	}
@@ -266,6 +265,34 @@ remove_my_items =
 		// Remove yellow armor.
 		remove_classname_origin ("item_armor2", '-392.0 1416.0 0.0');
 	}
+};
+
+float ()
+remove_func_wall =
+{
+	if (!scratch1 & S1_CUSTOM_EXITS)
+		return FALSE;
+
+	if (self.classname != "func_wall")
+		return FALSE;
+
+	if (mapname == "start")
+	{
+		if (self.model == "*30" || self.model == "*31" || self.model == "*32" || self.model == "*33")
+			return TRUE;
+	}
+	else if (mapname == "e1m1")
+	{
+		if (self.model == "*57")
+			return TRUE;
+	}
+	else if (mapname == "e2m6")
+	{
+		if (self.model == "*84")
+			return TRUE;
+	}
+
+	return FALSE;
 };
 
 void ()

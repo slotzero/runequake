@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.61 2003/11/27 06:15:16 slotzero Exp $
+/*  $Id: defs.qc,v 1.62 2003/11/30 23:29:04 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -756,6 +756,7 @@ float S1_BPRINT_TO_CONSOLE	= 8;
 float S1_ORIGINAL_LEVELS	= 16;
 float S1_MAX_TRAPS_FOR_LEVEL	= 32;
 float S1_BASIC_RUNES		= 64;
+float S1_CUSTOM_EXITS		= 128;
 
 // Bit settings for POWERUP_PICKUP_WARN in settings.qc.
 float ITEM_PENT = 1;
