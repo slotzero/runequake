@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.51 2004/12/03 10:49:14 slotzero Exp $
+/*  $Id: items.qc,v 1.52 2004/12/30 07:55:04 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -235,6 +235,9 @@ float	H_MEGA		= 2;
 void (string it_model, string it_noise, float it_healamount, float it_healtype)
 health_set =
 {
+	if (deathmatch & DM_MODE_ROCKET_ARENA)
+		return;
+
 	precache_model (it_model);
 	precache_noise (it_noise);
 
@@ -551,6 +554,9 @@ armor_set =
 {
 	if (!spawn_no_precache)
 		precache_model ("progs/armor.mdl");
+
+	if (deathmatch & DM_MODE_ROCKET_ARENA)
+		return;
 
 	self.touch	= armor_touch;
 	self.skin	= it_skin;
@@ -881,7 +887,7 @@ weapon_set =
 	if (!spawn_no_precache)
 		precache_model (it_model);
 
-	if (deathmatch & DM_MODE_PRACTICE)
+	if (deathmatch & DM_MODE_PRACTICE || deathmatch & DM_MODE_ROCKET_ARENA)
 		return;
 
 	self.touch	= weapon_touch;
@@ -1057,7 +1063,7 @@ ammo_set =
 {
 	precache_model (it_model);
 
-	if (deathmatch & DM_MODE_PRACTICE)
+	if (deathmatch & DM_MODE_PRACTICE || deathmatch & DM_MODE_ROCKET_ARENA)
 		return;
 
 	self.touch	= ammo_touch;
@@ -1475,6 +1481,9 @@ powerup_set =
 	precache_model (it_model);
 	precache_noise (it_noise);
 
+	if (deathmatch & DM_MODE_ROCKET_ARENA)
+		return;
+
 	self.touch	= powerup_touch;
 	self.netname	= it_netname;
 	self.items	= it_powerup;
@@ -1671,7 +1680,7 @@ DropBackpack =
 	if (!(self.ammo_shells + self.ammo_nails + self.ammo_rockets + self.ammo_cells))
 		return;	// nothing in it
 
-	if (deathmatch & DM_MODE_PRACTICE)
+	if (deathmatch & DM_MODE_PRACTICE || deathmatch & DM_MODE_ROCKET_ARENA)
 		return;
 
 	item		= spawn ();
