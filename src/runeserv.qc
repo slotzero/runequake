@@ -1,4 +1,4 @@
-// $Id: runeserv.qc,v 1.6 2002/07/20 19:04:34 slotzero Exp $
+// $Id: runeserv.qc,v 1.7 2002/08/04 06:32:24 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -772,7 +772,7 @@ Rune_Activate =
 		Hat_Spawn ("progs/s_bubble.spr", '-4 2 31', VEC_ORIGIN);
 
 	else if (self.runetype == RN_RADIO)
-		self.class_cnt = count_class_own (self, "radioative");
+		self.class_cnt = count_class_own (self, "radioactive");
 
 	else if (self.runetype == RN_FREEZE)
 		self.class_cnt = count_class_own (self, "freeze");
