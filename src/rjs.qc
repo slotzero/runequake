@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.114 2004/07/05 09:34:20 slotzero Exp $
+/*  $Id: rjs.qc,v 1.115 2004/07/05 23:11:56 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1170,9 +1170,6 @@ common_impulses =
 
 	else if (self.impulse == IMP_TEAM_ROTATE)
 		team_rotate (world);
-
-	else if (self.impulse == IMP_ADMIN_COMMAND)
-		admin_command ();
 
 	else if (self.impulse == IMP_CHANGE_MAP)
 		change_map ();
