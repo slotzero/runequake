@@ -1,4 +1,4 @@
-/*  $Id: spawn.qc,v 1.2 2003/10/15 23:15:33 slotzero Exp $
+/*  $Id: spawn.qc,v 1.3 2003/11/22 05:56:13 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -22,12 +22,16 @@ place_my_targets =
 {
 	if (mapname == "start")
 	{
-		if (self.map == "e2m1")
+		if	(self.map == "end")
+			self.target = "T5";
+		else if (self.map == "e1m1")
+			self.target = "T4";
+		else if (self.map == "e2m1")
 			self.target = "T3";
 		else if (self.map == "e3m1")
 			self.target = "T2";
-		else if (self.map == "end")
-			self.target = "T5";
+		else if (self.map == "e4m1")
+			self.target = "T1";
 	}
 	else if (mapname == "e1m1")
 	{
@@ -185,12 +189,16 @@ place_my_spots =
 		// Next to rockets at level exit.
 		spawn_info_player_deathmatch ('-268 1755 -360', 90);
 
-		// Start of map.
-		spawn_info_teleport_destination ('545.1 679.5 353.0', -90, "T5");
+		// E1M1 map teleporter.
+		spawn_info_teleport_destination ('-65 1689 136', 7, "T1");
 		// E1M2 map teleporter.
 		spawn_info_teleport_destination ('-494.0 2369.7 168', 0, "T2");
 		// E1M3 map teleporter.
 		spawn_info_teleport_destination ('1537.5 2992.7 264.0', -90, "T3");
+		// E1M4 map teleporter.
+		spawn_info_teleport_destination ('1955 1726.5 -216', 180, "T4");
+		// Start of map.
+		spawn_info_teleport_destination ('545.1 679.5 353.0', -90, "T5");
 	}
 	else if (mapname == "e1m1")
 	{
