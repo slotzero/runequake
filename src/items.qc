@@ -1,4 +1,4 @@
-// $Id: items.qc,v 1.4 2002/04/26 01:40:03 slotzero Exp $
+// $Id: items.qc,v 1.5 2002/04/26 03:35:26 slotzero Exp $
 
 /* ALL LIGHTS SHOULD BE 0 1 0 IN COLOR ALL OTHER ITEMS SHOULD
 BE .8 .3 .4 IN COLOR */
@@ -331,34 +331,30 @@ armor_touch =
 	SUB_UseTargets ();				// fire all targets / killtargets
 };
 
-/*QUAKED item_armor1 (0 .5 .8) (-16 -16 0) (16 16 32)
-*/
-
-void ()
-item_armor1 =
+void (float armor_skin)
+item_armor =
 {
-	self.touch = armor_touch;
-	if (!spawn_no_precache)
-		precache_model ("progs/armor.mdl");
+	self.touch	= armor_touch;
+	self.skin	= armor_skin;
 	setmodel (self, "progs/armor.mdl");
-	self.skin = 0;
 	setsize (self, '-16 -16 0', '16 16 56');
 	StartItem ();
 };
 
+/*QUAKED item_armor1 (0 .5 .8) (-16 -16 0) (16 16 32)
+*/
+void ()
+item_armor1 =
+{
+	item_armor (0);
+};
+
 /*QUAKED item_armor2 (0 .5 .8) (-16 -16 0) (16 16 32)
 */
-
 void ()
 item_armor2 =
 {
-	self.touch = armor_touch;
-	if (!spawn_no_precache)
-		precache_model ("progs/armor.mdl");
-	setmodel (self, "progs/armor.mdl");
-	self.skin = 1;
-	setsize (self, '-16 -16 0', '16 16 56');
-	StartItem ();
+	item_armor (1);
 };
 
 /*QUAKED item_armorInv (0 .5 .8) (-16 -16 0) (16 16 32)
@@ -367,13 +363,7 @@ item_armor2 =
 void ()
 item_armorInv =
 {
-	self.touch = armor_touch;
-	if (!spawn_no_precache)
-		precache_model ("progs/armor.mdl");
-	setmodel (self, "progs/armor.mdl");
-	self.skin = 2;
-	setsize (self, '-16 -16 0', '16 16 56');
-	StartItem ();
+	item_armor (2);
 };
 
 void ()
