@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.2 2005/01/03 21:35:28 slotzero Exp $
+/*  $Id: arena.qc,v 1.3 2005/01/03 23:18:20 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -165,9 +165,6 @@ arena_results =
 			SetArenaParms ();
 			self = os;
 		}
-
-		if (winner.health >= 100 && winner.armorvalue >= 200)
-			bprint ("\bFLAWLESS VICTORY!\n");
 
 		add_frag (winner, 1);
 		bprint (winner.netname);
