@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.27 2004/02/26 01:15:04 slotzero Exp $
+/*  $Id: runes30.qc,v 1.28 2004/03/15 23:59:37 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -308,17 +308,13 @@ Rune_Switch =
 	// Switch items.  Don't switch IT_SUPERHEALTH,
 	// though, because it really indicates an external
 	// health rotter acting on this player.
-	self_shealth = self.items & IT_SUPERHEALTH;
-	switch_shealth = switch.items & IT_SUPERHEALTH;
-	tempf = switch.items;
-	switch.items = self.items;
-	self.items = tempf;
-	self.items = self.items
-			- self.items & IT_SUPERHEALTH
-			+ self_shealth;
-	switch.items = switch.items
-			- switch.items & IT_SUPERHEALTH
-			+ switch_shealth;
+	self_shealth	= self.items & (IT_SUPERHEALTH | IT_KEY1 | IT_KEY2);
+	switch_shealth	= switch.items & (IT_SUPERHEALTH | IT_KEY1 | IT_KEY2);
+	tempf		= switch.items;
+	switch.items	= self.items;
+	self.items	= tempf;
+	self.items	= self.items - self.items & (IT_SUPERHEALTH | IT_KEY1 | IT_KEY2) + self_shealth;
+	switch.items	= switch.items - switch.items & (IT_SUPERHEALTH | IT_KEY1 | IT_KEY2) + switch_shealth;
 
 	// Start up health rotters.  This is a no-op if
 	// she doesn't need one or if she already has
