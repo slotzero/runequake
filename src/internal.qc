@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.19 2004/04/09 01:15:58 slotzero Exp $
+/*  $Id: internal.qc,v 1.20 2004/04/09 01:39:49 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -137,6 +137,7 @@ float HUNK_CONTEXT_MAX;
 float HUNK_ZONE;
 
 // hunk context allocation
+float HUNK_SERVER_TIME		= %10;
 float HUNK_CLIENT_DISCONNECT	= %100;
 
 //-------------------------------------------------------------------
