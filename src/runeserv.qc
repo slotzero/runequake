@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.38 2004/02/21 09:00:42 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.39 2004/02/25 20:37:22 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -549,7 +549,8 @@ Rune_Tell_real =
 		desc_s = " Thor  ";
 
 		d1 = "Lightning gun and constant\n"
-			"supply of ammo\n";
+			"supply of ammo\n"
+			"Shaft works under water!";
 	}
 	else if (type == RN_SNIPER)
 	{
