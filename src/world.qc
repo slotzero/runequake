@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.22 2003/10/09 01:40:21 slotzero Exp $
+/*  $Id: world.qc,v 1.23 2003/10/10 22:30:31 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -348,7 +348,7 @@ StartFrame =
 		}
 
 		else if (skill == SKILL_UPDATE_BINDINGS)
-			console_bindings ();
+			console_aliases ();
 
 		else if (skill == SKILL_LEVELS)
 			levels ();

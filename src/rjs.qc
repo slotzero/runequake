@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.68 2003/10/09 01:40:20 slotzero Exp $
+/*  $Id: rjs.qc,v 1.69 2003/10/10 22:30:31 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1484,59 +1484,7 @@ color_to_name =
 	}
 };
 
-void (string cmd, string cvr, float imp)
-console_init_cvar_alias =
-{
-	local string s;
-
-	s = ftos (imp);
-	localcmd ("alias ");
-	localcmd (cmd);
-	localcmd (" \"");
-	localcmd (cvr);
-	localcmd (" ");
-	localcmd (s);
-	localcmd ("\"\n");
-};
-
-void (string cmd, float imp)
-player_init_impulse_alias =
-{
-	local string s;
-
-	s = ftos (imp);
-	self_stuffcmd (self, "alias ");
-	self_stuffcmd (self, cmd);
-	self_stuffcmd (self, " \"impulse ");
-	self_stuffcmd (self, s);
-	self_stuffcmd (self, "\"\n");
-};
-
-
-// I have to pass the name_num separately because I have to re-ftos()
-// it, because ftos() has a single string which it always returns.
-// Quake C is so awful.
-
-void (string name, float name_num, float imp)
-player_init_switchfire_alias =
-{
-	local string s;
-
-	self_stuffcmd (self, "alias +sattack");
-	if (name_num)
-		name = ftos (name_num);
-	self_stuffcmd (self, name);
-	self_stuffcmd (self, " \"impulse ");
-	s = ftos (imp); self_stuffcmd (self, s);
-	self_stuffcmd (self, "\"; alias -sattack");
-	if (name_num)
-		name = ftos (name_num);
-	self_stuffcmd (self, name);
-	self_stuffcmd (self, " \"impulse ");
-	s = ftos (IMP_SWITCHFIRE_OFF); self_stuffcmd (self, s);
-	self_stuffcmd (self, "\"\n");
-};
-
+// XXX Move this?
 void ()
 levels =
 {
@@ -1554,113 +1502,6 @@ levels =
 };
 
 void ()
-console_bindings =
-{
-	level_aliases ();
-
-	console_init_cvar_alias ("last",		"skill",	SKILL_LAST);
-	console_init_cvar_alias ("show-players",	"skill",	SKILL_SHOW_PLAYERS);
-	console_init_cvar_alias ("show-settings",	"skill",	SKILL_SHOW_SETTINGS);
-	console_init_cvar_alias ("rune-cheat",		"skill",	SKILL_TOGGLE_RUNE_CHEAT);
-	console_init_cvar_alias ("update-bindings",	"skill",	SKILL_UPDATE_BINDINGS);
-	console_init_cvar_alias ("levels",		"skill",	SKILL_LEVELS);
-
-	dprint ("Sending console bindings\n");
-};
-
-void (string level, float imp)
-player_init_level_alias =
-{
-	local string s;
-
-	if (self == world)
-	{
-		localcmd ("alias ");
-		localcmd (level);
-		localcmd (" \"skill ");
-		s = ftos (imp);
-		localcmd (s);
-		localcmd ("\"\n");
-	}
-	else
-	{
-		self_stuffcmd (self, "alias ");
-		self_stuffcmd (self, level);
-		self_stuffcmd (self, " \"cl;w5;w5;impulse ");
-		s = ftos (imp);
-		self_stuffcmd (self, s);
-		self_stuffcmd (self, "\"\n");
-	}
-};
-
-void ()
-level_aliases =
-{
-	local string s;
-
-	if (self != world)
-	{
-		self_stuffcmd (self, "alias w5 \"wait;wait;wait;wait;wait\"\n");
-		self_stuffcmd (self, "alias cl \"impulse ");
-		s = ftos (IMP_ADMIN_CHANGE_MAP);
-		self_stuffcmd (self, s);
-		self_stuffcmd (self, "\"\n");
-	}
-
-	// XXX These should be scripted!! Add to map file.
-
-	// First and last.
-	player_init_level_alias ("start", 57);
-	player_init_level_alias ("end", 58);
-
-	// Episode 1
-	player_init_level_alias ("e1m1", 11);
-	player_init_level_alias ("e1m2", 12);
-	player_init_level_alias ("e1m3", 13);
-	player_init_level_alias ("e1m4", 14);
-	player_init_level_alias ("e1m5", 15);
-	player_init_level_alias ("e1m6", 16);
-	player_init_level_alias ("e1m7", 17);
-	player_init_level_alias ("e1m8", 18);
-
-	// Episode 2
-	player_init_level_alias ("e2m1", 21);
-	player_init_level_alias ("e2m2", 22);
-	player_init_level_alias ("e2m3", 23);
-	player_init_level_alias ("e2m4", 24);
-	player_init_level_alias ("e2m5", 25);
-	player_init_level_alias ("e2m6", 26);
-	player_init_level_alias ("e2m7", 27);
-
-	// Episode 3
-	player_init_level_alias ("e3m1", 31);
-	player_init_level_alias ("e3m2", 32);
-	player_init_level_alias ("e3m3", 33);
-	player_init_level_alias ("e3m4", 34);
-	player_init_level_alias ("e3m5", 35);
-	player_init_level_alias ("e3m6", 36);
-	player_init_level_alias ("e3m7", 37);
-
-	// Episode 4
-	player_init_level_alias ("e4m1", 41);
-	player_init_level_alias ("e4m2", 42);
-	player_init_level_alias ("e4m3", 43);
-	player_init_level_alias ("e4m4", 44);
-	player_init_level_alias ("e4m5", 45);
-	player_init_level_alias ("e4m6", 46);
-	player_init_level_alias ("e4m7", 47);
-	player_init_level_alias ("e4m8", 48);
-
-	// Deathmatch
-	player_init_level_alias ("dm1", 51);
-	player_init_level_alias ("dm2", 52);
-	player_init_level_alias ("dm3", 53);
-	player_init_level_alias ("dm4", 54);
-	player_init_level_alias ("dm5", 55);
-	player_init_level_alias ("dm6", 56);
-};
-
-void ()
 player_init =
 {
 	local entity e;
@@ -1674,68 +1515,11 @@ player_init =
 			self.aqflags = self.aqflags | AQ_QSMACK;
  	}
 
-	player_init_impulse_alias ("admin-toggle",		IMP_ADMIN_TOGGLE);
-	player_init_impulse_alias ("best-weapon",		IMP_BEST_WEAPON);
-	player_init_impulse_alias ("disp-info",			IMP_DISP_INFO);
-	player_init_impulse_alias ("disp-info-all",		IMP_DISP_INFO_ALL);
-	player_init_impulse_alias ("fix-angles",		IMP_FIX_BATMAN);
-	player_init_impulse_alias ("+hook",			IMP_HOOK_ON);
-	player_init_impulse_alias ("-hook",			IMP_HOOK_OFF);
-	player_init_impulse_alias ("hook-off",			IMP_HOOK_OFF);
-	player_init_impulse_alias ("hook-on",			IMP_HOOK_ON);
-	player_init_impulse_alias ("hook-toggle",		IMP_HOOK_TOGGLE);
-	player_init_impulse_alias ("hud-toggle",		IMP_HUD_TOGGLE);
-	player_init_impulse_alias ("quiet-toggle",		IMP_QUIET_TOGGLE);
-	player_init_impulse_alias ("remove-frags",		IMP_REMOVE_FRAGS);
-	player_init_impulse_alias ("rider-hide",		IMP_RIDER_HIDE);
-	player_init_impulse_alias ("rune-delete",		IMP_RUNE_DELETE);
-	player_init_impulse_alias ("rune-tell",			IMP_RUNE_TELL);
-	player_init_impulse_alias ("rune-use",			IMP_RUNE_USE);
-	player_init_impulse_alias ("show-players",		IMP_SHOW_PLAYERS);
-	player_init_impulse_alias ("show-pos",			IMP_SHOW_POS);
-	player_init_impulse_alias ("show-riders",		IMP_SHOW_RIDERS);
-	player_init_impulse_alias ("show-settings",		IMP_SHOW_SETTINGS);
-	player_init_impulse_alias ("team-change",		IMP_TEAM_ROTATE);
-	player_init_impulse_alias ("team-stats",		IMP_TEAM_STATS);
-	player_init_impulse_alias ("vote-exit",			IMP_VOTE_EXIT);
-	player_init_impulse_alias ("vote-team",			IMP_VOTE_TEAM);
-	player_init_impulse_alias ("vote-hook",			IMP_VOTE_HOOK);
-	player_init_impulse_alias ("weapon-mode",		IMP_WEAPON_MODE);
-	player_init_impulse_alias ("weapon-toggles",		IMP_WEAPON_TOGGLES);
-	player_init_impulse_alias ("weapon-toggles-toggle",	IMP_WEAPON_TOGGLES);
-	player_init_impulse_alias ("cycle-alternates",		IMP_CYCLE_ALTERNATES);
-	player_init_impulse_alias ("last",			IMP_LAST);
-	player_init_impulse_alias ("levels",			IMP_LEVELS);
-	player_init_impulse_alias ("change-level",		IMP_LEVELS);
-	player_init_impulse_alias ("vote-level",		IMP_LEVELS);
-
-	level_aliases ();
+	player_aliases ();
 
 	// Disable client-side ambient sounds.
 	if (scratch1 & S1_AMBIENT_SOUND_OFF && !is_qsmack ())
 		self_stuffcmd (self, "ambient_level 0\n");
-
-	i = 1;
-	while (i <= IMP_SWITCHFIRE_COUNT)
-	{
-		i = i + 1;
-		s = ftos (i);
-		player_init_switchfire_alias (string_null, i,
-						i + IMP_SWITCHFIRE_BASE - 1);
-	}
-	player_init_switchfire_alias("-best", 0, IMP_SWITCHFIRE_BEST);
-
-	// alias weapon9 "impulse 161"
-	i = 0;
-	while (i < IMP_WEAPON_COUNT)
-	{
-		self_stuffcmd (self, "alias weapon");
-		s = ftos (IMP_WEAPON_START + i); self_stuffcmd (self, s);
-		self_stuffcmd (self, " \"impulse ");
-		s = ftos (IMP_WEAPON_BASE + i); self_stuffcmd (self, s);
-		self_stuffcmd (self, "\"\n");
-		i = i + 1;
-	}
 
 	obs_become (0);
 	aq_menu_set (AQS_MENU_SPLASH);
@@ -1758,14 +1542,16 @@ player_init =
 		self_sprint (self, "The game is full, forwarding to ");
 		self_sprint (self, FORWARD_NAME);
 		self_sprint (self, "...\n");
+
 		aq_menu_set (AQS_MENU_FORWARD);
 		admin_toggle (0, 0);
-		e = spawn ();
-		e.aqstate = 0;
-		e.owner = self;
-		e.think = player_forward_think;
-		e.lip = time + 5;
-		e.nextthink = time;
+
+		e		= spawn ();
+		e.aqstate	= 0;
+		e.owner		= self;
+		e.think		= player_forward_think;
+		e.lip		= time + 5;
+		e.nextthink	= time;
 	}
 	else
 	{

@@ -1,4 +1,4 @@
-// $Id: progs.src,v 1.15 2003/10/02 04:14:41 slotzero Exp $
+// $Id: progs.src,v 1.16 2003/10/10 22:30:30 slotzero Exp $
 
 PROGS_FILE
 
@@ -43,6 +43,7 @@ map.qc
 menu.qc
 observer.qc
 rjs.qc
+bindings.qc
 print.qc
 team.qc
 

@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.21 2003/10/06 11:21:50 slotzero Exp $
+/*  $Id: admin.qc,v 1.22 2003/10/10 22:30:29 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -28,21 +28,7 @@ admin_init =
 
 	sprint_admin2 (self.netname, " activated admin mode\n");
 	self.aqflags = self.aqflags | AQ_ADMIN;
-	player_init_impulse_alias ("admin-eyes",		IMP_ADMIN_EYES);
-	player_init_impulse_alias ("admin-cycle",		IMP_ADMIN_CYCLE);
-	player_init_impulse_alias ("admin-cycle-show",		IMP_ADMIN_CYCLE_SHOW);
-	player_init_impulse_alias ("admin-join",		IMP_ADMIN_JOIN);
-	player_init_impulse_alias ("admin-kick",		IMP_ADMIN_KICK);
-	player_init_impulse_alias ("admin-kill",		IMP_ADMIN_KILL);
-	player_init_impulse_alias ("admin-rename",		IMP_ADMIN_RENAME);
-	player_init_impulse_alias ("admin-rune-delete",		IMP_ADMIN_RUNE_DELETE);
-	player_init_impulse_alias ("admin-team-change",		IMP_ADMIN_TEAM_CHANGE);
-	player_init_impulse_alias ("admin-team-change-toggle",	IMP_ADMIN_TEAM_CHANGE_TOGGLE);
-	player_init_impulse_alias ("admin-vote-team-toggle",	IMP_ADMIN_VOTE_TEAM_TOGGLE);
-	player_init_impulse_alias ("admin-teamplay-zero",	IMP_ADMIN_TEAMPLAY_ZERO);
-	player_init_impulse_alias ("admin-unbind",		IMP_ADMIN_UNBIND);
-	player_init_impulse_alias ("exit-level",		IMP_EXIT_LEVEL);
-	player_init_impulse_alias ("qsmack",			IMP_QSMACK_COMMAND);
+	admin_aliases ();
 	self_sprint (self, "Admin mode activated\n");
 	admin_sound ("misc/medkey.wav");
 };
