@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.50 2004/04/04 00:33:14 slotzero Exp $
+/*  $Id: client.qc,v 1.51 2004/04/04 01:30:09 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -727,10 +727,6 @@ PutClientInServer =
 		self.rqflags = self.rqflags | RQ_CYCLE_ALTERNATES;
 		player_init_spawn ();
 	}
-
-	// Don't send updates to qsmack client.
-	if (is_qsmack ())
-		self.cl[CL_NOMAP] = %1;
 
 	if (spawn_as_observer)
 	{

@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.90 2004/04/04 00:33:14 slotzero Exp $
+/*  $Id: rjs.qc,v 1.91 2004/04/04 01:30:09 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1413,10 +1413,7 @@ player_init =
 	if (*self.netconnection[QS_MOD] == *MOD_QSMACK)
 	{
 		if (!is_qsmack ())
-		{
 			self.aqflags = self.aqflags | AQ_QSMACK;
-			self.cl[CL_NOMAP] = %1;
-		}
  	}
 
 	self_sprint (self, "\buse\b -zone 1024 \bif quake crashes\n");
