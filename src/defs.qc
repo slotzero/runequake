@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.102 2004/07/15 04:06:00 slotzero Exp $
+/*  $Id: defs.qc,v 1.103 2004/07/16 06:02:30 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1343,6 +1343,7 @@ float	(vector v)				pointcontents	= #41;	// returns a CONTENT_*
 float	(float f)				fabs		= #43;
 vector	(entity e, float speed)			aim		= #44;	// returns the shooting vector
 float	(string s)				cvar		= #45;	// return cvar.value
+string	(string s, ...)				cvar_string	= #45;	// requires runequake engine
 void	(string s)				localcmd	= #46;	// put string into local que
 entity	(entity e)				nextent		= #47;	// for looping through all ents
 
