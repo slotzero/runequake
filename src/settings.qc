@@ -1,4 +1,4 @@
-// $Id: settings.qc,v 1.4 2002/06/01 05:57:17 slotzero Exp $
+// $Id: settings.qc,v 1.5 2002/06/09 20:20:43 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -78,28 +78,9 @@ string_init =
 	// will work for people who don't have their resolver configured
 	// properly (bletch).
 
-	FORWARD_MAX_PLAYERS	= 0;	// 0 = disabled
-
-	// You can set up to four servers using the scratch2 cvar.  See
-	// example.cfg for the bit settings.
-
-	FORWARD_DEST_1		= IN_POQ("quake.runequake.com", "qw.runequake.com");
-	FORWARD_NAME_1		= "Rune Quake Development Server";
-
-	FORWARD_DEST_2		= string_null;
-	FORWARD_NAME_2		= string_null;
-
-	FORWARD_DEST_3		= string_null;
-	FORWARD_NAME_3		= string_null;
-
-	FORWARD_DEST_4		= string_null;
-	FORWARD_NAME_4		= string_null;
-
-	// If you want admins to be able to forward players manually, as
-	// to rid annoying players.  Replace 'string_null' with the server
-	// address (surrounded by quotes).
-
-	ADMIN_FORWARD		= string_null;		// for connect cmd
+	FORWARD_MAX_PLAYERS	= 0; // 0 = disabled
+	FORWARD_DEST		= IN_POQ("quake.runequake.com", "qw.runequake.com");
+	FORWARD_NAME		= "Rune Quake Development Server";
 
 	// This is the name of a config file which the server will run
 	// at the start of every level.  It's okay if this is defined
@@ -384,11 +365,6 @@ float COUNTDOWN_TIMER		= 0;
 // For all powerups, add 1 + 2 + 4 + 8 = 15.
 
 float POWERUP_PICKUP_WARN	= 0;
-
-// If this is not 0, random seconds (up to 5 minutes) will be added to
-// the current quad and pent times.
-
-float RANDOM_POWERUP_RESPAWN	= 0;
 
 //-----------------------------------------------------------------------------
 // Weapons

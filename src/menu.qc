@@ -1,4 +1,4 @@
-// $Id: menu.qc,v 1.1 2002/02/21 21:47:55 slotzero Exp $
+// $Id: menu.qc,v 1.2 2002/06/09 20:20:42 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -109,14 +109,13 @@ aq_menu_print_n =
 			string_null, string_null);
 	}
 
-		else if (m == AQS_MENU_ADMIN_2)
+	else if (m == AQS_MENU_ADMIN_2)
 	{
 		centerprint6 (self,
 			"¡‰ÌÈÓ ÕÂÓı \n\n",
-			"Æ Back to main menu   \nÆ Forward player      \n",
+			"Æ Back to main menu   \nÆ Toggle vote-team    \n",
 			"Æ Unbind player's keys\nÆ Rename player       \n",
-			"Æ Toggle observer eyes\nÆ Toggle vote-team    \n",
-			//"Æ Toggle vote-team    \n",
+			"Æ Toggle observer eyes\n",
 			string_null, string_null);
 	}
 
@@ -137,10 +136,10 @@ aq_menu_print_n =
 	{
 		centerprint5 (self,
 			"Dimension of the Doomed\n\n",
-    	    	    	"Æ e1m1: Slipgate Complex    \nÆ e1m2: Castle of the Damned\n",
-    	    	    	"Æ e1m3: The Necropolis      \nÆ e1m4: The Grisly Grotto   \n",
-    	    	    	"Æ e1m5: Gloom Keep          \nÆ e1m6: The Door To Chthon  \n",
-    	    	    	"Æ e1m7: The House of Chthon \nÆ e1m8: Ziggurat Vertigo    \n"
+			"Æ e1m1: Slipgate Complex    \nÆ e1m2: Castle of the Damned\n",
+			"Æ e1m3: The Necropolis      \nÆ e1m4: The Grisly Grotto   \n",
+			"Æ e1m5: Gloom Keep          \nÆ e1m6: The Door To Chthon  \n",
+			"Æ e1m7: The House of Chthon \nÆ e1m8: Ziggurat Vertigo    \n"
 			);
 	}
 
@@ -148,10 +147,10 @@ aq_menu_print_n =
 	{
 		centerprint5 (self,
 			"The Realm of Black Magic\n\n",
-    	    	    	"Æ e2m1: The Installation    \nÆ e2m2: Ogre Citadel        \n",
-    	    	    	"Æ e2m3: Crypt of Decay      \nÆ e2m4: The Ebon Fortress   \n",
-    	    	    	"Æ e2m5: The Wizard's Manse  \nÆ e2m6: The Dismal Oubliette\n",
-    	    	    	"Æ e2m7: Underearth          \n"
+			"Æ e2m1: The Installation    \nÆ e2m2: Ogre Citadel        \n",
+			"Æ e2m3: Crypt of Decay      \nÆ e2m4: The Ebon Fortress   \n",
+			"Æ e2m5: The Wizard's Manse  \nÆ e2m6: The Dismal Oubliette\n",
+			"Æ e2m7: Underearth          \n"
 			);
 	}
 
@@ -159,10 +158,10 @@ aq_menu_print_n =
 	{
 		centerprint5 (self,
 			"The Netherworld\n\n",
-    	    	    	"Æ e3m1: Termination Central \nÆ e3m2: The Vaults of Zin   \n",
-    	    	    	"Æ e3m3: The Tomb of Terror  \nÆ e3m4: Satan's Dark Delight\n",
-    	    	    	"Æ e3m5: Wind Tunnels        \nÆ e3m6: Chambers of Torment \n",
-    	    	    	"Æ e3m7: The Haunted Halls   \n"
+			"Æ e3m1: Termination Central \nÆ e3m2: The Vaults of Zin   \n",
+			"Æ e3m3: The Tomb of Terror  \nÆ e3m4: Satan's Dark Delight\n",
+			"Æ e3m5: Wind Tunnels        \nÆ e3m6: Chambers of Torment \n",
+			"Æ e3m7: The Haunted Halls   \n"
 			);
 	}
 
@@ -170,10 +169,10 @@ aq_menu_print_n =
 	{
 		centerprint5 (self,
 			"The Elder World\n\n",
-    	    	    	"Æ e4m1: The Sewage System   \nÆ e4m2: The Tower of Despair\n",
-    	    	    	"Æ e4m3: The Elder God Shrine\nÆ e4m4: The Palace of Hate  \n",
-    	    	    	"Æ e4m5: Hell's Atrium       \nÆ e4m6: The Pain Maze       \n",
-    	    	    	"Æ e4m7: Azure Agony         \nÆ e4m8: The Nameless City   \n"
+			"Æ e4m1: The Sewage System   \nÆ e4m2: The Tower of Despair\n",
+			"Æ e4m3: The Elder God Shrine\nÆ e4m4: The Palace of Hate  \n",
+			"Æ e4m5: Hell's Atrium       \nÆ e4m6: The Pain Maze       \n",
+			"Æ e4m7: Azure Agony         \nÆ e4m8: The Nameless City   \n"
 			);
 	}
 
@@ -181,10 +180,10 @@ aq_menu_print_n =
 	{
 		centerprint5 (self,
 			"The Deathmatch Arenas\n\n",
-    	    	    	"Æ   dm1: Place of Two Deaths \nÆ   dm2: Claustrophobopolis  \n",
-    	    	    	"Æ   dm3: The Abandoned Base  \nÆ   dm4: The Bad Place       \n",
-    	    	    	"Æ   dm5: The Cistern         \nÆ   dm6: The Dark Zone       \n",
-    	    	    	"Æ start: Introduction        \nÆ   end: Shub-Niggurath's Pit\n"
+			"Æ   dm1: Place of Two Deaths \nÆ   dm2: Claustrophobopolis  \n",
+			"Æ   dm3: The Abandoned Base  \nÆ   dm4: The Bad Place       \n",
+			"Æ   dm5: The Cistern         \nÆ   dm6: The Dark Zone       \n",
+			"Æ start: Introduction        \nÆ   end: Shub-Niggurath's Pit\n"
 			);
 	}
 

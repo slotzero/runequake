@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.21 2002/06/08 05:42:35 slotzero Exp $
+// $Id: rjs.qc,v 1.22 2002/06/09 20:20:42 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -763,14 +763,11 @@ disp_info =
 		self_sprint (self, " secs left\n");
 	}
 
-	// forward dest
+	// forward name
 	if (all || 0)
 	{
-		self_sprint (self, "forward dest:");
-		self_sprint2 (self, "\n 1 ", FORWARD_DEST_1);
-		self_sprint2 (self, "\n 2 ", FORWARD_DEST_2);
-		self_sprint2 (self, "\n 3 ", FORWARD_DEST_3);
-		self_sprint3 (self, "\n 4 ", FORWARD_DEST_4, "\n");
+		if (FORWARD_NAME)
+			self_sprint3 (self, "forward dest: ", FORWARD_NAME, "\n");
 	}
 };
 
@@ -1177,19 +1174,18 @@ void ()
 impulse_override =
 {
 	if (self.aqstate & AQS_IMPOVER_MASK == AQS_IMPOVER_PASSWORD)
-		admin_Impulse_Password ();
+		admin_impulse_password ();
 
 	else if (self.aqstate & AQS_IMPOVER_MASK
 			== AQS_IMPOVER_QSMACK_PASSWORD)
-		admin_Impulse_Qsmack_Password ();
+		admin_impulse_qsmack_password ();
 
 	else if (self.aqstate & AQS_IMPOVER_MASK == AQS_IMPOVER_MAP)
-		admin_Try_Impulse_Map ();
+		admin_impulse_map ();
 
-	else {
-		// This can't happen.
+	// XXX This can't happen.
+	else
 		impulse_override_cancel ();
-	}
 
 	self.impulse = 0;
 };
@@ -1216,7 +1212,7 @@ common_impulses =
 		disp_info (1);
 
 	else if (self.impulse == IMP_ADMIN_TOGGLE)
-		admin_Toggle (1, 1);
+		admin_toggle (1, 1);
 
 	else if (self.impulse == IMP_RIDER_HIDE)
 	{
@@ -1239,10 +1235,10 @@ common_impulses =
 	}
 
 	else if (self.impulse == IMP_EXIT_LEVEL && self.aqflags & AQ_ADMIN)
-		admin_Try_Changelevel (string_null);
+		admin_changelevel (string_null);
 
 	else if (self.impulse == IMP_ADMIN_KICK)
-		admin_Try_Kick ();
+		admin_kick ();
 
 	else if (self.impulse == IMP_REMOVE_FRAGS && self.frags > 0)
 		self.frags = 0;
@@ -1259,54 +1255,43 @@ common_impulses =
 		team_rotate (world);
 
 	else if (self.impulse == IMP_ADMIN_JOIN)
-		admin_Try_Join ();
+		admin_join ();
 
 	else if (self.impulse == IMP_ADMIN_KILL)
-		admin_Try_Kill ();
+		admin_kill ();
 
 	if (self.impulse == IMP_ADMIN_VOTE_TEAM_TOGGLE)
-		admin_Try_Vote_Team_Toggle ();
+		admin_vote_team_toggle ();
 
 	else if (self.impulse == IMP_ADMIN_TEAMPLAY_ZERO)
-		admin_Try_Teamplay_Zero ();
-
-	else if (self.impulse == IMP_ADMIN_FORWARD)
-	{
-		if (ADMIN_FORWARD != string_null)
-		{
-			ADMIN_DEST = ADMIN_FORWARD;
-			admin_Try_Forward (1);
-		}
-		else
-			admin_Try_Forward (0);
-	}
+		admin_teamplay_zero ();
 
 	else if (self.impulse == IMP_ADMIN_UNBIND)
-		admin_Try_Unbind ();
+		admin_unbind ();
 
 	else if (self.impulse == IMP_ADMIN_RENAME)
-		admin_Try_Rename ();
+		admin_rename ();
 
 	else if (self.impulse == IMP_ADMIN_EYES)
-		admin_Try_Eyes ();
+		admin_eyes ();
 
 	else if (self.impulse == IMP_ADMIN_CYCLE)
-		admin_Try_Cycle (0);
+		admin_cycle (0);
 
 	else if (self.impulse == IMP_ADMIN_CYCLE_SHOW)
-			admin_Try_Cycle (1);
+		admin_cycle (1);
 
 	else if (self.impulse == IMP_ADMIN_TEAM_CHANGE_TOGGLE)
-		admin_Try_Team_Change_Toggle ();
+		admin_team_change_toggle ();
 
 	else if (self.impulse == IMP_ADMIN_RUNE_DELETE)
-		admin_Try_Rune_Delete ();
+		admin_rune_delete ();
 
 	else if (self.impulse == IMP_ADMIN_TEAM_CHANGE)
-		admin_Try_Team_Change ();
+		admin_team_change ();
 
 	else if (self.impulse == IMP_ADMIN_CHANGE_MAP)
-		admin_Try_Change_Map ();
+		admin_change_map ();
 
 	else if (self.impulse == IMP_QUIET_TOGGLE)
 	{
@@ -1392,81 +1377,6 @@ sure_kill =
 	// With old teamplay 1 rules you couldn't kill yourself this way
 	// (a workaround is set the attacker to world).
 	T_Damage (self, self, self, SURE_KILL_DAMAGE, dt);
-};
-
-void ()
-admin_forward_player =
-{
-	local entity e;
-
-	check_forward = 1;
-	e = spawn ();
-	e.aqstate = 0;
-	e.owner = self;
-	e.think = player_forward_think;
-	e.lip = time + 5;
-	e.nextthink = time;
-};
-
-string (float num, string s1, string s2, string s3, string s4)
-forward_dest =
-{
-	if	(num == 1)	{ FORWARD_NAME = FORWARD_DEST_1; return s1; }
-	else if	(num == 2)	{ FORWARD_NAME = FORWARD_DEST_2; return s2; }
-	else if	(num == 3)	{ FORWARD_NAME = FORWARD_DEST_3; return s3; }
-	else if	(num == 4)	{ FORWARD_NAME = FORWARD_DEST_4; return s4; }
-
-	return string_null;
-};
-
-void ()
-select_forward_server =
-{
-	local float random_forward, r, n, b1, b2, b3, b4;
-	local string f1, f2, f3, f4, t1, t2, t3, t4;
-
-	scratch2	= cvar ("scratch2");
-	random_forward	= scratch2 & S2_RANDOM_FORWARD;
-
-	// bit settings
-	b1 = scratch2 & S2_FORWARD_1; b2 = scratch2 & S2_FORWARD_2;
-	b3 = scratch2 & S2_FORWARD_3; b4 = scratch2 & S2_FORWARD_4;
-
-	// forward strings
-	f1 = FORWARD_DEST_1; f2 = FORWARD_DEST_2; f3 = FORWARD_DEST_3; f4 = FORWARD_DEST_4;
-
-	// temp strings
-	t1 = t2 = t3 = t4 = string_null;
-
-	// random and normal
-	r = 0; n = 0;
-
-	if (random_forward)
-	{
-		if (b1)	{ t1 = f1; r = 1; }
-		if (b2)	{ if (!t1) t1 = f2; else t2 = f2; r = r + 1; }
-		if (b3) { if (!t2) if (!t1) t1 = f3; else t2 = f3; else t3 = f3; r = r + 1; }
-		if (b4) { if (!t3) if (!t2) if (!t1) t1 = f4; else t2 = f4; else t3 = f4; else t4 = f4; r = r + 1; }
-
-		if (r)
-		{
-			r = ceil (r * random ());
-
-			FORWARD_DEST = forward_dest (r, t1, t2, t3, t4);
-			FORWARD_NAME = "a random server";
-		}
-		else
-			FORWARD_DEST = string_null;
-	}
-	else
-	{
-		if (b1)	n = 1;
-		if (b2)	n = 2;
-		if (b3)	n = 3;
-		if (b4)	n = 4;
-
-		FORWARD_DEST = forward_dest (n, f1, f2, f3, f4);
-	}
 };
 
 string (float c)
@@ -1610,15 +1520,11 @@ player_init =
 	}
 	if (i)
 	{
-		select_forward_server ();
-		if (!FORWARD_DEST)
-			sprint_admin ("WARNING: NULL forward address\n");
-		check_forward = 0;
 		self_sprint (self, "The game is full, forwarding to ");
 		self_sprint (self, FORWARD_NAME);
 		self_sprint (self, "...\n");
 		aq_menu_set (AQS_MENU_FORWARD);
-		admin_Toggle (0, 0);
+		admin_toggle (0, 0);
 		e = spawn ();
 		e.aqstate = 0;
 		e.owner = self;
@@ -1665,15 +1571,15 @@ player_forward_think =
 
 	if (self.owner.aqflags & AQ_ADMIN)
 	{
-		if (!check_forward)
-		{
-			bprint (self.owner.netname);
-			bprint (" connected to the server\n");
-		}
-		old_self = self;
-		self = self.owner;
+		bprint (self.owner.netname);
+		bprint (" connected to the server\n");
+
+		old_self	= self;
+		self		= self.owner;
+
 		aq_menu_set (0);
 		remove (old_self);
+
 		return;
 	}
 
@@ -1693,23 +1599,19 @@ player_forward_think =
 
 	if ((self.aqstate == 0 && self.owner.state == 0) || self.aqstate == 1)
 	{
-		if (check_forward)
-			sprint_admin2 (self.owner.netname, " was forwarded successfully\n");
-		else
-		{
-			bprint ("Forwarding ");
-			bprint (self.owner.netname);
-			bprint ("\n");
-		}
+		bprint ("Forwarding ");
+		bprint (self.owner.netname);
+		bprint ("\n");
+
 		self.owner.aqstate = self.owner.aqstate | AQS_FORWARDED;
+
 		self_stuffcmd (self.owner, "connect \"");
-		if (check_forward)
-			self_stuffcmd (self.owner, ADMIN_DEST);
-		else
-			self_stuffcmd (self.owner, FORWARD_DEST);
+		self_stuffcmd (self.owner, FORWARD_DEST);
 		self_stuffcmd (self.owner, "\"\n");
-		self.aqstate = 2;
-		self.lip = time + 10;
+
+		self.aqstate	= 2;
+		self.lip	= time + 10;
+
 		return;
 	}
 	self.aqstate = 1;

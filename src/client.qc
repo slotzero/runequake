@@ -1,4 +1,4 @@
-// $Id: client.qc,v 1.6 2002/06/08 05:42:33 slotzero Exp $
+// $Id: client.qc,v 1.7 2002/06/09 20:20:41 slotzero Exp $
 
 float modelindex_eyes, modelindex_player;
 
@@ -1786,7 +1786,7 @@ void (entity targ, entity attacker, string dt)
 ClientObituary =
 {
 	local float attacker_player, rnum, f;
-	local string attacker_name, dt, s1, s2;
+	local string attacker_name, s1, s2;
 
 	if (targ.classname != "player")
 		return;

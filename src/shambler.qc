@@ -1,4 +1,4 @@
-// $Id: shambler.qc,v 1.1 2002/02/21 21:48:00 slotzero Exp $
+// $Id: shambler.qc,v 1.2 2002/06/09 20:20:43 slotzero Exp $
 
 /*
 ==============================================================================
@@ -108,7 +108,7 @@ local float 	ldmg;
 	if (!CanDamage (self.enemy, self))
 		return;
 
-	ldmg = (random () + random () + random ()) * 40;
+	ldmg = 40 * (0.01 + random () + random () + random ());
 	T_Damage (self.enemy, self, self, ldmg, string_null);
 	sound (self, CHAN_VOICE, "shambler/smack.wav", 1, ATTN_NORM);
 
@@ -133,7 +133,7 @@ local float 	ldmg;
 	if (vlen (delta) > 100)
 		return;
 
-	ldmg = (random () + random () + random ()) * 20;
+	ldmg = 20 + (0.01 + random () + random () + random ());
 	T_Damage (self.enemy, self, self, ldmg, string_null);
 	sound (self, CHAN_VOICE, "shambler/smack.wav", 1, ATTN_NORM);
 

@@ -1,4 +1,4 @@
-// $Id: misc.qc,v 1.9 2002/05/06 02:13:01 slotzero Exp $
+// $Id: misc.qc,v 1.10 2002/06/09 20:20:42 slotzero Exp $
 
 /*QUAKED info_null (0 0.5 0) (-4 -4 -4) (4 4 4)
 Used as a positional target for spotlights, etc.
@@ -223,8 +223,6 @@ Laser_Touch =
 void (vector org, vector vec)
 LaunchLaser =
 {
-	local vector vec;
-
 //nomonster	if (self.classname == "monster_enforcer")
 //nomonster		sound (self, CHAN_WEAPON, "enforcer/enfire.wav", 1, ATTN_NORM);
 

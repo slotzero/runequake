@@ -1,4 +1,4 @@
-// $Id: items.qc,v 1.16 2002/05/10 19:57:42 slotzero Exp $
+// $Id: items.qc,v 1.17 2002/06/09 20:20:42 slotzero Exp $
 
 /* ALL LIGHTS SHOULD BE 0 1 0 IN COLOR ALL OTHER ITEMS SHOULD
 BE .8 .3 .4 IN COLOR */
@@ -1156,9 +1156,9 @@ powerup_touch =
 
 		if ((self.classname == "item_artifact_super_damage"
 				|| self.classname == "item_artifact_invulnerability")
-				&& RANDOM_POWERUP_RESPAWN)
+				&& deathmatch & DM_RANDOM_POWERUP_RESPAWN)
 		{
-			n = ceil (random () * 5 * 60);
+			n = ceil (random () * SLOW_POWERUP_RESPAWN_TIME);
 			self.nextthink = self.nextthink + n;
 		}
 

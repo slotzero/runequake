@@ -1,4 +1,4 @@
-// $Id: fight.qc,v 1.1 2002/02/21 21:47:50 slotzero Exp $
+// $Id: fight.qc,v 1.2 2002/06/09 20:20:41 slotzero Exp $
 
 /*
 
@@ -164,7 +164,7 @@ ai_melee =
 	if (vlen (delta) > 60)
 		return;
 
-	ldmg = (random () + random () + random ()) * 3;
+	ldmg = 3 * (0.01 + random () + random () + random ());
 	T_Damage (self.enemy, self, self, ldmg, string_null);
 };
 
@@ -185,7 +185,7 @@ ai_melee_side =
 		return;
 	if (!CanDamage (self.enemy, self))
 		return;
-	ldmg = (random () + random () + random ()) * 3;
+	ldmg = 3 * (0.01 + random ()+ random () + random ());
 	T_Damage (self.enemy, self, self, ldmg, string_null);
 };
 
@@ -263,7 +263,6 @@ ShamCheckAttack =
 {
 	local vector spot1, spot2;
 	local entity targ;
-	local float enemy_yaw;
 
 	if (enemy_range == RANGE_MELEE)
 	{

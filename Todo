@@ -1,7 +1,8 @@
-$Id: Todo,v 1.4 2002/06/07 02:58:44 slotzero Exp $
+$Id: Todo,v 1.5 2002/06/09 20:20:31 slotzero Exp $
 
     - Unsorted
 
+        - A frozen shambler can still attack you.
     	- Before latest release, please look over Changes and example.cfg and
 	  all other related information files!
         - Document gamecfg, providing you decide to use it.

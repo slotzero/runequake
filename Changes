@@ -1,12 +1,23 @@
-$Id: Changes,v 1.17 2002/06/07 02:58:43 slotzero Exp $
+$Id: Changes,v 1.18 2002/06/09 20:20:30 slotzero Exp $
 
-Version ?  Tue May 28 23:29:44 EST 2002
+Version 0.4.0  Sun Jun 09 16:09:20 EST 2002
+
+    - Admin Changes
+
+        - I removed admin-forward.
 
     - CVAR Changes
 
+    	- deathmatch
+
+	    I added a new bit setting, DM_RANDOM_POWERUP_RESPAWN, which works
+	    the same way as when it was in settings.qc.  The number of minutes
+	    added is based on the value of SLOW_POWERUP_RESPAWN_TIME which is
+	    located in settings.qc.
+
 	- gamecfg
 
-	    You can set/change the admin passcode by using the 'gamecfg'
+	    You can set/change/disable the admin passcode by using this
 	    console variable.  The passcode has the same restrictions set
 	    forth in settings.qc.  A value of zero will force the game to
 	    use the passcode in settings.qc.  A negative value will disable
@@ -14,7 +25,18 @@ Version ?  Tue May 28 23:29:44 EST 2002
 
 	- scratch1
 
-	    Changes... (FIX ME)
+	    - I removed the ability to make the levels completely bright or
+	      dark.  See example.cfg for the new bit settings.
+
+	    - When S1_AMBIENT_SOUNDS_OFF is set, you will disable ambient
+	      sounds from the client as well.  This is not yet reversible.
+
+    - Notable Internal Changes
+
+        - I worked on some more warnings produced by the frikqcc compiler.  Thanks
+	  to r00k for giving me the incentive.
+
+	- I finally synchronized TICK with sys_ticrate.
 
 Version 0.2.8  Mon May 13 17:02:51 EST 2002
 

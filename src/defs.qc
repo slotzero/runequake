@@ -1,4 +1,4 @@
-// $Id: defs.qc,v 1.8 2002/06/08 05:42:34 slotzero Exp $
+// $Id: defs.qc,v 1.9 2002/06/09 20:20:41 slotzero Exp $
 
 /*
 ==============================================================================
@@ -231,9 +231,9 @@ void		end_sys_fields;			// flag for structure dumping
 ==============================================================================
 */
 
-/****************\
-* Rune Serv vars *
-\****************/
+/////////////////////
+/* RUNE QUAKE VARS */
+/////////////////////
 
 // Global total rune var and current in-level var
 float runemax;
@@ -242,7 +242,7 @@ float runecurrent;
 // Param for every so often, a new rune enters the level.
 float runespawntime;
 
-// Needed for SelectSpawnPoint, but I'm not sure why it can't be local
+// Needed for spawn selection.
 entity runespawn;
 
 // Each players' rune type. Runes' runetype used for what they are.
@@ -305,10 +305,6 @@ float in_hud_hack;
 
 // This is used similarly for printing the rune description.
 float in_runedesc_hack;
-
-// This allows me to use the same function to forward players
-// via the admin menu or by amount of players.
-float check_forward;
 
 // This is used to return a second value from team_stats_1().
 float team_stats_1_lead;
@@ -465,16 +461,14 @@ float IMP_VOTE_TEAM		= 69;
 float IMP_ADMIN_TEAM_CHANGE	= 68;
 float IMP_ADMIN_JOIN		= 67;
 
-// Admin Menu 2
-float IMP_ADMIN_FORWARD		= 66;
-//float IMP_ADMIN_DISCONNECT	= 65; [FREE]
-float IMP_ADMIN_UNBIND		= 64;
-float IMP_ADMIN_RENAME		= 63;
-float IMP_ADMIN_EYES		= 62;
-float IMP_ADMIN_VOTE_TEAM_TOGGLE = 61;
-float IMP_ADMIN_TEAMPLAY_ZERO	= 60;
-float IMP_ADMIN_CYCLE		= 59;
-float IMP_ADMIN_CYCLE_SHOW	= 58;
+// admin menu 2
+float IMP_ADMIN_UNBIND		= 66;
+float IMP_ADMIN_RENAME		= 65;
+float IMP_ADMIN_EYES		= 64;
+float IMP_ADMIN_VOTE_TEAM_TOGGLE = 63;
+float IMP_ADMIN_TEAMPLAY_ZERO	= 62;
+float IMP_ADMIN_CYCLE		= 61;
+float IMP_ADMIN_CYCLE_SHOW	= 60;
 
 float IMP_SWITCHFIRE_OFF	= 40;
 float IMP_SWITCHFIRE_BASE	= 41;
@@ -503,6 +497,7 @@ float DM_NO_DROP_POWERUP	= 256;
 float DM_NO_ALT_WEAPONS		= 512;
 float DM_NO_DROP_ARMOR		= 1024;
 float DM_DAMAGE_MATCH		= 2048;
+float DM_RANDOM_POWERUP_RESPAWN	= 4096;
 
 // This mask includes the DM_* bits which indicates that the game is in
 // an actual deathmatch mode.  Bits other than these make sense in
@@ -512,21 +507,21 @@ float DM_DAMAGE_MATCH		= 2048;
 float DM_DM_MASK = 71;
 
 // teamplay flags
-float TEAM_HEALTH_PROT	= 1;
-float TEAM_FRAG_PENALTY	= 2;
-float TEAM_ARMOR_PROT	= 4;
-float TEAM_ENFORCE_MASK	= 24;
-float TEAM_2_TEAMS	= 8;
-float TEAM_3_TEAMS	= 16;
-float TEAM_4_TEAMS	= 24;
-float TEAM_MATCH_MODE	= 32;
-float TEAM_CHANGE_MASK	= 192;
-float TEAM_CHANGE_NONE	= 0;
-float TEAM_CHANGE_ANY	= 64;
-float TEAM_CHANGE_TOPDOG = 128;
-float TEAM_NO_VOTE	= 256;
-float TEAM_SELF_HEALTH_PROT = 512;
-float TEAM_SELF_ARMOR_PROT = 1024;
+float TEAM_HEALTH_PROT		= 1;
+float TEAM_FRAG_PENALTY		= 2;
+float TEAM_ARMOR_PROT		= 4;
+float TEAM_ENFORCE_MASK		= 24;
+float TEAM_2_TEAMS		= 8;
+float TEAM_3_TEAMS		= 16;
+float TEAM_4_TEAMS		= 24;
+float TEAM_MATCH_MODE		= 32;
+float TEAM_CHANGE_MASK		= 192;
+float TEAM_CHANGE_NONE		= 0;
+float TEAM_CHANGE_ANY		= 64;
+float TEAM_CHANGE_TOPDOG	= 128;
+float TEAM_NO_VOTE		= 256;
+float TEAM_SELF_HEALTH_PROT	= 512;
+float TEAM_SELF_ARMOR_PROT	= 1024;
 
 // This masks teamplay bits which actually correspond to a team mode,
 // like DM_DM_MASK.
@@ -537,46 +532,46 @@ float TEAM_TEAM_MASK = 31;
 // noexit flags.  New flags should just control the logic used to select
 // the next map, else update the logic in changelevel_touch().
 float noexit;
-float NOEXIT_NO_EXITING			= 1;
-float NOEXIT_ALLOW_EXITING_START	= 2;
-float NOEXIT_RANDOMIZE			= 4;
-float NOEXIT_CHOOSE_BY_NPLAYERS		= 8;
-float NOEXIT_MARLINSPIKE_LEVELS		= 16;
-float NOEXIT_DM_NO_LOOP			= 32;
-float NOEXIT_FORWARD_MULT		= 64;
-float NOEXIT_FORWARD_MASK		= 960;
+float NOEXIT_NO_EXITING		= 1;
+float NOEXIT_ALLOW_EXITING_START = 2;
+float NOEXIT_RANDOMIZE		= 4;
+float NOEXIT_CHOOSE_BY_NPLAYERS	= 8;
+float NOEXIT_MARLINSPIKE_LEVELS	= 16;
+float NOEXIT_DM_NO_LOOP		= 32;
+float NOEXIT_FORWARD_MULT	= 64;
+float NOEXIT_FORWARD_MASK	= 960;
 
 // aqflags flags (saved accross levels)
-float AQ_INIT_DONE	= 1;
-float AQ_TEAM_MASK	= 14;	// bits 2, 4, 8, but currently only 6 values
-float AQ_TEAM_NIL	= 2;
-float AQ_TEAM_1		= 4;
-float AQ_TEAM_2		= 6;
-float AQ_TEAM_3		= 8;
-float AQ_TEAM_4		= 10;
-float AQ_OBSERVER	= 16;
-float AQ_NAME_WARN	= 32;
-float AQ_KICKED		= 64;
-float AQ_ADMIN		= 128;
-float AQ_RIDER_HIDE	= 256;
+float AQ_INIT_DONE		= 1;
+float AQ_TEAM_MASK		= 14;	// bits 2, 4, 8, but currently only 6 values
+float AQ_TEAM_NIL		= 2;
+float AQ_TEAM_1			= 4;
+float AQ_TEAM_2			= 6;
+float AQ_TEAM_3			= 8;
+float AQ_TEAM_4			= 10;
+float AQ_OBSERVER		= 16;
+float AQ_NAME_WARN		= 32;
+float AQ_KICKED			= 64;
+float AQ_ADMIN			= 128;
+float AQ_RIDER_HIDE		= 256;
 
 // The AQ_ALT_* bits provide one of the interfaces to weapon selection.
 // They're used to select which weapon the user gets when she uses one
 // of the standard weapon selection impulses (1-8).
-float AQ_ALT_1		= 512;
-float AQ_ALT_2		= 1024;
-float AQ_ALT_3		= 2048;
-float AQ_ALT_4		= 4096;
-float AQ_ALT_5		= 8192;
-float AQ_ALT_6		= 16384;
-float AQ_ALT_7		= 32768;
-float AQ_ALT_8		= 65536;
+float AQ_ALT_1			= 512;
+float AQ_ALT_2			= 1024;
+float AQ_ALT_3			= 2048;
+float AQ_ALT_4			= 4096;
+float AQ_ALT_5			= 8192;
+float AQ_ALT_6			= 16384;
+float AQ_ALT_7			= 32768;
+float AQ_ALT_8			= 65536;
 
-float AQ_QUIET		= 131072;
-float AQ_NO_WEAPON_TOGGLE = 262144;
-float AQ_NO_HUD		= 524288;
-float AQ_HOOK		= 1048576;
-float AQ_VOTE_TEAM	= 2097152;
+float AQ_QUIET			= 131072;
+float AQ_NO_WEAPON_TOGGLE	= 262144;
+float AQ_NO_HUD			= 524288;
+float AQ_HOOK			= 1048576;
+float AQ_VOTE_TEAM		= 2097152;
 
 // aqstate flags (not saved accross levels)
 float AQS_MENU_MASK		= 31;
@@ -667,14 +662,6 @@ float S1_EQUALIZE_LIGHTSTYLE	= 1;
 float S1_AMBIENT_SOUND_OFF	= 2;
 float S1_LIGHT_MAKESTATIC_OFF	= 4;
 
-// scratch2 bit settings
-float scratch2;
-float S2_FORWARD_1		= 1;
-float S2_FORWARD_2		= 2;
-float S2_FORWARD_3		= 4;
-float S2_FORWARD_4		= 8;
-float S2_RANDOM_FORWARD		= 16;
-
 // Bit settings for POWERUP_PICKUP_WARN in settings.qc.
 float ITEM_PENT = 1;
 float ITEM_QUAD = 2;
@@ -685,9 +672,6 @@ float ITEM_SUIT = 8;
 // I'm declaring them here to keep it less confusing there.
 float FORWARD_MAX_PLAYERS, ADMIN_PASSCODE_REAL;
 string FORWARD_DEST, FORWARD_NAME;
-string FORWARD_DEST_1, FORWARD_DEST_2, FORWARD_DEST_3, FORWARD_DEST_4;
-string FORWARD_NAME_1, FORWARD_NAME_2, FORWARD_NAME_3, FORWARD_NAME_4;
-string ADMIN_DEST, ADMIN_FORWARD;
 string START_LEVEL_EXEC;
 string SPLASH_1, SPLASH_2, SPLASH_3, SPLASH_4;
 string CSHIFT_BLIND, CSHIFT_CLOAK, CSHIFT_FREEZE, CSHIFT_NONE, CSHIFT_SHIELD;
@@ -715,13 +699,13 @@ float SVC_SETVIEWANGLES	= 10;
 
 // free player entity variable
 // '.float speed'  bit-flag defines:
-float CHSCAM_ALT    = 4;
-float CHSCAM_ON     = 2;
-float LASERTARG_ON  = 1;
+// float CHSCAM_ALT    = 4;
+// float CHSCAM_ON     = 2;
+// float LASERTARG_ON  = 1;
 
-/********************\
-* Rune Serv vars end *
-\********************/
+/////////////////////////
+/* RUNE QUAKE VARS END */
+/////////////////////////
 
 //
 // constants
@@ -772,14 +756,12 @@ float	RANGE_MID			= 2;
 float	RANGE_FAR			= 3;
 
 // deadflag values
-
 float	DEAD_NO				= 0;
 float	DEAD_DYING			= 1;
 float	DEAD_DEAD			= 2;
 float	DEAD_RESPAWNABLE		= 3;
 
 // takedamage values
-
 float	DAMAGE_NO			= 0;
 float	DAMAGE_YES			= 1;
 float	DAMAGE_AIM			= 2;
@@ -832,7 +814,6 @@ float	IT_SUIT				= 2097152;
 float	IT_QUAD				= 4194304;
 
 // point content values
-
 float	CONTENT_EMPTY			= -1;
 float	CONTENT_SOLID			= -2;
 float	CONTENT_WATER			= -3;
@@ -853,6 +834,7 @@ vector	VEC_HULL2_MIN			= '-32 -32 -24';
 vector	VEC_HULL2_MAX			= '32 32 64';
 
 // protocol bytes
+
 float	SVC_TEMPENTITY			= 23;
 float	SVC_KILLEDMONSTER		= 27;
 float	SVC_FOUNDSECRET			= 28;
@@ -901,14 +883,12 @@ float	ATTN_IDLE			= 2;
 float	ATTN_STATIC			= 3;
 
 // update types
-
 float	UPDATE_GENERAL			= 0;
 float	UPDATE_STATIC			= 1;
 float	UPDATE_BINARY			= 2;
 float	UPDATE_TEMP			= 3;
 
 // entity effects
-
 float	EF_BRIGHTFIELD			= IN_POQ(1, 8);
 IN_POQ([-
 float	EF_MUZZLEFLASH 			= 2;
@@ -932,7 +912,7 @@ float   PRINT_CHAT              = 3;            // also goes to chat console
 
 // multicast sets.  These are defined in POQ because multicast() is
 // defined as a no-op there.
-float   MSG_MULTICAST			= 4;            // for multicast() call
+float   MSG_MULTICAST	= 4;            // for multicast() call
 float   MULTICAST_ALL   = 0;            // every client
 float   MULTICAST_PHS   = 1;            // within hearing
 float   MULTICAST_PVS   = 2;            // within sight

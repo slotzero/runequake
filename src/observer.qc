@@ -1,4 +1,4 @@
-// $Id: observer.qc,v 1.7 2002/05/10 03:09:22 slotzero Exp $
+// $Id: observer.qc,v 1.8 2002/06/09 20:20:42 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -156,17 +156,14 @@ obs_impulses =
 			self.impulse = 0;
 		}
 		else if (self.impulse == 2)
-			self.impulse = IMP_ADMIN_FORWARD;
+			self.impulse = IMP_ADMIN_VOTE_TEAM_TOGGLE;
 		else if (self.impulse == 3)
 			self.impulse = IMP_ADMIN_UNBIND;
 		else if (self.impulse == 4)
 			self.impulse = IMP_ADMIN_RENAME;
 		else if (self.impulse == 5)
 			self.impulse = IMP_ADMIN_EYES;
-		else if (self.impulse == 6)
-			self.impulse = IMP_ADMIN_VOTE_TEAM_TOGGLE;
-		//else if (self.impulse == 7)
-		//	self.impulse = IMP_ADMIN_TEAMPLAY_ZERO;
+
 		if (self.impulse)
 			common_impulses ();
 	}
@@ -211,7 +208,7 @@ obs_impulses =
 			if (self.aqflags & AQ_ADMIN)
 				aq_menu_set (AQS_MENU_ADMIN);
 			else
-				admin_Toggle (1, 0);
+				admin_toggle (1, 0);
 		}
 		else if (self.impulse == 7)
 		{

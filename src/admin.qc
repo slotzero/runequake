@@ -1,10 +1,10 @@
-// $Id: admin.qc,v 1.7 2002/06/01 06:44:41 slotzero Exp $
+// $Id: admin.qc,v 1.8 2002/06/09 20:20:40 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
 
 void ()
-admin_Init =
+admin_init =
 {
 	if (is_admin ())
 	{
@@ -17,7 +17,6 @@ admin_Init =
 	player_init_impulse_alias ("admin-eyes",	IMP_ADMIN_EYES);
 	player_init_impulse_alias ("admin-cycle",	IMP_ADMIN_CYCLE);
 	player_init_impulse_alias ("admin-cycle-show",	IMP_ADMIN_CYCLE_SHOW);
-	player_init_impulse_alias ("admin-forward",	IMP_ADMIN_FORWARD);
 	player_init_impulse_alias ("admin-join",	IMP_ADMIN_JOIN);
 	player_init_impulse_alias ("admin-kick",	IMP_ADMIN_KICK);
 	player_init_impulse_alias ("admin-kill",	IMP_ADMIN_KILL);
@@ -39,7 +38,7 @@ admin_Init =
 };
 
 void (string msg, float passcode)
-admin_Wrong_Passcode =
+admin_wrong_passcode =
 {
 	local float i;
 
@@ -58,7 +57,7 @@ admin_Wrong_Passcode =
 };
 
 void (float tell, float mention_console)
-admin_Toggle =
+admin_toggle =
 {
 	local float admin_passcode_cvar;
 
@@ -118,7 +117,7 @@ admin_Toggle =
 };
 
 void ()
-admin_Impulse_Password =
+admin_impulse_password =
 {
 	if (self.impulse < 1 || self.impulse > 8)
 	{
@@ -145,15 +144,15 @@ admin_Impulse_Password =
 		{
 			self.aqstate = self.aqstate
 				- self.aqstate & AQS_ADMIN_ATTEMPTS_MASK;
-			admin_Init ();
+			admin_init ();
 		}
 		else
-			admin_Wrong_Passcode ("admin passcode", passcode);
+			admin_wrong_passcode ("admin passcode", passcode);
 	}
 };
 
 void ()
-admin_Impulse_Qsmack_Password =
+admin_impulse_qsmack_password =
 {
 	local float i, failing;
 	local string s;
@@ -189,9 +188,9 @@ admin_Impulse_Qsmack_Password =
 		// She's sent 5 impulses, they might have been
 		// right or wrong.
 		if (failing)
-			admin_Wrong_Passcode ("Qsmack passcode", 0);
+			admin_wrong_passcode ("Qsmack passcode", 0);
 		else
-			admin_Init ();
+			admin_init ();
 
 	}
 };
@@ -201,7 +200,7 @@ float ADMIN_PLAYER_TYPE_PLAYER		= 1;
 float ADMIN_PLAYER_TYPE_OBSERVER	= 2;
 
 entity (float pt)
-admin_Player_Pick =
+admin_player_pick =
 {
 	local entity e;
 
@@ -250,7 +249,7 @@ admin_Player_Pick =
 };
 
 void ()
-admin_Try_Eyes =
+admin_eyes =
 {
 	local float n;
 	local string s, s1;
@@ -288,7 +287,7 @@ admin_Try_Eyes =
 };
 
 void (float cycle_show)
-admin_Try_Cycle =
+admin_cycle =
 {
 	local entity e;
 	local string s;
@@ -324,78 +323,68 @@ admin_Try_Cycle =
 		self_sprint5 (self, "ç ê#", s, "ë ", e.netname, " selected\n");
 };
 
-void (float configured)
-admin_Try_Forward =
-{
-	local entity e, old_self;
-
-	e = admin_Player_Pick (ADMIN_PLAYER_TYPE_ANY);
-	if (!e)
-		return;
-	if (!configured)
-	{
-		self_sprint (self, "Admin forward not configured\n");
-		return;
-	}
-	old_self = self;
-	self = e;
-	sprint3 (old_self, "Attempting to forward ", self.netname, "\n");
-	admin_forward_player ();
-	self = old_self;
-};
-
 void ()
-admin_Try_Join =
+admin_join =
 {
 	local entity e, old_self;
 
-	e = admin_Player_Pick (ADMIN_PLAYER_TYPE_OBSERVER);
+	e = admin_player_pick (ADMIN_PLAYER_TYPE_OBSERVER);
 	if (!e)
 		return;
-	old_self = self;
-	self = e;
+
+	old_self	= self;
+	self		= e;
+
 	obs_join_game (1);
-	self = old_self;
+
+	self		= old_self;
 };
 
 void ()
-admin_Try_Kick =
+admin_kick =
 {
 	local entity e, old_self;
 
-	e = admin_Player_Pick (ADMIN_PLAYER_TYPE_ANY);
+	e = admin_player_pick (ADMIN_PLAYER_TYPE_ANY);
 	if (!e)
 		return;
-	old_self = self;
-	self = e;
+
+	old_self	= self;
+	self		= e;
+
 	if (old_self.impulse == IMP_ADMIN_KICK)
 		kick ("by ", old_self.netname);
-	self = old_self;
+
+	self		= old_self;
 };
 
 void ()
-admin_Try_Kill =
+admin_kill =
 {
 	local entity e, old_self;
 
-	e = admin_Player_Pick (ADMIN_PLAYER_TYPE_PLAYER);
+	e = admin_player_pick (ADMIN_PLAYER_TYPE_PLAYER);
 	if (!e)
 		return;
-	old_self = self;
-	self = e;
+
+	old_self	= self;
+	self		= e;
+
 	sure_kill ("admin-kill");
-	self = old_self;
+
+	self		= old_self;
 };
 
 void ()
-admin_Try_Rename =
+admin_rename =
 {
 	local entity e;
 	local string newname;
 
-	e = admin_Player_Pick (ADMIN_PLAYER_TYPE_ANY);
+	e = admin_player_pick (ADMIN_PLAYER_TYPE_ANY);
 	if (!e)
 		return;
+
 	sprint_admin2 (e.netname, " was renamed to ");
 	self_stuffcmd (e, "name \"");
 	newname = random_name ();
@@ -406,37 +395,44 @@ admin_Try_Rename =
 };
 
 void ()
-admin_Try_Rune_Delete =
+admin_rune_delete =
 {
 	local entity e, old_self;
 
-	e = admin_Player_Pick (ADMIN_PLAYER_TYPE_PLAYER);
+	e = admin_player_pick (ADMIN_PLAYER_TYPE_PLAYER);
 	if (!e)
 		return;
+
 	if (e.deadflag)
 		return;
-	old_self = self;
-	self = e;
+
+	old_self	= self;
+	self		= e;
+
 	Rune_Activate (0, 1);
-	self = old_self;
+
+	self		= old_self;
 };
 
 void ()
-admin_Try_Team_Change =
+admin_team_change =
 {
 	local entity e, old_self;
 
-	e = admin_Player_Pick (ADMIN_PLAYER_TYPE_ANY);
+	e = admin_player_pick (ADMIN_PLAYER_TYPE_ANY);
 	if (!e)
 		return;
-	old_self = self;
-	self = e;
+
+	old_self	= self;
+	self		= e;
+
 	team_rotate (old_self);
-	self = old_self;
+
+	self		= old_self;
 };
 
 void ()
-admin_Try_Team_Change_Toggle =
+admin_team_change_toggle =
 {
 	local string s;
 	local float old, new;
@@ -467,32 +463,35 @@ admin_Try_Team_Change_Toggle =
 };
 
 void ()
-admin_Try_Vote_Team_Toggle =
+admin_vote_team_toggle =
 {
 	if (!is_admin ())
 		return;
+
 	if (teamplay & TEAM_NO_VOTE)
 		teamplay = teamplay - teamplay & TEAM_NO_VOTE;
 	else
 		teamplay = teamplay | TEAM_NO_VOTE;
+
 	change_teamplay (teamplay, 1);
 };
 
 void ()
-admin_Try_Teamplay_Zero =
+admin_teamplay_zero =
 {
 	if (is_admin ())
 		change_teamplay (0, 1);
 };
 
 void ()
-admin_Try_Unbind =
+admin_unbind =
 {
 	local entity e;
 
-	e = admin_Player_Pick (ADMIN_PLAYER_TYPE_ANY);
+	e = admin_player_pick (ADMIN_PLAYER_TYPE_ANY);
 	if (!e)
 		return;
+
 	self_stuffcmd (e, "unbindall\n");
 	self_stuffcmd (e, "sensitivity 0\n");
 	sprint_admin2 (e.netname, "'s keys unbound by ");
@@ -500,17 +499,19 @@ admin_Try_Unbind =
 };
 
 void (string m)
-admin_Try_Changelevel =
+admin_changelevel =
 {
 	bprint (self.netname);
+
 	if (self.netname != string_null)
 		bprint (" exited the level\n");
+
 	forced_nextmap = m;
 	NextLevel ();
 };
 
 void ()
-admin_Try_Impulse_Map =
+admin_impulse_map =
 {
 	local string m;
 
@@ -529,7 +530,7 @@ admin_Try_Impulse_Map =
 	{
 		impulse_override_cancel ();
 		aq_menu_set (0);
-		admin_Try_Changelevel (string_null);
+		admin_changelevel (string_null);
 		return;
 	}
 
@@ -543,16 +544,17 @@ admin_Try_Impulse_Map =
 		sprint (self, "\n");
 	}
 	else
-		admin_Try_Changelevel (m);
+		admin_changelevel (m);
 };
 
 void ()
-admin_Try_Change_Map =
+admin_change_map =
 {
 	if (!is_admin ())
 		return;
 
-	self.state = 0;
-	self.aqstate = self.aqstate | AQS_IMPOVER_MAP;
+	self.state	= 0;
+	self.aqstate	= self.aqstate | AQS_IMPOVER_MAP;
+
 	aq_menu_set (AQS_MENU_EPISODE);
 };

@@ -1,4 +1,4 @@
-// $Id: weapons.qc,v 1.2 2002/03/05 00:53:41 slotzero Exp $
+// $Id: weapons.qc,v 1.3 2002/06/09 20:20:43 slotzero Exp $
 
 // called by worldspawn
 
@@ -105,23 +105,22 @@ void (vector org, vector vel)
 SpawnMeatSpray =
 {
 	local	entity missile;
-	local	vector	org;
 
-	missile = spawn ();
-	missile.owner = self;
-	missile.movetype = MOVETYPE_BOUNCE;
-	missile.solid = SOLID_NOT;
+	missile			= spawn ();
+	missile.owner		= self;
+	missile.movetype	= MOVETYPE_BOUNCE;
+	missile.solid		= SOLID_NOT;
 
 	makevectors (self.angles);
 
-	missile.velocity = vel;
-	missile.velocity_z = missile.velocity_z + 250 + 50*random ();
+	missile.velocity	= vel;
+	missile.velocity_z	= missile.velocity_z + 250 + 50*random ();
 
-	missile.avelocity = '3000 1000 2000';
+	missile.avelocity	= '3000 1000 2000';
 
 	// set missile duration
-	missile.nextthink = time + 1;
-	missile.think = SUB_Remove;
+	missile.nextthink	= time + 1;
+	missile.think		= SUB_Remove;
 
 	setmodel (missile, "progs/zom_gib.mdl");
 	setsize (missile, VEC_ORIGIN, VEC_ORIGIN);

@@ -1,4 +1,4 @@
-$Id: Configuring,v 1.2 2002/03/05 21:26:01 slotzero Exp $
+$Id: Configuring,v 1.3 2002/06/09 20:20:31 slotzero Exp $
 
 Starting the server
 
@@ -157,6 +157,13 @@ deathmatch
 	The rules are simple, but some of the implications are surprising.
 	Eg, piercing becomes a much less desirable rune because you get
 	less benefit from each kill.
+
+    4096 random powerup respawn                 DM_RANDOM_POWERUP_RESPAWN
+
+        Many players keep tabs on when the next powerup will respawn.  To
+	avoid quad and pent domination, random seconds, based off of the
+	value SLOW_POWERUP_RESPAWN_TIME (settings.qc), will be added to
+	the current pent and quad times.
 
 
 teamplay
@@ -366,26 +373,19 @@ temp1
     	rune deleting (or set it to a minute or more), set random rune
     	models, and set it so you don't drop your rune when you die.
 
-scratch1 [your must restart the level for these changes to work]
 
-    1 lightstyle() to max brightness		S1_LIGHT_SETUP_ALL_BRIGHT
+scratch1
 
-	You can set the light style of every light to maximum intensity.
-	Use this with bit S1_LIGHT_SETUP_ALL_DARK and you get a medium
-	intensity.
+    1 equalize all lightstyles                  S1_EQUALIZE_LIGHTSTYLE
 
-    2 lightstyle() to max darkness		S1_LIGHT_SETUP_ALL_DARK
+	This will set all of the light sources to the normal lightstyle()
+	setting.  (lights won't flicker, strobe, or pulsate)
 
-	You can set the light style of every light to minimum intensity.
-	Use this with bit S1_LIGHT_SETUP_ALL_BRIGHT and you get a medium
-	intensity.
+    2 turn off all ambient sounds               S1_AMBIENT_SOUND_OFF
 
-    4 turn off all quakec ambient sounds	S1_AMBIENT_SOUND_OFF
+	Force all ambient sounds off, even from the client.
 
-	Remove all quakec ambient sounds such as torch flares, teleporter,
-	crickets, light noises.
-
-    8 don't spawn any static lights		S1_LIGHT_MAKESTATIC_OFF
+    4 don't spawn any static lights             S1_LIGHT_MAKESTATIC_OFF
 
 	Remove all static lights from the level.  This will not change the
 	lighting of the level.
