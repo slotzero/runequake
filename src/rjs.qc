@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.32 2002/09/22 20:10:03 slotzero Exp $
+// $Id: rjs.qc,v 1.33 2002/09/28 00:55:47 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -153,6 +153,21 @@ float ()
 is_valid_player =
 {
 	return is_valid_player_e (self);
+};
+
+float (entity e)
+is_qsmack_e =
+{
+	if (MOD_PROQUAKE)
+		return clientqsmack (e);
+	else
+		return FALSE;
+};
+
+float ()
+is_qsmack =
+{
+	return is_qsmack_e (self);
 };
 
 void (float n)

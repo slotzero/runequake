@@ -1,4 +1,4 @@
-// $Id: defs.qc,v 1.17 2002/09/21 16:25:50 slotzero Exp $
+// $Id: defs.qc,v 1.18 2002/09/28 00:55:46 slotzero Exp $
 
 /*
 ==============================================================================
@@ -1155,7 +1155,7 @@ void (vector ang)	makevectors		= #1;	// sets v_forward, etc globals
 void (entity e, vector o) setorigin		= #2;
 void (entity e, string m) setmodel		= #3;	// set movetype and solid first
 void (entity e, vector min, vector max) setsize	= #4;
-// #5 was removed
+float (entity e) clientqsmack			= #5;	// Don't use this, use is_qsmack() instead.
 void () break					= #6;
 float () random					= #7;	// returns 0 - 1
 void (entity e, float chan, string samp, float vol, float atten) xsound	= #8;
