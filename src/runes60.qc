@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.50 2004/11/06 00:10:06 slotzero Exp $
+/*  $Id: runes60.qc,v 1.51 2004/11/06 00:26:49 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -203,7 +203,10 @@ Rune_Blizzard =
 	{
 		if (e.classname == "player" || is_pet_e (e))
 		{
-			if (!environmental (e) && e.runetype != RN_BLIZZARD && e.runetype != RN_FREEZE)
+			if (!environmental (e)
+					&& e.runetype != RN_BLIZZARD
+					&& e.runetype != RN_FREEZE
+					&& !e.effects & EF_ICE)
 			{
 				if (e.health > 0 && e != self && e.owner != self)
 				{
@@ -310,6 +313,8 @@ Blizzard_Touch =
 	if (other.classname != "player" && !is_pet_e (other))
 		return;
 	if (environmental (other) || other.runetype == RN_BLIZZARD || other.runetype == RN_FREEZE)
+		return;
+	if (other.effects & EF_ICE)
 		return;
 
 	self.runetime = time + 3;
