@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.18 2004/04/05 10:30:58 slotzero Exp $
+/*  $Id: runes20.qc,v 1.19 2004/06/12 19:54:05 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -143,7 +143,7 @@ DSpot_Think =
 			particle (self.origin, '0 0 -10', particle_team, 10);
 		}
 	-], [-
-		create_te_gunshot (self.origin, 20);
+		create_te_gunshot (self.origin, 6);
 	-])
 	if (self.runetime < time)
 		DSpot_Blow ();
