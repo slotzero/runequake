@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.33 2004/04/04 09:44:47 slotzero Exp $
+/*  $Id: items.qc,v 1.34 2004/04/04 10:24:39 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1646,7 +1646,10 @@ drop_powerup_touch =
 					+ (self.cnt - time);
 		}
 		else
+		{
 			other.super_damage_finished = self.cnt;
+			Hat_Spawn (other, self.mdl, '0 0 30', VEC_ORIGIN, 4);
+		}
 	}
 	else if (self.netname == "ring")
 	{
@@ -1685,7 +1688,10 @@ drop_powerup_touch =
 					+ (self.cnt - time);
 		}
 		else
+		{
 			other.invincible_finished = self.cnt;
+			Hat_Spawn (other, self.mdl, '0 0 35', VEC_ORIGIN, 1);
+		}
 	}
 	else
 		return;
