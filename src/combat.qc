@@ -1,4 +1,4 @@
-// $Id: combat.qc,v 1.1 2002/02/21 21:47:49 slotzero Exp $
+// $Id: combat.qc,v 1.2 2002/03/02 20:12:16 slotzero Exp $
 
 /*
 ============
@@ -123,12 +123,6 @@ T_Damage =
 			|| attacker.owner.super_damage_finished >= time)
 		damage = damage * 4;
 
-	// environmental protection suit enhancement
-	if (targ.radsuit_finished > time && (inflictor.classname == "deathorb"
-			|| dtype == "lavagun"
-			|| dtype == "flamethrower"))
-		damage = 0;
-
 	if (attacker.runetype)
 	{
 		// impact and lumberjack rune do more
@@ -152,6 +146,23 @@ T_Damage =
 			damage = damage * RN_JACK_STRENGTH;
 	}
 
+	// Environmental Protections
+	if ((targ.runetype == RN_ENVIRO || targ.items & IT_SUIT) &&
+			((attacker.solid == SOLID_BSP && attacker != world) ||
+			attacker.classname == "trap_shooter" ||
+			attacker.classname == "fireball" ||
+			inflictor.classname == "deathorb" ||
+			inflictor.classname == "gfire" ||
+			inflictor.classname == "radioactive" ||
+			attacker.classname == "trap_spikeshooter" ||
+			attacker.classname == "trigger_hurt" ||
+			dtype == "barrel" ||
+			dtype == "squish" ||
+			dtype == "lavagun" ||
+			dtype == "flamethrower" ||
+			dtype == "kamikaze"))
+		damage = 0;
+
 	if (targ.runetype)
 	{
 		// Athlete's Rune reduces damage slightly
@@ -171,23 +182,6 @@ T_Damage =
 		// Uncloak when hurt
 		else if (targ.runetype == RN_CLOAK)
 			targ.runetime = time + RECLOAK_DELAY;
-
-		// Enviro rune protections
-		else if (targ.runetype == RN_ENVIRO &&
-				((attacker.solid == SOLID_BSP && attacker != world) ||
-				attacker.classname == "trap_shooter" ||
-				attacker.classname == "fireball" ||
-				inflictor.classname == "deathorb" ||
-				inflictor.classname == "gfire" ||
-				inflictor.classname == "radioactive" ||
-				attacker.classname == "trap_spikeshooter" ||
-				attacker.classname == "trigger_hurt" ||
-				dtype == "barrel" ||
-				dtype == "squish" ||
-				dtype == "lavagun" ||
-				dtype == "flamethrower" ||
-				dtype == "kamikaze"))
-			damage = 0;
 
 		else if (targ.runetype == RN_MONK
 				&& targ.runevar
@@ -301,7 +295,7 @@ T_Damage =
 		0;
 	else if (targ.armorvalue == 0)
 		0;
-	else if (attacker.runetype == RN_PIERCING && targ.runetype != RN_ENVIRO)
+	else if (attacker.runetype == RN_PIERCING)
 		sound (targ, CHAN_AUTO, "weapons/ric1.wav", 1, ATTN_NORM);
 	else
 	{
@@ -391,8 +385,7 @@ T_Damage =
 	// try to respawn in the same spot?  I've also got reports that
 	// this happens to targs with rune types other than vamp so I
 	// just prevent healing on teledeath entirely.
-	if (attacker.runetype == RN_VAMP && targ.runetype != RN_ENVIRO
-			&& dtype != "teledeath")
+	if (attacker.runetype == RN_VAMP && dtype != "teledeath")
 		Vamp_Heal (attacker, targ, real_take);
 
 	// Vengeance Rune does equal damage back to the attacker, but

@@ -1,4 +1,4 @@
-// $Id: client.qc,v 1.1 2002/02/21 21:47:49 slotzero Exp $
+// $Id: client.qc,v 1.2 2002/03/02 20:12:16 slotzero Exp $
 
 float modelindex_eyes, modelindex_player;
 
@@ -1166,7 +1166,7 @@ WaterMove =
 			return;
 		}
 		// environmental protection rune: heal in liquids
-		else if (self.runetype == RN_ENVIRO)
+		else if (environmental (self))
 		{
 			self.next_breath = time + 1;
 			self.dmgtime = time + 1;
@@ -1674,9 +1674,9 @@ PlayerPostThink =
 	{
 		if (self.watertype == CONTENT_WATER)
 			sound (self, CHAN_JUMP, "player/h2ojump.wav", 1, ATTN_NORM);
-
-		//RUNE SERV: Next loop is modified to exclude RN_ENVIRO holders.
 		else if (self.runetype != RN_ENVIRO
+				&& !self.items & IT_SUIT
+				&& self.runetype != RN_FLY
 				&& self.runetype != RN_MONK
 				&& (self.jump_flag < -850
 				|| (self.runetype != RN_ATHLETE

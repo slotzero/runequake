@@ -1,4 +1,4 @@
-// $Id: runes40.qc,v 1.1 2002/02/21 21:47:58 slotzero Exp $
+// $Id: runes40.qc,v 1.2 2002/03/02 20:12:18 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -490,7 +490,7 @@ Weird_Think =
 	local vector o;
 
 	// Stop EP suit and rune from burning.
-	if (self.runent.runetype == RN_ENVIRO || self.runent.radsuit_finished > time)
+	if (environmental (self.runent))
 		self.runetime = time - 1;
 
 	// Remove the weirder
@@ -611,7 +611,7 @@ Weird_Touch =
 		return;
 	}
 
-	if (other.runetype == RN_ENVIRO || other.radsuit_finished > time)
+	if (environmental (other))
 		return;
 
 	if (other.classname != "player" || other.health <= 0)

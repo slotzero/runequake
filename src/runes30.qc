@@ -1,4 +1,4 @@
-// $Id: runes30.qc,v 1.1 2002/02/21 21:47:58 slotzero Exp $
+// $Id: runes30.qc,v 1.2 2002/03/02 20:12:18 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -193,8 +193,9 @@ Rune_Switch =
 	if (switch.health <= 0)
 	    	return;
 
-	if (switch.runetype == RN_ENVIRO || switch.radsuit_finished > time)
+	if (environmental (switch))
 		return;
+
 	if (switch.classname != "player"
 			&& switch.classname != "shambler_slave"
 			&& switch.classname != "zombie_camper")
@@ -456,7 +457,8 @@ Freeze_Frozen =
 	if (self.runetime < time
 			|| self.runent.health < 1
 			|| self.runent.runetype == RN_FREEZE
-			|| self.runent.runetype == RN_ENVIRO)
+			|| self.runent.runetype == RN_ENVIRO
+			|| self.runent.items & IT_SUIT)
 	{
 		self.runent.attack_finished = time + 1;
 		if (self.runent.classname == "player")
@@ -479,8 +481,8 @@ Freeze_Touch =
 		return;
 
 	if (other.runetype == RN_ENVIRO
-			|| other.runetype == RN_FREEZE
-			|| other.radsuit_finished > time)
+			|| other.items & IT_SUIT
+			|| other.runetype == RN_FREEZE)
 		return;
 
 	if (isfriend2 (self.owner, other) && self.owner != other)
@@ -606,7 +608,7 @@ Suck =
 				if (suckee.classname != "player")
 					suckee.flags = suckee.flags-(suckee.flags & FL_ONGROUND);
 				if (suckee.runetype != RN_ENVIRO
-						&& !suckee.radsuit_finished > time)
+						&& !suckee.items & IT_SUIT)
 				{
 					suckdir = sucker.origin - suckee.origin;
 					suckdist = vlen (suckdir);
@@ -650,7 +652,7 @@ Suck_Touch =
 		return;
 	if (isfriend2 (self.owner, other))
 		return;
-	if (other.runetype == RN_ENVIRO || other.radsuit_finished > time)
+	if (environmental (other))
 		return;
 
 	T_Damage (other, self, self.owner, 1, "sucker");

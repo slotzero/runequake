@@ -1,4 +1,4 @@
-// $Id: plats.qc,v 1.1 2002/02/21 21:47:57 slotzero Exp $
+// $Id: plats.qc,v 1.2 2002/03/02 20:12:17 slotzero Exp $
 
 float PLAT_LOW_TRIGGER = 1;
 
@@ -221,7 +221,7 @@ train_blocked =
 
 	if (!other.takedamage
 			|| other.runetype == RN_ENVIRO
-			|| other.invincible_finished > time)
+			|| other.items & IT_SUIT)
 		train_next ();
 };
 void ()

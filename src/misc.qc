@@ -1,4 +1,4 @@
-// $Id: misc.qc,v 1.3 2002/03/02 15:02:39 slotzero Exp $
+// $Id: misc.qc,v 1.4 2002/03/02 20:12:17 slotzero Exp $
 
 /*QUAKED info_null (0 0.5 0) (-4 -4 -4) (4 4 4)
 Used as a positional target for spotlights, etc.
@@ -248,7 +248,7 @@ LaunchLaser =
 void ()
 spikeshooter_use =
 {
-	if (activator.runetype == RN_ENVIRO)
+	if (environmental (activator))
 		return;
 
 	if (self.spawnflags & SPAWNFLAG_LASER)

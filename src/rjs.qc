@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.6 2002/03/02 16:31:17 slotzero Exp $
+// $Id: rjs.qc,v 1.7 2002/03/02 20:12:17 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -2982,6 +2982,7 @@ T_RadiusLight =
 		self = head;
 		if (head.classname == "player"
 			&& head.runetype != RN_ENVIRO
+			&& !head.items & IT_SUIT
 			&& infront (inflictor))
 		{
 			// Have flash grenades report.
@@ -3415,6 +3416,12 @@ is_topdog =
 		e = find (e, classname, "player");
 	}
 	return 1;
+};
+
+float (entity e)
+environmental =
+{
+	return e.items & IT_SUIT || e.runetype == RN_ENVIRO;
 };
 
 float (entity e)

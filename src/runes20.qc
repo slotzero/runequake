@@ -1,4 +1,4 @@
-// $Id: runes20.qc,v 1.1 2002/02/21 21:47:58 slotzero Exp $
+// $Id: runes20.qc,v 1.2 2002/03/02 20:12:17 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -103,10 +103,13 @@ DSpot_Touch =
 
 	if (other.takedamage != DAMAGE_AIM)
 		return;
+
 	if (other.health < 1)
 		return;
-	if (other.runetype == RN_ENVIRO || other.radsuit_finished > time)
+
+	if (environmental (other))
 		return;
+
 	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;
 
@@ -624,7 +627,7 @@ Rune_Jump =
 	while (head)
 	{
 		if (head.health > 0 && !isfriend (head) && head.runetype != RN_ENVIRO
-				&& !head.radsuit_finished > time)
+				&& !head.items & IT_SUIT)
 		{
 			traceline (self.origin, head.origin + head.view_ofs, TRUE, self);
 			if ((trace_fraction >= 1) && (vlen (head.origin - self.origin) < dist))

@@ -1,4 +1,4 @@
-// $Id: burn.qc,v 1.1 2002/02/21 21:47:48 slotzero Exp $
+// $Id: burn.qc,v 1.2 2002/03/02 20:12:16 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -68,7 +68,7 @@ burn_think =
 			|| self.enemy.health < 1
 			|| !self.enemy.aqstate & AQS_BURNING
 			|| self.enemy.runetype == RN_ENVIRO
-			|| self.enemy.radsuit_finished > time
+			|| self.enemy.items & IT_SUIT
 			|| self.enemy.runetype == RN_FIREWALK
 			|| self.enemy.runetype == RN_TORCH
 			|| intermission_running)
@@ -129,7 +129,7 @@ burn_start =
 	local entity e;
 
 	if (targ.runetype == RN_ENVIRO
-			|| targ.radsuit_finished > time
+			|| targ.items & IT_SUIT
 			|| targ.runetype == RN_FIREWALK
 			|| targ.runetype == RN_TORCH
 			|| (targ.waterlevel > 1

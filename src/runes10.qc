@@ -1,4 +1,4 @@
-// $Id: runes10.qc,v 1.1 2002/02/21 21:47:58 slotzero Exp $
+// $Id: runes10.qc,v 1.2 2002/03/02 20:12:17 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -363,7 +363,7 @@ Rune_Zap =
 	}
 	if (selected != world
 			&& selected.runetype != RN_ENVIRO
-			&& !selected.radsuit_finished > time)
+			&& !selected.items & IT_SUIT)
 	{
 		self.ammo_cells = self.ammo_cells - 1;
 
