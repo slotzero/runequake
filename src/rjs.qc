@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.30 2002/08/24 01:28:12 slotzero Exp $
+// $Id: rjs.qc,v 1.31 2002/08/24 22:43:21 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -1056,8 +1056,8 @@ count_hooks =
 	return n_ent + n_player;
 };
 
-void (string class, vector orig)
-remove_classname_origin =
+void (string class, vector orig, float all)
+xremove_classname_origin =
 {
 	local entity e, next_e;
 
@@ -1066,7 +1066,7 @@ remove_classname_origin =
 	{
 		next_e = find (e, classname, class);
 
-		if (orig == VEC_ORIGIN)
+		if (all)
 			remove (e);
 		else if (e.origin == orig)
 		{
@@ -1077,10 +1077,16 @@ remove_classname_origin =
 	}
 };
 
+void (string class, vector orig)
+remove_classname_origin =
+{
+	xremove_classname_origin (class, orig, FALSE);
+};
+
 void (string class)
 remove_classname =
 {
-	remove_classname_origin (class, VEC_ORIGIN);
+	xremove_classname_origin (class, VEC_ORIGIN, TRUE);
 };
 
 void ()
