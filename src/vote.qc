@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.35 2004/07/18 14:17:28 slotzero Exp $
+/*  $Id: vote.qc,v 1.36 2004/07/20 11:15:16 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -230,6 +230,16 @@ count_votes =
 };
 
 void ()
+toyo_bot =
+{
+	self_sprint (self.owner, "\{1}Toyo-BOT:");
+	self_sprint (self.owner, " Hey ");
+	self_sprint (self.owner, self.owner.netname);
+	self_sprint (self.owner, ", type help-vote for additional vote options.\n");
+	remove (self);
+};
+
+void ()
 vote_think =
 {
 	IN_POQ([-
@@ -276,6 +286,17 @@ vote_think =
 
 		// all
 		bprint ("\ntype 'yes' or 'no' in console to vote\n");
+
+		// Feature request for Toyo.  XXX Remove this at some point?
+		if (self.impulse == IMP_VOTE_EXIT && !forced_nextmap)
+		{
+			local entity e;
+
+			e		= spawn ();
+			e.owner		= self.owner;
+			e.think		= toyo_bot;
+			e.nextthink	= time + 3;
+		}
 
 		self.runevar = self.runevar - 1;
 	}
