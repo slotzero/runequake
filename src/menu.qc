@@ -1,4 +1,4 @@
-/*  $Id: menu.qc,v 1.10 2004/02/21 07:40:08 slotzero Exp $
+/*  $Id: menu.qc,v 1.11 2004/02/21 08:28:12 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -108,7 +108,7 @@ aq_menu_print_n =
 	{
 		centerprint (self,
 			//----------------------------------*------
-			"Rune Quake was written by David   \n"
+			"Rune Quake was created by David   \n"
 			"'Slot Zero' Roberts.              \n"
 			"                                  \n\n"
 			"To report bugs, please e-mail     \n"
