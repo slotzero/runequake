@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.58 2003/09/20 02:53:41 slotzero Exp $
+/*  $Id: rjs.qc,v 1.59 2003/09/21 17:49:22 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -258,6 +258,14 @@ rjs_worldspawn =
 		localcmd (START_LEVEL_EXEC);
 		localcmd ("\n");
 	}
+
+	// Must be zero of self_sprint() will always be dprint().
+	cvar_set ("skill", "0");
+
+	// XXX This is done every level, but shouldn't it only be done once and elsewhere?
+	console_init_cvar_alias ("last",		"skill",	SKILL_LAST);
+	console_init_cvar_alias ("show-players",	"skill",	SKILL_SHOW_PLAYERS);
+	console_init_cvar_alias ("show-settings",	"skill",	SKILL_SHOW_SETTINGS);
 
 	// I used to do an initial change_teamplay() here to get the mod
 	// and version into the teamplay string.  See the comments in
@@ -1478,6 +1486,21 @@ color_to_name =
 	}
 };
 
+void (string cmd, string cvr, float imp)
+console_init_cvar_alias =
+{
+	local string s;
+
+	s = ftos (imp);
+	localcmd ("alias ");
+	localcmd (cmd);
+	localcmd (" \"");
+	localcmd (cvr);
+	localcmd (" ");
+	localcmd (s);
+	localcmd ("\"\n");
+};
+
 void (string cmd, float imp)
 player_init_impulse_alias =
 {
@@ -1751,16 +1774,21 @@ void ()
 show_players =
 {
 	local entity e;
+	local float self_admin;
+
+	if (is_admin () || self == world)
+		self_admin = 1;
 
 	self_sprint (self, "\nStatus  Name\n");
 	e = find (world, classname, "player");
+	if (!e)  self_sprint (self, "\nNo players found.\n");	// Only works for console (obviously).
 	while (e)
 	{
 		if (is_valid_player_e (e))
 		{
 			if (is_observer_e (e))
 			{
-				if (e.owner != world && (!e.aqflags & AQ_ADMIN || self.aqflags & AQ_ADMIN))
+				if (e.owner != world && (!e.aqflags & AQ_ADMIN || self_admin))
 				{
 					if (self == e)
 						self_sprint (self, "rider  \{141}");
@@ -1771,7 +1799,7 @@ show_players =
 					self_sprint (self, e.owner.netname);
 					self_sprint (self, ")");
 				}
-				else if (e.netname != string_null || self.aqflags & AQ_ADMIN)
+				else if (e.netname != string_null || self_admin)
 				{
 					if (self == e)
 						self_sprint (self, "obs.   \{141}");
@@ -1795,7 +1823,7 @@ show_players =
 					self_sprint (self, ")");
 				}
 			}
-			else if (e.netname != string_null || self.aqflags & AQ_ADMIN)
+			else if (e.netname != string_null || self_admin)
 			{
 				if (self == e)
 					self_sprint (self, "player \{141}");
@@ -1810,7 +1838,7 @@ show_players =
 					self_sprint (self, " (hook vote)");
 			}
 
-			if (is_admin ())
+			if (self_admin)
 			{
 				if (is_qsmack_e (e))
 					self_sprint (self, " (qsmack)");
@@ -1818,7 +1846,7 @@ show_players =
 					self_sprint (self, " (admin)");
 			}
 
-			if (e.netname != string_null || self.aqflags & AQ_ADMIN)
+			if (e.netname != string_null || self_admin)
 				self_sprint (self, "\n");
 		}
 		e = find (e, classname, "player");

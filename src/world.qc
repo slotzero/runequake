@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.17 2003/06/24 22:17:46 slotzero Exp $
+/*  $Id: world.qc,v 1.18 2003/09/21 17:49:22 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -304,6 +304,20 @@ StartFrame =
 	}
 
 	skill = cvar ("skill");
+	if (skill)
+	{
+		if (skill & SKILL_LAST)
+			Client_Disconnect_Log ();
+
+		else if (skill & SKILL_SHOW_PLAYERS)
+			show_players ();
+
+		else if (skill & SKILL_SHOW_SETTINGS)
+			show_settings ();
+
+		cvar_set ("skill", "0");
+	}
+
 	IN_QW([-
 		deathmatch = cvar ("deathmatch");
 	-])

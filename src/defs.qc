@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.42 2003/08/03 00:48:15 slotzero Exp $
+/*  $Id: defs.qc,v 1.43 2003/09/21 17:49:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1013,6 +1013,10 @@ float	framecount;
 
 float	skill;
 
+float	SKILL_LAST			= 1;
+float	SKILL_SHOW_PLAYERS		= 2;
+float	SKILL_SHOW_SETTINGS		= 4;
+
 IN_QW([-
 //
 // cvars checked each frame
@@ -1238,7 +1242,7 @@ void (string s, ...)				bprint4		= #23;
 void (string s, ...)				bprint5		= #23;
 void (string s, ...)				bprint6		= #23;
 void (string s, ...)				bprint7		= #23;
-void (entity client, string s)			self_sprint	= #24;
+void (entity client, string s)			xself_sprint	= #24;
 void (entity client, string s, ...)		self_sprint2	= #24;
 void (entity client, string s, ...)		self_sprint3	= #24;
 void (entity client, string s, ...)		self_sprint4	= #24;
