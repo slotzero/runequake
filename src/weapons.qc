@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.45 2004/07/18 20:03:48 slotzero Exp $
+/*  $Id: weapons.qc,v 1.46 2004/07/18 20:07:12 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -53,8 +53,6 @@ crandom =
 void ()
 reflect_projectile =
 {
-	local string s;
-
 	if (self.velocity == VEC_ORIGIN)
 	{
 		create_te_explosion (self.origin, 1);
