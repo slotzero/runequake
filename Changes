@@ -1,17 +1,15 @@
-$Id: Changes,v 1.58 2004/03/16 00:37:23 slotzero Exp $
+$Id: Changes,v 1.59 2004/04/04 03:15:46 slotzero Exp $
 
-switch rune no longer switches your key
-hook bounces off of spawn shields
 added custom sound, denied.wav for q3 style message
 added command custom-sounds
-telefrag deflect locks you down as you exit the teleporter
 added q3 style denied message
-anti-pack rune doesn't change weapon weapon of same type is removed
-added practice mode to admin menu.
+added practice mode to admin menu
 
-Version 1.0  Wed Feb 25 18:41:36 EST 2004
+Version 1.0
 
     - Bug Fixes
+
+        - The switch rune no longer switches your keys.
 
         - The blizzard and ice trap code was adding an extra 0.5 second firing delay after
           the release of a frozen victim.
@@ -21,6 +19,8 @@ Version 1.0  Wed Feb 25 18:41:36 EST 2004
         - Shamblers no longer attack you while they are frozen.
 
     - Changes
+
+        - The hook no longer attaches to the spawn shields.
 
         - The Thor rune can fire under water/slime/lava!
 
@@ -77,7 +77,7 @@ Version 0.9  Wed Jul 16 23:06:07 EST 2003
     - Bug Fixes
 
         - Gold key no longer appears when you join the game if it was visible in
-	  free look observer.
+          free look observer.
 
     - CVAR Changes
 
