@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.63 2003/12/27 05:49:44 slotzero Exp $
+/*  $Id: defs.qc,v 1.64 2003/12/28 08:31:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -499,6 +499,7 @@ float RN_MAX_ALL	= 59;
 float IMP_SHOW_POS		= 254;
 //				= 238 - 253 [weapon aliases]
 //				= 220 - 237 [qsmack]
+float IMP_COMMANDS		= 204;
 float IMP_CUSTOM		= 203;
 float IMP_LEVELS		= 202;
 float IMP_LAST			= 201;

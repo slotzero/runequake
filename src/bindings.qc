@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.9 2003/12/27 05:49:44 slotzero Exp $
+/*  $Id: bindings.qc,v 1.10 2003/12/28 08:31:21 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -142,6 +142,10 @@ player_aliases =
 
 	player_init_impulse_alias ("admin-toggle",		IMP_ADMIN_TOGGLE);
 	player_init_impulse_alias ("best-weapon",		IMP_BEST_WEAPON);
+	player_init_impulse_alias ("change-level",		IMP_LEVELS);
+	player_init_impulse_alias ("commands",			IMP_COMMANDS);
+	player_init_impulse_alias ("custom",			IMP_CUSTOM);
+	player_init_impulse_alias ("cycle-alternates",		IMP_CYCLE_ALTERNATES);
 	player_init_impulse_alias ("disp-info",			IMP_DISP_INFO);
 	player_init_impulse_alias ("disp-info-all",		IMP_DISP_INFO_ALL);
 	player_init_impulse_alias ("fix-angles",		IMP_FIX_BATMAN);
@@ -151,6 +155,8 @@ player_aliases =
 	player_init_impulse_alias ("hook-on",			IMP_HOOK_ON);
 	player_init_impulse_alias ("hook-toggle",		IMP_HOOK_TOGGLE);
 	player_init_impulse_alias ("hud-toggle",		IMP_HUD_TOGGLE);
+	player_init_impulse_alias ("last",			IMP_LAST);
+	player_init_impulse_alias ("levels",			IMP_LEVELS);
 	player_init_impulse_alias ("quiet-toggle",		IMP_QUIET_TOGGLE);
 	player_init_impulse_alias ("remove-frags",		IMP_REMOVE_FRAGS);
 	player_init_impulse_alias ("rider-hide",		IMP_RIDER_HIDE);
@@ -164,17 +170,12 @@ player_aliases =
 	player_init_impulse_alias ("team-change",		IMP_TEAM_ROTATE);
 	player_init_impulse_alias ("team-stats",		IMP_TEAM_STATS);
 	player_init_impulse_alias ("vote-exit",			IMP_VOTE_EXIT);
+	player_init_impulse_alias ("vote-level",		IMP_LEVELS);
 	player_init_impulse_alias ("vote-team",			IMP_VOTE_TEAM);
 	player_init_impulse_alias ("vote-hook",			IMP_VOTE_HOOK);
 	player_init_impulse_alias ("weapon-mode",		IMP_WEAPON_MODE);
 	player_init_impulse_alias ("weapon-toggles",		IMP_WEAPON_TOGGLES);
 	player_init_impulse_alias ("weapon-toggles-toggle",	IMP_WEAPON_TOGGLES);
-	player_init_impulse_alias ("cycle-alternates",		IMP_CYCLE_ALTERNATES);
-	player_init_impulse_alias ("last",			IMP_LAST);
-	player_init_impulse_alias ("levels",			IMP_LEVELS);
-	player_init_impulse_alias ("change-level",		IMP_LEVELS);
-	player_init_impulse_alias ("vote-level",		IMP_LEVELS);
-	player_init_impulse_alias ("custom",			IMP_CUSTOM);
 
 	switchfire_aliases ();
 	level_aliases ();
@@ -258,4 +259,51 @@ console_aliases =
 	level_aliases ();
 	custom_aliases ();
 	custom_maps ();
+};
+
+// XXX I would like to expand this.  help-server, help-weapons, help-vote, and so on.
+void ()
+commands =
+{
+       local string s2, s3, s4, s5;
+       local float i;
+
+	i = -14;
+
+	//                                                              12345678901234567890123456789012345\n
+	self_sprint (self, "\ncommands\n\n");
+	self_sprintf_len (self, "\brune-delete", i);		self_sprint (self, "delete your rune\n");
+	self_sprintf_len (self, "\brune-tell", i);		self_sprint (self, "rune description\n");
+	self_sprintf_len (self, "\brune-use", i);		self_sprint (self, "activate rune\n");
+	self_sprintf_len (self, "\bweapon-mode", i);		self_sprint (self, "switch weapon to safest\n");
+	self_sprintf_len (self, "\bshow-riders", i);		self_sprint (self, "show players riding you\n");
+	self_sprintf_len (self, "\bfix-angles", i);		self_sprint (self, "fix frozen screen tilt\n");
+	self_sprintf_len (self, "\bshow-players", i);		self_sprint (self, "status of all players\n");
+	self_sprintf_len (self, "\bshow-settings", i);		self_sprint (self, "show mod settings\n");
+	self_sprintf_len (self, "\blevels", i);			self_sprint (self, "list standard levels\n");
+	self_sprintf_len (self, "\bcustom", i);			self_sprint (self, "custom levels on server\n");
+	self_sprintf_len (self, "\bvote-exit", i);		self_sprint (self, "vote to exit the level\n");
+	self_sprintf_len (self, "\bvote-team", i);		self_sprint (self, "vote to toggle teams\n");
+	self_sprintf_len (self, "\bvote-hook", i);		self_sprint (self, "vote to toggle hook\n");
+	self_sprintf_len (self, "\bremove-frags", i);		self_sprint (self, "zero out positive frags\n");
+	self_sprintf_len (self, "\bhud-toggle", i);		self_sprint (self, "toggle hud display\n");
+	self_sprintf_len (self, "\b+hook", i);			self_sprint (self, "use hook\n");
+	self_sprintf_len (self, "\bquiet-toggle", i);		self_sprint (self, "mute many game messages\n");
+	self_sprint (self, "\n");
+
+/*
+       self_sprint ("disp-info",
+       self_sprint ("disp-info-all",
+       self_sprint ("-hook",
+       self_sprint ("hook-off",
+       self_sprint ("hook-on",
+       self_sprint ("hook-toggle",
+       self_sprint ("rider-hide",
+       self_sprint ("show-pos",
+       self_sprint ("weapon-mode",
+       self_sprint ("weapon-toggles"
+       self_sprint ("weapon-toggles-toggle"
+       self_sprint ("cycle-alternates
+       self_sprint ("change-level"
+*/
 };

@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.83 2003/12/27 05:13:20 slotzero Exp $
+/*  $Id: rjs.qc,v 1.84 2003/12/28 08:31:22 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1108,6 +1108,9 @@ common_impulses =
 
 	else if (self.impulse == IMP_ADMIN_TOGGLE)
 		admin_toggle (1, 1);
+
+	else if (self.impulse == IMP_COMMANDS)
+		commands ();
 
 	else if (self.impulse == IMP_LEVELS)
 		levels ();
