@@ -1,4 +1,4 @@
-// $Id: items.qc,v 1.17 2002/06/09 20:20:42 slotzero Exp $
+// $Id: items.qc,v 1.18 2002/07/19 19:49:02 slotzero Exp $
 
 /* ALL LIGHTS SHOULD BE 0 1 0 IN COLOR ALL OTHER ITEMS SHOULD
 BE .8 .3 .4 IN COLOR */
@@ -352,6 +352,25 @@ armor_touch =
 	}
 	else
 	{
+		// XXX I wanted to add the option to drop armor of whose type
+		// is worse than the one you picked up, but I'm not satisfied
+		// with the results.  I left the code here just incase anyone
+		// wants to use it.
+		/* if (1)
+		{
+			if (type > other.armortype)
+			{
+				local entity old_self;
+
+				old_self	= self;
+				self		= other;
+
+				drop_armor();
+
+				self		= old_self;
+			}
+		}*/
+
 		other.armortype		= type;
 		other.armorvalue	= value;
 		other.items		= other.items - (other.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + bit;
