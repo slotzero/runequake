@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.9 2003/06/08 10:56:07 slotzero Exp $
+/*  $Id: strman.qc,v 1.10 2003/06/10 01:52:21 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -215,4 +215,46 @@ flen =
 			return substr (s, 0, max);
 	}
 	return string_null;
+};
+
+float (string ch)
+ctof =
+{
+	local float i;
+
+	for (i = %0; i < %10; i = i + %1)
+	{
+		if (ch == hex[i * 2])
+			return i / %1;
+	}
+
+	return -1;
+};
+
+string (float n)
+ctos =
+{
+	local float i, asc;
+
+	i = %0;
+	for (asc = 48; asc < 58; asc = asc + 1)
+	{
+		if (n == asc)
+			return hex[i * 2];
+
+		i = i + %1;
+	}
+
+	return string_null;
+};
+
+float (float n)
+eval_exponent =
+{
+	local float i;
+
+	for (i = 1; n > 1; n = n - 1)
+		i = i * 10;
+
+	return i;
 };

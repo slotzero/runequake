@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.14 2003/06/08 02:34:06 slotzero Exp $
+/*  $Id: develop.qc,v 1.15 2003/06/10 01:52:20 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -25,35 +25,65 @@ Test_Button =
 	SUB_Null ();
 };
 
-float (string ch)
-ctof =
+float (string s)
+stof1 =
 {
-	local float i;
+	local float n, ps, cmp, frac, tot, neg, dot;
+	local string ch, clean;
 
-	for (i = %0; i < %10; i = i + %1)
+	&%116 = 0;
+	ps = AddInt(AddInt(&s, PSTRING_TO_PQUAKEC), %-3);
+
+	cmp = strlen (s);
+	for (n = 0; n < cmp; n = n + 1)
 	{
-		if (ch == hex[i * 2])
-			return i / %1;
+		&%113 = (*ps)[0];
+
+		if (world[%5] == '-' && !n)
+			neg = 1;
+		else if (world[%5] == '.')
+		{
+			if (!tot)
+				frac = -1;
+			else
+				frac = tot;
+		}
+
+		ch = ctos (world[%5] / %1);
+		if (ch)
+		{
+			clean = strcat (clean, ch);
+			tot = tot + 1;
+		}
+
+		ps = AddInt (ps, %1);
+	}
+	ps = AddInt (ps, %3);
+
+	if (frac)
+	{
+		if (frac < 0)
+			frac = 0;
+
+		frac = tot - frac;
+		frac = eval_exponent (frac + 1);
 	}
 
-	return -1;
-};
+	n = stof (clean);
 
-float (float n)
-eval_exponent =
-{
-	local float i;
+	if (frac)
+		n = n / frac;
 
-	for (i = 1; n > 1; n = n - 1)
-		i = i * 10;
+	if (neg)
+		n = n - n * 2;
 
-	return i;
+	return n;
 };
 
 float (string s)
-prepare_stof =
+stof2 =
 {
-	local float i, cmp, ps, pch, n, n_tot, n_frac;
+	local float i, cmp, ps, pch, n, n_tot, n_frac, neg;
 	local string s_clean, ch;
 
 	ps = AddInt (AddInt (&s, PSTRING_TO_PQUAKEC), %-3);
@@ -65,18 +95,22 @@ prepare_stof =
 		(*pch)[%0] = (*ps)[%0];
 		pch = AddInt (pch, %3);
 
+		n = -1;
 		ch = @AddInt (pch, PQUAKEC_TO_PSTRING);
 		if (ch == ".")
 		{
-			n_frac = n_tot;
-			n = -1;
+			if (!n_tot)
+				n_frac = -1;
+			else
+				n_frac = n_tot;
 		}
+		else if (ch == "-" && !i)
+			neg = 1;
 		else
 			n = ctof (ch);
 
-		if (n != -1)
+		if (n > -1)
 		{
-			ch = @AddInt (pch, PQUAKEC_TO_PSTRING);
 			s_clean = strcat (s_clean, ch);
 			n_tot = n_tot + 1;
 		}
@@ -87,6 +121,9 @@ prepare_stof =
 
 	if (n_frac)
 	{
+		if (n_frac < 0)
+			n_frac = 0;
+
 		n_frac = n_tot - n_frac;
 		n_frac = eval_exponent (n_frac + 1);
 	}
@@ -95,6 +132,9 @@ prepare_stof =
 
 	if (n_frac)
 		n_tot = n_tot / n_frac;
+
+	if (neg)
+		n_tot = n_tot - n_tot * 2;
 
 	return n_tot;
 };
@@ -126,35 +166,6 @@ stof =
 	return sum;
 };
 -])
-
-/* string (float type, float offset)
-Read_Hunk =
-{
-	local entity hunk;
-
-	hunk = *AddInt(AddInt(&progs, %-16), type);
-	if (*hunk[%0] != *HUNK_SENTINAL)
-	{
-		dprint ("Read_Hunk(): hunk != HUNK_SENTINAL\n");
-		return string_null;
-	}
-
-	return @AddInt(AddInt(&hunk, 4 * offset), PQUAKEC_TO_PSTRING);
-}; */
-
-/* void (float type, float offset, string s)
-Write_Hunk =
-{
-	local entity hunk;
-	local string temp;
-
-	hunk = *AddInt(AddInt(&progs, %-16), type);
-	if (*hunk[%0] != *HUNK_SENTINAL)
-		dprint ("Write_Hunk(): hunk != HUNK_SENTINAL\n");
-
-	temp = @AddInt(AddInt(&hunk, 4 * offset), PQUAKEC_TO_PSTRING);
-	strcpy (temp, s);
-}; */
 
 entity (float type, float offset)
 Get_Hunk =
@@ -224,3 +235,6 @@ parse_time =
 	if (seconds < 10) bprint ("0");
 	bprint_float (seconds);
 };
+
+//if (n == asc || n == (98 + asc) || n == (128 + asc))
+// &800, &%767, %176
