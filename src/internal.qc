@@ -3,32 +3,32 @@
 // OFFSETS FOR INTERNAL QUAKE.EXE DATA STRUCTURES
 //-------------------------------------------------------------------
 
-float SV_ACTIVE				;// = %0; - might need to change this for linux/mac
-float SV_PAUSED				;// = %1; - might need to change this for linux/mac
-float SV_LOADGAME			;// = %2; - might need to change this for linux/mac
-float SV_TIME				;// = %4; - might need to change this for linux/mac
-float SV_LASTCHECK			;// = %6; - might need to change this for linux/mac
-float SV_LASTCHECKTIME			= %8;
-float SV_NAME					= %10;
-float SV_MODELNAME				= %26;
-float SV_WORLDMODEL				= %42;
-float SV_MODEL_PRECACHE			= %43;
-float SV_MODELS					= %299;
-float SV_SOUND_PRECACHE			= %555;
-float SV_LIGHTSTYLES			= %811;
-float SV_NUM_EDICTS				= %875;
-float SV_MAX_EDICTS				= %876;
-float SV_EDICTS					= %877;
-float SV_STATE					= %878;
-float SV_DATAGRAM				= %879;
-float SV_DATAGRAM_BUF			= %884;
-float SV_RELIABLE_DATAGRAM		= %1140;
+float SV_ACTIVE			;// = %0; - might need to change this for linux/mac
+float SV_PAUSED			;// = %1; - might need to change this for linux/mac
+float SV_LOADGAME		;// = %2; - might need to change this for linux/mac
+float SV_TIME			;// = %4; - might need to change this for linux/mac
+float SV_LASTCHECK		;// = %6; - might need to change this for linux/mac
+float SV_LASTCHECKTIME		= %8;
+float SV_NAME			= %10;
+float SV_MODELNAME		= %26;
+float SV_WORLDMODEL		= %42;
+float SV_MODEL_PRECACHE		= %43;
+float SV_MODELS			= %299;
+float SV_SOUND_PRECACHE		= %555;
+float SV_LIGHTSTYLES		= %811;
+float SV_NUM_EDICTS		= %875;
+float SV_MAX_EDICTS		= %876;
+float SV_EDICTS			= %877;
+float SV_STATE			= %878;
+float SV_DATAGRAM		= %879;
+float SV_DATAGRAM_BUF		= %884;
+float SV_RELIABLE_DATAGRAM	= %1140;
 float SV_RELIABLE_DATAGRAM_BUF	= %1145;
-float SV_SIGNON					= %1401;
-float SV_SIGNON_DATA			= %1403;
-float SV_SIGNON_MAXSIZE			= %1404;
-float SV_SIGNON_CURSIZE			= %1405;
-float SV_SIGNON_BUF				= %1406;
+float SV_SIGNON			= %1401;
+float SV_SIGNON_DATA		= %1403;
+float SV_SIGNON_MAXSIZE		= %1404;
+float SV_SIGNON_CURSIZE		= %1405;
+float SV_SIGNON_BUF		= %1406;
 
 float CL_ACTIVE			;// = %0; - might need to change this for linux/mac
 float CL_SPAWNED		;// = %1; - might need to change this for linux/mac
@@ -37,43 +37,44 @@ float CL_PRIVILEGED		;// = %3; - might need to change this for linux/mac
 float CL_SENDSIGNON		;// = %4; - might need to change this for linux/mac
 float CL_LAST_MESSAGE		= %6;
 float CL_NETCONNECTION		= %8;
-float CL_CMD				= %9;
+float CL_CMD			= %9;
 float CL_CMD_FORWARD		= %12;
-float CL_CMD_SIDE			= %13;
-float CL_CMD_UP				= %14;
-float CL_WISHDIR			= %15;
-float CL_MESSAGE			= %18;
+float CL_CMD_SIDE		= %13;
+float CL_CMD_UP			= %14;
+float CL_WISHDIR		= %15;
+float CL_MESSAGE		= %18;
 float CL_MESSAGE_DATA		= %20;
 float CL_MESSAGE_MAXSIZE	= %21;
 float CL_MESSAGE_CURSIZE	= %22;
-float CL_MSGBUF				= %23;
-float CL_EDICT				= %2023;
-float CL_NAME				= %2024;
-float CL_COLORS				= %2032;
-float CL_PING_TIMES			= %2033;
-float CL_NUM_PINGS			= %2049;
+float CL_MSGBUF			= %23;
+float CL_EDICT			= %2023;
+float CL_NAME			= %2024;
+float CL_COLORS			= %2032;
+float CL_PING_TIMES		= %2033;
+float CL_NUM_PINGS		= %2049;
 float CL_SPAWN_PARMS		= %2050;
-float CL_OLD_FRAGS			= %2066;
+float CL_OLD_FRAGS		= %2066;
 
 float QS_ADDR			;// = %4118; - might need to change this for linux/mac
 float QS_IN_ADDR		;// = %4119; - might need to change this for linux/mac
 float QS_ADDRESS		;// = %4122; - might need to change this for linux/mac
+float QS_MOD			;// = %4138; - might need to change this for linux/mac
 
 float PR_VERSION		= %0;
 float PR_CRC			= %1;
-float PR_OFS_STATEMENTS	= %2;
-float PR_NUMSTATEMENTS	= %3;
-float PR_OFS_GLOBALDEFS	= %4;
-float PR_NUMGLOBALDEFS	= %5;
-float PR_OFS_FIELDDEFS	= %6;
-float PR_NUMFIELDDEFS	= %7;
-float PR_OFS_FUNCTIONS	= %8;
-float PR_NUMFUNCTIONS	= %9;
-float PR_OFS_STRINGS	= %10;
+float PR_OFS_STATEMENTS		= %2;
+float PR_NUMSTATEMENTS		= %3;
+float PR_OFS_GLOBALDEFS		= %4;
+float PR_NUMGLOBALDEFS		= %5;
+float PR_OFS_FIELDDEFS		= %6;
+float PR_NUMFIELDDEFS		= %7;
+float PR_OFS_FUNCTIONS		= %8;
+float PR_NUMFUNCTIONS		= %9;
+float PR_OFS_STRINGS		= %10;
 float PR_NUMSTRINGS		= %11;
-float PR_OFS_GLOBALS	= %12;
+float PR_OFS_GLOBALS		= %12;
 float PR_NUMGLOBALS		= %13;
-float PR_ENTITYFIELDS	= %14;
+float PR_ENTITYFIELDS		= %14;
 
 //-------------------------------------------------------------------
 // INTERNAL CONSTANTS
@@ -104,6 +105,9 @@ entity progs;
 // quake sv data structure
 entity sv;
 
+// proquake
+float MOD_QSMACK = %2;
+
 //-------------------------------------------------------------------
 // HEXADECIMAL PRINTING FUNCTIONS
 //-------------------------------------------------------------------
@@ -115,7 +119,7 @@ string hex = "0":"1":"2":"3":"4":"5":"6":"7":"8":"9":"a":"b":"c":"d":"e":"f";
 //
 //  H E X  1 6
 //
-void (float i) hex16 = 
+void (float i) hex16 =
 {
 	local float d;
 	d = floor(i / 4096);
@@ -132,7 +136,7 @@ void (float i) hex16 =
 //
 //  H E X  3 2
 //
-void (float i) hex32 = 
+void (float i) hex32 =
 {
 	local float high, low;
 
@@ -162,7 +166,7 @@ void (float i) hex32 =
 //
 //  A D D  I N T
 //
-float (float a, float b) AddInt = 
+float (float a, float b) AddInt =
 {
 	local vector va, vb, sum;
 
@@ -192,7 +196,7 @@ float (float a, float b) AddInt =
 //
 //  S U B  I N T
 //
-float (float a, float b) SubInt = 
+float (float a, float b) SubInt =
 {
 	local vector va, vb, sum;
 
@@ -230,7 +234,7 @@ float (float a, float b) SubInt =
 //
 //  N E G  I N T
 //
-float (float a) NegInt = 
+float (float a) NegInt =
 {
 	local float high, low;
 
@@ -261,7 +265,7 @@ float (float a) NegInt =
 //
 //  Print out the name of a function given a pointer to the function
 //
-void (float f) fnstring = 
+void (float f) fnstring =
 {
 	local float p;
 
@@ -276,7 +280,7 @@ void (float f) fnstring =
 //
 //  Copy the source string to the destination string
 //
-float (string dst, string src) strcpy = 
+void (string dst, string src) strcpy =
 {
 	local float data, cursize;
 
@@ -298,7 +302,7 @@ float (string dst, string src) strcpy =
 //
 //  I N T E R N A L  I N I T
 //
-void () InternalInit = 
+void () InternalInit =
 {
 	local float p, p2;
 
@@ -340,21 +344,22 @@ void () InternalInit =
 
 		NOALIGN = 0;
 
-		SV_ACTIVE			= %0;
-		SV_PAUSED			= %1;
-		SV_LOADGAME			= %2;
-		SV_TIME				= %4;
+		SV_ACTIVE		= %0;
+		SV_PAUSED		= %1;
+		SV_LOADGAME		= %2;
+		SV_TIME			= %4;
 		SV_LASTCHECK		= %6;
 
-		CL_ACTIVE			= %0;
-		CL_SPAWNED			= %1;
-		CL_DROPASAP			= %2;
+		CL_ACTIVE		= %0;
+		CL_SPAWNED		= %1;
+		CL_DROPASAP		= %2;
 		CL_PRIVILEGED		= %3;
 		CL_SENDSIGNON		= %4;
 
-		QS_ADDR				= %4118;
-		QS_IN_ADDR			= %4119;
-		QS_ADDRESS			= %4122;
+		QS_ADDR			= %4118;
+		QS_IN_ADDR		= %4119;
+		QS_ADDRESS		= %4122;
+		QS_MOD			= %4138;
 	}
 	else
 	{
@@ -362,21 +367,22 @@ void () InternalInit =
 
 		NOALIGN = 1;
 
-		SV_ACTIVE			= %2;
-		SV_PAUSED			= %3;
-		SV_LOADGAME			= %4;
-		SV_TIME				= %5;
+		SV_ACTIVE		= %2;
+		SV_PAUSED		= %3;
+		SV_LOADGAME		= %4;
+		SV_TIME			= %5;
 		SV_LASTCHECK		= %7;
 
-		CL_ACTIVE			= %1;
-		CL_SPAWNED			= %2;
-		CL_DROPASAP			= %3;
+		CL_ACTIVE		= %1;
+		CL_SPAWNED		= %2;
+		CL_DROPASAP		= %3;
 		CL_PRIVILEGED		= %4;
 		CL_SENDSIGNON		= %5;
 
-		QS_ADDR				= %4117;
-		QS_IN_ADDR			= %4118;
-		QS_ADDRESS			= %4121;
+		QS_ADDR			= %4117;
+		QS_IN_ADDR		= %4118;
+		QS_ADDRESS		= %4121;
+		QS_MOD			= %4137;
 	}
 };
 
@@ -387,18 +393,18 @@ void () InternalInit =
 entity lasth, currh;
 
 // Create some storage space for hunk names.
-// NOTE: the two string constants *must* be different or only one of them 
+// NOTE: the two string constants *must* be different or only one of them
 // will be allocated with the /Od option is used.
 //
 string hunkname = "00000000";
 string prevname = "00000001";
 
-void () InitHunkSearch = 
+void () InitHunkSearch =
 {
 	lasth = currh = *AddInt(&progs, %-16);
 };
 
-void (float h) GetHunkName = 
+void (float h) GetHunkName =
 {
 	local float p, p2;
 	p = AddInt(&hunkname, PSTRING_TO_PQUAKEC);
@@ -409,7 +415,7 @@ void (float h) GetHunkName =
 	(*p)[%1] = (*h)[%3];
 };
 
-float (float h) PrintHunk = 
+float (float h) PrintHunk =
 {
 	local float samecount;
 	local float samesize;
@@ -444,9 +450,10 @@ float (float h) PrintHunk =
 
 		h = AddInt(h, (*h)[%1]);
 	}
+	return FALSE;
 };
 
-void () SearchHunk = 
+void () SearchHunk =
 {
 	local float i;
 	local string hname = "XXXXXXXX";
@@ -479,4 +486,3 @@ void () SearchHunk =
 		}
 	}
 };
-
