@@ -1,4 +1,4 @@
-/*  $Id: customap.qc,v 1.9 2004/02/22 04:42:26 slotzero Exp $
+/*  $Id: customap.qc,v 1.10 2004/04/09 20:33:49 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -78,7 +78,8 @@ customs_to_hunk =
 		else
 		{
 			total = total + 1;
-			Write_Hunk (HUNK_CONTEXT, pos + (i * 3), level);
+			Write_Hunk_Float (HUNK_CONTEXT, pos + i, n);
+			//Write_Hunk (HUNK_CONTEXT, pos + (i * 3), level);
 		}
 	}
 	update_customs_count (levsize, total);
@@ -123,7 +124,8 @@ string (float levsize, float pos)
 remove_custom_from_hunk =
 {
 	local float hunk_pos, max, total;
-	local string new;
+	local float new;
+	// local string new;
 
 	// Check map script for levels first.
 	if (!sized_custom_count (levsize))
@@ -146,18 +148,24 @@ remove_custom_from_hunk =
 		pos = max;
 
 	// Store current in hunk.
-	new = Read_Hunk (HUNK_CONTEXT, hunk_pos + (pos * 3));
-	Write_Hunk (HUNK_CONTEXT, %30, new);
+	// new = Read_Hunk (HUNK_CONTEXT, hunk_pos + (pos * 3));
+	// Write_Hunk (HUNK_CONTEXT, %30, new);
+	new = Read_Hunk_Float (HUNK_CONTEXT, hunk_pos + pos);
+	Write_Hunk_Float (HUNK_CONTEXT, %30, new);
 
 	if (*max != *pos)
 	{
 		// Replace current map in hunk with last map name in hunk.
-		new = Read_Hunk (HUNK_CONTEXT, hunk_pos + (max * 3));
-		Write_Hunk (HUNK_CONTEXT, hunk_pos + (pos * 3), new);
+		// new = Read_Hunk (HUNK_CONTEXT, hunk_pos + (max * 3));
+		// Write_Hunk (HUNK_CONTEXT, hunk_pos + (pos * 3), new);
+		new = Read_Hunk_Float (HUNK_CONTEXT, hunk_pos + max);
+		Write_Hunk_Float (HUNK_CONTEXT, hunk_pos + pos, new);
 	}
 	update_customs_count (levsize, total);
 
-	return Read_Hunk_Max (HUNK_CONTEXT, %30, 12);
+	//return Read_Hunk_Max (HUNK_CONTEXT, %30, 12);
+	new = Read_Hunk_Float (HUNK_CONTEXT, %30);
+	return sized_custom (levsize, new);
 };
 
 void ()
