@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.99 2004/07/12 02:48:32 slotzero Exp $
+/*  $Id: defs.qc,v 1.100 2004/07/13 07:21:30 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1383,6 +1383,7 @@ void	(entity e)				makestatic	= #69;
 void	(string s)				xchangelevel	= #70;
 //								= #71;	[removed]
 void	(string var, string val)		cvar_set	= #72;	// sets cvar.value
+void	(string var, string val, float serv)	pq_cvar_set	= #72;	// proquake only
 void	(entity client, string s, ...)		self_centerprint= #73;	// sprint, but in middle
 void	(vector pos, string samp, float vol,
 		float atten)			ambientsound	= #74;
