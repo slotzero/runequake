@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.57 2004/04/10 02:26:42 slotzero Exp $
+/*  $Id: develop.qc,v 1.58 2004/04/11 06:35:01 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -80,6 +80,22 @@ change_practice_mode =
 	s = ftos (new_deathmatch);
 	cvar_set ("deathmatch", s);
 	admin_changelevel (mapname);
+};
+
+float ()
+maxplayers =
+{
+	local entity e;
+	local float i;
+
+	e = nextent (world);
+	for (i = 0; i < 16; i = i + 1)
+	{
+		if (e.classname == "bodyque")
+			return i;
+		e = nextent (e);
+	}
+	return 16;
 };
 
 void ()
