@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.71 2003/10/14 01:46:14 slotzero Exp $
+/*  $Id: rjs.qc,v 1.72 2003/10/15 23:15:32 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2090,6 +2090,8 @@ set_weapon =
 		show_weapon_mode ();
 		draw_hud (1);
 	}
+	else
+		W_SetCurrentAmmo (0);
 };
 
 void ()

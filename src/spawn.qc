@@ -1,4 +1,4 @@
-/*  $Id: spawn.qc,v 1.1 2003/10/14 01:46:14 slotzero Exp $
+/*  $Id: spawn.qc,v 1.2 2003/10/15 23:15:33 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -28,6 +28,11 @@ place_my_targets =
 			self.target = "T2";
 		else if (self.map == "end")
 			self.target = "T5";
+	}
+	else if (mapname == "e1m1")
+	{
+		if (self.map == "e1m2")
+			self.target = "T1";
 	}
 	else if (mapname == "e1m7")
 	{
@@ -194,6 +199,8 @@ place_my_spots =
 		spawn_info_player_deathmatch ('1216 841 -408', 90);
 		// Top of crate next to level exit.
 		spawn_info_player_deathmatch ('1184 568 -128', 33);
+
+		spawn_info_teleport_destination ('480.4 -351.4 88', 90, "T1");
 	}
 	else if (mapname == "e1m2")
 	{
