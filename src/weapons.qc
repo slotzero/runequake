@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.29 2004/02/25 20:31:05 slotzero Exp $
+/*  $Id: weapons.qc,v 1.30 2004/02/25 20:40:14 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -525,8 +525,6 @@ LIGHTNING
 void (entity from, float damage, string dtype)
 LightningHit =
 {
-	local entity os;
-
 	IN_POQ([-
 		particle (trace_endpos, '0 0 100', PARTICLE_ENT_DAMAGE, damage * 4);
 	-], [-
