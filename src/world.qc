@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.44 2004/06/30 23:31:21 slotzero Exp $
+/*  $Id: world.qc,v 1.45 2004/06/30 23:42:22 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -325,10 +325,10 @@ StartFrame =
 		obs_process_game_queue ();
 	}
 
-	i = cvar_infokey (CVAR_CONMAP);
+	i = cvar_infokey (CVAR_C1);
 	if (i)
 	{
-		cvar_set_infokey (CVAR_CONMAP, "0");
+		cvar_set_infokey (CVAR_C1, "0");
 		IN_POQ(if (!HUNK_CONTEXT_MAX) i = 0;)
 
 		&%IN_POQ(368,376) = i;
@@ -339,19 +339,19 @@ StartFrame =
 			dprint ("Invalid level impulse\n");
 	}
 
-	concmd = cvar_infokey (CVAR_CONCMD);
-	if (concmd)
+	i = cvar_infokey (CVAR_C2);
+	if (i)
 	{
-		if (concmd == CONCMD_UPDATE_BINDINGS)
+		if (i == C2_UPDATE_BINDINGS)
 			console_aliases ();
 
-		else if (concmd == CONCMD_SHOW_PLAYERS)
+		else if (i == C2_SHOW_PLAYERS)
 			show_players ();
 
-		else if (concmd == CONCMD_SHOW_SETTINGS)
+		else if (i == C2_SHOW_SETTINGS)
 			show_settings ();
 
-		else if (concmd == CONCMD_TOGGLE_RUNE_CHEAT)
+		else if (i == C2_TOGGLE_RUNE_CHEAT)
 		{
 			// XXX Move this to its own function, for in-game use.
 			temp1 = cvar_infokey ("temp1");
@@ -369,37 +369,37 @@ StartFrame =
 			cvar_set_infokey ("temp1", s);
 		}
 
-		else if (concmd == CONCMD_LAST)
+		else if (i == C2_LAST)
 			Client_Disconnect_Log ();
 
-		else if (concmd == CONCMD_LEVELS)
+		else if (i == C2_LEVELS)
 			levels ();
 
-		else if (concmd == CONCMD_CUSTOM)
+		else if (i == C2_CUSTOM)
 			custom ();
 
-		else if (concmd == CONCMD_COMMANDS)
+		else if (i == C2_COMMANDS)
 			commands ();
 
-		else if (concmd == CONCMD_LEVEL_TIME)
+		else if (i == C2_LEVEL_TIME)
 		{
 			dprint_force (parse_time (time));
 			dprint_force ("\n");
 		}
 
-		else if (concmd == CONCMD_MODE_PRACTICE)
+		else if (i == C2_MODE_PRACTICE)
 			change_practice_mode (1);
 
-		else if (concmd == CONCMD_MODE_NORMAL)
+		else if (i == C2_MODE_NORMAL)
 			change_practice_mode (0);
 
-		else if (concmd == CONCMD_TOGGLE_ALTERNATES)
+		else if (i == C2_TOGGLE_ALTERNATES)
 			toggle_alternates ();
 
 		else
-			dprint ("concmd: unknown command\n");
+			dprint ("Unknown command\n");
 
-		cvar_set_infokey (CVAR_CONCMD, "0");
+		cvar_set_infokey (CVAR_C2, "0");
 	}
 
 	IN_QW([-

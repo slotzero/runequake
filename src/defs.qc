@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.87 2004/06/30 23:31:21 slotzero Exp $
+/*  $Id: defs.qc,v 1.88 2004/06/30 23:42:22 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1048,24 +1048,23 @@ float	framecount;
 
 float	skill;
 
-// cvars
-string	CVAR_CONCMD	= "saved1";
-string	CVAR_CONMAP	= "saved2";
+// custom cvars
+string	CVAR_C1	= "saved1";	// levels
+string	CVAR_C2	= "saved2";	// console commands
 
 // console commands
-float	concmd;
-float	CONCMD_UPDATE_BINDINGS		= 1;
-float	CONCMD_SHOW_PLAYERS		= 2;
-float	CONCMD_SHOW_SETTINGS		= 3;
-float	CONCMD_TOGGLE_RUNE_CHEAT	= 4;
-float	CONCMD_LAST			= 5;
-float	CONCMD_LEVELS			= 6;
-float	CONCMD_CUSTOM			= 7;
-float	CONCMD_COMMANDS			= 8;
-float	CONCMD_LEVEL_TIME		= 9;
-float	CONCMD_MODE_PRACTICE		= 10;
-float	CONCMD_MODE_NORMAL		= 11;
-float	CONCMD_TOGGLE_ALTERNATES	= 12;
+float	C2_UPDATE_BINDINGS	= 1;
+float	C2_SHOW_PLAYERS		= 2;
+float	C2_SHOW_SETTINGS	= 3;
+float	C2_TOGGLE_RUNE_CHEAT	= 4;
+float	C2_LAST			= 5;
+float	C2_LEVELS		= 6;
+float	C2_CUSTOM		= 7;
+float	C2_COMMANDS		= 8;
+float	C2_LEVEL_TIME		= 9;
+float	C2_MODE_PRACTICE	= 10;
+float	C2_MODE_NORMAL		= 11;
+float	C2_TOGGLE_ALTERNATES	= 12;
 
 IN_QW([-
 //

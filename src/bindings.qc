@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.24 2004/06/29 22:47:35 slotzero Exp $
+/*  $Id: bindings.qc,v 1.25 2004/06/30 23:42:22 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -215,7 +215,7 @@ player_console_init_level_alias =
 		localcmd ("alias ");
 		localcmd (level);
 		localcmd (" \"IN_QW(serverinfo )");
-		localcmd (CVAR_CONMAP);
+		localcmd (CVAR_C1);
 		localcmd (" ");
 		s = ftos (imp);
 		localcmd (s);
@@ -253,18 +253,18 @@ console_aliases =
 {
 	dprint_force ("Sending console bindings\n");
 
-	console_init_cvar_alias ("update-bindings",	CVAR_CONCMD,	CONCMD_UPDATE_BINDINGS);
-	console_init_cvar_alias ("show-players",	CVAR_CONCMD,	CONCMD_SHOW_PLAYERS);
-	console_init_cvar_alias ("show-settings",	CVAR_CONCMD,	CONCMD_SHOW_SETTINGS);
-	console_init_cvar_alias ("rune-cheat",		CVAR_CONCMD,	CONCMD_TOGGLE_RUNE_CHEAT);
-	console_init_cvar_alias ("last",		CVAR_CONCMD,	CONCMD_LAST);
-	console_init_cvar_alias ("levels",		CVAR_CONCMD,	CONCMD_LEVELS);
-	console_init_cvar_alias ("custom",		CVAR_CONCMD,	CONCMD_CUSTOM);
-	console_init_cvar_alias ("commands",		CVAR_CONCMD,	CONCMD_COMMANDS);
-	console_init_cvar_alias ("level-time",		CVAR_CONCMD,	CONCMD_LEVEL_TIME);
-	console_init_cvar_alias ("practice",		CVAR_CONCMD,	CONCMD_MODE_PRACTICE);
-	console_init_cvar_alias ("normal",		CVAR_CONCMD,	CONCMD_MODE_NORMAL);
-	console_init_cvar_alias ("alternates",		CVAR_CONCMD,	CONCMD_TOGGLE_ALTERNATES);
+	console_init_cvar_alias ("update-bindings",	CVAR_C2,	C2_UPDATE_BINDINGS);
+	console_init_cvar_alias ("show-players",	CVAR_C2,	C2_SHOW_PLAYERS);
+	console_init_cvar_alias ("show-settings",	CVAR_C2,	C2_SHOW_SETTINGS);
+	console_init_cvar_alias ("rune-cheat",		CVAR_C2,	C2_TOGGLE_RUNE_CHEAT);
+	console_init_cvar_alias ("last",		CVAR_C2,	C2_LAST);
+	console_init_cvar_alias ("levels",		CVAR_C2,	C2_LEVELS);
+	console_init_cvar_alias ("custom",		CVAR_C2,	C2_CUSTOM);
+	console_init_cvar_alias ("commands",		CVAR_C2,	C2_COMMANDS);
+	console_init_cvar_alias ("level-time",		CVAR_C2,	C2_LEVEL_TIME);
+	console_init_cvar_alias ("practice",		CVAR_C2,	C2_MODE_PRACTICE);
+	console_init_cvar_alias ("normal",		CVAR_C2,	C2_MODE_NORMAL);
+	console_init_cvar_alias ("alternates",		CVAR_C2,	C2_TOGGLE_ALTERNATES);
 
 	level_aliases ();
 	custom_aliases ();
