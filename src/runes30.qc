@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.28 2004/03/15 23:59:37 slotzero Exp $
+/*  $Id: runes30.qc,v 1.29 2004/09/11 22:38:04 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -521,6 +521,9 @@ Freeze_Touch =
 	if (environmental (other) || other.runetype == RN_FREEZE)
 		return;
 
+	if (other.aqstate & AQS_SPAWN_PROTECT)
+		return;
+
 	if (other.runetype == RN_BLIZZARD)
 	{
 		if (self.owner.runetype == RN_FREEZE && self.owner.runevar > 0)
@@ -567,7 +570,6 @@ Freeze_Touch =
 		sprint (self.owner, other.owner.netname);
 		sprint (self.owner, "'s shambler is frozen in your ice trap.\n");
 	}
-
 
 	sound (self, CHAN_BODY, "shambler/smack.wav", 1, ATTN_NORM);
 
