@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.39 2003/07/28 13:47:51 slotzero Exp $
+/*  $Id: defs.qc,v 1.40 2003/07/30 10:52:41 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -470,8 +470,6 @@ float RN_MAX		= 49;
 float RN_LITHIUM_HOOK	= 50;
 float RN_MAX_ALL	= 50;
 
-float IMP_LAST		= 160;
-
 // impulses
 
 //    1-8 weapon selection
@@ -486,6 +484,9 @@ float IMP_LAST		= 160;
 //    255 quad cheat
 
 float IMP_SHOW_POS		= 192;
+float IMP_LAST			= 177;
+//				= 176 - 161 [weapon aliases]
+//				= 150 - 101 [cheat impulses]
 float IMP_RUNE_CHEAT_BASE	= 101;
 float IMP_RUNE_USE		= 100;
 float IMP_RUNE_TELL		= 99;
@@ -533,10 +534,12 @@ float IMP_ADMIN_CYCLE_SHOW	= 60;
 
 float IMP_CYCLE_ALTERNATES	= 59;
 
-float IMP_SWITCHFIRE_OFF	= 40;
-float IMP_SWITCHFIRE_BASE	= 41;
-float IMP_SWITCHFIRE_COUNT	= 16;
+//				= 57 - 41 [sattack aliases]
 float IMP_SWITCHFIRE_BEST	= 57;
+float IMP_SWITCHFIRE_BASE	= 41;
+float IMP_SWITCHFIRE_OFF	= 40;
+float IMP_SWITCHFIRE_COUNT	= 16;
+
 float IMP_WEAPON_BASE		= 161;
 float IMP_WEAPON_START		= 1;
 float IMP_WEAPON_COUNT		= 16;
