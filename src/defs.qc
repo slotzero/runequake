@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.31 2003/06/08 07:10:21 slotzero Exp $
+/*  $Id: defs.qc,v 1.32 2003/06/08 07:30:42 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -989,10 +989,11 @@ float   MULTICAST_PVS_R = 5;            // within sight, reliable
 //
 // globals
 //
+
 float	movedist;
 float	gameover;		// set when a rule exits
 
-string	string_null;	// null string, nothing should be held here
+string	string_null;		// null string, nothing should be held here
 float	empty_float;
 
 IN_POQ([-
@@ -1000,23 +1001,23 @@ entity	newmis;			// launch_spike sets this after spawning it
 -])
 
 entity	activator;		// the entity that activated a trigger or brush
-
 entity	damage_attacker;	// set by T_Damage
-entity  damage_inflictor;
+entity	damage_inflictor;
 float	framecount;
 
-float		skill;
+float	skill;
 
 IN_QW([-
 //
 // cvars checked each frame
 //
-float           teamplay;
-float           timelimit;
-float           fraglimit;
-float           deathmatch;
-float           rj;
-float		coop;
+
+float	teamplay;
+float	timelimit;
+float	fraglimit;
+float	deathmatch;
+float	rj;
+float	coop;
 -])
 
 float	intermission_running;
@@ -1028,37 +1029,37 @@ float	fraglimit;
 //
 // world fields (FIXME: make globals)
 //
-.string		wad;
-.string 	map;
-.float		worldtype;	// 0=medieval 1=metal 2=base
+
+.string	wad;
+.string	map;
+.float	worldtype;	// 0=medieval 1=metal 2=base
 
 //================================================
 
-.string		killtarget;
+.string	killtarget;
 
 //
 // quakeed fields
 //
-.float		light_lev;		// not used by game, but parsed by light util
-.float		style;
+
+.float	light_lev;	// not used by game, but parsed by light util
+.float	style;
 
 //
 // monster ai
 //
-.void ()		th_stand;
-.void ()		th_walk;
-.void ()		th_run;
-.void ()		th_missile;
-.void ()		th_melee;
-.void (entity attacker, float damage)		th_pain;
-.void ()		th_die;
 
-.entity		oldenemy;		// mad at this player before taking damage
+.void()	th_stand;
+.void()	th_walk;
+.void()	th_run;
+.void()	th_missile;
+.void()	th_melee;
+.void(entity attacker, float damage)	th_pain;
+.void()	th_die;
 
-.float		speed;
-
+.entity	oldenemy;	// mad at this player before taking damage
+.float	speed;
 .float	lefty;
-
 .float	search_time;
 .float	attack_state;
 
@@ -1070,116 +1071,123 @@ float	AS_MISSILE		= 4;
 //
 // player only fields
 //
-.float		walkframe;
 
-.float 		attack_finished;
-.float		pain_finished;
+.float	walkframe;
+.float	attack_finished;
+.float	pain_finished;
+.float	invincible_finished;
+.float	invisible_finished;
+.float	super_damage_finished;
+.float	radsuit_finished;
+.float	invincible_time;
+.float	invincible_sound;
+.float	invisible_time;
+.float	invisible_sound;
+.float	super_time;
+.float	super_sound;
+.float	rad_time;
+.float	rad_sound;
+.float	fly_sound;
+.string	damage_type;	// useful for determining pain & death sounds.
 
-.float		invincible_finished;
-.float		invisible_finished;
-.float		super_damage_finished;
-.float		radsuit_finished;
+// Set to time + 0.2 whenever a client fires a weapon or takes damage.
+// Used to alert monsters that otherwise would let the player go.
+.float	show_hostile;
 
-.float		invincible_time;
-.float		invincible_sound;
-.float		invisible_time;
-.float		invisible_sound;
-.float		super_time;
-.float		super_sound;
-.float		rad_time;
-.float		rad_sound;
-.float		fly_sound;
-
-.string		damage_type;	// useful for determining pain & death sounds.
-.float		show_hostile;	// set to time+0.2 whenever a client fires a
-							// weapon or takes damage.  Used to alert
-							// monsters that otherwise would let the player go
-.float		jump_flag;		// player jump flag
-.float		swim_flag;		// player swimming sound flag
-.float		air_finished;	// when time > air_finished, start drowning
-.float		next_breath;	// controls how quickly your drown
-.float		bubble_count;	// keeps track of the number of bubbles
+.float	jump_flag;	// player jump flag
+.float	swim_flag;	// player swimming sound flag
+.float	air_finished;	// when time > air_finished, start drowning
+.float	next_breath;	// controls how quickly your drown
+.float	bubble_count;	// keeps track of the number of bubbles
 
 //
 // object stuff
 //
-.string		mdl;
-.vector		mangle;			// angle at start
 
-// XXX oldorigin has already been declared
-// .vector		oldorigin;		// only used by secret door
-
-.float		t_length;
-.float		t_width;
+.string	mdl;
+.vector	mangle;		// angle at start
+.float	t_length;
+.float	t_width;
 
 //
 // doors, etc
 //
-.vector		dest;
-.vector		dest1;
-.vector		dest2;
-.float		wait;			// time from firing to restarting
-.float		delay;			// time from activation to firing
-.entity		trigger_field;	// door's trigger entity
-.string		noise4;
+
+.vector	dest;
+.vector	dest1;
+.vector	dest2;
+.float	wait;		// time from firing to restarting
+.float	delay;		// time from activation to firing
+.entity	trigger_field;	// door's trigger entity
+.string	noise4;
 
 //
 // monsters
 //
-.float 		pausetime;
-.entity 	movetarget;
+
+.float	pausetime;
+.entity	movetarget;
 
 //
 // doors
 //
-.float		aflag;
-.float		dmg;			// damage done by door when hit
+
+.float	aflag;
+.float	dmg;		// damage done by door when hit
 
 //
 // misc
 //
-.float		cnt; 			// misc flag, next hud print time
+
+.float	cnt;		// misc flag, next hud print time
 
 //
 // subs
 //
-.void ()		think1;
-.vector		finaldest;
-.vector		finalangle;
+
+.void()	think1;
+.vector	finaldest;
+.vector	finalangle;
 
 //
 // triggers
 //
+
 // For players, time at which to redisplay the menu.
-.float		count;			// for counting triggers
+.float	count;		// for counting triggers
 
 //
 // plats / doors / buttons
 //
+
 // For players, time at which to check nick.
 // For burn thinkers, time at which to do burn damage.
 // For zombie campers, amount of damage taken since getting up.
 // For runes, time dropped by a pack rat.
-.float		lip;
+.float	lip;
+
 // For players, currently entered part of password.  If in a qsmack init
 // sequence, the sequence number of the last code received, plus 8 if
 // the password was wrong.
-.float		state;
+.float	state;
+
 // pos1 is used to store angles for dual teleport and recall runes
 // pos1 is used for misc. settings for flaming missiles
-.vector		pos1;
-.vector		pos2;		// top and bottom positions
+.vector	pos1;
+.vector	pos2;		// top and bottom positions
+
 // For players, time last ran fix-angles.
 // For zombie campers, whether a quick pain sequence was done since getting up.
-.float		height;
+.float	height;
 
 //
 // sounds
 //
+
 // For players waitmin and waitmax are used for displaying the rune
 // type.  See the comments in rjs.qc above the rune_tell_*() functions.
-.float		waitmin;
-.float		waitmax;
+.float	waitmin;
+.float	waitmax;
 
 // For players, time at which player died.
 .float	volume;
