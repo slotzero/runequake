@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.74 2003/11/01 01:42:54 slotzero Exp $
+/*  $Id: rjs.qc,v 1.75 2003/11/03 00:42:26 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1381,7 +1381,7 @@ custom =
 	if (!custom_sprint (2))
 		self_sprint (self, "None.");
 	self_sprint (self, "\n\n\bLarge\n\n");
-	if (!custom_sprint (2))
+	if (!custom_sprint (3))
 		self_sprint (self, "None.");
 	self_sprint (self, "\n");
 };
