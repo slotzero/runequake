@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.29 2004/07/15 04:23:23 slotzero Exp $
+/*  $Id: vote.qc,v 1.30 2004/07/15 04:24:42 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -672,5 +672,5 @@ show_votes =
 		self_sprint_float (self, tot); self_sprint (self, " lack\n");
 	}
 	else
-		self_sprint (self, "No vote\n");
+		self_sprint (self, "no votes\n");
 };
