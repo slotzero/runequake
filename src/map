@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#    $Id: map,v 1.23 2005/01/10 23:20:15 slotzero Exp $
+#    $Id: map,v 1.24 2005/01/11 00:26:45 slotzero Exp $
 
 use strict;
 use warnings;
@@ -385,6 +385,10 @@ for my $size (1..$#custom_lev)
 	{
 		$ix++;
 		print "\t\tif (n == $ix) return \"$map\";\n";
+	}
+	if (!$ix)
+	{
+		print "\t\treturn string_null;\n";
 	}
 	print "\t}\n";
 }
