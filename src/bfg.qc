@@ -1,4 +1,4 @@
-/*  $Id: bfg.qc,v 1.10 2004/06/06 08:50:44 slotzero Exp $
+/*  $Id: bfg.qc,v 1.11 2004/07/29 09:23:01 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -40,10 +40,10 @@ BFG_Zap =
 		return;
 	}
 
-	i = 0;
-	if (self.runetype == RN_ZAP)
+	i = 1;
+	if (self.owner.runetype == RN_ZAP)
 		i = 5;
- 	else if (self.runetype == RN_THOR)
+ 	else if (self.owner.runetype == RN_THOR)
 		i = 2.5;
 
 	// Find everything within range
