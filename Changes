@@ -1,11 +1,49 @@
-$Id: Changes,v 1.45 2003/05/20 20:51:04 slotzero Exp $
+$Id: Changes,v 1.46 2004/02/15 04:53:20 slotzero Exp $
 
+Version 1.0  Sat Feb 14 23:51:51 EST 2004
 
-FOR SHMACK:
+    - coming soon
 
-NON-TEAM MODE SELF DAMAGE
-INCREASE ROCKET JUMP
-WORLD DOESN'T HURT YOU?
+Version 0.9  Wed Jul 16 23:06:07 EST 2003
+
+    - Bug Fixes
+
+        - Gold key no longer appears when you join the game if it was visible in
+	  free look observer.
+
+    - CVAR Changes
+
+        - teamplay
+
+            - TEAM_SELF_HEALTH_PROT and TEAM_SELF_ARMOR_PROT no longer require their
+	      respective TEAM_HEALTH_PROT/TEAM_ARMOR_PROT bit settings to be set in
+	      order for them to work.
+
+        - scratch1
+
+            - You can limit the maximum number of traps (per rune) that a player
+              can leave on a level by adding the S1_MAX_TRAPS_FOR_LEVEL bit.
+
+            - If you're just looking for a taste of runes, add S1_BASIC_RUNES
+              to scratch1 and only the four basic runes will be permitted.  These
+              are; strength, regeneration, resistance, and haste.
+
+    - Notable Internal Changes
+
+        - Repulsion and gravity well no longer use sys_ticrate as their nextthink.  This
+          eliminates the need to change SUCK_FORCE/PUSH_FORCE with every tick change.
+
+        - I switched RN_HEALTH with RN_STRENGTH to accomodate the S1_BASIC_RUNES
+          mode.
+
+    - Team Changes
+
+        - Death traps are team distinguisable.
+
+        - Ice traps are team distinguishable
+
+        - Prevent shirt color from being changed when enforced teams
+
 
 Version 0.8.2  Fri Apr 25 00:44:32 EST 2003
 

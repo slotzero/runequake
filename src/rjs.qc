@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.85 2003/12/30 05:57:44 slotzero Exp $
+/*  $Id: rjs.qc,v 1.86 2004/02/15 04:53:32 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2332,6 +2332,19 @@ W_ChangeWeapon =
 	set_weapon (it);
 	return TRUE;
 };
+
+// XXX The CycleWeapon*Command() functions have the potential to crash the server.  The last crash was
+// reported back in the RJS days.
+//
+//              RETURN     2362(IMMEDIATE)  1.0
+//                  rjs.qc : weapon_it_have_min_ammo
+//                  rjs.qc : CycleWeaponCommand
+//              weapons.qc : ImpulseCommands
+//              weapons.qc : W_WeaponFrame
+//               client.qc : PlayerPostThink
+//              <NO FUNCTION>
+//              runaway loop error
+//              Host_Error: Program error
 
 void ()
 CycleWeaponCommand =
