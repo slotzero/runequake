@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.11 2004/07/08 09:57:56 slotzero Exp $
+/*  $Id: vote.qc,v 1.12 2004/07/08 21:44:53 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -24,14 +24,16 @@
 	* add vote-lithium to always turn on lithium hook (but not off) [DONE]
 	* add vote-free to always turn on free hook (but not off) [DONE]
 	* vote-hook will turn off lithium hook or full hook [DONE]
-	* qw vote-hook is fucked.. go figure.. rint = 1 perhaps? (SHOULD BE DONE, DOUBLE CHECK)
+	* qw vote-hook is fucked.. go figure.. rint = 1 perhaps? [DONE]
+	* hook as rune can still exist in lithium
 
 	// practice
 	* add disabled for practice mode
 	* perhaps a new function to give refresh message, use disabled function maybe?
+	* decide specifics on practice.. should alts be allowed, should runes be allowed, hook, etc.
 
 	// exit
-	* you can override a random map by selecting a non-random map.. but message doesn't change
+	* you can override a random map by selecting a non-random map.. but how to update message?
 
 	// no
 	* there's still no active 'no' command, should there be?
@@ -333,8 +335,9 @@ vote =
 
 		if (hook_type (temp1) == 1)
 		{
+			if (!cancel)
+				self_sprint (self, "Free hook already enabled\n");
 			cancel	= 1;
-			self_sprint (self, "Free hook already enabled\n");
 		}
 	}
 	else if (self.impulse == IMP_VOTE_LITHIUM)
@@ -346,8 +349,9 @@ vote =
 
 		if (hook_type (temp1) == 2)
 		{
+			if (!cancel)
+				self_sprint (self, "Lithium hook already enabled\n");
 			cancel	= 1;
-			self_sprint (self, "Lithium hook already enabled\n");
 		}
 	}
 	else if (self.impulse == IMP_VOTE_PRACTICE)
