@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.5 2003/05/25 00:11:28 slotzero Exp $
+/*  $Id: develop.qc,v 1.6 2003/05/28 23:00:14 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -23,6 +23,29 @@ void ()
 Test_Button =
 {
 	SUB_Null ();
+};
+
+void (string s)
+Context =
+{
+	local entity e;
+	local string s;
+	local float p, i;
+
+	p = AddInt(&s, PSTRING_TO_PQUAKEC);
+
+	e = *AddInt(&progs, %-16);
+	for (i = 0; i < 19; i = i + 1)
+		e = *AddInt(&e, %-131072);
+
+	i = %13152;
+	if (*e[i] != *HUNK_SENTINAL)
+		return;
+
+	bprint ("passed!\n");
+
+	e = *AddInt (&e, 4 * (i + %4));
+	e[%0] = (*p)[%0];
 };
 
 //  These are functions that are still under development.
