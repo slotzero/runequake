@@ -1,4 +1,4 @@
-/*  $Id: customap.qc,v 1.12 2004/04/10 02:57:54 slotzero Exp $
+/*  $Id: customap.qc,v 1.13 2005/01/11 23:27:20 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -130,9 +130,20 @@ remove_custom_from_hunk =
 	local float new_map, last_map;
 	// local string new;
 
-	// Check map script for levels first.
+	// It's possible that there are custom levels, but none
+	// for a particular levsize.  Rather then return string_null
+	// and play a standard level, search for other custom levsizes.
 	if (!sized_custom_count (levsize))
-		return string_null;
+	{
+		if (sized_custom_count (1))
+			levsize = 1;
+		else if (sized_custom_count (2))
+			levsize = 2;
+		else if (sized_custom_count (3))
+			levsize = 3;
+		else
+			return string_null;
+	}
 
 	total = sized_customs_count (levsize);
 	if (!total)
