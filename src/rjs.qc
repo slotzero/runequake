@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.105 2004/06/30 07:24:15 slotzero Exp $
+/*  $Id: rjs.qc,v 1.106 2004/06/30 07:54:28 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -259,7 +259,6 @@ rjs_worldspawn =
 		localcmd ("\n");
 	}
 
-	// XXX I don't like doing this every level, maybe find a better way to do this.
 	if (!map_size (mapname))
 		MAP_IS_CUSTOM = 1;
 
