@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.38 2004/12/27 02:13:56 slotzero Exp $
+/*  $Id: hunk.qc,v 1.39 2005/02/07 21:48:30 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -92,6 +92,21 @@ Get_Hunk =
 //-------------------------------------------------------------------
 // READ HUNK
 //-------------------------------------------------------------------
+
+entity (float type, float offset)
+Read_Hunk_Entity =
+{
+	local entity hunk;
+
+	hunk = Get_Hunk (type, offset);
+	if (!hunk)
+	{
+		dprint ("Read_Hunk_Entity: hunk is null\n");
+		return world;
+	}
+
+	return *hunk[%0];
+};
 
 // requires 3 dwords (offset + 2)
 vector (float type, float offset)
@@ -274,6 +289,18 @@ Read_Hunk_String_Exact =
 //-------------------------------------------------------------------
 // WRITE HUNK
 //-------------------------------------------------------------------
+
+void (float type, float offset, entity e)
+Write_Hunk_Entity =
+{
+	local entity hunk;
+
+	hunk = Get_Hunk (type, offset);
+	if (!hunk)
+		return dprint ("Write_Hunk_Entity: hunk is null\n");
+
+	hunk[%0] = &e;
+};
 
 // requires 3 dwords (offset + 2)
 void (float type, float offset, vector v)
