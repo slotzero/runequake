@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.8 2003/05/27 20:23:41 slotzero Exp $
+/*  $Id: internal.qc,v 1.9 2003/06/01 01:13:54 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -126,6 +126,10 @@ entity sv;
 
 // proquake
 float MOD_QSMACK = %2;
+
+// hunk constants
+float HUNK_CONTEXT = %-2437760;
+float HUNK_ZONE = %-3773392;
 
 //-------------------------------------------------------------------
 // HEXADECIMAL PRINTING FUNCTIONS
