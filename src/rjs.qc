@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.115 2004/07/05 23:11:56 slotzero Exp $
+/*  $Id: rjs.qc,v 1.116 2004/07/05 23:20:47 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1156,6 +1156,9 @@ common_impulses =
 			self_sprint (self, "Custom sounds \bon\n");
 		}
 	}
+
+	else if (self.impulse == IMP_ADMIN_COMMAND)
+		admin_command ();
 
 	else if (self.impulse == IMP_REMOVE_FRAGS && self.frags > 0)
 		self.frags = 0;

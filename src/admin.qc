@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.33 2004/07/05 23:11:56 slotzero Exp $
+/*  $Id: admin.qc,v 1.34 2004/07/05 23:20:47 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -680,9 +680,6 @@ admin_impulse_commands =
 		sprint_admin2 ("#qsmack_command# ", self.netname);
 		sprint_admin2 ("\n", string_null);
 	}
-
-	else if (self.impulse == IMP_ADMIN_COMMAND)
-		admin_command ();
 
 	impulse_override_cancel ();
 };
