@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.135 2004/07/15 04:06:00 slotzero Exp $
+/*  $Id: rjs.qc,v 1.136 2004/07/16 06:08:07 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2948,7 +2948,7 @@ maybe_update_trap_count =
 	return FALSE;
 };
 
-void (string c_var, float bit, string msg)
+float (string c_var, float bit)
 toggle_cvar_bit =
 {
 	local float bits;
@@ -2957,18 +2957,15 @@ toggle_cvar_bit =
 	bits = cvar (c_var);
 
 	if (bits & bit)
-	{
 		bits = bits - bits & bit;
-		self_sprint (self, msg);
-		self_sprint (self, "off\n");
-	}
 	else
-	{
 		bits = bits | bit;
-		self_sprint (self, msg);
-		self_sprint (self, "on\n");
-	}
 
 	new = ftos (bits);
 	cvar_set (c_var, new);
+
+	if (bits & bit)
+		return TRUE;
+
+	return FALSE;
 };

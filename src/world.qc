@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.50 2004/07/08 06:49:32 slotzero Exp $
+/*  $Id: world.qc,v 1.51 2004/07/16 06:08:07 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -388,7 +388,7 @@ StartFrame =
 			change_practice_mode (0);
 
 		else if (i == C2_TOGGLE_NOALTS)
-			toggle_cvar_bit ("deathmatch", DM_NO_ALT_WEAPONS, "no alts ");
+			toggle_cvar_bit ("deathmatch", DM_NO_ALT_WEAPONS);
 
 		else
 			dprint ("Unknown command\n");
