@@ -1,4 +1,4 @@
-/*  $Id: triggers.qc,v 1.21 2004/04/05 03:30:36 slotzero Exp $
+/*  $Id: triggers.qc,v 1.22 2004/06/24 20:25:46 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -297,17 +297,17 @@ float SILENT 		= 2;
 void ()
 play_teleport =
 {
-	local float r;
+	local float i;
 	local string s;
 
-	r = random () * 5;
-	if (r < 1)
+	i = rint (random () * 5);
+	if (i == 1)
 		s = "misc/r_tele1.wav";
-	else if (r < 2)
+	else if (i == 2)
 		s = "misc/r_tele2.wav";
-	else if (r < 3)
+	else if (i == 3)
 		s = "misc/r_tele3.wav";
-	else if (r < 4)
+	else if (i == 4)
 		s = "misc/r_tele4.wav";
 	else
 		s = "misc/r_tele5.wav";
