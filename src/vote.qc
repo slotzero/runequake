@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.49 2005/01/08 04:03:16 slotzero Exp $
+/*  $Id: vote.qc,v 1.50 2005/01/08 04:09:12 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -39,8 +39,9 @@
 void ()
 vote_impulse_commands =
 {
-	// XXX I hard coded the vote impulses to reduce the amount of impulse checks
-	if (self.impulse >= 1 && self.impulse <= 17)
+	if (is_observer ())
+		count_votes (2);
+	else if (self.impulse >= 1 && self.impulse <= 17)
 		vote ();
 
 	impulse_override_cancel ();
