@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.26 2004/07/03 19:49:34 slotzero Exp $
+/*  $Id: hunk.qc,v 1.27 2004/07/11 05:07:39 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -91,6 +91,7 @@ Get_Hunk =
 // READ HUNK
 //-------------------------------------------------------------------
 
+// requires 3 dwords (offset + 2)
 vector (float type, float offset)
 Read_Hunk_Vector =
 {
@@ -104,9 +105,7 @@ Read_Hunk_Vector =
 		return VEC_ORIGIN;
 	}
 
-	v_x = hunk[%0];
-	v_y = hunk[%1];
-	v_z = hunk[%2];
+	v = hunk^[%0];
 
 	return v;
 };
@@ -245,6 +244,7 @@ Read_Hunk_Max =
 // WRITE HUNK
 //-------------------------------------------------------------------
 
+// requires 3 dwords (offset + 2)
 void (float type, float offset, vector v)
 Write_Hunk_Vector =
 {
@@ -254,9 +254,7 @@ Write_Hunk_Vector =
 	if (!hunk)
 		return dprint ("Write_Hunk_Vector: hunk is null\n");
 
-	hunk[%0] = v_x;
-	hunk[%1] = v_y;
-	hunk[%2] = v_z;
+	hunk^[%0] = v;
 };
 
 void (float type, float offset, float f)
