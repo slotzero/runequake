@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.20 2004/07/18 16:29:10 slotzero Exp $
+/*  $Id: hunked.qc,v 1.21 2004/07/18 16:46:01 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -25,13 +25,13 @@ float LAST_TIME_UPDATE;
 float HUNK_SERVER_TIME		= %10;
 float HUNK_CLIENT_DISCONNECT	= %100;
 float HUNK_NO_QUAD		= %1010;
-float HUNK_NO_PENT		= %1012;
-float HUNK_NO_RING		= %1014;
-float HUNK_NO_SUIT		= %1016;
-float HUNK_NO_ARMOR		= %1018;
-float HUNK_ROTATE		= %1020;
-float HUNK_NO_RUNES		= %1022;
-float HUNK_NO_ALT_WEAPONS	= %1024;
+float HUNK_NO_PENT		= %1011;
+float HUNK_NO_RING		= %1012;
+float HUNK_NO_SUIT		= %1013;
+float HUNK_NO_ARMOR		= %1014;
+float HUNK_ROTATE		= %1015;
+float HUNK_NO_RUNES		= %1016;
+float HUNK_NO_ALT_WEAPONS	= %1017;
 
 float ()
 server_time =

@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.29 2004/07/14 11:22:19 slotzero Exp $
+/*  $Id: hunk.qc,v 1.30 2004/07/18 16:46:01 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -65,6 +65,8 @@
 	%649		= float (reserved)
 
 	%799		= float number of denied maps
+
+	%1000-?		= hunk settings
 
 	// strman.qc
 	%3000 - %4000	= memory for string manipulation functions
