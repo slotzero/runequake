@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.25 2004/07/12 11:15:47 slotzero Exp $
+/*  $Id: vote.qc,v 1.26 2004/07/12 11:34:01 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -368,7 +368,8 @@ vote =
 		e.think1	= toggle_free_hook;
 		e.noise2	= " free hook ";
 
-		if (i = hook_type (temp1))
+		i = hook_type (temp1);
+		if (i)
 		{
 			if (i == 2)
 			e.noise2	= " lithium hook ";
