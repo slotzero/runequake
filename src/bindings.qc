@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.13 2004/03/01 01:27:48 slotzero Exp $
+/*  $Id: bindings.qc,v 1.14 2004/04/05 22:24:50 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -257,6 +257,7 @@ console_aliases =
 	console_init_cvar_alias ("levels",		"skill",	SKILL_LEVELS);
 	console_init_cvar_alias ("custom",		"skill",	SKILL_CUSTOM);
 	console_init_cvar_alias ("commands",		"skill",	SKILL_COMMANDS);
+	console_init_cvar_alias ("level-time",		"skill",	SKILL_LEVEL_TIME);
 
 	level_aliases ();
 	custom_aliases ();
