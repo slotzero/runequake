@@ -1,11 +1,6 @@
-$Id: Changes,v 1.63 2004/04/30 04:13:13 slotzero Exp $
+$Id: Changes,v 1.64 2004/05/01 03:21:08 slotzero Exp $
 
-unsorted:
-
-switch rune will remove lg with thor?
-consider a new console command, cvars.. in case your forget!
-
-Version 1.0
+Version 1.0  Fri Apr 30 23:19:17 EST 2004
 
     - Bug Fixes
 
