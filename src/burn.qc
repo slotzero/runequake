@@ -1,4 +1,4 @@
-/*  $Id: burn.qc,v 1.9 2003/06/24 22:17:35 slotzero Exp $
+/*  $Id: burn.qc,v 1.10 2004/12/30 01:21:27 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -53,6 +53,7 @@ weapon_bubble =
 	e.classname = "bubble";
 	e.frame = 0;
 	e.cnt = 15; // don't split, and die quicker
+	e.effects = EF_MAYBE_DRAW;
 	setsize (e, '-8 -8 -8', '8 8 8');
 };
 

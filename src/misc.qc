@@ -1,4 +1,4 @@
-/*  $Id: misc.qc,v 1.21 2004/02/22 03:26:43 slotzero Exp $
+/*  $Id: misc.qc,v 1.22 2004/12/30 01:21:27 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -386,6 +386,7 @@ bubble_split =
 	e.classname	= "bubble";
 	e.frame		= 1;
 	e.cnt		= 10;
+	e.effects	= EF_MAYBE_DRAW;
 
 	setmodel (e, "progs/s_bubble.spr");
 	setorigin (e, self.origin);

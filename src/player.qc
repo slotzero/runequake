@@ -1,4 +1,4 @@
-/*  $Id: player.qc,v 1.15 2004/12/29 04:34:56 slotzero Exp $
+/*  $Id: player.qc,v 1.16 2004/12/30 01:21:27 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -390,7 +390,10 @@ DeathBubblesSpawn =
 	local entity bubble;
 
 	if (self.owner.waterlevel != 3)
+	{
+		remove (self);
 		return;
+	}
 
 	bubble			= spawn ();
 	bubble.movetype		= MOVETYPE_NOCLIP;
@@ -401,6 +404,7 @@ DeathBubblesSpawn =
 	bubble.classname	= "bubble";
 	bubble.frame		= 0;
 	bubble.cnt		= 0;
+	bubble.effects		= EF_MAYBE_DRAW;
 
 	setmodel (bubble, "progs/s_bubble.spr");
 	setorigin (bubble, self.owner.origin + '0 0 24');
