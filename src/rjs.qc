@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.117 2004/07/05 23:22:50 slotzero Exp $
+/*  $Id: rjs.qc,v 1.118 2004/07/06 01:30:25 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1995,11 +1995,11 @@ weapon_it_to_name =
 	else if (it == IT_ROCKET_LAUNCHER)	return "Rocket    ";
 	else if (it == IT_LIGHTNING)		return "Lightning ";
 	else if (it == WEAPON_HOOK)		return "Hook      ";
-	else if (it == WEAPON_MAGIC_SHOTGUN)	return "Shot bomb ";
+	else if (it == WEAPON_MAGIC_SHOTGUN)	return "Magic shot";
 	else if (it == WEAPON_FLAMETHROWER)	return "Flame     ";
 	else if (it == WEAPON_LAVA)		return "Lava      ";
 	else if (it == WEAPON_BOMB)		return "Bomb      ";
-	else if (it == WEAPON_FLASH_GRENADE)	return "Flash     ";
+	else if (it == WEAPON_FLASH_GRENADE)	return "Gas       ";
 	else if (it == WEAPON_MORTAR)		return "Mortar    ";
 	else if (it == WEAPON_BFG)		return "BFG       ";
 	else					return "?         ";
