@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.16 2003/06/24 22:17:36 slotzero Exp $
+/*  $Id: combat.qc,v 1.17 2004/02/21 07:08:28 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -272,6 +272,20 @@ T_Damage =
 		{
 			burn_start (targ, attacker,
 					TORCH_BURN_ATTACK_DURATION);
+		}
+	}
+
+	if (DM_MODE_PRACTICE)
+	{
+		if (attacker != targ)
+		{
+			if (attacker.classname == "player" && targ.classname == "player")
+			{
+				local string x;
+
+				x = ftos (damage);
+				centerprint4 (attacker, targ.netname, ": ", x, "\n\n\n\n");
+			}
 		}
 	}
 
