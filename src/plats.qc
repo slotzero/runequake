@@ -1,4 +1,4 @@
-// $Id: plats.qc,v 1.2 2002/03/02 20:12:17 slotzero Exp $
+// $Id: plats.qc,v 1.3 2002/04/30 21:39:39 slotzero Exp $
 
 float PLAT_LOW_TRIGGER = 1;
 
@@ -148,26 +148,22 @@ func_plat =
 {
 	if (!self.t_length)
 		self.t_length = 80;
+
 	if (!self.t_width)
 		self.t_width = 10;
 
-	if (self.sounds == 0)
-		self.sounds = 2;
 	// FIX THIS TO LOAD A GENERIC PLAT SOUND
 
 	if (self.sounds == 1)
 	{
-		precache_sound ("plats/plat1.wav");
+		precache_noise ("plats/plat1.wav");
 		precache_sound ("plats/plat2.wav");
-		self.noise = "plats/plat1.wav";
 		self.noise1 = "plats/plat2.wav";
 	}
-
-	if (self.sounds == 2)
+	else
 	{
-		precache_sound ("plats/medplat1.wav");
+		precache_noise ("plats/medplat1.wav");
 		precache_sound ("plats/medplat2.wav");
-		self.noise = "plats/medplat1.wav";
 		self.noise1 = "plats/medplat2.wav";
 	}
 
@@ -302,18 +298,14 @@ func_train =
 
 	if (self.sounds == 0)
 	{
-		self.noise = ("misc/null.wav");
-		precache_sound ("misc/null.wav");
-		self.noise1 = ("misc/null.wav");
-		precache_sound ("misc/null.wav");
+		precache_noise ("misc/null.wav");
+		self.noise1 = "misc/null.wav";
 	}
-
-	if (self.sounds == 1)
+	else if (self.sounds == 1)
 	{
-		self.noise = ("plats/train2.wav");
-		precache_sound ("plats/train2.wav");
-		self.noise1 = ("plats/train1.wav");
+		precache_noise ("plats/train2.wav");
 		precache_sound ("plats/train1.wav");
+		self.noise1 = "plats/train1.wav";
 	}
 
 	self.cnt = 1;
@@ -351,10 +343,8 @@ misc_teleporttrain =
 	self.use = train_use;
 	self.avelocity = '100 200 300';
 
-	self.noise = ("misc/null.wav");
-	precache_sound ("misc/null.wav");
-	self.noise1 = ("misc/null.wav");
-	precache_sound ("misc/null.wav");
+	precache_noise ("misc/null.wav");
+	self.noise1 = "misc/null.wav";
 
 	precache_model2 ("progs/teleport.mdl");
 	setmodel (self, "progs/teleport.mdl");

@@ -1,4 +1,4 @@
-// $Id: misc.qc,v 1.5 2002/03/04 05:46:08 slotzero Exp $
+// $Id: misc.qc,v 1.6 2002/04/30 21:39:38 slotzero Exp $
 
 /*QUAKED info_null (0 0.5 0) (-4 -4 -4) (4 4 4)
 Used as a positional target for spotlights, etc.
@@ -143,7 +143,7 @@ misc_explobox =
 	if (oldz - self.origin_z > 250)
 	{
 		dprint ("item fell out of level at ");
-		dprint (vtos (self.origin));
+		dprint_vec (self.origin);
 		dprint ("\n");
 		remove (self);
 	}
@@ -178,7 +178,7 @@ misc_explobox2 =
 	if (oldz - self.origin_z > 250)
 	{
 		dprint ("item fell out of level at ");
-		dprint (vtos (self.origin));
+		dprint_vec (self.origin);
 		dprint ("\n");
 		remove (self);
 	}

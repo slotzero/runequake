@@ -1,4 +1,4 @@
-// $Id: triggers.qc,v 1.2 2002/03/04 05:46:08 slotzero Exp $
+// $Id: triggers.qc,v 1.3 2002/04/30 21:39:39 slotzero Exp $
 
 entity s_tfog;
 
@@ -117,23 +117,15 @@ void ()
 trigger_multiple =
 {
 	if (self.sounds == 1)
-	{
-		precache_sound ("misc/secret.wav");
-		self.noise = "misc/secret.wav";
-	}
+		precache_noise ("misc/secret.wav");
 	else if (self.sounds == 2)
-	{
-		precache_sound ("misc/talk.wav");
-		self.noise = "misc/talk.wav";
-	}
+		precache_noise ("misc/talk.wav");
 	else if (self.sounds == 3)
-	{
-		precache_sound ("misc/trigger1.wav");
-		self.noise = "misc/trigger1.wav";
-	}
+		precache_noise ("misc/trigger1.wav");
 
 	if (!self.wait)
 		self.wait = 0.2;
+
 	self.use = multi_use;
 
 	InitTrigger ();
@@ -210,15 +202,9 @@ trigger_secret =
 		self.sounds = 1;
 
 	if (self.sounds == 1)
-	{
-		precache_sound ("misc/secret.wav");
-		self.noise = "misc/secret.wav";
-	}
+		precache_noise ("misc/secret.wav");
 	else if (self.sounds == 2)
-	{
-		precache_sound ("misc/talk.wav");
-		self.noise = "misc/talk.wav";
-	}
+		precache_noise ("misc/talk.wav");
 
 	trigger_multiple ();
 };

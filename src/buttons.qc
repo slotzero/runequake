@@ -1,4 +1,4 @@
-// $Id: buttons.qc,v 1.1 2002/02/21 21:47:48 slotzero Exp $
+// $Id: buttons.qc,v 1.2 2002/04/30 21:39:38 slotzero Exp $
 
 // button and multiple button
 
@@ -90,25 +90,13 @@ void ()
 func_button =
 {
 	if (self.sounds == 0)
-	{
-		precache_sound ("buttons/airbut1.wav");
-		self.noise = "buttons/airbut1.wav";
-	}
-	if (self.sounds == 1)
-	{
-		precache_sound ("buttons/switch21.wav");
-		self.noise = "buttons/switch21.wav";
-	}
-	if (self.sounds == 2)
-	{
-		precache_sound ("buttons/switch02.wav");
-		self.noise = "buttons/switch02.wav";
-	}
-	if (self.sounds == 3)
-	{
-		precache_sound ("buttons/switch04.wav");
-		self.noise = "buttons/switch04.wav";
-	}
+		precache_noise ("buttons/airbut1.wav");
+	else if (self.sounds == 1)
+		precache_noise ("buttons/switch21.wav");
+	else if (self.sounds == 2)
+		precache_noise ("buttons/switch02.wav");
+	else if (self.sounds == 3)
+		precache_noise ("buttons/switch04.wav");
 
 	// Trigger bridge on E1M7.
 	if ((world.model == "maps/e1m7.bsp" && self.target == "t9"))
