@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.40 2005/02/06 21:28:04 slotzero Exp $
+/*  $Id: observer.qc,v 1.41 2005/02/06 22:09:07 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -648,8 +648,8 @@ observer_teleport =
 void ()
 obs_player_detect =
 {
-	local entity wanted;
-	local float area, refresh;
+	local entity wanted, tempe;
+	local float area, tempf;
 	local vector vec;
 	local string s, s1, s2, s3;
 
@@ -657,7 +657,7 @@ obs_player_detect =
 		s3 = "\nvisible eyes";
 	else
 		s3 = string_null;
-	refresh = 0;
+
 	wanted = findradius (self.origin, 600);
 	while (wanted)
 	{
@@ -674,63 +674,71 @@ obs_player_detect =
 
 				if ( area > 0.85 )
 				{
-					if (wanted.classname == "player")
+					if (area > tempf)
 					{
-						s = string_null;
-						s1 = wanted.netname;
-						s2 = Rune_Tell_real (0, wanted.runetype, 0, 2);
-						if (s2 == "No Rune")
-							s2 = string_null;
+						tempf = area;
+						tempe = wanted;
 					}
-					else if (wanted.classname == "shambler_slave")
-					{
-						s = wanted.owner.netname;
-						s1 = "'s Shambler";
-						s2 = string_null;
-					}
-					else if (wanted.classname == "zombie_camper")
-					{
-						s = wanted.owner.netname;
-						s1 = "'s Zombie";
-						s2 = string_null;
-					}
-
-					if (!self.aqstate & AQS_MENU_MASK && (self.class_cnt < time || wanted != self.aiment))
-					{
-						centerprint5 (self, s, s1, "\n\n", s2, s3);
-						self.class_cnt = time + 1.5;
-						self.aiment = wanted;
-					}
-
-					if (!wanted.aqflags & AQ_RIDER_HIDE)
-					{
-						if (self.items != wanted.items)
-							self.items = wanted.items;
-						if (self.health != wanted.health)
-							self.health = wanted.health;
-						if (self.currentammo != wanted.currentammo)
-							self.currentammo = wanted.currentammo;
-						if (self.ammo_shells != wanted.ammo_shells)
-							self.ammo_shells = wanted.ammo_shells;
-						if (self.ammo_nails != wanted.ammo_nails)
-							self.ammo_nails = wanted.ammo_nails;
-						if (self.ammo_rockets != wanted.ammo_rockets)
-							self.ammo_rockets = wanted.ammo_rockets;
-						if (self.ammo_cells != wanted.ammo_cells)
-							self.ammo_cells = wanted.ammo_cells;
-						if (self.armortype != wanted.armortype)
-							self.armortype = wanted.armortype;
-						if (self.armorvalue != wanted.armorvalue)
-							self.armorvalue = wanted.armorvalue;
-					}
-					return;
 				}
 			}
 		}
 		wanted = wanted.chain;
 	}
+	wanted = tempe;
 
-	if (!refresh)
+	if (wanted)
+	{
+		if (wanted.classname == "player")
+		{
+			s = string_null;
+			s1 = wanted.netname;
+			s2 = Rune_Tell_real (0, wanted.runetype, 0, 2);
+			if (s2 == "No Rune")
+				s2 = string_null;
+		}
+		else if (wanted.classname == "shambler_slave")
+		{
+			s = wanted.owner.netname;
+			s1 = "'s Shambler";
+			s2 = string_null;
+		}
+		else if (wanted.classname == "zombie_camper")
+		{
+			s = wanted.owner.netname;
+			s1 = "'s Zombie";
+			s2 = string_null;
+		}
+
+		if (!self.aqstate & AQS_MENU_MASK && (self.class_cnt < time || wanted != self.aiment))
+		{
+			centerprint5 (self, s, s1, "\n\n", s2, s3);
+			self.class_cnt = time + CENTERPRINT_REFRESH;
+			self.aiment = wanted;
+		}
+
+		if (!wanted.aqflags & AQ_RIDER_HIDE)
+		{
+			if (self.items != wanted.items)
+				self.items = wanted.items;
+			if (self.health != wanted.health)
+				self.health = wanted.health;
+			if (self.currentammo != wanted.currentammo)
+				self.currentammo = wanted.currentammo;
+			if (self.ammo_shells != wanted.ammo_shells)
+				self.ammo_shells = wanted.ammo_shells;
+			if (self.ammo_nails != wanted.ammo_nails)
+				self.ammo_nails = wanted.ammo_nails;
+			if (self.ammo_rockets != wanted.ammo_rockets)
+				self.ammo_rockets = wanted.ammo_rockets;
+			if (self.ammo_cells != wanted.ammo_cells)
+				self.ammo_cells = wanted.ammo_cells;
+			if (self.armortype != wanted.armortype)
+				self.armortype = wanted.armortype;
+			if (self.armorvalue != wanted.armorvalue)
+				self.armorvalue = wanted.armorvalue;
+		}
+	}
+	else
 	{
 		if (self.class_cnt < 0 || self.class_cnt > time)
 			return;
