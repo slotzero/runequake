@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.143 2004/07/18 09:43:20 slotzero Exp $
+/*  $Id: rjs.qc,v 1.144 2004/07/18 10:25:40 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -20,14 +20,14 @@
 void ()
 timelimit_countdown =
 {
-	local float time_limit, seconds, minutes, n;
+	local float seconds, minutes, n;
 	local string s1, s2;
 
-	time_limit = cvar ("timelimit") * 60;
-	if (!time_limit)
+	timelimit = cvar ("timelimit") * 60;
+	if (!timelimit)
 		return;
 
-	seconds = ceil (time_limit - time);
+	seconds = ceil (timelimit - time);
 	minutes = ceil (seconds / 60);
 
 	n = 1;

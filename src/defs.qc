@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.111 2004/07/18 09:43:20 slotzero Exp $
+/*  $Id: defs.qc,v 1.112 2004/07/18 10:25:39 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1119,8 +1119,8 @@ IN_QW([-
 //
 
 float	teamplay;
-float	timelimit;
-float	fraglimit;
+//float	timelimit;
+//float	fraglimit;
 float	deathmatch;
 float	rj;
 float	coop;
@@ -1129,6 +1129,7 @@ float	coop;
 float	intermission_running;
 float	intermission_exittime;
 float	fraglimit;
+float	timelimit;
 
 //================================================
 
@@ -1439,10 +1440,6 @@ void	(vector where, float set)		multicast	= #82; // sends the temp message to a 
 
 .entity cl;
 .entity	netconnection;
-
-float	vote_exit_time;
-float	vote_team_time;
-float	vote_hook_time;
 
 .float	drop_hook;
 
