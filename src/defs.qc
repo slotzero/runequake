@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.65 2003/12/30 05:57:43 slotzero Exp $
+/*  $Id: defs.qc,v 1.66 2003/12/30 09:59:11 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1045,6 +1045,7 @@ float	SKILL_TOGGLE_RUNE_CHEAT		= 4;
 float	SKILL_UPDATE_BINDINGS		= 5;
 float	SKILL_LEVELS			= 6;
 float	SKILL_CUSTOM			= 7;
+float	SKILL_COMMANDS			= 8;
 
 // levels
 float	crosshair;
