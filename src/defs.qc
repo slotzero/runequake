@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.86 2004/06/30 01:47:41 slotzero Exp $
+/*  $Id: defs.qc,v 1.87 2004/06/30 23:31:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1066,9 +1066,6 @@ float	CONCMD_LEVEL_TIME		= 9;
 float	CONCMD_MODE_PRACTICE		= 10;
 float	CONCMD_MODE_NORMAL		= 11;
 float	CONCMD_TOGGLE_ALTERNATES	= 12;
-
-// levels
-float	conmap;
 
 IN_QW([-
 //

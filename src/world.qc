@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.43 2004/06/29 22:47:35 slotzero Exp $
+/*  $Id: world.qc,v 1.44 2004/06/30 23:31:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -325,13 +325,13 @@ StartFrame =
 		obs_process_game_queue ();
 	}
 
-	conmap = cvar_infokey (CVAR_CONMAP);
-	if (conmap)
+	i = cvar_infokey (CVAR_CONMAP);
+	if (i)
 	{
 		cvar_set_infokey (CVAR_CONMAP, "0");
-		IN_POQ(if (!HUNK_CONTEXT_MAX)	conmap = 0;)
+		IN_POQ(if (!HUNK_CONTEXT_MAX) i = 0;)
 
-		&%IN_POQ(368,376) = conmap;
+		&%IN_POQ(368,376) = i;
 		s = impulse_to_map ();
 		if (s)
 			admin_changelevel (s);
