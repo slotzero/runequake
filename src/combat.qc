@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.14 2003/04/14 00:56:11 slotzero Exp $
+/*  $Id: combat.qc,v 1.15 2003/06/23 19:52:22 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -43,7 +43,7 @@ CanDamage =
 	// XXX If traceline() doesn't encounter an obstacle,
 	// trace_fraction is suppose to return 1; however;
 	// when an entity is forced inside a platform,
-	// trace_traction always returns 1 and causes
+	// trace_fraction always returns 1 and causes
 	// all entites (within the radius) to be affected.
 	//
 	// Under the assumption that trace_ent should always
@@ -324,16 +324,18 @@ T_Damage =
 	// save damage based on the target's armor level
 	save = 0;
 
-	if (teamplay & TEAM_ARMOR_PROT
+	/* if (teamplay & TEAM_ARMOR_PROT
 			&& teamplay & TEAM_SELF_ARMOR_PROT
 			&& targ.team > 0
 			&& targ.team == attacker.team
 			&& dtype != "kamiself")
-		SUB_Null ();
-	else if (teamplay & TEAM_ARMOR_PROT
+		SUB_Null (); */
+	if (teamplay & TEAM_ARMOR_PROT
 			&& targ.team > 0
 			&& targ.team == attacker.team
 			&& targ != attacker)
+		SUB_Null ();
+	else if (teamplay & TEAM_SELF_ARMOR_PROT && targ == attacker)
 		SUB_Null ();
 	else if (targ.armorvalue == 0)
 		SUB_Null ();
@@ -395,16 +397,18 @@ T_Damage =
 	}
 
 	// team play damage avoidance
-	else if (teamplay & TEAM_HEALTH_PROT
+	/* else if (teamplay & TEAM_HEALTH_PROT
 			&& teamplay & TEAM_SELF_HEALTH_PROT
 			&& targ.team > 0
 			&& targ.team == attacker.team
 			&& dtype != "kamiself")
-		take = 0;
+		take = 0; */
 	else if (teamplay & TEAM_HEALTH_PROT
 			&& targ.team > 0
 			&& targ.team == attacker.team
 			&& targ != attacker)
+		take = 0;
+	else if (teamplay & TEAM_SELF_HEALTH_PROT && targ == attacker)
 		take = 0;
 
 	if (take > targ.health)

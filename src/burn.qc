@@ -1,4 +1,4 @@
-/*  $Id: burn.qc,v 1.7 2003/04/14 00:56:10 slotzero Exp $
+/*  $Id: burn.qc,v 1.8 2003/06/23 19:52:22 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -155,6 +155,9 @@ burn_start =
 			&& teamplay & TEAM_ARMOR_PROT
 			&& isfriend2 (targ, attacker)
 			&& targ != attacker)
+		return;
+
+	if (teamplay & TEAM_SELF_HEALTH_PROT && targ == attacker)
 		return;
 
 	e = world;
