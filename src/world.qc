@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.56 2005/01/08 04:03:16 slotzero Exp $
+/*  $Id: world.qc,v 1.57 2005/01/16 07:11:43 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -51,8 +51,13 @@ worldspawn =
 	// I'd wager).
 	if (self.model == "maps/e1m8.bsp")
 		sv_gravity = 100;
+	else if (self.model == "maps/bunmoo3.bsp")
+		sv_gravity = 150;
+	else if (self.model == "maps/lowgrav.bsp")
+		sv_gravity = 150;
 	else
 		sv_gravity = DEFAULT_GRAVITY;
+
 	s = ftos (sv_gravity);
 	cvar_set ("sv_gravity", s);
 
