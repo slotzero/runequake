@@ -1,4 +1,7 @@
-// $Id: items.qc,v 1.13 2002/05/04 17:30:24 slotzero Exp $
+// $Id: items.qc,v 1.14 2002/05/05 22:19:09 slotzero Exp $
+
+/* ALL LIGHTS SHOULD BE 0 1 0 IN COLOR ALL OTHER ITEMS SHOULD
+BE .8 .3 .4 IN COLOR */
 
 void (entity e, float chan, string samp, float vol, float atten)
 item_sound =
@@ -96,7 +99,7 @@ Sets the clipping size and plants the object on the floor
 void ()
 StartItem =
 {
-	self.nextthink	= time + 0.2;	// items start after other solids
+	self.nextthink	= time + 0.2; // items start after other solids
 	self.think	= PlaceItem;
 
 	if (!did_my_items)
@@ -226,7 +229,7 @@ health_touch =
 	}
 
 	activator = other;
-	SUB_UseTargets ();				// fire all targets / killtargets
+	SUB_UseTargets (); // fire all targets / killtargets
 };
 
 /*
@@ -337,7 +340,7 @@ armor_touch =
 	other.aqstate = other.aqstate - other.aqstate & AQS_BURNING;
 
 	activator = other;
-	SUB_UseTargets ();				// fire all targets / killtargets
+	SUB_UseTargets (); // fire all targets / killtargets
 };
 
 void (float it_skin)
@@ -581,7 +584,7 @@ weapon_touch =
 	self.think = SUB_regen;
 
 	activator = other;
-	SUB_UseTargets ();				// fire all targets / killtargets
+	SUB_UseTargets (); // fire all targets / killtargets
 };
 
 void ()
@@ -752,7 +755,7 @@ ammo_touch =
 	self.think = SUB_regen;
 
 	activator = other;
-	SUB_UseTargets ();				// fire all targets / killtargets
+	SUB_UseTargets (); // fire all targets / killtargets
 };
 
 float WEAPON_BIG2 = 1;
@@ -817,14 +820,6 @@ item_cells =
 		ammo_set ("maps/b_batt0.bsp", 6, 4, "cells");
 };
 
-/*QUAKED item_weapon (0 .5 .8) (0 0 0) (32 32 32) shotgun rocket spikes big
-DO NOT USE THIS!!!! IT WILL BE REMOVED!
-*/
-void ()
-item_weapon =
-{
-};
-
 /*
 ===============================================================================
 
@@ -860,7 +855,7 @@ key_touch =
 	}
 
 	activator = other;
-	SUB_UseTargets ();				// fire all targets / killtargets
+	SUB_UseTargets (); // fire all targets / killtargets
 };
 
 void ()
@@ -955,10 +950,10 @@ sigil_touch =
 	self.solid	= SOLID_NOT;
 	self.model	= string_null;
 	serverflags	= serverflags | (self.spawnflags & SERVERFLAGS_RUNE_MASK);
-	self.classname	= string_null;		// so rune doors won't find it
+	self.classname	= string_null; // so rune doors won't find it
 
 	activator	= other;
-	SUB_UseTargets ();				// fire all targets / killtargets
+	SUB_UseTargets (); // fire all targets / killtargets
 };
 
 void (string it_model)
@@ -1092,7 +1087,7 @@ powerup_touch =
 	}
 
 	activator = other;
-	SUB_UseTargets ();				// fire all targets / killtargets
+	SUB_UseTargets (); // fire all targets / killtargets
 };
 
 void (string it_model, string it_noise, string it_netname, float it_powerup)
@@ -1492,6 +1487,157 @@ drop_powerup_touch =
 	}
 
 	activator = other;
-	SUB_UseTargets ();	// fire all targets / killtargets
+	SUB_UseTargets (); // fire all targets / killtargets
 	remove (self); // remove duplicate blinks
 };
+
+//============================================================================
+
+/* QUAKED noclass (0 0 0) (-8 -8 -8) (8 8 8)
+prints a warning message when spawned
+*/
+/* void () noclass =
+{
+	dprint ("noclass spawned at");
+	dprint (vtos (self.origin));
+	dprint ("\n");
+	remove (self);
+};
+*/
+
+/* void () item_megahealth_rot =
+{
+	other = self.owner;
+
+	if (other.health > other.max_health)
+	{
+		other.health = other.health - 1;
+		self.nextthink = time + 1;
+		return;
+	}
+
+	// it is possible for a player to die and respawn between rots,
+	// so don't just blindly subtract the flag off
+	other.items = other.items - (other.items & IT_SUPERHEALTH);
+
+	if (deathmatch & DM_RESPAWN)
+	{
+		self.nextthink = time + HEALTH_RESPAWN_TIME;
+		self.think = SUB_regen;
+	}
+};
+*/
+
+/* float (float w) RankForWeapon =
+{
+	if (w == IT_LIGHTNING)
+		return 1;
+	if (w == IT_ROCKET_LAUNCHER)
+		return 2;
+	if (w == IT_SUPER_NAILGUN)
+		return 3;
+	if (w == IT_GRENADE_LAUNCHER)
+		return 4;
+	if (w == IT_SUPER_SHOTGUN)
+		return 5;
+	if (w == IT_NAILGUN)
+		return 6;
+	return 7;
+};
+*/
+
+/*
+=============
+Deathmatch_Weapon
+
+Deathmatch weapon change rules for picking up a weapon
+
+.float		ammo_shells, ammo_nails, ammo_rockets, ammo_cells;
+=============
+*/
+/* void (float old, float new) Deathmatch_Weapon =
+{
+	local float or, nr;
+
+	// change self.weapon if desired
+	or = RankForWeapon (self.weapon);
+	nr = RankForWeapon (new);
+	if (nr < or)
+		set_weapon (new);
+};
+*/
+
+/*QUAKED item_weapon (0 .5 .8) (0 0 0) (32 32 32) shotgun rocket spikes big
+DO NOT USE THIS!!!! IT WILL BE REMOVED!
+*/
+
+/*
+float WEAPON_SHOTGUN	= 1;
+float WEAPON_ROCKET	= 2;
+float WEAPON_SPIKES	= 4;
+float WEAPON_BIG	= 8;
+*/
+
+/* void ()
+item_weapon =
+{
+	self.touch = ammo_touch;
+
+	if (self.spawnflags & WEAPON_SHOTGUN)
+	{
+		if (self.spawnflags & WEAPON_BIG)
+		{
+			precache_model ("maps/b_shell1.bsp");
+			setmodel (self, "maps/b_shell1.bsp");
+			self.aflag = 40;
+		}
+		else
+		{
+			precache_model ("maps/b_shell0.bsp");
+			setmodel (self, "maps/b_shell0.bsp");
+			self.aflag = 20;
+		}
+		self.weapon = 1;
+		self.netname = "shells";
+	}
+
+	if (self.spawnflags & WEAPON_SPIKES)
+	{
+		if (self.spawnflags & WEAPON_BIG)
+		{
+			precache_model ("maps/b_nail1.bsp");
+			setmodel (self, "maps/b_nail1.bsp");
+			self.aflag = 40;
+		}
+		else
+		{
+			precache_model ("maps/b_nail0.bsp");
+			setmodel (self, "maps/b_nail0.bsp");
+			self.aflag = 20;
+		}
+		self.weapon = 2;
+		self.netname = "spikes";
+	}
+
+	if (self.spawnflags & WEAPON_ROCKET)
+	{
+		if (self.spawnflags & WEAPON_BIG)
+		{
+			precache_model ("maps/b_rock1.bsp");
+			setmodel (self, "maps/b_rock1.bsp");
+			self.aflag = 10;
+		}
+		else
+		{
+			precache_model ("maps/b_rock0.bsp");
+			setmodel (self, "maps/b_rock0.bsp");
+			self.aflag = 5;
+		}
+		self.weapon = 3;
+		self.netname = "rockets";
+	}
+
+	setsize (self, VEC_ORIGIN, '32 32 56');
+	StartItem ();
+};
+*/

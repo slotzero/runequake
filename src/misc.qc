@@ -1,4 +1,4 @@
-// $Id: misc.qc,v 1.7 2002/05/05 00:52:28 slotzero Exp $
+// $Id: misc.qc,v 1.8 2002/05/05 22:19:10 slotzero Exp $
 
 /*QUAKED info_null (0 0.5 0) (-4 -4 -4) (4 4 4)
 Used as a positional target for spotlights, etc.
@@ -445,7 +445,6 @@ A simple entity that looks solid but lets you walk through it.
 void ()
 func_illusionary =
 {
-	return;
 	self.angles	= VEC_ORIGIN;
 	self.movetype	= MOVETYPE_NONE;
 	self.solid	= SOLID_NOT;
@@ -491,7 +490,7 @@ ambient_sound =
 
 /*QUAKED ambient_* (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
 */
-	
+
 void () ambient_comp_hum	= { ambient_sound ("ambience/comp1.wav", 1); };
 void () ambient_drip		= { ambient_sound ("ambience/drip1.wav", 0.5); };
 void () ambient_drone		= { ambient_sound ("ambience/drone6.wav", 0.5);	};
