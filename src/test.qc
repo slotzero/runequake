@@ -1,4 +1,4 @@
-// $Id: test.qc,v 1.2 2002/02/25 21:23:18 slotzero Exp $
+// $Id: test.qc,v 1.3 2002/04/25 06:42:03 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -53,6 +53,18 @@ misc_noisemaker =
 
 	self.nextthink = time + TICK + random ();
 	self.think = noise_think;
+};
+
+/* QUAKED noclass (0 0 0) (-8 -8 -8) (8 8 8)
+prints a warning message when spawned
+*/
+void ()
+noclass =
+{
+	dprint ("noclass spawned at");
+	dprint (vtos (self.origin));
+	dprint ("\n");
+	remove (self);
 };
 
 /*~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>

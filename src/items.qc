@@ -1,4 +1,4 @@
-// $Id: items.qc,v 1.1 2002/02/21 21:47:53 slotzero Exp $
+// $Id: items.qc,v 1.2 2002/04/25 06:42:03 slotzero Exp $
 
 /* ALL LIGHTS SHOULD BE 0 1 0 IN COLOR ALL OTHER ITEMS SHOULD
 BE .8 .3 .4 IN COLOR */
@@ -11,17 +11,6 @@ SUB_regen =
 	sound (self, CHAN_VOICE, "items/itembk2.wav", 1, ATTN_NORM);	// play respawn sound
 	setorigin (self, self.origin);
 };
-
-/* QUAKED noclass (0 0 0) (-8 -8 -8) (8 8 8)
-prints a warning message when spawned
-*/
-/* void () noclass =
-{
-	dprint ("noclass spawned at");
-	dprint (vtos (self.origin));
-	dprint ("\n");
-	remove (self);
-}; */
 
 void (entity e, float chan, string samp, float vol, float atten)
 item_sound =
