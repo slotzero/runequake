@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.19 2003/07/08 05:12:34 slotzero Exp $
+/*  $Id: strman.qc,v 1.20 2003/07/08 05:17:22 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -71,7 +71,7 @@ allocate_hunk =
 string (float bytes)
 allocate_string_size =
 {
-	local entity e, array;
+	local entity array;
 	local float p, i, dword;
 
 	if (bytes < 1 || bytes > 255)

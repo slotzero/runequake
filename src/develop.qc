@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.31 2003/07/08 05:12:33 slotzero Exp $
+/*  $Id: develop.qc,v 1.32 2003/07/08 05:17:22 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -110,7 +110,7 @@ string (float n)
 parse_time =
 {
 	local float hours, minutes, seconds;
-	local string x, s1, s2, s3, s4;
+	local string s1, s2, s3, s4;
 
 	seconds	= floor (n);
 	minutes	= floor (seconds / 60);
@@ -141,7 +141,7 @@ ProQuake_Version =
 {
 	local entity cl;
 	local float i, d, sum;
-	local string s1, s2, s3, s4;
+	local string s1, s2, s3;
 
 	cl = *SubInt(AddInt(PSTRING_TO_PQUAKEC, &self.netname), 4 * CL_NAME);
 	cl = *AddInt(cl[CL_NETCONNECTION], PC_TO_PQUAKEC);
