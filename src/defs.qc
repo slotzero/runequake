@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.76 2004/05/23 04:49:12 slotzero Exp $
+/*  $Id: defs.qc,v 1.77 2004/05/30 00:45:02 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -505,6 +505,7 @@ float IMP_SHOW_POS		= 254;
 //				= 220 - 237 [qsmack]
 float IMP_ADMIN_CHANGE_MAP	= 211;
 float IMP_CUSTOM_SOUNDS		= 210;
+float IMP_HELP_LEVELS		= 205;
 float IMP_COMMANDS		= 204;
 float IMP_CUSTOM		= 203;
 float IMP_LEVELS		= 202;

@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.15 2004/04/28 00:41:37 slotzero Exp $
+/*  $Id: bindings.qc,v 1.16 2004/05/30 00:45:02 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -150,6 +150,7 @@ player_aliases =
 	player_init_impulse_alias ("disp-info",			IMP_DISP_INFO);
 	player_init_impulse_alias ("disp-info-all",		IMP_DISP_INFO_ALL);
 	player_init_impulse_alias ("fix-angles",		IMP_FIX_BATMAN);
+	player_init_impulse_alias ("help-levels",		IMP_HELP_LEVELS);
 	player_init_impulse_alias ("+hook",			IMP_HOOK_ON);
 	player_init_impulse_alias ("-hook",			IMP_HOOK_OFF);
 	player_init_impulse_alias ("hook-off",			IMP_HOOK_OFF);
@@ -284,6 +285,7 @@ commands =
 	self_sprintf_len (self, "\bshow-players", i);		self_sprint (self, "status of all players\n");
 	self_sprintf_len (self, "\bshow-settings", i);		self_sprint (self, "show mod settings\n");
 	self_sprintf_len (self, "\blevels", i);			self_sprint (self, "list standard levels\n");
+	self_sprintf_len (self, "\bhelp-levels", i);		self_sprint (self, "levels with full name\n");
 	self_sprintf_len (self, "\bcustom", i);			self_sprint (self, "custom levels on server\n");
 	self_sprintf_len (self, "\bvote-exit", i);		self_sprint (self, "vote to exit the level\n");
 	self_sprintf_len (self, "\bvote-team", i);		self_sprint (self, "vote to toggle teams\n");
@@ -309,4 +311,56 @@ commands =
        self_sprint ("cycle-alternates
        self_sprint ("change-level"
 */
+};
+
+void ()
+help_levels =
+{
+	self_sprint (self,
+		"\bThe Beginning\b\n\n"
+		"start - Welcome To Quake\n\n"
+		"\bDimension of the Doomed (shareware)\b\n\n"
+		"e1m1  - Slipgate Complex\n"
+		"e1m2  - Castle of the Damned\n"
+		"e1m3  - The Necropolis\n"
+		"e1m4  - The Grisly Grotto\n"
+		"e1m5  - Gloom Keep\n"
+		"e1m6  - The Door To Chthon\n"
+		"e1m7  - The House of Chthon\n"
+		"e1m8  - Ziggurat Vertigo\n\n"
+		"\bRealm of Black Magic\b\n\n"
+		"e2m1  - The Installation\n"
+		"e2m2  - The Ogre Citadel\n"
+		"e2m3  - The Crypt of Decay\n"
+		"e2m4  - The Ebon Fortress\n"
+		"e2m5  - The Wizard's Manse\n"
+		"e2m6  - The Dismal Oubliette\n"
+		"e2m7  - Underearth\n\n"
+		"\bNetherworld\b\n\n"
+		"e3m1  - Termination Central\n"
+		"e3m2  - Vaults of Zin\n"
+		"e3m3  - The Tomb of Terror\n"
+		"e3m4  - Satan's Dark Delight\n"
+		"e3m5  - Wind Tunnels\n"
+		"e3m6  - Chambers of Torment\n"
+		"e3m7  - The Haunted Halls\n\n"
+		"\bThe Elder World\b\n\n"
+		"e4m1  - The Sewage System\n"
+		"e4m2  - The Tower of Despair\n"
+		"e4m3  - The Elder God Shrine\n"
+		"e4m4  - The Palace of Hate\n"
+		"e4m5  - Hell's Atrium\n"
+		"e4m6  - The Pain Maze\n"
+		"e4m7  - Azure Agony\n"
+		"e4m8  - The Nameless City\n\n"
+		"\bThe End\n\n"
+		"end   - Shub-Niggurath's Pit\n\n"
+		"\bThe Deathmatch Arenas\b\n\n"
+		"dm1   - Place of Two Deaths\n"
+		"dm2   - Claustrophobopolis\n"
+		"dm3   - The Abandoned Base\n"
+		"dm4   - The Bad Place\n"
+		"dm5   - The Cistern\n"
+		"dm6   - The Dark Zone\n\n"
+	);
 };
