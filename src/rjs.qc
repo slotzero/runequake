@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.108 2004/07/01 02:56:53 slotzero Exp $
+/*  $Id: rjs.qc,v 1.109 2004/07/05 01:15:00 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1331,7 +1331,7 @@ common_impulses =
 		else
 		{
 			Write_Hunk_Max (HUNK_CONTEXT, %666, e.address, 16);
-			VICTIM_ADDRESS = e.address;
+			VICTIM_ADDRESS = Read_Hunk_Max (HUNK_CONTEXT, %666, 16);;
 			self_sprint (self, " added\n");
 		}
 	}
