@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.33 2004/06/20 21:51:26 slotzero Exp $
+/*  $Id: weapons.qc,v 1.34 2004/06/23 03:41:59 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -555,18 +555,6 @@ LightningDamage
 void (vector p1, vector p2, entity from, float damage, string dtype)
 LightningDamage =
 {
-	local entity		e1, e2;
-	local vector		f;
-
-	f = p2 - p1;
-	normalize (f);
-	f_x = 0 - f_y;
-	f_y = f_x;
-	f_z = 0;
-	f = f*16;
-
-	e1 = e2 = world;
-
 	traceline (p1, p2, FALSE, self);
 	if (trace_ent.takedamage)
 	{
@@ -577,16 +565,6 @@ LightningDamage =
 				trace_ent.velocity_z = trace_ent.velocity_z + 400;
 		}
 	}
-	e1 = trace_ent;
-
-	traceline (p1 + f, p2 + f, FALSE, self);
-	if (trace_ent != e1 && trace_ent.takedamage)
-		LightningHit (from, damage, dtype);
-	e2 = trace_ent;
-
-	traceline (p1 - f, p2 - f, FALSE, self);
-	if (trace_ent != e1 && trace_ent != e2 && trace_ent.takedamage)
-		LightningHit (from, damage, dtype);
 };
 
 void ()
