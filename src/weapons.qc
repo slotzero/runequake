@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.23 2003/11/30 08:10:34 slotzero Exp $
+/*  $Id: weapons.qc,v 1.24 2003/12/01 21:59:56 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1142,7 +1142,7 @@ W_Attack =
 		if (is_alt)
 		{
 			W_MagicShotgun ();
-			t = 0.6;
+			t = 0.6 * haste_multi;
 		}
 		else
 		{
