@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.27 2003/11/26 08:58:17 slotzero Exp $
+/*  $Id: runes60.qc,v 1.28 2003/11/26 09:02:54 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -955,7 +955,7 @@ void() tornado_pull =
 		}
 			e = e.chain;
 	}
-	self.nextthink = time + sys_ticrate;
+	self.nextthink = time + 0.1;
 };
 
 void() tornado_touch =
