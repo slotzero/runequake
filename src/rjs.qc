@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.109 2004/07/05 01:15:00 slotzero Exp $
+/*  $Id: rjs.qc,v 1.110 2004/07/05 01:26:49 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1060,8 +1060,7 @@ set_viewport =
 void ()
 impulse_override_cancel =
 {
-	self.aqstate = self.aqstate
-			- self.aqstate & AQS_IMPOVER_MASK;
+	self.aqstate = self.aqstate - self.aqstate & AQS_IMPOVER_MASK;
 };
 
 void ()
@@ -1070,14 +1069,15 @@ impulse_override =
 	if (self.aqstate & AQS_IMPOVER_MASK == AQS_IMPOVER_PASSWORD)
 		admin_impulse_password ();
 
-	else if (self.aqstate & AQS_IMPOVER_MASK
-			== AQS_IMPOVER_QSMACK_PASSWORD)
+	else if (self.aqstate & AQS_IMPOVER_MASK == AQS_IMPOVER_QSMACK_PASSWORD)
 		admin_impulse_qsmack_password ();
 
 	else if (self.aqstate & AQS_IMPOVER_MASK == AQS_IMPOVER_MAP)
 		admin_impulse_map ();
 
-	// XXX This can't happen.
+	else if (self.aqstate & AQS_IMPOVER_MASK == AQS_IMPOVER_ADMIN_COMMANDS)
+		admin_impulse_commands ();
+
 	else
 		impulse_override_cancel ();
 
@@ -1331,7 +1331,7 @@ common_impulses =
 		else
 		{
 			Write_Hunk_Max (HUNK_CONTEXT, %666, e.address, 16);
-			VICTIM_ADDRESS = Read_Hunk_Max (HUNK_CONTEXT, %666, 16);;
+			VICTIM_ADDRESS = Read_Hunk_Max (HUNK_CONTEXT, %666, 16);
 			self_sprint (self, " added\n");
 		}
 	}
