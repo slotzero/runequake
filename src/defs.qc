@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.120 2004/10/11 04:18:30 slotzero Exp $
+/*  $Id: defs.qc,v 1.121 2004/10/17 02:45:34 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -854,6 +854,8 @@ float	FL_ONGROUND			= 512;	// standing on something
 float	FL_PARTIALGROUND		= 1024;	// not all corners are valid
 float	FL_WATERJUMP			= 2048;	// player jumping out of water
 float	FL_JUMPRELEASED			= 4096;	// for jump debouncing
+float	FL_HEAVY			= 8192;	// player twice as heavy (requires runequake engine)
+float	FL_LIGHT			= 16384;// player twice as light (requires runequake engine)
 
 // edict.movetype values
 float	MOVETYPE_NONE			= 0;	// never moves
