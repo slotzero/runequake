@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.2 2003/06/11 21:23:56 slotzero Exp $
+/*  $Id: hunk.qc,v 1.3 2003/06/11 23:03:20 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -69,7 +69,7 @@ Write_Hunk =
 };
 
 string (entity hunk, float bytes)
-Read_Hunk_Bytes =
+Read_Hunk_Max_e =
 {
 	local float i, pdata, dword;
 	local string data;
@@ -86,14 +86,24 @@ Read_Hunk_Bytes =
 
  	if (bytes)
 	{
-		bytes = OppInt ((4 - bytes) * %1);
+		bytes = NegInt ((4 - bytes) * %1);
 		hunk = *AddInt (&hunk, bytes);
 		pdata = AddInt (pdata, bytes);
 		(*pdata)[i] = hunk[i];
-		bytes = OppInt (bytes);
+		bytes = NegInt (bytes);
 		hunk = *AddInt (&hunk, bytes);
 		pdata = AddInt (pdata, bytes);
  	}
 
 	return (@AddInt (pdata, PQUAKEC_TO_PSTRING));
+};
+
+string (float type, float offset, float bytes)
+Read_Hunk_Max =
+{
+	local entity hunk;
+
+	hunk = Get_Hunk (type, offset);
+
+	return Read_Hunk_Max_e (hunk, bytes);
 };
