@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.36 2003/10/14 01:46:13 slotzero Exp $
+/*  $Id: client.qc,v 1.37 2003/10/18 05:11:43 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -257,6 +257,8 @@ string nextmap;
 void ()
 GotoNextMap =
 {
+	update_server_time ();
+
 	if (forced_nextmap)
 		changelevel (forced_nextmap);
 	else if (cvar ("samelevel") & 1)	// if samelevel is set, stay on same level
