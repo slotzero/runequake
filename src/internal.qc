@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.4 2002/10/11 22:05:47 slotzero Exp $
+/* $Id: internal.qc,v 1.5 2003/04/13 07:49:48 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -77,6 +77,7 @@ float QS_ADDR			;// = %4118; - might need to change this for linux/mac
 float QS_IN_ADDR		;// = %4119; - might need to change this for linux/mac
 float QS_ADDRESS		;// = %4122; - might need to change this for linux/mac
 float QS_MOD			;// = %4138; - might need to change this for linux/mac
+float QS_CLIENT_PORT		;// = %4139; - might need to change this for linux/mac
 
 float PR_VERSION		= %0;
 float PR_CRC			= %1;
@@ -137,7 +138,8 @@ string hex = "0":"1":"2":"3":"4":"5":"6":"7":"8":"9":"a":"b":"c":"d":"e":"f";
 //
 //  H E X  1 6
 //
-void (float i) hex16 =
+void (float i)
+hex16 =
 {
 	local float d;
 	d = floor(i / 4096);
@@ -154,7 +156,8 @@ void (float i) hex16 =
 //
 //  H E X  3 2
 //
-void (float i) hex32 =
+void (float i)
+hex32 =
 {
 	local float high, low;
 
@@ -184,7 +187,8 @@ void (float i) hex32 =
 //
 //  A D D  I N T
 //
-float (float a, float b) AddInt =
+float (float a, float b)
+AddInt =
 {
 	local vector va, vb, sum;
 
@@ -214,7 +218,8 @@ float (float a, float b) AddInt =
 //
 //  S U B  I N T
 //
-float (float a, float b) SubInt =
+float (float a, float b)
+SubInt =
 {
 	local vector va, vb, sum;
 
@@ -252,7 +257,8 @@ float (float a, float b) SubInt =
 //
 //  N E G  I N T
 //
-float (float a) NegInt =
+float (float a)
+NegInt =
 {
 	local float high, low;
 
@@ -283,7 +289,8 @@ float (float a) NegInt =
 //
 //  Print out the name of a function given a pointer to the function
 //
-void (float f) fnstring =
+void (float f)
+fnstring =
 {
 	local float p;
 
@@ -298,7 +305,8 @@ void (float f) fnstring =
 //
 //  Copy the source string to the destination string
 //
-void (string dst, string src) strcpy =
+void (string dst, string src)
+strcpy =
 {
 	local float data, cursize;
 
@@ -320,7 +328,8 @@ void (string dst, string src) strcpy =
 //
 //  I N T E R N A L  I N I T
 //
-void () InternalInit =
+void ()
+InternalInit =
 {
 	local float p, p2;
 
@@ -378,6 +387,7 @@ void () InternalInit =
 		QS_IN_ADDR		= %4119;
 		QS_ADDRESS		= %4122;
 		QS_MOD			= %4138;
+		QS_CLIENT_PORT		= %4139;
 	}
 	else
 	{
@@ -401,6 +411,7 @@ void () InternalInit =
 		QS_IN_ADDR		= %4118;
 		QS_ADDRESS		= %4121;
 		QS_MOD			= %4137;
+		QS_CLIENT_PORT		= %4138;
 	}
 };
 
@@ -417,12 +428,14 @@ entity lasth, currh;
 string hunkname = "00000000";
 string prevname = "00000001";
 
-void () InitHunkSearch =
+void ()
+InitHunkSearch =
 {
 	lasth = currh = *AddInt(&progs, %-16);
 };
 
-void (float h) GetHunkName =
+void (float h)
+GetHunkName =
 {
 	local float p, p2;
 	p = AddInt(&hunkname, PSTRING_TO_PQUAKEC);
@@ -433,7 +446,8 @@ void (float h) GetHunkName =
 	(*p)[%1] = (*h)[%3];
 };
 
-float (float h) PrintHunk =
+float (float h)
+PrintHunk =
 {
 	local float samecount;
 	local float samesize;
@@ -471,7 +485,8 @@ float (float h) PrintHunk =
 	return FALSE;
 };
 
-void () SearchHunk =
+void ()
+SearchHunk =
 {
 	local float i;
 	local string hname = "XXXXXXXX";

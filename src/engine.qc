@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.7 2002/10/14 18:57:04 slotzero Exp $
+/*  MERGE COMPLETE [COMPLICATIONS EXPECTED]
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -175,20 +175,10 @@ create_te_spike =
 {
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, type);
-	WriteCoord (MSG_BROADCAST, self.origin_x);
-	WriteCoord (MSG_BROADCAST, self.origin_y);
-	WriteCoord (MSG_BROADCAST, self.origin_z);
+	WriteCoord (MSG_BROADCAST, o_x);
+	WriteCoord (MSG_BROADCAST, o_y);
+	WriteCoord (MSG_BROADCAST, o_z);
 	multicast (self.origin, MULTICAST_PHS);
-};
-
-void (float s, float e)
-write_cdtrack =
-{
-	WriteByte (MSG_ALL, SVC_CDTRACK);
-	WriteByte (MSG_ALL, s);
-	IN_POQ([-
-		WriteByte (MSG_ALL, e);
-	-])
 };
 
 void (entity e)

@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.21 2002/10/14 18:57:06 slotzero Exp $
+/*  MERGE COMPLETE
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 

@@ -1,6 +1,6 @@
-/*  $Id: hook.qc,v 1.5 2002/10/14 18:57:06 slotzero Exp $
+/*  MERGE COMPLETE
 
-    Copyright (C) 1998, 1988  Jared 'KnyteHawkk' Larsen.
+    Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -366,4 +366,98 @@ HookToggle =
 		HookOff ();
 	else
 		HookOn ();
+};
+
+float (float type)
+hook_type_to_bit =
+{
+	if (type == 1)
+		return T1_FREE_HOOK;
+	else if (type == 2)
+		return T1_LITHIUM_HOOK;
+	else
+		return T1_HOOK_MASK;
+};
+
+float (float bit)
+hook_bit_to_type =
+{
+	if (bit & T1_HOOK_MASK == T1_FREE_HOOK)
+		return 1;
+	else if (bit & T1_HOOK_MASK == T1_LITHIUM_HOOK)
+		return 2;
+	else
+		return -1;
+};
+
+void (float new_bit)
+change_hook_mode =
+{
+	local entity e;
+	local float curr_type, new_type, old_temp1;
+	local string s;
+
+	curr_type = hook_bit_to_type (temp1);
+	new_type = hook_bit_to_type (new_bit);
+
+	if (curr_type == new_type)
+		return;
+
+	old_temp1 = temp1;
+
+	if (new_type != 2)
+	{
+		if (temp1 & T1_LITHIUM_HOOK)
+			temp1 = temp1 - temp1 & T1_LITHIUM_HOOK;
+	}
+        if (new_type != 1)
+	{
+		if (temp1 & T1_FREE_HOOK)
+			temp1 = temp1 - temp1 & T1_FREE_HOOK;
+	}
+
+	new_bit = hook_type_to_bit (new_type);
+	if (new_type > 0 && !temp1 & new_bit)
+		temp1 = temp1 | new_bit;
+
+	if (old_temp1 != temp1)
+	{
+		dprint ("new_temp1(");
+		dprint_float (temp1);
+		dprint (")\n");
+
+		s = ftos (temp1);
+		cvar_set ("temp1", s);
+
+		// Remove the vote bit from all players.
+		e = find (world, classname, "player");
+		while (e)
+		{
+			e.aqflags = e.aqflags - e.aqflags & AQ_VOTE_HOOK;
+			e = find (e, classname, "player");
+		}
+	}
+};
+
+void (float force_type)
+toggle_hook_mode =
+{
+	local float curr_type, wanted_type, wanted_bit;
+
+	curr_type		= hook_bit_to_type (temp1);
+	if (force_type)
+		wanted_type	= force_type;
+	else
+		wanted_type	= hook_bit_to_type (VOTE_HOOK_MODE);
+
+	if (force_type && curr_type == wanted_type)
+		return;
+	if (wanted_type <= 0)
+		wanted_type = 1;
+
+	wanted_bit		= hook_type_to_bit (wanted_type);
+	if (curr_type > 0)
+		change_hook_mode (T1_HOOK_MASK);
+	else
+		change_hook_mode (wanted_bit);
 };
