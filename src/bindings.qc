@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.4 2003/11/01 01:42:52 slotzero Exp $
+/*  $Id: bindings.qc,v 1.5 2003/11/01 18:22:33 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -89,16 +89,32 @@ player_bindings_think =
 
 	os = self;
 	self = self.owner;
-	self_sprint (self, "Sending player bindings\n");
-	player_aliases ();
-	// XXX Move this message to settings.qc.
-	if (MAP_IS_CUSTOM)
+	if (os.runevar)
 	{
-		self_sprint (self, "\nDon't have the map?\n");
-		self_sprint (self, "\nDownload from \bwww.runequake.com\b\n");
+		custom_aliases ();
+
+		// XXX I want to put this in settings.qc, but I'm thinking this can be done
+		// more effeciently with internals.qc or just modified the engine.
+		if (MAP_IS_CUSTOM)
+		{
+			self_sprint (self, "\nDon't have the map?\n");
+			self_sprint (self, "\nDownload from \bwww.runequake.com\b\n");
+		}
+	}
+	else
+	{
+		self_sprint (self, "Sending standard bindings\n");
+		player_aliases ();
 	}
 	self = os;
-	remove (self);
+
+	if (self.runevar || !total_customs ())
+		remove (self);
+	else
+	{
+		self.runevar = 1;
+		self.nextthink = time + 2;
+	}
 };
 
 void ()
@@ -108,6 +124,7 @@ spawn_player_bindings =
 
 	e		= spawn ();
 	e.owner		= self;
+	e.runevar	= 0;
 	e.think		= player_bindings_think;
 	e.nextthink	= time + 2;
 };
@@ -238,5 +255,6 @@ console_aliases =
 	console_init_cvar_alias ("levels",		"skill",	SKILL_LEVELS);
 
 	level_aliases ();
+	custom_aliases ();
 	custom_maps ();
 };
