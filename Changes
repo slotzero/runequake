@@ -1,4 +1,4 @@
-$Id: Changes,v 1.78 2004/11/28 01:11:16 slotzero Exp $
+$Id: Changes,v 1.79 2004/12/26 06:01:12 slotzero Exp $
 
 ideas... user allow map via the console (PK)
 armor piercing throug shield (suggestion by Mental-D Nygma)
@@ -20,6 +20,12 @@ i need to improve phased so that looking down slightly won't create error.
 
 latest changes:
 
+vote commands on diff impulse allowing 255 vote options
+weirdness to shamblers + zombies
+vote-team really fixed in quakeworld
+remove-frags will remove negative frags if observer
+ice traps don't stick you into another player
+anti-pack not updating weapon when current was alternate and removed
 fire walking doesn't damage you in low levels of lava
 hook activates buttons (zop)
 shootphobia no longer allows you to throw hook
