@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.13 2004/07/20 12:27:59 slotzero Exp $
+/*  $Id: toggle.qc,v 1.14 2004/12/27 03:36:34 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -176,4 +176,10 @@ void ()
 setshields =
 {
 	NO_SPAWN_SHIELDS = fput (HUNK_NO_SPAWN_SHIELDS, !NO_SPAWN_SHIELDS);
+};
+
+void ()
+sethookdamage =
+{
+	NO_HOOK_DAMAGE = fput (HUNK_NO_HOOK_DAMAGE, !NO_HOOK_DAMAGE);
 };

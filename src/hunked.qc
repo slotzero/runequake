@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.24 2004/12/25 02:30:08 slotzero Exp $
+/*  $Id: hunked.qc,v 1.25 2004/12/27 03:36:34 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -24,15 +24,16 @@
 float LAST_TIME_UPDATE;
 float HUNK_SERVER_TIME		= %10;
 float HUNK_CLIENT_DISCONNECT	= %100;
-float HUNK_NO_QUAD		= %1010;
-float HUNK_NO_PENT		= %1011;
-float HUNK_NO_RING		= %1012;
-float HUNK_NO_SUIT		= %1013;
-float HUNK_NO_ARMOR		= %1014;
-float HUNK_ROTATE		= %1015;
-float HUNK_NO_RUNES		= %1016;
-float HUNK_NO_ALT_WEAPONS	= %1017;
-float HUNK_NO_SPAWN_SHIELDS	= %1018;
+float HUNK_NO_QUAD		= %1008;
+float HUNK_NO_PENT		= %1009;
+float HUNK_NO_RING		= %1010;
+float HUNK_NO_SUIT		= %1011;
+float HUNK_NO_ARMOR		= %1012;
+float HUNK_ROTATE		= %1013;
+float HUNK_NO_RUNES		= %1014;
+float HUNK_NO_ALT_WEAPONS	= %1015;
+float HUNK_NO_SPAWN_SHIELDS	= %1016;
+float HUNK_NO_HOOK_DAMAGE	= %1017;
 
 float ()
 server_time =
@@ -240,24 +241,16 @@ fput =
 
 	s = ftos (value);
 
-	if (*offset == *HUNK_NO_QUAD)
-		cvar_set_infokey ("NO_QUAD", s);
-	else if (*offset == *HUNK_NO_PENT)
-		cvar_set_infokey ("NO_PENT", s);
-	else if (*offset == *HUNK_NO_RING)
-		cvar_set_infokey ("NO_RING", s);
-	else if (*offset == *HUNK_NO_SUIT)
-		cvar_set_infokey ("NO_SUIT", s);
-	else if (*offset == *HUNK_NO_ARMOR)
-		cvar_set_infokey ("NO_ARMOR", s);
-	else if (*offset == *HUNK_ROTATE)
-		cvar_set_infokey ("ROTATE", s);
-	else if (*offset == *HUNK_NO_RUNES)
-		cvar_set_infokey ("NO_RUNES", s);
-	else if (*offset == *HUNK_NO_ALT_WEAPONS)
-		cvar_set_infokey ("NO_ALT_WEAPONS", s);
-	else if (*offset == *HUNK_NO_SPAWN_SHIELDS)
-		cvar_set_infokey ("NO_SPAWN_SHIELDS", s);
+	if	(*offset == *HUNK_NO_QUAD)		cvar_set_infokey ("NO_QUAD",		s);
+	else if (*offset == *HUNK_NO_PENT)		cvar_set_infokey ("NO_PENT",		s);
+	else if (*offset == *HUNK_NO_RING)		cvar_set_infokey ("NO_RING",		s);
+	else if (*offset == *HUNK_NO_SUIT)		cvar_set_infokey ("NO_SUIT",		s);
+	else if (*offset == *HUNK_NO_ARMOR)		cvar_set_infokey ("NO_ARMOR",		s);
+	else if (*offset == *HUNK_ROTATE)		cvar_set_infokey ("ROTATE",		s);
+	else if (*offset == *HUNK_NO_RUNES)		cvar_set_infokey ("NO_RUNES",		s);
+	else if (*offset == *HUNK_NO_ALT_WEAPONS)	cvar_set_infokey ("NO_ALT_WEAPONS",	s);
+	else if (*offset == *HUNK_NO_SPAWN_SHIELDS)	cvar_set_infokey ("NO_SPAWN_SHIELDS",	s);
+	else if (*offset == *HUNK_NO_HOOK_DAMAGE)	cvar_set_infokey ("HO_HOOK_DAMAGE",	s);
 
 	return value;
 };
@@ -268,24 +261,16 @@ fget =
 	local float i;
 	if (0) default = default; // frikqcc
 
-	if (*offset == *HUNK_NO_QUAD)
-		i = NO_QUAD = cvar_infokey ("NO_QUAD");
-	else if (*offset == *HUNK_NO_PENT)
-		i = NO_PENT = cvar_infokey ("NO_PENT");
-	else if (*offset == *HUNK_NO_RING)
-		i = NO_RING = cvar_infokey ("NO_RING");
-	else if (*offset == *HUNK_NO_SUIT)
-		i = NO_SUIT = cvar_infokey ("NO_SUIT");
-	else if (*offset == *HUNK_NO_ARMOR)
-		i = NO_ARMOR = cvar_infokey ("NO_ARMOR");
-	else if (*offset == *HUNK_ROTATE)
-		i = ROTATE = cvar_infokey ("ROTATE");
-	else if (*offset == *HUNK_NO_RUNES)
-		i = NO_RUNES = cvar_infokey ("NO_RUNES");
-	else if (*offset == *HUNK_NO_ALT_WEAPONS)
-		i = NO_ALT_WEAPONS = cvar_infokey ("NO_ALT_WEAPONS");
-	else if (*offset == *HUNK_NO_SPAWN_SHIELDS)
-		i = NO_SPAWN_SHIELDS = cvar_infokey ("NO_SPAWN_SHIELDS");
+	if	(*offset == *HUNK_NO_QUAD)		i = NO_QUAD		= cvar_infokey ("NO_QUAD");
+	else if (*offset == *HUNK_NO_PENT)		i = NO_PENT		= cvar_infokey ("NO_PENT");
+	else if (*offset == *HUNK_NO_RING)		i = NO_RING		= cvar_infokey ("NO_RING");
+	else if (*offset == *HUNK_NO_SUIT)		i = NO_SUIT		= cvar_infokey ("NO_SUIT");
+	else if (*offset == *HUNK_NO_ARMOR)		i = NO_ARMOR		= cvar_infokey ("NO_ARMOR");
+	else if (*offset == *HUNK_ROTATE)		i = ROTATE		= cvar_infokey ("ROTATE");
+	else if (*offset == *HUNK_NO_RUNES)		i = NO_RUNES		= cvar_infokey ("NO_RUNES");
+	else if (*offset == *HUNK_NO_ALT_WEAPONS)	i = NO_ALT_WEAPONS	= cvar_infokey ("NO_ALT_WEAPONS");
+	else if (*offset == *HUNK_NO_SPAWN_SHIELDS)	i = NO_SPAWN_SHIELDS	= cvar_infokey ("NO_SPAWN_SHIELDS");
+	else if (*offset == *HUNK_NO_HOOK_DAMAGE)	i = NO_HOOK_DAMAGE	= cvar_infokey ("NO_HOOK_DAMAGE");
 
 	return i;
 };
@@ -327,6 +312,7 @@ Hunk_Settings =
 	NO_RUNES		= fget (HUNK_NO_RUNES,		0);
 	NO_ALT_WEAPONS		= fget (HUNK_NO_ALT_WEAPONS,	0);
 	NO_SPAWN_SHIELDS	= fget (HUNK_NO_SPAWN_SHIELDS,	0);
+	NO_HOOK_DAMAGE		= fget (HUNK_NO_HOOK_DAMAGE,	0);
 
 	set_runemax ();
 };

@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.49 2004/12/26 05:08:44 slotzero Exp $
+/*  $Id: bindings.qc,v 1.50 2004/12/27 03:36:34 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -269,6 +269,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-armor",		IMP_VOTE_ARMOR);
 	player_vote_impulse_alias ("vote-exit",			IMP_VOTE_EXIT);
 	player_vote_impulse_alias ("vote-free",			IMP_VOTE_FREE);
+	player_vote_impulse_alias ("vote-hook-damage",		IMP_VOTE_HOOK_DAMAGE);
 	player_vote_impulse_alias ("vote-lithium",		IMP_VOTE_LITHIUM);
 	player_vote_impulse_alias ("vote-normal",		IMP_VOTE_NORMAL);
 	player_vote_impulse_alias ("vote-pent",			IMP_VOTE_PENT);

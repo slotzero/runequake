@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.43 2004/12/26 05:08:44 slotzero Exp $
+/*  $Id: vote.qc,v 1.44 2004/12/27 03:36:34 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -43,7 +43,7 @@ void ()
 vote_impulse_commands =
 {
 	// XXX I hard coded the vote impulses to reduce the amount of impulse checks
-	if (self.impulse >= 1 && self.impulse <= 16)
+	if (self.impulse >= 1 && self.impulse <= 17)
 		vote ();
 
 	impulse_override_cancel ();
@@ -617,6 +617,27 @@ vote =
 			if (!cancel)
 				self_sprint (self, "Spawn shields voting disabled\n");
 			cancel = 1;
+		}
+	}
+	else if (self.impulse == IMP_VOTE_HOOK_DAMAGE)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= sethookdamage;
+		e.noise2	= " hook damage ";
+
+		if (NO_HOOK_DAMAGE)
+			e.noise1	= "enable";
+		else
+			e.noise1	= "disable";
+
+		i = hook_type (temp1);
+		if ((i == 1 && !HOOK_DAMAGE_FREE)
+				|| (i == 2 && !HOOK_DAMAGE_LITHIUM)
+				|| (!i && !HOOK_DAMAGE_RUNE))
+		{
+			if (!cancel)
+				self_sprint (self, "Hook damage for this type of hook is disabled\n");
 		}
 	}
 	else
