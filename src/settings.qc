@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.29 2004/02/21 08:06:20 slotzero Exp $
+/*  $Id: settings.qc,v 1.30 2004/04/05 00:31:37 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -414,10 +414,10 @@ float HOOK_MAX_CHAIN_LEN	= 1600;
 // Various other hook constants.
 
 float HOOK_TRAVEL_SPEED		= 2500;
-float HOOK_LINK_COUNT		= 8;
+float HOOK_LINK_COUNT		= 6;
 
-// Release hook when weapon fires.  Set this value to anything other than
-// zero to enable.
+// Release hook when weapon fires or attaches to a surface too long.  Set this value
+// to anything other than zero to enable.
 
 float HOOK_CAMP_PROT		= 0;
 

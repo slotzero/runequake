@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.67 2004/03/01 01:27:48 slotzero Exp $
+/*  $Id: defs.qc,v 1.68 2004/04/05 00:31:37 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1381,3 +1381,5 @@ void	(vector where, float set)		multicast	= #82; // sends the temp message to a 
 float	vote_exit_time;
 float	vote_team_time;
 float	vote_hook_time;
+
+.float	drop_hook;

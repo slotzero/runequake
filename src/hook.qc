@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.13 2004/03/09 23:06:00 slotzero Exp $
+/*  $Id: hook.qc,v 1.14 2004/04/05 00:31:37 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -90,6 +90,12 @@ MaybeDropHook =
 	// player picked up ep suit/rune
 	else if (environmental (self.enemy))
 		dropit = 1;
+
+	if (HOOK_CAMP_PROT)
+	{
+		if (self.drop_hook && self.drop_hook < time)
+			dropit = 1;
+	}
 
 	if (dropit)
 		DropHook ();
@@ -225,6 +231,7 @@ HookTouch =
 	{
 		sound (self, CHAN_AUTO, "player/axhit2.wav", 1, ATTN_NORM);
 		self.avelocity = VEC_ORIGIN;
+		self.drop_hook = time + 1;
 	}
 
 	if (other.takedamage)
