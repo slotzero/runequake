@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.9 2003/06/01 07:58:35 slotzero Exp $
+/*  $Id: develop.qc,v 1.10 2003/06/01 08:51:18 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -38,6 +38,20 @@ Read_Hunk =
 	}
 
 	return @AddInt(AddInt(&hunk, 4 * offset), PQUAKEC_TO_PSTRING);
+};
+
+void (float type, float offset, string s)
+Write_Hunk =
+{
+	local entity hunk;
+	local string temp;
+
+	hunk = *AddInt(AddInt(&progs, %-16), type);
+	if (*hunk[%0] != *HUNK_SENTINAL)
+		dprint ("Write_Hunk(): hunk != HUNK_SENTINAL\n");
+
+	temp = @AddInt(AddInt(&hunk, 4 * offset), PQUAKEC_TO_PSTRING);
+	strcpy (temp, s);
 };
 
 void (float n)
