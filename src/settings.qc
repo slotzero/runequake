@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.12 2002/10/11 22:05:52 slotzero Exp $
+/*  $Id: settings.qc,v 1.13 2002/10/14 18:57:11 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -64,62 +64,70 @@ float QSMACK_IMPULSE_3		= 0;
 float QSMACK_IMPULSE_4		= 0;
 float QSMACK_IMPULSE_5		= 0;
 
-// You can configure the server so that it forwards players to
-// another server when the game is full.  Set the maximum size
-// of the game and the destination here.  Players who type in
-// the admin code can connect to the game even though it is
-// full.
-//
-// You have to allow more than this number of people into the
-// game so that they can connect and be forwarded, though.
-// That is, if you want to limit your local game to 8 players,
-// you have to allow at least 9 players to connect, otherwise
-// they'll just get a "server full" message.  It's best to
-// allow a few extra slots so several people can be forwarded
-// at once, and so that it still works if an admin connects and
-// so temporarily puts the game over limit.
-//
-// Note that due to a bug in Quake if the other server is using
-// a port other than 26000 you have to use an IP adress rather
-// than a host name.  In that case specify the destination as
-// something like `192.168.23.42:26001'.  You might want to use
-// an IP address rather than a host name regardless, so this
-// will work for people who don't have their resolver configured
-// properly (bletch).
+// This function is used to initialize string variables.  (A bug in
+// Quake prevents initializing them in the normal fashion.)
 
-float FORWARD_MAX_PLAYERS	= 0; // 0 = disabled
-string FORWARD_DEST		= IN_POQ("quake.runequake.com", "qw.runequake.com");
-string FORWARD_NAME		= "Rune Quake Development Server";
+void ()
+string_init =
+{
 
-// This is the name of a config file which the server will run
-// at the start of every level.  It's okay if this is defined
-// but the file doesn't exist.  If you want to turn it off
-// anyway, set it to string_null (no quotes).
+	// You can configure the server so that it forwards players to
+	// another server when the game is full.  Set the maximum size
+	// of the game and the destination here.  Players who type in
+	// the admin code can connect to the game even though it is
+	// full.
+	//
+	// You have to allow more than this number of people into the
+	// game so that they can connect and be forwarded, though.
+	// That is, if you want to limit your local game to 8 players,
+	// you have to allow at least 9 players to connect, otherwise
+	// they'll just get a "server full" message.  It's best to
+	// allow a few extra slots so several people can be forwarded
+	// at once, and so that it still works if an admin connects and
+	// so temporarily puts the game over limit.
+	//
+	// Note that due to a bug in Quake if the other server is using
+	// a port other than 26000 you have to use an IP adress rather
+	// than a host name.  In that case specify the destination as
+	// something like `192.168.23.42:26001'.  You might want to use
+	// an IP address rather than a host name regardless, so this
+	// will work for people who don't have their resolver configured
+	// properly (bletch).
 
-string START_LEVEL_EXEC		= "startlevel.cfg";
+	FORWARD_MAX_PLAYERS	= 0; // 0 = disabled
+	FORWARD_DEST		= IN_POQ("quake.runequake.com", "qw.runequake.com");
+	FORWARD_NAME		= "Rune Quake Development Server";
 
-// You can modify the splash screen users see when they connect
-// to the server via these variables.  A lot of people like to
-// put the server's name and the server op's email address here.
-//
-// You can have up to 7 lines of text with up to 40 characters
-// on each line.  If you use more lines than that players who
-// use the default screen size (320x200) won't see some of the
-// info.
-//
-// Use "\n" to start a new line.  If you don't do this the game
-// will wrap your text for you.
-//
-// Eg:
-//     SPLASH_1 = "Welcome to Mojo World!\n\n";
-//     SPLASH_2 = "http://quake.mojo.com\n\n";
-//     SPLASH_3 = "Server admin is quake@mojo.com\n\n";
-//     SPLASH_4 = "Let's be careful out there\n";
+	// This is the name of a config file which the server will run
+	// at the start of every level.  It's okay if this is defined
+	// but the file doesn't exist.  If you want to turn it off
+	// anyway, set it to string_null (no quotes).
 
-string SPLASH_1			= "\nInstructions are right\n";
-string SPLASH_2			= "here via the menu and at\n";
-string SPLASH_3			= "\n";
-string SPLASH_4			= "\bwww.runequake.com\b\n";
+	START_LEVEL_EXEC	= "startlevel.cfg";
+
+	// You can modify the splash screen users see when they connect
+	// to the server via these variables.  A lot of people like to
+	// put the server's name and the server op's email address here.
+	//
+	// You can have up to 7 lines of text with up to 40 characters
+	// on each line.  If you use more lines than that players who
+	// use the default screen size (320x200) won't see some of the
+	// info.
+	//
+	// Use "\n" to start a new line.  If you don't do this the game
+	// will wrap your text for you.
+	//
+	// Eg:
+	//     SPLASH_1 = "Welcome to Mojo World!\n\n";
+	//     SPLASH_2 = "http://quake.mojo.com\n\n";
+	//     SPLASH_3 = "Server admin is quake@mojo.com\n\n";
+	//     SPLASH_4 = "Let's be careful out there\n";
+
+	SPLASH_1 = "\nInstructions are right\n";
+	SPLASH_2 = "here via the menu and at\n";
+	SPLASH_3 = "\n";
+	SPLASH_4 = "χχχ®ςυξερυαλε®γον\n";
+};
 
 // This is the amount of water you can be standing in and still safely
 // use your lightning gun.  Standard Quake uses 1 (just your feet), but
@@ -356,10 +364,10 @@ float LEVEL_RECONNECT_ALLOWANCE	= 15;
 
 float SET_PARMS_WITH_NEW_LEVEL	= 0;
 
-// Timelimit countdown.  Use 1 to enable timer, 2 to enable audible timer,
+// Countdown timer.  Use 1 to enable timer, 2 to enable audible timer,
 // and 0 to disable.
 
-float TIMELIMIT_COUNTDOWN	= 0;
+float COUNTDOWN_TIMER		= 0;
 
 // If you want to display a warning message to all players when someone
 // picks up the Pentagram of Protection, Quad Damage, Ring of Shadows,
@@ -485,8 +493,6 @@ float MORTAR_TAPER		= 0.1;
 
 // Your maximum health under various circumstances.
 
-string SOUND_RUNE_PICKUP	= "buttons/switch21.wav";
-
 float MAX_HEALTH_NORMAL		= 100;
 float MAX_HEALTH_LUMBER		= 250;
 float MAX_HEALTH_GOOD_HEALTH	= 666;
@@ -578,13 +584,18 @@ float TORCH_TRAP_BURN_DURATION	= 15;
 
 float PACK_RAT_BONUS_PERCENT	= 0.33;
 
-// red, green, blue, scale
+void ()
+string_init_2 =
+{
+	// red, green, blue, scale
+	CSHIFT_BLIND		= "v_cshift 256 256 256 200\n";
+	CSHIFT_CLOAK		= "v_cshift   0   0   0  75\n";
+	CSHIFT_FREEZE		= "v_cshift  50  50 256 100\n";
+	CSHIFT_NONE		= "v_cshift   0   0   0   0\n";
+	CSHIFT_SHIELD		= "v_cshift 100 100   0 100\n";
 
-string	CSHIFT_BLIND		= "v_cshift 256 256 256 200\n";
-string	CSHIFT_CLOAK		= "v_cshift   0   0   0  75\n";
-string	CSHIFT_FREEZE		= "v_cshift  50  50 256 100\n";
-string	CSHIFT_NONE		= "v_cshift   0   0   0   0\n";
-string	CSHIFT_SHIELD		= "v_cshift 100 100   0 100\n";
+	SOUND_RUNE_PICKUP	= "buttons/switch21.wav";
+};
 
 // Good armor
 

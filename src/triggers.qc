@@ -1,4 +1,4 @@
-/*  $Id: triggers.qc,v 1.7 2002/10/11 22:05:54 slotzero Exp $
+/*  $Id: triggers.qc,v 1.8 2002/10/14 18:57:13 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 

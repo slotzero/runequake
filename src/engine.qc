@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.6 2002/10/11 22:05:46 slotzero Exp $
+/*  $Id: engine.qc,v 1.7 2002/10/14 18:57:04 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -24,10 +24,7 @@ IN_POQ([-
 void (vector where, float set)
 multicast =
 {
-	// remove frikqcc compiler warnings;
-	if (0) where = where;
-	else if (0) set = set;
-	else SUB_Null ();
+	SUB_Null ();
 };
 
 //-----------------------------------------------------------------------------
@@ -197,8 +194,6 @@ write_cdtrack =
 void (entity e)
 trackvel =
 {
-	if (0) e = e; // prevent frikqcc compiler warning
-
 	IN_QW([-
 		self.velocity = e.velocity;
 	-])
@@ -248,7 +243,6 @@ bigkick =
 			kick_size = -4;
 		self.punchangle_x = kick_size;
 	-], [-
-		if (0) kick_size = kick_size;	// prevent frikqcc compiler warning
 		msg_entity = self;
 		WriteByte (MSG_ONE, SVC_SMALLKICK);
 	-])

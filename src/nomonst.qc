@@ -1,4 +1,4 @@
-/*  $Id: nomonst.qc,v 1.2 2002/10/11 22:05:49 slotzero Exp $
+/*  $Id: nomonst.qc,v 1.3 2002/10/14 18:57:08 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 

@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.4 2002/10/11 22:05:47 slotzero Exp $
+/*  $Id: hook.qc,v 1.5 2002/10/14 18:57:06 slotzero Exp $
 
     Copyright (C) 1998, 1988  Jared 'KnyteHawkk' Larsen.
 

@@ -1,4 +1,4 @@
-#   $Id: Makefile,v 1.8 2002/10/11 23:35:51 slotzero Exp $
+#   $Id: Makefile,v 1.9 2002/10/14 18:57:00 slotzero Exp $
 
 #    Copyright (C) 1998-2001  Roderick Schertler.
 #
@@ -63,7 +63,7 @@ progs_all	:= $(foreach type,$(types),$(progs_$(type)))
 M4		:= m4
 M4FLAGS		:= --prefix-builtins
 
-base_files	:= Changes Configuring Copying Playing Todo \
+base_files	:=  Changes Configuring Copying Playing Todo \
 			aliases.cfg example.cfg gnu.txt runequake.qst
 base_files_src	:= Notes
 
@@ -149,7 +149,7 @@ $(progs_all):
 	cd $(dir_$(type)); [ ! -x $$HOME/.quake-passcode ] || \
 	    $$HOME/.quake-passcode < settings.qc.real > settings.qc
 	cd $(dir_$(type)); \
-	    frikqcc /O2 -warn 4; cp -p settings.qc.real settings.qc && exit $$ret
+	    frikqcc /O2 -warn 0; cp -p settings.qc.real settings.qc && exit $$ret
     # XXX fastqcc umask bug
 	chmod o-w $@
 	[ ! -d $$HOME/quake/runequake ] || cp $@ $$HOME/quake/runequake

@@ -1,4 +1,4 @@
-/*  $Id: burn.qc,v 1.4 2002/10/11 22:05:44 slotzero Exp $
+/*  $Id: burn.qc,v 1.5 2002/10/14 18:57:02 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 

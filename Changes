@@ -1,18 +1,10 @@
-$Id: Changes,v 1.38 2002/10/06 21:59:08 slotzero Exp $
+$Id: Changes,v 1.39 2002/10/14 18:56:56 slotzero Exp $
 
-Version 0.6  Sun Oct 06 17:49:08 EST 2002
+Version 0.6  Mon Oct 14 13:46:02 EST 2002
 
-    - Bug Fixes
-
-    - Notable Internal Changes
-
-        - The mod now compiles with no warnings on any warning level when
-          using frikqcc 2.5.  I've also changed the Makefile so that it
-          won't ignore warnings by default.
-
-        - I'm considering the implementation of internal.qc.  If I don't
-          remember to change during a snapshot, you'll at least notice
-          the file in the folder.
+    The purpose of this release is to mark the seperation (and support) of
+    the Quakeworld version of this mod.  This version will be the last
+    version where the Quake and Quakeworld sources are merged.
 
 Version 0.5.3  Sat Sep 07 09:18:36 EST 2002
 

@@ -1,4 +1,4 @@
-/*  $Id: misc.qc,v 1.14 2002/10/11 23:35:52 slotzero Exp $
+/*  $Id: misc.qc,v 1.15 2002/10/14 18:57:07 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -183,7 +183,7 @@ misc_explobox2 =
 	self.movetype	= MOVETYPE_NONE;
 	self.mdl	= "maps/b_exbox2.bsp";
 
-	precache_model (self.mdl);
+	precache_model2 (self.mdl);
 	setmodel (self, self.mdl);
 	IN_QW([-
 		setsize (self, '0 0 0', '32 32 32');
@@ -307,9 +307,9 @@ trap_spikeshooter =
 	self.use = spikeshooter_use;
 	if (self.spawnflags & SPAWNFLAG_LASER)
 	{
-		precache_model ("progs/laser.mdl");
-		precache_sound ("enforcer/enfire.wav");
-		precache_sound ("enforcer/enfstop.wav");
+		precache_model2 ("progs/laser.mdl");
+		precache_sound2 ("enforcer/enfire.wav");
+		precache_sound2 ("enforcer/enfstop.wav");
 	}
 	else
 		precache_sound ("weapons/spike2.wav");

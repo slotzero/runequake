@@ -1,4 +1,4 @@
-/*  $Id: test.qc,v 1.6 2002/10/11 23:35:53 slotzero Exp $
+/*  $Id: test.qc,v 1.7 2002/10/14 18:57:13 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -54,16 +54,16 @@ void ()
 misc_noisemaker =
 
 {
-	precache_sound ("enforcer/enfire.wav");
-	precache_sound ("enforcer/enfstop.wav");
-	precache_sound ("enforcer/sight1.wav");
-	precache_sound ("enforcer/sight2.wav");
-	precache_sound ("enforcer/sight3.wav");
-	precache_sound ("enforcer/sight4.wav");
-	precache_sound ("enforcer/pain1.wav");
-	precache_sound ("enforcer/pain2.wav");
-	precache_sound ("enforcer/death1.wav");
-	precache_sound ("enforcer/idle1.wav");
+	precache_sound2 ("enforcer/enfire.wav");
+	precache_sound2 ("enforcer/enfstop.wav");
+	precache_sound2 ("enforcer/sight1.wav");
+	precache_sound2 ("enforcer/sight2.wav");
+	precache_sound2 ("enforcer/sight3.wav");
+	precache_sound2 ("enforcer/sight4.wav");
+	precache_sound2 ("enforcer/pain1.wav");
+	precache_sound2 ("enforcer/pain2.wav");
+	precache_sound2 ("enforcer/death1.wav");
+	precache_sound2 ("enforcer/idle1.wav");
 
 	self.nextthink = time + sys_ticrate + random ();
 	self.think = noise_think;

@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.13 2002/10/11 22:05:50 slotzero Exp $
+/*  $Id: observer.qc,v 1.14 2002/10/14 18:57:08 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -608,7 +608,7 @@ obs_player_detect =
 					{
 						s = string_null;
 						s1 = wanted.netname;
-						s2 = Rune_Tell_real (0, wanted.runetype, 0, 2);
+						s2 = Rune_Description (wanted.runetype, 1);
 						if (s2 == "No Rune")
 							s2 = string_null;
 					}

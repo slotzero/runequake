@@ -1,4 +1,4 @@
-/*  $Id: zombie.qc,v 1.8 2002/10/11 22:05:55 slotzero Exp $
+/*  $Id: zombie.qc,v 1.9 2002/10/14 18:57:14 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -577,15 +577,13 @@ zombie_pain =
 {
 	local float r;
 
-	if (0) attacker = attacker; 	// prevent frikqcc compiler warning
-
-	self.health = self.max_health;	// allways reset health
+	self.health = self.max_health;		// allways reset health
 
 	if (take < 9)
-		return;	// totally ignore
+		return;				// totally ignore
 
 	if (self.inpain == 2)
-		return;	// down on ground, so don't reset any counters
+		return;			// down on ground, so don't reset any counters
 
 	if (self.classname == "zombie_camper")
 	{

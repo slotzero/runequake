@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.42 2002/10/11 22:05:51 slotzero Exp $
+/*  $Id: rjs.qc,v 1.43 2002/10/14 18:57:10 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -17,21 +17,27 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-void ()
-timelimit_countdown =
+void (float timer)
+countdown_timer =
 {
-	local float timelimit_, seconds, minutes, n;
-	local string s1, s2;
+	local float timelimit, seconds, minutes, n;
+	local string s, s2, s3;
 
-	timelimit_ = cvar ("timelimit") * 60;
-	if (!timelimit_)
+	if (!timer)
+		return;
+	if (!deathmatch)
+		return;
+	if (gameover)
+		return;
+	timelimit = cvar ("timelimit") * 60;
+	if (!timelimit)
 		return;
 
-	seconds = ceil (timelimit_ - time);
+	seconds = ceil (timelimit - time);
 	minutes = ceil (seconds / 60);
 
 	n = 1;
-	s2 = "s";
+	s3 = "s";
 
 	if ((minutes == 25 || minutes == 20 || minutes == 15 || minutes == 10
 			|| minutes == 5) && countdown != minutes)
@@ -39,7 +45,7 @@ timelimit_countdown =
 	else if (minutes == 1 && countdown != minutes && seconds >= 60)
 	{
 		countdown = minutes;
-		s2 = "";
+		s3 = "";
 	}
 	else if ((seconds == 30 || seconds == 15 || seconds == 5)
 			&& countdown != seconds)
@@ -49,18 +55,19 @@ timelimit_countdown =
 
 	if (n)
 	{
+		s = ftos (countdown);
 		if (seconds < 60)
-			s1 = " second";
+			s2 = " second";
 		else
-			s1 = " minute";
+			s2 = " minute";
 
 		bprint (" ");
-		bprint_float (countdown);
-		bprint (s1);
+		bprint (s);
 		bprint (s2);
+		bprint (s3);
 		bprint (" remaining\n");
 
-		if (TIMELIMIT_COUNTDOWN == 2)
+		if (timer == 2)
 			sound (self, CHAN_BODY, "misc/talk.wav", 1, ATTN_NONE);
 	}
 };
@@ -98,21 +105,6 @@ self_sound =
 };
 
 void (string samp)
-admin_sound =
-{
-	local entity e;
-
-	e = find (world, classname, "player");
-	while (e)
-	{
-		if (is_admin_e (e))
-			self_sound (e, samp);
-
-		e = find (e, classname, "player");
-	}
-};
-
-void (string samp)
 observer_sound =
 {
 	local entity e;
@@ -120,7 +112,12 @@ observer_sound =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		if (is_observer_e (e))
+		// XXX I check for null name here because qsmack
+		// rejects play as a valid command.  I should add
+		// a bit setting to aqflags to distinguish qsmack
+		// init_* from the manual self.impulses.
+
+		if (is_observer_e (e) && e.netname != string_null)
 			self_sound (e, samp);
 
 		e = find (e, classname, "player");
@@ -234,6 +231,8 @@ rjs_worldspawn =
 
 	set_version ();
 	sys_ticrate = cvar ("sys_ticrate");
+	string_init ();
+	string_init_2 ();
 	vote_counter_spawn ();
 	frag_init ();
 	orig_serverflags = serverflags;
@@ -275,9 +274,7 @@ process_cvars =
 	noexit = cvar_infokey ("noexit");
 	i = noexit & NOEXIT_FORWARD_MASK;
 	if (i)
-		FORWARD_MAX_PLAYERS_REAL = i / NOEXIT_FORWARD_MULT;
-	else
-		FORWARD_MAX_PLAYERS_REAL = FORWARD_MAX_PLAYERS;
+		FORWARD_MAX_PLAYERS = i / NOEXIT_FORWARD_MULT;
 
 	temp1 = cvar_infokey ("temp1");
 	runemax = temp1 & T1_NRUNES_MASK;
@@ -1207,7 +1204,6 @@ set_viewport =
 		//WriteAngle (MSG_ONE, targ.angles_y);
 		//WriteAngle (MSG_ONE, targ.angles_z);
 	-], [-
-		if (0) targ = targ;	// prevent frikqcc compiler warning
 		SUB_Null ();
 	-])
 };
@@ -1497,9 +1493,9 @@ player_init_switchfire_alias =
 void ()
 player_init =
 {
-	local entity e;
 	local float i;
 	local string s;
+	local entity e;
 
 	player_init_impulse_alias ("admin-toggle",	IMP_ADMIN_TOGGLE);
 	player_init_impulse_alias ("best-weapon",	IMP_BEST_WEAPON);
@@ -1561,10 +1557,10 @@ player_init =
 	aq_menu_set (AQS_MENU_SPLASH);
 
 	i = 0;
-	if (FORWARD_MAX_PLAYERS_REAL > 0)
+	if (FORWARD_MAX_PLAYERS > 0)
 	{
 		i = count_players_by_ent ();
-		if (i <= FORWARD_MAX_PLAYERS_REAL)
+		if (i <= FORWARD_MAX_PLAYERS)
 			i = 0;
 	}
 	if (i)
@@ -1814,7 +1810,7 @@ show_settings =
 	self_sprint (self, "\n  randomize      ");	self_sprint_boolean (self, noexit & NOEXIT_RANDOMIZE);
 	self_sprint (self, "  no dm loop  ");		self_sprint_boolean (self, noexit & NOEXIT_DM_NO_LOOP);
 	self_sprint (self, "\n  samelevel      ");	self_sprint_boolean (self, i & 1);
-	self_sprint (self, "  forward max ");		self_sprint_float (self, FORWARD_MAX_PLAYERS_REAL);
+	self_sprint (self, "  forward max ");		self_sprint_float (self, FORWARD_MAX_PLAYERS);
 	self_sprint (self, "\n");
 
 	self_sprint (self, "Teamplay:");
@@ -2578,7 +2574,7 @@ draw_hud =
 			willdrop = "Ä";
 		else
 			willdrop = " ";
-		runedesc = Rune_Tell_real (0, self.runetype, 0, 2);
+		runedesc = Rune_Description (self.runetype, 0);
 		in_hud_hack = 1;
 		centerprint6 (self, "\n\n\n\n\n\n\n\n\n\n\n\n",
 			weap, "                 ",
@@ -2933,7 +2929,7 @@ Rune_Tell =
 	// If this is a simple "no rune" message, don't refresh it.
 	if (!type && !also_hook)
 	{
-		Rune_Tell_real (riders, type, also_hook, 0);
+		Rune_Tell_real (riders, type, also_hook);
 		rune_tell_stop (1);
 		return;
 	}
@@ -2957,7 +2953,7 @@ rune_tell_refresh =
 	in_runedesc_hack = 1;
 	Rune_Tell_real (self.waitmin & 8,
 			(self.waitmin - self.waitmin & 31) / 32,
-			self.waitmin & 16, 0);
+			self.waitmin & 16);
 	in_runedesc_hack = 0;
 
 	// Increment number of times I've shown it.

@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.15 2002/10/11 22:05:43 slotzero Exp $
+/*  $Id: admin.qc,v 1.16 2002/10/14 18:57:01 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -22,7 +22,7 @@ admin_init =
 {
 	if (is_admin ())
 	{
-		self_sprint (self, "Admin mode already active\n");
+		sprint (self, "Admin mode already active\n");
 		return;
 	}
 
@@ -48,8 +48,7 @@ admin_init =
 	player_init_impulse_alias ("exit-level",	IMP_EXIT_LEVEL);
 	player_init_impulse_alias ("qsmack",		IMP_QSMACK_COMMAND);
 	self_stuffcmd (self, "bind 9 \"impulse 9\"\n");
-	self_sprint (self, "Admin mode activated\n");
-	admin_sound ("misc/medkey.wav");
+	sprint (self, "Admin mode activated\n");
 };
 
 void (string msg, float passcode)
@@ -63,10 +62,10 @@ admin_wrong_passcode =
 	else
 	{
 		sprint_admin2 (self.netname, " used the wrong admin passcode\n");
-		self_sprint (self, "Invalid passcode ");
+		sprint (self, "Invalid passcode ");
 		if (passcode)
 			self_sprint_float (self, passcode);
-		self_sprint (self, "\n");
+		sprint (self, "\n");
 		self.aqstate = self.aqstate + AQS_ADMIN_ATTEMPTS_MULT;
 	}
 };
@@ -78,7 +77,7 @@ admin_toggle =
 
 	if (is_admin ())
 	{
-		self_sprint (self, "Admin mode disabled\n");
+		sprint (self, "Admin mode disabled\n");
 		self.aqflags = self.aqflags - AQ_ADMIN;
 		return;
 	}
@@ -99,7 +98,7 @@ admin_toggle =
 		IN_POQ([-
 			ADMIN_PASSCODE_REAL = admin_passcode_cvar;
 	    	-], [-
-			self_sprint (self, "Admin passcode can not be set in gamecfg\n");
+			sprint (self, "This feature is disabled in Quakeworld\n");
 			return;
 		-])
 	}
@@ -109,7 +108,7 @@ admin_toggle =
 	if (ADMIN_PASSCODE_REAL == 123456)
 	{
 		if (tell)
-			self_sprint (self, "Admin passcode not configured\n");
+			sprint (self, "Admin passcode not configured\n");
 		return;
 	}
 
@@ -117,11 +116,11 @@ admin_toggle =
 	{
 		if (tell)
 		{
-			self_sprint (self, "Invalid admin passcode in");
+			sprint (self, "Invalid admin passcode in");
 			if (admin_passcode_cvar > 0)
-				self_sprint (self, " gamecfg\n");
+				sprint (self, " gamecfg\n");
 			else
-				self_sprint (self, " settings.qc\n");
+				sprint (self, " settings.qc\n");
 		}
 		return;
 	}
@@ -129,10 +128,10 @@ admin_toggle =
 	if (tell)
 	{
 		if (mention_console)
-			self_sprint (self, "Close console and e");
+			sprint (self, "Close console and e");
 		else
-			self_sprint (self, "E");
-		self_sprint (self, "nter admin passcode now\n");
+			sprint (self, "E");
+		sprint (self, "nter admin passcode now\n");
 	}
 	self.aqstate = self.aqstate | AQS_IMPOVER_PASSWORD;
 	self.state = 0;
@@ -143,9 +142,9 @@ admin_impulse_password =
 {
 	if (self.impulse < 1 || self.impulse > 8)
 	{
-		self_sprint (self, "Canceled, invalid passcode impulse ");
-		self_sprint_float (self, self.impulse);
-		self_sprint (self, "\n");
+		sprint (self, "Canceled, invalid passcode impulse ");
+		sprint_float (self, self.impulse);
+		sprint (self, "\n");
 		impulse_override_cancel ();
 		return;
 	}
@@ -239,7 +238,7 @@ admin_player_pick =
 
 	if (is_admin_e (e))
 	{
-		self_sprint (self, "This client is an admin\n");
+		sprint (self, "This client is an admin\n");
 		return world;
 	}
 
@@ -247,7 +246,7 @@ admin_player_pick =
 	{
 		if (!is_player_e (e))
 		{
-			self_sprint (self, "This client isn't playing\n");
+			sprint (self, "This client isn't playing\n");
 			return world;
 		}
 	}
@@ -255,15 +254,15 @@ admin_player_pick =
 	{
 		if (!is_observer_e (e))
 		{
-			self_sprint (self, "This client isn't observing\n");
+			sprint (self, "This client isn't observing\n");
 			return world;
 		}
 	}
 	else if (pt != ADMIN_PLAYER_TYPE_ANY)
 	{
-		self_sprint (self, "Bug, invalid player type ");
-		self_sprint_float (self,  pt);
-		self_sprint (self, "\n");
+		sprint (self, "Bug, invalid player type ");
+		sprint_float (self,  pt);
+		sprint (self, "\n");
 		return world;
 	}
 
@@ -305,7 +304,7 @@ admin_eyes =
 		self.modelindex = n;
 	-])
 
-	self_sprint (self, s1);
+	sprint (self, s1);
 };
 
 void (float cycle_show)
@@ -567,9 +566,9 @@ admin_impulse_map =
 	m = impulse_to_map ();
 	if (!m)
 	{
-		self_sprint (self, "Canceled, invalid map impulse ");
-		self_sprint_float (self, self.impulse);
-		self_sprint (self, "\n");
+		sprint (self, "Canceled, invalid map impulse ");
+		sprint_float (self, self.impulse);
+		sprint (self, "\n");
 	}
 	else
 		admin_changelevel (m);

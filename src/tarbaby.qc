@@ -1,4 +1,4 @@
-/*  $Id: tarbaby.qc,v 1.4 2002/10/11 23:35:53 slotzero Exp $
+/*  $Id: tarbaby.qc,v 1.5 2002/10/14 18:57:12 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -201,12 +201,12 @@ monster_tarbaby =
 		remove (self);
 		return;
 	}
-	precache_model ("progs/tarbaby.mdl");
+	precache_model2 ("progs/tarbaby.mdl");
 
-	precache_sound ("blob/death1.wav");
-	precache_sound ("blob/hit1.wav");
-	precache_sound ("blob/land1.wav");
-	precache_sound ("blob/sight1.wav");
+	precache_sound2 ("blob/death1.wav");
+	precache_sound2 ("blob/hit1.wav");
+	precache_sound2 ("blob/land1.wav");
+	precache_sound2 ("blob/sight1.wav");
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.6 2002/10/11 22:05:55 slotzero Exp $
+/*  $Id: weapons.qc,v 1.7 2002/10/14 18:57:13 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -168,8 +168,6 @@ void (float damage)
 spawn_touchblood =
 {
 	local vector vel;
-
-	if (0) damage = damage;	// prevent frikqcc compiler warning;
 
 	vel = wall_velocity () * 0.2;
 	SpawnBlood (self.origin + vel*0.01, vel, IN_POQ(damage, 1));

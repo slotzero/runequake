@@ -1,4 +1,4 @@
-/*  $Id: ai.qc,v 1.5 2002/10/11 22:05:43 slotzero Exp $
+/*  $Id: ai.qc,v 1.6 2002/10/14 18:57:01 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
