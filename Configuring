@@ -1,4 +1,4 @@
-$Id: Configuring,v 1.12 2004/04/07 21:16:13 slotzero Exp $
+$Id: Configuring,v 1.13 2004/05/01 03:07:08 slotzero Exp $
 
 Starting the server
 
@@ -166,6 +166,11 @@ deathmatch
         level, but the armors remain.  When you do damage to a player, the
         amount of damage is displayed on your screen.
 
+   16384 rotating armors                        DM_ROTATING_ARMORS
+
+        All of the armors on the level will cycle through the three main classes
+        of armor (green, yellow, red).  The interval of each cycle as well as the
+        predictability can be configured in settings.qc.
 
 teamplay
 
