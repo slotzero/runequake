@@ -1,6 +1,6 @@
-/*  MERGE COMPLETE
+/* $Id: develop.qc,v 1.1 2003/04/13 20:30:18 slotzero Exp $
 
-    Copyright (C) 1998-2001  Roderick Schertler.
+    Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,10 +17,27 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-string version;
+//  These are functions that are still under development.
 
-void ()
-set_version =
+void (float n)
+parse_time =
 {
-	version = "0.7.11";
+	local float hours, minutes, seconds;
+
+	seconds	= floor (n);
+	minutes	= floor (seconds / 60);
+	hours	= floor (minutes / 60);
+	seconds	= seconds - floor (minutes * 60);
+	minutes	= minutes - floor (hours * 60);
+
+	if (hours)
+	{
+		bprint_float (hours);
+		bprint (":");
+		if (minutes < 10) bprint ("0");
+	}
+	bprint_float (minutes);
+	bprint (":");
+	if (seconds < 10) bprint ("0");
+	bprint_float (seconds);
 };

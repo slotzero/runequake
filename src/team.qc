@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.4 2002/10/14 18:57:13 slotzero Exp $
+/*  MERGE COMPLETE
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -344,6 +344,8 @@ change_teamplay =
 		localcmd (s);
 		localcmd (" Rune Quake ");
 		localcmd (version);
+		if (FORWARD_MAX_PLAYERS_REAL < 0)
+			localcmd (" [forward server]");
 		localcmd ("\"\n");
 	}
 
@@ -383,6 +385,21 @@ change_teamplay =
 	{
 		e.aqflags = e.aqflags - e.aqflags & AQ_VOTE_TEAM;
 		e = find (e, classname, "player");
+	}
+};
+
+void (float check_state)
+toggle_teamplay =
+{
+	if (teamplay & TEAM_TEAM_MASK)
+	{
+		if (check_state < 1)
+			change_teamplay (0, 1);
+	}
+	else
+	{
+		if (check_state >= 0)
+			change_teamplay (VOTE_TEAM_MODE, 1);
 	}
 };
 

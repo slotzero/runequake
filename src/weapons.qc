@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.7 2002/10/14 18:57:13 slotzero Exp $
+/*  MERGE COMPLETE
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -168,6 +168,8 @@ void (float damage)
 spawn_touchblood =
 {
 	local vector vel;
+
+	if (0) damage = damage;	// prevent frikqcc compiler warning;
 
 	vel = wall_velocity () * 0.2;
 	SpawnBlood (self.origin + vel*0.01, vel, IN_POQ(damage, 1));
@@ -564,6 +566,9 @@ W_FireLightning =
 
 	use_ammo ();
 
+	if (self.runetype == RN_CLOAK)
+		self.runetime = time + RECLOAK_DELAY;
+
 	if (self.t_width < time)
 	{
 		sound (self, CHAN_WEAPON, "weapons/lhit.wav", 1, ATTN_NORM);
@@ -754,6 +759,9 @@ W_FireSpikes =
 	if (!W_CheckNoAmmo ())
 		return;
 	use_ammo ();
+
+	if (self.runetype == RN_CLOAK)
+		self.runetime = time + RECLOAK_DELAY;
 
 	if (self.weapon == IT_SUPER_NAILGUN)
 	{
@@ -980,6 +988,11 @@ W_Attack =
 	if (!W_CheckNoAmmo ())
 		return;
 
+	// Sometimes self.deadflag doesn't get set fast enough so I check it
+	// again here.
+ 	if (self.deadflag)
+		return;
+
 	if (self.weapon == WEAPON_HOOK)
 	{
 		if (have_hook ())
@@ -988,6 +1001,12 @@ W_Attack =
 				HookOn ();
 			return;
 		}
+	}
+	else
+	{
+		// Feature request for PK.
+		if (HOOK_CAMP_PROT)
+			HookOff ();
 	}
 
 	do_ammo = 1;
@@ -1332,7 +1351,14 @@ ImpulseCommands =
 		if (!have_hook ())
 		{
 			if (self.impulse != IMP_HOOK_OFF)
-				sprint (self, "No hook\n");
+			{
+				sprint (self, "No hook");
+				if (temp1 & T1_HOOK_MASK == T1_LITHIUM_HOOK)
+					sprint (self, ", find one first");
+				else if (!vote_hook_disabled (0))
+					sprint (self, ", use vote-hook");
+ 				sprint (self, "\n");
+			}
 		}
 		else if (self.impulse == IMP_HOOK_ON)
 			HookOn ();
@@ -1353,7 +1379,8 @@ ImpulseCommands =
 	}
 
 	else if (self.impulse == IMP_VOTE_EXIT
-			|| self.impulse == IMP_VOTE_TEAM)
+			|| self.impulse == IMP_VOTE_TEAM
+			|| self.impulse == IMP_VOTE_HOOK)
 		vote ();
 
 	else
