@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.84 2004/06/28 06:41:41 slotzero Exp $
+/*  $Id: defs.qc,v 1.85 2004/06/29 22:47:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1048,21 +1048,27 @@ float	framecount;
 
 float	skill;
 
-float	SKILL_UPDATE_BINDINGS		= 1;
-float	SKILL_SHOW_PLAYERS		= 2;
-float	SKILL_SHOW_SETTINGS		= 3;
-float	SKILL_TOGGLE_RUNE_CHEAT		= 4;
-float	SKILL_LAST			= 5;
-float	SKILL_LEVELS			= 6;
-float	SKILL_CUSTOM			= 7;
-float	SKILL_COMMANDS			= 8;
-float	SKILL_LEVEL_TIME		= 9;
-float	SKILL_MODE_PRACTICE		= 10;
-float	SKILL_MODE_NORMAL		= 11;
-float	SKILL_TOGGLE_ALTERNATES		= 12;
+// cvars
+string	CVAR_CONCMD	= "nomonsters";
+string	CVAR_CONMAP	= "scratch4";
+
+// console commands
+float	concmd;
+float	CONCMD_UPDATE_BINDINGS		= 1;
+float	CONCMD_SHOW_PLAYERS		= 2;
+float	CONCMD_SHOW_SETTINGS		= 3;
+float	CONCMD_TOGGLE_RUNE_CHEAT	= 4;
+float	CONCMD_LAST			= 5;
+float	CONCMD_LEVELS			= 6;
+float	CONCMD_CUSTOM			= 7;
+float	CONCMD_COMMANDS			= 8;
+float	CONCMD_LEVEL_TIME		= 9;
+float	CONCMD_MODE_PRACTICE		= 10;
+float	CONCMD_MODE_NORMAL		= 11;
+float	CONCMD_TOGGLE_ALTERNATES	= 12;
 
 // levels
-float	crosshair;
+float	conmap;
 
 IN_QW([-
 //

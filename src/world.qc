@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.42 2004/06/28 06:39:46 slotzero Exp $
+/*  $Id: world.qc,v 1.43 2004/06/29 22:47:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -325,13 +325,13 @@ StartFrame =
 		obs_process_game_queue ();
 	}
 
-	crosshair = cvar_infokey ("crosshair");
-	if (crosshair)
+	conmap = cvar_infokey (CVAR_CONMAP);
+	if (conmap)
 	{
-		cvar_set_infokey ("crosshair", "0");
-		IN_POQ(if (!HUNK_CONTEXT_MAX)	crosshair = 0;)
+		cvar_set_infokey (CVAR_CONMAP, "0");
+		IN_POQ(if (!HUNK_CONTEXT_MAX)	conmap = 0;)
 
-		&%IN_POQ(368,376) = crosshair;
+		&%IN_POQ(368,376) = conmap;
 		s = impulse_to_map ();
 		if (s)
 			admin_changelevel (s);
@@ -339,19 +339,19 @@ StartFrame =
 			dprint ("Invalid level impulse\n");
 	}
 
-	skill = cvar_infokey ("skill");
-	if (skill)
+	concmd = cvar_infokey (CVAR_CONCMD);
+	if (concmd)
 	{
-		if (skill == SKILL_UPDATE_BINDINGS)
+		if (concmd == CONCMD_UPDATE_BINDINGS)
 			console_aliases ();
 
-		else if (skill == SKILL_SHOW_PLAYERS)
+		else if (concmd == CONCMD_SHOW_PLAYERS)
 			show_players ();
 
-		else if (skill == SKILL_SHOW_SETTINGS)
+		else if (concmd == CONCMD_SHOW_SETTINGS)
 			show_settings ();
 
-		else if (skill == SKILL_TOGGLE_RUNE_CHEAT)
+		else if (concmd == CONCMD_TOGGLE_RUNE_CHEAT)
 		{
 			// XXX Move this to its own function, for in-game use.
 			temp1 = cvar_infokey ("temp1");
@@ -369,37 +369,37 @@ StartFrame =
 			cvar_set_infokey ("temp1", s);
 		}
 
-		else if (skill == SKILL_LAST)
+		else if (concmd == CONCMD_LAST)
 			Client_Disconnect_Log ();
 
-		else if (skill == SKILL_LEVELS)
+		else if (concmd == CONCMD_LEVELS)
 			levels ();
 
-		else if (skill == SKILL_CUSTOM)
+		else if (concmd == CONCMD_CUSTOM)
 			custom ();
 
-		else if (skill == SKILL_COMMANDS)
+		else if (concmd == CONCMD_COMMANDS)
 			commands ();
 
-		else if (skill == SKILL_LEVEL_TIME)
+		else if (concmd == CONCMD_LEVEL_TIME)
 		{
 			dprint_force (parse_time (time));
 			dprint_force ("\n");
 		}
 
-		else if (skill == SKILL_MODE_PRACTICE)
+		else if (concmd == CONCMD_MODE_PRACTICE)
 			change_practice_mode (1);
 
-		else if (skill == SKILL_MODE_NORMAL)
+		else if (concmd == CONCMD_MODE_NORMAL)
 			change_practice_mode (0);
 
-		else if (skill == SKILL_TOGGLE_ALTERNATES)
+		else if (concmd == CONCMD_TOGGLE_ALTERNATES)
 			toggle_alternates ();
 
 		else
-			dprint ("skill: unknown command\n");
+			dprint ("concmd: unknown command\n");
 
-		cvar_set_infokey ("skill", "0");
+		cvar_set_infokey (CVAR_CONCMD, "0");
 	}
 
 	IN_QW([-
