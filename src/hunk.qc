@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.18 2004/06/30 03:54:52 slotzero Exp $
+/*  $Id: hunk.qc,v 1.19 2004/07/02 05:21:03 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -56,6 +56,14 @@
 	%400 - %498	= float details about large levels
 	%499		= float large levels left in map rotation
 
+	// standard levels (reserved)
+	%500 - %548	= float (reserved)
+	%549		= float ()
+	%550 - %598	= float ()
+	%549		= float ()
+	%600 - %648	= float ()
+	%649		= float (reserved)
+
 	// strman.qc
 	%3000 - %4000	= memory for string manipulation functions
 */
@@ -107,8 +115,8 @@ Read_Hunk_Vector =
 	hunk = Get_Hunk (type, offset);
 	if (!hunk)
 	{
-		dprint ("Read_Hunk_Float: hunk is null\n");
-		return 0;
+		dprint ("Read_Hunk_Vector: hunk is null\n");
+		return VEC_ORIGIN;
 	}
 
 	v_x = hunk[%0];
@@ -150,7 +158,7 @@ Write_Hunk =
 	Write_Hunk_e (hunk, s);
 };
 
-// requires 3 bytes
+// requires 3 dwords (12 bytes)
 void (float type, float offset, vector v)
 Write_Hunk_Vector =
 {
