@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.18 2003/04/25 05:28:14 slotzero Exp $
+/*  $Id: client.qc,v 1.19 2003/04/26 01:08:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -959,11 +959,10 @@ PlayerDeathThink =
 		return;
 	}
 
-	IN_QW([-
-		if (!OLD_STYLE_PHOENIX)
-	-])
 	// Prevent phoenix holders from firing.
-	if (self.runetype == RN_PHOENIX)
+	if (self.runetype == RN_PHOENIX
+		IN_QW(&& !OLD_STYLE_PHOENIX)
+			)
 	{
 		if ((!self.button2 && !self.button1) || self.aqflags & AQ_KICKED)
 			return;
