@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.81 2005/01/20 22:48:22 slotzero Exp $
+/*  $Id: client.qc,v 1.82 2005/01/21 00:45:58 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -747,10 +747,18 @@ PutClientInServer =
 	else
 		self.origin = spot.origin + '0 0 1';
 
+	// arena
 	if (spot.classname == "info_teleport_destination")
+	{
 		self.angles = spot.mangle;
+		makevectors (spot.mangle);
+		self.velocity = v_forward * 300;
+	}
 	else
+	{
 		self.angles = spot.angles;
+		self.velocity = VEC_ORIGIN;
+	}
 
 	self.fixangle = TRUE;		// turn this way immediately
 
@@ -764,7 +772,6 @@ PutClientInServer =
 	setsize (self, VEC_HULL_MIN, VEC_HULL_MAX);
 
 	self.view_ofs = PLAYER_VIEW_OFFSET;
-	self.velocity = VEC_ORIGIN;
 	self.state = 0;
 	self.aqstate = self.aqstate - self.aqstate & AQS_SWITCHFIRING;
 
