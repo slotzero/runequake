@@ -1,4 +1,4 @@
-// $Id: light.qc,v 1.3 2002/03/04 05:46:08 slotzero Exp $
+// $Id: light.qc,v 1.4 2002/05/05 00:52:28 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -155,7 +155,10 @@ void (string s)
 light_makestatic =
 {
 	if (scratch1 & S1_LIGHT_MAKESTATIC_OFF)
+	{
+		remove (self);
 		return;
+	}
 
 	precache_model (s);
 	setmodel (self, s);
@@ -171,6 +174,16 @@ void ()
 light_globe =
 {
 	light_makestatic ("progs/s_light.spr");
+};
+
+void ()
+ambient_fire1 =
+{
+	if (scratch1 & S1_AMBIENT_SOUND_OFF)
+		return;
+
+	precache_sound ("ambience/fire1.wav");
+	ambientsound (self.origin, "ambience/fire1.wav", 0.5, ATTN_STATIC);
 };
 
 /*QUAKED light_torch_small_walltorch (0 .5 0) (-10 -10 -20) (10 10 20)

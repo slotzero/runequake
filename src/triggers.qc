@@ -1,4 +1,4 @@
-// $Id: triggers.qc,v 1.3 2002/04/30 21:39:39 slotzero Exp $
+// $Id: triggers.qc,v 1.4 2002/05/05 00:52:28 slotzero Exp $
 
 entity s_tfog;
 
@@ -19,9 +19,9 @@ multi_wait =
 {
 	if (self.max_health)
 	{
-		self.health = self.max_health;
-		self.takedamage = DAMAGE_YES;
-		self.solid = SOLID_BBOX;
+		self.health	= self.max_health;
+		self.takedamage	= DAMAGE_YES;
+		self.solid	= SOLID_BBOX;
 	}
 };
 
@@ -32,14 +32,13 @@ void ()
 multi_trigger =
 {
 	if (self.nextthink > time)
-	{
-		return;		// already been triggered
-	}
+		return; // already been triggered
 
 	if (self.classname == "trigger_secret")
 	{
 		if (self.enemy.classname != "player")
 			return;
+
 		found_secrets = found_secrets + 1;
 		WriteByte (MSG_ALL, SVC_FOUNDSECRET);
 	}
@@ -47,24 +46,22 @@ multi_trigger =
 	if (self.noise)
 		sound (self, CHAN_VOICE, self.noise, 1, ATTN_NORM);
 
-// don't trigger again until reset
-	self.takedamage = DAMAGE_NO;
-
-	activator = self.enemy;
+	self.takedamage	= DAMAGE_NO; // don't trigger again until reset
+	activator	= self.enemy;
 
 	SUB_UseTargets ();
 
 	if (self.wait > 0)
 	{
-		self.think = multi_wait;
-		self.nextthink = time + self.wait;
+		self.think	= multi_wait;
+		self.nextthink	= time + self.wait;
 	}
 	else
 	{	// we can't just remove (self) here, because this is a touch function
-		// called wheil C code is looping through area links...
-		self.touch = SUB_Null;
-		self.nextthink = time + TICK;
-		self.think = SUB_Remove;
+		// called while C code is looping through area links.
+		self.touch	= SUB_Null;
+		self.nextthink	= time + TICK;
+		self.think	= SUB_Remove;
 	}
 };
 
@@ -72,6 +69,7 @@ void ()
 multi_killed =
 {
 	self.enemy = damage_attacker;
+
 	multi_trigger ();
 };
 
@@ -79,6 +77,7 @@ void ()
 multi_use =
 {
 	self.enemy = activator;
+
 	multi_trigger ();
 };
 
@@ -88,15 +87,16 @@ multi_touch =
 	if (other.classname != "player")
 		return;
 
-// if the trigger has an angles field, check player's facing direction
+	// if the trigger has an angles field, check player's facing direction
 	if (self.movedir != VEC_ORIGIN)
 	{
 		makevectors (other.angles);
 		if (v_forward * self.movedir < 0)
-			return;		// not facing the right way
+			return; // not facing the right way
 	}
 
 	self.enemy = other;
+
 	multi_trigger ();
 };
 
@@ -134,19 +134,16 @@ trigger_multiple =
 	{
 		if (self.spawnflags & SPAWNFLAG_NOTOUCH)
 			objerror ("health and notouch don't make sense\n");
-		self.max_health = self.health;
-		self.th_die = multi_killed;
-		self.takedamage = DAMAGE_YES;
-		self.solid = SOLID_BBOX;
-		setorigin (self, self.origin);	// make sure it links into the world
+		self.max_health	= self.health;
+		self.th_die	= multi_killed;
+		self.takedamage	= DAMAGE_YES;
+		self.solid	= SOLID_BBOX;
+
+		setorigin (self, self.origin); // make sure it links into the world
 	}
 	else
-	{
 		if (!(self.spawnflags & SPAWNFLAG_NOTOUCH))
-		{
 			self.touch = multi_touch;
-		}
-	}
 };
 
 /*QUAKED trigger_once (.5 .5 .5) ? notouch
@@ -166,6 +163,7 @@ void ()
 trigger_once =
 {
 	self.wait = -1;
+
 	trigger_multiple ();
 };
 
@@ -194,10 +192,12 @@ set "message" to text string
 void ()
 trigger_secret =
 {
-	total_secrets = total_secrets + 1;
-	self.wait = -1;
+	total_secrets	= total_secrets + 1;
+	self.wait	= -1;
+
 	if (!self.message)
 		self.message = "You found a secret area!";
+
 	if (!self.sounds)
 		self.sounds = 1;
 
@@ -220,17 +220,18 @@ counter_use =
 
 	if (self.count != 0)
 	{
-		if (activator.classname == "player"
-		&& (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0)
+		if (activator.classname == "player" &&
+				(self.spawnflags & SPAWNFLAG_NOMESSAGE)	== 0)
 		{
 			if (self.count >= 4)
 				centerprint (activator, "There are more to go...");
-			else if (self.count == 3)
-				centerprint (activator, "Only 3 more to go...");
-			else if (self.count == 2)
-				centerprint (activator, "Only 2 more to go...");
 			else
-				centerprint (activator, "Only 1 more to go...");
+			{
+				local string s;
+
+				s = ftos (self.count);
+				centerprint3 (activator, "Only ", s, " more to go...");
+			}
 		}
 		return;
 	}
@@ -238,7 +239,9 @@ counter_use =
 	if (activator.classname == "player"
 			&& (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0)
 		centerprint (activator, "Sequence completed!");
+
 	self.enemy = activator;
+
 	multi_trigger ();
 };
 
@@ -253,6 +256,7 @@ void ()
 trigger_counter =
 {
 	self.wait = -1;
+
 	if (!self.count)
 		self.count = 2;
 
@@ -267,38 +271,39 @@ TELEPORT TRIGGERS
 ==============================================================================
 */
 
-float	PLAYER_ONLY	= 1;
-float	SILENT = 2;
+float PLAYER_ONLY	= 1;
+float SILENT 		= 2;
 
 void ()
 play_teleport =
 {
-	local float v;
-	local string tmpstr;
+	local float r;
+	local string s;
 
-	v = random () * 5;
-	if (v < 1)
-		tmpstr = "misc/r_tele1.wav";
-	else if (v < 2)
-		tmpstr = "misc/r_tele2.wav";
-	else if (v < 3)
-		tmpstr = "misc/r_tele3.wav";
-	else if (v < 4)
-		tmpstr = "misc/r_tele4.wav";
+	r = random () * 5;
+	if (r < 1)
+		s = "misc/r_tele1.wav";
+	else if (r < 2)
+		s = "misc/r_tele2.wav";
+	else if (r < 3)
+		s = "misc/r_tele3.wav";
+	else if (r < 4)
+		s = "misc/r_tele4.wav";
 	else
-		tmpstr = "misc/r_tele5.wav";
+		s = "misc/r_tele5.wav";
 
-	sound (self, CHAN_VOICE, tmpstr, 1, ATTN_NORM);
+	sound (self, CHAN_VOICE, s, 1, ATTN_NORM);
+
 	remove (self);
 };
 
 void (vector org)
 spawn_tfog =
 {
-	s_tfog = spawn ();
-	s_tfog.origin = org;
-	s_tfog.nextthink = time + 0.2;
-	s_tfog.think = play_teleport;
+	s_tfog			= spawn ();
+	s_tfog.origin		= org;
+	s_tfog.nextthink	= time + 0.2;
+	s_tfog.think		= play_teleport;
 
 	create_te_teleport (org);
 };
@@ -318,6 +323,7 @@ tdeath_touch =
 			T_Damage (self.owner, self, other, 50000, "teledeath2");
 			return;
 		}
+
 		// frag monster who try to telefrag players
 		if (self.owner.classname != "player")
 		{
@@ -338,19 +344,21 @@ spawn_tdeath =
 {
 	local entity death;
 
-	death = spawn ();
-	death.classname = "teledeath";
-	death.movetype = MOVETYPE_NONE;
-	death.solid = SOLID_TRIGGER;
-	death.angles = VEC_ORIGIN;
+	death		= spawn ();
+	death.classname	= "teledeath";
+	death.movetype	= MOVETYPE_NONE;
+	death.solid	= SOLID_TRIGGER;
+	death.angles	= VEC_ORIGIN;
+
 	setsize (death, death_owner.mins - '1 1 1', death_owner.maxs + '1 1 1');
 	setorigin (death, org);
-	death.touch = tdeath_touch;
-	death.nextthink = time + 0.2;
-	death.think = SUB_Remove;
-	death.owner = death_owner;
 
-	force_retouch = 2;		// make sure even still objects get hit
+	death.touch	= tdeath_touch;
+	death.nextthink	= time + 0.2;
+	death.think	= SUB_Remove;
+	death.owner	= death_owner;
+
+	force_retouch	= 2;		// make sure even still objects get hit
 };
 
 void ()
@@ -360,18 +368,12 @@ teleport_touch =
 	local vector org;
 
 	if (self.targetname)
-	{
 		if (self.nextthink < time)
-		{
-			return;		// not fired yet
-		}
-	}
+			return; // not fired yet
 
 	if (self.spawnflags & PLAYER_ONLY)
-	{
 		if (other.classname != "player")
 			return;
-	}
 
 	// only teleport living creatures
 	if (other.health <= 0 || other.solid != SOLID_SLIDEBOX)
@@ -379,8 +381,7 @@ teleport_touch =
 
 	SUB_UseTargets ();
 
-	// put a tfog where the player was
-	//RUNE SERV: unless cloaked
+	// put a tfog where the player was unless cloaked
 	if (other.runetype != RN_CLOAK)
 		spawn_tfog (other.origin);
 
@@ -395,26 +396,33 @@ teleport_touch =
 	//RUNE SERV: unless cloaked
 	if (other.runetype != RN_CLOAK)
 		spawn_tfog (org);
+
 	spawn_tdeath (t.origin, other);
 
 	// move the player and lock him down for a little while
 	if (!other.health)
 	{
-		other.origin = t.origin;
-		other.velocity = (v_forward * other.velocity_x) + (v_forward * other.velocity_y);
+		other.origin	= t.origin;
+		other.velocity	= (v_forward * other.velocity_x)
+					+ (v_forward * other.velocity_y);
 		return;
 	}
 
 	setorigin (other, t.origin);
+
 	other.angles = t.mangle;
+
 	if (other.classname == "player")
 	{
-		other.fixangle = 1;		// turn this way immediately
-		other.teleport_time = time + 0.7;
+		other.fixangle		= 1; // turn this way immediately
+		other.teleport_time	= time + 0.7;
+
 		HookOff_e (other);
 		HookOff_by_targ_e (other);
+
 		if (other.flags & FL_ONGROUND)
 			other.flags = other.flags - FL_ONGROUND;
+
 		other.velocity = v_forward * 300;
 	}
 	other.flags = other.flags - other.flags & FL_ONGROUND;
@@ -427,10 +435,11 @@ void ()
 info_teleport_destination =
 {
 	// this does nothing, just serves as a target spot
-	self.mangle = self.angles;
-	self.angles = VEC_ORIGIN;
-	self.model = string_null;
-	self.origin = self.origin + '0 0 27';
+	self.mangle	= self.angles;
+	self.angles	= VEC_ORIGIN;
+	self.model	= string_null;
+	self.origin	= self.origin + '0 0 27';
+
 	if (!self.targetname)
 		objerror ("no targetname");
 };
@@ -438,9 +447,9 @@ info_teleport_destination =
 void ()
 teleport_use =
 {
-	self.nextthink = time + 0.2;
-	force_retouch = 2;		// make sure even still objects get hit
-	self.think = SUB_Null;
+	self.nextthink	= time + 0.2;
+	force_retouch	= 2; // make sure even still objects get hit
+	self.think	= SUB_Null;
 };
 
 /*QUAKED trigger_teleport (.5 .5 .5) ? PLAYER_ONLY SILENT
@@ -543,6 +552,7 @@ trigger_onlyregistered_touch =
 {
 	if (other.classname != "player")
 		return;
+
 	if (self.attack_finished > time)
 		return;
 

@@ -1,8 +1,10 @@
-$Id: Changes,v 1.10 2002/05/04 17:30:06 slotzero Exp $
+$Id: Changes,v 1.11 2002/05/05 00:52:23 slotzero Exp $
 
-Version 0.3  Sat Apr 20 21:44:23 EST 2002
+Version 0.3  Sat May 04 21:44:23 EST 2002
 
     - Bug Fixes
+
+    	- Dead bodies can no longer trigger buttons.
 
 	- > If you ride a player, enter admin, change level, and then
 	  > join the game, you join with the player your riding.  You can

@@ -1,4 +1,4 @@
-// $Id: doors.qc,v 1.1 2002/02/21 21:47:50 slotzero Exp $
+// $Id: doors.qc,v 1.2 2002/05/05 00:52:27 slotzero Exp $
 
 float DOOR_START_OPEN	= 1;
 float DOOR_DONT_LINK	= 4;
@@ -47,31 +47,37 @@ void ()
 door_hit_top =
 {
 	sound (self, CHAN_VOICE | CHAN_NO_PHS_ADD, self.noise1, 1, ATTN_NORM);
-	self.state = STATE_TOP;
+
+	self.state	= STATE_TOP;
+
 	if (self.spawnflags & DOOR_TOGGLE)
-		return;		// don't come down automatically
-	self.think = door_go_down;
-	self.nextthink = self.ltime + self.wait;
+		return; // don't come down automatically
+
+	self.think	= door_go_down;
+	self.nextthink	= self.ltime + self.wait;
 };
 
 void ()
 door_hit_bottom =
 {
 	sound (self, CHAN_VOICE | CHAN_NO_PHS_ADD, self.noise1, 1, ATTN_NORM);
-	self.state = STATE_BOTTOM;
+
+	self.state	= STATE_BOTTOM;
 };
 
 void ()
 door_go_down =
 {
 	sound (self, CHAN_VOICE, self.noise2, 1, ATTN_NORM);
+
 	if (self.max_health)
 	{
 		self.takedamage = DAMAGE_YES;
 		self.health = self.max_health;
 	}
 
-	self.state = STATE_DOWN;
+	self.state	= STATE_DOWN;
+
 	SUB_CalcMove (self.pos1, self.speed, door_hit_bottom);
 };
 
@@ -79,16 +85,17 @@ void ()
 door_go_up =
 {
 	if (self.state == STATE_UP)
-		return;		// already going up
+		return; // already going up
 
 	if (self.state == STATE_TOP)
-	{	// reset top wait time
+	{
+		// reset top wait time
 		self.nextthink = self.ltime + self.wait;
 		return;
 	}
 
 	sound (self, CHAN_VOICE, self.noise2, 1, ATTN_NORM);
-	self.state = STATE_UP;
+	self.state	= STATE_UP;
 
 	// Speed up the crusher on E4M5.
 	if (world.model == "maps/e4m5.bsp" && self.targetname == "t87")
@@ -117,12 +124,11 @@ door_fire =
 		objerror ("door_fire: self.owner != self");
 
 	// play use key sound
-
 	if (self.items)
 		sound (self, CHAN_VOICE, self.noise4, 1, ATTN_NORM);
 
-	self.message = string_null;		// no more message
-	oself = self;
+	self.message	= string_null;		// no more message
+	oself		= self;
 
 	if (self.spawnflags & DOOR_TOGGLE)
 	{
@@ -153,15 +159,18 @@ door_fire =
 void ()
 door_use =
 {
-	local entity oself;
+	local entity old_self;
 
-	self.message = string_null;			// door message are for touch only
-	self.owner.message = string_null;
-	self.enemy.message = string_null;
-	oself = self;
-	self = self.owner;
+	self.message		= string_null; // door message are for touch only
+	self.owner.message	= string_null;
+	self.enemy.message	= string_null;
+
+	old_self		= self;
+	self			= self.owner;
+
 	door_fire ();
-	self = oself;
+
+	self			= old_self;
 };
 
 void ()

@@ -1,4 +1,4 @@
-// $Id: misc.qc,v 1.6 2002/04/30 21:39:38 slotzero Exp $
+// $Id: misc.qc,v 1.7 2002/05/05 00:52:28 slotzero Exp $
 
 /*QUAKED info_null (0 0.5 0) (-4 -4 -4) (4 4 4)
 Used as a positional target for spotlights, etc.
@@ -8,16 +8,6 @@ info_null =
 {
 	remove (self);
 };
-
-/*QUAKED info_notnull (0 0.5 0) (-4 -4 -4) (4 4 4)
-Used as a positional target for lightning.
-*/
-void ()
-info_notnull =
-{
-};
-
-//============================================================================
 
 //============================================================================
 
@@ -320,14 +310,7 @@ testing air bubbles
 void ()
 air_bubbles =
 {
-	if (deathmatch & DM_DM_MASK)
-	{
-		remove (self);
-		return;
-	}
-
-	self.nextthink	= time + 1;
-	self.think	= make_bubbles;
+	remove (self);
 };
 
 void ()
@@ -428,21 +411,6 @@ bubble_bob =
 	self.think	= bubble_bob;
 };
 
-/*~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>
-~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~*/
-
-/*QUAKED viewthing (0 .5 .8) (-8 -8 -8) (8 8 8)
-Just for the debugging level.  Don't use
-*/
-void ()
-viewthing =
-{
-	self.movetype	= MOVETYPE_NONE;
-	self.solid	= SOLID_NOT;
-	precache_model ("progs/player.mdl");
-	setmodel (self, "progs/player.mdl");
-};
-
 /*
 ==============================================================================
 
@@ -453,8 +421,8 @@ SIMPLE BMODELS
 
 void ()
 func_wall_use =
-{	// change to alternate textures
-	self.frame = 1 - self.frame;
+{
+	self.frame = 1 - self.frame; // change to alternate textures
 };
 
 /*QUAKED func_wall (0 .5 .8) ?
@@ -464,9 +432,10 @@ void ()
 func_wall =
 {
 	self.angles	= VEC_ORIGIN;
-	self.movetype	= MOVETYPE_PUSH;	// so it doesn't get pushed by anything
+	self.movetype	= MOVETYPE_PUSH; // so it doesn't get pushed by anything
 	self.solid	= SOLID_BSP;
 	self.use	= func_wall_use;
+
 	setmodel (self, self.model);
 };
 
@@ -476,27 +445,24 @@ A simple entity that looks solid but lets you walk through it.
 void ()
 func_illusionary =
 {
+	return;
 	self.angles	= VEC_ORIGIN;
 	self.movetype	= MOVETYPE_NONE;
 	self.solid	= SOLID_NOT;
+
 	setmodel (self, self.model);
+
 	makestatic (self);
 };
 
 /*QUAKED func_episodegate (0 .5 .8) ? E1 E2 E3 E4
-This bmodel will appear if the episode has already been completed, so players can't reenter it.
+This bmodel will appear if the episode has already been completed,
+so players can't reenter it.
 */
 void ()
 func_episodegate =
 {
-	if (!(serverflags & self.spawnflags))
-		return;			// can still enter episode
-
-	self.angles	= VEC_ORIGIN;
-	self.movetype	= MOVETYPE_PUSH;	// so it doesn't get pushed by anything
-	self.solid	= SOLID_BSP;
-	self.use	= func_wall_use;
-	setmodel (self, self.model);
+	remove (self);
 };
 
 /*QUAKED func_bossgate (0 .5 .8) ?
@@ -505,13 +471,7 @@ This bmodel appears unless players have all of the episode sigils.
 void ()
 func_bossgate =
 {
-	if ((serverflags & SERVERFLAGS_RUNE_MASK) == SERVERFLAGS_RUNE_MASK)
-		return;		// all episodes completed
-	self.angles	= VEC_ORIGIN;
-	self.movetype	= MOVETYPE_PUSH;	// so it doesn't get pushed by anything
-	self.solid	= SOLID_BSP;
-	self.use	= func_wall_use;
-	setmodel (self, self.model);
+	func_wall ();
 };
 
 //============================================================================
@@ -520,7 +480,10 @@ void (string samp, float vol)
 ambient_sound =
 {
 	if (scratch1 & S1_AMBIENT_SOUND_OFF)
+	{
+		remove (self);
 		return;
+	}
 
 	precache_sound (samp);
 	ambientsound (self.origin, samp, vol, ATTN_STATIC);
@@ -528,16 +491,13 @@ ambient_sound =
 
 /*QUAKED ambient_* (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
 */
-
+	
 void () ambient_comp_hum	= { ambient_sound ("ambience/comp1.wav", 1); };
 void () ambient_drip		= { ambient_sound ("ambience/drip1.wav", 0.5); };
-void () ambient_drone		= { ambient_sound ("ambience/drone6.wav", 0.5); };
-void () ambient_fire1		= { ambient_sound ("ambience/fire1.wav", 0.5); };
+void () ambient_drone		= { ambient_sound ("ambience/drone6.wav", 0.5);	};
 void () ambient_flouro_buzz	= { ambient_sound ("ambience/buzz1.wav", 1); };
 void () ambient_light_buzz	= { ambient_sound ("ambience/fl_hum1.wav", 0.5); };
 void () ambient_suck_wind	= { ambient_sound ("ambience/suck1.wav", 1); };
 void () ambient_swamp1		= { ambient_sound ("ambience/swamp1.wav", 0.5); };
 void () ambient_swamp2		= { ambient_sound ("ambience/swamp2.wav", 0.5); };
 void () ambient_thunder		= { ambient_sound ("ambience/thunder1.wav", 0.5); };
-
-//============================================================================
