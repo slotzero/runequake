@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.92 2004/07/05 23:09:00 slotzero Exp $
+/*  $Id: defs.qc,v 1.93 2004/07/07 08:42:19 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -316,11 +316,14 @@ entity runespawn;
 // various per-player flags, some retained across levels
 .float aqflags;
 
-// more per-player flags
+// various per-player flags, retained across levels
 .float rqflags;
 
 // state information, not retained across levels
 .float aqstate;
+
+// state information, not retained across levels
+.float rqstate;
 
 // vote information
 .float vote_flags;
@@ -497,10 +500,10 @@ float RN_MAX_ALL	= 60;
 //     21 don't use (drop weapon in CTF)
 //     22 don't use (grapple in CTF)
 //     23 don't use (flag info in CTF)
-//    255 quad cheat
+//     73 don't use (qsmack)
 
-//				= 255 [quad cheat]
-float IMP_SHOW_POS		= 254;
+float IMP_VOTE_YES		= 255;
+float IMP_VOTE_NO		= 254;
 //				= 238 - 253 [weapon aliases]
 //				= 220 - 237 [qsmack]
 float IMP_CUSTOM_SOUNDS		= 210;
@@ -532,7 +535,8 @@ float IMP_DISP_INFO_ALL		= 83;
 float IMP_REMOVE_FRAGS		= 82;
 float IMP_HUD_TOGGLE		= 81;
 float IMP_TEAM_ROTATE		= 80;
-//				= 79 - 78 [free]
+float IMP_SHOW_POS		= 79;
+//				= 78; [free]
 float IMP_QUIET_TOGGLE		= 77;
 float IMP_HOOK_TOGGLE		= 76;
 //				= 75; [free]
@@ -638,7 +642,7 @@ float NOEXIT_NO_CUSTOM_LEVELS	= 1024;
 float NOEXIT_CUSTOM_LEVELS_ONLY	= 2048;
 
 
-// aqflags flags (saved accross levels)
+// aqflags flags (saved across levels)
 float AQ_INIT_DONE		= 1;
 float AQ_TEAM_MASK		= 14;	// bits 2, 4, 8, but currently only 6 values
 float AQ_TEAM_NIL		= 2;
@@ -670,11 +674,14 @@ float AQ_NO_HUD			= 524288;
 float AQ_HOOK			= 1048576;
 float AQ_QSMACK			= 2097152;
 
-// rqflags
+// rqflags flags (saved across levels)
 float RQ_CYCLE_ALTERNATES	= 1;
 float RQ_CUSTOM_SOUNDS		= 2;
 
-// aqstate flags (not saved accross levels)
+// rqstate flags (not saved across levels)
+float RQS_VOTE_YES		= 1;
+
+// aqstate flags (not saved across levels)
 float AQS_MENU_MASK		= 31;
 float AQS_MENU_SPLASH		= 1;
 float AQS_MENU_MAIN		= 2;
