@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.46 2004/07/01 02:43:38 slotzero Exp $
+/*  $Id: world.qc,v 1.47 2004/07/01 02:56:53 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -55,8 +55,6 @@ worldspawn =
 		sv_gravity = DEFAULT_GRAVITY;
 	s = ftos (sv_gravity);
 	cvar_set ("sv_gravity", s);
-
-	scratch1 = cvar_infokey ("scratch1");
 
 	// the area based ambient sounds MUST be the first precache_sounds
 
