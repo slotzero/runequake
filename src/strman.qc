@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.26 2004/04/11 06:29:50 slotzero Exp $
+/*  $Id: strman.qc,v 1.27 2004/06/27 06:59:24 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -102,8 +102,8 @@ allocate_string_size =
 		return string_null;
 	}
 
-	allocate_hunk (bytes);
 	array = Get_Hunk (HUNK_CONTEXT, ALLOCATE_HUNK);
+	allocate_hunk (bytes);
 	p	= AddInt (&"    \{0}   ", PSTRING_TO_PQUAKEC);
 
 	dword	= floor (bytes / 4) * %1;
@@ -180,8 +180,8 @@ strcat7 =
 	total = L1 + L2 + L3 + L4 + L5 + L6 + L7;
 	if (!total) return string_null;
 
-	allocate_hunk (total);
 	alloc_hunk = ALLOCATE_HUNK;
+	allocate_hunk (total);
 	hunk = Get_Hunk (HUNK_CONTEXT, alloc_hunk);
 	if (!hunk)
 		return string_null;
@@ -257,8 +257,8 @@ substr =
 	if (offset > i)
 		return expr;
 
-	allocate_hunk (i);
 	hunk = Get_Hunk (HUNK_CONTEXT, ALLOCATE_HUNK);
+	allocate_hunk (i);
 	if (!hunk)
 		return string_null;
 
