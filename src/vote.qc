@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.19 2004/07/09 08:53:34 slotzero Exp $
+/*  $Id: vote.qc,v 1.20 2004/07/12 01:14:54 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -29,25 +29,18 @@
 
 	// practice
 	* add disabled for practice mode
-	* perhaps a new function to give refresh message, use disabled function maybe?
+	* perhaps a new function to give refresh message, use disabled function maybe? [DONE]
 	* decide specifics on practice.. should alts be allowed, should runes be allowed, hook, etc.
 
 	// exit
 	* you can override a random map by selecting a non-random map.. but how to update message?
 
-	// no
-	* there's still no active 'no' command, should there be?
-
 	// observer
-	* I still don't like how this works.  Aside from that, disp-info-all prints observer message.
+	* Better...
 
 	// warnings
 	* make sure that you don't try to assign value to a world entity (!vip for example)!!!
 */
-
-//
-// functions that check to see if a voted item is disabled
-//
 
 float (float tell)
 vote_team_disabled =

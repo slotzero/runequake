@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.70 2004/07/11 09:24:48 slotzero Exp $
+/*  $Id: develop.qc,v 1.71 2004/07/12 01:14:54 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -85,6 +85,13 @@ ring_on =
 	}
 };
 
+// types
+//
+// "item_artifact_super_damage"
+// "item_artifact_invulnerability"
+// "item_artifact_invisibility"
+// "item_artifact_envirosuit"
+
 void (string type, float mode)
 toggle_powerup =
 {
@@ -108,14 +115,62 @@ toggle_powerup =
 	}
 };
 
+float HUNK_NO_QUADS	= %1050;
+float HUNK_NO_PENTS	= %1051;
+float HUNK_NO_RINGS	= %1052;
+float HUNK_NO_SUITS	= %1053;
+
 void ()
 setquad =
 {
-	// Find out what mode quad is in...
+	NO_QUADS = !NO_QUADS;
+	toggle_powerup ("item_artifact_super_damage", !NO_QUADS);
+	fput (HUNK_NO_QUADS, NO_QUADS);
+};
+
+void (float offset, float value)
+fput =
+{
+	Write_Hunk_Float (HUNK_CONTEXT, offset, value);
+};
+
+float (float offset, float default)
+fget =
+{
+	local float i;
+
+	i = Read_Hunk_Float (HUNK_CONTEXT, offset);
+	if (i == 0x20202020)
+	{
+		fput (offset, default);
+		return default;
+	}
+
+	return i;
+};
+
+void ()
+Populate_Settings =
+{
+	NO_QUADS		= fget (HUNK_NO_QUADS,		0);
+	NO_PENTS		= fget (HUNK_NO_PENTS,		0);
+	NO_RINGS		= fget (HUNK_NO_RINGS,		0);
+	NO_SUITS		= fget (HUNK_NO_SUITS,		0);
+
+	// After settings have been populated, there are some take action on
+	// those globals that require it.
+
+	// powerups are always on at the start of the level, so check to see if
+	// they've been shut off.
+	if (NO_QUADS)
+	{
+		dprint_force ("Quad Damage disabled\n");
+		toggle_powerup ("item_artifact_super_damage", 0);
+	}
 };
 
 void ()
 Test_Button =
 {
-	SUB_Null ();
+	setquad ();
 };
