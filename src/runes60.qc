@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.30 2003/11/27 00:13:42 slotzero Exp $
+/*  $Id: runes60.qc,v 1.31 2003/11/27 06:52:44 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -977,6 +977,13 @@ tornado_explode =
 	self.think	= tornado_pull;
 	self.nextthink	= time + 0.1;
 	sound (self, CHAN_BODY, "boss1/out1.wav", 1, ATTN_NORM);
+};
+
+void (float riders, entity of_e)
+Rune_Tornado_sprint =
+{
+	rprint_numdesc (self, riders, of_e.runevar, "tornado");
+	rprint (self, riders, " left\n");
 };
 
 void()
