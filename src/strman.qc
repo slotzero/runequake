@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.29 2004/06/27 08:28:51 slotzero Exp $
+/*  $Id: strman.qc,v 1.30 2004/06/28 01:07:20 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -165,8 +165,8 @@ strcat =
 	hunk = Get_Hunk (HUNK_CONTEXT, alloc_hunk);
 	if (!hunk) return string_null;
 
-	if (s1) { Write_Hunk_e (hunk, s1); hunk = *AddInt (L1 * %1, &hunk); }
-	if (s2) { Write_Hunk_e (hunk, s2); }
+	if (s1) { Write_Hunk_e (hunk, s1); }
+	if (s2) { hunk = *AddInt (L1 * %1, &hunk); Write_Hunk_e (hunk, s2); }
 
 	return Read_Hunk (HUNK_CONTEXT, alloc_hunk);
 };
