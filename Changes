@@ -1,4 +1,11 @@
-$Id: Changes,v 1.13 2002/05/12 20:13:09 slotzero Exp $
+$Id: Changes,v 1.14 2002/05/13 21:05:28 slotzero Exp $
+
+Version 0.2.8  Mon May 13 17:02:51 EST 2002
+
+    - Bug Fixes
+
+        Oops!  Some of the special characters (right pointing arrow, etc)
+        were changed by my incorrectly configured text editor.  [fixed]
 
 Version 0.2.7  Sun May 12 16:11:55 EST 2002
 
