@@ -1,4 +1,4 @@
-// $Id: admin.qc,v 1.3 2002/03/03 00:24:56 slotzero Exp $
+// $Id: admin.qc,v 1.4 2002/04/26 01:40:02 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -102,8 +102,6 @@ admin_Toggle =
 void ()
 admin_Impulse_Password =
 {
-	local string s;
-
 	if (self.impulse < 1 || self.impulse > 8)
 	{
 		sprint (self, "Canceled, invalid passcode impulse ");
@@ -113,9 +111,8 @@ admin_Impulse_Password =
 		return;
 	}
 
-	s = ftos (self.impulse);
 	self_sprint (self, "ê");
-	self_sprint (self, s);
+	self_sprint_float (self, self.impulse);
 	self_sprint (self, "ë\n");
 	self.state = self.state * 10 + self.impulse;
 	self.impulse = 0;

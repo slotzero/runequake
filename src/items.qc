@@ -1,4 +1,4 @@
-// $Id: items.qc,v 1.3 2002/04/25 07:07:07 slotzero Exp $
+// $Id: items.qc,v 1.4 2002/04/26 01:40:03 slotzero Exp $
 
 /* ALL LIGHTS SHOULD BE 0 1 0 IN COLOR ALL OTHER ITEMS SHOULD
 BE .8 .3 .4 IN COLOR */
@@ -174,19 +174,19 @@ void ()
 health_touch =
 {
 	local float is_mega, amount;
-	local string s, n;
+	local string s;
 
 	if (other.classname != "player")
 		return;
 
 	is_mega = self.healtype == 2;
 	amount = self.healamount;
-	n = self.noise;
+	s = self.noise;
 	// Vampires only get 5 health from non-mega health boxes.
 	if (!is_mega && other.runetype == RN_VAMP)
 	{
 		amount = 5;
-		n = "items/r_item1.wav";
+		s = "items/r_item1.wav";
 	}
 	if (!T_Heal (other, amount, is_mega))
 		return;
@@ -194,13 +194,12 @@ health_touch =
 	if (!deathmatch & DM_DM_MASK)
 	{
 		sprint (other, "You receive ");
-		s = ftos (amount);
-		sprint (other, s);
+		sprint_float (other, amount);
 		sprint (other, " health\n");
 	}
 
 	// health touch sound
-	item_sound (other, CHAN_ITEM, n, 1, ATTN_NORM);
+	item_sound (other, CHAN_ITEM, s, 1, ATTN_NORM);
 
 	self.model = string_null;
 	self.solid = SOLID_NOT;
@@ -1408,7 +1407,6 @@ PLAYER BACKPACKS
 void ()
 BackpackTouch =
 {
-	local string s;
 	local float best, old, new, acount;
 	local entity stemp;
 
@@ -1453,8 +1451,7 @@ BackpackTouch =
 		if (acount)
 			sprint (other, ", ");
 		acount = 1;
-		s = ftos (self.ammo_shells);
-		sprint (other, s);
+		sprint_float (other, self.ammo_shells);
 		sprint (other, " shells");
 	}
 	if (self.ammo_nails)
@@ -1462,8 +1459,7 @@ BackpackTouch =
 		if (acount)
 			sprint (other, ", ");
 		acount = 1;
-		s = ftos (self.ammo_nails);
-		sprint (other, s);
+		sprint_float (other, self.ammo_nails);
 		sprint (other, " nails");
 	}
 	if (self.ammo_rockets)
@@ -1471,8 +1467,7 @@ BackpackTouch =
 		if (acount)
 			sprint (other, ", ");
 		acount = 1;
-		s = ftos (self.ammo_rockets);
-		sprint (other, s);
+		sprint_float (other, self.ammo_rockets);
 		sprint (other, " rockets");
 	}
 	if (self.ammo_cells)
@@ -1480,8 +1475,7 @@ BackpackTouch =
 		if (acount)
 			sprint (other, ", ");
 		acount = 1;
-		s = ftos (self.ammo_cells);
-		sprint (other, s);
+		sprint_float (other, self.ammo_cells);
 		sprint (other, " cells");
 	}
 

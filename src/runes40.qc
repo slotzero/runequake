@@ -1,4 +1,4 @@
-// $Id: runes40.qc,v 1.4 2002/04/22 02:45:13 slotzero Exp $
+// $Id: runes40.qc,v 1.5 2002/04/26 01:40:03 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -858,10 +858,7 @@ Resurrect =
 		}
 		else
 		{
-			local string s;
-
-			s = ftos (self.runevar);
-			sprint (self, s);
+			sprint_float (self, self.runevar);
 			sprint (self, " resurrection");
 			if (self.runevar != 1)
 				sprint (self, "s");

@@ -1,4 +1,4 @@
-// $Id: runes20.qc,v 1.2 2002/03/02 20:12:17 slotzero Exp $
+// $Id: runes20.qc,v 1.3 2002/04/26 01:40:03 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -20,16 +20,13 @@ Bomb_Think =
 void ()
 Rune_Bomb =
 {
-	local string runetex;
-
 	if (self.runevar == -1 || self.runetime > time)
 		return;
 
 	if (self.runevar > 0)
 	{
 		sprint (self, "");
-		runetex = ftos (self.runevar);
-		sprint (self, runetex);
+		sprint_float (self, self.runevar);
 		sprint (self, " ");
 
 		self.runetime = time + 0.5;
