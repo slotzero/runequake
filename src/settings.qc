@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.33 2004/04/10 02:26:42 slotzero Exp $
+/*  $Id: settings.qc,v 1.34 2004/04/30 05:46:25 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -278,6 +278,10 @@ float ARMOR_TYPE_3		= 0.8;
 float MAX_ARMOR_1		= 100;
 float MAX_ARMOR_2		= 150;
 float MAX_ARMOR_3		= 200;
+
+// These only apply when deathmatch & DM_ROTATING_ARMORS is set.
+float ARMOR_ROTATE_INTERVAL	= 1; // seconds
+float ARMOR_ROTATE_RANDOM	= 0; // 0 disable | 1 random
 
 // This is the amount of health you can accumulate with mega health
 // boxes.  The default is 150, which when added to your base 100 health

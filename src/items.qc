@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.40 2004/04/24 04:09:02 slotzero Exp $
+/*  $Id: items.qc,v 1.41 2004/04/30 05:46:25 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -445,12 +445,16 @@ armor_cycle =
 
 	if (self.runetype < time)
 	{
-		self.skin = self.skin + 1;
+		if (ARMOR_ROTATE_RANDOM)
+			self.skin = rint (random () * 2);
+		else
+			self.skin = self.skin + 1;
+
 		if (self.skin > 2)
 			self.skin = 0;
 	}
 
-	self.nextthink	= time + 1;
+	self.nextthink	= time + ARMOR_ROTATE_INTERVAL;
 	self.think	= armor_cycle;
 };
 
