@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.8 2003/06/01 06:08:28 slotzero Exp $
+/*  $Id: develop.qc,v 1.9 2003/06/01 07:58:35 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -23,6 +23,21 @@ void ()
 Test_Button =
 {
 	SUB_Null ();
+};
+
+string (float type, float offset)
+Read_Hunk =
+{
+	local entity hunk;
+
+	hunk = *AddInt(AddInt(&progs, %-16), type);
+	if (*hunk[%0] != *HUNK_SENTINAL)
+	{
+		dprint ("Read_Hunk(): hunk != HUNK_SENTINAL\n");
+		return string_null;
+	}
+
+	return @AddInt(AddInt(&hunk, 4 * offset), PQUAKEC_TO_PSTRING);
 };
 
 void (float n)
