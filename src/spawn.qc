@@ -1,4 +1,4 @@
-/*  $Id: spawn.qc,v 1.6 2003/12/07 04:50:03 slotzero Exp $
+/*  $Id: spawn.qc,v 1.7 2003/12/24 03:23:34 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -120,7 +120,7 @@ spawn_info_player_deathmatch =
 	e.origin	= e_origin;
 	e.angles_y	= e_angle;
 
-	e.nextthink	= time + IN_QW(5, 1);
+	e.nextthink	= time + IN_QW(6, 2);
 	e.think		= spawn_info_player_deathmatch_real;
 };
 
