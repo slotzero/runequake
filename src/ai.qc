@@ -1,4 +1,4 @@
-/*  $Id: ai.qc,v 1.12 2004/06/25 00:42:12 slotzero Exp $
+/*  $Id: ai.qc,v 1.13 2004/12/11 23:11:59 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -258,7 +258,7 @@ SightSound =
 		snd = "vomitus/v_sight1.wav";
 	else if (self.classname == "monster_enforcer")
 	{
-		rsnd = rint (random () * 3);
+		rsnd = rint (random () * 4);
 		if (rsnd == 1)
 			snd = "enforcer/sight1.wav";
 		else if (rsnd == 2)
