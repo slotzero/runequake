@@ -1,4 +1,4 @@
-/*  $Id: buttons.qc,v 1.12 2004/12/26 04:04:04 slotzero Exp $
+/*  $Id: buttons.qc,v 1.13 2005/01/22 19:08:23 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -93,7 +93,10 @@ button_touch =
 	else
 		self.enemy = other;
 
-	button_fire ();
+	if (self.health)
+		button_killed ();
+	else
+		button_fire ();
 };
 
 void ()
@@ -155,14 +158,16 @@ func_button =
 	self.blocked	= button_blocked;
 	self.use	= button_use;
 
-	if (self.health)
+	if (!self.health)
 	{
-		self.max_health	= self.health;
-		self.th_die	= button_killed;
-		self.takedamage	= DAMAGE_YES;
-	}
-	else
 		self.touch	= button_touch;
+		self.health	= 1;
+	}
+
+	// allow damage to all buttons
+	self.max_health	= self.health;
+	self.th_die	= button_killed;
+	self.takedamage	= DAMAGE_YES;
 
 	if (!self.speed)
 		self.speed	= 40;
