@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.17 2002/06/01 06:44:42 slotzero Exp $
+// $Id: rjs.qc,v 1.18 2002/06/02 05:45:38 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -1687,6 +1687,7 @@ player_init =
 	}
 	if (i)
 	{
+		select_forward_server ();
 		check_forward = 0;
 		self_sprint (self, "The game is full, forwarding to ");
 		self_sprint (self, FORWARD_NAME);
