@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.117 2004/09/16 01:00:50 slotzero Exp $
+/*  $Id: defs.qc,v 1.118 2004/09/16 01:34:31 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1183,7 +1183,6 @@ float	AS_MISSILE		= 4;
 .float	super_time;
 .float	super_sound;
 .float	rad_time;
-.float	rad_sound;
 .float	fly_sound;
 .string	damage_type;	// useful for determining pain & death sounds.
 
