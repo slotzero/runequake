@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.27 2003/12/27 05:13:20 slotzero Exp $
+/*  $Id: world.qc,v 1.28 2003/12/27 05:49:45 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -374,6 +374,9 @@ StartFrame =
 		else if (skill == SKILL_LEVELS)
 			levels ();
 
+		else if (skill == SKILL_CUSTOM)
+			custom ();
+
 		else
 			dprint ("skill: unknown command\n");
 
@@ -382,6 +385,12 @@ StartFrame =
 
 	IN_QW([-
 		deathmatch = cvar ("deathmatch");
+
+		if (!cvar_infokey ("console_bindings"))
+		{
+			console_aliases ();
+			cvar_set_infokey ("console_bindings", "1");
+		}
 	-])
 	framecount = framecount + 1;
 
