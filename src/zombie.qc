@@ -1,4 +1,4 @@
-// $Id: zombie.qc,v 1.3 2002/07/17 19:35:04 slotzero Exp $
+// $Id: zombie.qc,v 1.4 2002/07/18 04:07:59 slotzero Exp $
 
 /*
 ==============================================================================
@@ -465,6 +465,10 @@ void ()	zombie_paine11	= [$paine11,	zombie_paine12]
 };
 void ()	zombie_paine12	= [$paine12,	zombie_paine13]
 {
+	// if zombie is stuck for a while, kill her
+	if (self.last_thought > 30)
+		zombie_die ();
+
 	// see if ok to stand up
 	self.health	= self.max_health;
 	self.solid	= SOLID_SLIDEBOX;
@@ -473,13 +477,14 @@ void ()	zombie_paine12	= [$paine12,	zombie_paine13]
 	{
 		self.think = zombie_paine11;
 		self.solid = SOLID_NOT;
+		self.last_thought = self.last_thought + 1;
 
 		return;
 	}
 
 	sound (self, CHAN_VOICE, "zombie/z_idle.wav", 1, ATTN_IDLE);
 };
-void ()	zombie_paine13	= [$paine13,	zombie_paine14]	{};
+void ()	zombie_paine13	= [$paine13,	zombie_paine14]	{ self.last_thought = 0; };
 void ()	zombie_paine14	= [$paine14,	zombie_paine15]	{};
 void ()	zombie_paine15	= [$paine15,	zombie_paine16]	{};
 void ()	zombie_paine16	= [$paine16,	zombie_paine17]	{};
@@ -508,18 +513,21 @@ zombie_die =
 			&& self.owner.runetype == RN_ZOMBIE
 			&& self.owner.runevar > 0)
 	{
-		if (self.enemy == self.owner)
+		if (self.last_thought)
+			sprint (self.owner, "God");
+		else if (self.enemy == self.owner)
 			sprint (self.owner, "You just");
 		else
 			sprint (self.owner, self.enemy.netname);
 		sprint (self.owner, " killed your zombie camper\n");
-		self.owner.runevar = self.owner.runevar - 1;
 	}
 	sound (self, CHAN_VOICE, "zombie/z_gib.wav", 1, ATTN_NORM);
-	ThrowHead ("progs/h_zombie.mdl", self.health);
+	// ThrowHead ("progs/h_zombie.mdl", self.health);
 	ThrowGib ("progs/gib1.mdl", self.health);
 	ThrowGib ("progs/gib2.mdl", self.health);
 	ThrowGib ("progs/gib3.mdl", self.health);
+
+	remove (self);
 };
 
 /*
