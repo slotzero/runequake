@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.63 2003/10/03 23:25:49 slotzero Exp $
+/*  $Id: rjs.qc,v 1.64 2003/10/04 04:25:07 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1566,8 +1566,8 @@ level_aliases =
 	// XXX These should be scripted!! Add to map file.
 
 	// First and last.
-	player_init_level_alias ("start", 56);
-	player_init_level_alias ("end", 57);
+	player_init_level_alias ("start", 57);
+	player_init_level_alias ("end", 58);
 
 	// Episode 1
 	player_init_level_alias ("e1m1", 11);
