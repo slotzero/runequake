@@ -1,11 +1,11 @@
-$Id: Todo,v 1.13 2004/02/16 02:43:13 slotzero Exp $
+$Id: Todo,v 1.14 2004/04/30 04:13:13 slotzero Exp $
 
     - 2.0 release goals
 
+        - better in-game help commands
         - server bots
         - vote head hunters option
-
-    - scratch pad
+	- vote crmod practice option
 
     - suggestions
 

@@ -1,18 +1,9 @@
-$Id: Changes,v 1.62 2004/04/07 02:22:28 slotzero Exp $
+$Id: Changes,v 1.63 2004/04/30 04:13:13 slotzero Exp $
 
-added level-time for console
-added armors that cycle through all types
-added hat to quad and pent
-added custom sound, denied.wav for q3 style message
-added command custom-sounds
-added q3 style denied message
-added practice mode to admin menu
-
-Todo:
+unsorted:
 
 switch rune will remove lg with thor?
 consider a new console command, cvars.. in case your forget!
-fix admin level by menu
 
 Version 1.0
 
@@ -23,15 +14,32 @@ Version 1.0
         - The blizzard and ice trap code was adding an extra 0.5 second firing delay after
           the release of a frozen victim.
 
-        - The vote-hook command doesn't reset the hook when update_cvars() is called.
+        - The vote-hook command doesn't reset the hook when update_cvars() is called (QW).
 
         - Shamblers no longer attack you while they are frozen.
 
+	- The ascii character for the right pointing arrow was not being displayed in some QW
+          servers.
+
     - Changes
+
+        - Type 'level-time' in the server console to see how much time has elapsed
+          on the level.
+
+        - Added the option to rotate armors.   You can turn this option on by adding the
+          bit DM_ROTATING_ARMORS to the deathmatch cvar.  You can control the length of
+          the rotation as well as the order in settings.qc.
+
+        - Players wear a quad and/or pent hat if they pick up the corresponding power-up.
 
         - The hook no longer attaches to the spawn shields.
 
-        - The Thor rune can fire under water/slime/lava!
+        - Admins can change to practice mode.
+
+        - The mode now supports the 'localinfo <mapname> <next_map>', for custom map rotation
+          in Quakeworld.  Type 'localinfo infokey_maps 1' in the server console to enable.
+
+        - The Thor rune can fire under water/slime/lava and has a wider BFG zap radius.
 
         - The electric rune does half damage from the lightning gun.  The damage is actually
           converted into cells.
@@ -49,6 +57,8 @@ Version 1.0
           of a random one.
 
         - Betty launches on death.
+
+        - Added a new option to prevent lingering on the ceiling with hook.  See settings.qc.
 
         - Weakened the magic shotgun, it is still slightly higher damage w/ direct shot
           than shotgun.
@@ -73,11 +83,20 @@ Version 1.0
           type 'custom' in the console.
 
         - All of the levels that have exits teleport you to either a fixed location or a random
-          location throughout the level.  The leveles start, e1m1, e1m7, and e2m6 have fixed
+          location throughout the level.  The levels start, e1m1, e1m7, and e2m6 have fixed
           locations.
 
         - Many of the client commands (show-settings, show-players, etc.) work from the server
           console.
+
+        - You can set the admin passcode in Quakeworld by using localinfo gamecfg <passcode> (QW).
+
+        - The mod detects if a proquake client (or client based on the proquake source) has connected
+          to the server.  Only admins will see this message.  This is by no means an accurate way
+          to determine a legit client.  I was just curious to see how many people are using proquake.
+
+        - Typing 'last' in the console will report the last 10 players to disconnect and the length
+          of time they've been disconnected.  The log size can be controlled in settings.qc.
 
         - I've reversed the default cycle-alternates toggle from off to on.
 
