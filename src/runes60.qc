@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.36 2004/02/21 09:00:42 slotzero Exp $
+/*  $Id: runes60.qc,v 1.37 2004/02/22 03:53:52 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -445,7 +445,7 @@ Rune_Sonar =
 
 	self.runevar = 0;
 
-	head = findradius (self.origin, 1500);
+	head = findradius (self.origin, 1600);
 	while (head)
 	{
 		if (head.classname == "player")
@@ -457,8 +457,8 @@ Rune_Sonar =
 					// XXX Only sonar holder should hear this.
 					sound (head, CHAN_WEAPON, "enforcer/sight3.wav", 1, ATTN_NORM);
 
-					traceline (self.origin, head.origin, TRUE, self);
 					dist = vlen (head.origin - self.origin);
+					dist = floor (dist / 32);
 
 					if (!d1 || dist < d1)
 					{
@@ -759,7 +759,7 @@ Launch_Betty =
 {
 	newmis			= spawn ();
 
-	if (self.owner == world)
+	if (!self.owner)
 		newmis.owner	= self;
 	else
 		newmis.owner	= self.owner;
