@@ -1,4 +1,4 @@
-/*  $Id: triggers.qc,v 1.16 2003/11/30 20:28:29 slotzero Exp $
+/*  $Id: triggers.qc,v 1.17 2003/12/07 02:27:41 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -514,7 +514,7 @@ trigger_teleport =
 	if ((mapname == "e4m5" && self.target == "t178")
 		|| (mapname == "e4m8" && self.target == "t273")
 		|| (mapname == "start" && self.target == "t11")
-		|| (mapname == "e1m7" && self.target == "t15")
+		|| (mapname == "e1m7" && self.target != "T2") // && self.target == "t15")
 		|| (mapname == "e2m6" && self.target == "t88"))
 	{
 		remove (self);

@@ -1,4 +1,4 @@
-/*  $Id: spawn.qc,v 1.4 2003/11/30 23:29:04 slotzero Exp $
+/*  $Id: spawn.qc,v 1.5 2003/12/07 02:27:41 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -84,77 +84,6 @@ spawn_item =
 	self = o;
 };
 
-void ()
-place_my_items =
-{
-	if (scratch1 & S1_ORIGINAL_LEVELS)
-		return;
-
-	if (mapname == "e1m1")
-	{
-		// Same room as environmetal protection suit.
-		spawn_item ("item_armorInv", 0, '1232 2048 -216', 0);
-		// Top of crate next to level exit.
-		spawn_item ("weapon_rocketlauncher", 0, '1445 608 -192', 0);
-	}
-	else if (mapname == "e1m2")
-	{
-		// Replace the RL.
-		spawn_item ("item_armorInv", 0, '680.0 728.0 184.0', 0);
-		// Place new RL.
-		spawn_item ("weapon_rocketlauncher", 0, '-96.0 605.0 320.0', 0);
-		// Place new RL.
-		spawn_item ("weapon_rocketlauncher", 0, '1104.0 640.0 312.0', 0);
-	}
-	else if (mapname == "e1m6")
-	{
-		// Under the stairs.
-		spawn_item ("weapon_grenadelauncher", 0, '-510 355 -155', 0);
-	}
-	else if (mapname == "e1m7")
-	{
-		// Between GL and quad.
-		spawn_item ("item_armor2", 0, '-260 64 56', 0);
-		// In front of the level's exit.
-		spawn_item ("item_health", 0, '848 46 -1064', 0);
-	}
-	else if (mapname == "e2m1")
-	{
-		// Same room as the RA that's near quad.
-		spawn_item ("weapon_grenadelauncher", 0, '1178.5 1965 24', 0);
-	}
-	else if (mapname == "e2m4")
-	{
-		// Armor added near the start of level.
-		spawn_item ("item_armor1", 0, '832.0 465.0 32.0', 0);
-		// Added LG in water near SNG.
-		spawn_item ("weapon_grenadelauncher", 0, '1015.0 941.5 -168', 0);
-	}
-	else if (mapname == "e2m6")
-	{
-		// Middle level near shells to the left of the pentagram door.
-		spawn_item ("item_armorInv", 0, '870 1280 -968', 0);
-		// Bottom level of all lifts.
-		spawn_item ("weapon_grenadelauncher", 0, '1250 1140 -744', 0);
-	}
-	else if (mapname == "e3m2")
-	{
-		// On long pole above double shotgun.
-		spawn_item ("weapon_rocketlauncher", 0, '1072 -80 20', 0);
-		// Under the elevator lift.
-		spawn_item ("item_armorInv", 0, '481 -801 -232', 0);
-		// Replaces the only nailgun.
-		spawn_item ("weapon_supernailgun", 0, '-384 384 8', 0);
-	}
-	else if (mapname == "dm1")
-	{
-		// Replaces yellow armor.
-		spawn_item ("item_armorInv", 0, '-380 1415 24', 0);
-		// Room where entrance requires trigger activation.
-		spawn_item ("weapon_rocketlauncher", 0, '423 1532 -120', 0);
-	}
-};
-
 void (vector e_origin, float e_mangle, string e_targetname)
 spawn_info_teleport_destination =
 {
@@ -162,10 +91,22 @@ spawn_info_teleport_destination =
 
 	e		= spawn ();
 	e.classname	= "info_teleport_destination";
+	e.origin	= e_origin;
 	e.mangle_y	= e_mangle;
 	e.targetname	= e_targetname;
+};
 
-	setorigin (e, e_origin);
+void ()
+spawn_info_player_deathmatch_real =
+{
+	local entity e;
+
+	e		= spawn ();
+	e.classname	= "info_player_deathmatch";
+	e.origin	= self.origin;
+	e.angles_y	= self.angles_y;
+
+	remove (self);
 };
 
 void (vector e_origin, float e_angle)
@@ -174,14 +115,60 @@ spawn_info_player_deathmatch =
 	local entity e;
 
 	e		= spawn ();
-	e.classname	= "info_player_deathmatch";
+	e.classname	= "spawn_info_player_deathmatch";
 	e.origin	= e_origin;
 	e.angles_y	= e_angle;
+
+	e.nextthink	= time + 1;
+	e.think		= spawn_info_player_deathmatch_real;
+};
+
+void (vector e_origin, string e_model, string e_target)
+spawn_trigger_teleport =
+{
+	local entity e, o;
+
+	if (e_model)
+	{
+		e		= spawn ();
+		e.classname	= "trigger_teleport_model";
+		e.origin	= e_origin;
+		e.model		= e_model;
+		makestatic (e);
+	}
+
+	e		= spawn ();
+	e.classname	= "trigger_teleport";
+	e.target	= e_target;
+	e.origin	= e_origin;
+
+	o = self;
+	self = e;
+	trigger_teleport ();
+	self = o;
+};
+
+// XXX Find a better way/place to do this?
+void (vector eo, float ef, string em)
+spawn_effects_model =
+{
+	local entity e;
+
+	e		= spawn ();
+	e.classname	= "effects_object";
+	e.effects	= ef;
+
+	setorigin (e, eo);
+	precache_model (em);
+	setmodel (e, em);
 };
 
 void ()
-place_my_spots =
+place_my_items =
 {
+	if (scratch1 & S1_ORIGINAL_LEVELS)
+		return;
+
 	if (mapname == "start")
 	{
 		// Across from super nailgun.
@@ -202,6 +189,11 @@ place_my_spots =
 	}
 	else if (mapname == "e1m1")
 	{
+		// Same room as environmetal protection suit.
+		spawn_item ("item_armorInv", 0, '1232 2048 -216', 0);
+		// Top of crate next to level exit.
+		spawn_item ("weapon_rocketlauncher", 0, '1445 608 -192', 0);
+
 		// Near bridge by SSG.
 		spawn_info_player_deathmatch ('647 1675 -200', -159);
 		// Teleporter to pent.
@@ -211,6 +203,13 @@ place_my_spots =
 	}
 	else if (mapname == "e1m2")
 	{
+		// Replace the RL.
+		spawn_item ("item_armorInv", 0, '680.0 728.0 184.0', 0);
+		// Place new RL.
+		spawn_item ("weapon_rocketlauncher", 0, '-96.0 605.0 320.0', 0);
+		// Place new RL.
+		spawn_item ("weapon_rocketlauncher", 0, '1104.0 640.0 312.0', 0);
+
 		// Near level exit.
 		spawn_info_player_deathmatch ('-300 -285.5 480', -126);
 	}
@@ -219,13 +218,37 @@ place_my_spots =
 		// Ledge above secret normally occupied by an ogre in single player.
 		spawn_info_player_deathmatch ('360 -1281 -40', 80);
 	}
+	else if (mapname == "e1m6")
+	{
+		// Under the stairs.
+		spawn_item ("weapon_grenadelauncher", 0, '-510 355 -155', 0);
+	}
 	else if (mapname == "e1m7")
 	{
-		// Start of map.
-		spawn_info_teleport_destination ('-450 64 366', 0, "T1");
+		// Between GL and quad.
+		spawn_item ("item_armor2", 0, '-260 64 56', 0);
+		// In front of the level's exit.
+		spawn_item ("item_health", 0, '848 46 -1064', 0);
+
+		// Dark room that holds single player monsters.
+		spawn_effects_model ('1520 32 96', EF_DIMLIGHT, "progs/flame.mdl");
+		spawn_effects_model ('1872 32 96', EF_DIMLIGHT, "progs/flame.mdl");
+		spawn_effects_model ('1696 -304 96', EF_DIMLIGHT, "progs/flame.mdl");
+		spawn_effects_model ('1696 368 96', EF_DIMLIGHT, "progs/flame.mdl");
+
+		// Dark room that holds single player monsters.
+		spawn_trigger_teleport ('1696 -250 24', "progs/s_light.spr", "T2");
+
+		// Dark room that holds single player monsters.
+		spawn_info_teleport_destination ('1696 314 24', -90, "T1");
+		// Ceiling of GL room.
+		spawn_info_teleport_destination ('-450 64 366', 0, "T2");
 	}
 	else if (mapname == "e2m1")
 	{
+		// Same room as the RA that's near quad.
+		spawn_item ("weapon_grenadelauncher", 0, '1178.5 1965 24', 0);
+
 		spawn_info_player_deathmatch ('546 -803 72', 85);
 		// Red armor/super shotgun teleport.
 		spawn_info_player_deathmatch ('1971 1656.5 -56', 175);
@@ -235,15 +258,45 @@ place_my_spots =
 		// Weird textured button by super nailgun.
 		spawn_info_player_deathmatch ('-1267 1120 -56', 90);
 	}
+	else if (mapname == "e2m4")
+	{
+		// Armor added near the start of level.
+		spawn_item ("item_armor1", 0, '832.0 465.0 32.0', 0);
+		// Added LG in water near SNG.
+		spawn_item ("weapon_grenadelauncher", 0, '1015.0 941.5 -168', 0);
+	}
 	else if (mapname == "e2m5")
 	{
 		// End of level.
 		spawn_info_player_deathmatch ('-1247.5 2733.5 -96', 50);
 	}
+	else if (mapname == "e2m6")
+	{
+		// Middle level near shells to the left of the pentagram door.
+		spawn_item ("item_armorInv", 0, '870 1280 -968', 0);
+		// Bottom level of all lifts.
+		spawn_item ("weapon_grenadelauncher", 0, '1250 1140 -744', 0);
+	}
+	else if (mapname == "e3m2")
+	{
+		// On long pole above double shotgun.
+		spawn_item ("weapon_rocketlauncher", 0, '1072 -80 20', 0);
+		// Under the elevator lift.
+		spawn_item ("item_armorInv", 0, '481 -801 -232', 0);
+		// Replaces the only nailgun.
+		spawn_item ("weapon_supernailgun", 0, '-384 384 8', 0);
+	}
 	else if (mapname == "e3m6")
 	{
 		// Platform next to shells from RA.
 		spawn_info_player_deathmatch ('-1999 -472.5 88', 0);
+	}
+	else if (mapname == "dm1")
+	{
+		// Replaces yellow armor.
+		spawn_item ("item_armorInv", 0, '-380 1415 24', 0);
+		// Room where entrance requires trigger activation.
+		spawn_item ("weapon_rocketlauncher", 0, '423 1532 -120', 0);
 	}
 };
 
@@ -298,11 +351,9 @@ remove_func_wall =
 void ()
 fix_map =
 {
+	// XXX Do this check in rjs_worldspawn?
 	if (!scratch1 & S1_ORIGINAL_LEVELS)
-	{
-		place_my_spots ();
 		remove_my_items ();
-	}
 
 	remove (self);
 };
