@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.65 2004/09/25 22:44:57 slotzero Exp $
+/*  $Id: client.qc,v 1.66 2004/09/27 22:42:06 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1687,14 +1687,12 @@ PlayerPostThink =
 		return;
 	}
 
-	// XXX This prevents batman villain syndrome (w/ switch).  I am not
-	// satisfied with how I do this as I still need to know why it
-	// occurs.
-	if (ceil (self.v_angle_z))
+	// XXX This is my first attempt at correcting batman villain syndrome.
+	/* if (ceil (self.v_angle_z))
 	{
 		self.angles_z = 0;
 		self.fixangle = 1;
-	}
+	} */
 
 	// do weapon stuff
 

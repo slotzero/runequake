@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.30 2004/09/16 18:38:35 slotzero Exp $
+/*  $Id: runes30.qc,v 1.31 2004/09/27 22:42:06 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -229,11 +229,14 @@ Rune_Switch =
 	// doesn't transfer, even when swapping the whole of
 	// angles and v_angle, and putting the setorigin() after
 	// rather than before).
-	tempv_y = switch.angles_y;
-	switch.angles_y = self.angles_y;
-	self.angles_y = tempv_y;
-	self.fixangle = 1;
-	switch.fixangle = 1;
+	tempv_y		= switch.angles_y;
+	switch.angles_y	= self.angles_y;
+	switch.angles_z	= 0; // batman fix
+	self.angles_y	= tempv_y;
+	self.angles_z	= 0; // batman fix
+
+	self.fixangle	= 1;
+	switch.fixangle	= 1;
 
 	// Switch velocity
 	tempv = switch.velocity;
