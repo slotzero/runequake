@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.8 2003/04/22 04:13:05 slotzero Exp $
+/*  $Id: team.qc,v 1.9 2003/04/22 05:33:21 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -65,10 +65,12 @@ correct_team =
 float ()
 is_correct_team =
 {
-	local float tm;
+	local float tm, tc;
 
 	tm = correct_team ();
-	return (tm == -1 || self.team == tm);
+	tc = team_top_color (tm);
+
+	return (tm == -1 || (self.team == tm && self.team == tc));
 };
 
 float (float tm)
@@ -199,12 +201,16 @@ set_team_e =
 float ()
 is_allowable_team =
 {
-	local float tm, n_teams, any_valid, n1, n2, n3, n4;
+	local float tm, tc, n_teams, any_valid, n1, n2, n3, n4;
 
 	tm = self.team;
 	n_teams = enforced_teams ();
 	if (!n_teams)
 		return 1;
+
+	tc = team_top_color (tm);
+	if (tm != tc)
+		tm = 0;
 
 	// In match mode, team nil is for observing admins, but admins
 	// can also be on teams.
