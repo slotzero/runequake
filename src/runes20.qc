@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.17 2004/04/04 09:44:47 slotzero Exp $
+/*  $Id: runes20.qc,v 1.18 2004/04/05 10:30:58 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -552,29 +552,21 @@ maybe_reblink =
 	remove (self);
 };
 
-void ()
+float ()
 maybe_remove_hat =
 {
-	local float die;
-
-	die = 0;
 	if (intermission_running)
-		die = 1;
+		return TRUE;
 	else if (self.runetype && self.owner.runetype != self.runetype)
-		die = 1;
+		return TRUE;
 	else if (self.runevar)
 	{
 		if (self.runevar == 1 && self.owner.invincible_finished < time)
-			die = 1;
+			return TRUE;
 		if (self.runevar == 4 && self.owner.super_damage_finished < time)
-			die = 1;
+			return TRUE;
 	}
-
-	if (die)
-	{
-		remove (self);
-		return;
-	}
+	return FALSE;
 };
 
 void ()
@@ -582,7 +574,11 @@ Hat_Think =
 {
 	local vector a;
 
-	maybe_remove_hat ();
+	if (maybe_remove_hat ())
+	{
+		remove (self);
+		return;
+	}
 
 	if (self.runevar)
 		setorigin (self, self.owner.origin + self.runevector);
