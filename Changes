@@ -1,8 +1,9 @@
-$Id: Changes,v 1.50 2004/02/24 01:09:28 slotzero Exp $
+$Id: Changes,v 1.51 2004/02/25 20:37:44 slotzero Exp $
 
+thor can use lg underwater.
 electric rune takes 1/2 damage from lightning gun attacks while building ammo.
 removed barrier from all exits (even custom)
-changed sonar distance to be more like feet using tiles in e1m2 (1 tile = 1 foot).
+changed sonar distance to be more like feet using tiles by quad in e1m2 (1 tile = 1 foot).
 added health (25) to athlete
 added practice mode to admin menu
 exit-level will go to forced map (voted)
