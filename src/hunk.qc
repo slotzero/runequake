@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.23 2004/07/03 08:36:09 slotzero Exp $
+/*  $Id: hunk.qc,v 1.24 2004/07/03 09:25:55 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -296,24 +296,26 @@ Write_Hunk =
 	Write_Hunk_e (hunk, s);
 };
 
-// This function uses the smallest dword possible to fit the string
-// into the hunk, not the exact bytes.  While this is less accurate
-// than Write_Hunk_Max(), it's much faster.
-void (float type, float offset, string s)
-Write_Hunk_String =
+// This is much faster than Write_Hunk_Max(), but it is
+// also less accurate.  Bytes should be equal to 4^X.
+void (float type, float offset, string data, float bytes)
+Write_Hunk_String_Max =
 {
 	local entity hunk;
-	local float i, ps, dword;
+	local float i, pdata, dword;
 
 	hunk = Get_Hunk (type, offset);
 	if (!hunk)
-		return dprint ("Write_Hunk_String: hunk is null\n");
+		return dprint ("Write_Hunk_String_Max: hunk is null\n");
 
-	dword = ceil ((strlen (s) + 1) / 4) * %1;
-	ps = AddInt (&s, PSTRING_TO_PQUAKEC);
+	dword = floor (bytes / 4) * %1;
+	pdata = AddInt (&data, PSTRING_TO_PQUAKEC);
 
 	for (i = %0; i < dword; i = i + %1)
-		hunk[i] = (*ps)[i];
+	{
+		hex32 (i);
+		hunk[i] = (*pdata)[i];
+	}
 };
 
 // This will always force a null termination.  The actual
