@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.58 2003/11/26 05:47:12 slotzero Exp $
+/*  $Id: defs.qc,v 1.59 2003/11/26 21:40:34 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -875,7 +875,7 @@ float	IT_LIGHTNING			= 64;
 float WEAPON_NONALT_MASK		= 4223;
 float WEAPON_ALT			= 128;
 float WEAPON_HOOK			= 4224;
-float WEAPON_TORNADO			= 129;
+float WEAPON_MAGIC_SHOTGUN		= 129;
 float WEAPON_FLAMETHROWER		= 130;
 float WEAPON_LAVA			= 132;
 float WEAPON_BOMB			= 136;

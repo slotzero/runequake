@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.19 2003/11/26 08:40:58 slotzero Exp $
+/*  $Id: weapons.qc,v 1.20 2003/11/26 21:40:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -41,6 +41,7 @@ W_Precache =
 	precache_sound ("doors/runetry.wav");	// bomb tick
 	precache_sound ("weapons/rocket1i.wav");// bomb fire
 	precache_sound ("demon/dhit2.wav");	// flash grenade
+	precache_sound ("hknight/attack1.wav");	// shotgun bomb
 };
 
 float ()
@@ -331,6 +332,40 @@ W_FireShotgun =
 
 	dir = aim (self, 100000);
 	FireBullets (6, dir, '0.04 0.04 0', "shotgun");
+};
+
+void ()
+MagicShotgun_Think =
+{
+	create_te_explosion (self.origin, 1);
+};
+
+/*
+================
+W_ShotgunBomb
+================
+*/
+void ()
+W_MagicShotgun =
+{
+	local entity bomb;
+	local vector o;
+
+	sound (self, CHAN_WEAPON, "hknight/attack1.wav", 1, ATTN_NORM);
+
+	bomb		= spawn ();
+	o		= self.origin + '0 0 16';
+	bomb.think	= MagicShotgun_Think;
+	bomb.nextthink	= time;
+
+	traceline (o, o + v_forward * 1000000, FALSE, self);
+	setorigin (bomb, trace_endpos);
+
+	monk_radius_hack = 1;
+	T_RadiusDamage (RADIUS_NORMAL, bomb, self, 50, other, "helldog");
+	monk_radius_hack = 0;
+
+	self.attack_finished	= time + 0.5;
 };
 
 /*
@@ -982,16 +1017,8 @@ W_BestWeapon =
 			return IT_NAILGUN;
 	}
 
-	if (it & IT_SHOTGUN)
- 	{
-		if (nw
-			&& weapon_it_have_min_ammo (WEAPON_TORNADO, 0)
-			&& (self.runetype == RN_ENVIRO
-				|| weapon_it_is_alt (IT_SHOTGUN)))
-			return WEAPON_TORNADO;
-		else if (weapon_it_have_min_ammo (IT_SHOTGUN, 0))
+	if (it & IT_SHOTGUN && weapon_it_have_min_ammo (IT_SHOTGUN, 0))
 			return IT_SHOTGUN;
-	}
 
 	if (weapon_it_is_alt (IT_AXE))
 		return WEAPON_HOOK;
@@ -1117,14 +1144,14 @@ W_Attack =
 	}
 	else if (base_weapon == IT_SHOTGUN)
 	{
+		player_shot1 ();
 		if (is_alt)
 		{
-			Rune_Tornado ();
-			t = 0.8;
+			W_MagicShotgun ();
+			t = 0.6;
 		}
 		else
 		{
-			player_shot1 ();
 			W_FireShotgun ();
 			t = 0.5 * haste_mult;
 		}
