@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.33 2004/12/25 00:58:48 slotzero Exp $
+/*  $Id: hunk.qc,v 1.34 2004/12/25 01:16:50 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -194,7 +194,7 @@ Read_Hunk_String_Max =
 };
 
 string (entity hunk, float bytes)
-Read_Hunk_Max_e =
+Read_Hunk_String_Exact_e =
 {
 	local float i, pdata, dword;
 	local string data;
@@ -236,13 +236,13 @@ Read_Hunk_Max_e =
 };
 
 string (float type, float offset, float bytes)
-Read_Hunk_Max =
+Read_Hunk_String_Exact =
 {
 	local entity hunk;
 
 	hunk = Get_Hunk (type, offset);
 
-	return Read_Hunk_Max_e (hunk, bytes);
+	return Read_Hunk_String_Exact_e (hunk, bytes);
 };
 
 //-------------------------------------------------------------------
