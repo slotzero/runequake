@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.14 2003/06/24 22:17:45 slotzero Exp $
+/*  $Id: strman.qc,v 1.15 2003/07/01 22:35:56 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -218,7 +218,21 @@ flen =
 };
 
 float (string ch)
-ctof =
+hex_ctof =
+{
+	local float i;
+
+	for (i = %0; i < %16; i = i + %1)
+	{
+		if (ch == hex[i * 2])
+			return i / %1;
+	}
+
+	return -1;
+};
+
+float (string ch)
+dec_ctof =
 {
 	local float i;
 

@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.22 2003/07/01 22:29:28 slotzero Exp $
+/*  $Id: develop.qc,v 1.23 2003/07/01 22:35:55 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -78,10 +78,10 @@ ProQuake_Version =
 
 	d = floor (i / 4096);
 	i = i - d * 4096;
-	sum = ctof (hex[d * %2]) * 16;
+	sum = hex_ctof (hex[d * %2]) * 16;
 	d = floor (i / 256);
 	i = i - d * 256;
-	sum = sum + ctof (hex[d * %2]);
+	sum = sum + hex_ctof (hex[d * %2]);
 	d = floor (sum / 10);
 	v = ftos (d);
 	v = strcat (v, ".");
