@@ -1,4 +1,4 @@
-/*  $Id: ai.qc,v 1.11 2004/06/25 00:36:47 slotzero Exp $
+/*  $Id: ai.qc,v 1.12 2004/06/25 00:42:12 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -53,10 +53,9 @@ float	sight_entity_time;
 float (float v)
 anglemod =
 {
-	while (v >= 360)
-		v = v - 360;
-	while (v < 0)
-		v = v + 360;
+	while (v >= 360)	v = v - 360;
+	while (v < 0)		v = v + 360;
+
 	return v;
 };
 
@@ -65,7 +64,8 @@ anglemod =
 
 MOVETARGET CODE
 
-The angle of the movetarget effects standing and bowing direction, but has no effect on movement, which allways heads to the next target.
+The angle of the movetarget effects standing and bowing direction, but has no
+effect on movement, which allways heads to the next target.
 
 targetname
 must be present.  The name of this movetarget.
