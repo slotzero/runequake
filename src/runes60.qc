@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.52 2004/11/27 07:34:35 slotzero Exp $
+/*  $Id: runes60.qc,v 1.53 2004/11/28 00:21:23 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -89,6 +89,9 @@ Glue_Touch =
 		return;
 
 	if (environmental (other))
+		return;
+
+	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;
 
 	if (other.effects & EF_GLUE)
@@ -206,6 +209,7 @@ Rune_Blizzard =
 			if (!environmental (e)
 					&& e.runetype != RN_BLIZZARD
 					&& e.runetype != RN_FREEZE
+					&& !(isfriend2 (self, e) && self != e)
 					&& !e.effects & EF_ICE)
 			{
 				if (e.health > 0 && e != self && e.owner != self)
@@ -313,6 +317,8 @@ Blizzard_Touch =
 	if (other.classname != "player" && !is_pet_e (other))
 		return;
 	if (environmental (other) || other.runetype == RN_BLIZZARD || other.runetype == RN_FREEZE)
+		return;
+	if (isfriend (other) && self != other)
 		return;
 	if (other.effects & EF_ICE)
 		return;
@@ -552,7 +558,17 @@ AntiPack_Think =
 {
 	self.nextthink = time + 1;
 	IN_POQ([-
-		particle (self.origin, '0 0 10', 73, 20);
+
+
+		if (teamplay & TEAM_TEAM_MASK)
+		{
+			local float particle_team;
+
+			particle_team = team_to_particle (self.owner.team);
+			particle (self.origin, '0 0 10', particle_team, 20);
+		}
+		else
+			particle (self.origin, '0 0 10', 73, 20);
 	-], [-
 		create_te_blood (self.origin + '0 0 10', 2);
 	-])
@@ -590,7 +606,7 @@ AntiPack_Touch =
 	if (environmental (other))
 		return;
 
-	if (other == self.owner)
+	if (isfriend2 (self.owner, other))
 		return;
 
 	maybe_update_trap_count (self.owner, RN_ANTIPACK);
@@ -865,7 +881,8 @@ tornado_pull =
 				&& e.movetype != MOVETYPE_PUSH
 				&& e.movetype != MOVETYPE_NOCLIP
 				&& !environmental (e)
-				&& e.health)
+				&& e.health > 0
+				&& !(isfriend2 (self.owner, e) && self.owner != e))
 		{
 			d = vlen (e.origin - org);
 			if (e.flags & FL_ONGROUND)
@@ -882,6 +899,15 @@ tornado_pull =
 			e.velocity = e.velocity + '0 0 10' + normalize (self.origin - e.origin) * gPower * gPercent;
 
 			IN_POQ([-
+
+				if (teamplay & TEAM_TEAM_MASK)
+				{
+					local float particle_team;
+
+					particle_team = team_to_particle (self.owner.team);
+					particle (e.origin + v_up * random () * 30, e.velocity, particle_team, 3);
+				}
+				else
 				// Fire those particles toward the tornado
 				particle (e.origin + v_up * random () * 30, e.velocity, 96, 3);
 			-])
@@ -894,10 +920,13 @@ tornado_pull =
 void ()
 tornado_touch =
 {
-	if (other.health <= 0)
+	if (other.health <= 0 || other == world)
 		return;
 
 	if (environmental (other))
+		return;
+
+	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;
 
 	T_Damage (other, self, self.owner, self.runevar / 2, "tornado");

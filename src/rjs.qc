@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.152 2004/11/13 02:43:50 slotzero Exp $
+/*  $Id: rjs.qc,v 1.153 2004/11/28 00:21:23 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -145,11 +145,16 @@ isteammate =
 float (entity e)
 isfriend =
 {
+	local float i;
+
 	// self could be world if this was via isfriend2().
 	if (self == world || e == world)
 		return FALSE;
-	return (e == self || e.owner == self || self.owner == e
-		|| isteammate (e));
+
+	// Only one argument in an if statement will work, so I had to break this up.
+	i = (e == self || e.owner == self || self.owner == e || isteammate (e));
+	//  This should prevent monsters from triggering a teammate's traps.
+	return (i || isteammate (e.owner));
 };
 
 float (entity a, entity b)
