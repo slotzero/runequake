@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.26 2004/07/10 05:11:45 slotzero Exp $
+/*  $Id: team.qc,v 1.27 2004/07/11 22:16:36 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -592,19 +592,6 @@ change_practice_mode =
 	s = ftos (new_deathmatch);
 	cvar_set ("deathmatch", s);
 	admin_changelevel (mapname);
-};
-
-void ()
-practice_default =
-{
-	local float default;
-
-	default = 0; // XXX move to settings or hunk
-
-	if (!default)
-		return;
-
-
 };
 
 void ()
