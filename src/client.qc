@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.84 2005/02/04 02:28:49 slotzero Exp $
+/*  $Id: client.qc,v 1.85 2005/02/26 21:17:45 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1820,21 +1820,42 @@ PlayerPostThink =
 void ()
 client_ip =
 {
-	local float px, pch, i;
-	local string new;
+	local float px, pch, i, oc, dot;
+	local string new, ch;
+	local string octet = "abc";
 
 	new = net_address ();
 	self.address = @AddInt (&new, %32);
 	strcpy (self.address, new);
 
 	px = AddInt(&"\{0}  ", PSTRING_TO_PQUAKEC);
-	pch = AddInt(AddInt(&self.address, PSTRING_TO_PQUAKEC), %-3);
+	pch = AddInt(AddInt(&self.address, PSTRING_TO_PQUAKEC), %-4);
 
 	&%116 = 0;
 	for (i = 0; i < 16; i = i + 1)
 	{
 		pch = AddInt (pch, %1);
 		&%113 = (*pch)[0];
+
+		if (world[%5] != '.' && world[%5] != ':')
+		{
+			ch = atoc (world[%5] / %1);
+			if (ch)
+				strcpy (octet[oc], ch);
+			oc = oc + %1;
+		}
+		else
+		{
+			dot = dot + 1;
+			oc = 0;
+
+			if (dot == 1)
+				self.subnet_x = stof (octet);
+			else if (dot == 2)
+				self.subnet_y = stof (octet);
+			else if (dot == 3)
+				self.subnet_z = stof (octet);
+		}
 
 		if (world[%5] == ':')
 			i = 16;
