@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.36 2004/06/28 06:42:19 slotzero Exp $
+/*  $Id: weapons.qc,v 1.37 2004/07/05 07:55:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1241,65 +1241,6 @@ W_Attack =
 
 /*
 ============
-CheatCommand
-============
-*/
-void ()
-CheatCommand =
-{
-	if (deathmatch & DM_DM_MASK || coop)
-		return;
-
-	self.ammo_rockets	= MAX_ROCKETS;
-	self.ammo_nails		= MAX_NAILS;
-	self.ammo_shells	= MAX_SHELLS;
-	self.ammo_cells		= MAX_CELLS;
-	self.items = self.items |
-		IT_AXE |
-		IT_SHOTGUN |
-		IT_SUPER_SHOTGUN |
-		IT_NAILGUN |
-		IT_SUPER_NAILGUN |
-		IT_GRENADE_LAUNCHER |
-		IT_ROCKET_LAUNCHER |
-		IT_LIGHTNING |
-		IT_KEY1 | IT_KEY2;
-
-	set_weapon (W_BestWeapon ());
-};
-
-/*
-============
-ServerflagsCommand
-
-Just for development
-============
-*/
-void ()
-ServerflagsCommand =
-{
-	if (serverflags & SERVERFLAGS_RUNE_MASK == SERVERFLAGS_RUNE_MASK)
-		serverflags = 0;
-	else
-		serverflags = serverflags
-				- (serverflags & SERVERFLAGS_RUNE_MASK)
-				+ ((serverflags & SERVERFLAGS_RUNE_MASK) * 2)
-				+ 1;
-};
-
-void ()
-QuadCheat =
-{
-	if (deathmatch & DM_DM_MASK || coop)
-		return;
-	self.super_time = -1;
-	self.super_damage_finished = time + 30;
-	self.items = self.items | IT_QUAD;
-	dprint ("quad cheat\n");
-};
-
-/*
-============
 ImpulseCommands
 
 ============
@@ -1309,25 +1250,16 @@ ImpulseCommands =
 {
 	if (self.aqstate & AQS_IMPOVER_MASK)
 		impulse_override ();
+
 	else if (self.impulse >= 1 && self.impulse <= 8)
 		W_ChangeWeapon (1, 1);
-	else if (self.impulse == 9)
-		CheatCommand ();
+
 	else if (self.impulse == 10)
 		CycleWeaponCommand ();
-	else if (self.impulse == 11 && (!deathmatch & DM_DM_MASK
-					|| self.aqflags & AQ_ADMIN))
-		ServerflagsCommand ();
+
 	else if (self.impulse == 12)
 		CycleWeaponReverseCommand ();
-	else if (self.impulse == 255)
-		QuadCheat ();
 
-/*********************\
-* RUNE SERV: Impulses *
-\*********************/
-
-	// Give yourself a rune
 	else if (self.impulse >= IMP_RUNE_CHEAT_BASE
 			&& self.impulse < IMP_RUNE_CHEAT_BASE + RN_MAX_ALL)
 	{
@@ -1349,14 +1281,12 @@ ImpulseCommands =
 			Rune_Activate (wanted, 1);
 	}
 
-	// Activate ability
-	else if (self.impulse == IMP_RUNE_USE) Rune_Button ();
+	else if (self.impulse == IMP_RUNE_USE)
+		Rune_Button ();
 
-	// What rune do I have?
 	else if (self.impulse == IMP_RUNE_TELL)
 		rune_tell_toggle (0, self);
 
-	// I don't like my rune!
 	else if (self.impulse == IMP_RUNE_DELETE)
 	{
 		if (self.runetype == 0)
@@ -1408,7 +1338,7 @@ ImpulseCommands =
 		switchfire_off ();
 
 	else if (self.impulse >= IMP_SWITCHFIRE_BASE
-		&& self.impulse <= IMP_SWITCHFIRE_BASE + IMP_SWITCHFIRE_COUNT - 1)
+			&& self.impulse <= IMP_SWITCHFIRE_BASE + IMP_SWITCHFIRE_COUNT - 1)
 	{
 		self.impulse = self.impulse - IMP_SWITCHFIRE_BASE + 1;
 		switchfire ();
@@ -1455,7 +1385,7 @@ ImpulseCommands =
 		weapon_mode ();
 
 	else if (self.impulse >= IMP_WEAPON_BASE
-		&& self.impulse <= IMP_WEAPON_BASE + IMP_WEAPON_COUNT - 1)
+			&& self.impulse <= IMP_WEAPON_BASE + IMP_WEAPON_COUNT - 1)
 	{
 		self.impulse = self.impulse - IMP_WEAPON_BASE + IMP_WEAPON_START;
 		W_ChangeWeapon (0, 1);
@@ -1468,10 +1398,6 @@ ImpulseCommands =
 
 	else
 		common_impulses ();
-
-/*************************\
-* RUNE SERV: Impulses end *
-\*************************/
 
 	self.impulse = 0;
 };
@@ -1546,28 +1472,4 @@ SuperDamageSound =
 		}
 	}
 	return;
-};
-
-void ()
-toggle_alternates =
-{
-	local float new_deathmatch, bits;
-	local string s;
-
-	bits = DM_NO_ALT_WEAPONS;
-	new_deathmatch = cvar ("deathmatch");
-
-	if (!new_deathmatch & bits)
-	{
-		new_deathmatch = new_deathmatch | bits;
-		self_sprint (self, "Alternate weapons off.\n");
-	}
-	else
-	{
-		new_deathmatch = new_deathmatch - new_deathmatch & bits;
-		self_sprint (self, "Alternate weapons on.\n");
-	}
-
-	s = ftos (new_deathmatch);
-	cvar_set ("deathmatch", s);
 };

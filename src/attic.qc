@@ -1,4 +1,4 @@
-/*  $Id: attic.qc,v 1.6 2004/06/25 00:36:47 slotzero Exp $
+/*  $Id: attic.qc,v 1.7 2004/07/05 07:55:47 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -334,3 +334,62 @@ ChangeYaw =
 };
 
 */
+
+/*
+============
+CheatCommand
+============
+*/
+void ()
+CheatCommand =
+{
+	if (deathmatch & DM_DM_MASK || coop)
+		return;
+
+	self.ammo_rockets	= MAX_ROCKETS;
+	self.ammo_nails		= MAX_NAILS;
+	self.ammo_shells	= MAX_SHELLS;
+	self.ammo_cells		= MAX_CELLS;
+	self.items = self.items |
+		IT_AXE |
+		IT_SHOTGUN |
+		IT_SUPER_SHOTGUN |
+		IT_NAILGUN |
+		IT_SUPER_NAILGUN |
+		IT_GRENADE_LAUNCHER |
+		IT_ROCKET_LAUNCHER |
+		IT_LIGHTNING |
+		IT_KEY1 | IT_KEY2;
+
+	set_weapon (W_BestWeapon ());
+};
+
+/*
+============
+ServerflagsCommand
+
+Just for development
+============
+*/
+void ()
+ServerflagsCommand =
+{
+	if (serverflags & SERVERFLAGS_RUNE_MASK == SERVERFLAGS_RUNE_MASK)
+		serverflags = 0;
+	else
+		serverflags = serverflags
+				- (serverflags & SERVERFLAGS_RUNE_MASK)
+				+ ((serverflags & SERVERFLAGS_RUNE_MASK) * 2)
+				+ 1;
+};
+
+void ()
+QuadCheat =
+{
+	if (deathmatch & DM_DM_MASK || coop)
+		return;
+	self.super_time = -1;
+	self.super_damage_finished = time + 30;
+	self.items = self.items | IT_QUAD;
+	dprint ("quad cheat\n");
+};
