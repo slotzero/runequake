@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.47 2004/01/03 12:01:53 slotzero Exp $
+/*  $Id: client.qc,v 1.48 2004/01/04 08:19:45 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -262,11 +262,30 @@ GotoNextMap =
 	IN_QW([-
 		local string newmap;
 
-		if (cvar_infokey ("infokey_maps") && !forced_nextmap)
+		if (cvar_infokey ("infokey_maps"))
 		{
-			newmap = infokey (world, mapname);
-			if (newmap != string_null)
-				forced_nextmap = newmap;
+			newmap = infokey (world, "next_map");
+			if (forced_nextmap)
+			{
+				if (!newmap)
+				{
+					newmap = infokey (world, mapname);
+					if (newmap)
+						cvar_set_infokey ("next_map", newmap);
+				}
+			}
+			else
+			{
+				if (newmap != string_null && newmap != mapname)
+					forced_nextmap = newmap;
+				else
+				{
+					newmap = infokey (world, mapname);
+					if (newmap)
+						forced_nextmap = newmap;
+				}
+				cvar_set_infokey ("next_map", "\"\"");
+			}
 		}
 	-])
 
