@@ -1,4 +1,4 @@
-/*  $Id: menu.qc,v 1.11 2004/02/21 08:28:12 slotzero Exp $
+/*  $Id: menu.qc,v 1.12 2004/02/21 08:34:59 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -96,7 +96,7 @@ aq_menu_print_n =
 			"\1\b.\b View instructions \n"
 			"\2\b.\b Join the game     \n"
 			"\3\b.\b View credits      \n"
-			"\4\b.\b Observe           \n"
+			"\4\b.\b Observe (menu off)\n"
 			"\5\b.\b Ride next player  \n"
 			"\6\b.\b Admin menu        \n"
 			"\7\b.\b Weapon toggles    \n"
