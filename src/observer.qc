@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.16 2003/04/14 00:56:16 slotzero Exp $
+/*  $Id: observer.qc,v 1.17 2003/05/25 00:11:29 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1189,6 +1189,12 @@ show_riders =
 	}
 	else
 	{
+		if (DEVELOPER_MODE)
+		{
+			Test_Button ();
+			return;
+		}
+
 		// Display rate with show-riders.
 		if (!is_observer ())
 		{

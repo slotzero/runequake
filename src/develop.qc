@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.4 2003/05/24 02:33:09 slotzero Exp $
+/*  $Id: develop.qc,v 1.5 2003/05/25 00:11:28 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -16,6 +16,14 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
+
+float DEVELOPER_MODE = 0;
+
+void ()
+Test_Button =
+{
+	SUB_Null ();
+};
 
 //  These are functions that are still under development.
 
