@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.48 2004/07/01 07:06:23 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.49 2004/07/09 08:50:50 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -1300,7 +1300,12 @@ Rune_Type_Allowed =
 		if (type == RN_PHASE)				return 0;
 	-])
 
-	/* if (type == RN_TORNADO)	return 0; */
+	// don't spawn these in practice mode
+	if (deathmatch & DM_MODE_PRACTICE)
+	{
+		if (type == RN_ANTIPACK)			return 0;
+		if (type == RN_AMMO)				return 0;
+	}
 
 	return 1;
 };

@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.47 2004/07/09 08:03:18 slotzero Exp $
+/*  $Id: runes60.qc,v 1.48 2004/07/09 08:50:50 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -656,6 +656,9 @@ Rune_AntiPack =
 	local entity antipack;
 	local string s, s1;
 
+	if (deathmatch & DM_MODE_PRACTICE)
+		return centerprint (self, "Rune disabled in practice mode\n");
+
 	if (self.runevar >= MAX_ANTIPACK)
 	{
 		s = ftos (MAX_ANTIPACK);
@@ -785,10 +788,16 @@ Launch_Betty_Package =
 void ()
 Rune_Betty =
 {
+	local float nospam;
+
 	if (self.runevector_x > time)
 		return;
 
-	if (self.ammo_rockets >= AMMO_BETTY)
+	nospam = 0;
+	if (deathmatch & DM_MODE_PRACTICE)
+		nospam = 3;
+
+	else if (self.ammo_rockets >= AMMO_BETTY)
 	{
 		self.ammo_rockets = self.ammo_rockets - AMMO_BETTY;
 		set_current_ammo ();
@@ -799,7 +808,7 @@ Rune_Betty =
 		return;
 	}
 
-	self.runevector_x = time + 3;
+	self.runevector_x = time + 3 + nospam;
 
 	W_FireGrenade ("betty");
 };
@@ -916,11 +925,14 @@ void ()
 Rune_Tornado =
 {
 	local entity tornado;
+	local float nospam;
 
 	if (self.runevector_x > time)
 		return;
 
-	if (self.ammo_cells >= AMMO_TORNADO)
+	if (deathmatch & DM_MODE_PRACTICE)
+		nospam = 13.5;
+	else if (self.ammo_cells >= AMMO_TORNADO)
 	{
 		self.ammo_cells = self.ammo_cells - AMMO_TORNADO;
 		set_current_ammo ();
@@ -931,7 +943,7 @@ Rune_Tornado =
 		return;
 	}
 
- 	self.runevector_x	= time + 1.5;
+ 	self.runevector_x	= time + 1.5 + nospam;
 
 	// create a tornado object
 	tornado			= spawn();
