@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.24 2004/06/23 20:40:53 slotzero Exp $
+/*  $Id: combat.qc,v 1.25 2004/07/18 20:03:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -705,8 +705,8 @@ T_RadiusDamage =
 					bprint ("\n");
 				}
 				if (head == attacker
-						&& monk_radius_hack
-						&& dtype != "mortar")
+						&& monk_radius_hack)
+						// && dtype != "mortar")
 					points = points * 0.5;
 				if (head.runetype == RN_MONK
 						&& head != attacker

@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.44 2004/07/18 14:17:28 slotzero Exp $
+/*  $Id: weapons.qc,v 1.45 2004/07/18 20:03:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -53,13 +53,20 @@ crandom =
 void ()
 reflect_projectile =
 {
+	local string s;
+
 	if (self.velocity == VEC_ORIGIN)
-		self.touch ();
+	{
+		create_te_explosion (self.origin, 1);
+		return;
+	}
 	else
 		self.angles = vectoangles (self.velocity);
 
+	random_sound2 (self, CHAN_WEAPON, "weapons/ric2.wav", "weapons/ric3.wav", 1, ATTN_NORM);
+
 	self.movetype	= MOVETYPE_FLYMISSILE;
-	self.nextthink	= time + 3;
+	self.nextthink	= time + 6;
 	self.think	= SUB_Remove;
 };
 
@@ -444,25 +451,25 @@ T_MissileTouch =
 
 	if (other.health)
 	{
-		if (is_mortar)
+		/* if (is_mortar)
 			damg = MORTAR_DAMAGE;
-		else
+		else */
 			damg = 100 + random ()*20;
 		if (other.classname == "monster_shambler")
 			damg = damg * 0.5;	// mostly immune
 		T_Damage (other, self, self.owner, damg, self.classname);
 	}
 
-	if (is_mortar)
+	/* if (is_mortar)
 	{
 		radius_type	= RADIUS_MORTAR;
 		damg		= MORTAR_DAMAGE;
 	}
 	else
-	{
+	{ */
 		radius_type	= RADIUS_NORMAL;
 		damg		= 120;
-	}
+	// }
 	// don't do radius damage to the other, because all the damage
 	// was done in the impact
 	monk_radius_hack = 1;
@@ -471,7 +478,23 @@ T_MissileTouch =
 
 	self.origin = self.origin - 8*normalize (self.velocity);
 
-	create_te_explosion (self.origin, 1);
+	if (is_mortar)
+	{
+		if (self.runevar == 1)
+			create_te_explosion (self.origin, 1);
+		else
+		{
+
+			self.runevar	= 1;
+			self.movetype	= MOVETYPE_BOUNCE;
+			self.nextthink	= time;
+			self.think	= reflect_projectile;
+
+			return;
+		}
+	}
+	else
+		create_te_explosion (self.origin, 1);
 };
 
 /*
@@ -492,7 +515,7 @@ W_FireRocket =
 	else
 	{
 		is_mortar	= 1;
-		mv		= MOVETYPE_BOUNCE;
+		mv		= MOVETYPE_FLYMISSILE; // MOVETYPE_BOUNCE;
 	}
 
 	sound (self, CHAN_WEAPON, "weapons/sgun1.wav", 1, ATTN_NORM);
@@ -507,12 +530,12 @@ W_FireRocket =
 
 	makevectors (self.v_angle);
 	newmis.velocity = aim (self, 1000);
-	if (is_mortar)
+	/* if (is_mortar)
 	{
 		makevectors (self.v_angle);
 		newmis.velocity = v_forward*750 + v_up*440;
 	}
-	else
+	else */
 		newmis.velocity = newmis.velocity * 1000;
 	newmis.angles = vectoangles (newmis.velocity);
 

@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.59 2004/07/18 10:25:39 slotzero Exp $
+/*  $Id: client.qc,v 1.60 2004/07/18 20:03:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -2007,7 +2007,7 @@ ClientObituary =
 			else if (dt == "gas")
 				bprint (" likes the smell of his own gas\n");
 			else if (dt == "mortar")
-				bprint (" shelled himself\n");
+				bprint (" pretends his rocket is a boomerang\n");
 			else if (dt == "bfgblast")
 				bprint (" was too close to his own BFG\n");
 			else if (dt == "grenade" || dt == "gasbomb")
@@ -2241,8 +2241,8 @@ ClientObituary =
 		}
 		else if (dt == "mortar")
 		{
-			s1 = " was shelled by ";
-			s2 = "'s mortar\n";
+			s1 = " uses his face to ricochet ";
+			s2 = "'s rocket\n";
 		}
 		else if (dt == "bfgzap")
 		{

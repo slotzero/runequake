@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.42 2004/07/18 14:17:28 slotzero Exp $
+/*  $Id: settings.qc,v 1.43 2004/07/18 20:03:48 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -404,7 +404,7 @@ float AMMO_FLAMETHROWER		= 1;
 float AMMO_LAVAGUN		= 1;
 float AMMO_BOMB			= 10;
 float AMMO_FLASH_GRENADE	= 3;
-float AMMO_MORTAR		= 1;
+float AMMO_MORTAR		= 2;
 float AMMO_BFG			= 30;
 
 // Amount of damage done by the hook, per tick, for the various hook
@@ -501,7 +501,7 @@ float AXE_DAMAGE_LUMBER		= 100;	// also gets lumberjack adjustment
 // than 2/3 that of a rocket (100 vs. 160), I don't think this makes it
 // too powerful (even though it can fire slightly faster).
 
-float MORTAR_REFIRE		= 0.7;
+float MORTAR_REFIRE		= 0.9;
 float MORTAR_DAMAGE		= 90;
 float MORTAR_RADIUS		= 100;
 float MORTAR_TAPER		= 0.1;
