@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.46 2004/07/18 20:07:12 slotzero Exp $
+/*  $Id: weapons.qc,v 1.47 2004/07/19 05:58:26 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -48,24 +48,6 @@ float ()
 crandom =
 {
 	return 2*(random () - 0.5);
-};
-
-void ()
-reflect_projectile =
-{
-	if (self.velocity == VEC_ORIGIN)
-	{
-		create_te_explosion (self.origin, 1);
-		return;
-	}
-	else
-		self.angles = vectoangles (self.velocity);
-
-	random_sound2 (self, CHAN_WEAPON, "weapons/ric2.wav", "weapons/ric3.wav", 1, ATTN_NORM);
-
-	self.movetype	= MOVETYPE_FLYMISSILE;
-	self.nextthink	= time + 6;
-	self.think	= SUB_Remove;
 };
 
 /*
@@ -432,6 +414,48 @@ BecomeExplosion =
 };
 
 void ()
+RocketDamageExplosion =
+{
+	monk_radius_hack = 1;
+	T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 120, other, self.classname);
+	monk_radius_hack = 0;
+
+	create_te_explosion (self.origin, 1);
+};
+
+void ()
+reflect_projectile =
+{
+	local entity os;
+
+	if (self.velocity == VEC_ORIGIN)
+	{
+		create_te_explosion (self.origin, 1);
+		return;
+	}
+	else
+		self.angles = vectoangles (self.velocity);
+
+	os = self;
+	self = self.owner;
+	if (!W_CheckNoAmmo ())
+	{
+		self = os;
+		create_te_explosion (self.origin, 1);
+		return;
+	}
+	use_ammo ();
+	self = os;
+
+	random_sound2 (self, CHAN_WEAPON, "weapons/ric2.wav", "weapons/ric3.wav", 1, ATTN_NORM);
+	create_te_explosion (self.origin, 0);
+
+	self.movetype	= MOVETYPE_FLYMISSILE;
+	self.nextthink	= time + 1;
+	self.think	= RocketDamageExplosion;
+};
+
+void ()
 T_MissileTouch =
 {
 	local float is_mortar, damg, radius_type;
@@ -474,20 +498,19 @@ T_MissileTouch =
 	T_RadiusDamage (radius_type, self, self.owner, damg, other, self.classname);
 	monk_radius_hack = 0;
 
-	self.origin = self.origin - 8*normalize (self.velocity);
+	self.origin = self.origin - 8 * normalize (self.velocity);
 
 	if (is_mortar)
 	{
-		if (self.runevar == 1)
+		if (self.runevar == 2)
 			create_te_explosion (self.origin, 1);
 		else
 		{
-
-			self.runevar	= 1;
+			self.runevar	= self.runevar + 1;
 			self.movetype	= MOVETYPE_BOUNCE;
 			self.nextthink	= time;
 			self.think	= reflect_projectile;
-
+			self.velocity	= self.velocity * 1.4;
 			return;
 		}
 	}

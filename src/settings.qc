@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.43 2004/07/18 20:03:48 slotzero Exp $
+/*  $Id: settings.qc,v 1.44 2004/07/19 05:58:26 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -501,7 +501,7 @@ float AXE_DAMAGE_LUMBER		= 100;	// also gets lumberjack adjustment
 // than 2/3 that of a rocket (100 vs. 160), I don't think this makes it
 // too powerful (even though it can fire slightly faster).
 
-float MORTAR_REFIRE		= 0.9;
+float MORTAR_REFIRE		= 1.4;
 float MORTAR_DAMAGE		= 90;
 float MORTAR_RADIUS		= 100;
 float MORTAR_TAPER		= 0.1;
