@@ -1,6 +1,7 @@
-$Id: Changes,v 1.56 2004/03/01 01:30:01 slotzero Exp $
+$Id: Changes,v 1.57 2004/03/09 23:06:44 slotzero Exp $
 
 added custom sound, denied.wav for q3 style message
+hook doesn't attach to spawn shields
 added command custom-sounds
 telefrag deflect locks you down as you exit the teleporter
 added q3 style denied message
