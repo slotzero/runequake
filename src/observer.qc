@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.18 2003/06/24 22:17:41 slotzero Exp $
+/*  $Id: observer.qc,v 1.19 2003/06/29 01:00:39 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -99,6 +99,8 @@ corpse_to_observer =
 	CopyToBodyQue (self);
 	obs_become (tell_type);
 	obs_process_game_queue ();
+	if (self.items | IT_KEY2)
+		self.items = self.items - self.items & IT_KEY2;
 	return 1;
 };
 
@@ -463,7 +465,12 @@ obs_post_think =
 				|| self.runetime == -2)
 		{
 			if (deathmatch & DM_DM_MASK)
-				self.owner.items = self.owner.items | IT_KEY2;
+			{
+				// Don't key admin observers (only admin obs can ride obs).
+				if (!is_observer_e (self.owner))
+					self.owner.items = self.owner.items | IT_KEY2;
+			}
+
 			self_sprint (self.owner, "Rider ");
 			self_sprint (self.owner, self.netname);
 			self_sprint (self.owner, " acquired\n");
@@ -806,6 +813,8 @@ obs_join_game =
 	bprint (self.netname);
 	bprint (" joined the game\n");
 
+	if (self.items & IT_KEY2)
+		self.items = self.items - self.items & IT_KEY2;
 	if (teamplay & TEAM_TEAM_MASK)
 		describe_team_mode ();
 	if (enforced_teams ())
