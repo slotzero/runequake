@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.35 2004/04/04 11:12:29 slotzero Exp $
+/*  $Id: items.qc,v 1.36 2004/04/04 11:40:31 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -31,7 +31,7 @@ SUB_regen =
 	if (self.touch == armor_touch)
 	{
 		self.think = armor_morph;
-		self.nextthink = time + 5;
+		self.nextthink = (time + 5) - (self.skin * 4);
 	}
 
 	setorigin (self, self.origin);
@@ -137,7 +137,7 @@ PlaceItem =
 	else if (self.touch == armor_touch)
 	{
 		self.think	= armor_morph;
-		self.nextthink	= (time + 5) - self.skin * 4;
+		self.nextthink	= time;
 	}
 };
 
@@ -445,7 +445,7 @@ armor_morph =
 	self.skin = self.skin + 1;
 	if (self.skin > 2)
 		self.skin = 0;
-	self.nextthink = (time + 10) - self.skin * 4;
+	self.nextthink = (time + 10) - (self.skin * 4);
 };
 
 void (float it_skin)
