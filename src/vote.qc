@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.38 2004/07/26 18:59:55 slotzero Exp $
+/*  $Id: vote.qc,v 1.39 2004/10/11 04:18:31 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -29,11 +29,14 @@
 	// exit
 	* you can override a random map by selecting a non-random map.. but how to update message?
 
-	// observer
-	* Better...
-
 	// warnings
 	* make sure that you don't try to assign value to a world entity (!vip for example)!!!
+
+	// ideas
+	* maybe a new command, auto-vote to disable your LAST_VOTE_*
+	* auto-yes/auto-no to always vote yes or no whatever the vote.
+	* a command to toggle the amount of bprints (from 3 to 1).
+	* limit the number of votes per given time
 */
 
 float (float tell)
@@ -79,21 +82,6 @@ vote_action =
 	if (!vip)
 		dprint ("vote_action: vip is null\n");
 
-	/* if (self.classname == "player")
-		bprint (self.netname);
-	else if (vip.owner.classname == "player")
-		bprint (vip.owner.netname);
-	else
-		bprint ("Someone");
-
-	bprint (" voted to ");
-	if (vip.noise1)
-		bprint (vip.noise1);
-	if (vip.noise2)
-		bprint (vip.noise2);
-	if (vip.noise3)
-		bprint (vip.noise3); */
-
 	if (vip.noise1 == "enable" || vip.noise1 == "disable")
 	{
 		bprint (vip.noise2[%1]);
@@ -113,7 +101,7 @@ vote_action =
 	else
 		dprint ("vote_action: think1 is null\n");
 
-	remove_bit_from_players (vote_flags, VOTE_YES | VOTE_NO);
+	remove_bit_from_players (vote_flags, VOTE_YES | VOTE_NO | VOTE_LAST_YES | VOTE_LAST_NO);
 	remove (vip);
 };
 
@@ -333,7 +321,37 @@ vote =
 		return self_sprint (self, "\{141} a vote is already in progress\n");
 	}
 
-	self.vote_flags = self.vote_flags | VOTE_YES;
+	// prevent auto-vote on exit votes of different levels
+	if (LAST_VOTE_IMPULSE == IMP_VOTE_EXIT)
+	{
+		if (LAST_VOTE_LEVEL != forced_nextmap)
+			LAST_VOTE_IMPULSE = 0;
+	}
+
+	// compare new vote to last vote and auto-vote if necessary
+	if (LAST_VOTE_IMPULSE == self.impulse)
+	{
+		e = find (world, classname, "player");
+		while (e)
+		{
+			if (e != self)
+			{
+				if (e.vote_flags & VOTE_LAST_YES)
+					e.vote_flags = e.vote_flags | VOTE_YES;
+				else if (e.vote_flags & VOTE_LAST_NO)
+					e.vote_flags = e.vote_flags | VOTE_NO;
+			}
+			e = find (e, classname, "player");
+		}
+	}
+	else
+	{
+		LAST_VOTE_IMPULSE = self.impulse;
+		LAST_VOTE_LEVEL = string_null;
+		remove_bit_from_players (vote_flags, VOTE_LAST_YES | VOTE_LAST_NO);
+	}
+
+	self.vote_flags = self.vote_flags | VOTE_YES | VOTE_LAST_YES;
 
 	// entity init
 	//
@@ -355,6 +373,8 @@ vote =
 		e.frag_rate	= VOTE_EXIT_PERCENTAGE;
 		e.think1	= NextLevel;
 		e.noise1	= "change";
+
+		LAST_VOTE_LEVEL	= forced_nextmap;
 
 		if (forced_nextmap)
 		{
@@ -621,7 +641,7 @@ vote_yes =
 
 	if (self.vote_flags & VOTE_NO)
 	{
-		self.vote_flags = self.vote_flags - self.vote_flags & VOTE_NO;
+		self.vote_flags = self.vote_flags - self.vote_flags & (VOTE_NO | VOTE_LAST_NO);
 		self_sprint (self, "You recalled your \bno\b vote\n");
 		return;
 	}
@@ -632,7 +652,7 @@ vote_yes =
 		return;
 	}
 
-	self.vote_flags = self.vote_flags | VOTE_YES;
+	self.vote_flags = self.vote_flags | VOTE_YES | VOTE_LAST_YES;
 
 	if (count_votes (1) <= 0)
 		vote_action (vip);
@@ -657,7 +677,7 @@ vote_no =
 
 	if (self.vote_flags & VOTE_YES)
 	{
-		self.vote_flags = self.vote_flags - self.vote_flags & VOTE_YES;
+		self.vote_flags = self.vote_flags - self.vote_flags & (VOTE_YES | VOTE_LAST_YES);
 		self_sprint (self, "You recalled your \byes\b vote\n");
 		return;
 	}
@@ -668,7 +688,7 @@ vote_no =
 		return;
 	}
 
-	self.vote_flags = self.vote_flags | VOTE_NO;
+	self.vote_flags = self.vote_flags | VOTE_NO | VOTE_LAST_NO;
 
 	count_votes (1);
 };

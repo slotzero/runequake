@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.119 2004/09/18 04:09:05 slotzero Exp $
+/*  $Id: defs.qc,v 1.120 2004/10/11 04:18:30 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -794,6 +794,8 @@ float S1_NO_DEFAULT		= 1024; // temporary
 // vote flags
 float VOTE_YES			= 1;
 float VOTE_NO			= 2;
+float VOTE_LAST_YES		= 4;
+float VOTE_LAST_NO		= 8;
 
 // Bit settings for POWERUP_PICKUP_WARN in settings.qc.
 float ITEM_PENT = 1;
@@ -1435,3 +1437,6 @@ void	(vector where, float set)		multicast	= #82; // sends the temp message to a 
 entity	last_teleport;
 
 string	VICTIM_ADDRESS;
+
+float	LAST_VOTE_IMPULSE;
+string	LAST_VOTE_LEVEL;
