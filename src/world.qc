@@ -1,4 +1,4 @@
-// $Id: world.qc,v 1.2 2002/02/22 03:24:44 slotzero Exp $
+// $Id: world.qc,v 1.3 2002/02/23 22:54:01 slotzero Exp $
 
 void ()
 main =
@@ -332,7 +332,7 @@ worldspawn =
 	precache_sound ("boss2/idle.wav");		// Blowing up in a Death Spot
 	precache_sound ("knight/sword1.wav");		// lumberjack axe
 	precache_sound ("knight/sword2.wav");		// lumberjack axe
-	precache_sound ("ambience/thunder1.wav"); 	// player connect
+	precache_sound ("shalrath/sight.wav");		// player connect
 
 	// For the Shambler Helper
 	precache_model ("progs/shambler.mdl");

@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.2 2002/02/22 05:05:42 slotzero Exp $
+// $Id: rjs.qc,v 1.3 2002/02/23 22:54:01 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -1882,8 +1882,7 @@ player_init =
 	{
 		bprint (self.netname);
 		bprint (" connected to the server\n");
-		// Add sound to incoming players.
-		sound (self, CHAN_BODY, "ambience/thunder1.wav", 1, ATTN_NONE);
+		sound (self, CHAN_BODY, "shalrath/sight.wav", 1, ATTN_NONE);
 	}
 
 	self_stuffcmd (self, "init\n");
