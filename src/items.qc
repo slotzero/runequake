@@ -1,4 +1,4 @@
-// $Id: items.qc,v 1.11 2002/04/30 20:53:20 slotzero Exp $
+// $Id: items.qc,v 1.12 2002/05/04 05:53:05 slotzero Exp $
 
 void (entity e, float chan, string samp, float vol, float atten)
 item_sound =
@@ -19,6 +19,27 @@ void (string s)
 precache_noise =
 {
 	precache_noise_e (self, s);
+};
+
+void ()
+blink_item =
+{
+	if (time < self.cnt)
+	{
+		local float i;
+
+		i = self.cnt - time;
+
+		if ((i - floor (i)) >= 0.5)
+			setmodel (self, self.mdl);
+		else
+			setmodel (self, string_null);
+
+		self.nextthink = time + 0.5;
+
+		return;
+	}
+	remove (self);
 };
 
 /*
@@ -396,8 +417,9 @@ drop_armor =
 
 	setsize (e, '-16 -16 0', '16 16 56');
 	e.touch = armor_touch;
-	e.nextthink = time + DROP_ARMOR_DURATION;
-	e.think = SUB_Remove;
+	e.cnt	= time + DROP_ARMOR_DURATION;
+	e.nextthink = e.cnt - 3; // blink before removing
+	e.think = blink_item;
 };
 
 /*
@@ -1308,12 +1330,14 @@ DropBackpack =
 	item.flags	= FL_ITEM;
 	item.solid	= SOLID_TRIGGER;
 	item.movetype	= MOVETYPE_TOSS;
+	item.mdl	= "progs/backpack.mdl";
 
-	setmodel (item, "progs/backpack.mdl");
+	setmodel (item, item.mdl);
 	setsize (item, '-16 -16 0', '16 16 56');
 
-	item.nextthink	= time + DROP_BACKPACK_DURATION;
-	item.think	= SUB_Remove;
+	item.cnt	= time + DROP_BACKPACK_DURATION;
+	item.nextthink  = item.cnt - 3; // blink before removing
+	item.think	= blink_item;
 };
 
 void (string type, float finish_time)
@@ -1378,8 +1402,8 @@ drop_powerup =
 
 	item.cnt	= finish_time;
 	item.touch	= drop_powerup_touch;
-	item.nextthink	= item.cnt;	// remove it with the time left on it
-	item.think	= SUB_Remove;
+	item.nextthink	= item.cnt - 3;	// blink before removing
+	item.think	= blink_item;
 };
 
 void ()
@@ -1470,4 +1494,5 @@ drop_powerup_touch =
 
 	activator = other;
 	SUB_UseTargets ();	// fire all targets / killtargets
+	remove (self); // remove duplicate blinks
 };
