@@ -1,4 +1,4 @@
-/*  $Id: tornado.qc,v 1.3 2003/10/18 17:24:20 slotzero Exp $
+/*  $Id: tornado.qc,v 1.4 2003/11/22 04:53:58 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -19,19 +19,20 @@
 
 void() tornado_touch =
 {
-	// try to gib whatever touched the tornado center
-	if (other.takedamage && other.health > 0 && !environmental (other))
-		T_Damage(other, self, self.owner, self.runevar / 2, "tornado");
+	if (other.health > 0)
+		return;
+
+	if (environmental (other))
+		return;
+
+	T_Damage (other, self, self.owner, self.runevar / 2, "tornado");
 };
 
 void() tornado_pull =
 {
 	local entity e;
-	local float d;
 	local vector org;
-	local float gPercent;
-	local float gDist;
-	local float gPower;
+	local float d, gDist, gPower, gPercent;
 
 	gDist = 960;
 
@@ -49,23 +50,20 @@ void() tornado_pull =
 	self.movetype = MOVETYPE_FLYMISSILE;
 	self.flags = self.flags - FL_ONGROUND;
 
-
 	tornado_random_move ();
 
 	if (time > self.attack_finished)
-		{
-		if (self.effects & EF_BRIGHTLIGHT) // turn off bright light
+	{
+		if (self.effects & EF_BRIGHTLIGHT)
 			self.effects = self.effects - EF_BRIGHTLIGHT;
 
-		// Explode
 		T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 40, world, "tornado");
 		create_te_explosion (self.origin, 1);
-		BecomeExplosion();//This automatically removes self
 		return;
-		}
+	}
 
 	org = (self.absmin + self.absmax) * 0.5;
-	e = findradius(self.origin, gDist);
+	e = findradius (self.origin, gDist);
 
 	while (e)
 	{
@@ -73,7 +71,7 @@ void() tornado_pull =
 				&& e.movetype != MOVETYPE_NONE
 				&& e.movetype != MOVETYPE_PUSH
 				&& e.movetype != MOVETYPE_NOCLIP
-				&& e.runetype != RN_ENVIRO
+				&& !environmental (e)
 				&& e.health)
 		{
 			d = vlen(e.origin - org);
@@ -134,7 +132,7 @@ W_Tornado =
 	setmodel(tornado, "progs/w_spike.mdl");
 
 	// XXX get accurate sizing
-	setsize(tornado, VEC_ORIGIN, '32 32 32');
+	setsize (tornado, VEC_ORIGIN, '32 32 32');
 
 	tornado.angles		= '90 0 0';
 	tornado.runevar		= 1;
@@ -151,31 +149,17 @@ W_Tornado =
 void ()
 tornado_random_move =
 {
-	self.velocity = self.velocity * 0.2;
+	local float n;
+	local vector v;
 
-	local float torn_speed, ranman;
-	local vector vecman;
+	self.velocity	= self.velocity * 0.2;
+	n		= ceil (100 + (random () * 300));
 
-	torn_speed = ceil (100 + (random () * 300));
+	v_x = rint (random () * 2);
+	if (v_x == 2)	v_x = -1;
 
-	ranman = ceil (random () * 8);
+	v_y = rint (random () * 2);
+	if (v_y == 2)	v_y = -1;
 
-	if (ranman <= 1)
-		vecman = '1 0 0';
-	else if (ranman <= 2)
-		vecman = '0 1 0';
-	else if (ranman <= 3)
-		vecman = '1 1 0';
-	else if (ranman <= 4)
-		vecman = '-1 0 0';
-	else if (ranman <= 5)
-		vecman = '0 -1 0';
-	else if (ranman <= 6)
-		vecman = '-1 -1 0';
-	else if (ranman <= 7)
-		vecman = '1 -1 0';
-	else if (ranman > 7)
-		vecman = '-1 1 0';
-
-	self.velocity = self.velocity + (vecman * torn_speed);
+	self.velocity = self.velocity + (v * n);
 };
