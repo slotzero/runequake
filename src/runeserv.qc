@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.43 2004/05/20 21:09:24 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.44 2004/05/22 23:08:11 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -583,16 +583,15 @@ Rune_Tell_real =
 		desc_l = "Telefrag Deflect Rune";
 		desc_s = " TelDef";
 
-		d1 = "Deflects most telefrags\n";
+		d1 = "Deflects most telefrags";
 	}
 	else if (type == RN_BETTY)
 	{
 		desc_l = "Bouncing Betty";
 		desc_s = " Betty ";
 
-		d1 = "Launch a cluster of grenades\n";
-		d2 = ftos (MAX_BETTY);
-		d3 = " maximum";
+		d1 = "Launch a cluster of grenades\n"
+			"(requires rockets)";
 	}
 	else if (type == RN_TORNADO)
 	{
@@ -683,7 +682,6 @@ Rune_Tell_sprint =
 	else if (of_e.runetype == RN_GLUE)	Rune_Glue_sprint (r, of_e);
 	else if (of_e.runetype == RN_BLIZZARD)	Rune_Blizzard_sprint (r, of_e);
 	else if (of_e.runetype == RN_ANTIPACK)	Rune_AntiPack_sprint (r, of_e);
-	else if (of_e.runetype == RN_BETTY)	Rune_Betty_sprint (r, of_e);
 	else if (of_e.runetype == RN_TORNADO)	Rune_Tornado_sprint (r, of_e);
 };
 
@@ -980,7 +978,13 @@ Rune_Activate =
 		self.runevar = MAX_DEFLECT;
 
 	else if (self.runetype == RN_BETTY)
-		self.runevar = MAX_BETTY;
+	{
+		if (self.ammo_rockets < 50)
+			self.ammo_rockets = 50;
+		if (self.ammo_rockets >= MAX_ROCKETS)
+			self.ammo_rockets = MAX_ROCKETS;
+		set_current_ammo ();
+	}
 
 	else if (self.runetype == RN_TORNADO)
 	{

@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.40 2004/05/15 04:29:52 slotzero Exp $
+/*  $Id: runes60.qc,v 1.41 2004/05/22 23:08:11 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -750,7 +750,6 @@ Betty_Package_Explode =
 void ()
 Betty_Touch =
 {
-	// XXX Why?
 	if (self.velocity == VEC_ORIGIN)
 		self.avelocity = VEC_ORIGIN;
 
@@ -787,32 +786,26 @@ Launch_Betty_Package =
 	BecomeExplosion ();
 };
 
-void (float riders, entity of_e)
-Rune_Betty_sprint =
-{
-	rprint_numdesc (self, riders, of_e.runevar, "betty");
-	rprint (self, riders, " left\n");
-};
-
 void ()
 Rune_Betty =
 {
 	if (self.runevector_x > time)
 		return;
 
-	self.runevar	= self.runevar - 1;
-	self.runevector	= time + 3;
+	if (self.ammo_rockets >= AMMO_BETTY)
+	{
+		self.ammo_rockets = self.ammo_rockets - AMMO_BETTY;
+		set_current_ammo ();
+	}
+	else
+	{
+		sprint (self, "Not enough ammo\n");
+		return;
+	}
+
+	self.runevector_x = time + 3;
 
 	W_FireGrenade ("betty");
-
-	if (self.runevar == 1)
-		sprint (self, "\{141} \b[warning]\b 1 betty left\n");
-
-	if (!self.runevar)
-	{
-		sprint (self, "Max bouncing bettys launched, rune deleted\n");
-		Rune_Delete (0);
-	}
 };
 
 void ()
