@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.14 2002/05/13 20:30:57 slotzero Exp $
+// $Id: rjs.qc,v 1.15 2002/05/13 20:37:18 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -2547,7 +2547,7 @@ draw_hud =
 		else
 			lithhook = "     ";
 		if (self.runetype != 0 && self.dropdelay < 0)
-			willdrop = "-";
+			willdrop = "Ä";
 		else
 			willdrop = " ";
 		runedesc = Rune_Tell_real (0, self.runetype, 0, 1);
