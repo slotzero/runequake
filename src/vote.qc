@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.40 2004/11/28 08:22:00 slotzero Exp $
+/*  $Id: vote.qc,v 1.41 2004/12/23 18:18:00 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -696,16 +696,16 @@ vote_no =
 void ()
 show_votes =
 {
-	local entity e;
+	local entity e, vip;
 	local float yes, no, tot;
 
-	e = find_vip ();
-	if (e)
+	vip = find_vip ();
+	if (vip)
 	{
 		self_sprint (self, "Vote: ");
-		self_sprint (self, e.noise1);
-		self_sprint (self, e.noise2);
-		self_sprint (self, e.noise3);
+		self_sprint (self, vip.noise1);
+		self_sprint (self, vip.noise2);
+		self_sprint (self, vip.noise3);
 		self_sprint (self, "\n\n");
 	}
 	else
@@ -726,6 +726,8 @@ show_votes =
 				self_sprint (self, "yes - ");
 
 			self_sprint (self, e.netname);
+			if (vip.owner == e)
+				self_sprint (self, " \{133}");
 			self_sprint (self, "\n");
 			yes = yes + 1;
 		}
@@ -742,6 +744,8 @@ show_votes =
 			else
 				self_sprint (self, " no - ");
 			self_sprint (self, e.netname);
+			if (vip.owner == e)
+				self_sprint (self, " \{133}");
 			self_sprint (self, "\n");
 			no = no + 1;
 		}
