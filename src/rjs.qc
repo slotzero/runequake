@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.95 2004/05/16 22:52:00 slotzero Exp $
+/*  $Id: rjs.qc,v 1.96 2004/05/16 22:55:18 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -3156,7 +3156,11 @@ unset_owner_think =
 void (string m)
 changelevel =
 {
-	if (!m) m = "start";
+	if (!m)
+	{
+		dprint ("changelevel: mapname is null\n");
+		m = "start";
+	}
 
 	localcmd ("\n");
 	xchangelevel (m);
