@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.28 2004/12/27 05:01:37 slotzero Exp $
+/*  $Id: hook.qc,v 1.29 2004/12/29 04:31:52 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -197,6 +197,7 @@ CreateChain =
 		link.weapon = linknum / num;
 		link.movetype = MOVETYPE_NOCLIP;
 		link.solid = SOLID_NOT;
+		link.effects = EF_MAYBE_DRAW;
 		setmodel (link, "progs/s_spike.mdl");
 		setsize (link, VEC_ORIGIN, VEC_ORIGIN);
 		link.think = LinkPos;

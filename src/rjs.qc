@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.159 2004/12/27 03:36:34 slotzero Exp $
+/*  $Id: rjs.qc,v 1.160 2004/12/29 04:31:52 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1317,6 +1317,23 @@ common_impulses =
 		{
 			self.rqflags = self.rqflags | RQ_CYCLE_ALTERNATES;
 			sprint (self, "Alternate weapons cycle\n");
+		}
+	}
+
+	// requires runequake engine
+	else if (self.impulse == IMP_LAG)
+	{
+		if (self.rqflags & RQ_LOW_BANDWIDTH_CLIENT)
+		{
+			self.rqflags = self.rqflags - self.rqflags & RQ_LOW_BANDWIDTH_CLIENT;
+			self.flags = self.flags - self.flags & FL_LOW_BANDWIDTH_CLIENT;
+			sprint (self, "gibs and hook links enabled\n");
+		}
+		else
+		{
+			self.rqflags = self.rqflags | RQ_LOW_BANDWIDTH_CLIENT;
+			self.flags = self.flags | FL_LOW_BANDWIDTH_CLIENT;
+			sprint (self, "gibs and hook links disabled\n");
 		}
 	}
 

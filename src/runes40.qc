@@ -1,4 +1,4 @@
-/*  $Id: runes40.qc,v 1.23 2004/12/18 23:50:15 slotzero Exp $
+/*  $Id: runes40.qc,v 1.24 2004/12/29 04:31:52 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -826,6 +826,9 @@ Resurrect =
 	self.invincible_finished = 0;
 	self.effects = 0;
 	self.invincible_time = 0;
+
+	if (self.rqflags & RQ_LOW_BANDWIDTH_CLIENT)
+		self.flags = self.flags | FL_LOW_BANDWIDTH_CLIENT;
 
 	if (is_phoenix)
 	{

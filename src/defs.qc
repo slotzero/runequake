@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.130 2004/12/27 03:36:34 slotzero Exp $
+/*  $Id: defs.qc,v 1.131 2004/12/29 04:31:52 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -540,7 +540,8 @@ float IMP_CUSTOM		= 69;
 float IMP_LEVELS		= 68;
 float IMP_LAST			= 67;
 float IMP_VOTE_COMMAND		= 66;
-//				= 65 - 60	[free]
+float IMP_LAG			= 65;
+//				= 64 - 60	[free]
 float IMP_CYCLE_ALTERNATES	= 59;
 //				= 58;		[free]
 float IMP_SWITCHFIRE_BEST	= 57;
@@ -689,6 +690,7 @@ float AQ_QSMACK			= 2097152;
 
 // rqflags flags (saved across levels)
 float RQ_CYCLE_ALTERNATES	= 1;
+float RQ_LOW_BANDWIDTH_CLIENT	= 2;
 
 // aqstate flags (not saved across levels)
 float AQS_MENU_MASK		= 31;
@@ -858,6 +860,7 @@ float	FL_WATERJUMP			= 2048;	// player jumping out of water
 float	FL_JUMPRELEASED			= 4096;	// for jump debouncing
 float	FL_HEAVY			= 8192;	// player twice as heavy (requires runequake engine)
 float	FL_LIGHT			= 16384;// player twice as light (requires runequake engine)
+float	FL_LOW_BANDWIDTH_CLIENT		= 32768;// low bandwidth mode (requires runequake engine)
 
 // edict.movetype values
 float	MOVETYPE_NONE			= 0;	// never moves
@@ -1028,8 +1031,9 @@ float	EF_MUZZLEFLASH 			= 2;
 float	EF_BRIGHTLIGHT 			= 4;
 float	EF_DIMLIGHT 			= 8;
 //	EF_NO_DRAW			= 16;		// joequake uses this
-float	EF_FROZEN			= 32;
+float	EF_FROZEN			= 32;		// EF_ZERO_VELOCITY (requires runequake engine)
 float	EF_WEIRD			= 64;
+float	EF_MAYBE_DRAW			= 32768;	// requires runequake engine
 
 // messages
 float	MSG_BROADCAST			= IN_POQ(0, 4);	// unreliable to all

@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.70 2004/12/18 23:50:15 slotzero Exp $
+/*  $Id: client.qc,v 1.71 2004/12/29 04:31:52 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -689,6 +689,9 @@ PutClientInServer =
 	self.grenade_spam_time = 0;
 
 	DecodeLevelParms ();
+
+	if (self.rqflags & RQ_LOW_BANDWIDTH_CLIENT)
+		self.flags = self.flags | FL_LOW_BANDWIDTH_CLIENT;
 
 	// Do not allow firing immediately after you respawn to prevent
 	// your from losing your spawn shield.
