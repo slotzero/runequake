@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.50 2005/01/08 04:09:12 slotzero Exp $
+/*  $Id: vote.qc,v 1.51 2005/01/08 04:20:12 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -41,7 +41,7 @@ vote_impulse_commands =
 {
 	if (is_observer ())
 		count_votes (2);
-	else if (self.impulse >= 1 && self.impulse <= 17)
+	else if (self.impulse >= 1 && self.impulse <= 18)
 		vote ();
 
 	impulse_override_cancel ();
@@ -652,6 +652,21 @@ vote =
 		{
 			if (!cancel)
 				self_sprint (self, "Hook damage voting disabled\n");
+			cancel = 1;
+		}
+	}
+	else if (self.impulse == IMP_VOTE_ARENA)
+	{
+		// cancel	= 1;	//
+		e.frag_rate	= 0.51;	// XXX move to settings.
+		e.think1	= change_mode_to_arena;
+		e.noise1	= "change";
+		e.noise2	= " mode to arena";
+
+		if (mode_arena ())
+		{
+			if (!cancel)
+				self_sprint (self, "already in arena mode\n");
 			cancel = 1;
 		}
 	}

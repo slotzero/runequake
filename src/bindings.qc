@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.52 2004/12/29 04:31:52 slotzero Exp $
+/*  $Id: bindings.qc,v 1.53 2005/01/08 04:20:12 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -259,6 +259,7 @@ vote_aliases =
 	self_stuffcmd (self, s);
 	self_stuffcmd (self, "\"\n");
 
+	player_vote_impulse_alias ("arena",			IMP_VOTE_ARENA);	// CRMod (Style)
 	player_vote_impulse_alias ("ffa",			IMP_VOTE_NORMAL);	// CRMod
 	player_vote_impulse_alias ("normal",			IMP_VOTE_NORMAL);	// CRMod
 	player_vote_impulse_alias ("practice",			IMP_VOTE_PRACTICE);	// CRMod
@@ -268,6 +269,7 @@ vote_aliases =
 	player_vote_impulse_alias ("setsuit",			IMP_VOTE_SUIT);		// CRMod
 	player_vote_impulse_alias ("vote-alts",			IMP_VOTE_ALTS);
 	player_vote_impulse_alias ("vote-alt-weapons",		IMP_VOTE_ALTS);
+	player_vote_impulse_alias ("vote-arena",		IMP_VOTE_ARENA);
 	player_vote_impulse_alias ("vote-armor",		IMP_VOTE_ARMOR);
 	player_vote_impulse_alias ("vote-exit",			IMP_VOTE_EXIT);
 	player_vote_impulse_alias ("vote-free",			IMP_VOTE_FREE);
