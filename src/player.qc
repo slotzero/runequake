@@ -1,4 +1,4 @@
-// $Id: player.qc,v 1.1 2002/02/21 21:47:57 slotzero Exp $
+// $Id: player.qc,v 1.2 2002/06/08 05:42:35 slotzero Exp $
 
 /*
 ==============================================================================
@@ -383,7 +383,7 @@ DeathBubblesSpawn =
 	bubble.frame = 0;
 	bubble.cnt = 0;
 	setsize (bubble, '-8 -8 -8', '8 8 8');
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 	self.think = DeathBubblesSpawn;
 	self.air_finished = self.air_finished + 1;
 	if (self.air_finished >= self.bubble_count)
@@ -399,7 +399,7 @@ DeathBubbles =
 	setorigin (bubble_spawner, self.origin);
 	bubble_spawner.movetype = MOVETYPE_NONE;
 	bubble_spawner.solid = SOLID_NOT;
-	bubble_spawner.nextthink = time + TICK;
+	bubble_spawner.nextthink = time + sys_ticrate;
 	bubble_spawner.think = DeathBubblesSpawn;
 	bubble_spawner.air_finished = 0;
 	bubble_spawner.owner = self;

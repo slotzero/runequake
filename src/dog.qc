@@ -1,4 +1,4 @@
-// $Id: dog.qc,v 1.1 2002/02/21 21:47:50 slotzero Exp $
+// $Id: dog.qc,v 1.2 2002/06/08 05:42:34 slotzero Exp $
 
 /*
 ==============================================================================
@@ -85,7 +85,7 @@ Dog_JumpTouch =
 			//dprint ("popjump\n");
 			self.touch = SUB_Null;
 			self.think = dog_leap1;
-			self.nextthink = time + TICK;
+			self.nextthink = time + sys_ticrate;
 
 			//self.velocity_x = (random () - 0.5) * 600;
 			//self.velocity_y = (random () - 0.5) * 600;
@@ -97,7 +97,7 @@ Dog_JumpTouch =
 
 	self.touch = SUB_Null;
 	self.think = dog_run1;
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 };
 
 void () dog_stand1	=[	$stand1,	dog_stand2	] {ai_stand ();};

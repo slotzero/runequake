@@ -1,4 +1,4 @@
-// $Id: ai.qc,v 1.2 2002/05/10 03:09:20 slotzero Exp $
+// $Id: ai.qc,v 1.3 2002/06/08 05:42:32 slotzero Exp $
 
 /*
 
@@ -214,7 +214,7 @@ ChangeYaw
 
 Turns towards self.ideal_yaw at self.yaw_speed
 Sets the global variable current_yaw
-Called every TICK sec by monsters
+Called every sys_ticrate sec by monsters
 ============
 */
 /*
@@ -270,7 +270,7 @@ HuntTarget =
 	self.goalentity = self.enemy;
 	self.think = self.th_run;
 	self.ideal_yaw = vectoyaw (self.enemy.origin - self.origin);
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 	SUB_AttackFinished (1);	// wait a while before first attack
 };
 
@@ -367,7 +367,7 @@ FindTarget =
 	// spawnflags & 3 is a big hack, because zombie crucified used
 	// the first spawn flag prior to the ambush flag, and I forgot
 	// about it, so the second spawn flag works as well
-	if (sight_entity_time >= time - TICK && !(self.spawnflags & 3))
+	if (sight_entity_time >= time - sys_ticrate && !(self.spawnflags & 3))
 	{
 		client = sight_entity;
 		if (client.enemy == self.enemy)

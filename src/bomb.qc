@@ -1,4 +1,4 @@
-// $Id: bomb.qc,v 1.1 2002/02/21 21:47:48 slotzero Exp $
+// $Id: bomb.qc,v 1.2 2002/06/08 05:42:33 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -154,7 +154,7 @@ bomb_tick =
 	}
 
 	if (self.runevar)
-		self.nextthink = time + TICK;
+		self.nextthink = time + sys_ticrate;
 	else
 		self.nextthink = self.dropdelay;
 };

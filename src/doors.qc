@@ -1,4 +1,4 @@
-// $Id: doors.qc,v 1.2 2002/05/05 00:52:27 slotzero Exp $
+// $Id: doors.qc,v 1.3 2002/06/08 05:42:34 slotzero Exp $
 
 float DOOR_START_OPEN	= 1;
 float DOOR_DONT_LINK	= 4;
@@ -554,7 +554,7 @@ func_door =
 	// LinkDoors can't be done until all of the doors have been
 	// spawned, so the sizes can be detected properly.
 	self.think = LinkDoors;
-	self.nextthink = self.ltime + TICK;
+	self.nextthink = self.ltime + sys_ticrate;
 };
 
 /*
@@ -596,7 +596,7 @@ fd_secret_use =
 	// Make a sound, wait a little...
 
 	sound (self, CHAN_VOICE, self.noise1, 1, ATTN_NORM);
-	self.nextthink = self.ltime + TICK;
+	self.nextthink = self.ltime + sys_ticrate;
 
 	temp = 1 - (self.spawnflags & SECRET_1ST_LEFT);	// 1 or -1
 	makevectors (self.mangle);

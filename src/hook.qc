@@ -1,4 +1,4 @@
-// $Id: hook.qc,v 1.2 2002/04/21 03:47:36 slotzero Exp $
+// $Id: hook.qc,v 1.3 2002/06/08 05:42:34 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -131,7 +131,7 @@ HookPull =
 	else
 		vel = normalize (vel) * 700;
 	self.owner.velocity = vel;
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 };
 
 // Updated calculation of link positions
@@ -223,7 +223,7 @@ HookTouch =
 
 	self.velocity = other.velocity;
 	self.enemy = other;
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 	self.think = HookPull;
 	self.touch = SUB_Null;
 };
@@ -249,7 +249,7 @@ LaunchHook =
 		DropHook ();
 		return;
 	}
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 };
 
 // Initiate the hook
@@ -283,7 +283,7 @@ HookOn =
 	newhook.goalentity = CreateChain (newhook, self, HOOK_LINK_COUNT);
 
 	newhook.touch = HookTouch;
-	newhook.nextthink = time + TICK ;
+	newhook.nextthink = time + sys_ticrate ;
 	newhook.think = LaunchHook;
 };
 

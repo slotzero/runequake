@@ -1,4 +1,4 @@
-// $Id: runes30.qc,v 1.6 2002/05/13 20:30:57 slotzero Exp $
+// $Id: runes30.qc,v 1.7 2002/06/08 05:42:36 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -449,7 +449,7 @@ Freeze_Frozen =
 	self.runent.frame = self.runevar;
 	self.runent.velocity = VEC_ORIGIN;
 
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 
 	// frozen particles
 	if (self.attack_finished < time)
@@ -671,7 +671,7 @@ Suck_Think =
 	if (self.owner.runetype == RN_SUCK)
 		self.runetime = time + 20;
 
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 
 	Suck (self);
 };
@@ -889,7 +889,7 @@ VengHead_Think =
 
 	setorigin (self, self.owner.origin + v_up*20 - v_right*1 - v_forward*9);
 	trackvel (self.owner);
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 
 	self.angles_x = self.owner.angles_x - 60;
 	self.angles_y = self.owner.angles_y - 27;
@@ -917,7 +917,7 @@ VengHead_Spawn =
 void ()
 ShubHat_Bye =
 {
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 	setorigin (self, self.origin + '0 0 15');
 	self.angles_y = self.angles_y - 10;
 
@@ -947,7 +947,7 @@ ShubHat_Think =
 
 	setorigin (self, self.owner.origin);
 	trackvel (self.owner);
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 };
 
 void ()
@@ -978,7 +978,7 @@ Rune_Repel =
 	if (self.runetime > time)
 		return;
 
-	self.runetime = self.runetime + TICK;
+	self.runetime = self.runetime + sys_ticrate;
 
 	local entity pushee;
 	local vector pushdir, pushforce;

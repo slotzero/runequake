@@ -1,4 +1,4 @@
-// $Id: burn.qc,v 1.2 2002/03/02 20:12:16 slotzero Exp $
+// $Id: burn.qc,v 1.3 2002/06/08 05:42:33 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -108,7 +108,7 @@ burn_think =
 
 	if (self.enemy.touch == SUB_Null)
 		self.enemy.touch = burn_player_touch;
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 };
 
 // Burning players get this as their touch function.  It can run many
@@ -258,7 +258,7 @@ flamemissile_think =
 
 	if (time > self.runevar)
 		self.think = flamemissile_touch;
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 };
 
 void (string class, float ox)

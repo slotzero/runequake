@@ -1,4 +1,4 @@
-// $Id: triggers.qc,v 1.4 2002/05/05 00:52:28 slotzero Exp $
+// $Id: triggers.qc,v 1.5 2002/06/08 05:42:37 slotzero Exp $
 
 entity s_tfog;
 
@@ -60,7 +60,7 @@ multi_trigger =
 	{	// we can't just remove (self) here, because this is a touch function
 		// called while C code is looping through area links.
 		self.touch	= SUB_Null;
-		self.nextthink	= time + TICK;
+		self.nextthink	= time + sys_ticrate;
 		self.think	= SUB_Remove;
 	}
 };

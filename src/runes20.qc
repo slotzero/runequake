@@ -1,4 +1,4 @@
-// $Id: runes20.qc,v 1.5 2002/05/13 20:30:57 slotzero Exp $
+// $Id: runes20.qc,v 1.6 2002/06/08 05:42:36 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -14,7 +14,7 @@ Bomb_Think =
 
 	setorigin (self, self.owner.origin + '0 0 35');
 	trackvel (self.owner);
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 };
 
 void ()
@@ -222,7 +222,7 @@ Holo_Think =
 	self.angles = self.owner.angles;
 	self.angles_y = self.angles_y + self.runevar;
 	self.frame = self.owner.frame;
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 };
 
 void (float riders, entity of_e)
@@ -329,7 +329,7 @@ Orb_Think =
 
 	setorigin (self, trace_endpos-v_forward*10);
 	trackvel (self.owner);
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 
 	if (self.runetime > time)
 		return;
@@ -472,7 +472,7 @@ Rune_Blink =
 	e.think = maybe_reblink;
 	// I used to do this after one tick, but it would occasionally
 	// fail to detect a failed blink for some reason.
-	e.nextthink = time + 2 * TICK;
+	e.nextthink = time + 2 * sys_ticrate;
 	setorigin (self, e.runevector);
 	muzzleflash ();
 	self.velocity = VEC_ORIGIN;
@@ -570,7 +570,7 @@ Hat_Think =
 
 	trackvel (self.owner);
 	self.angles = self.owner.angles + self.mangle;
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 };
 
 void (string tmodel, vector offs, vector ang)

@@ -1,4 +1,4 @@
-// $Id: subs.qc,v 1.6 2002/05/10 19:57:43 slotzero Exp $
+// $Id: subs.qc,v 1.7 2002/06/08 05:42:37 slotzero Exp $
 
 void ()
 SUB_Null =
@@ -86,7 +86,7 @@ local float		len, traveltime;
 	if (tdest == self.origin)
 	{
 		self.velocity = VEC_ORIGIN;
-		self.nextthink = self.ltime + TICK;
+		self.nextthink = self.ltime + sys_ticrate;
 		return;
 	}
 
@@ -100,10 +100,10 @@ local float		len, traveltime;
 	traveltime = len / tspeed;
 
 	IN_POQ([-
-		if (traveltime < TICK)
+		if (traveltime < sys_ticrate)
 		{
 			self.velocity = VEC_ORIGIN;
-			self.nextthink = self.ltime + TICK;
+			self.nextthink = self.ltime + sys_ticrate;
 			return;
 		}
 	-], [-

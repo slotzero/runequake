@@ -1,4 +1,4 @@
-// $Id: boss.qc,v 1.1 2002/02/21 21:47:48 slotzero Exp $
+// $Id: boss.qc,v 1.2 2002/06/08 05:42:33 slotzero Exp $
 
 /*
 ==============================================================================
@@ -305,7 +305,7 @@ lightning_fire =
 	// compensate for length of bolt
 	p2 = p2 - normalize (p2-p1)*100;
 
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 	self.think = lightning_fire;
 
 	create_te_lightning (TE_LIGHTNING3, world, p1, p2);

@@ -1,4 +1,4 @@
-// $Id: defs.qc,v 1.7 2002/06/07 02:58:54 slotzero Exp $
+// $Id: defs.qc,v 1.8 2002/06/08 05:42:34 slotzero Exp $
 
 /*
 ==============================================================================
@@ -697,7 +697,6 @@ string SOUND_RUNE_PICKUP;
 float SERVERFLAGS_RUNE_MASK	= 15;
 vector PLAYER_WEAPON_OFFSET	= '0 0 16';
 vector PLAYER_VIEW_OFFSET	= '0 0 22';
-float TICK			= 0.1;
 float CENTERPRINT_TIME		= 2;		// default scr_centertime
 float CENTERPRINT_REFRESH	= 1.5;		// a little less
 

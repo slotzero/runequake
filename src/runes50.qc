@@ -1,4 +1,4 @@
-// $Id: runes50.qc,v 1.3 2002/05/10 03:09:23 slotzero Exp $
+// $Id: runes50.qc,v 1.4 2002/06/08 05:42:36 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -300,7 +300,7 @@ Torch_Trap_Think =
 
 	// Don't bother think any more if I've come to a stop.
 	if (self.velocity)
-		self.nextthink	= time + TICK;
+		self.nextthink	= time + sys_ticrate;
 	else
 	{
 		self.runevar	= 1;
@@ -528,7 +528,7 @@ pack_rat_rune_move =
 				+ v_right * self.runevector_x
 				+ v_up * self.runevector_z);
 	trackvel (self.owner);
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 };
 
 void (float tell)

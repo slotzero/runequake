@@ -1,4 +1,4 @@
-// $Id: monsters.qc,v 1.1 2002/02/21 21:47:56 slotzero Exp $
+// $Id: monsters.qc,v 1.2 2002/06/08 05:42:34 slotzero Exp $
 
 /* ALL MONSTERS SHOULD BE 1 0 0 IN COLOR */
 
@@ -36,7 +36,7 @@ monster_use =
 	// delay reaction so if the monster is teleported, its sound is
 	// still heard
 	self.enemy = activator;
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 	self.think = FoundTarget;
 };
 

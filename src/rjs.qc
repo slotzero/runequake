@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.20 2002/06/08 02:21:06 slotzero Exp $
+// $Id: rjs.qc,v 1.21 2002/06/08 05:42:35 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -1659,7 +1659,7 @@ player_forward_think =
 	// that I'll delete myself as soon as possible, so I won't apply to
 	// the next player who logs in to this slot.  lip tracks the time at
 	// which I want to act.
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 	if (time < self.lip)
 		return;
 
@@ -1740,7 +1740,7 @@ player_init_spawn =
 	//
 	// In QW without a longer delay some of the stuffed commands
 	// don't work, either.
-	e.nextthink = time + IN_QW(5, 1) * TICK;
+	e.nextthink = time + IN_QW(5, 1) * sys_ticrate;
 };
 
 void ()

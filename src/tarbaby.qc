@@ -1,4 +1,4 @@
-// $Id: tarbaby.qc,v 1.1 2002/02/21 21:48:01 slotzero Exp $
+// $Id: tarbaby.qc,v 1.2 2002/06/08 05:42:37 slotzero Exp $
 
 /*
 ==============================================================================
@@ -111,7 +111,7 @@ Tar_JumpTouch =
 			self.touch = SUB_Null;
 			self.think = tbaby_run1;
 			self.movetype = MOVETYPE_STEP;
-			self.nextthink = time + TICK;
+			self.nextthink = time + sys_ticrate;
 
 			//self.velocity_x = (random () - 0.5) * 600;
 			//self.velocity_y = (random () - 0.5) * 600;
@@ -123,7 +123,7 @@ Tar_JumpTouch =
 
 	self.touch = SUB_Null;
 	self.think = tbaby_jump1;
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 };
 
 void ()	tbaby_fly1		=[	$fly1,	tbaby_fly2	] {};

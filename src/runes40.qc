@@ -1,4 +1,4 @@
-// $Id: runes40.qc,v 1.7 2002/05/13 20:30:57 slotzero Exp $
+// $Id: runes40.qc,v 1.8 2002/06/08 05:42:36 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -179,7 +179,7 @@ Cloud_Think =
 
 	setorigin (self, self.owner.origin + '0 0 60');
 	// XXX Can't set velocity here because it overrides avelocity.
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 };
 
 void ()
@@ -381,7 +381,7 @@ delayed_shambler_spawn =
 	e = spawn ();
 	e.owner = self;
 	e.think = delayed_shambler_spawn_think;
-	e.nextthink = time + TICK;
+	e.nextthink = time + sys_ticrate;
 };
 
 void ()
@@ -431,7 +431,7 @@ Rune_Dual =
 
 	if (self.runetime > time)
 		return;
-	self.runetime = time + TICK;
+	self.runetime = time + sys_ticrate;
 
 	HookOff ();
 	HookOff_by_targ ();
@@ -524,7 +524,7 @@ Weird_Think =
 		return;
 	}
 
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 
 	IN_POQ([-
 		particle (self.runent.origin + '0 0 25', '0 0 1'*crandom ()*500 + '0 1 0'*crandom ()*500 + '1 0 0'*crandom ()*500, random ()*255, 30);
@@ -560,7 +560,7 @@ Weird_Think =
 			self.runent.flags = self.runent.flags - FL_ONGROUND;
 			sound (self.runent, CHAN_JUMP, "player/plyrjmp8.wav", 1, ATTN_NORM);
 			self.runent.velocity_z = self.runent.velocity_z + 270;
-			self.attack_finished = time + TICK;
+			self.attack_finished = time + sys_ticrate;
 		}
 	}
 	else if (self.runevar == WEIRD_DRUNK)

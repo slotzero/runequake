@@ -1,4 +1,4 @@
-// $Id: runes10.qc,v 1.4 2002/04/28 07:43:18 slotzero Exp $
+// $Id: runes10.qc,v 1.5 2002/06/08 05:42:35 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -262,7 +262,7 @@ Rune_Firewalk =
 {
 	if (self.runetime > time)
 		return;
-	self.runetime = time + TICK;
+	self.runetime = time + sys_ticrate;
 
 	GFire_Spawn ();
 };
@@ -396,7 +396,7 @@ Zap_Think =
 
 	setorigin (self, self.owner.origin + '0 0 20');
 	trackvel (self.owner);
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 
 	if (self.owner.ammo_cells < 1 || self.owner.waterlevel > 0)
 	{

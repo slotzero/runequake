@@ -1,4 +1,4 @@
-// $Id: plats.qc,v 1.3 2002/04/30 21:39:39 slotzero Exp $
+// $Id: plats.qc,v 1.4 2002/06/08 05:42:35 slotzero Exp $
 
 float PLAT_LOW_TRIGGER = 1;
 
@@ -237,7 +237,7 @@ train_wait =
 		sound (self, CHAN_VOICE | CHAN_NO_PHS_ADD, self.noise, 1, ATTN_NORM);
 	}
 	else
-		self.nextthink = self.ltime + TICK;
+		self.nextthink = self.ltime + sys_ticrate;
 
 	self.think = train_next;
 };
@@ -270,7 +270,7 @@ func_train_find =
 	setorigin (self, targ.origin - self.mins);
 	if (!self.targetname)
 	{	// not triggered, so start immediately
-		self.nextthink = self.ltime + TICK;
+		self.nextthink = self.ltime + sys_ticrate;
 		self.think = train_next;
 	}
 };
@@ -321,7 +321,7 @@ func_train =
 
 	// start trains on the second frame, to make sure their targets
 	// have had a chance to spawn
-	self.nextthink = self.ltime + TICK;
+	self.nextthink = self.ltime + sys_ticrate;
 	self.think = func_train_find;
 };
 
@@ -353,6 +353,6 @@ misc_teleporttrain =
 
 	// start trains on the second frame, to make sure their targets
 	// have had a chance to spawn
-	self.nextthink = self.ltime + TICK;
+	self.nextthink = self.ltime + sys_ticrate;
 	self.think = func_train_find;
 };

@@ -1,4 +1,4 @@
-// $Id: client.qc,v 1.5 2002/05/13 20:30:56 slotzero Exp $
+// $Id: client.qc,v 1.6 2002/06/08 05:42:33 slotzero Exp $
 
 float modelindex_eyes, modelindex_player;
 
@@ -434,7 +434,7 @@ changelevel_touch =
 	// called in the middle of C movement code, so set a think time
 	// to do it
 	self.think = execute_changelevel;
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 };
 
 /*QUAKED trigger_changelevel (0.5 0.5 0.5) ? NO_INTERMISSION
@@ -956,7 +956,7 @@ NextLevel =
 	if (o.nextthink < time)
 	{
 		o.think = execute_changelevel;
-		o.nextthink = time + TICK;
+		o.nextthink = time + sys_ticrate;
 	}
 
 	// Don't mess with the runes in the user's display if they

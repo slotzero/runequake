@@ -1,4 +1,4 @@
-// $Id: shalrath.qc,v 1.1 2002/02/21 21:48:00 slotzero Exp $
+// $Id: shalrath.qc,v 1.2 2002/06/08 05:42:36 slotzero Exp $
 
 /*
 ==============================================================================
@@ -132,8 +132,8 @@ ShalMissile =
 	dir = normalize ((self.enemy.origin + '0 0 10') - self.origin);
 	dist = vlen (self.enemy.origin - self.origin);
 	flytime = dist * 0.002;
-	if (flytime < TICK)
-		flytime = TICK;
+	if (flytime < sys_ticrate)
+		flytime = sys_ticrate;
 
 	muzzleflash ();
 	sound (self, CHAN_WEAPON, "shalrath/attack2.wav", 1, ATTN_NORM);
@@ -225,6 +225,6 @@ monster_shalrath =
 	self.th_missile = shal_attack1;
 
 	self.think = walkmonster_start;
-	self.nextthink = time + TICK + random ()*0.1;
+	self.nextthink = time + sys_ticrate + random ()*0.1;
 
 };

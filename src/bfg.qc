@@ -1,4 +1,4 @@
-// $Id: bfg.qc,v 1.1 2002/02/21 21:47:47 slotzero Exp $
+// $Id: bfg.qc,v 1.2 2002/06/08 05:42:32 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -87,7 +87,7 @@ BFG_Warmup =
 	}
 
 	// Always reposition the lava ball.
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 	makevectors (self.owner.v_angle);
 	setorigin (self, self.owner.origin
 				+ PLAYER_WEAPON_OFFSET
@@ -141,7 +141,7 @@ BFG_Warmup =
 		self.velocity = self.velocity * 400;
 	self.touch = BFG_Touch;
 	self.lip = time + 15;
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 	self.think = BFG_Zap;
 };
 

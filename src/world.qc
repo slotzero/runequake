@@ -1,4 +1,4 @@
-// $Id: world.qc,v 1.4 2002/03/04 05:46:09 slotzero Exp $
+// $Id: world.qc,v 1.5 2002/06/08 05:42:37 slotzero Exp $
 
 void ()
 main =
@@ -172,6 +172,8 @@ worldspawn =
 	lastspawn = world;
 	InitBodyQue ();
 	rjs_worldspawn ();
+
+	sys_ticrate = cvar ("sys_ticrate");
 
 	// I can't read the gravity from sv_gravity in rjs_worldspawn()
 	// (for the same reason I have to wait before reading teamplay,

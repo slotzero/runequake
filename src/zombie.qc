@@ -1,4 +1,4 @@
-// $Id: zombie.qc,v 1.1 2002/02/21 21:48:02 slotzero Exp $
+// $Id: zombie.qc,v 1.2 2002/06/08 05:42:38 slotzero Exp $
 
 /*
 ==============================================================================
@@ -88,11 +88,11 @@ void () zombie_stand15	=[	$stand15,		zombie_stand1	] {ai_stand ();};
 void () zombie_cruc1	=	[	$cruc_1,		zombie_cruc2	] {
 if (random () < 0.1)
 	sound (self, CHAN_VOICE, "zombie/idle_w2.wav", 1, ATTN_STATIC);};
-void () zombie_cruc2	=	[	$cruc_2,		zombie_cruc3	] {self.nextthink = time + TICK + random ()*0.1;};
-void () zombie_cruc3	=	[	$cruc_3,		zombie_cruc4	] {self.nextthink = time + TICK + random ()*0.1;};
-void () zombie_cruc4	=	[	$cruc_4,		zombie_cruc5	] {self.nextthink = time + TICK + random ()*0.1;};
-void () zombie_cruc5	=	[	$cruc_5,		zombie_cruc6	] {self.nextthink = time + TICK + random ()*0.1;};
-void () zombie_cruc6	=	[	$cruc_6,		zombie_cruc1	] {self.nextthink = time + TICK + random ()*0.1;};
+void () zombie_cruc2	=	[	$cruc_2,		zombie_cruc3	] {self.nextthink = time + sys_ticrate + random ()*0.1;};
+void () zombie_cruc3	=	[	$cruc_3,		zombie_cruc4	] {self.nextthink = time + sys_ticrate + random ()*0.1;};
+void () zombie_cruc4	=	[	$cruc_4,		zombie_cruc5	] {self.nextthink = time + sys_ticrate + random ()*0.1;};
+void () zombie_cruc5	=	[	$cruc_5,		zombie_cruc6	] {self.nextthink = time + sys_ticrate + random ()*0.1;};
+void () zombie_cruc6	=	[	$cruc_6,		zombie_cruc1	] {self.nextthink = time + sys_ticrate + random ()*0.1;};
 
 void () zombie_walk1	=[	$walk1,		zombie_walk2	] {ai_walk (0);};
 void () zombie_walk2	=[	$walk2,		zombie_walk3	] {ai_walk (2);};

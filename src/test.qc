@@ -1,4 +1,4 @@
-// $Id: test.qc,v 1.3 2002/04/25 06:42:03 slotzero Exp $
+// $Id: test.qc,v 1.4 2002/06/08 05:42:37 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -51,7 +51,7 @@ misc_noisemaker =
 	precache_sound2 ("enforcer/death1.wav");
 	precache_sound2 ("enforcer/idle1.wav");
 
-	self.nextthink = time + TICK + random ();
+	self.nextthink = time + sys_ticrate + random ();
 	self.think = noise_think;
 };
 

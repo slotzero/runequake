@@ -1,4 +1,4 @@
-// $Id: oldone.qc,v 1.1 2002/02/21 21:47:57 slotzero Exp $
+// $Id: oldone.qc,v 1.2 2002/06/08 05:42:35 slotzero Exp $
 
 /*
 ==============================================================================
@@ -266,7 +266,7 @@ monster_oldone =
 
 	self.health = 40000;		// kill by telefrag
 	self.think = old_idle1;
-	self.nextthink = time + TICK;
+	self.nextthink = time + sys_ticrate;
 	self.takedamage = DAMAGE_YES;
 	self.th_pain = nopain;
 	self.th_die = finale_1;
