@@ -1,4 +1,4 @@
-$Id: Changes,v 1.71 2004/06/27 08:31:05 slotzero Exp $
+$Id: Changes,v 1.72 2004/06/29 02:10:33 slotzero Exp $
 
 // developer stuff
 fix the tornado rune
@@ -11,6 +11,8 @@ added some basic reflect code, not implemented
 Version 1.1  Sun Jun 27 04:30:50 EST 2004
 
     - Bug Fixes
+
+        - Vampire no longer rots twice as fast when picked up after rotting health.
 
         - Potentially hazardous bug fixed with the hunk allocation code.
 
