@@ -1,4 +1,4 @@
-$Id: Changes,v 1.2 2002/03/03 01:20:33 slotzero Exp $
+$Id: Changes,v 1.3 2002/03/04 05:51:21 slotzero Exp $
 
 Version 0.?  ?
 
@@ -14,6 +14,14 @@ Version 0.?  ?
     - Sound Changes
 
         - I changed the sound heard when players first connect.
+
+    - CVAR Changes
+
+        - Use scratch1 to control
+
+            - lightstyle() intensity for all lights
+            - turn off ambient_sound.
+            - remove static light models
 
     - Notable Internal Changes
 
