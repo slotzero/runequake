@@ -1,11 +1,30 @@
-$Id: Changes,v 1.65 2004/05/23 02:06:27 slotzero Exp $
+$Id: Changes,v 1.66 2004/06/13 01:24:30 slotzero Exp $
 
-telefrag deflect doesn't remove itself (no limit)
-tornado uses 30 cells instead of removing itself
-betty uses 10 rockets instead of removing itself
+particles for death spots in qw are smaller
+true qsmack clients don't send updates
+removed punchangle from weapon attacks
+fixed voting for level
+added help-levels for voting
+practice mode wasn't displaying attackers health when killed
+
+// developer stuff
+add pain to hook camp instead of releasing...
 regen gives/converts your armor to red.. I eventually want to wein from using rune-use
 added some basic reflect code, not implemented
-bugfix: using rcon <map> while infokey_maps is set will crash the server (reward mr happy)
+
+Version 1.1  Sat Jun 12 14:39:35 EST 2004
+
+    - Bug Fixes
+
+        - Using rcon <map> while infokey_maps is set will no longer crash the server.
+
+    - Changes
+
+        - Added requiem rune.
+
+        - Telefrag deflect limit removed.
+
+        - The tornado and betty runes are now ammo dependent instead of having a preset limit.
 
 Version 1.0  Fri Apr 30 23:19:17 EST 2004
 
