@@ -1,4 +1,4 @@
-// $Id: runeserv.qc,v 1.8 2002/08/15 09:20:41 slotzero Exp $
+// $Id: runeserv.qc,v 1.9 2002/09/19 22:59:54 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -763,7 +763,12 @@ Rune_Activate =
 		Bomb_Spawn ();
 
 	else if (self.runetype == RN_DSPOTS)
-		self.class_cnt = count_class_own (self, "dspot");
+	{
+		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
+			self.runevar = count_class_own (self, "dspot");
+		else
+			self.class_cnt = count_class_own (self, "dspot");
+	}
 
 	else if (self.runetype == RN_ORB)
 		Orb_Spawn ();
@@ -772,10 +777,16 @@ Rune_Activate =
 		Hat_Spawn ("progs/s_bubble.spr", '-4 2 31', VEC_ORIGIN);
 
 	else if (self.runetype == RN_RADIO)
-		self.class_cnt = count_class_own (self, "radioactive");
+		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
+			self.runevar = count_class_own (self, "radioactive");
+		else
+			self.class_cnt = count_class_own (self, "radioactive");
 
 	else if (self.runetype == RN_FREEZE)
-		self.class_cnt = count_class_own (self, "freeze");
+		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
+			self.runevar = count_class_own (self, "freeze");
+		else
+			self.class_cnt = count_class_own (self, "freeze");
 
 	else if (self.runetype == RN_VENG)
 		VengHead_Spawn ();
@@ -840,7 +851,10 @@ Rune_Activate =
 	else if (self.runetype == RN_TORCH)
 	{
 		self.touch = Torch_Touch;
-		self.class_cnt = count_class_own (self, "torchtrap");
+		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
+			self.runevar = count_class_own (self, "torchtrap");
+		else
+			self.class_cnt = count_class_own (self, "torchtrap");
 		Hat_Spawn ("progs/flame2.mdl", '-4 1 35', VEC_ORIGIN);
 	}
 

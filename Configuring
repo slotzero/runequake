@@ -1,4 +1,4 @@
-$Id: Configuring,v 1.5 2002/08/23 23:55:10 slotzero Exp $
+$Id: Configuring,v 1.6 2002/09/19 22:59:49 slotzero Exp $
 
 Starting the server
 
@@ -397,6 +397,11 @@ scratch1
    16 keep existing level items                 S1_ORIGINAL_LEVELS
 
         Do not place any additonal items on the level.
+
+   32 no more than rune max traps per level     S1_MAX_TRAPS_FOR_LEVEL
+
+        Prevent setting more traps then the maximum for any rune type
+        regardless of how many times you pick up the rune.
 
 samelevel
 
