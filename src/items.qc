@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.55 2005/01/02 23:18:21 slotzero Exp $
+/*  $Id: items.qc,v 1.56 2005/01/21 01:06:22 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1905,5 +1905,17 @@ drop_powerup_touch =
 	// XXX When a powerup is dropped again, blink_item() makes
 	// both models flash.  I'm not sure why that happens but
 	// I remove the entity now to prevent it.
+	remove (self);
+};
+
+// hack
+void ()
+item_arena_rune =
+{
+	if (!did_my_items)
+	{
+		did_my_items = 1;
+		place_my_items ();
+	}
 	remove (self);
 };

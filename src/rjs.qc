@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.165 2005/01/11 01:57:41 slotzero Exp $
+/*  $Id: rjs.qc,v 1.166 2005/01/21 01:06:22 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2400,7 +2400,11 @@ is_player_start_class =
 float (entity spot)
 safe_spawn_point =
 {
-	spot = findradius (spot.origin, 150);
+	if (spot.classname == "info_teleport_destination")
+		spot = findradius (spot.origin, 64);
+	else
+		spot = findradius (spot.origin, 150);
+
 	while (spot)
 	{
 		if (is_player_e (spot))

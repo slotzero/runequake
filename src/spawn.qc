@@ -1,4 +1,4 @@
-/*  $Id: spawn.qc,v 1.10 2004/12/18 18:47:13 slotzero Exp $
+/*  $Id: spawn.qc,v 1.11 2005/01/21 01:06:22 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -249,6 +249,10 @@ place_my_items =
 		spawn_item ("item_armorInv", 0, '-380 1415 24', 0);
 		// Room where entrance requires trigger activation.
 		spawn_item ("weapon_rocketlauncher", 0, '423 1532 -120', 0);
+	}
+	else if (mapname == "uarena1")
+	{
+		spawn_info_teleport_destination ('-150 0 -160', 180, "arena2");
 	}
 };
 
