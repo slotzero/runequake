@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.94 2004/04/28 00:41:37 slotzero Exp $
+/*  $Id: rjs.qc,v 1.95 2004/05/16 22:52:00 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -3156,6 +3156,8 @@ unset_owner_think =
 void (string m)
 changelevel =
 {
+	if (!m) m = "start";
+
 	localcmd ("\n");
 	xchangelevel (m);
 };
