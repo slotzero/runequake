@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.16 2003/04/14 00:56:18 slotzero Exp $
+/*  $Id: runes30.qc,v 1.17 2003/04/22 03:23:58 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -411,7 +411,15 @@ Freeze_Think =
 {
 	self.nextthink = time + 1.0;
 	IN_POQ([-
-	particle (self.origin, '0 0 -10', PARTICLE_FREEZE_TRAP, 20);
+		particle (self.origin, '0 0 -10', PARTICLE_FREEZE_TRAP, 20);
+
+		if (teamplay & TEAM_TEAM_MASK)
+		{
+			local float particle_team;
+
+			particle_team = team_to_particle (self.owner.team);
+			particle (self.origin, '0 0 -10', particle_team, 10);
+		}
 	-])
 	if (self.runetime < time)
 	{

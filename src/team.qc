@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.6 2003/04/14 00:56:20 slotzero Exp $
+/*  $Id: team.qc,v 1.7 2003/04/22 03:23:59 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -75,6 +75,16 @@ float (float tm)
 team_to_color =
 {
 	return tm - 1;
+};
+
+float (float tm)
+team_to_particle =
+{
+	tm = (tm - 1) * 16;
+	if (tm < 128)
+		tm = tm + 8;
+
+	return tm;
 };
 
 float (float bc)

@@ -1,4 +1,10 @@
-$Id: Changes,v 1.41 2003/04/14 00:56:03 slotzero Exp $
+$Id: Changes,v 1.42 2003/04/22 03:23:53 slotzero Exp $
+
+Version 0.8.1  Mon Apr 21 23:19:01 EST 2003
+
+    - Team Changes
+
+        - ice traps are team distinguishable
 
 Version 0.8  Sun Apr 13 20:54:23 EST 2003
 
