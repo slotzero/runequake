@@ -1,3 +1,7 @@
+// $Id: internal.qc,v 1.3 2002/10/06 15:42:05 slotzero Exp $
+//
+// Copyright (c) 2000  J.P. Grossman.  All rights reserved.
+// See the file `Copying' in the distribution for terms.
 
 //-------------------------------------------------------------------
 // OFFSETS FOR INTERNAL QUAKE.EXE DATA STRUCTURES
