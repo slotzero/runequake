@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.17 2005/01/31 22:10:07 slotzero Exp $
+/*  $Id: arena.qc,v 1.18 2005/02/01 01:16:58 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -44,6 +44,34 @@ mode_arena =
 		return FALSE;
 
 	return TRUE;
+};
+
+void (entity e)
+arena_game_pos_announce =
+{
+	local float my_pos, total;
+	local string s;
+
+	if (e == arena.owner || e == arena.runent)
+		return self_sprint (e, "you are in the game\n");
+
+	my_pos = game_queue_pos_e (e);
+	total = game_queue_len ();
+
+	if (my_pos == 1)
+		self_sprint (e, "you are next in line\n");
+	else if (my_pos == total)
+		self_sprint (e, "you are last in line\n");
+ 	else
+	{
+		self_sprint (e, "there are ");
+		s = ftos (my_pos);
+		self_sprint (e, s);
+		self_sprint (e, " (of ");
+		s = ftos (total);
+		self_sprint (e, s);
+		self_sprint (e, ") players ahead of you\n");
+	}
 };
 
 void ()

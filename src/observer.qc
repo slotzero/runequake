@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.38 2005/01/08 04:20:12 slotzero Exp $
+/*  $Id: observer.qc,v 1.39 2005/02/01 01:16:58 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -779,8 +779,10 @@ game_queue_len =
 void (float force)
 obs_join_game =
 {
-	local float maxp, i;
+	local float maxp, i, ra;
 	local string s1, s2, sx;
+
+	ra = mode_arena ();
 
 	if (!force && self.runevar)
 	{
@@ -792,13 +794,24 @@ obs_join_game =
 			bprint_float (self.runevar);
 			bprint (")\n");
 		}
-		self_sprint (self, "Current game queue position ");
-		i = game_queue_pos_e (self);
-		self_sprint_float (self, i);
-		self_sprint (self, " of ");
-		i = game_queue_len ();
-		self_sprint_float (self, i);
-		self_sprint (self, "\n");
+
+		if (ra)
+		{
+			self.runevar = 0;
+			self_sprint (self, "you are \bout\b of line\n");
+			return;
+		}
+		else
+		{
+			self_sprint (self, "Current game queue position ");
+			i = game_queue_pos_e (self);
+			self_sprint_float (self, i);
+			self_sprint (self, " of ");
+			i = game_queue_len ();
+			self_sprint_float (self, i);
+			self_sprint (self, "\n");
+		}
+
 		if (time <= LEVEL_RECONNECT_ALLOWANCE)
 		{
 			self_sprint (self, "Game will open in ");
@@ -816,13 +829,17 @@ obs_join_game =
 	// Just queue if this is the very start of a level, so that you
 	// can't join what is really a full game before the players
 	// arrive.
-	if (!force
-		&& time <= LEVEL_RECONNECT_ALLOWANCE
-		&& !temp1 & T1_RUNE_CHEAT)
+	if (!force && time <= LEVEL_RECONNECT_ALLOWANCE && !temp1 & T1_RUNE_CHEAT)
 	{
 		self.runevar = time;
-		bprint (self.netname);
-		bprint (" queued for game at start of level\n");
+
+		if (ra)
+			arena_game_pos_announce (self);
+		else
+		{
+			bprint (self.netname);
+			bprint (" queued for game at start of level\n");
+		}
 		return;
 	}
 
@@ -834,11 +851,17 @@ obs_join_game =
 	if (!force && maxp && count_players (0) >= maxp)
 	{
 		self.runevar = time;
-		bprint (self.netname);
-		bprint (" queued for game, position ");
-		i = game_queue_pos_e (self);
-		bprint_float (i);
-		bprint ("\n");
+
+		if (ra)
+			arena_game_pos_announce (self);
+		else
+		{
+			bprint (self.netname);
+			bprint (" queued for game, position ");
+			i = game_queue_pos_e (self);
+			bprint_float (i);
+			bprint ("\n");
+		}
 		return;
 	}
 
@@ -850,7 +873,7 @@ obs_join_game =
 	persistent_parms ();
 	PutClientInServer ();
 
-	if (!mode_arena ())
+	if (!ra)
 	{
 		bprint (self.netname);
 		bprint (" joined the game\n");
