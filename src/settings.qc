@@ -1,4 +1,4 @@
-// $Id: settings.qc,v 1.3 2002/06/01 05:53:57 slotzero Exp $
+// $Id: settings.qc,v 1.4 2002/06/01 05:57:17 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -79,6 +79,9 @@ string_init =
 	// properly (bletch).
 
 	FORWARD_MAX_PLAYERS	= 0;	// 0 = disabled
+
+	// You can set up to four servers using the scratch2 cvar.  See
+	// example.cfg for the bit settings.
 
 	FORWARD_DEST_1		= IN_POQ("quake.runequake.com", "qw.runequake.com");
 	FORWARD_NAME_1		= "Rune Quake Development Server";
