@@ -1,5 +1,8 @@
-$Id: Changes,v 1.54 2004/02/27 20:58:24 slotzero Exp $
+$Id: Changes,v 1.55 2004/02/29 08:22:39 slotzero Exp $
 
+telefrag deflect locks you down as you exit the teleporter
+added q3 style denied message
+anti-pack rune doesn't change weapon weapon of same type is removed
 added practice mode to admin menu.
 
 Version 1.0  Wed Feb 25 18:41:36 EST 2004
