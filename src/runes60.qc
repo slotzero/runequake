@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.33 2003/12/03 23:34:12 slotzero Exp $
+/*  $Id: runes60.qc,v 1.34 2003/12/04 00:43:01 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -888,7 +888,8 @@ tornado_random_move =
 	self.velocity = self.velocity + (v * n);
 };
 
-void() tornado_pull =
+void ()
+tornado_pull =
 {
 	local entity e;
 	local vector org;
@@ -956,7 +957,8 @@ void() tornado_pull =
 	self.nextthink = time + sys_ticrate;
 };
 
-void() tornado_touch =
+void ()
+tornado_touch =
 {
 	if (other.health <= 0)
 		return;
@@ -986,7 +988,7 @@ Rune_Tornado_sprint =
 	rprint (self, riders, " left\n");
 };
 
-void()
+void ()
 Rune_Tornado =
 {
 	local entity tornado;
