@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.7 2004/07/08 03:27:31 slotzero Exp $
+/*  $Id: vote.qc,v 1.8 2004/07/08 04:33:29 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -23,16 +23,20 @@
 	* fix hook voting so that vote-hook is always always-on.
 	* add vote-lithium to always turn on lithium hook (but not off)
 	* vote-hook will turn off lithium hook or full hook
+	* qw vote-hook is fucked.. go figure.. rint = 1 perhaps?
 
 	// practice
 	* add disabled for practice mode
 	* perhaps a new function to give refresh message, use disabled function maybe?
 
+	// exit
+	* you can override a random map by selecting a non-random map.. but message doesn't change
+
 	// no
 	* there's still no active 'no' command, should there be?
 
 	// observer
-	* this kinda works
+	* ready for beta testing
 
 	// warnings
 	* make sure that you don't try to assign value to a world entity (!vip for example)!!!
@@ -44,10 +48,11 @@ vote_action =
 	if (!vip)
 		return dprint ("vote_action: vip is null\n");
 
+	// XXX owner could be dead
 	if (self.classname != "player")
-		bprint (vip.owner.classname);
+		bprint (vip.owner.netname);
 	else
-		bprint (self.classname);
+		bprint (self.netname);
 
 	bprint (" voted to ");
 	bprint (vip.netname);
@@ -74,7 +79,7 @@ maybe_print_votes =
 			sprint (self, " vote");
 			if (value != 1)
 				sprint (self, "s");
-			sprint (self, " in queue\n");
+			sprint (self, " in queue, please wait...\n");
 		}
 	}
 	else
@@ -113,7 +118,7 @@ count_votes =
 
 	if (!vip)
 	{
-		sprint (self, "\{141} Nothing to vote on\n");
+		sprint (self, "\{141} Observers can't vote\n");
 		return 0;
 	}
 
@@ -287,7 +292,7 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_PRACTICE)
 	{
-		// cancel = XXX add me
+		cancel = -1; // XXX This isn't ready yet.
 		e.frag_rate	= 0.51;	// XXX settings.
 		e.think1	= mode_practice;
 		e.netname	= "change mode to practice";
@@ -341,6 +346,7 @@ vote_yes =
 		vote_action (vip);
 };
 
+// this doesn't work yet
 void ()
 vote_no =
 {
@@ -359,5 +365,4 @@ vote_no =
 	}
 	else if (self.vote_flags & VOTE_YES)
 		self.vote_flags = self.vote_flags - self.vote_flags & VOTE_YES;
-
 };

@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.32 2004/07/07 01:14:20 slotzero Exp $
+/*  $Id: bindings.qc,v 1.33 2004/07/08 04:33:29 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -199,6 +199,10 @@ player_aliases =
 	player_init_impulse_alias ("weapon-toggles",		IMP_WEAPON_TOGGLES);
 	player_init_impulse_alias ("weapon-toggles-toggle",	IMP_WEAPON_TOGGLES);
 	player_init_impulse_alias ("yes",			IMP_VOTE_YES);
+
+	// not ready yet
+	// player_inti_impulse_alias ("no", 			IMP_VOTE_NO);
+	self_stuffcmd (self, "alias no \"echo Command still in development\"\n");
 
 	switchfire_aliases ();
 	level_aliases ();
