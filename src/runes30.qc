@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.26 2003/11/23 06:25:33 slotzero Exp $
+/*  $Id: runes30.qc,v 1.27 2004/02/26 01:15:04 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -433,7 +433,7 @@ Unfreeze =
 	{
 		if (of_e.runent == e)
 		{
-			of_e.runent.attack_finished = time + 1;
+			of_e.runent.attack_finished = time + sys_ticrate;
 			of_e.runevar = 0;
 			sound (of_e.runent, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
 			of_e.think = SUB_Remove;
@@ -487,7 +487,7 @@ Freeze_Frozen =
 				&& self.runent.runevector_x < time)
 				|| self.runent.items & IT_SUIT)
 	{
-		self.runent.attack_finished = time + 1;
+		self.runent.attack_finished = time + sys_ticrate;
 		if (self.runent.classname == "player")
 		{
 			if (self.runent.health > 0)
