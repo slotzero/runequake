@@ -1,4 +1,4 @@
-/*  $Id: spawn.qc,v 1.8 2004/02/22 03:26:43 slotzero Exp $
+/*  $Id: spawn.qc,v 1.9 2004/04/04 03:15:32 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -102,33 +102,6 @@ spawn_info_teleport_destination =
 	e.targetname	= e_targetname;
 };
 
-void ()
-spawn_info_player_deathmatch_real =
-{
-	local entity e;
-
-	e		= spawn ();
-	e.classname	= "info_player_deathmatch";
-	e.origin	= self.origin;
-	e.angles_y	= self.angles_y;
-
-	remove (self);
-};
-
-void (vector e_origin, float e_angle)
-spawn_info_player_deathmatch =
-{
-	local entity e;
-
-	e		= spawn ();
-	e.classname	= "spawn_info_player_deathmatch";
-	e.origin	= e_origin;
-	e.angles_y	= e_angle;
-
-	e.nextthink	= time + IN_QW(6, 2);
-	e.think		= spawn_info_player_deathmatch_real;
-};
-
 void (vector e_origin, string e_model, string e_target)
 spawn_trigger_teleport =
 {
@@ -178,11 +151,6 @@ place_my_items =
 
 	if (mapname == "start")
 	{
-		// Across from super nailgun.
-		spawn_info_player_deathmatch ('1210 1728 -360', 0);
-		// Next to rockets at level exit.
-		spawn_info_player_deathmatch ('-268 1755 -360', 90);
-
 		// E1M1 map teleporter.
 		spawn_info_teleport_destination ('-65 1689 136', 7, "T1");
 		// E1M2 map teleporter.
@@ -200,12 +168,7 @@ place_my_items =
 		spawn_item ("item_armorInv", 0, '1232 2048 -216', 0);
 		// Top of crate next to level exit.
 		spawn_item ("weapon_rocketlauncher", 0, '1445 608 -192', 0);
-
-		// Near bridge by SSG.
-		spawn_info_player_deathmatch ('647 1675 -200', -159);
-		// Teleporter to pent.
-		spawn_info_player_deathmatch ('1216 841 -408', 90);
-
+		// Level exit.
 		spawn_info_teleport_destination ('480.4 -351.4 88', 90, "T1");
 	}
 	else if (mapname == "e1m2")
@@ -216,14 +179,6 @@ place_my_items =
 		spawn_item ("weapon_rocketlauncher", 0, '-96.0 605.0 320.0', 0);
 		// Place new RL.
 		spawn_item ("weapon_rocketlauncher", 0, '1104.0 640.0 312.0', 0);
-
-		// Near level exit.
-		spawn_info_player_deathmatch ('-300 -285.5 480', -126);
-	}
-	else if (mapname == "e1m3")
-	{
-		// Ledge above secret normally occupied by an ogre in single player.
-		spawn_info_player_deathmatch ('360 -1281 -40', 80);
 	}
 	else if (mapname == "e1m6")
 	{
@@ -260,15 +215,6 @@ place_my_items =
 	{
 		// Same room as the RA that's near quad.
 		spawn_item ("weapon_grenadelauncher", 0, '1178.5 1965 24', 0);
-
-		spawn_info_player_deathmatch ('546 -803 72', 85);
-		// Red armor/super shotgun teleport.
-		spawn_info_player_deathmatch ('1971 1656.5 -56', 175);
-	}
-	else if (mapname == "e2m3")
-	{
-		// Weird textured button by super nailgun.
-		spawn_info_player_deathmatch ('-1267 1120 -56', 90);
 	}
 	else if (mapname == "e2m4")
 	{
@@ -276,11 +222,6 @@ place_my_items =
 		spawn_item ("item_armor1", 0, '832.0 465.0 32.0', 0);
 		// Added LG in water near SNG.
 		spawn_item ("weapon_grenadelauncher", 0, '1015.0 941.5 -168', 0);
-	}
-	else if (mapname == "e2m5")
-	{
-		// End of level.
-		spawn_info_player_deathmatch ('-1247.5 2733.5 -96', 50);
 	}
 	else if (mapname == "e2m6")
 	{
@@ -297,11 +238,6 @@ place_my_items =
 		spawn_item ("item_armorInv", 0, '481 -801 -232', 0);
 		// Replaces the only nailgun.
 		spawn_item ("weapon_supernailgun", 0, '-384 384 8', 0);
-	}
-	else if (mapname == "e3m6")
-	{
-		// Platform next to shells from RA.
-		spawn_info_player_deathmatch ('-1999 -472.5 88', 0);
 	}
 	else if (mapname == "dm1")
 	{
