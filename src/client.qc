@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.52 2004/06/20 21:50:44 slotzero Exp $
+/*  $Id: client.qc,v 1.53 2004/06/25 05:21:04 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -345,23 +345,37 @@ void (entity e)
 move_to_intermission =
 {
 	IN_POQ([-
-		e.view_ofs = VEC_ORIGIN;
-		e.angles = e.v_angle = intermission_pos.mangle;
-		e.fixangle = TRUE;		// turn this way immediately
-		e.nextthink = time + 0.5;
+		e.view_ofs	 = VEC_ORIGIN;
+
+		if (world.impulse)
+		{
+			intermission_pos	= find (world, classname, "info_player_deathmatch");
+			e.angles		= intermission_pos.angles;
+
+			makevectors (intermission_pos.angles);
+			spawn_tfog (intermission_pos.origin + 16 * v_forward);
+		}
+		else
+			e.angles		= e.v_angle = intermission_pos.mangle;
+
+		e.fixangle	 = TRUE;		// turn this way immediately
+		e.nextthink	 = time + 0.5;
+
 		setorigin (e, intermission_pos.origin);
 	-])
-	e.takedamage = DAMAGE_NO;
-	e.solid = SOLID_NOT;
-	e.movetype = MOVETYPE_NONE;
-	e.modelindex = 0;
+	e.takedamage	= DAMAGE_NO;
+	e.solid		= SOLID_NOT;
+	e.movetype	= MOVETYPE_NONE;
+	e.modelindex	= 0;
+
 	self_stuffcmd (e, CSHIFT_NONE);
 };
 
 void (float who)
 proto_intermission =
 {
-	WriteByte (who, SVC_INTERMISSION);
+	IN_POQ(if (!world.impulse))
+		WriteByte (who, SVC_INTERMISSION);
 	IN_QW([-
 		WriteCoord (who, intermission_pos.origin_x);
 		WriteCoord (who, intermission_pos.origin_y);
