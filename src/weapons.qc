@@ -1,4 +1,4 @@
-// $Id: weapons.qc,v 1.1 2002/02/21 21:48:01 slotzero Exp $
+// $Id: weapons.qc,v 1.2 2002/03/05 00:53:41 slotzero Exp $
 
 // called by worldspawn
 
@@ -555,6 +555,8 @@ W_FireLightning =
 	}
 	smallkick ();
 
+	makevectors (self.v_angle);
+
 	org = self.origin + PLAYER_WEAPON_OFFSET;
 
 	//RUNE SERV: Haste makes lightning fire twices as far
@@ -718,6 +720,7 @@ W_FireSuperSpikes =
 
 	sound (self, CHAN_WEAPON, "weapons/spike2.wav", 1, ATTN_NORM);
 	self.attack_finished = time + 0.2;
+	makevectors (self.v_angle);
 	dir = aim (self, 1000);
 	launch_spike (self.origin + PLAYER_WEAPON_OFFSET, dir);
 	newmis.touch = superspike_touch;
