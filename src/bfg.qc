@@ -1,6 +1,6 @@
-/*  $Id: bfg.qc,v 1.4 2002/10/14 18:57:02 slotzero Exp $
+/*  MERGE COMPLETE
 
-    Copyright (C) 1998, 1988  Jared 'KnyteHawkk' Larsen.
+    Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

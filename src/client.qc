@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.15 2002/10/14 18:57:03 slotzero Exp $
+/*  MERGE COMPLETE
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -46,6 +46,7 @@ persistent_parms =
 	//if (self.aqflags & AQ_ADMIN)
 	//	parm1 = parm1 | IT_KEYx;
 	parm11 = self.aqflags - self.aqflags & AQ_HOOK;
+	parm14 = self.rqflags;
 };
 
 void ()
@@ -88,11 +89,11 @@ SetChangeParms =
 	parm7 = self.ammo_cells;
 	parm8 = self.weapon;
 	parm9 = self.armortype * 100;
-
-	//RUNE SERV: Save AQ-specific values.
 	parm10 = self.runetype;
 	parm12 = 0;	// observers, negative duration in game queue
 	parm13 = 0;	// observers, ridee
+	parm14 = self.rqflags;
+
 	if (is_observer ())
 	{
 		if (self.runevar)
@@ -126,47 +127,44 @@ SetNewParms =
 	parm8 = 1;
 	parm9 = 0;
 
-	//RUNE SERV: Reset AQ-specific values.
 	parm10 = 0;	// runetype
 	parm11 = 0;	// aqflags
+	parm14 = 0;	// rqflags
 
 	// Parms 12 and 13 are only valid for observers, and they never
 	// get run here.  This sets them for new players coming in and
 	// starting as observers.
-	parm12 = parm13 = 0;
+	parm12 = 0;
+	parm13 = 0;
 };
 
 void ()
 DecodeLevelParms =
 {
-	if (serverflags && !deathmatch & DM_DM_MASK && world.model == "maps/start.bsp")
-	{
-		SetNewParms ();		// take away all stuff on starting new episode
-		persistent_parms ();
-	}
+	self.items		= parm1;
+	self.health		= parm2;
+	self.armorvalue		= parm3;
+	self.ammo_shells	= parm4;
+	self.ammo_nails		= parm5;
+	self.ammo_rockets	= parm6;
+	self.ammo_cells		= parm7;
 
-	self.items = parm1;
-	self.health = parm2;
-	self.armorvalue = parm3;
-	self.ammo_shells = parm4;
-	self.ammo_nails = parm5;
-	self.ammo_rockets = parm6;
-	self.ammo_cells = parm7;
 	// Setting self.weapon is necessary because you retain your
-	// weapon setting accross deaths.  If you die with the single
+	// weapon setting across deaths.  If you die with the single
 	// shotgun set_weapon() won't do anything when this tries to set
 	// your weapon because it thinks you're already wielding that.
 	self.weapon = 0;
 	set_weapon (parm8);
+
 	// XXX For some strange reason, multiplying parm9 by 0.01 returns
 	// the wrong value for red armor (0.79 instead of 0.80).  The result
 	// is picking up red armor when you don't need it.  I work around it
 	// by dividing by 100 instead.
 	self.armortype = parm9 / 100;
 
-	//RUNE SERV: Restore AQ-specific values.
 	Rune_Activate (parm10, 0);
-	self.aqflags = parm11;
+	self.aqflags		= parm11;
+	self.rqflags		= parm14;
 };
 
 /*
@@ -242,79 +240,6 @@ GotoNextMap =
 void ()
 ExitIntermission =
 {
-	// skip any text in deathmatch
-	if (deathmatch & DM_DM_MASK)
-	{
-		GotoNextMap ();
-		return;
-	}
-
-	intermission_exittime = time + 1;
-	intermission_running = intermission_running + 1;
-
-	// run some text if at the end of an episode
-	if (intermission_running == 2)
-	{
-		if (world.model == "maps/e1m7.bsp")
-		{
-			write_cdtrack (2, 3);
-			if (!cvar ("registered"))
-			{
-				WriteByte (MSG_ALL, SVC_FINALE);
-				WriteString (MSG_ALL, "As the corpse of the monstrous entity\nChthon sinks back into the lava whence\nit rose, you grip the Rune of Earth\nMagic tightly. Now that you have\nconquered the Dimension of the Doomed,\nrealm of Earth Magic, you are ready to\ncomplete your task in the other three\nhaunted lands of Quake. Or are you? If\nyou don't register Quake, you'll never\nknow what awaits you in the Realm of\nBlack Magic, the Netherworld, and the\nElder World!");
-			}
-			else
-			{
-				WriteByte (MSG_ALL, SVC_FINALE);
-				WriteString (MSG_ALL, "As the corpse of the monstrous entity\nChthon sinks back into the lava whence\nit rose, you grip the Rune of Earth\nMagic tightly. Now that you have\nconquered the Dimension of the Doomed,\nrealm of Earth Magic, you are ready to\ncomplete your task. A Rune of magic\npower lies at the end of each haunted\nland of Quake. Go forth, seek the\ntotality of the four Runes!");
-			}
-			return;
-		}
-		else if (world.model == "maps/e2m6.bsp")
-		{
-			write_cdtrack (2, 3);
-
-			WriteByte (MSG_ALL, SVC_FINALE);
-			WriteString (MSG_ALL, "The Rune of Black Magic throbs evilly in\nyour hand and whispers dark thoughts\ninto your brain. You learn the inmost\nlore of the Hell-Mother; Shub-Niggurath!\nYou now know that she is behind all the\nterrible plotting which has led to so\nmuch death and horror. But she is not\ninviolate! Armed with this Rune, you\nrealize that once all four Runes are\ncombined, the gate to Shub-Niggurath's\nPit will open, and you can face the\nWitch-Goddess herself in her frightful\notherworld cathedral.");
-			return;
-		}
-		else if (world.model == "maps/e3m6.bsp")
-		{
-			write_cdtrack (2, 3);
-
-			WriteByte (MSG_ALL, SVC_FINALE);
-			WriteString (MSG_ALL, "The charred viscera of diabolic horrors\nbubble viscously as you seize the Rune\nof Hell Magic. Its heat scorches your\nhand, and its terrible secrets blight\nyour mind. Gathering the shreds of your\ncourage, you shake the devil's shackles\nfrom your soul, and become ever more\nhard and determined to destroy the\nhideous creatures whose mere existence\nthreatens the souls and psyches of all\nthe population of Earth.");
-			return;
-		}
-		else if (world.model == "maps/e4m7.bsp")
-		{
-			write_cdtrack (2, 3);
-
-			WriteByte (MSG_ALL, SVC_FINALE);
-			WriteString (MSG_ALL, "Despite the awful might of the Elder\nWorld, you have achieved the Rune of\nElder Magic, capstone of all types of\narcane wisdom. Beyond good and evil,\nbeyond life and death, the Rune\npulsates, heavy with import. Patient and\npotent, the Elder Being Shub-Niggurath\nweaves her dire plans to clear off all\nlife from the Earth, and bring her own\nfoul offspring to our world! For all the\ndwellers in these nightmare dimensions\nare her descendants! Once all Runes of\nmagic power are united, the energy\nbehind them will blast open the Gateway\nto Shub-Niggurath, and you can travel\nthere to foil the Hell-Mother's plots\nin person.");
-			return;
-		}
-
-		GotoNextMap ();
-	}
-
-	if (intermission_running == 3)
-	{
-		if (!cvar ("registered"))
-		{	// shareware episode has been completed, go to sell screen
-			WriteByte (MSG_ALL, SVC_SELLSCREEN);
-			return;
-		}
-
-		if ((serverflags&15) == 15)
-		{
-			WriteByte (MSG_ALL, SVC_FINALE);
-			WriteString (MSG_ALL, "Now, you have all four Runes. You sense\ntremendous invisible forces moving to\nunseal ancient barriers. Shub-Niggurath\nhad hoped to use the Runes Herself to\nclear off the Earth, but now instead,\nyou will use them to enter her home and\nconfront her as an avatar of avenging\nEarth-life. If you defeat her, you will\nbe remembered forever as the savior of\nthe planet. If she conquers, it will be\nas if you had never been born.");
-			return;
-		}
-
-	}
-
 	GotoNextMap ();
 };
 
@@ -367,7 +292,6 @@ move_to_intermission =
 void (float who)
 proto_intermission =
 {
-	write_cdtrack (3, 3);
 	WriteByte (who, SVC_INTERMISSION);
 	IN_QW([-
 		WriteCoord (who, intermission_pos.origin_x);
@@ -632,60 +556,6 @@ SelectSpawnPoint =
 
 /*
 ===========
-ValidateUser
-============
-*/
-/* float(entity e) ValidateUser =
-{
-
-	local string    s;
-	local string    userclan;
-	local float     rank, rankmin, rankmax;
-
-//
-// if the server has set "clan1" and "clan2", then it
-// is a clan match that will allow only those two clans in
-//
-	s = serverinfo ("clan1");
-	if (s)
-	{
-		userclan = masterinfo (e,"clan");
-		if (s == userclan)
-			return true;
-		s = serverinfo ("clan2");
-		if (s == userclan)
-			return true;
-		return false;
-	}
-
-//
-// if the server has set "rankmin" and/or "rankmax" then
-// the users rank must be between those two values
-//
-	s = masterinfo (e, "rank");
-	rank = stof (s);
-
-	s = serverinfo ("rankmin");
-	if (s)
-	{
-		rankmin = stof (s);
-		if (rank < rankmin)
-			return false;
-	}
-	s = serverinfo ("rankmax");
-	if (s)
-	{
-		rankmax = stof (s);
-		if (rankmax < rank)
-			return false;
-	}
-
-	return true;
-};
-*/
-
-/*
-===========
 PutClientInServer
 
 called each time a player is spawned
@@ -761,7 +631,7 @@ PutClientInServer =
 	self.state = 0;
 	self.aqstate = self.aqstate - self.aqstate & AQS_SWITCHFIRING;
 
-	player_stand1 ();
+	player_stand ();
 
 	//RUNE SERV:  Player initialization
 	if (!self.aqflags & AQ_INIT_DONE)
@@ -1013,8 +883,8 @@ CheckRules =
 		return;
 	}
 
-	// XXX I'd like to change this to a bit setting.
-	countdown_timer (COUNTDOWN_TIMER);
+	if (TIMELIMIT_COUNTDOWN)
+		timelimit_countdown ();
 };
 
 //============================================================================
@@ -1026,7 +896,7 @@ PlayerDeathThink =
 
 	// Warn phoenix users.
 	if (self.runetype == RN_PHOENIX)
-		centerprint (self, "קבעמימח\nphoenix rune detected\nuse jump to respawn");
+		centerprint (self, "\<\bwarning\b\>\nphoenix rune detected\nuse jump to respawn");
 
 	if (self.flags & FL_ONGROUND)
 	{
@@ -1788,6 +1658,7 @@ ClientDisconnect =
 	self.health = 0;
 	self.runetype = 0;
 	self.aqflags = 0;	// for AQ_INIT_DONE, for is_valid_player()
+	self.rqflags = 0;
 	self.effects = 0;
 	// Set frags so the "unconnected" status list entry for the next
 	// player to get this slot (which can last for a while) isn't

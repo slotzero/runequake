@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.12 2002/10/14 18:57:03 slotzero Exp $
+/*  MERGE COMPLETE
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
