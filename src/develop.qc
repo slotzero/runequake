@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.28 2003/07/03 23:04:32 slotzero Exp $
+/*  $Id: develop.qc,v 1.29 2003/07/05 21:33:41 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -19,63 +19,104 @@
 
 float DEVELOPER_MODE = 0;
 
-/* void ()
-Ban_Client_Level =
+void ()
+Test_Button =
 {
-	local float i, offset;
-	local string s, ip;
-
-	// hunk offset
-	offset = %100;
-	ip = self.netname;
-
-	for (i = %22; i >= %0; i = i - %1)
-	{
-		s = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 16), 16);
-		Write_Hunk_Max (HUNK_CONTEXT, offset + ((i + %1) * 16), s, 16);
-		dprint (">", s, "<\n");
-	}
-	Write_Hunk_Max (HUNK_CONTEXT, offset, ip, 16);
-}; */
+	SUB_Null ();
+};
 
 void ()
-Log_Client =
+Log_Client_Disconnect =
 {
 	IN_QW(return;)
 	local float i, offset;
-	local string s;
+	local string e_name, e_time, elapsed;
 
 	// hunk offset
 	offset = %100;
 
-	s = Read_Hunk_Max (HUNK_CONTEXT, offset, 16);
+	elapsed = ftos (elapsed_time ());
+	e_name = Read_Hunk_Max (HUNK_CONTEXT, offset, 16);
+
 	// check last entry for duplicate, update time only.
-	if (s == self.netname)
+	if (e_name == self.netname)
 	{
-		// dprint ("duplicate entry removed\n");
-		s = ftos (elapsed_time ());
-		Write_Hunk_Max (HUNK_CONTEXT, offset + %16, s, 8);
+		Write_Hunk_Max (HUNK_CONTEXT, offset + %16, elapsed, 8);
 		return;
 	}
 
 	for (i = %6; i >= %0; i = i - %1)
 	{
-		s = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 24), 16);
-		Write_Hunk_Max (HUNK_CONTEXT, offset + ((i + %1) * 24), s, 16);
-		s = Read_Hunk_Max (HUNK_CONTEXT, offset + %16 + (i * 24), 8);
-		Write_Hunk_Max (HUNK_CONTEXT, offset + %16 + ((i + %1) * 24), s, 16);
+		e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 24), 16);
+		Write_Hunk_Max (HUNK_CONTEXT, offset + ((i + %1) * 24), e_name, 16);
+		e_time = Read_Hunk_Max (HUNK_CONTEXT, offset + %16 + (i * 24), 8);
+		Write_Hunk_Max (HUNK_CONTEXT, offset + %16 + ((i + %1) * 24), e_time, 16);
 	}
+
 	Write_Hunk_Max (HUNK_CONTEXT, offset, self.netname, 16);
-	s = ftos (elapsed_time ());
-	Write_Hunk_Max (HUNK_CONTEXT, offset + %16, s, 8);
+	Write_Hunk_Max (HUNK_CONTEXT, offset + %16, elapsed, 8);
 };
 
-void ()
-Read_Log =
+/* void (float hunk_offset, float max_entries, string entry, float entry_size, float timed, float e_remove)
+Hunk_Write_List =
 {
 	IN_QW(return;)
-	local float i, offset, last, real;
-	local string name, display;
+	local float i, n, offset;
+	local string e_name, e_time, elapsed;
+
+	// hunk offset
+	offset = %100;
+
+	offset = entry_size;
+	if (timed)
+	{
+		elapsed = ftos (elapsed_time ());
+		offset = offset + 8;
+	}
+
+	n = %0;
+	if (e_remove)
+	{
+		for (i = max_entries; i >= %0; i = i - %1)
+		{
+			e_name = Read_Hunk_Max (HUNK_CONTEXT, hunk_offset + (i * offset), entry_size);
+			if (e_name == entry)
+			{
+				Write_Hunk_Max (HUNK_CONTEXT, hunk_offset + (i * offset), "0", 8);
+				Write_Hunk_Max (HUNK_CONTEXT, hunk_offset + (entry_size * %1) + (i * offset), "0", 8);
+				if (i) n = i - %1;
+				else n = %-1;
+			}
+		}
+	}
+
+	if (n)
+		max_entries = n;
+
+	for (i = max_entries; i >= %0; i = i - %1)
+	{
+		e_name = Read_Hunk_Max (HUNK_CONTEXT, hunk_offset + (i * offset), entry_size);
+		Write_Hunk_Max (HUNK_CONTEXT, hunk_offset + ((i + %1) * offset), e_name, entry_size);
+		e_time = Read_Hunk_Max (HUNK_CONTEXT, hunk_offset + (entry_size * %1) + (i * offset), 8);
+		Write_Hunk_Max (HUNK_CONTEXT, hunk_offset + (entry_size * %1) + ((i + %1) * offset), e_time, 8);
+	}
+
+	Write_Hunk_Max (HUNK_CONTEXT, hunk_offset, entry, entry_size);
+	Write_Hunk_Max (HUNK_CONTEXT, hunk_offset + (entry_size * %1), elapsed, 8);
+}; */
+
+/* void ()
+Log_Client_Disconnect =
+{
+	Hunk_Write_List (%100, %6, self.netname, 16, TRUE, TRUE);
+}; */
+
+void ()
+Read_Client_Disconnect_Log =
+{
+	IN_QW(return;)
+	local float i, offset, e_time, e_away;
+	local string e_name, display;
 
 	// hunk offset
 	offset = %100;
@@ -89,28 +130,21 @@ Read_Log =
 
 	for (i = %6; i >= %0; i = i - %1)
 	{
-		name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 24), 16);
-		last = stof (Read_Hunk_Max (HUNK_CONTEXT, offset + %16 + (i * 24), 8));
-		real = elapsed_time ();
-		real = real - last;
+		e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 24), 16);
+		e_time = stof (Read_Hunk_Max (HUNK_CONTEXT, offset + %16 + (i * 24), 8));
+		e_away = elapsed_time () - e_time;
 
-		if (last)
+		if (e_time)
 		{
-			display = flen (name, -16);
+			display = flen (e_name, -16);
 			self_sprint (self, display);
-			display = flen (parse_time (real), 8);
+			display = flen (parse_time (e_away), 8);
 			self_sprint (self, display);
 			self_sprint (self, "\n");
 		}
 	}
-	if (!last)
+	if (!e_time)
 		self_sprint (self, "No entries found.\n");
-};
-
-void ()
-Test_Button =
-{
-	Read_Log ();
 };
 
 string (float n)
@@ -167,11 +201,13 @@ ProQuake_Version =
 	i = cl[QS_MOD] / %1;
 
 	if (!i)
-		return "0";
+		return " with a non-proquake client";
 	// XXX Mod version hasn't always been present, I forget what version
 	// it was introduced, so I'm using 3.00 until I research it.
 	else if (i == 1)
-		return "< 3.00";
+		return " with proquake version \b<\b 3.00";
+
+	v = " with proquake version ";
 
 	d = floor (i / 4096);
 	i = i - d * 4096;
@@ -180,7 +216,8 @@ ProQuake_Version =
 	i = i - d * 256;
 	sum = sum + hex_ctof (hex[d * %2]);
 	d = floor (sum / 10);
-	v = ftos (d);
+	x = ftos (d);
+	v = strcat (v, x);
 	v = strcat (v, ".");
 	sum = sum - (d * 10);
 	x = ftos (sum);

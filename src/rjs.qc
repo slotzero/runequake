@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.49 2003/07/03 20:51:30 slotzero Exp $
+/*  $Id: rjs.qc,v 1.50 2003/07/05 21:33:41 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1267,7 +1267,7 @@ common_impulses =
 		admin_toggle (1, 1);
 
 	else if (self.impulse == IMP_LAST)
-		Read_Log ();
+		Read_Client_Disconnect_Log ();
 
 	else if (self.impulse == IMP_RIDER_HIDE)
 	{
@@ -1624,7 +1624,11 @@ player_init =
 	else
 	{
 		bprint (self.netname);
-		bprint (" connected to the server\n");
+		bprint (" connected to the server");
+
+		sprint_admin (ProQuake_Version ());
+		bprint ("\n");
+
 		sound (self, CHAN_BODY, "shalrath/sight.wav", 1, ATTN_NONE);
 	}
 

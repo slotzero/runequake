@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.21 2003/07/03 20:51:29 slotzero Exp $
+/*  $Id: client.qc,v 1.22 2003/07/05 21:33:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1690,7 +1690,7 @@ ClientDisconnect =
 	obs_process_game_queue ();
 	lose_riders ();
 	setmodel (self, string_null);
-	Log_Client ();
+	Log_Client_Disconnect ();
 };
 
 /*
