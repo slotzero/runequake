@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.51 2004/07/16 06:08:07 slotzero Exp $
+/*  $Id: world.qc,v 1.52 2004/07/17 07:48:53 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -389,6 +389,78 @@ StartFrame =
 
 		else if (i == C2_TOGGLE_NOALTS)
 			toggle_cvar_bit ("deathmatch", DM_NO_ALT_WEAPONS);
+
+		else if (i == C2_QUADON)
+		{
+			if (voteflags & C3_NO_QUAD)
+			{
+				dprint_force ("Quad enabled\n");
+				setquad ();
+			}
+		}
+
+		else if (i == C2_QUADOFF)
+		{
+			if (!voteflags & C3_NO_QUAD)
+			{
+				dprint_force ("Quad disabled\n");
+				setquad ();
+			}
+		}
+
+		else if (i == C2_PENTON)
+		{
+			if (voteflags & C3_NO_PENT)
+			{
+				dprint_force ("Pentagram enabled\n");
+				setpent ();
+			}
+		}
+
+		else if (i == C2_PENTOFF)
+		{
+			if (!voteflags & C3_NO_PENT)
+			{
+				dprint_force ("Pentagram disabled\n");
+				setpent ();
+			}
+		}
+
+		else if (i == C2_RINGON)
+		{
+			if (voteflags & C3_NO_RING)
+			{
+				dprint_force ("Ring of shadows enabled\n");
+				setring ();
+			}
+		}
+
+		else if (i == C2_RINGOFF)
+		{
+			if (!voteflags & C3_NO_RING)
+			{
+				dprint_force ("Ring of shadows disabled\n");
+				setring ();
+			}
+		}
+
+		else if (i == C2_SUITON)
+		{
+			if (voteflags & C3_NO_SUIT)
+			{
+				dprint_force ("Environmental protection suit enabled\n");
+				setsuit ();
+			}
+		}
+
+		else if (i == C2_SUITOFF)
+		{
+			if (!voteflags & C3_NO_SUIT)
+			{
+				dprint_force ("Environmental protection suit disabled\n");
+				setsuit ();
+			}
+		}
 
 		else
 			dprint ("Unknown command\n");

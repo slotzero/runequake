@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.44 2004/07/16 12:49:24 slotzero Exp $
+/*  $Id: bindings.qc,v 1.45 2004/07/17 07:48:52 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -315,6 +315,14 @@ console_aliases =
 	console_init_cvar_alias ("practice",		CVAR_C2,	C2_MODE_PRACTICE);
 	console_init_cvar_alias ("normal",		CVAR_C2,	C2_MODE_NORMAL);
 	console_init_cvar_alias ("noalts",		CVAR_C2,	C2_TOGGLE_NOALTS);
+	console_init_cvar_alias ("quadon",		CVAR_C2,	C2_QUADON);
+	console_init_cvar_alias ("quadoff",		CVAR_C2,	C2_QUADOFF);
+	console_init_cvar_alias ("penton",		CVAR_C2,	C2_PENTON);
+	console_init_cvar_alias ("pentoff",		CVAR_C2,	C2_PENTOFF);
+	console_init_cvar_alias ("ringon",		CVAR_C2,	C2_RINGON);
+	console_init_cvar_alias ("ringoff",		CVAR_C2,	C2_RINGOFF);
+	console_init_cvar_alias ("suiton",		CVAR_C2,	C2_SUITON);
+	console_init_cvar_alias ("suitoff",		CVAR_C2,	C2_SUITOFF);
 
 	level_aliases ();
 	custom_aliases ();
