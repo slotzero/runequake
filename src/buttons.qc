@@ -1,4 +1,4 @@
-/*  $Id: buttons.qc,v 1.14 2005/01/22 20:11:15 slotzero Exp $
+/*  $Id: buttons.qc,v 1.15 2005/01/24 23:23:17 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -93,6 +93,9 @@ button_touch =
 	else
 		self.enemy = other;
 
+	// dmg hack
+   	self.runevar = 1;
+
 	if (self.health)
 		button_killed ();
 	else
@@ -102,7 +105,12 @@ button_touch =
 void ()
 button_killed =
 {
-	self.enemy	= damage_attacker;
+	// dmg hack
+	if (self.runevar)
+		self.runevar	= 0;
+	else
+		self.enemy	= damage_attacker;
+
 	self.health	= self.max_health;
 	self.takedamage	= DAMAGE_NO; // wil be reset upon return
 
