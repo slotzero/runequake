@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.170 2005/02/18 05:41:57 slotzero Exp $
+/*  $Id: rjs.qc,v 1.171 2005/03/28 23:30:24 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2418,8 +2418,15 @@ random_color =
 void (entity e)
 set_random_colors =
 {
-	local float c;
+	local float c, qsmack;
 	local string s;
+
+	// WPWW
+	if (is_qsmack_e (e))
+	{
+		self_stuffcmd (e, "color 0 0\n");
+		return;
+	}
 
 	self_stuffcmd (e, "color ");
 
