@@ -1,11 +1,17 @@
-$Id: Changes,v 1.60 2004/04/04 20:19:08 slotzero Exp $
+$Id: Changes,v 1.61 2004/04/06 00:15:22 slotzero Exp $
 
+added level-time for console
 added armors that cycle through all types
 added hat to quad and pent
 added custom sound, denied.wav for q3 style message
 added command custom-sounds
 added q3 style denied message
 added practice mode to admin menu
+
+Todo:
+
+consider a new console command, cvars.. in case your forget!
+fix admin level by menu
 
 Version 1.0
 
