@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.2 2003/04/14 00:56:11 slotzero Exp $
+/*  $Id: develop.qc,v 1.3 2003/05/21 23:14:12 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -18,6 +18,66 @@
 */
 
 //  These are functions that are still under development.
+
+float (string s)
+char_to_float =
+{
+	if (s == "1") return 1;
+	if (s == "2") return 2;
+	if (s == "3") return 3;
+	if (s == "4") return 4;
+	if (s == "5") return 5;
+	if (s == "6") return 6;
+	if (s == "7") return 7;
+	if (s == "8") return 8;
+	if (s == "9") return 9;
+
+	return 0;
+};
+
+float (float n)
+eval_exponent =
+{
+	local float i;
+
+	i = 1;
+	while (n > 1)
+	{
+		i = i * 10;
+		n = n - 1;
+	}
+
+	return i;
+};
+
+// XXX Only works on whole numbers.
+float (string s)
+stof =
+{
+	local float i, ps, pch, cmp, x, n, sum;
+
+	ps = AddInt (AddInt (&s, PSTRING_TO_PQUAKEC), %-3);
+	pch = AddInt (&"xxxx", PSTRING_TO_PQUAKEC);
+
+	cmp = x = strlen (s);
+	for (i = 0; i < cmp; i = i + 1)
+	{
+		(*pch)[%0] = (*ps)[%0];
+		pch = AddInt (pch, %3);
+
+		// Make this a separate function and do away with char_to_float
+		// and eval_exponent?
+		n = char_to_float (@AddInt (pch, PQUAKEC_TO_PSTRING));
+		n = n * (eval_exponent (x));
+		sum = sum + n;
+
+		pch = AddInt (pch, %-3);
+		ps = AddInt (ps, %1);
+		x = x - 1;
+	}
+
+	return sum;
+};
 
 void (float n)
 parse_time =
