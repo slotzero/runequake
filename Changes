@@ -1,8 +1,37 @@
-$Id: Changes,v 1.46 2004/02/15 04:53:20 slotzero Exp $
+$Id: Changes,v 1.47 2004/02/16 04:01:43 slotzero Exp $
 
-Version 1.0  Sat Feb 14 23:51:51 EST 2004
+Version 1.0  Sun Feb 15 22:26:22 EST 2004
 
-    - coming soon
+    - Bug Fixes
+
+        - The vote-hook command doesn't reset the hook when update_cvars() is called.
+
+        - Shamblers no longer attack you while they are frozen.
+
+    - Changes
+
+        - There are two new weapons: Magic Shotgun (ALT-2) and the Gas Grenades (ALT-6).
+
+        - There are 9 new runes: anti-pack, telefrag deflect, bouncin' betty, tornado,
+          super blue stuff, blizzard, thor, sniper, and sonar.
+
+        - All votes expire instead of cycling a message every two minutes.  The life
+          expectancy of a vote is between 30 - 45 seconds.
+
+        - To vote for a specific level, type its name in the console.  To acknowledge a vote
+          you can type the voted level name or 'vote-exit'.  For a list of standard levels,
+          type 'levels'.  For custom maps, type 'custom'.
+
+        - The mod now supports custom levels!  To view what levels are available on the server,
+          type 'custom' in the console.
+
+        - All of the levels that have exits teleport you to either a fixed location or a random
+          location throughout the level.  See the Notes file for fixed locations.
+
+        - Many of the client commands (show-settings, show-players, etc.) work from the server
+          console.
+
+        - I've reversed the default cycle-alternates toggle from off to on.
 
 Version 0.9  Wed Jul 16 23:06:07 EST 2003
 
@@ -47,7 +76,7 @@ Version 0.9  Wed Jul 16 23:06:07 EST 2003
 
 Version 0.8.2  Fri Apr 25 00:44:32 EST 2003
 
-    - Cvar Changes
+    - CVAR Changes
 
         - scratch1
 
@@ -186,7 +215,7 @@ Version 0.5.3  Sat Sep 07 09:18:36 EST 2002
         - I replaced the nail gun with a super nail gun on E3M2.  I also
           added a red armor.
 
-    - Cvar Changes
+    - CVAR Changes
 
         - scratch1
 
