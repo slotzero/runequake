@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.51 2003/07/08 05:12:34 slotzero Exp $
+/*  $Id: rjs.qc,v 1.52 2003/07/09 04:07:04 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1267,7 +1267,7 @@ common_impulses =
 		admin_toggle (1, 1);
 
 	else if (self.impulse == IMP_LAST)
-		Read_Client_Disconnect_Log ();
+		Client_Disconnect_Log ();
 
 	else if (self.impulse == IMP_RIDER_HIDE)
 	{
