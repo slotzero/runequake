@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.34 2005/01/07 00:24:08 slotzero Exp $
+/*  $Id: strman.qc,v 1.35 2005/02/18 02:48:05 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -22,12 +22,12 @@
 //-------------------------------------------------------------------
 
 //
-//  S T R I N G _ L E N G T H
+//  S T R I N G _ Q C
 //
 //  Return the length of a string (&s must be positive and less than 2^24)
 //
 float (string s)
-string_length =
+strlen_qc =
 {
 	local float i;
 
@@ -39,23 +39,19 @@ string_length =
 		i = i + %1;
 	}
 
-	dprint ("string_length(): string too big\n");
+	dprint ("strlen_qc(): string too big\n");
+
 	return 0;
 };
 
 //
-//  S T R L E N
+//  S T R L E N _ A N Y
 //
 //  Return the length of a string
 //
 float (string s)
-strlen =
+strlen_any =
 {
-	IN_QW([-
-
-	return string_length (s);
-
-	-], [-
 	local float i, ps;
 
 	ps = AddInt (&s, PSTRING_TO_PQUAKEC);
@@ -66,11 +62,22 @@ strlen =
 		ps = AddInt (ps, %1);
 	}
 
-	dprint ("strlen(): string too big\n");
-
-	-])
+	dprint ("strlen_any(): string too big\n");
 
 	return 0;
+};
+
+float (string s)
+strlen =
+{
+	IN_QW([-
+		return strlen_qc (s);
+	-])
+
+	if (&s > 0 && &s < 16777216)
+		return strlen_qc (s);
+	else
+		return strlen_any (s);
 };
 
 // base is the dword offset
