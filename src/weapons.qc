@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.50 2004/07/28 03:02:02 slotzero Exp $
+/*  $Id: weapons.qc,v 1.51 2004/09/18 01:36:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1012,7 +1012,7 @@ W_BestWeapon =
 			if (weapon_it_have_min_ammo (WEAPON_BFG, 0))
 				return WEAPON_BFG;
 		}
-		else if (nw && weapon_it_have_min_ammo (IT_LIGHTNING, 0))
+		else if ((nw || self.runetype == RN_THOR) && weapon_it_have_min_ammo (IT_LIGHTNING, 0))
 			return IT_LIGHTNING;
 	}
 
