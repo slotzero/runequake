@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.30 2004/02/25 20:40:14 slotzero Exp $
+/*  $Id: weapons.qc,v 1.31 2004/05/09 00:58:25 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -48,6 +48,19 @@ float ()
 crandom =
 {
 	return 2*(random () - 0.5);
+};
+
+void ()
+reflect_projectile =
+{
+	if (self.velocity == VEC_ORIGIN)
+		self.touch ();
+	else
+		self.angles = vectoangles (self.velocity);
+
+	self.movetype	= MOVETYPE_FLYMISSILE;
+	self.nextthink	= time + 3;
+	self.think	= SUB_Remove;
 };
 
 /*
@@ -873,17 +886,35 @@ spike_touch =
 	}
 	else
 	{
-		if (self.classname == "wizspike")
-			type = TE_WIZSPIKE;
-		else if (self.classname == "knightspike")
-			type = TE_KNIGHTSPIKE;
+		// developing reflect code
+		if (0)
+		{
+			if (self.runevar == 1)
+				create_te_spike (type, self.origin);
+			else
+			{
+				self.runevar	= 1;
+				self.movetype	= MOVETYPE_BOUNCE;
+				self.nextthink	= time;
+				self.think	= reflect_projectile;
+
+				return;
+			}
+		}
 		else
-			type = TE_SPIKE;
-		create_te_spike (type, self.origin);
+		{
+			if (self.classname == "wizspike")
+				type = TE_WIZSPIKE;
+			else if (self.classname == "knightspike")
+				type = TE_KNIGHTSPIKE;
+			else
+				type = TE_SPIKE;
+
+			create_te_spike (type, self.origin);
+		}
 	}
 
 	remove (self);
-
 };
 
 void ()
