@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.13 2004/04/09 05:59:54 slotzero Exp $
+/*  $Id: hunk.qc,v 1.14 2004/04/09 07:26:36 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -22,7 +22,7 @@
 	%0 - %9		= [DO NOT USE]
 
 	// server_time(), update_server_time()
-	%10  - ?	= float time
+	%10		= float time
 
 	// sized_customs_count(), update_customs_count()
 	%21		= float small levels left in map rotation
@@ -30,16 +30,16 @@
 	%23		= float large levels left in map rotation
 
 	// Log_Client_Disconnect(), Client_Disconnect_Log()
-	%100 - %103	= string netname	%104 - %105	= float elapsed
-	%106 - %109	= string netname	%110 - %111	= float elapsed
-	%112 - %115	= string netname	%116 - %117	= float elapsed
-	%118 - %121	= string netname	%122 - %123	= float elapsed
-	%124 - %127	= string netname	%128 - %129	= float elapsed
-	%130 - %133	= string netname	%134 - %135	= float elapsed
-	%136 - %139	= string netname	%140 - %141	= float elapsed
-	%142 - %145	= string netname	%146 - %147	= float elapsed
-	%148 - %151	= string netname	%152 - %153	= float elapsed
-	%154 - %157	= string netname	%158 - %159	= float elapsed
+	%100 - %103	= string netname	%104	= float elapsed
+	%105 - %108	= string netname	%109	= float elapsed
+	%110 - %113	= string netname	%114	= float elapsed
+	%115 - %118	= string netname	%119	= float elapsed
+	%120 - %123	= string netname	%124	= float elapsed
+	%125 - %128	= string netname	%129	= float elapsed
+	%130 - %133	= string netname	%134	= float elapsed
+	%135 - %138	= string netname	%139	= float elapsed
+	%140 - %143	= string netname	%144	= float elapsed
+	%145 - %148	= string netname	%149	= float elapsed
 
 	// custom_hunk_pos()
 	%200 - %399	= string (12 bytes) containing small level names
