@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.60 2005/02/04 02:28:49 slotzero Exp $
+/*  $Id: bindings.qc,v 1.61 2005/02/14 23:41:18 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -388,6 +388,7 @@ console_aliases =
 	console_init_cvar_alias ("hookdamageon",	CVAR_C2,	C2_HOOKDAMAGEON);
 	console_init_cvar_alias ("hookdamageoff",	CVAR_C2,	C2_HOOKDAMAGEOFF);
 	console_init_cvar_alias ("arena",		CVAR_C2,	C2_MODE_ARENA);
+	console_init_cvar_alias ("sping",		CVAR_C2,	C2_CLIENT_PING_TIMES);
 
 	level_aliases ();
 	custom_aliases ();
