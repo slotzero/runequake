@@ -1,4 +1,4 @@
-$Id: Changes,v 1.9 2002/04/24 04:18:52 slotzero Exp $
+$Id: Changes,v 1.10 2002/05/04 17:30:06 slotzero Exp $
 
 Version 0.3  Sat Apr 20 21:44:23 EST 2002
 
@@ -23,6 +23,10 @@ Version 0.3  Sat Apr 20 21:44:23 EST 2002
     - Rune Changes
 
 	- The EP suit/rune is protected against hooks.
+
+    - Other Changes
+
+    	- Dropped powerups, armor, and backpacks blink before they expire.
 
 Version 0.2.1  Tue Mar 12 21:33:50 EST 2002
 
