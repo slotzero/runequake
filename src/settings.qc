@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.30 2004/04/05 00:31:37 slotzero Exp $
+/*  $Id: settings.qc,v 1.31 2004/04/05 20:43:08 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -417,9 +417,11 @@ float HOOK_TRAVEL_SPEED		= 2500;
 float HOOK_LINK_COUNT		= 6;
 
 // Release hook when weapon fires or attaches to a surface too long.  Set this value
-// to anything other than zero to enable.
+// to anything other than zero to enable.  The hook drop delay controls the amount
+// of seconds to wait before releasing from surfaces.
 
 float HOOK_CAMP_PROT		= 0;
+float HOOK_DROP_DELAY		= 2;
 
 // Settings for burning weapons.
 
