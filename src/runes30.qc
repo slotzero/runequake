@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.18 2003/06/24 22:17:43 slotzero Exp $
+/*  $Id: runes30.qc,v 1.19 2003/06/26 05:30:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -695,7 +695,9 @@ Suck_Think =
 	if (self.owner.runetype == RN_SUCK)
 		self.runetime = time + 20;
 
-	self.nextthink = time + sys_ticrate;
+	// I used to set this to sys_ticrate but it's a pain having to change
+	// this value every time you change the tick.
+	self.nextthink = time + 0.1;
 
 	Suck (self);
 };
