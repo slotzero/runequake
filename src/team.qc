@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.30 2004/07/13 07:21:31 slotzero Exp $
+/*  $Id: team.qc,v 1.31 2004/07/13 07:50:42 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -353,7 +353,7 @@ change_teamplay =
 {
 	local float old_teamplay, old_teams, new_teams;
 	local entity e;
-	local string s;
+	local string s, poq;
 
 	dprint ("new_teamplay(");
 	dprint_float (new_teamplay);
@@ -361,20 +361,24 @@ change_teamplay =
 
 	if (update_cvar)
 	{
-		IN_POQ([-
-			// poq
-			local string poq;
+		if (HUNK_CONTEXT_MAX)
+		{
+			poq = allocate_string_size (32);
 
-			poq = allocate_string_size (48);
 			s = ftos (new_teamplay);
 			strcpy (poq, s);
-			poq = strcat (poq, " Rune Quake ");
-			poq = strcat (poq, version);
 			if (FORWARD_MAX_PLAYERS_REAL < 0)
 				poq = strcat (poq, " [forward server]");
+			else
+			{
+				poq = strcat (poq, " Rune Quake ");
+				poq = strcat (poq, version);
+			}
+
 			pq_cvar_set ("teamplay", poq, 2);
-		-], [-
-			// qw
+		}
+		else
+		{
 			localcmd ("teamplay \"");
 			s = ftos (new_teamplay);
 			localcmd (s);
@@ -383,7 +387,7 @@ change_teamplay =
 			if (FORWARD_MAX_PLAYERS_REAL < 0)
 				localcmd (" [forward server]");
 				localcmd ("\"\n");
-		-])
+		}
 	}
 
 	old_teamplay = teamplay;
