@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.6 2004/07/08 02:38:53 slotzero Exp $
+/*  $Id: vote.qc,v 1.7 2004/07/08 03:27:31 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -152,8 +152,9 @@ count_votes =
 		bprint_float (lack);  bprint (" lack\n");
 	}
 
+	// always lack in queue
 	if (is_queue)
-		return voted;
+		return 1;
 	else
 		return lack;
 };
@@ -338,4 +339,25 @@ vote_yes =
 
 	if (!count_votes (1))
 		vote_action (vip);
+};
+
+void ()
+vote_no =
+{
+	local entity vip;
+
+	vip = find (world, classname, "vote_in_progress");
+	if (!vip)
+		return self_sprint (self, "\{141} Nothing to vote on\n");
+
+	// it's your vote, so cancel that bitch
+	if (vip.owner == self)
+	{
+		remove_bit_from_players (vote_flags, VOTE_YES); // XXX Hmm. how can i avoid using this
+		vip.runevar = 0;
+		vip.nextthink = time;
+	}
+	else if (self.vote_flags & VOTE_YES)
+		self.vote_flags = self.vote_flags - self.vote_flags & VOTE_YES;
+
 };
