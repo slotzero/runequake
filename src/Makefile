@@ -1,4 +1,4 @@
-#    $Id: Makefile,v 1.10 2003/04/14 00:56:08 slotzero Exp $
+#    $Id: Makefile,v 1.11 2003/06/23 07:52:30 slotzero Exp $
 
 #    Copyright (C) 1998-2001  Roderick Schertler.
 #
@@ -149,7 +149,7 @@ $(progs_all):
 	cd $(dir_$(type)); [ ! -x $$HOME/.quake-passcode ] || \
 	    $$HOME/.quake-passcode < settings.qc.real > settings.qc
 	cd $(dir_$(type)); \
-	    frikqcc /O2 -warn 4; cp -p settings.qc.real settings.qc && exit $$ret
+	    qccx /O2; cp -p settings.qc.real settings.qc && exit $$ret
     # XXX fastqcc umask bug
 	chmod o-w $@
 	[ ! -d $$HOME/quake/runequake ] || cp $@ $$HOME/quake/runequake
