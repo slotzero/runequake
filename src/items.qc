@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.50 2004/12/02 20:38:01 slotzero Exp $
+/*  $Id: items.qc,v 1.51 2004/12/03 10:49:14 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -454,7 +454,10 @@ armor_touch =
 			other.items	= other.items - (other.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + bit;
 
 		other.armortype		= type;
-		other.armorvalue	= other.armorvalue + 15;
+		if (other.armorvalue <= 0)
+			other.armorvalue = value / 2;
+		else
+			other.armorvalue	= other.armorvalue + 15;
 	}
 	else
 	{
