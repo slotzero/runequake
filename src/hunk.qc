@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.30 2004/07/18 16:46:01 slotzero Exp $
+/*  $Id: hunk.qc,v 1.31 2004/12/25 00:42:28 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -137,7 +137,7 @@ Read_Hunk_e =
 };
 
 string (float type, float offset)
-Read_Hunk =
+Read_Hunk_String =
 {
 	local entity hunk;
 

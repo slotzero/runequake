@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.30 2004/06/28 01:07:20 slotzero Exp $
+/*  $Id: strman.qc,v 1.31 2004/12/25 00:42:28 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -168,7 +168,7 @@ strcat =
 	if (s1) { Write_Hunk_e (hunk, s1); }
 	if (s2) { hunk = *AddInt (L1 * %1, &hunk); Write_Hunk_e (hunk, s2); }
 
-	return Read_Hunk (HUNK_CONTEXT, alloc_hunk);
+	return Read_Hunk_String (HUNK_CONTEXT, alloc_hunk);
 };
 
 //
@@ -284,7 +284,7 @@ substr_replace =
  	s = @AddInt (AddInt (AddInt (&expr, PSTRING_TO_PQUAKEC), L1 * %1), PQUAKEC_TO_PSTRING);
 	Write_Hunk_e (hunk, s);
 
-	return Read_Hunk (HUNK_CONTEXT, alloc_hunk);
+	return Read_Hunk_String (HUNK_CONTEXT, alloc_hunk);
 };
 
 //
