@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.79 2004/06/25 02:42:20 slotzero Exp $
+/*  $Id: defs.qc,v 1.80 2004/06/28 05:12:11 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1047,6 +1047,8 @@ entity	damage_inflictor;
 float	framecount;
 
 float	skill;
+
+float	scratch4;
 
 float	SKILL_LAST			= 1;
 float	SKILL_SHOW_PLAYERS		= 2;

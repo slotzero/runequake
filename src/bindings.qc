@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.19 2004/06/25 02:42:20 slotzero Exp $
+/*  $Id: bindings.qc,v 1.20 2004/06/28 05:12:11 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -251,17 +251,17 @@ console_aliases =
 {
 	dprint_force ("Sending console bindings\n");
 
-	console_init_cvar_alias ("last",		"skill",	SKILL_LAST);
-	console_init_cvar_alias ("show-players",	"skill",	SKILL_SHOW_PLAYERS);
-	console_init_cvar_alias ("show-settings",	"skill",	SKILL_SHOW_SETTINGS);
-	console_init_cvar_alias ("rune-cheat",		"skill",	SKILL_TOGGLE_RUNE_CHEAT);
-	console_init_cvar_alias ("update-bindings",	"skill",	SKILL_UPDATE_BINDINGS);
-	console_init_cvar_alias ("levels",		"skill",	SKILL_LEVELS);
-	console_init_cvar_alias ("custom",		"skill",	SKILL_CUSTOM);
-	console_init_cvar_alias ("commands",		"skill",	SKILL_COMMANDS);
-	console_init_cvar_alias ("level-time",		"skill",	SKILL_LEVEL_TIME);
-	console_init_cvar_alias ("practice",		"skill",	SKILL_MODE_PRACTICE);
-	console_init_cvar_alias ("normal",		"skill",	SKILL_MODE_NORMAL);
+	console_init_cvar_alias ("last",		"scratch4",	SKILL_LAST);
+	console_init_cvar_alias ("show-players",	"scratch4",	SKILL_SHOW_PLAYERS);
+	console_init_cvar_alias ("show-settings",	"scratch4",	SKILL_SHOW_SETTINGS);
+	console_init_cvar_alias ("rune-cheat",		"scratch4",	SKILL_TOGGLE_RUNE_CHEAT);
+	console_init_cvar_alias ("update-bindings",	"scratch4",	SKILL_UPDATE_BINDINGS);
+	console_init_cvar_alias ("levels",		"scratch4",	SKILL_LEVELS);
+	console_init_cvar_alias ("custom",		"scratch4",	SKILL_CUSTOM);
+	console_init_cvar_alias ("commands",		"scratch4",	SKILL_COMMANDS);
+	console_init_cvar_alias ("level-time",		"scratch4",	SKILL_LEVEL_TIME);
+	console_init_cvar_alias ("practice",		"scratch4",	SKILL_MODE_PRACTICE);
+	console_init_cvar_alias ("normal",		"scratch4",	SKILL_MODE_NORMAL);
 
 	level_aliases ();
 	custom_aliases ();
