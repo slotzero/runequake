@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.66 2003/10/06 11:21:51 slotzero Exp $
+/*  $Id: rjs.qc,v 1.67 2003/10/07 02:18:12 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -3132,17 +3132,17 @@ vote_counter_think =
 	if (self.runevar == 1)
 	{
 		count_votes (IMP_VOTE_HOOK, 2);
-		self.runevar = 0;
+		self.runevar = 2;
 	}
 	else if (self.runevar == 2)
 	{
 		count_votes (IMP_VOTE_TEAM, 2);
-		self.runevar = 3;
+		self.runevar = 0;
 	}
 	else
 	{
 		count_votes (IMP_VOTE_EXIT, 2);
-		self.runevar = 2;
+		self.runevar = 1;
 	}
 
 	self.nextthink = time + VOTE_COUNT_PERIOD / 3;
