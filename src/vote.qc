@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.16 2004/07/09 06:47:07 slotzero Exp $
+/*  $Id: vote.qc,v 1.17 2004/07/09 07:05:25 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -58,7 +58,7 @@ vote_team_disabled =
 			|| VOTE_TEAM_PERCENTAGE > 1)
 	{
 		if (tell)
-			sprint (self, "Team voting is disabled\n");
+			self_sprint (self, "Team voting is disabled\n");
 		return TRUE;
 	}
 	return FALSE;
@@ -72,7 +72,7 @@ vote_hook_disabled =
 			|| VOTE_HOOK_PERCENTAGE > 1)
 	{
 		if (tell)
-			sprint (self, "Hook voting is disabled\n");
+			self_sprint (self, "Hook voting is disabled\n");
 		return TRUE;
 	}
 	return FALSE;
@@ -125,11 +125,11 @@ maybe_print_votes =
 	{
 		if (msg_type < 3)
 		{
-			sprint_float (self, value);
-			sprint (self, " vote");
+			self_sprint_float (self, value);
+			self_sprint (self, " vote");
 			if (value != 1)
-				sprint (self, "s");
-			sprint (self, " in queue, please wait...\n");
+				self_sprint (self, "s");
+			self_sprint (self, " in queue, please wait...\n");
 		}
 	}
 	else
@@ -139,18 +139,18 @@ maybe_print_votes =
 			if (msg_type == 1 && value <= 0)
 				return;
 
-			sprint_float (self, value);
-			sprint (self, " more vote");
+			self_sprint_float (self, value);
+			self_sprint (self, " more vote");
 			if (value != 1)
-				sprint (self, "s");
-			sprint (self, " needed to ");
+				self_sprint (self, "s");
+			self_sprint (self, " needed to ");
 			if (vip.noise1)
-				sprint (self, vip.noise1);
+				self_sprint (self, vip.noise1);
 			if (vip.noise2)
-				sprint (self, vip.noise2);
+				self_sprint (self, vip.noise2);
 			if (vip.noise3)
-				sprint (self, vip.noise3);
-			sprint (self, "\n");
+				self_sprint (self, vip.noise3);
+			self_sprint (self, "\n");
 		}
 	}
 };
@@ -171,9 +171,9 @@ count_votes =
 	if (!vip)
 	{
 		if (type == 3)
-			sprint (self, "vote: nothing to vote on\n");
+			self_sprint (self, "vote: nothing to vote on\n");
 		else if (type)
-			sprint (self, "Join the game to vote\n");
+			self_sprint (self, "Join the game to vote\n");
 		return 0;
 	}
 
@@ -549,7 +549,7 @@ show_votes =
 	{
 		self_sprint (self, "\n");
 		self_sprint_float (self, yes); self_sprint (self, " yes / ");
-		self_sprint_float (self, no); self_sprint (self, " no\n");
+		self_sprint_float (self, no);  self_sprint (self, " no\n");
 	}
 	else
 		self_sprint (self, "No votes\n");
