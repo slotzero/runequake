@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.73 2004/04/28 00:41:37 slotzero Exp $
+/*  $Id: defs.qc,v 1.74 2004/05/15 23:05:28 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -764,6 +764,8 @@ float S1_ORIGINAL_LEVELS	= 16;
 float S1_MAX_TRAPS_FOR_LEVEL	= 32;
 float S1_BASIC_RUNES		= 64;
 float S1_CUSTOM_EXITS		= 128;
+float S1_NOQUAD			= 256;
+float S1_NOPENT			= 512;
 
 // vote flags
 float VOTE_EXIT			= 1;
