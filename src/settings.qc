@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.45 2004/07/19 06:11:35 slotzero Exp $
+/*  $Id: settings.qc,v 1.46 2004/07/19 06:32:12 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -404,7 +404,7 @@ float AMMO_FLAMETHROWER		= 1;
 float AMMO_LAVAGUN		= 1;
 float AMMO_BOMB			= 10;
 float AMMO_FLASH_GRENADE	= 3;
-float AMMO_MORTAR		= 5;
+float AMMO_MORTAR		= 3;
 float AMMO_BFG			= 30;
 
 // Amount of damage done by the hook, per tick, for the various hook

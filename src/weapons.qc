@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.48 2004/07/19 06:11:35 slotzero Exp $
+/*  $Id: weapons.qc,v 1.49 2004/07/19 06:32:12 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -417,7 +417,7 @@ void ()
 RocketDamageExplosion =
 {
 	monk_radius_hack = 1;
-	T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 120, other, self.classname);
+	T_RadiusDamage (RADIUS_NORMAL, self, self.owner, MORTAR_DAMAGE, other, self.classname);
 	monk_radius_hack = 0;
 
 	create_te_explosion (self.origin, 1);
@@ -426,8 +426,6 @@ RocketDamageExplosion =
 void ()
 reflect_projectile =
 {
-	// local entity os;
-
 	if (self.velocity == VEC_ORIGIN)
 	{
 		create_te_explosion (self.origin, 1);
@@ -435,17 +433,6 @@ reflect_projectile =
 	}
 	else
 		self.angles = vectoangles (self.velocity);
-
-	/* os = self;
-	self = self.owner;
-	if (!W_CheckNoAmmo ())
-	{
-		self = os;
-		create_te_explosion (self.origin, 1);
-		return;
-	}
-	use_ammo ();
-	self = os; */
 
 	random_sound2 (self, CHAN_WEAPON, "weapons/ric2.wav", "weapons/ric3.wav", 1, ATTN_NORM);
 	create_te_explosion (self.origin, 0);
@@ -482,16 +469,13 @@ T_MissileTouch =
 		T_Damage (other, self, self.owner, damg, self.classname);
 	}
 
-	/* if (is_mortar)
-	{
-		radius_type	= RADIUS_MORTAR;
+	if (is_mortar)
 		damg		= MORTAR_DAMAGE;
-	}
 	else
-	{ */
-		radius_type	= RADIUS_NORMAL;
 		damg		= 120;
-	// }
+
+	radius_type	= RADIUS_NORMAL;
+
 	// don't do radius damage to the other, because all the damage
 	// was done in the impact
 	monk_radius_hack = 1;
