@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.5 2003/06/24 22:17:38 slotzero Exp $
+/*  $Id: hunk.qc,v 1.6 2003/06/26 23:11:30 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -108,14 +108,19 @@ Read_Hunk_Max =
 	return Read_Hunk_Max_e (hunk, bytes);
 };
 
+// If bytes is larger than data, bytes will be equal to
+// data plus one to include the null termination.
 void (entity hunk, string data, float bytes)
 Write_Hunk_Max_e =
 {
 	local float i, pdata, dword;
 
+	if (!hunk)
+		return dprint ("Write_Hunk_Max_e(): hunk is null\n");
+
 	i = strlen (data);
 	if (bytes > i)
-		bytes = i;
+		bytes = i + 1;
 
 	pdata = AddInt (&data, PSTRING_TO_PQUAKEC);
 
