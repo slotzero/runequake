@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.19 2004/06/12 19:54:05 slotzero Exp $
+/*  $Id: runes20.qc,v 1.20 2004/06/23 03:39:55 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -561,6 +561,8 @@ maybe_remove_hat =
 		return TRUE;
 	else if (self.runevar)
 	{
+		if (self.owner.classname == "deader")
+			return TRUE;
 		if (self.runevar == 1 && self.owner.invincible_finished < time)
 			return TRUE;
 		if (self.runevar == 4 && self.owner.super_damage_finished < time)
