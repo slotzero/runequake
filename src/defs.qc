@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.96 2004/07/08 09:41:41 slotzero Exp $
+/*  $Id: defs.qc,v 1.97 2004/07/09 06:10:02 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -508,6 +508,8 @@ float IMP_VOTE_TEAM		= 218;
 float IMP_VOTE_HOOK		= 217;
 float IMP_VOTE_FREE		= 216;
 float IMP_VOTE_LITHIUM		= 215;
+float IMP_VOTE_PRACTICE		= 214;
+float IMP_VOTE_NORMAL		= 213;
 
 float IMP_CUSTOM_SOUNDS		= 210;
 float IMP_HELP_LEVELS		= 205;
@@ -539,7 +541,7 @@ float IMP_REMOVE_FRAGS		= 82;
 float IMP_HUD_TOGGLE		= 81;
 float IMP_TEAM_ROTATE		= 80;
 float IMP_SHOW_POS		= 79;
-float IMP_VOTE_PRACTICE		= 78;
+//				= 78;		[free]
 float IMP_QUIET_TOGGLE		= 77;
 float IMP_HOOK_TOGGLE		= 76;
 //				= 75;		[free]

@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.34 2004/07/08 09:57:56 slotzero Exp $
+/*  $Id: bindings.qc,v 1.35 2004/07/09 06:10:02 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -179,6 +179,10 @@ player_aliases =
 	player_init_impulse_alias ("hud-toggle",		IMP_HUD_TOGGLE);
 	player_init_impulse_alias ("last",			IMP_LAST);
 	player_init_impulse_alias ("levels",			IMP_LEVELS);
+	player_init_impulse_alias ("no",			IMP_VOTE_NO);
+	player_init_impulse_alias ("normal",			IMP_VOTE_NORMAL);
+	player_init_impulse_alias ("ffa",			IMP_VOTE_NORMAL);
+	player_init_impulse_alias ("practice",			IMP_VOTE_PRACTICE);
 	player_init_impulse_alias ("quiet-toggle",		IMP_QUIET_TOGGLE);
 	player_init_impulse_alias ("remove-frags",		IMP_REMOVE_FRAGS);
 	player_init_impulse_alias ("rider-hide",		IMP_RIDER_HIDE);
@@ -195,16 +199,14 @@ player_aliases =
 	player_init_impulse_alias ("vote-free",			IMP_VOTE_FREE);
 	player_init_impulse_alias ("vote-level",		IMP_LEVELS);
 	player_init_impulse_alias ("vote-lithium",		IMP_VOTE_LITHIUM);
+	player_init_impulse_alias ("vote-normal",		IMP_VOTE_NORMAL);
+	player_init_impulse_alias ("vote-practice",		IMP_VOTE_PRACTICE);
 	player_init_impulse_alias ("vote-team",			IMP_VOTE_TEAM);
 	player_init_impulse_alias ("vote-hook",			IMP_VOTE_HOOK);
 	player_init_impulse_alias ("weapon-mode",		IMP_WEAPON_MODE);
 	player_init_impulse_alias ("weapon-toggles",		IMP_WEAPON_TOGGLES);
 	player_init_impulse_alias ("weapon-toggles-toggle",	IMP_WEAPON_TOGGLES);
 	player_init_impulse_alias ("yes",			IMP_VOTE_YES);
-
-	// not ready yet
-	// player_inti_impulse_alias ("no", 			IMP_VOTE_NO);
-	self_stuffcmd (self, "alias no \"echo Command still in development\"\n");
 
 	switchfire_aliases ();
 	level_aliases ();

@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.14 2004/07/09 02:22:50 slotzero Exp $
+/*  $Id: vote.qc,v 1.15 2004/07/09 06:10:02 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -88,16 +88,15 @@ void (entity vip)
 vote_action =
 {
 	if (!vip)
-		return dprint ("vote_action: vip is null\n");
+		dprint ("vote_action: vip is null\n");
 
 	if (self.classname == "player")
-		vip.netname = self.netname;
+		bprint (self.netname);
 	else if (vip.owner.classname == "player")
-		vip.netname = vip.owner.netname;
+		bprint (vip.owner.netname);
 	else
-		vip.netname = "Someone";
+		bprint ("Someone");
 
-	bprint (vip.netname);
 	bprint (" voted to ");
 	if (vip.noise1)
 		bprint (vip.noise1);
@@ -107,8 +106,12 @@ vote_action =
 		bprint (vip.noise3);
 	bprint ("\n");
 
-	vip.think1 ();
-	remove_bit_from_players (vote_flags, VOTE_YES);
+	if (vip.think1)
+		vip.think1 ();
+	else
+		dprint ("vote_action: think1 is null\n");
+
+	remove_bit_from_players (vote_flags, VOTE_YES | VOTE_NO);
 	remove (vip);
 };
 
@@ -162,7 +165,7 @@ float (float type)
 count_votes =
 {
 	local entity e, vip;
-	local float tot, lack, need, voted, is_queue;
+	local float tot, lack, need, voted, no, is_queue;
 
 	vip = find_vip ();
 	if (!vip)
@@ -185,6 +188,8 @@ count_votes =
 			tot = tot + 1;
 			if (e.vote_flags & VOTE_YES)
 				voted = voted + 1;
+			else if (e.vote_flags & VOTE_NO)
+				no = no + 1;
 		}
 		e = find (e, classname, "player");
 	}
@@ -193,6 +198,12 @@ count_votes =
 	if (need < 1)
 		need = 1;
 	lack = need - voted;
+
+	// XXX I have to see how this works out, for the most part, for every 2 people
+	// who vote note, 1 vote is taken away.  This can be kind of pointless though
+	// because it's essentially a race between votes.. a race which can be repeated
+	// vote after vote...  Again, I have to see how this works out.
+	lack = lack + floor (no * 0.50);
 
 	if (is_queue)
 		maybe_print_votes (vip, type, is_queue, voted);
@@ -273,7 +284,7 @@ vote_think =
 		// XXX Don't like this... do it elsehwere?
 		if (self.impulse == IMP_VOTE_EXIT)
 			forced_nextmap = string_null;
-		remove_bit_from_players (vote_flags, VOTE_YES);
+		remove_bit_from_players (vote_flags, VOTE_YES | VOTE_NO);
 		remove (self);
 		return;
 	}
@@ -382,15 +393,30 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_PRACTICE)
 	{
-		cancel = -1; // XXX This isn't ready yet.
-		e.frag_rate	= 0.51;	// XXX settings.
+		// cancel	= -1;	// XXX This isn't ready yet.
+		e.frag_rate	= 0.51;	// XXX move to settings.
 		e.think1	= mode_practice;
 		e.noise1	= "change mode to practice";
 
 		if (deathmatch & DM_MODE_PRACTICE)
 		{
+			if (!cancel)
+				self_sprint (self, "Already in Practice mode\n");
 			cancel = 1;
-			self_sprint (self, "Already in Practice mode\n");
+		}
+	}
+	else if (self.impulse == IMP_VOTE_NORMAL)
+	{
+		// cancel	= -1;	// XXX This isn't ready yet.
+		e.frag_rate	= 0.51; // XXX move to settings (share with practice?)
+		e.think1	= mode_normal;
+		e.noise1	= "change mode to normal";
+
+		if (!deathmatch & DM_MODE_PRACTICE)
+		{
+			if (!cancel)
+				self_sprint (self, "Already in Normal mode\n");
+			cancel = 1;
 		}
 	}
 	else
@@ -405,7 +431,7 @@ vote =
 			sprint (self, "\n");
 		}
 
-		remove_bit_from_players (vote_flags, VOTE_YES);
+		remove_bit_from_players (vote_flags, VOTE_YES | VOTE_NO);
 		remove (e);
 	}
 	else
@@ -446,13 +472,23 @@ vote_no =
 	if (!vip)
 		return self_sprint (self, "\{141} Nothing to vote on\n");
 
-	// it's your vote, so cancel that bitch
-	if (vip.owner == self)
+	// I like this, but I have to figure out how to prevent it being abused.
+	/* if (vip.owner == self)
 	{
-		remove_bit_from_players (vote_flags, VOTE_YES); // XXX Hmm. how can i avoid using this
+		remove_bit_from_players (vote_flags, VOTE_YES | VOTE_NO);
 		vip.runevar = 0;
 		vip.nextthink = time;
-	}
-	else if (self.vote_flags & VOTE_YES)
+		return;
+	} else */
+	if (self.vote_flags & VOTE_YES)
+	{
 		self.vote_flags = self.vote_flags - self.vote_flags & VOTE_YES;
+		self_sprint (self, "You recalled your vote\n");
+		return;
+	}
+
+	if (!self.vote_flags & VOTE_NO)
+		self.vote_flags = self.vote_flags | VOTE_NO;
+
+	count_votes (1);
 };
