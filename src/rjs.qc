@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.128 2004/07/10 05:11:45 slotzero Exp $
+/*  $Id: rjs.qc,v 1.129 2004/07/10 09:59:51 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -296,7 +296,7 @@ process_misc =
 		toggle_teamplay (VOTE_TEAM_MODE_DEFAULT);
 
 	// vote-hook
-	if (!temp1 & T1_HOOK_DEFAULT_ON)
+	if (temp1 & T1_HOOK_DEFAULT_ON)
 	{
 		wanted = hook_type (HOOK_DEFAULT);
 		if (wanted != hook_type (temp1))
