@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.17 2004/06/07 00:29:20 slotzero Exp $
+/*  $Id: bindings.qc,v 1.18 2004/06/07 00:50:17 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -328,6 +328,8 @@ help_levels =
 		"e1m6  - The Door To Chthon\n"
 		"e1m7  - The House of Chthon\n"
 		"e1m8  - Ziggurat Vertigo\n\n"
+	);
+	self_sprint (self,
 		"\bRealm of Black Magic\b\n\n"
 		"e2m1  - The Installation\n"
 		"e2m2  - The Ogre Citadel\n"
@@ -336,6 +338,8 @@ help_levels =
 		"e2m5  - The Wizard's Manse\n"
 		"e2m6  - The Dismal Oubliette\n"
 		"e2m7  - Underearth\n\n"
+	);
+	self_sprint (self,
 		"\bNetherworld\b\n\n"
 		"e3m1  - Termination Central\n"
 		"e3m2  - Vaults of Zin\n"
@@ -344,6 +348,8 @@ help_levels =
 		"e3m5  - Wind Tunnels\n"
 		"e3m6  - Chambers of Torment\n"
 		"e3m7  - The Haunted Halls\n\n"
+	);
+	self_sprint (self,
 		"\bThe Elder World\b\n\n"
 		"e4m1  - The Sewage System\n"
 		"e4m2  - The Tower of Despair\n"
@@ -353,8 +359,12 @@ help_levels =
 		"e4m6  - The Pain Maze\n"
 		"e4m7  - Azure Agony\n"
 		"e4m8  - The Nameless City\n\n"
+	);
+	self_sprint (self,
 		"\bThe End\n\n"
 		"end   - Shub-Niggurath's Pit\n\n"
+	);
+	self_sprint (self,
 		"\bThe Deathmatch Arenas\b\n\n"
 		"dm1   - Place of Two Deaths\n"
 		"dm2   - Claustrophobopolis\n"
