@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.15 2003/07/01 04:25:34 slotzero Exp $
+/*  $Id: internal.qc,v 1.16 2003/07/03 19:50:45 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -131,10 +131,10 @@ entity sv;
 float MOD_QSMACK = %2;
 
 // hunk
-float HUNK_IPLOG	;//= %-2097600;
-float HUNK_CONTEXT	;//= %-2437760;
-float HUNK_CONTEXT_MAX	;//= %65552;
-float HUNK_ZONE		;//= %-3773392;
+float HUNK_IPLOG;
+float HUNK_CONTEXT;
+float HUNK_CONTEXT_MAX;
+float HUNK_ZONE;
 
 //-------------------------------------------------------------------
 // HEXADECIMAL PRINTING FUNCTIONS
@@ -523,8 +523,7 @@ SearchHunk =
 					HUNK_IPLOG = SubInt (4 * i, framecount * %131072);
 				else if (hname == "context")
 						HUNK_CONTEXT = SubInt (4 * i, framecount * %131072);
-
-				if (hname == "zone")
+				else if (hname == "zone")
 				{
 					HUNK_ZONE = SubInt (4 * i, framecount * %131072);
 					PrintHunk(&lasth);
