@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.64 2004/07/05 09:34:20 slotzero Exp $
+/*  $Id: develop.qc,v 1.65 2004/07/06 09:57:44 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -84,6 +84,8 @@ vote_type_valid =
 		return TRUE;
 	if (vote_type == 3)
 		return TRUE;
+	if (vote_type == 4)
+		return TRUE;
 
 	return FALSE;
 };
@@ -93,22 +95,31 @@ xvote_think =
 {
 	if (self.runevar)
 	{
-		// XXX Check each entity to see bit flags and msg only those who didn't vote
-		bprint ("Request to ");
-		bprint (self.classname);
+		local string s;
+
+		// XXX I'm going to do this another way or I'll kill Quakeworld.
+		s = allocate_string_size (64);
+		s = strcat ("\{1}Request to ", self.netname);
+		s = strcat (s, self.map);
+
+		bprint (s);
+		bprint ("\ntype 'yes' or 'no' in console to vote\n");
+
 		self.runevar = self.runevar - 1;
 	}
 	else
 	{
-		bprint ("Vote cancelled\n");
+		bprint ("\{1}Vote cancelled\n");
+		remove_bit_from_players (rqflags, RQ_VOTE_YES);
 		VOTE_IN_PROGRESS = 0;
 		remove (self);
 		return;
 	}
-	self.nextthink = time + 5;
+
+	self.nextthink = time + 8;
 };
 
-void (string class, string net)
+void (string net, string m, float vote_type)
 xvote =
 {
 	local entity e;
@@ -116,23 +127,102 @@ xvote =
 	if (VOTE_IN_PROGRESS)
 		return self_sprint (self, "a vote is already in progress!\n");
 
-   	if (!vote_type_valid)
+   	if (!vote_type_valid (vote_type))
 		return dprint ("vote: invalid vote type\n");
 
 	VOTE_IN_PROGRESS = 1;
 
-	//self.vote_flags = 1;	// move this to something else and remove it
+	self.rqflags = self.rqflags | RQ_VOTE_YES;
 
 	e		= spawn ();
-	e.classname	= class;
+	e.classname	= "vote_in_progress";
 	e.netname	= net; // levels
+	e.map		= m;
 	e.runevar	= 3;
+	e.runetype	= vote_type;
 	e.think		= xvote_think;
 	e.nextthink	= time + sys_ticrate;
 };
 
 void ()
+vote_yes =
+{
+	local entity e;
+	local float vote_type;
+	local float bit, pct;
+	local string cmd, desc;
+	local float tot, voted, need, lack, force;
+	local entity e;
+	local string s;
+
+	if (!VOTE_IN_PROGRESS)
+		return self_sprint (self, "Nothing to vote on\n");
+
+	if (self.rqflags & RQ_VOTE_YES)
+		return self_sprint (self, "You already voted yes\n");
+
+	self.rqflags = self.rqflags | RQ_VOTE_YES;
+
+	bit = RQ_VOTE_YES;
+	pct = VOTE_EXIT_PERCENTAGE;
+	tot = voted = 0;
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (is_player_e (e))
+		{
+			tot = tot + 1;
+			if (e.rqflags & bit)
+				voted = voted + 1;
+		}
+		e = find (e, classname, "player");
+	}
+
+	need = ceil (tot * pct);
+	if (need < 1) // can't happen
+		need = 1;
+	lack = need - voted;
+	s = ftos (lack);
+
+	if (lack > 0)
+		 self_sprint (self, "x more votes needed\n");
+  	else
+	{
+		self_sprint (self, "the action should be performed NOW!\n");
+		e = find (world, classname, "vote_in_progress");
+		while (e)
+		{
+			if (e.map)
+				forced_nextmap = e.map;
+			vote_type = e.runetype;
+			e = find (e, classname, "vote_in_progress");
+		}
+		VOTE_IN_PROGRESS = 1;
+
+		remove_bit_from_players (rqflags, RQ_VOTE_YES);
+
+		if (vote_type == 1 && forced_nextmap != string_null)
+			NextLevel ();
+		else if (vote_type == 4)
+			change_practice_mode (!deathmatch & DM_MODE_PRACTICE);
+	}
+
+	if (1) // debug
+	{
+		//self_sprint (self, cmd);
+		self_sprint (self, "vote: ");
+		self_sprint_float (self, tot);   self_sprint (self, " tot ");
+		self_sprint_float (self, voted); self_sprint (self, " voted ");
+		self_sprint_float (self, need);  self_sprint (self, " need ");
+		self_sprint_float (self, lack);  self_sprint (self, " lack\n");
+		return;
+	}
+
+};
+
+void ()
 Test_Button =
 {
-	SUB_Null ();
+	//xvote ("change level to ", "dm6", 1);	// 1 would be VOTE_EXIT (or something like that);
+	xvote ("change mode to practice", string_null, 4);
 };
