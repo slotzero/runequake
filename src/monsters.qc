@@ -1,4 +1,4 @@
-/*  $Id: monsters.qc,v 1.7 2003/06/24 22:17:40 slotzero Exp $
+/*  $Id: monsters.qc,v 1.8 2003/10/05 02:55:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -99,13 +99,13 @@ walkmonster_start_go =
 
 	self.takedamage = DAMAGE_AIM;
 
-	self.ideal_yaw = self.angles * '0 1 0';
+	self.ideal_yaw	= self.angles * '0 1 0';
 	if (!self.yaw_speed)
 		self.yaw_speed = 20;
-	self.view_ofs = '0 0 25';
-	self.use = monster_use;
+	self.view_ofs	= '0 0 25';
+	self.use	= monster_use;
 
-	self.flags = self.flags | FL_MONSTER;
+	self.flags	= self.flags | FL_MONSTER;
 
 	if (self.target)
 	{
@@ -144,9 +144,9 @@ walkmonster_start =
 {
 	// delay drop to floor to make sure all doors have been spawned
 	// spread think times so they don't all happen at same time
-	self.nextthink = time + 0.1 + random ()*0.5;
-	self.think = walkmonster_start_go;
-	total_monsters = total_monsters + 1;
+	self.nextthink	= time + 0.1 + random () * 0.5;
+	self.think	= walkmonster_start_go;
+	total_monsters	= total_monsters + 1;
 };
 
 void ()

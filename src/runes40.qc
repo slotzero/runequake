@@ -1,4 +1,4 @@
-/*  $Id: runes40.qc,v 1.14 2003/09/27 05:32:07 slotzero Exp $
+/*  $Id: runes40.qc,v 1.15 2003/10/05 02:55:22 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -405,37 +405,40 @@ Rune_ShamblerSpawn =
 	local entity temp;
 	local entity shamctrl;
 
-	sham = spawn ();
-	self.runent = sham;
+	sham			= spawn ();
+	self.runent		= sham;
 
-	sham.classname = "shambler_slave";
-	sham.owner = self;
-	sham.runevar = 0;
-	sham.flags = sham.flags | FL_MONSTER;
-	sham.movetarget = self;
-	sham.angles = self.pos1 = self.angles;
-	sham.fixangle = 1;
+	sham.classname		= "shambler_slave";
+	sham.owner		= self;
+	sham.runevar		= 0;
+	sham.flags		= sham.flags | FL_MONSTER;
+	sham.movetarget		= self;
+	sham.angles		= self.pos1 = self.angles;
+	sham.fixangle		= 1;
+
 	setorigin (sham, self.origin);
 	spawn_tfog (sham.origin);
 
-	temp = self;
-	self = sham;
+	temp			= self;
+	self			= sham;
 	monster_shambler_1 (0);
-	self = temp;
+	self			= temp;
 
-	shamctrl = spawn ();
-	shamctrl.solid = SOLID_NOT;
-	shamctrl.movetype = MOVETYPE_FLY;
+	shamctrl		= spawn ();
+	shamctrl.solid		= SOLID_NOT;
+	shamctrl.movetype	= MOVETYPE_FLY;
+
 	setorigin (shamctrl, self.origin);
 	setsize (shamctrl, VEC_ORIGIN, VEC_ORIGIN);
-	shamctrl.classname = "shambler_control";
-	shamctrl.owner = self;
-	shamctrl.runent = sham;
-	shamctrl.runevar = 0;
-	shamctrl.nextthink = time + 1;
-	shamctrl.think = Rune_ShamblerThink;
 
-	sham.trigger_field = shamctrl;
+	shamctrl.classname	= "shambler_control";
+	shamctrl.owner		= self;
+	shamctrl.runent		= sham;
+	shamctrl.runevar	= 0;
+	shamctrl.nextthink	= time + 1;
+	shamctrl.think		= Rune_ShamblerThink;
+
+	sham.trigger_field	= shamctrl;
 };
 
 void ()

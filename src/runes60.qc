@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.7 2003/10/05 01:31:35 slotzero Exp $
+/*  $Id: runes60.qc,v 1.8 2003/10/05 02:55:22 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -68,7 +68,7 @@ Glue_Stuck =
 		return;
 	}
 
-	if (self.runent.health < 1)
+	if (self.runent.health <= 0)
 	{
 		remove (self);
 		return;
@@ -83,20 +83,13 @@ Glue_Stuck =
 void()
 Glue_Touch =
 {
-	//if (other == self.owner)
-
-	if (other.classname != "player")
-			// && other.classname != "shambler_slave"
-			// && other.classname != "zombie_camper")
+	if (other.classname != "player" && !is_pet_e (other))
 		return;
 
 	if (other.health <= 0)
 		return;
 
 	if (environmental (other))
-		return;
-
-	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;
 
 	if (!self.runevar)
@@ -122,15 +115,23 @@ Glue_Touch =
 	centerprint(other, "You are stuck!");
 
 	if (other == self.owner)
-		sprint(self.owner, "You glued yourself\n");
+		sprint (self.owner, "You glued yourself\n");
 	else
 	{
-		sprint (other, "You stepped in ");
-		sprint (other, self.owner.netname);
-		sprint (other, "'s glue.\n");
+		if (is_pet_e (other))
+		{
+			sprint (self.owner, other.owner.netname);
+			sprint (self.owner, "'s pet is caught in your glue.\n");
+		}
+		else
+		{
+			sprint (other, "You stepped in ");
+			sprint (other, self.owner.netname);
+			sprint (other, "'s glue.\n");
 
-		sprint(self.owner, other.netname);
-		sprint(self.owner, " is caught in your glue.\n");
+			sprint (self.owner, other.netname);
+			sprint (self.owner, " is caught in your glue.\n");
+  		}
 	}
 };
 

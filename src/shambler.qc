@@ -1,4 +1,4 @@
-/*  $Id: shambler.qc,v 1.11 2003/06/24 22:17:44 slotzero Exp $
+/*  $Id: shambler.qc,v 1.12 2003/10/05 02:55:23 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -226,6 +226,9 @@ void ()
 sham_melee =
 {
 	local float chance;
+
+	if (self.runevar == 2)
+		return;
 
 	chance = random ();
 	if (chance > 0.6 || self.health == self.max_health)

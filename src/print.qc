@@ -1,4 +1,4 @@
-/*  $Id: print.qc,v 1.13 2003/09/21 17:49:22 slotzero Exp $
+/*  $Id: print.qc,v 1.14 2003/10/05 02:55:22 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -161,18 +161,25 @@ centerprint7 =
 {
 	local entity o;
 
-	self_centerprint (e, s1, s2, s3, s4, s5, s6, s7);
-	if (!in_hud_hack && e.classname == "player")
-		e.cnt = time + CENTERPRINT_TIME;
-	if (!in_runedesc_hack && e.classname == "player" && e.waitmax)
+	if (e.classname == "player")
 	{
-		if (e.waitmax > 0)
-			e.waitmax = time + CENTERPRINT_TIME;
-		else
-			e.waitmax = 0;
+		self_centerprint (e, s1, s2, s3, s4, s5, s6, s7);
+
+		if (!in_hud_hack)
+			e.cnt = time + CENTERPRINT_TIME;
+
+		if (!in_runedesc_hack && e.waitmax)
+		{
+			if (e.waitmax > 0)
+				e.waitmax = time + CENTERPRINT_TIME;
+			else
+				e.waitmax = 0;
+		}
 	}
+
 	if (!e.aqstate & AQS_HAS_RIDERS)
 		return;
+
 	o = find (world, classname, "player");
 	while (o)
 	{
