@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.9 2003/12/25 01:52:42 slotzero Exp $
+/*  $Id: hunked.qc,v 1.10 2003/12/25 02:13:51 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -93,16 +93,16 @@ string ()
 PQ_Version =
 {
 	local float i, ch, sum;
-	local string format = "with proquake version 0.00";
+	local string format = " with proquake version 0.00";
 	local string x;
 
 	i = self.netconnection[QS_MOD] / %1;
 	if (!i)
-		return "with a non-proquake client";
+		return " with a non-proquake client";
 	else if (i == 1)
-		return "with an unknown proquake client";
+		return " with an unknown proquake client";
 	else if (i == 2)
-		return "as a qsmack client";
+		return " as a qsmack client";
 
 	ch = floor (i / 4096);
 	i = i - ch * 4096;
@@ -113,7 +113,7 @@ PQ_Version =
 	ch = floor (sum / 10);
 	x = ftos (ch);
 
-	i = %22;
+	i = %23;
 	strcpy (format[i], x);		i = i + %1;
 	strcpy (format[i], ".");	i = i + %1;
 
