@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.115 2004/07/24 03:09:22 slotzero Exp $
+/*  $Id: defs.qc,v 1.116 2004/09/16 00:36:39 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1286,7 +1286,8 @@ float	AS_MISSILE		= 4;
 .float	waitmin;
 .float	waitmax;
 
-// For players, time at which player died.
+// For (dead) players, the amount of time to morph from a corpse to an observer when
+// dead.
 .float	volume;
 
 //===========================================================================

@@ -1,4 +1,4 @@
-/*  $Id: player.qc,v 1.11 2004/07/18 20:03:48 slotzero Exp $
+/*  $Id: player.qc,v 1.12 2004/09/16 00:36:39 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -566,13 +566,12 @@ PlayerDie =
 	local float i;
 
 	spawn_protect_off ();
-	self.items = self.items - (self.items & IT_INVISIBILITY);
+	self.items = self.items - self.items & IT_INVISIBILITY;
 
 	if (!deathmatch & DM_NO_DROP_POWERUP)
 	{
-		if (self.super_damage_finished > time + 3
-				// Don't drop phoenix quad.
-				&& self.super_time != -2)
+		// Don't drop phoenix quad.
+		if (self.super_damage_finished > time + 3 && self.super_time != -2)
 			drop_powerup ("quad", self.super_damage_finished);
 		if (self.invisible_finished > time + 3)
 			drop_powerup ("ring", self.invisible_finished);
@@ -582,23 +581,25 @@ PlayerDie =
 			drop_powerup ("pentagram", self.invincible_finished);
 	}
 
-	self.invisible_finished = 0;	// don't die as eyes
-	self.invincible_finished = 0;
-	self.super_damage_finished = 0;
-	self.radsuit_finished = 0;
-	self.modelindex = modelindex_player;	// don't use eyes
+	self.invisible_finished		= 0;	// don't die as eyes
+	self.invincible_finished	= 0;
+	self.super_damage_finished	= 0;
+	self.radsuit_finished		= 0;
+	self.modelindex			= modelindex_player;	// don't use eyes
 
 	if ((deathmatch & DM_DM_MASK || coop) && self.runetype != RN_PHOENIX)
 		DropBackpack ();
 
-	self.weaponmodel=string_null;
-	self.view_ofs = '0 0 -8';
-	self.deadflag = DEAD_DYING;
-	self.solid = SOLID_NOT;
-	self.flags = self.flags - (self.flags & FL_ONGROUND);
-	self.movetype = MOVETYPE_TOSS;
+	self.weaponmodel		= string_null;
+	self.view_ofs			= '0 0 -8';
+	self.deadflag			= DEAD_DYING;
+	self.solid			= SOLID_NOT;
+	self.flags			= self.flags - self.flags & FL_ONGROUND;
+	self.movetype			= MOVETYPE_TOSS;
+	self.volume			= 0;
+
 	if (self.velocity_z < 10)
-		self.velocity_z = self.velocity_z + random ()*300;
+		self.velocity_z = self.velocity_z + random () * 300;
 
 	if (self.runetype)
 	{
@@ -607,7 +608,7 @@ PlayerDie =
 			create_te_explosion (self.origin, 0);
 			T_RadiusDamage (RADIUS_NORMAL, self, self, 300, self, "kamikilled");
 			if (self.health > -41)
-				self.health = self.health - random ()*50+1;
+				self.health = self.health - random () * 50 + 1;
 		}
 		else if (self.runetype == RN_MONK)
 			monk_trance_off ();
@@ -656,7 +657,7 @@ PlayerDie =
 		return;
 	}
 
-	i = 1 + floor (random ()*6);
+	i = rint (random () * 5);
 	if (i == 1)
 		player_diea1 ();
 	else if (i == 2)
@@ -667,7 +668,6 @@ PlayerDie =
 		player_died1 ();
 	else
 		player_diee1 ();
-
 };
 
 void ()
