@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.4 2004/07/13 10:08:50 slotzero Exp $
+/*  $Id: toggle.qc,v 1.5 2004/07/16 11:24:32 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -76,8 +76,8 @@ toggle_powerup =
 		}
 		else
 		{
-			e.solid		= SOLID_NOT;
 			e.model		= string_null;
+			e.solid		= SOLID_NOT;
 			e.nextthink	= -1;
 		}
 		e = find (e, classname, type);
@@ -87,33 +87,29 @@ toggle_powerup =
 void ()
 setquad =
 {
-	toggle_powerup ("item_artifact_super_damage", NO_QUADS);
-	NO_QUADS = !NO_QUADS;
-	fput (HUNK_NO_QUADS, NO_QUADS);
+	toggle_powerup ("item_artifact_super_damage", voteflags & C3_NO_QUAD);
+	voteflags = toggle_cvar_bit (CVAR_C3, C3_NO_QUAD);
 };
 
 void ()
 setpent =
 {
-	toggle_powerup ("item_artifact_invulnerability", NO_PENTS);
-	NO_PENTS = !NO_PENTS;
-	fput (HUNK_NO_PENTS, NO_PENTS);
+	toggle_powerup ("item_artifact_invulnerability", voteflags & C3_NO_PENT);
+	voteflags = toggle_cvar_bit (CVAR_C3, C3_NO_PENT);
 };
 
 void ()
 setring =
 {
-	toggle_powerup ("item_artifact_invisibility", NO_RINGS);
-	NO_RINGS = !NO_RINGS;
-	fput (HUNK_NO_RINGS, NO_RINGS);
+	toggle_powerup ("item_artifact_invisibility", voteflags & C3_NO_RING);
+	voteflags = toggle_cvar_bit (CVAR_C3, C3_NO_RING);
 };
 
 void ()
 setsuit =
 {
-	toggle_powerup ("item_artifact_envirosuit", NO_SUITS);
-	NO_SUITS = !NO_SUITS;
-	fput (HUNK_NO_SUITS, NO_SUITS);
+	toggle_powerup ("item_artifact_envirosuit", voteflags & C3_NO_SUIT);
+	voteflags = toggle_cvar_bit (CVAR_C3, C3_NO_SUIT);
 };
 
 void (float mode)
@@ -144,77 +140,16 @@ toggle_armor =
 void ()
 setarmor =
 {
-	toggle_armor (NO_ARMORS);
-	NO_ARMORS = !NO_ARMORS;
-	fput (HUNK_NO_ARMORS, NO_ARMORS);
+	toggle_armor (voteflags & C3_NO_ARMOR);
+	voteflags = toggle_cvar_bit (CVAR_C3, C3_NO_ARMOR);
 };
 
 void ()
 setrotate =
 {
-	if (NO_ARMORS)
+	if (voteflags & C3_NO_ARMOR)
 		return;
 
-	ROTATE = !ROTATE;
-	fput (HUNK_ROTATE, ROTATE);
 	toggle_armor (1);
-};
-
-//
-// hunk settings
-//
-
-void ()
-Populate_Settings =
-{
-	NO_QUADS		= fget (HUNK_NO_QUADS,		0);
-	NO_PENTS		= fget (HUNK_NO_PENTS,		0);
-	NO_RINGS		= fget (HUNK_NO_RINGS,		0);
-	NO_SUITS		= fget (HUNK_NO_SUITS,		0);
-	NO_RUNES		= fget (HUNK_NO_RUNES,		0);
-	NO_ARMORS		= fget (HUNK_NO_ARMORS,		0);
-	ROTATE			= fget (HUNK_ROTATE,		0);
-
-	// After settings have been populated, there are some take action on
-	// those globals that require it.
-	//
-	// powerups are always on at the start of the level, so check to see if
-	// they've been shut off.
-	//
-	// XXX The powerups aren't removed until almost 3 seconds after the level
-	// loads.  If someone touches a powerup before then, they'll be able to
-	// pick it up.  I could prevent players from touching the item until
-	// 3 seconds after the level loads, but I'm wondering if there isn't
-	// a better way to do this.
-	if (NO_QUADS)
-	{
-		dprint_force ("Quad Damage disabled\n");
-		toggle_powerup ("item_artifact_super_damage", 0);
-	}
-	if (NO_PENTS)
-	{
-		dprint_force ("Pentagram of Protection disabled\n");
-		toggle_powerup ("item_artifact_invulnerability", 0);
-	}
-	if (NO_RINGS)
-	{
-		dprint_force ("Ring of Shadows disabled\n");
-		toggle_powerup ("item_artifact_invisibility", 0);
-	}
-	if (NO_SUITS)
-	{
-		dprint_force ("Environmental Protection Suit disabled\n");
-		toggle_powerup ("item_artifact_envirosuit", 0);
-	}
-	// NO RUNES
-	if (NO_ARMORS)
-	{
-		dprint_force ("Armors disabled\n");
-		toggle_armor (0);
-	}
-	if (ROTATE && !NO_ARMORS)
-	{
-		dprint_force ("Rotating armors enabled\n");
-		toggle_armor (1);
-	}
+	voteflags = toggle_cvar_bit (CVAR_C3, C3_ROTATE);
 };

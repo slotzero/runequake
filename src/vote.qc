@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.30 2004/07/15 04:24:42 slotzero Exp $
+/*  $Id: vote.qc,v 1.31 2004/07/16 11:24:32 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -445,7 +445,7 @@ vote =
 		e.think1	= setquad;
 		e.noise2	= " quad ";
 
-		if (NO_QUADS)
+		if (voteflags & C3_NO_QUAD)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -457,7 +457,7 @@ vote =
 		e.think1	= setpent;
 		e.noise2	= " pentagram ";
 
-		if (NO_PENTS)
+		if (voteflags & C3_NO_PENT)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -469,7 +469,7 @@ vote =
 		e.think1	= setring;
 		e.noise2	= " ring of shadows ";
 
-		if (NO_RINGS)
+		if (voteflags & C3_NO_RING)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -481,7 +481,7 @@ vote =
 		e.think1	= setsuit;
 		e.noise2	= " environmental suit ";
 
-		if (NO_SUITS)
+		if (voteflags & C3_NO_SUIT)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -494,7 +494,7 @@ vote =
 		e.think1	= setarmor;
 		e.noise2	= " armor ";
 
-		if (NO_ARMORS)
+		if (voteflags & C3_NO_ARMOR)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -506,12 +506,12 @@ vote =
 		e.think1	= setrotate;
 		e.noise2	= " rotating armor ";
 
-		if (ROTATE)
+		if (voteflags & C3_ROTATE)
 			e.noise1	= "disable";
 		else
 			e.noise1	= "enable";
 
-		if (NO_ARMORS)
+		if (voteflags & C3_NO_ARMOR)
 		{
 			if (!cancel)
 				self_sprint (self, "enable armor first\n");

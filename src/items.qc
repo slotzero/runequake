@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.47 2004/07/13 09:33:42 slotzero Exp $
+/*  $Id: items.qc,v 1.48 2004/07/16 11:24:31 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -86,6 +86,34 @@ blink_item =
 	remove (self);
 };
 
+void ()
+maybe_disable_item =
+{
+	if (self.touch == powerup_touch)
+	{
+		if (self.classname == "item_artifact_super_damage" && !voteflags & C3_NO_QUAD)
+			return;
+		if (self.classname == "item_artifact_invulnerability" && !voteflags & C3_NO_PENT)
+			return;
+		if (self.classname == "item_artifact_invisibility" && !voteflags & C3_NO_RING)
+			return;
+		if (self.classname == "item_artifact_envirosuit" && !voteflags & C3_NO_SUIT)
+			return;
+	}
+	else if (self.touch == armor_touch)
+	{
+		 if (!voteflags & C3_NO_ARMOR)
+		 {
+		 	armor_cycle ();
+			return;
+		 }
+	}
+
+	self.model	= string_null;
+	self.solid	= SOLID_NOT;
+	self.nextthink	= -1;
+};
+
 /*
 ============
 PlaceItem
@@ -131,8 +159,8 @@ PlaceItem =
 			self.nextthink	= time;
 		}
 	}
-	else if (self.touch == armor_touch)
-		armor_cycle ();
+	else if (self.touch == powerup_touch || self.touch == armor_touch)
+		maybe_disable_item ();
 };
 
 float did_my_items;
@@ -492,7 +520,7 @@ armor_touch =
 void ()
 armor_cycle =
 {
-	if (!ROTATE)
+	if (!voteflags & C3_ROTATE)
 		return;
 
 	if (self.runetype < time)

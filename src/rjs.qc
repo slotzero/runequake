@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.136 2004/07/16 06:08:07 slotzero Exp $
+/*  $Id: rjs.qc,v 1.137 2004/07/16 11:24:32 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -235,7 +235,8 @@ rjs_worldspawn =
 	sys_ticrate = cvar ("sys_ticrate");
 	if (!sys_ticrate) sys_ticrate = 0.1;
 
-	scratch1 = cvar_infokey ("scratch1");
+	scratch1	= cvar_infokey ("scratch1");
+	voteflags	= cvar_infokey (CVAR_C3);
 
 	frag_init ();
 	orig_serverflags = serverflags;
@@ -311,18 +312,18 @@ process_misc =
 	}
 
 	// Default mode for power ups.
-	if (NO_QUADS)
+	if (voteflags & C3_NO_QUAD)
 		setquad ();
-	if (NO_PENTS)
+	if (voteflags & C3_NO_PENT)
 		setpent ();
-	if (NO_RINGS)
+	if (voteflags & C3_NO_RING)
 		setring ();
-	if (NO_SUITS)
+	if (voteflags & C3_NO_SUIT)
 		setsuit ();
 	// no runes
-	if (NO_ARMORS)
+	if (voteflags & C3_NO_ARMOR)
 		setarmor ();
-	if (!ROTATE && !NO_ARMORS)
+	else if (voteflags & C3_ROTATE)
 		setrotate ();
 
 	// vote-practice (always do this last)
@@ -2964,8 +2965,5 @@ toggle_cvar_bit =
 	new = ftos (bits);
 	cvar_set (c_var, new);
 
-	if (bits & bit)
-		return TRUE;
-
-	return FALSE;
+	return bits;
 };

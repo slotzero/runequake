@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.40 2004/07/13 09:33:42 slotzero Exp $
+/*  $Id: settings.qc,v 1.41 2004/07/16 11:24:32 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -662,15 +662,3 @@ string	CSHIFT_CLOAK		= "v_cshift   0   0   0  75\n";
 string	CSHIFT_FREEZE		= "v_cshift  50  50 256 100\n";
 string	CSHIFT_NONE		= "v_cshift   0   0   0   0\n";
 string	CSHIFT_SHIELD		= "v_cshift 100 100   0 100\n";
-
-//
-// HUNK SETTINGS
-//
-
-float NO_QUADS;
-float NO_PENTS;
-float NO_RINGS;
-float NO_SUITS;
-//float NO_RUNES;
-float NO_ARMORS;
-float ROTATE;
