@@ -1,4 +1,4 @@
-/*  $Id: net.qc,v 1.3 2003/08/02 16:16:39 slotzero Exp $
+/*  $Id: net.qc,v 1.4 2003/08/03 00:48:15 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -24,10 +24,10 @@
 entity (entity e)
 qs_address_e =
 {
-	local entity cl;
+	local entity client;
 
-	cl = e.cl_netconnection;
-	return *AddInt(&cl, 4 * QS_ADDRESS);
+	client = e.netconnection;
+	return *AddInt(&client, 4 * QS_ADDRESS);
 };
 
 entity ()
@@ -39,10 +39,10 @@ qs_address =
 string (entity e)
 net_address_e =
 {
-	local entity cl;
+	local entity client;
 
-	cl = qs_address_e (e);
-	return @AddInt(&cl, PQUAKEC_TO_PSTRING);
+	client = qs_address_e (e);
+	return @AddInt(&client, PQUAKEC_TO_PSTRING);
 };
 
 string ()

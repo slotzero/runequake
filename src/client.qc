@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.29 2003/08/02 16:16:39 slotzero Exp $
+/*  $Id: client.qc,v 1.30 2003/08/03 00:48:14 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1699,8 +1699,8 @@ called when a player connects to a server
 void ()
 ClientConnect =
 {
-	self.cl_name = *SubInt(AddInt(PSTRING_TO_PQUAKEC, &self.netname), 4 * CL_NAME);
-	self.cl_netconnection = *AddInt(self.cl_name[CL_NETCONNECTION], PC_TO_PQUAKEC);
+	self.cl = *SubInt(AddInt(PSTRING_TO_PQUAKEC, &self.netname), 4 * CL_NAME);
+	self.netconnection = *AddInt(self.cl[CL_NETCONNECTION], PC_TO_PQUAKEC);
 	client_ip ();
 
 	// I wanted to change the "Foo entered the game" message

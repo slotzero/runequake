@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.42 2003/08/02 16:16:39 slotzero Exp $
+/*  $Id: develop.qc,v 1.43 2003/08/03 00:48:15 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -44,7 +44,7 @@ ghost_check =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		if (!e.cl_name[CL_ACTIVE])
+		if (!e.cl[CL_ACTIVE])
 		{
 			os = self;
 			self = e;
@@ -144,7 +144,7 @@ ProQuake_Version =
 	local float i, d, sum;
 	local string s1, s2, s3;
 
-	i = self.cl_netconnection[QS_MOD] / %1;
+	i = self.netconnection[QS_MOD] / %1;
 
 	if (!i)
 		return " with a non-proquake client";

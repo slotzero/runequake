@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.13 2003/07/27 13:18:07 slotzero Exp $
+/*  $Id: team.qc,v 1.14 2003/08/03 00:48:16 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -92,11 +92,9 @@ team_to_particle =
 float (float tm)
 team_top_color =
 {
-	local entity cl;
 	local float tc;
 
-	cl = *SubInt(AddInt(PSTRING_TO_PQUAKEC, &self.netname), 4 * CL_NAME);
-	tc = (cl[CL_COLORS] / %1 - (tm - 1)) / 16;
+	tc = (self.cl[CL_COLORS] / %1 - (tm - 1)) / 16;
 
 	return tc + 1;
 };

@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.56 2003/08/02 16:16:40 slotzero Exp $
+/*  $Id: rjs.qc,v 1.57 2003/08/03 00:48:16 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1524,7 +1524,7 @@ player_init =
 	local string s;
 
 	// This is only useful for ProQuake servers version 3.1 or later.
-	if (*self.cl_netconnection[QS_MOD] == *MOD_QSMACK)
+	if (*self.netconnection[QS_MOD] == *MOD_QSMACK)
 	{
 		if (!is_qsmack ())
 			self.aqflags = self.aqflags | AQ_QSMACK;
