@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.19 2004/07/18 14:17:28 slotzero Exp $
+/*  $Id: hunked.qc,v 1.20 2004/07/18 16:29:10 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -230,6 +230,63 @@ Client_Disconnect_Log =
 		self_sprint (self, "No entries found.\n");
 };
 
+IN_QW([-
+// My awful attempt to keep QW compatible...
+float (float offset, float value)
+fput =
+{
+	local string s;
+
+	s = ftos (value);
+
+	if (*offset == *HUNK_NO_QUAD)
+		cvar_set_infokey ("NO_QUAD", s);
+	else if (*offset == *HUNK_NO_PENT)
+		cvar_set_infokey ("NO_PENT", s);
+	else if (*offset == *HUNK_NO_RING)
+		cvar_set_infokey ("NO_RING", s);
+	else if (*offset == *HUNK_NO_SUIT)
+		cvar_set_infokey ("NO_SUIT", s);
+	else if (*offset == *HUNK_NO_ARMOR)
+		cvar_set_infokey ("NO_ARMOR", s);
+	else if (*offset == *HUNK_ROTATE)
+		cvar_set_infokey ("ROTATE", s);
+	else if (*offset == *HUNK_NO_RUNES)
+		cvar_set_infokey ("NO_RUNES", s);
+	else if (*offset == *HUNK_NO_ALT_WEAPONS)
+		cvar_set_infokey ("NO_ALT_WEAPONS", s);
+
+	return value;
+};
+
+float (float offset, float default)
+fget =
+{
+	local float i;
+	if (0) default = default; // frikqcc
+
+	if (*offset == *HUNK_NO_QUAD)
+		i = NO_QUAD = cvar_infokey ("NO_QUAD");
+	else if (*offset == *HUNK_NO_PENT)
+		i = NO_PENT = cvar_infokey ("NO_PENT");
+	else if (*offset == *HUNK_NO_RING)
+		i = NO_RING = cvar_infokey ("NO_RING");
+	else if (*offset == *HUNK_NO_SUIT)
+		i = NO_SUIT = cvar_infokey ("NO_SUIT");
+	else if (*offset == *HUNK_NO_ARMOR)
+		i = NO_ARMOR = cvar_infokey ("NO_ARMOR");
+	else if (*offset == *HUNK_ROTATE)
+		i = ROTATE = cvar_infokey ("ROTATE");
+	else if (*offset == *HUNK_NO_RUNES)
+		i = NO_RUNES = cvar_infokey ("NO_RUNES");
+	else if (*offset == *HUNK_NO_ALT_WEAPONS)
+		i = NO_ALT_WEAPONS = cvar_infokey ("NO_ALT_WEAPONS");
+
+	return i;
+};
+-])
+
+IN_POQ([-
 float (float offset, float value)
 fput =
 {
@@ -251,6 +308,7 @@ fget =
 
 	return i;
 };
+-])
 
 void ()
 Hunk_Settings =

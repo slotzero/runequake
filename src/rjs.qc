@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.145 2004/07/18 14:17:28 slotzero Exp $
+/*  $Id: rjs.qc,v 1.146 2004/07/18 16:29:10 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -268,6 +268,9 @@ rjs_worldspawn =
 	// I used to do an initial change_teamplay() here to get the mod
 	// and version into the teamplay string.  See the comments in
 	// StartFrame().
+	IN_QW([-
+		Hunk_Settings ();
+	-])
 };
 
 void ()
