@@ -1,4 +1,4 @@
-/*  $Id: version.qc,v 1.52 2004/05/16 01:02:28 slotzero Exp $
+/*  $Id: version.qc,v 1.53 2004/05/16 06:20:55 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -17,4 +17,4 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-string version = "1.0.1";
+string version = "1.0.2";
