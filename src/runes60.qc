@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.31 2003/11/27 06:52:44 slotzero Exp $
+/*  $Id: runes60.qc,v 1.32 2003/11/30 07:41:44 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -829,7 +829,7 @@ Launch_Betty_Package =
 	missile.touch		= Betty_Touch;
 
 	// Set Duration
-	missile.nextthink	= time + 1;
+	missile.nextthink	= time + 0.5;
 	missile.think		= Betty_Package_Explode;
 
 	setmodel (missile, "progs/missile.mdl");

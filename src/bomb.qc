@@ -1,4 +1,4 @@
-/*  $Id: bomb.qc,v 1.8 2003/10/18 17:24:17 slotzero Exp $
+/*  $Id: bomb.qc,v 1.9 2003/11/30 07:41:43 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -182,4 +182,75 @@ bomb_explode =
 		self.enemy = world;
 	T_RadiusDamage (RADIUS_150, self, self.owner, 150, self.enemy, "bomb");
 	create_te_explosion (self.origin, 1);
+};
+
+//=============================================================================
+
+void (float damage, float radius)
+Gas_Cloud_Damage =
+{
+	local entity head;
+
+	head = findradius (self.origin, radius);
+	while (head)
+	{
+		if (head.health > 0)
+		{
+			if (!(CanDamage (head, self)))
+				damage = damage * 0.25;
+
+			if (head.classname == "player")
+			{
+				if (environmental (head))
+					damage = 0;
+				else if (head == self.owner)
+						damage = damage * 0.5;
+			}
+			else if (is_pet_e (head))
+				damage = damage * 0.5;
+			else
+				damage = 0;
+
+			damage = ceil (damage);
+			if (damage)
+				T_Damage (head, self, self.owner, damage, "gasbomb");
+		}
+		head = head.chain;
+	}
+};
+
+void ()
+Gas_Cloud_Think =
+{
+	if (self.cnt > 0)
+	{
+		Gas_Cloud_Damage (4, 225 - self.cnt);
+
+		self.cnt	= self.cnt - 1;
+		self.nextthink	= time + 0.1;
+	}
+	else
+		remove (self);
+};
+
+void ()
+Gas_Cloud =
+{
+	local entity cloud;
+
+	create_te_lavasplash (self.origin + '0 0 -50');
+
+	cloud		= spawn ();
+	cloud.movetype	= MOVETYPE_NONE;
+	cloud.velocity	= VEC_ORIGIN;
+	cloud.solid	= SOLID_NOT;
+	cloud.cnt	= 25;
+	cloud.owner	= self.owner;
+	cloud.classname	= "gascloud";
+
+	setmodel (cloud, string_null);
+	setorigin (cloud, self.origin);
+
+	cloud.nextthink	= time + 0.1;
+	cloud.think	= Gas_Cloud_Think;
 };

@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.21 2003/11/27 06:31:36 slotzero Exp $
+/*  $Id: weapons.qc,v 1.22 2003/11/30 07:41:45 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -642,15 +642,11 @@ GrenadeExplode_targ =
 		T_RadiusLight (self, 500);
 	else
 	{
-		if (targ)
-		{
-			if (self.classname == "betty")
-				d = 20;
-			else
-				d = 100 + (random () + 0.01) * 20;
+		if (self.classname == "gasbomb")
+			Gas_Cloud ();
 
-			T_Damage (targ, self, self.owner, d, self.classname);
-		}
+		if (targ)
+			T_Damage (targ, self, self.owner, 100 + (random () + 0.01) * 20, self.classname);
 
 		monk_radius_hack = 1;
 		T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 120, targ, self.classname);
@@ -1201,7 +1197,7 @@ W_Attack =
 	{
 		player_rocket1 ();
 		if (is_alt)
-			W_FireGrenade ("flashgrenade");
+			W_FireGrenade ("gasbomb");
 		else
 			W_FireGrenade ("grenade");
 		t = 0.6 * haste_mult;
