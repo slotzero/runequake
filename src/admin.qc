@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.25 2003/11/23 06:25:31 slotzero Exp $
+/*  $Id: admin.qc,v 1.26 2003/11/27 06:15:16 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -581,7 +581,12 @@ admin_impulse_map =
 			if (forced_nextmap)
 			{
 				if (forced_nextmap == m)
-					vote ();
+				{
+					if (self.aqstate & AQS_VOTE_EXIT)
+						sprint (self, "\{141} You've already voted for this level\n");
+					else
+						vote ();
+				}
 				else
 					sprint (self, "\{141} A vote is already in progress\n");
 				return;
@@ -590,7 +595,6 @@ admin_impulse_map =
 			if (is_player () && !self.aqstate & AQS_VOTE_EXIT)
 			{
 				forced_nextmap = m;
-				forced_nextmap_time = time + 30;
 				vote ();
 			}
 			else

@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.79 2003/11/26 21:40:34 slotzero Exp $
+/*  $Id: rjs.qc,v 1.80 2003/11/27 06:15:17 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2814,17 +2814,43 @@ vote_counter_think =
 	vote_team_mode_default ();
 	vote_hook_mode_default ();
 
-	if (forced_nextmap)
+	if (vote_exit_time < time && vote_exit_time > 0)
 	{
-		if (forced_nextmap_time < time)
-		{
-			bprint ("Not enough votes, ");
+		bprint ("\{141} Not enough votes, ");
+		if (forced_nextmap)
 			bprint (forced_nextmap);
-			bprint (" vote cancelled\n");
+		else
+			bprint ("exit");
+		bprint (" vote cancelled\n");
 
-			forced_nextmap = string_null;
-			remove_player_bit (aqstate, AQS_VOTE_EXIT);
-		}
+		forced_nextmap = string_null;
+		remove_player_bit (aqstate, AQS_VOTE_EXIT);
+
+		vote_exit_time = -1;
+		self.nextthink = time + 5;
+		return;
+	}
+	else if (vote_team_time < time && vote_team_time > 0)
+	{
+		bprint ("\{141} Not enough votes, ");
+		bprint ("team vote cancelled\n");
+
+		remove_player_bit (aqflags, AQ_VOTE_TEAM);
+
+		vote_team_time = -1;
+		self.nextthink = time + 5;
+		return;
+	}
+	else if (vote_hook_time < time && vote_hook_time > 0)
+	{
+		bprint ("\{141} Not enough votes, ");
+		bprint ("hook vote cancelled\n");
+
+		remove_player_bit (aqflags, AQ_VOTE_HOOK);
+
+		vote_hook_time = -1;
+		self.nextthink = time + 5;
+		return;
 	}
 
 	if (self.runevar == 1)
@@ -2867,6 +2893,10 @@ vote_counter_spawn =
 	e.classname	= "vote_counter";
 	e.think		= level_reconnect_allowance;
 	e.nextthink	= time + LEVEL_RECONNECT_ALLOWANCE;
+
+	vote_exit_time	= -1;
+	vote_team_time	= -1;
+	vote_hook_time	= -1;
 };
 
 void ()
@@ -2882,11 +2912,7 @@ vote =
 		bit		= AQS_VOTE_EXIT;
 		pct		= VOTE_EXIT_PERCENTAGE;
 
-		if (!forced_nextmap && !self.aqstate & bit)
-		{
-			levels ();
-			return;
-		}
+		vote_exit_time	= time + 30;
 	}
 	else if (self.impulse == IMP_VOTE_TEAM)
 	{
@@ -2896,6 +2922,8 @@ vote =
 		use_state	= 0;
 		bit		= AQ_VOTE_TEAM;
 		pct		= VOTE_TEAM_PERCENTAGE;
+
+		vote_team_time	= time + 30;
 	}
 	else if (self.impulse == IMP_VOTE_HOOK)
 	{
@@ -2905,6 +2933,8 @@ vote =
 		use_state	= 0;
 		bit		= AQ_VOTE_HOOK;
 		pct		= VOTE_HOOK_PERCENTAGE;
+
+		vote_hook_time	= time + 30;
 	}
 	else
 	{

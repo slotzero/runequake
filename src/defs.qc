@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.60 2003/11/27 00:13:42 slotzero Exp $
+/*  $Id: defs.qc,v 1.61 2003/11/27 06:15:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -406,7 +406,6 @@ float qsmack_status_valid;
 // If this is set it's used as the next map no matter what.  It's used
 // by the admin map changing code.
 string forced_nextmap;
-float forced_nextmap_time;
 
 // Weighted frag rate and the counter used to compute it
 .float frag_rate;
@@ -1366,3 +1365,7 @@ void	(vector where, float set)		multicast	= #82; // sends the temp message to a 
 
 .entity cl;
 .entity	netconnection;
+
+float	vote_exit_time;
+float	vote_team_time;
+float	vote_hook_time;
