@@ -1,4 +1,4 @@
-/*  $Id: spawn.qc,v 1.9 2004/04/04 03:15:32 slotzero Exp $
+/*  $Id: spawn.qc,v 1.10 2004/12/18 18:47:13 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -109,11 +109,15 @@ spawn_trigger_teleport =
 
 	if (e_model)
 	{
-		e		= spawn ();
-		e.classname	= "trigger_teleport_model";
-		e.origin	= e_origin;
-		e.model		= e_model;
-		makestatic (e);
+		IN_POQ([-
+			spawn_altar (e_origin - '0 0 16');	// just testing how this looks
+		-], [-
+			e		= spawn ();
+			e.classname	= "trigger_teleport_model";
+			e.origin	= e_origin;
+			e.model		= e_model;
+			makestatic (e);
+		-])
 	}
 
 	e		= spawn ();
