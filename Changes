@@ -1,11 +1,10 @@
-$Id: Changes,v 1.27 2002/07/17 07:45:55 slotzero Exp $
+$Id: Changes,v 1.28 2002/07/17 08:01:28 slotzero Exp $
 
 Version 0.5.1  Fri Jul 05 07:38:14 EST 2002
 
     - Bug Fixes
 
-        - Searching for truth in a vector yields false if the first
-          coordinate is zero.
+        - Fire traps can no longer live in water.
 
         - If you die with the phoenix rune just before the level changes,
           you no longer lose the rune.
