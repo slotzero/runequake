@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.3 2005/01/03 23:18:20 slotzero Exp $
+/*  $Id: arena.qc,v 1.4 2005/01/06 02:21:21 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -266,4 +266,6 @@ arena_client_disconnect =
 
 	arena.think = arena_countdown;
 	arena.nextthink = time;
+
+	return TRUE;
 };
