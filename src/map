@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#    $Id: map,v 1.17 2003/11/01 18:22:34 slotzero Exp $
+#    $Id: map,v 1.18 2003/11/01 18:25:40 slotzero Exp $
 
 use strict;
 use warnings;
@@ -178,7 +178,7 @@ my @custom_lev = (
 	],
 );
 
-# @custom_lev = ();
+@custom_lev = ();
 
 # Construct %wan, the list of levels which aren't in %lan.
 my %wan;
