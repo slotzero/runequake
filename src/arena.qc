@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.11 2005/01/17 07:45:23 slotzero Exp $
+/*  $Id: arena.qc,v 1.12 2005/01/17 22:07:33 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -184,7 +184,6 @@ arena_results =
 	else
 		winner = self.enemy;
 
-	self.movetarget = winner;
 	self.deadflag = 1;
 	if (winner)
 	{
@@ -195,6 +194,12 @@ arena_results =
 			self.owner = winner;
 			self.runent = os;
 		}
+
+		// kill command
+		if (arena.state == -3)
+			return;
+
+		self.movetarget = winner;
 
 		add_frag (winner, 1);
 		bprint (winner.netname);
@@ -263,10 +268,13 @@ arena_death_think =
 		respawn ();
 };
 
-void (entity targ, entity attacker)
+void (entity targ, entity attacker, string dtype)
 arena_death =
 {
-	arena.state	= -1;
+	if (dtype == "suicide")
+		arena.state = -3;
+	else
+		arena.state = -1;
 
 	if (attacker.classname != "player")
 		attacker = targ;
