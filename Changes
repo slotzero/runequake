@@ -1,4 +1,9 @@
-$Id: Changes,v 1.74 2004/06/29 22:53:08 slotzero Exp $
+$Id: Changes,v 1.75 2004/07/01 10:27:10 slotzero Exp $
+
+ideas... user allow map via the console (PK)
+use skill isntead of gamecfg to set password (via command)
+make sure you inform of new cvars saved1 and saved2 internals.
+
 
 customizable cvars for console related aliases
 // developer stuff
