@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.25 2003/07/24 03:38:22 slotzero Exp $
+/*  $Id: items.qc,v 1.26 2003/07/27 12:43:11 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1465,6 +1465,9 @@ DropBackpack =
 
 	if (!(self.ammo_shells + self.ammo_nails + self.ammo_rockets + self.ammo_cells))
 		return;	// nothing in it
+
+	if (deathmatch & DM_MODE_PRACTICE)
+		return;
 
 	item		= spawn ();
 	item.classname	= "backpack";

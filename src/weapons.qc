@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.10 2003/06/24 22:17:46 slotzero Exp $
+/*  $Id: weapons.qc,v 1.11 2003/07/27 12:43:12 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -645,8 +645,8 @@ W_FireGrenade
 void (string class)
 W_FireGrenade =
 {
-	local	float  eff;
-	local	string snd;
+	local float eff, spam_cnt;
+	local string snd;
 
 	if (class == "grenade")
 	{
@@ -657,6 +657,24 @@ W_FireGrenade =
 	{
 		snd	= "demon/dhit2.wav";
 		eff	= EF_DIMLIGHT;
+	}
+
+	if (deathmatch & DM_MODE_PRACTICE)
+	{
+		if (self.grenade_spam_time > time)
+		{
+			spam_cnt = ceil (self.grenade_spam_time - time);
+			dprint (ftos (spam_cnt), "\n");
+
+			if (spam_cnt > 4)
+			{
+				set_weapon (W_BestWeapon ());
+				self.items = self.items - self.items & IT_GRENADE_LAUNCHER;
+				sprint (self, "\b\<Grenade Spam Protection Activated\>\b\n");
+			}
+		}
+
+		self.grenade_spam_time = time + spam_cnt + 1;
 	}
 
 	sound (self, CHAN_WEAPON, snd, 1, ATTN_NORM);
