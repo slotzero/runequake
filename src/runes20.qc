@@ -1,4 +1,4 @@
-// $Id: runes20.qc,v 1.4 2002/05/10 03:09:22 slotzero Exp $
+// $Id: runes20.qc,v 1.5 2002/05/13 20:30:57 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -25,9 +25,9 @@ Rune_Bomb =
 
 	if (self.runevar > 0)
 	{
-		sprint (self, "Ä");
+		sprint (self, "");
 		sprint_float (self, self.runevar);
-		sprint (self, "Ä ");
+		sprint (self, " ");
 
 		self.runetime = time + 0.5;
 		self.runevar = self.runevar - 1;
@@ -521,7 +521,7 @@ maybe_reblink =
 	if (0)
 	{
 		if (reblink)
-			bprint ("ì");
+			bprint ("");
 		else
 			bprint (" ");
 		sprint_int_f (world, time * 10, 4);

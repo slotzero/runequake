@@ -1,4 +1,4 @@
-// $Id: runes30.qc,v 1.5 2002/05/10 03:09:23 slotzero Exp $
+// $Id: runes30.qc,v 1.6 2002/05/13 20:30:57 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -78,7 +78,7 @@ Radio_Think =
 							"radioactive")
 							&& head.classname
 								== "player")
-						sprint (head, "Ï This area is radioactive!\n");
+						sprint (head, "ç This area is radioactive!\n");
 				}
 			}
 		}

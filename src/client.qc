@@ -1,4 +1,4 @@
-// $Id: client.qc,v 1.4 2002/05/10 03:09:21 slotzero Exp $
+// $Id: client.qc,v 1.5 2002/05/13 20:30:56 slotzero Exp $
 
 float modelindex_eyes, modelindex_player;
 
@@ -1002,7 +1002,7 @@ PlayerDeathThink =
 
 	// Warn phoenix users.
 	if (self.runetype == RN_PHOENIX)
-		centerprint (self, "¥ί=eTetƒ\nphoenix rune detected\nuse jump to respawn");
+		centerprint (self, "χαςξιξη\nphoenix rune detected\nuse jump to respawn");
 
 	if (self.flags & FL_ONGROUND)
 	{

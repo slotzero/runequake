@@ -1,4 +1,4 @@
-// $Id: runes40.qc,v 1.6 2002/05/10 03:09:23 slotzero Exp $
+// $Id: runes40.qc,v 1.7 2002/05/13 20:30:57 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -697,8 +697,8 @@ Weird_Touch =
 		other_desc = "I'M BLIND! I'M BLIND!";
 	}
 
-	centerprint3 (other, "Å Hit by weirdness! Å\n",
-		"¥PPPPPPPPPPPPPPPPPPPPƒ\n",
+	centerprint3 (other, " Hit by weirdness! \n",
+		"Ÿ\n",
 		other_desc);
 
 	sprint (self.owner, "You weirded out ");

@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.13 2002/05/10 03:09:22 slotzero Exp $
+// $Id: rjs.qc,v 1.14 2002/05/13 20:30:57 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -47,7 +47,7 @@ countdown_timer =
 		else
 			s2 = " minute";
 
-		bprint5 ("8 ", s, s2, s3, " remaining\n");
+		bprint5 ("ç ", s, s2, s3, " remaining\n");
 		if (timer == 2)
 			sound (self, CHAN_BODY, "misc/talk.wav", 1, ATTN_NONE);
 	}
@@ -56,6 +56,7 @@ countdown_timer =
 void (entity e, float chan, string samp, float vol, float atten)
 sound =
 {
+	// debug
 	/* if (self.classname == "player")
 	{
 		bprint_float (time);
