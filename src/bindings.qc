@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.43 2004/07/16 12:46:36 slotzero Exp $
+/*  $Id: bindings.qc,v 1.44 2004/07/16 12:49:24 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -442,9 +442,9 @@ help_vote =
 	self_sprint (self, "\bvote-pent\b     vote to toggle pent\n");
 	self_sprint (self, "\bvote-ring\b     vote to toggle ring\n");
 	self_sprint (self, "\bvote-suit\b     vote to toggle suit\n");
-	self_sprint (self, "\bvote-runes\b    vote to toggle runes\n");
 	self_sprint (self, "\bvote-armor\b    vote to toggle armor\n");
 	self_sprint (self, "\bvote-rotate\b   toggle rotating armors\n");
+	self_sprint (self, "\bvote-runes\b    vote to toggle runes\n");
 	self_sprint (self, "\bvote-alts\b     toggle alt weapons\n");
 	self_sprint (self, "\n");
 };
