@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.31 2003/10/02 04:14:40 slotzero Exp $
+/*  $Id: client.qc,v 1.32 2003/10/02 05:08:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1698,7 +1698,7 @@ called when a player connects to a server
 */
 void ()
 ClientConnect =
-{
+{	IN_QW(return;)
 	self.cl = *SubInt(AddInt(PSTRING_TO_PQUAKEC, &self.netname), 4 * CL_NAME);
 	self.netconnection = *AddInt(self.cl[CL_NETCONNECTION], PC_TO_PQUAKEC);
 	client_ip ();

@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.44 2003/09/20 02:55:58 slotzero Exp $
+/*  $Id: develop.qc,v 1.45 2003/10/02 05:08:49 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -38,7 +38,7 @@ remove_player_bit =
 
 void ()
 ghost_check =
-{
+{	IN_QW(return;)
 	local entity e, os;
 
 	e = find (world, classname, "player");
