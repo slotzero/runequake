@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.24 2004/07/12 09:30:32 slotzero Exp $
+/*  $Id: vote.qc,v 1.25 2004/07/12 11:15:47 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -516,6 +516,12 @@ vote_yes =
  	if (!vip)
 		return self_sprint (self, "\{141} Nothing to vote on\n");
 
+	if (is_admin ())
+	{
+		vote_action (vip);
+		return;
+	}
+
 	if (self.vote_flags & VOTE_NO)
 	{
 		self.vote_flags = self.vote_flags - self.vote_flags & VOTE_NO;
@@ -544,6 +550,13 @@ vote_no =
 	vip = find_vip ();
 	if (!vip)
 		return self_sprint (self, "\{141} Nothing to vote on\n");
+
+	if (is_admin ())
+	{
+		vip.runevar	= 0;
+		vip.nextthink	= time;
+		return;
+	}
 
 	if (self.vote_flags & VOTE_YES)
 	{
