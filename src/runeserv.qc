@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.39 2004/02/25 20:37:22 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.40 2004/04/04 09:44:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -826,7 +826,7 @@ Rune_Activate =
 		Orb_Spawn ();
 
 	else if (self.runetype == RN_BLINK)
-		Hat_Spawn ("progs/s_bubble.spr", '-4 2 31', VEC_ORIGIN);
+		Hat_Spawn (self, "progs/s_bubble.spr", '-4 2 31', VEC_ORIGIN, 0);
 
 	else if (self.runetype == RN_RADIO)
 	{
@@ -878,7 +878,7 @@ Rune_Activate =
 	else if (self.runetype == RN_DUAL)
 	{
 		self.runevector = self.origin;
-		Hat_Spawn ("progs/s_spike.mdl", '-4 1 23', '90 0 0');
+		Hat_Spawn (self, "progs/s_spike.mdl", '-4 1 23', '90 0 0', 0);
 	}
 
 	else if (self.runetype == RN_IMPACT)
@@ -886,7 +886,7 @@ Rune_Activate =
 		IN_POQ([-
 			self.touch = Impact_Touch;
 		-])
-		Hat_Spawn ("progs/s_spike.mdl", '-8 1 30', VEC_ORIGIN);
+		Hat_Spawn (self, "progs/s_spike.mdl", '-8 1 30', VEC_ORIGIN, 0);
 	}
 
 	else if (self.runetype == RN_LUMBER)
@@ -911,7 +911,7 @@ Rune_Activate =
 			self.runevar = count_class_own (self, "torchtrap");
 		else
 			self.class_cnt = count_class_own (self, "torchtrap");
-		Hat_Spawn ("progs/flame2.mdl", '-4 1 35', VEC_ORIGIN);
+		Hat_Spawn (self, "progs/flame2.mdl", '-4 1 35', VEC_ORIGIN, 0);
 	}
 
 	else if (self.runetype == RN_ARMOR)
@@ -988,7 +988,7 @@ Rune_Activate =
 	else if (self.runetype == RN_TORNADO)
 	{
 		self.runevar = MAX_TORNADO;
-		Hat_Spawn ("progs/w_spike.mdl", '0 0 35', VEC_ORIGIN);
+		Hat_Spawn (self, "progs/w_spike.mdl", '0 0 35', VEC_ORIGIN, 0);
  	}
 
 	if (self.weapon == best)

@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.32 2004/03/01 01:27:48 slotzero Exp $
+/*  $Id: items.qc,v 1.33 2004/04/04 09:44:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1259,6 +1259,8 @@ powerup_touch =
 	}
 	else if (self.classname == "item_artifact_invulnerability")
 	{
+		if (other.invincible_finished < time)
+			Hat_Spawn (other, self.mdl, '0 0 35', VEC_ORIGIN, 1);
 		if (POWERUP_PICKUP_WARN & ITEM_PENT)
 			tell = 1;
 		other.invincible_time = -1;
@@ -1273,6 +1275,9 @@ powerup_touch =
 	}
 	else if (self.classname == "item_artifact_super_damage")
 	{
+		if (other.super_damage_finished < time)
+			Hat_Spawn (other, self.mdl, '0 0 30', VEC_ORIGIN, 4);
+
 		if (POWERUP_PICKUP_WARN & ITEM_QUAD)
 			tell = 1;
 		other.super_time = -1;

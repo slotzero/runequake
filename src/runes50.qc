@@ -1,4 +1,4 @@
-/*  $Id: runes50.qc,v 1.15 2003/11/10 22:52:16 slotzero Exp $
+/*  $Id: runes50.qc,v 1.16 2004/04/04 09:44:47 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -693,6 +693,10 @@ quad_activate =
 	self.items	= self.items | IT_QUAD;
 	self.effects	= self.effects | EF_DIMLIGHT;
 	self.super_time	= -2;
+
+	if (self.super_damage_finished < time)
+		Hat_Spawn (self, "progs/quaddama.mdl", '0 0 30', VEC_ORIGIN, 4);
+
 	self.super_damage_finished = time + RN_QUAD_DURATION;
 	self.runetime	= self.super_damage_finished + RN_QUAD_RECHARGE;
 };

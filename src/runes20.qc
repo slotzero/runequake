@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.16 2003/12/13 03:46:18 slotzero Exp $
+/*  $Id: runes20.qc,v 1.17 2004/04/04 09:44:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -553,32 +553,58 @@ maybe_reblink =
 };
 
 void ()
-Hat_Think =
+maybe_remove_hat =
 {
-	local vector a;
+	local float die;
 
-	if (self.owner.runetype != self.runetype || intermission_running)
+	die = 0;
+	if (intermission_running)
+		die = 1;
+	else if (self.runetype && self.owner.runetype != self.runetype)
+		die = 1;
+	else if (self.runevar)
+	{
+		if (self.runevar == 1 && self.owner.invincible_finished < time)
+			die = 1;
+		if (self.runevar == 4 && self.owner.super_damage_finished < time)
+			die = 1;
+	}
+
+	if (die)
 	{
 		remove (self);
 		return;
 	}
+};
 
-	// makevectors() uses e.v_angle-style angles rather than
-	// e.angles-style.  The pitch goes the other way.
-	a = self.owner.angles;
-	a_x = 0 - a_x;
-	makevectors (a);
-	setorigin (self, self.owner.origin
-				+ self.runevector_x * v_forward
-				+ self.runevector_y * v_right
-				+ self.runevector_z * v_up);
+void ()
+Hat_Think =
+{
+	local vector a;
 
-	trackvel (self.owner);
-	self.angles = self.owner.angles + self.mangle;
+	maybe_remove_hat ();
+
+	if (self.runevar)
+		setorigin (self, self.owner.origin + self.runevector);
+	else
+	{
+		// makevectors() uses e.v_angle-style angles rather than
+		// e.angles-style.  The pitch goes the other way.
+		a = self.owner.angles;
+		a_x = 0 - a_x;
+		makevectors (a);
+		setorigin (self, self.owner.origin
+					+ self.runevector_x * v_forward
+					+ self.runevector_y * v_right
+					+ self.runevector_z * v_up);
+
+		trackvel (self.owner);
+		self.angles = self.owner.angles + self.mangle;
+	}
 	self.nextthink = time + sys_ticrate;
 };
 
-void (string tmodel, vector offs, vector ang)
+void (entity e, string tmodel, vector offs, vector ang, float type)
 Hat_Spawn =
 {
 	local entity dot;
@@ -586,10 +612,14 @@ Hat_Spawn =
 	dot		= spawn ();
 	dot.movetype	= MOVETYPE_FLY;
 	dot.solid	= SOLID_NOT;
-	dot.owner	= self;
-	dot.runetype	= self.runetype;
+	dot.owner	= e;
 
-	setorigin (dot, self.origin);
+	if (type)
+		dot.runevar	= type;
+	else
+		dot.runetype	= e.runetype;
+
+	setorigin (dot, e.origin);
 	setsize (dot, VEC_ORIGIN, VEC_ORIGIN);
 	setmodel (dot, tmodel);
 
