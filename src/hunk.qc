@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.31 2004/12/25 00:42:28 slotzero Exp $
+/*  $Id: hunk.qc,v 1.32 2004/12/25 00:54:48 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -131,7 +131,7 @@ Read_Hunk_Float =
 };
 
 string (entity hunk)
-Read_Hunk_e =
+Read_Hunk_String_e =
 {
 	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
 };
@@ -148,7 +148,7 @@ Read_Hunk_String =
 		return string_null;
 	}
 
-	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
+	return Read_Hunk_String_e (hunk);
 };
 
 // The value of bytes is rounded up to the closest dword.

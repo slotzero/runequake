@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.31 2004/12/25 00:42:28 slotzero Exp $
+/*  $Id: strman.qc,v 1.32 2004/12/25 00:54:48 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -209,7 +209,7 @@ substr =
 	Write_Hunk_e (hunk, expr);
 
 	hunk = *AddInt (&hunk, offset * %1);
-	s = Read_Hunk_e (hunk);
+	s = Read_Hunk_String_e (hunk);
 
 	if (length < 0)
 		length = fabs (length);
