@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.28 2004/01/03 08:28:41 slotzero Exp $
+/*  $Id: admin.qc,v 1.29 2004/02/21 07:31:35 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -565,34 +565,29 @@ admin_impulse_map =
 	}
 	else
 	{
-		if (is_admin ())
-			admin_changelevel (m);
-		else
+		self.impulse = IMP_VOTE_EXIT;
+
+		if (forced_nextmap)
 		{
-			self.impulse = IMP_VOTE_EXIT;
-
-			if (forced_nextmap)
+			if (forced_nextmap == m)
 			{
-				if (forced_nextmap == m)
-				{
-					if (self.vote_flags & VOTE_EXIT)
-						sprint (self, "\{141} You've already voted for this level\n");
-					else
-						vote ();
-				}
+				if (self.vote_flags & VOTE_EXIT)
+					sprint (self, "\{141} You've already voted for this level\n");
 				else
-					sprint (self, "\{141} A vote is already in progress\n");
-				return;
-			}
-
-			if (is_player () && !self.vote_flags & VOTE_EXIT)
-			{
-				forced_nextmap = m;
-				vote ();
+					vote ();
 			}
 			else
-				count_votes (self.impulse, 0);
+				sprint (self, "\{141} A vote is already in progress\n");
+			return;
 		}
+
+		if (is_player () && !self.vote_flags & VOTE_EXIT)
+		{
+			forced_nextmap = m;
+			vote ();
+		}
+		else
+			count_votes (self.impulse, 0);
 	}
 };
 

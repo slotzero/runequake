@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.87 2004/02/21 06:09:10 slotzero Exp $
+/*  $Id: rjs.qc,v 1.88 2004/02/21 07:31:35 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1142,7 +1142,7 @@ common_impulses =
 	}
 
 	else if (self.impulse == IMP_EXIT_LEVEL && self.aqflags & AQ_ADMIN)
-		admin_changelevel (string_null);
+		admin_changelevel (forced_nextmap);
 
 	else if (self.impulse == IMP_ADMIN_KICK)
 		admin_kick ();
