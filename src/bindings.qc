@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.2 2003/10/26 08:04:44 slotzero Exp $
+/*  $Id: bindings.qc,v 1.3 2003/10/31 02:30:43 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -83,11 +83,39 @@ player_init_impulse_alias =
 };
 
 void ()
+player_bindings_think =
+{
+	local entity os;
+
+	os = self;
+	self = self.owner;
+	self_sprint (self, "Sending player bindings\n");
+	player_aliases ();
+	// XXX Move this message to settings.qc.
+	if (MAP_IS_CUSTOM)
+	{
+		self_sprint (self, "\nDon't have the map?\n");
+		self_sprint (self, "\nDownload from \bwww.runequake.com\b\n");
+	}
+	self = os;
+	remove (self);
+};
+
+void ()
+spawn_player_bindings =
+{
+	local entity e;
+
+	e		= spawn ();
+	e.owner		= self;
+	e.think		= player_bindings_think;
+	e.nextthink	= time + 2;
+};
+
+void ()
 player_aliases =
 {
 	local string s;
-
-	self_sprint (self, "Sending player bindings\n");
 
 	self_stuffcmd (self, "alias w5 \"wait;wait;wait;wait;wait\"\n");
 	self_stuffcmd (self, "alias cl \"impulse ");

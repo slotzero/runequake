@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.52 2003/10/26 08:04:44 slotzero Exp $
+/*  $Id: defs.qc,v 1.53 2003/10/31 02:30:44 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -412,6 +412,9 @@ float forced_nextmap_time;
 .float frag_rate;
 .float recent_frags;
 float update_frag_rates_time;
+
+// If the map is custom, send message to players about downloading maps.
+float MAP_IS_CUSTOM;
 
 // Rune constants (NONE MAY BE OVER 100!)
 

@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.72 2003/10/15 23:15:32 slotzero Exp $
+/*  $Id: rjs.qc,v 1.73 2003/10/31 02:30:45 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -261,6 +261,10 @@ rjs_worldspawn =
 
 	// Must be zero or self_sprint() will always be dprint().
 	cvar_set ("skill", "0");
+
+	// XXX I don't like doing this every level, maybe find a better way to do this.
+	if (!map_size (mapname))
+		MAP_IS_CUSTOM = 1;
 
 	// I used to do an initial change_teamplay() here to get the mod
 	// and version into the teamplay string.  See the comments in
@@ -1350,7 +1354,8 @@ player_init =
 			self.aqflags = self.aqflags | AQ_QSMACK;
  	}
 
-	player_aliases ();
+	self_sprint (self, "\buse\b -zone 1024 \bif quake crashes\n");
+	spawn_player_bindings ();
 
 	// Disable client-side ambient sounds.
 	if (scratch1 & S1_AMBIENT_SOUND_OFF && !is_qsmack ())
