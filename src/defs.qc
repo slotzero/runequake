@@ -1,4 +1,4 @@
-// $Id: defs.qc,v 1.22 2002/10/05 20:57:55 slotzero Exp $
+// $Id: defs.qc,v 1.23 2002/10/06 20:49:25 slotzero Exp $
 
 /*
 ==============================================================================
@@ -345,6 +345,9 @@ float NO_FRAGS = -23000;
 
 // This holds either the passcode in settings.qc or gamecfg.
 float ADMIN_PASSCODE_REAL;
+
+// Holds the amount of players to allow before forwarding.
+float FORWARD_MAX_PLAYERS_REAL;
 
 // Various cvars initialized only at the start of the level.
 float sys_ticrate;

@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.39 2002/10/05 20:57:56 slotzero Exp $
+// $Id: rjs.qc,v 1.40 2002/10/06 20:49:26 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -261,7 +261,9 @@ process_cvars =
 	noexit = cvar_infokey ("noexit");
 	i = noexit & NOEXIT_FORWARD_MASK;
 	if (i)
-		FORWARD_MAX_PLAYERS = i / NOEXIT_FORWARD_MULT;
+		FORWARD_MAX_PLAYERS_REAL = i / NOEXIT_FORWARD_MULT;
+	else
+		FORWARD_MAX_PLAYERS_REAL = FORWARD_MAX_PLAYERS;
 
 	temp1 = cvar_infokey ("temp1");
 	runemax = temp1 & T1_NRUNES_MASK;
@@ -1544,10 +1546,10 @@ player_init =
 	aq_menu_set (AQS_MENU_SPLASH);
 
 	i = 0;
-	if (FORWARD_MAX_PLAYERS > 0)
+	if (FORWARD_MAX_PLAYERS_REAL > 0)
 	{
 		i = count_players_by_ent ();
-		if (i <= FORWARD_MAX_PLAYERS)
+		if (i <= FORWARD_MAX_PLAYERS_REAL)
 			i = 0;
 	}
 	if (i)
@@ -1797,7 +1799,7 @@ show_settings =
 	self_sprint (self, "\n  randomize      ");	self_sprint_boolean (self, noexit & NOEXIT_RANDOMIZE);
 	self_sprint (self, "  no dm loop  ");		self_sprint_boolean (self, noexit & NOEXIT_DM_NO_LOOP);
 	self_sprint (self, "\n  samelevel      ");	self_sprint_boolean (self, i & 1);
-	self_sprint (self, "  forward max ");		self_sprint_float (self, FORWARD_MAX_PLAYERS);
+	self_sprint (self, "  forward max ");		self_sprint_float (self, FORWARD_MAX_PLAYERS_REAL);
 	self_sprint (self, "\n");
 
 	self_sprint (self, "Teamplay:");
@@ -2561,7 +2563,7 @@ draw_hud =
 			willdrop = "Ä";
 		else
 			willdrop = " ";
-		runedesc = Rune_Description (self.runetype, 0);
+		runedesc = Rune_Tell_real (0, self.runetype, 0, 2);
 		in_hud_hack = 1;
 		centerprint6 (self, "\n\n\n\n\n\n\n\n\n\n\n\n",
 			weap, "                 ",
@@ -2916,7 +2918,7 @@ Rune_Tell =
 	// If this is a simple "no rune" message, don't refresh it.
 	if (!type && !also_hook)
 	{
-		Rune_Tell_real (riders, type, also_hook);
+		Rune_Tell_real (riders, type, also_hook, 0);
 		rune_tell_stop (1);
 		return;
 	}
@@ -2940,7 +2942,7 @@ rune_tell_refresh =
 	in_runedesc_hack = 1;
 	Rune_Tell_real (self.waitmin & 8,
 			(self.waitmin - self.waitmin & 31) / 32,
-			self.waitmin & 16);
+			self.waitmin & 16, 0);
 	in_runedesc_hack = 0;
 
 	// Increment number of times I've shown it.
