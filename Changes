@@ -1,5 +1,6 @@
-$Id: Changes,v 1.73 2004/06/29 02:11:30 slotzero Exp $
+$Id: Changes,v 1.74 2004/06/29 22:53:08 slotzero Exp $
 
+customizable cvars for console related aliases
 // developer stuff
 fix the tornado rune
 remove notification for riders
