@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.32 2004/07/16 12:02:11 slotzero Exp $
+/*  $Id: vote.qc,v 1.33 2004/07/16 12:46:36 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -20,16 +20,10 @@
 // VOTE TODO (DEV)
 /*
 	// hook
-	* fix hook voting so that vote-hook is always always-on. [DONE]
-	* add vote-lithium to always turn on lithium hook (but not off) [DONE]
-	* add vote-free to always turn on free hook (but not off) [DONE]
-	* vote-hook will turn off lithium hook or full hook [DONE]
-	* qw vote-hook is fucked.. go figure.. rint = 1 perhaps? [DONE]
 	* hook as rune can still exist in lithium
 
 	// practice
 	* add disabled for practice mode
-	* perhaps a new function to give refresh message, use disabled function maybe? [DONE]
 	* decide specifics on practice.. should alts be allowed, should runes be allowed, hook, etc.
 
 	// exit
@@ -528,6 +522,25 @@ vote =
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
+	}
+	else if (self.impulse == IMP_VOTE_ALTS)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= setalts;
+		e.noise2	= " alternate weapons ";
+
+		if (deathmatch & DM_NO_ALT_WEAPONS)
+			e.noise1	= "enable";
+		else
+			e.noise1	= "disable";
+
+		if (deathmatch & DM_MODE_PRACTICE)
+		{
+			if (!cancel)
+				self_sprint (self, "disable practice mode first\n");
+			cancel = 1;
+		}
 	}
 	else
 		cancel = -1;

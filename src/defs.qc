@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.106 2004/07/16 12:19:37 slotzero Exp $
+/*  $Id: defs.qc,v 1.107 2004/07/16 12:46:36 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1095,6 +1095,7 @@ float	C3_NO_SUIT		= 8;
 float	C3_NO_ARMOR		= 16;
 float	C3_ROTATE		= 32;
 float	C3_NO_RUNES		= 64;
+float	C3_NO_ALTS		= 128;
 
 IN_QW([-
 //

@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.7 2004/07/16 12:11:47 slotzero Exp $
+/*  $Id: toggle.qc,v 1.8 2004/07/16 12:46:36 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -172,4 +172,10 @@ setrunes =
 			runemax = DEFAULT_RUNEMAX;
 		runespawntime	= time;
 	}
+};
+
+void ()
+setalts =
+{
+	deathmatch = toggle_cvar_bit ("deathmatch", DM_NO_ALT_WEAPONS);
 };

@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.138 2004/07/16 12:02:11 slotzero Exp $
+/*  $Id: rjs.qc,v 1.139 2004/07/16 12:46:36 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -311,7 +311,7 @@ process_misc =
 		}
 	}
 
-	// Default mode for power ups.
+	// XXX All of code below is hard coded and should be fixed.
 	if (voteflags & C3_NO_QUAD)
 		setquad ();
 	if (voteflags & C3_NO_PENT)
@@ -320,14 +320,16 @@ process_misc =
 		setring ();
 	if (voteflags & C3_NO_SUIT)
 		setsuit ();
-	// no runes
 	if (voteflags & C3_NO_ARMOR)
 		setarmor ();
 	else if (voteflags & C3_ROTATE)
 		setrotate ();
+	if (voteflags & C3_NO_RUNES)
+		setrunes ();
+	if (voteflags & C3_NO_ALTS)
+		setalts ();
 
 	// vote-practice (always do this last)
-	// XXX move to settings or something
 	if (deathmatch & DM_MODE_PRACTICE)
 		mode_normal ();
 };
@@ -1187,7 +1189,7 @@ common_impulses =
 		vote_no ();
 
 	// XXX I hard coded the vote impulses to reduce the amount of impulse checks
-	else if (self.impulse >= 206 && self.impulse <= 219)
+	else if (self.impulse >= 201 && self.impulse <= 219)
 		vote ();
 
 	else if (self.impulse == IMP_LEVELS)
