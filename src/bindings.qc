@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.11 2003/12/30 09:59:10 slotzero Exp $
+/*  $Id: bindings.qc,v 1.12 2004/02/22 04:42:26 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -266,7 +266,6 @@ console_aliases =
 void ()
 commands =
 {
-       local string s2, s3, s4, s5;
        local float i;
 
 	i = -14;

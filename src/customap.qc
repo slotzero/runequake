@@ -1,4 +1,4 @@
-/*  $Id: customap.qc,v 1.8 2004/01/03 11:59:53 slotzero Exp $
+/*  $Id: customap.qc,v 1.9 2004/02/22 04:42:26 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -20,8 +20,6 @@
 float (float levsize)
 sized_customs_count =
 {
-	local float i;
-
 	if	(levsize == 1)	return floor (Read_Hunk_Float (HUNK_CONTEXT, %21));
 	else if	(levsize == 2)	return floor (Read_Hunk_Float (HUNK_CONTEXT, %22));
 	else if (levsize == 3)	return floor (Read_Hunk_Float (HUNK_CONTEXT, %23));
@@ -177,8 +175,7 @@ custom_maps =
 string (float levsize)
 select_custom =
 {
-	local float i, nmaps, sized, randomly;
-	local string s;
+	local float i, nmaps, randomly;
 
 	randomly = noexit & NOEXIT_RANDOMIZE;
 
