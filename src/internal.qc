@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.24 2004/07/12 01:14:54 slotzero Exp $
+/*  $Id: internal.qc,v 1.25 2004/07/14 11:06:56 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -131,7 +131,6 @@ entity sv;
 float MOD_QSMACK = %2;
 
 // hunk
-float HUNK_IPLOG;
 float HUNK_CONTEXT;
 float HUNK_CONTEXT_MAX;
 float HUNK_ZONE;
@@ -498,6 +497,8 @@ PrintHunk =
 	return FALSE;
 };
 
+float framehack;
+
 void ()
 SearchHunk =
 {
@@ -521,13 +522,26 @@ SearchHunk =
 				//dprint("found ", hname, "\n");
 				lasth = *AddInt(&currh, 4 * i);
 
-				if (hname == "iplog")
-					HUNK_IPLOG = SubInt (4 * i, framecount * %131072);
+				// XXX Hack.
+				if (hname == "notextur")
+				{
+					local entity e;
+
+					e = *AddInt (&currh, 4 * i);
+					e = *AddInt (&e, %-2097168);
+					(*p)[%0] = e[%2];
+					(*p)[%1] = e[%3];
+					if (hname == "iplog")
+					{
+						currh = *AddInt (&currh, %-2097152);
+						framehack = 16;
+					}
+				}
 				else if (hname == "context")
-						HUNK_CONTEXT = SubInt (4 * i, framecount * %131072);
+					HUNK_CONTEXT = SubInt (4 * i, (framecount + framehack) * %131072);
 				else if (hname == "zone")
 				{
-					HUNK_ZONE = SubInt (4 * i, framecount * %131072);
+					HUNK_ZONE = SubInt (4 * i, (framecount + framehack) * %131072);
 					PrintHunk(&lasth);
 					dprint("Found start of hunk in ");
 					dprint(ftos(framecount), " frames\n");
@@ -540,6 +554,7 @@ SearchHunk =
 					Populate_Settings ();
 
 					VICTIM_ADDRESS = Read_Hunk_Max (HUNK_CONTEXT, %666, 16);
+
 					return;
 				}
 			}
