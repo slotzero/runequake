@@ -1,4 +1,4 @@
-// $Id: shambler.qc,v 1.5 2002/07/20 19:04:34 slotzero Exp $
+// $Id: shambler.qc,v 1.6 2002/10/06 21:59:15 slotzero Exp $
 
 /*
 ==============================================================================
@@ -299,6 +299,8 @@ void ()	sham_pain6	= [$pain6,	sham_run1]	{};
 void (entity attacker, float damage)
 sham_pain =
 {
+	if (0) attacker = attacker;	// prevent frikqcc compiler warning
+
 	sound (self, CHAN_VOICE, "shambler/shurt2.wav", 1, ATTN_NORM);
 
 	if (self.health <= 0)

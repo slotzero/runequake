@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.40 2002/10/06 20:49:26 slotzero Exp $
+// $Id: rjs.qc,v 1.41 2002/10/06 21:59:14 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -6,14 +6,14 @@
 void ()
 timelimit_countdown =
 {
-	local float timelimit, seconds, minutes, n;
+	local float timelimit_, seconds, minutes, n;
 	local string s1, s2;
 
-	timelimit = cvar ("timelimit") * 60;
-	if (!timelimit)
+	timelimit_ = cvar ("timelimit") * 60;
+	if (!timelimit_)
 		return;
 
-	seconds = ceil (timelimit - time);
+	seconds = ceil (timelimit_ - time);
 	minutes = ceil (seconds / 60);
 
 	n = 1;
@@ -1193,6 +1193,7 @@ set_viewport =
 		//WriteAngle (MSG_ONE, targ.angles_y);
 		//WriteAngle (MSG_ONE, targ.angles_z);
 	-], [-
+		if (0) targ = targ;	// prevent frikqcc compiler warning
 		SUB_Null ();
 	-])
 };

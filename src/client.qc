@@ -1,4 +1,4 @@
-// $Id: client.qc,v 1.11 2002/09/22 20:10:03 slotzero Exp $
+// $Id: client.qc,v 1.12 2002/10/06 21:59:14 slotzero Exp $
 
 float modelindex_eyes, modelindex_player;
 
@@ -982,15 +982,15 @@ Exit deathmatch games upon conditions
 void ()
 CheckRules =
 {
-	local float timelimit;
+	local float timelimit_;
 
 	if (gameover)	// someone else quit the game already
 		return;
 
-	timelimit = cvar ("timelimit") * 60;
+	timelimit_ = cvar ("timelimit") * 60;
 	fraglimit = cvar ("fraglimit");
 
-	if (timelimit && time >= timelimit)
+	if (timelimit_ && time >= timelimit_)
 	{
 		NextLevel ();
 		return;

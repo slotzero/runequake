@@ -1,4 +1,18 @@
-$Id: Changes,v 1.37 2002/09/21 16:25:47 slotzero Exp $
+$Id: Changes,v 1.38 2002/10/06 21:59:08 slotzero Exp $
+
+Version 0.6  Sun Oct 06 17:49:08 EST 2002
+
+    - Bug Fixes
+
+    - Notable Internal Changes
+
+        - The mod now compiles with no warnings on any warning level when
+          using frikqcc 2.5.  I've also changed the Makefile so that it
+          won't ignore warnings by default.
+
+        - I'm considering the implementation of internal.qc.  If I don't
+          remember to change during a snapshot, you'll at least notice
+          the file in the folder.
 
 Version 0.5.3  Sat Sep 07 09:18:36 EST 2002
 

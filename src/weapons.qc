@@ -1,4 +1,4 @@
-// $Id: weapons.qc,v 1.4 2002/08/21 17:28:47 slotzero Exp $
+// $Id: weapons.qc,v 1.5 2002/10/06 21:59:15 slotzero Exp $
 
 // called by worldspawn
 
@@ -151,6 +151,8 @@ void (float damage)
 spawn_touchblood =
 {
 	local vector vel;
+
+	if (0) damage = damage;	// prevent frikqcc compiler warning;
 
 	vel = wall_velocity () * 0.2;
 	SpawnBlood (self.origin + vel*0.01, vel, IN_POQ(damage, 1));

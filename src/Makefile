@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.5 2002/06/15 19:27:28 slotzero Exp $
+# $Id: Makefile,v 1.6 2002/10/06 21:59:13 slotzero Exp $
 #
 # Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 # See the file `Copying' in the distribution for terms.
@@ -136,7 +136,7 @@ $(progs_all):
 	cd $(dir_$(type)); [ ! -x $$HOME/.quake-passcode ] || \
 	    $$HOME/.quake-passcode < settings.qc.real > settings.qc
 	cd $(dir_$(type)); \
-	    frikqcc /O2 -warn 0; cp -p settings.qc.real settings.qc && exit $$ret
+	    frikqcc /O2 -warn 4; cp -p settings.qc.real settings.qc && exit $$ret
     # XXX fastqcc umask bug
 	chmod o-w $@
 	[ ! -d $$HOME/quake/runequake ] || cp $@ $$HOME/quake/runequake

@@ -1,4 +1,4 @@
-// $Id: engine.qc,v 1.4 2002/06/17 01:22:16 slotzero Exp $
+// $Id: engine.qc,v 1.5 2002/10/06 21:59:14 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -10,7 +10,10 @@ IN_POQ([-
 void (vector where, float set)
 multicast =
 {
-	SUB_Null ();
+	// remove frikqcc compiler warnings;
+	if (0) where = where;
+	else if (0) set = set;
+	else SUB_Null ();
 };
 
 //-----------------------------------------------------------------------------
@@ -180,6 +183,8 @@ write_cdtrack =
 void (entity e)
 trackvel =
 {
+	if (0) e = e; // prevent frikqcc compiler warning
+
 	IN_QW([-
 		self.velocity = e.velocity;
 	-])
@@ -229,6 +234,7 @@ bigkick =
 			kick_size = -4;
 		self.punchangle_x = kick_size;
 	-], [-
+		if (0) kick_size = kick_size;	// prevent frikqcc compiler warning
 		msg_entity = self;
 		WriteByte (MSG_ONE, SVC_SMALLKICK);
 	-])
