@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.54 2005/01/10 22:59:55 slotzero Exp $
+/*  $Id: bindings.qc,v 1.55 2005/01/17 08:40:48 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -124,10 +124,18 @@ player_bindings_think =
 		// XXX Move this to settings.qc.
 		if (MAP_IS_CUSTOM)
 		{
-			self_sprint (self, "\nDon't have the map?\n");
-			self_sprint (self, "\nDownload from\n\n\b    ftp.runequake.com/quake/maps/\b\n\nFilename: ");
-			self_sprint (self, mapname);
-			self_sprint (self, ".zip\n");
+			if (mode_arena ())
+			{
+				self_sprint (self, "\nDon't have the arena maps?\n");
+				self_sprint (self, "\nDownload from\n\n\b    runequake.com/maps/ramaps.zip\b\n\n");
+			}
+			else
+			{
+				self_sprint (self, "\nDon't have the map?\n");
+				self_sprint (self, "\nDownload from\n\n\b    ftp.runequake.com/quake/maps/\b\n\nFilename: ");
+				self_sprint (self, mapname);
+				self_sprint (self, ".zip\n");
+			}
 		}
 	}
 	else
