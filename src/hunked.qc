@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.22 2004/07/20 12:27:59 slotzero Exp $
+/*  $Id: hunked.qc,v 1.23 2004/07/20 12:38:42 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -256,6 +256,8 @@ fput =
 		cvar_set_infokey ("NO_RUNES", s);
 	else if (*offset == *HUNK_NO_ALT_WEAPONS)
 		cvar_set_infokey ("NO_ALT_WEAPONS", s);
+	else if (*offset == *HUNK_NO_SPAWN_SHIELDS)
+		cvar_set_infokey ("NO_SPAWN_SHIELDS", s);
 
 	return value;
 };
@@ -282,6 +284,8 @@ fget =
 		i = NO_RUNES = cvar_infokey ("NO_RUNES");
 	else if (*offset == *HUNK_NO_ALT_WEAPONS)
 		i = NO_ALT_WEAPONS = cvar_infokey ("NO_ALT_WEAPONS");
+	else if (*offset == *HUNK_NO_SPAWN_SHIELDS)
+		i = NO_SPAWN_SHIELDS = cvar_infokey ("NO_SPAWN_SHIELDS");
 
 	return i;
 };
