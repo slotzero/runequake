@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.23 2004/06/23 19:40:24 slotzero Exp $
+/*  $Id: combat.qc,v 1.24 2004/06/23 20:40:53 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -129,7 +129,7 @@ Killed =
 				self_sprint (targ, attacker.netname);
 				self_sprint (targ, " has ");
 				self_sprint (targ, x);
-				self_sprint (targ, " health");
+				self_sprint (targ, " health\n");
 			}
 		}
 	}
