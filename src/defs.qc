@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.74 2004/05/15 23:05:28 slotzero Exp $
+/*  $Id: defs.qc,v 1.75 2004/05/23 01:12:14 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1292,8 +1292,8 @@ void (entity client, string s, ...)		self_sprint5	= #24;
 void (entity client, string s, ...)		self_sprint6	= #24;
 void (entity client, string s, ...)		self_sprint7	= #24;
 -],[-
-void (float level, string s, ...)		xbprint7	= #23;
-void (entity client, float level, string s, ...)xself_sprint6	= #24;
+void (float level, string s, ...)		xbprint		= #23;
+void (entity client, float level, string s, ...)xself_sprint	= #24;
 -])
 
 void	(string s, ...)				dprint		= #25;

@@ -1,4 +1,4 @@
-/*  $Id: print.qc,v 1.15 2003/12/27 05:13:19 slotzero Exp $
+/*  $Id: print.qc,v 1.16 2004/05/23 01:12:14 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -481,7 +481,7 @@ self_sprint =
 	IN_POQ([-
 		xself_sprint (e, s);
 	-], [-
-		xself_sprint6 (e, PRINT_HIGH, s);
+		xself_sprint (e, PRINT_HIGH, s);
 	-])
 };
 
