@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.22 2004/06/28 05:29:46 slotzero Exp $
+/*  $Id: bindings.qc,v 1.23 2004/06/28 07:11:30 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -251,17 +251,18 @@ console_aliases =
 {
 	dprint_force ("Sending console bindings\n");
 
-	console_init_cvar_alias ("last",		"skill",	SKILL_LAST);
+	console_init_cvar_alias ("update-bindings",	"skill",	SKILL_UPDATE_BINDINGS);
 	console_init_cvar_alias ("show-players",	"skill",	SKILL_SHOW_PLAYERS);
 	console_init_cvar_alias ("show-settings",	"skill",	SKILL_SHOW_SETTINGS);
 	console_init_cvar_alias ("rune-cheat",		"skill",	SKILL_TOGGLE_RUNE_CHEAT);
-	console_init_cvar_alias ("update-bindings",	"skill",	SKILL_UPDATE_BINDINGS);
+	console_init_cvar_alias ("last",		"skill",	SKILL_LAST);
 	console_init_cvar_alias ("levels",		"skill",	SKILL_LEVELS);
 	console_init_cvar_alias ("custom",		"skill",	SKILL_CUSTOM);
 	console_init_cvar_alias ("commands",		"skill",	SKILL_COMMANDS);
 	console_init_cvar_alias ("level-time",		"skill",	SKILL_LEVEL_TIME);
 	console_init_cvar_alias ("practice",		"skill",	SKILL_MODE_PRACTICE);
 	console_init_cvar_alias ("normal",		"skill",	SKILL_MODE_NORMAL);
+	console_init_cvar_alias ("alternates",		"skill",	SKILL_TOGGLE_ALTERNATES);
 
 	level_aliases ();
 	custom_aliases ();
