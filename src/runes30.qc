@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.19 2003/06/26 05:30:47 slotzero Exp $
+/*  $Id: runes30.qc,v 1.20 2003/06/28 00:15:52 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -695,8 +695,8 @@ Suck_Think =
 	if (self.owner.runetype == RN_SUCK)
 		self.runetime = time + 20;
 
-	// I used to set this to sys_ticrate but it's a pain having to change
-	// this value every time you change the tick.
+	// I used to set this to sys_ticrate but every time the rate changes
+	// SUCK_FORCE is either too weak or too strong.
 	self.nextthink = time + 0.1;
 
 	Suck (self);
@@ -1006,7 +1006,9 @@ Rune_Repel =
 	if (self.runetime > time)
 		return;
 
-	self.runetime = self.runetime + sys_ticrate;
+	// I used to set this to sys_ticrate but every time the rate changes
+	// PUSH_FORCE is either too weak or too strong.
+	self.runetime = self.runetime + 0.1;
 
 	local entity pushee;
 	local vector pushdir, pushforce;
