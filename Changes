@@ -1,4 +1,37 @@
-$Id: Changes,v 1.1 2002/02/21 21:47:39 slotzero Exp $
+$Id: Changes,v 1.2 2002/03/03 01:20:33 slotzero Exp $
+
+Version 0.?  ?
+
+    - Level Changes
+
+        - I increased the default intensity for the "normal" lightstyle().
+ 
+        - There are now two rocket launchers on E1M2; the original one has been
+          replaced with red armor.
+
+        - I added a grenade launcher and green armor to E2M4.
+
+    - Sound Changes
+
+        - I changed the sound heard when players first connect.
+
+    - Notable Internal Changes
+
+        - I'm using frikqcc to compile the distributions so you'll see a
+          change in the Makefile.  You can download Frikqcc and a variety
+          of other compilers at,
+
+          ftp://ftp.runequake.com/quake/quakec/compilers/
+
+        - I cleaned up most of the code in misc.qc; any light related function
+          was moved to light.qc.
+
+        - All unused (by me) test functions were placed in a new file called
+          test.qc.
+
+    - Other
+
+        - The environmental protection suit is synonymous to the rune.
 
 Version 0.1  Tue Jan 15 23:42:10 PM EST 2002
 
