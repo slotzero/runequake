@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.52 2005/01/31 02:14:48 slotzero Exp $
+/*  $Id: vote.qc,v 1.53 2005/02/02 01:55:09 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -710,6 +710,7 @@ void ()
 vote_yes =
 {
 	local entity vip;
+	local float i;
 
  	vip = find_vip ();
  	if (!vip)
@@ -728,7 +729,12 @@ vote_yes =
 		return;
 	}
 
-	if (self.vote_flags & VOTE_YES || is_observer ())
+	if (mode_arena ())
+		i = (is_observer () && !self.runevar);
+	else
+		i = is_observer ();
+
+	if (self.vote_flags & VOTE_YES || i)
 	{
 		count_votes (1);
 		return;
@@ -745,6 +751,7 @@ void ()
 vote_no =
 {
 	local entity vip;
+	local float i;
 
 	vip = find_vip ();
 	if (!vip)
@@ -764,7 +771,12 @@ vote_no =
 		return;
 	}
 
-	if (self.vote_flags & VOTE_NO || is_observer ())
+	if (mode_arena ())
+		i = (is_observer () && !self.runevar);
+	else
+		i = is_observer ();
+
+	if (self.vote_flags & VOTE_NO || i)
 	{
 		count_votes (1);
 		return;
