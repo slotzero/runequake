@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.7 2003/05/24 21:00:54 slotzero Exp $
+/*  $Id: internal.qc,v 1.8 2003/05/27 20:23:41 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -287,9 +287,9 @@ float (float i)
 OppInt =
 {
 	if (i > %0)
-		return NegInt (SubInt (i, i * %2));
+		return SubInt (i, i + i);
 	else
-		return NegInt (i * %2);
+		return NegInt (i);
 };
 
 //-------------------------------------------------------------------
