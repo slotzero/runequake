@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.28 2004/06/27 07:44:07 slotzero Exp $
+/*  $Id: strman.qc,v 1.29 2004/06/27 08:28:51 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -140,11 +140,11 @@ allocate_string =
 //
 //  Concatenate string
 //
-string (string s1, string s2, string s3, string s4, string s5, string s6, string s7)
-strcat7 =
+string (string s1, string s2)
+strcat =
 {
 	local entity hunk;
-	local float L1, L2, L3, L4, L5, L6, L7, total, alloc_hunk;
+	local float L1, L2, total, alloc_hunk;
 
 	if (s1)
 	{
@@ -156,80 +156,19 @@ strcat7 =
 		L2 = strlen (s2);
 		if (!L2) s2 = string_null;
 	}
-	if (s3)
-	{
-		L3 = strlen (s3);
-		if (!L3) s3 = string_null;
-	}
-	if (s4)
-	{
-		L4 = strlen (s4);
-		if (!L4) s4 = string_null;
-	}
-	if (s5)
-	{
-		L5 = strlen (s5);
-		if (!L5) s5 = string_null;
-	}
-	if (s6)
-	{
-		L6 = strlen (s6);
-		if (!L6) s6 = string_null;
-	}
-	if (s7)
-	{
-		L7 = strlen (s7);
-		if (!L7) s7 = string_null;
-	}
 
-	total = L1 + L2 + L3 + L4 + L5 + L6 + L7;
+	total = L1 + L2;
 	if (!total) return string_null;
 
 	allocate_hunk (total);
 	alloc_hunk = ALLOCATE_HUNK;
 	hunk = Get_Hunk (HUNK_CONTEXT, alloc_hunk);
-	if (!hunk)
-		return string_null;
+	if (!hunk) return string_null;
 
 	if (s1) { Write_Hunk_e (hunk, s1); hunk = *AddInt (L1 * %1, &hunk); }
-	if (s2) { Write_Hunk_e (hunk, s2); hunk = *AddInt (L2 * %1, &hunk); }
-	if (s3) { Write_Hunk_e (hunk, s3); hunk = *AddInt (L3 * %1, &hunk); }
-	if (s4) { Write_Hunk_e (hunk, s4); hunk = *AddInt (L4 * %1, &hunk); }
-	if (s5) { Write_Hunk_e (hunk, s5); hunk = *AddInt (L5 * %1, &hunk); }
-	if (s6) { Write_Hunk_e (hunk, s6); hunk = *AddInt (L6 * %1, &hunk); }
-	if (s7) { Write_Hunk_e (hunk, s7); hunk = *AddInt (L7 * %1, &hunk); }
+	if (s2) { Write_Hunk_e (hunk, s2); }
 
 	return Read_Hunk (HUNK_CONTEXT, alloc_hunk);
-};
-
-string (string s1, string s2, string s3, string s4, string s5, string s6)
-strcat6 =
-{
-	return strcat7 (s1, s2, s3, s4, s5, s6, string_null);
-};
-
-string (string s1, string s2, string s3, string s4, string s5)
-strcat5 =
-{
-	return strcat7 (s1, s2, s3, s4, s5, string_null, string_null);
-};
-
-string (string s1, string s2, string s3, string s4)
-strcat4 =
-{
-	return strcat7 (s1, s2, s3, s4, string_null, string_null, string_null);
-};
-
-string (string s1, string s2, string s3)
-strcat3 =
-{
-	return strcat7 (s1, s2, s3, string_null, string_null, string_null, string_null);
-};
-
-string (string s1, string s2)
-strcat =
-{
-	return strcat7 (s1, s2, string_null, string_null, string_null, string_null, string_null);
 };
 
 //
