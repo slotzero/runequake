@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.28 2004/07/12 06:47:37 slotzero Exp $
+/*  $Id: hunk.qc,v 1.29 2004/07/14 11:22:19 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -79,7 +79,7 @@ Get_Hunk =
 {
 	local entity hunk;
 
-	if (!HUNK_CONTEXT_MAX)
+	if (!HUNK_CONTEXT)
 		return world;
 
 	hunk = *AddInt(AddInt(&progs, %-16), type);

@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.25 2004/07/14 11:06:56 slotzero Exp $
+/*  $Id: internal.qc,v 1.26 2004/07/14 11:22:19 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -538,7 +538,11 @@ SearchHunk =
 					}
 				}
 				else if (hname == "context")
+				{
 					HUNK_CONTEXT = SubInt (4 * i, (framecount + framehack) * %131072);
+
+					Populate_Settings ();
+				}
 				else if (hname == "zone")
 				{
 					HUNK_ZONE = SubInt (4 * i, (framecount + framehack) * %131072);
@@ -550,8 +554,6 @@ SearchHunk =
 					// console bindings
 					if (server_time () < 10)
 						console_aliases ();
-
-					Populate_Settings ();
 
 					VICTIM_ADDRESS = Read_Hunk_Max (HUNK_CONTEXT, %666, 16);
 
