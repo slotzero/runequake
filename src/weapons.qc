@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.15 2003/10/05 23:16:50 slotzero Exp $
+/*  $Id: weapons.qc,v 1.16 2003/10/10 23:20:13 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -569,7 +569,10 @@ W_FireLightning =
 	if (self.runetype == RN_CLOAK)
 		self.runetime = time + RECLOAK_DELAY;
 	else if (self.runetype == RN_THOR)
-		self.runetime = time + 2;
+	{
+		if (self.runetime < time + 2)
+			self.runetime = time + 2;
+	}
 
 	if (self.t_width < time)
 	{

@@ -1,4 +1,4 @@
-/*  $Id: bfg.qc,v 1.8 2003/10/05 23:16:48 slotzero Exp $
+/*  $Id: bfg.qc,v 1.9 2003/10/10 23:20:12 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -32,6 +32,7 @@ void ()
 BFG_Zap =
 {
 	local entity head;
+	local float i;
 
 	if (self.lip < time)
 	{
@@ -39,8 +40,14 @@ BFG_Zap =
 		return;
 	}
 
+	i = 0;
+	if (self.runetype == RN_ZAP)
+		i = 5;
+ 	else if (self.runetype == RN_THOR)
+		i = 2.5;
+
 	// Find everything within range
-	head = findradius (self.origin, BFG_ZAP_RANGE);
+	head = findradius (self.origin, BFG_ZAP_RANGE * i);
 
 	// Search the list for stuff that takes damage
 	while (head)
@@ -181,5 +188,5 @@ W_BFG =
 	missile.think		= BFG_Warmup;
 
 	if (self.runetype == RN_THOR)
-		self.runetime = time + 10;
+		self.runetime = time + 15;
 };
