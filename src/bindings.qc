@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.7 2003/11/16 03:04:16 slotzero Exp $
+/*  $Id: bindings.qc,v 1.8 2003/12/27 05:13:19 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -210,7 +210,7 @@ player_console_init_level_alias =
 	{
 		localcmd ("alias ");
 		localcmd (level);
-		localcmd (" \"crosshair ");
+		localcmd (" \"IN_QW(serverinfo )crosshair ");
 		s = ftos (imp);
 		localcmd (s);
 		localcmd ("\"\n");
@@ -235,7 +235,7 @@ console_init_cvar_alias =
 	s = ftos (imp);
 	localcmd ("alias ");
 	localcmd (cmd);
-	localcmd (" \"");
+	localcmd (" \"IN_QW(serverinfo )");
 	localcmd (cvr);
 	localcmd (" ");
 	localcmd (s);

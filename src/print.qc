@@ -1,4 +1,4 @@
-/*  $Id: print.qc,v 1.14 2003/10/05 02:55:22 slotzero Exp $
+/*  $Id: print.qc,v 1.15 2003/12/27 05:13:19 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -472,16 +472,18 @@ sprint_float_f =
 //=============================================================================
 // self_sprint
 
-IN_POQ([-
 void (entity e, string s)
 self_sprint =
 {
 	if (e == world)
 		dprint_force (s);
 	else
+	IN_POQ([-
 		xself_sprint (e, s);
+	-], [-
+		xself_sprint6 (e, PRINT_HIGH, s);
+	-])
 };
--])
 
 void (entity e, float n)
 self_sprint_float =

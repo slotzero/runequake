@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.11 2003/06/24 22:17:37 slotzero Exp $
+/*  $Id: engine.qc,v 1.12 2003/12/27 05:13:19 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -42,14 +42,12 @@ void (string s, string s2, string s3, string s4, string s5) bprint5 = { xbprint7
 void (string s, string s2, string s3, string s4, string s5, string s6) bprint6 = { xbprint7 (PRINT_HIGH, s, s2, s3, s4, s5, s6, string_null); };
 void (string s, string s2, string s3, string s4, string s5, string s6, string s7) bprint7 = { xbprint7 (PRINT_HIGH, s, s2, s3, s4, s5, s6, s6); };
 
-void (entity client, string s) self_sprint = { xself_sprint6 (client, PRINT_HIGH, s, string_null, string_null, string_null, string_null, string_null); };
 void (entity client, string s, string s2) self_sprint2 = { xself_sprint6 (client, PRINT_HIGH, s, s2, string_null, string_null, string_null, string_null); };
 void (entity client, string s, string s2, string s3) self_sprint3 = { xself_sprint6 (client, PRINT_HIGH, s, s2, s3, string_null, string_null, string_null); };
 void (entity client, string s, string s2, string s3, string s4) self_sprint4 = { xself_sprint6 (client, PRINT_HIGH, s, s2, s3, s4, string_null, string_null); };
 void (entity client, string s, string s2, string s3, string s4, string s5) self_sprint5 = { xself_sprint6 (client, PRINT_HIGH, s, s2, s3, s4, s5, string_null); };
 void (entity client, string s, string s2, string s3, string s4, string s5, string s6) self_sprint6 = { xself_sprint6 (client, PRINT_HIGH, s, s2, s3, s4, s5, s6); };
 void (entity client, string s, string s2, string s3, string s4, string s5, string s6, string s7) self_sprint7 = { xself_sprint6 (client, PRINT_HIGH, s, s2, s3, s4, s5, s6); };
-
 -])
 
 void (float type, entity e, vector o1, vector o2)
@@ -203,6 +201,20 @@ cvar_infokey =
 	-], [-
 		stof (infokey (world, var))
 	-]);
+};
+
+void (string var, string val)
+cvar_set_infokey =
+{
+	IN_POQ([-
+		cvar_set (var, val);
+	-], [-
+		localcmd ("serverinfo ");
+		localcmd (var);
+		localcmd (" ");
+		localcmd (val);
+		localcmd ("\n");
+	-])
 };
 
 void ()

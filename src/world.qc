@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.26 2003/11/08 05:46:17 slotzero Exp $
+/*  $Id: world.qc,v 1.27 2003/12/27 05:13:20 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -327,14 +327,14 @@ StartFrame =
 	crosshair = cvar_infokey ("crosshair");
 	if (crosshair)
 	{
-		&%IN_POQ(368,360) = crosshair;
+		&%IN_POQ(368,376) = crosshair;
 		s = impulse_to_map ();
 		if (s)
 			admin_changelevel (s);
 		else
 			dprint ("Invalid level impulse\n");
 
-		cvar_set ("crosshair", "0");
+		cvar_set_infokey ("crosshair", "0");
 	}
 
 	// XXX This doesn't work in QW yet.
@@ -365,7 +365,7 @@ StartFrame =
 				dprint_force ("Rune cheat on\n");
 			}
 			s = ftos (temp1);
-			cvar_set ("temp1", s);
+			cvar_set_infokey ("temp1", s);
 		}
 
 		else if (skill == SKILL_UPDATE_BINDINGS)
@@ -377,7 +377,7 @@ StartFrame =
 		else
 			dprint ("skill: unknown command\n");
 
-		cvar_set ("skill", "0");
+		cvar_set_infokey ("skill", "0");
 	}
 
 	IN_QW([-
