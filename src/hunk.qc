@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.35 2004/12/25 02:05:18 slotzero Exp $
+/*  $Id: hunk.qc,v 1.36 2004/12/25 02:13:52 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -135,6 +135,12 @@ Read_Hunk_Float =
 string (entity hunk)
 Read_Hunk_String_e =
 {
+	if (!hunk)
+	{
+		dprint ("Read_Hunk_String_e: hunk is null\n");
+		return string_null;
+	}
+
 	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
 };
 
@@ -146,11 +152,6 @@ Read_Hunk_String =
 	local entity hunk;
 
 	hunk = Get_Hunk (type, offset);
-	if (!hunk)
-	{
-		dprint ("Read_Hunk_String: hunk is null\n");
-		return string_null;
-	}
 
 	return Read_Hunk_String_e (hunk);
 };
@@ -288,20 +289,20 @@ Write_Hunk_Float =
 };
 
 void (entity hunk, string s)
-Write_Hunk_e =
+Write_Hunk_String_e =
 {
 	if (!hunk)
-		return dprint ("Write_Hunk_e: hunk is null\n");
+		return dprint ("Write_Hunk_String_e: hunk is null\n");
 	strcpy (@AddInt(&hunk, PQUAKEC_TO_PSTRING), s);
 };
 
 void (float type, float offset, string s)
-Write_Hunk =
+Write_Hunk_String =
 {
 	local entity hunk;
 
 	hunk = Get_Hunk (type, offset);
-	Write_Hunk_e (hunk, s);
+	Write_Hunk_String_e (hunk, s);
 };
 
 // This is much faster than Write_Hunk_Max(), but it is

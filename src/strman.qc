@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.32 2004/12/25 00:54:48 slotzero Exp $
+/*  $Id: strman.qc,v 1.33 2004/12/25 02:13:52 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -165,8 +165,8 @@ strcat =
 	hunk = Get_Hunk (HUNK_CONTEXT, alloc_hunk);
 	if (!hunk) return string_null;
 
-	if (s1) { Write_Hunk_e (hunk, s1); }
-	if (s2) { hunk = *AddInt (L1 * %1, &hunk); Write_Hunk_e (hunk, s2); }
+	if (s1) { Write_Hunk_String_e (hunk, s1); }
+	if (s2) { hunk = *AddInt (L1 * %1, &hunk); Write_Hunk_String_e (hunk, s2); }
 
 	return Read_Hunk_String (HUNK_CONTEXT, alloc_hunk);
 };
@@ -206,7 +206,7 @@ substr =
 	if (!hunk)
 		return string_null;
 
-	Write_Hunk_e (hunk, expr);
+	Write_Hunk_String_e (hunk, expr);
 
 	hunk = *AddInt (&hunk, offset * %1);
 	s = Read_Hunk_String_e (hunk);
@@ -219,7 +219,7 @@ substr =
 		return s;
 
  	hunk = *AddInt (&hunk, length * %1);
-	Write_Hunk_e (hunk, string_null);
+	Write_Hunk_String_e (hunk, string_null);
 
 	return s;
 };
@@ -253,7 +253,7 @@ substr_replace =
 	if (!hunk)
 		return string_null;
 
-	Write_Hunk_e (hunk, expr);
+	Write_Hunk_String_e (hunk, expr);
 
 	if (offset)
 	{
@@ -266,7 +266,7 @@ substr_replace =
 
 	if (replace)
 	{
-		Write_Hunk_e (hunk, replace);
+		Write_Hunk_String_e (hunk, replace);
 		hunk = *AddInt (L2 * %1, &hunk);
 	}
 
@@ -282,7 +282,7 @@ substr_replace =
 		L1 = offset + length;
 
  	s = @AddInt (AddInt (AddInt (&expr, PSTRING_TO_PQUAKEC), L1 * %1), PQUAKEC_TO_PSTRING);
-	Write_Hunk_e (hunk, s);
+	Write_Hunk_String_e (hunk, s);
 
 	return Read_Hunk_String (HUNK_CONTEXT, alloc_hunk);
 };
