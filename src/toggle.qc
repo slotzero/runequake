@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.11 2004/07/18 14:49:53 slotzero Exp $
+/*  $Id: toggle.qc,v 1.12 2004/07/18 14:50:10 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -154,6 +154,8 @@ setrunes =
 void ()
 setalts =
 {
+	local entity e, os;
+
 	NO_ALT_WEAPONS = fput (HUNK_NO_ALT_WEAPONS, !NO_ALT_WEAPONS);
 	if (NO_ALT_WEAPONS)
 	{
