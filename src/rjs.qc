@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.59 2003/09/21 17:49:22 slotzero Exp $
+/*  $Id: rjs.qc,v 1.60 2003/09/24 21:49:04 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1982,9 +1982,9 @@ show_settings =
 			&& (VOTE_HOOK_MODE == T1_FREE_HOOK
 				|| VOTE_HOOK_MODE == T1_LITHIUM_HOOK))
 	{
-		if (temp1 & T1_HOOK_MASK == VOTE_HOOK_MODE_DEFAULT)
+		if (VOTE_HOOK_MODE == T1_FREE_HOOK)
 			self_sprint (self, "free");
-		else if (temp1 & T1_HOOK_MASK == VOTE_HOOK_MODE_DEFAULT)
+		else if (VOTE_HOOK_MODE == T1_LITHIUM_HOOK)
 			self_sprint (self, "lith");
 		else
 			self_sprint (self, "rune");
