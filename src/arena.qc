@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.1 2005/01/03 11:30:19 slotzero Exp $
+/*  $Id: arena.qc,v 1.2 2005/01/03 21:35:28 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -115,19 +115,6 @@ arena_countdown =
 };
 
 void ()
-arena_init =
-{
-	arena.state	= -1;
-	arena.deadflag	= 0;
-	arena.enemy	= world;
-	arena.oldenemy	= world;
-	arena.aiment	= world;
-
-	arena.think	= arena_countdown;
-	arena.nextthink	= time + 1;
-};
-
-void ()
 arena_results =
 {
 	local entity winner, os;
@@ -179,6 +166,9 @@ arena_results =
 			self = os;
 		}
 
+		if (winner.health >= 100 && winner.armorvalue >= 200)
+			bprint ("\bFLAWLESS VICTORY!\n");
+
 		add_frag (winner, 1);
 		bprint (winner.netname);
 		bprint (" won the round\n");
@@ -229,6 +219,19 @@ arena_death =
 	arena.nextthink	= time + 1;
 };
 
+void ()
+arena_init =
+{
+	arena.state	= -1;
+	arena.deadflag	= 0;
+	arena.enemy	= world;
+	arena.oldenemy	= world;
+	arena.aiment	= world;
+
+	arena.think	= arena_countdown;
+	arena.nextthink	= time + 1;
+};
+
 float ()
 put_client_in_arena =
 {
@@ -243,7 +246,7 @@ put_client_in_arena =
 		return FALSE;
 
 	arena.think = arena_init;
-	arena.nextthink = time + 1;
+	arena.nextthink = time;
 
 	return TRUE;
 };
@@ -256,12 +259,14 @@ arena_client_disconnect =
 
   	arena.state = -1;
 
-	if (arena.owner = self)
-		arena.owner = world;
+	if (arena.owner == self)
+	{
+		arena.owner = arena.runent;
+		arena.runent = world;
+	}
 	else
 		arena.runent = world;
 
 	arena.think = arena_countdown;
 	arena.nextthink = time;
 };
-
