@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.43 2005/03/12 08:19:34 slotzero Exp $
+/*  $Id: observer.qc,v 1.44 2005/04/02 05:37:15 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -554,6 +554,7 @@ obs_become =
 			self.runevar = 0;
 	}
 	self.aqflags		= self.aqflags | AQ_OBSERVER;
+	self.flags		= self.flags | FL_OBSERVER;
 	// Look for classname tests if you try changing this.
 	//self.classname	= "observer";
 	self.owner		= world;
@@ -888,6 +889,7 @@ obs_join_game =
 	aq_menu_set (0);
 	obs_rider_off (0);
 	self.aqflags = self.aqflags - AQ_OBSERVER;
+	self.flags = self.flags - self.flags & FL_OBSERVER;
 	set_viewport (self);
 	SetNewParms ();
 	persistent_parms ();
