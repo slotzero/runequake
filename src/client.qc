@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.51 2004/04/04 01:30:09 slotzero Exp $
+/*  $Id: client.qc,v 1.52 2004/06/20 21:50:44 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1113,7 +1113,8 @@ PlayerJump =
 	self.button2 = 0;
 
 	// player jumping sound
-	sound (self, CHAN_JUMP, "player/plyrjmp8.wav", 1, ATTN_NORM);
+	if (self.attack_finished <= time + 15)
+		sound (self, CHAN_JUMP, "player/plyrjmp8.wav", 1, ATTN_NORM);
 
 	IN_POQ([-
 		self.velocity_z = self.velocity_z + 270;
