@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.24 2003/11/26 07:54:17 slotzero Exp $
+/*  $Id: runes60.qc,v 1.25 2003/11/26 08:40:58 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -755,12 +755,11 @@ Rune_Deflect_Telefrag =
 };
 
 void ()
-launch_betty =
+Launch_Betty =
 {
 	newmis			= spawn ();
 	newmis.owner		= self.owner;
 	newmis.movetype		= MOVETYPE_BOUNCE;
-	self.touch		= SUB_Null;
 	newmis.solid		= SOLID_BBOX;
 
 	newmis.touch		= GrenadeTouch;
@@ -786,7 +785,7 @@ launch_betty =
 // This code segment detonates the 'second stage' of the grenade
 // (After it has popped up)
 void ()
-BouncerExplode =
+Betty_Package_Explode =
 {
 	local float i;
 
@@ -795,13 +794,13 @@ BouncerExplode =
 	monk_radius_hack = 0;
 
 	for (i = MAX_LAUNCH_BETTY; i >= 0; i = i - 1)
-		launch_betty ();
+		Launch_Betty ();
 
 	create_te_explosion (self.origin, 1);
 };
 
 void ()
-BouncerTouch =
+Betty_Touch =
 {
 	// XXX Why?
 	if (self.velocity == VEC_ORIGIN)
@@ -811,7 +810,7 @@ BouncerTouch =
 };
 
 void ()
-BouncerPopUp =
+Launch_Betty_Package =
 {
 	local entity missile;
 
@@ -822,16 +821,16 @@ BouncerPopUp =
 	missile.owner		= self.owner;
 	missile.movetype	= MOVETYPE_BOUNCE;
 	missile.solid		= SOLID_BBOX;
-	missile.classname	= "betty-missile";
+	missile.classname	= "betty-package";
 
 	// Set speed
 	missile.velocity	= '0 0 650';
 	missile.angles		= vectoangles (missile.velocity);
-	missile.touch		= BouncerTouch;
+	missile.touch		= Betty_Touch;
 
 	// Set Duration
 	missile.nextthink	= time + 1;
-	missile.think		= BouncerExplode;
+	missile.think		= Betty_Package_Explode;
 
 	setmodel (missile, "progs/missile.mdl");
 	setsize (missile, VEC_ORIGIN, VEC_ORIGIN);
@@ -847,61 +846,18 @@ Rune_Betty_sprint =
 	rprint (self, riders, " left\n");
 };
 
-// XXX Clean this up.
 void ()
 Rune_Betty =
 {
-	local entity missile;
 	local string s;
 
 	if (self.runevector_x > time)
 		return;
 
-	self.runevector = time + 3;
+	self.runevar	= self.runevar - 1;
+	self.runevector	= time + 3;
 
-	sound (self, CHAN_WEAPON, "weapons/grenade.wav", 1, ATTN_NORM);
-
-	IN_POQ([-
-		self.punchangle_x = -2;
-	-])
-
-	// This spawns the grenade - it is all id's standard grenade code
-	missile			= spawn ();
-	missile.owner		= self;
-	missile.movetype	= MOVETYPE_BOUNCE;
-	missile.solid		= SOLID_BBOX;
-	missile.classname	= "betty";
-
-	// set missile speed
-	makevectors (self.v_angle);
-
-	if (self.v_angle_x)
-		missile.velocity = v_forward * 600 + v_up * 200 + crandom () * v_right * 10 + crandom () * v_up * 10;
-	else
-	{
-		missile.velocity = aim (self, 10000);
-		missile.velocity = missile.velocity * 600;
-		missile.velocity_z = 200;
-	}
-
-	missile.avelocity	= '300 300 300';
-	missile.angles		= vectoangles(missile.velocity);
-
-	// if the grenade touches anything, BouncerTouch() is called
-	missile.touch		= BouncerTouch;
-
-	// Grenade has a maximum lifespan of 1.5 (seconds?)
-	// set missile duration
-	missile.nextthink	= time + 1;
-
-	// when the grenade's lifespan has expired, BouncerPopUp() is called
-	missile.think		= BouncerPopUp;
-
-	setmodel (missile, "progs/grenade.mdl");
-	setsize (missile, VEC_ORIGIN, VEC_ORIGIN);
-	setorigin (missile, self.origin);
-
-	self.runevar = self.runevar - 1;
+	W_FireGrenade ("betty");
 
 	s = ftos (self.runevar);
 	if (s == "1")

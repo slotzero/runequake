@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.18 2003/11/26 07:54:17 slotzero Exp $
+/*  $Id: weapons.qc,v 1.19 2003/11/26 08:40:58 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -603,7 +603,9 @@ GrenadeExplode_targ =
 {
 	local float d;
 
-	if (self.classname == "grenade" || self.classname == "betty")
+	if (self.classname == "flashgrenade")
+		T_RadiusLight (self, 500);
+	else
 	{
 		if (targ)
 		{
@@ -619,8 +621,6 @@ GrenadeExplode_targ =
 		T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 120, targ, self.classname);
 		monk_radius_hack = 0;
 	}
-	else
-		T_RadiusLight (self, 500);
 
 	create_te_explosion (self.origin, 1);
 };
@@ -657,15 +657,15 @@ W_FireGrenade =
 	local float eff, spam_cnt;
 	local string snd;
 
-	if (class == "grenade")
-	{
-		snd	= "weapons/grenade.wav";
-		eff	= 0;
-	}
-	else
+	if (class == "flashgrenade")
 	{
 		snd	= "demon/dhit2.wav";
 		eff	= EF_DIMLIGHT;
+	}
+	else
+	{
+		snd	= "weapons/grenade.wav";
+		eff	= 0;
 	}
 
 	if (deathmatch & DM_MODE_PRACTICE)
@@ -690,19 +690,19 @@ W_FireGrenade =
 	sound (self, CHAN_WEAPON, snd, 1, ATTN_NORM);
 	smallkick ();
 
-	newmis = spawn ();
-	newmis.owner = self;
-	newmis.movetype = MOVETYPE_BOUNCE;
-	newmis.solid = SOLID_BBOX;
-	newmis.classname = class;
-	newmis.effects = eff;
+	newmis			= spawn ();
+	newmis.owner		= self;
+	newmis.movetype		= MOVETYPE_BOUNCE;
+	newmis.solid		= SOLID_BBOX;
+	newmis.classname	= class;
+	newmis.effects		= eff;
 
 	// set missile speed
 
 	makevectors (self.v_angle);
 
 	if (self.v_angle_x)
-		newmis.velocity = v_forward*600 + v_up * 200 + crandom ()*v_right*10 + crandom ()*v_up*10;
+		newmis.velocity = v_forward * 600 + v_up * 200 + crandom () * v_right * 10 + crandom () * v_up * 10;
 	else
 	{
 		newmis.velocity = aim (self, 10000);
@@ -710,15 +710,21 @@ W_FireGrenade =
 		newmis.velocity_z = 200;
 	}
 
-	newmis.avelocity = '300 300 300';
+	newmis.avelocity	= '300 300 300';
+	newmis.angles		= vectoangles (newmis.velocity);
 
-	newmis.angles = vectoangles (newmis.velocity);
-
-	newmis.touch = GrenadeTouch;
-
-	// set missile duration
-	newmis.nextthink = time + 2.5;
-	newmis.think = GrenadeExplode;
+	if (class == "betty")
+	{
+		newmis.touch		= Betty_Touch;
+		newmis.nextthink	= time + 1;
+		newmis.think		= Launch_Betty_Package;
+	}
+	else
+	{
+		newmis.touch		= GrenadeTouch;
+		newmis.nextthink	= time + 2.5;
+		newmis.think		= GrenadeExplode;
+	}
 
 	setmodel (newmis, "progs/grenade.mdl");
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
