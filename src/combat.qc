@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.26 2004/09/16 01:37:10 slotzero Exp $
+/*  $Id: combat.qc,v 1.27 2004/11/28 07:42:17 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -436,10 +436,10 @@ T_Damage =
 	else if (targ.invincible_finished >= time
 			|| targ.owner.invincible_finished >= time)
 	{
-		if (self.invincible_sound < time)
+		if (targ.invincible_sound < time)
 		{
 			sound (targ, CHAN_AUTO, "items/protect3.wav", 1, ATTN_NORM);
-			self.invincible_sound = time + 2;
+			targ.invincible_sound = time + 2;
 		}
 		take = 0;
 	}
