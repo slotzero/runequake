@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.9 2003/07/26 02:00:08 slotzero Exp $
+/*  $Id: hook.qc,v 1.10 2003/07/27 13:18:07 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -393,7 +393,7 @@ hook_bit_to_type =
 void (float new_bit)
 change_hook_mode =
 {
-	local entity e;
+	// local entity e;
 	local float curr_type, new_type, old_temp1;
 	local string s;
 
@@ -436,7 +436,7 @@ change_hook_mode =
 			e.aqflags = e.aqflags - e.aqflags & AQ_VOTE_HOOK;
 			e = find (e, classname, "player");
 		} */
-		remove_player_bit (aqflags, AQ_VOTE_HOOK, 0);
+		remove_player_bit (aqflags, AQ_VOTE_HOOK);
 	}
 };
 

@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.11 2003/07/27 12:43:12 slotzero Exp $
+/*  $Id: weapons.qc,v 1.12 2003/07/27 13:18:07 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -664,7 +664,6 @@ W_FireGrenade =
 		if (self.grenade_spam_time > time)
 		{
 			spam_cnt = ceil (self.grenade_spam_time - time);
-			dprint (ftos (spam_cnt), "\n");
 
 			if (spam_cnt > 4)
 			{

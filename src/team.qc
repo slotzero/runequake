@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.12 2003/07/26 02:00:08 slotzero Exp $
+/*  $Id: team.qc,v 1.13 2003/07/27 13:18:07 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -410,7 +410,7 @@ change_teamplay =
 		e.aqflags = e.aqflags - e.aqflags & AQ_VOTE_TEAM;
 		e = find (e, classname, "player");
 	}*/
-	remove_player_bit (aqflags, AQ_VOTE_TEAM, 0);
+	remove_player_bit (aqflags, AQ_VOTE_TEAM);
 };
 
 void (float check_state)
