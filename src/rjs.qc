@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.86 2004/02/15 04:53:32 slotzero Exp $
+/*  $Id: rjs.qc,v 1.87 2004/02/21 06:09:10 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1716,33 +1716,30 @@ show_settings =
 	else
 		self_sprint (self, "xxx");
 	self_sprint (self, "\n  frag penalty   ");	self_sprint_boolean (self, teamplay & TEAM_FRAG_PENALTY);
-	self_sprint (self, "  forced teams ");
-	i = enforced_teams ();
-	if (i)
-		self_sprint_float (self, i);
-	else
-		self_sprint (self, "no");
+
 	i = vote_team_disabled (0);
-	self_sprint (self, "\n  no vote        ");	self_sprint_boolean (self, i);
+	self_sprint (self, "  vote-team   ");		self_sprint_boolean (self, !i);
+	self_sprint (self, "\n  forced teams   ");
+	i = enforced_teams ();				self_sprint_boolean (self, i);
 	self_sprint (self, "\n");
 
 	self_sprint (self, "General:");
 	self_sprint (self, "\n  items respawn  ");	self_sprint_boolean (self, deathmatch & DM_RESPAWN);
-	self_sprint (self, "   pent repl  ");		self_sprint_boolean (self, deathmatch & DM_PENT_REPLACEMENT);
+	self_sprint (self, "  pent repl   ");		self_sprint_boolean (self, deathmatch & DM_PENT_REPLACEMENT);
 	self_sprint (self, "\n  weapons stay   ");	self_sprint_boolean (self, deathmatch & DM_WEAPONS_STAY);
-	self_sprint (self, "   lan mode   ");		self_sprint_boolean (self, deathmatch & DM_LAN_MODE);
+	self_sprint (self, "  removed     ");		self_sprint (self, "xxx");
 	self_sprint (self, "\n  long quad resp "); 	self_sprint_boolean (self, deathmatch & DM_LONG_QUAD_RESPAWN);
-	self_sprint (self, "   exit safe  ");		self_sprint_boolean (self, deathmatch & DM_EXIT_NON_FATAL);
+	self_sprint (self, "  exit safe   ");		self_sprint_boolean (self, deathmatch & DM_EXIT_NON_FATAL);
 	self_sprint (self, "\n  quad replace   ");	self_sprint_boolean (self, deathmatch & DM_QUAD_REPLACEMENT);
-	self_sprint (self, "   no dischrg ");		self_sprint_boolean (self, deathmatch & DM_NO_DISCHARGE);
+	self_sprint (self, "  no dischrg  ");		self_sprint_boolean (self, deathmatch & DM_NO_DISCHARGE);
 	self_sprint (self, "\n  no drop powup  ");	self_sprint_boolean (self, deathmatch & DM_NO_DROP_POWERUP);
-	self_sprint (self, "   no altweap ");		self_sprint_boolean (self, deathmatch & DM_NO_ALT_WEAPONS);
+	self_sprint (self, "  no altweap  ");		self_sprint_boolean (self, deathmatch & DM_NO_ALT_WEAPONS);
 	self_sprint (self, "\n  no drop armor  ");	self_sprint_boolean (self, deathmatch & DM_NO_DROP_ARMOR);
-	self_sprint (self, "   dmg frags  ");		self_sprint_boolean (self, deathmatch & DM_DAMAGE_MATCH);
+	self_sprint (self, "  dmg frags   ");		self_sprint_boolean (self, deathmatch & DM_DAMAGE_MATCH);
 	self_sprint (self, "\n  sv_maxspeed    ");
 	i = cvar ("sv_maxspeed");
 	self_sprint_float (self, i);
-	self_sprint (self, "   sv_aim  ");
+	self_sprint (self, "  sv_aim   ");
 	i = cvar ("sv_aim");
 	if (i == rint (i))
 		self_sprint (self, "   ");
@@ -1775,7 +1772,7 @@ show_settings =
 	else
 		self_sprint (self, "rune");
 	i = vote_hook_disabled (0);
-	self_sprint (self, " hook vote  ");		self_sprint_boolean (self, !i);
+	self_sprint (self, " vote-hook   ");		self_sprint_boolean (self, !i);
 		self_sprint (self, "\n  hook default   ");
 	if (VOTE_HOOK_MODE_DEFAULT
 			&& temp1 & T1_HOOK_MODE_DEFAULT_ON
