@@ -1,4 +1,4 @@
-// $Id: map.qc,v 1.2 2002/05/10 03:09:22 slotzero Exp $
+// $Id: map.qc,v 1.3 2002/05/12 18:14:47 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -222,13 +222,14 @@ allowed_map =
 
 	if (noexit & NOEXIT_MARLINSPIKE_LEVELS)
 	{
-		if (m == "dm1")  return 0; // Place of Two Deaths
+		if (m == "e1m4") return 0; // The Grisly Grotto
+		if (m == "e1m6") return 0; // The Door To Chthon
 		if (m == "e1m8") return 0; // Ziggurat Vertigo
-		if (m == "e2m6") return 0; // The Dismal Oubliette
+		if (m == "e2m3") return 0; // Crypt Of Decay
+		if (m == "e2m7") return 0; // Underneath
 		if (m == "e3m4") return 0; // Satan's Dark Delight
 		if (m == "e3m5") return 0; // Wind Tunnels
 		if (m == "e4m1") return 0; // The Sewage System
-		if (m == "e4m2") return 0; // The Tower of Despair
 		if (m == "e4m6") return 0; // The Pain Maze
 		if (m == "end")  return 0; // Shub-Niggurath's Pit
 	}
