@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.37 2005/04/02 07:35:35 slotzero Exp $
+/*  $Id: team.qc,v 1.38 2005/04/02 07:37:21 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -554,7 +554,8 @@ sprint_team =
 void ()
 team_fraglimit =
 {
-	if (fraglimit && (tf_1 >= fraglimit
+	if (fraglimit &&  (tf_0 >= fraglimit
+			|| tf_1 >= fraglimit
 			|| tf_2 >= fraglimit
 			|| tf_3 >= fraglimit
 			|| tf_4 >= fraglimit
