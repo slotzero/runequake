@@ -1,12 +1,14 @@
 #!/usr/bin/perl -w
 use strict;
 
-# $Id: map,v 1.3 2002/05/10 19:57:43 slotzero Exp $
+# $Id: map,v 1.4 2002/05/12 03:36:52 slotzero Exp $
 #
 # Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 # See the file `Copying' in the distribution for terms.
 
 (my $Me = $0) =~ s-.*/--;
+
+my @custom = find_custom ("../maps");
 
 my %lan = map { $_ => 1 } qw(e1m7 e1m8 end);
 
@@ -59,7 +61,13 @@ my @lev = (
 		'e4m8',	# The Nameless City
 		'e4m7',	# Azure Agony
 	],
+
+        [ # custom
+                @custom,
+        ],
 );
+
+unless (@custom) { pop (@lev); }
 
 # Construct %wan, the list of levels which aren't in %lan.
 my %wan;
@@ -159,6 +167,7 @@ print "\n";
 print "string ()\n";
 print "impulse_to_map =\n";
 print "{\n";
+pop (@lev); # don't include custom in menu
 for my $map (map { @$_ } @lev ) {
     my $impulse = $map;
     if ($map =~ /^dm([1-6])$/)	{ $impulse = "5$1" }
@@ -259,3 +268,16 @@ EOF
 print "\tteam_stats_1_lead = lead;\n";
 print "\treturn t;\n";
 print "};\n";
+
+sub find_custom
+{
+        my @custom;
+
+        foreach my $dir (@_) {
+                opendir (DIR, $dir) or next;
+                @custom = grep (/\.bsp/, readdir (DIR));
+                for my $map (0, 0 .. $#custom) { $custom[$map] =~ s/\.bsp//g; }
+                closedir (DIR);
+        }
+        return @custom;
+}
