@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.15 2004/04/30 06:39:50 slotzero Exp $
+/*  $Id: hunked.qc,v 1.16 2004/06/26 04:01:21 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -27,19 +27,25 @@ float HUNK_CLIENT_DISCONNECT	= %100;
 
 float ()
 server_time =
-{	IN_QW(return 0;)
+{
 	local float i;
 
+	if (!HUNK_CONTEXT_MAX)
+		return 0;
+
 	i = Read_Hunk_Float (HUNK_CONTEXT, HUNK_SERVER_TIME);
-	i = i + floor (time - LAST_TIME_UPDATE);
+	i = i + time - LAST_TIME_UPDATE;
 
 	return i;
 };
 
 void ()
 update_server_time =
-{	IN_QW(return;)
+{
 	local float i;
+
+	if (!HUNK_CONTEXT_MAX)
+		return;
 
 	i = server_time ();
 	Write_Hunk_Float (HUNK_CONTEXT, HUNK_SERVER_TIME, i);
@@ -48,10 +54,13 @@ update_server_time =
 
 string (float n)
 parse_time =
-{	IN_QW(return string_null;)
+{
 	local float i, hours, minutes, seconds;
 	local string format = "0000:00:00";
 	local string x;
+
+	if (!HUNK_CONTEXT_MAX)
+		return "Command not supported on this server.\n";
 
 	seconds	= floor (n);
 	minutes	= floor (seconds / 60);
@@ -129,9 +138,12 @@ PQ_Version =
 
 void ()
 Log_Client_Disconnect =
-{	IN_QW(return;)
+{
 	local float i, n, max, offset, e_time, elapsed;
 	local string e_name;
+
+	if (!HUNK_CONTEXT_MAX)
+		return;
 
 	if (MAX_CLIENT_DISCONNECT_LOG < 1 || MAX_CLIENT_DISCONNECT_LOG > 20)
 		return;
@@ -167,9 +179,15 @@ Log_Client_Disconnect =
 
 void ()
 Client_Disconnect_Log =
-{	IN_QW(return;)
+{
 	local float i, max, offset, e_time, e_away, server_t;
 	local string e_name;
+
+	if (!HUNK_CONTEXT_MAX)
+	{
+		self_sprint (self, "Command not supported on this server.\n");
+		return;
+	}
 
 	if (MAX_CLIENT_DISCONNECT_LOG < 1 || MAX_CLIENT_DISCONNECT_LOG > 20)
 	{
