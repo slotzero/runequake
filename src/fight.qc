@@ -1,4 +1,4 @@
-/*  $Id: fight.qc,v 1.10 2004/06/25 01:09:51 slotzero Exp $
+/*  $Id: fight.qc,v 1.11 2004/06/25 01:35:17 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -139,9 +139,6 @@ The monster is in a melee attack, so get as close as possible to .enemy
 void (float d)
 ai_charge =
 {
-	if (self.runevar == 2)
-		return;
-
 	ai_face ();
 	movetogoal (d);		// done in C code...
 };
