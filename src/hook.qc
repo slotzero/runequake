@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.18 2004/07/08 08:03:11 slotzero Exp $
+/*  $Id: hook.qc,v 1.19 2004/07/08 08:55:25 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -376,111 +376,6 @@ HookToggle =
 		HookOn ();
 };
 
-float (float type)
-hook_type_to_bit =
-{
-	if (type == 1)
-		return T1_FREE_HOOK;
-	else if (type == 2)
-		return T1_LITHIUM_HOOK;
-	else
-		return T1_HOOK_MASK;
-};
-
-float (float bit)
-hook_bit_to_type =
-{
-	if (bit & T1_HOOK_MASK == T1_FREE_HOOK)
-		return 1;
-	else if (bit & T1_HOOK_MASK == T1_LITHIUM_HOOK)
-		return 2;
-	else
-		return -1;
-};
-
-void (float new_bit) // XXX REMOVE THIS (or redo this)
-change_hook_mode =
-{
-	// local entity e;
-	local float curr_type, new_type, old_temp1;
-	local string s;
-
-	curr_type = hook_bit_to_type (temp1);
-	new_type = hook_bit_to_type (new_bit);
-
-	if (curr_type == new_type)
-		return;
-
-	old_temp1 = temp1;
-
-	if (new_type != 2)
-	{
-		if (temp1 & T1_LITHIUM_HOOK)
-			temp1 = temp1 - temp1 & T1_LITHIUM_HOOK;
-	}
-        if (new_type != 1)
-	{
-		if (temp1 & T1_FREE_HOOK)
-			temp1 = temp1 - temp1 & T1_FREE_HOOK;
-	}
-
-	new_bit = hook_type_to_bit (new_type);
-	if (new_type > 0 && !temp1 & new_bit)
-		temp1 = temp1 | new_bit;
-
-	if (old_temp1 != temp1)
-	{
-		dprint ("new_temp1(");
-		dprint_float (temp1);
-		dprint (")\n");
-
-		s = ftos (temp1);
-		cvar_set_infokey ("temp1", s);
-
-		// Remove the vote bit from all players.
-		// I'm pretty sure the new vote code handles this. :)
-		//remove_bit_from_players (vote_flags, VOTE_HOOK);
-	}
-};
-
-void (float force_type) // XXX REMOVE THIS (or redo)
-toggle_hook_mode =
-{
-	local float curr_type, wanted_type, wanted_bit;
-
-	curr_type		= hook_bit_to_type (temp1);
-	if (force_type)
-		wanted_type	= force_type;
-	else
-		wanted_type	= hook_bit_to_type (VOTE_HOOK_MODE);
-
-	if (force_type && curr_type == wanted_type)
-		return;
-	if (wanted_type <= 0)
-		wanted_type = 1;
-
-	wanted_bit		= hook_type_to_bit (wanted_type);
-	if (curr_type > 0)
-		change_hook_mode (T1_HOOK_MASK);
-	else
-		change_hook_mode (wanted_bit);
-};
-
-// 0 off
-// 1 free
-// 2 lithium
-
-float ()
-hook_state =
-{
-	if (!temp1 & T1_HOOK_MASK || temp1 & T1_HOOK_MASK == T1_HOOK_MASK)
-		return 0;
-	if (temp1 & T1_FREE_HOOK)
-		return 1;
-	if (temp1 & T1_LITHIUM_HOOK)
-		return 2;
-};
-
 void ()
 toggle_free_hook =
 {
@@ -516,6 +411,18 @@ toggle_free_hook =
 };
 
 void ()
+free_hook =
+{
+	if (temp1 & T1_LITHIUM_HOOK)
+		temp1 = temp1 - temp1 & T1_LITHIUM_HOOK;
+
+	if (temp1 & T1_FREE_HOOK)
+		temp1 = temp1 - temp1 & T1_FREE_HOOK;
+
+	toggle_free_hook ();
+};
+
+void ()
 lithium_hook =
 {
 	local string new;
@@ -532,4 +439,42 @@ lithium_hook =
 
 	new = ftos (temp1);
 	cvar_set_infokey ("temp1", new);
+};
+
+// 0 off
+// 1 free
+// 2 lithium
+
+float (float bits)
+hook_type =
+{
+	if (!bits & T1_HOOK_MASK || bits & T1_HOOK_MASK == T1_HOOK_MASK)
+		return 0;
+	if (bits & T1_FREE_HOOK)
+		return 1;
+	if (bits & T1_LITHIUM_HOOK)
+		return 2;
+};
+
+void ()
+hook_default =
+{
+	local float wanted;
+
+	if (!temp1 & T1_HOOK_DEFAULT_ON)
+		return;
+
+	if (count_players_by_ent (0))
+		return;
+
+	wanted = hook_type (HOOK_DEFAULT);
+	if (wanted == hook_type (temp1))
+		return;
+
+	if (wanted == 0)
+		toggle_free_hook ();
+	else if (wanted == 1)
+		free_hook ();
+	else if (wanted == 2)
+		lithium_hook ();
 };

@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.94 2004/07/08 01:32:55 slotzero Exp $
+/*  $Id: defs.qc,v 1.95 2004/07/08 08:55:25 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -748,7 +748,7 @@ float T1_HOOK_MASK		= 786432;
 float T1_FREE_HOOK		= 262144;
 float T1_LITHIUM_HOOK		= 524288;
 float T1_HOOK_NO_VOTE		= 1048576;
-float T1_HOOK_MODE_DEFAULT_ON	= 2097152;
+float T1_HOOK_DEFAULT_ON	= 2097152;
 
 // Three bits set the rune drop delay, they're 512, 65536 and 131072.
 // They aren't contiguous, and the delay for 60 is out of order, for

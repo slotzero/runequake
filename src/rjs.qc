@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.122 2004/07/08 08:03:11 slotzero Exp $
+/*  $Id: rjs.qc,v 1.123 2004/07/08 08:55:25 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1786,17 +1786,16 @@ show_settings =
 	i = vote_hook_disabled (0);
 	self_sprint (self, " vote-hook   ");		self_sprint_boolean (self, !i);
 		self_sprint (self, "\n  hook default   ");
-	if (VOTE_HOOK_MODE_DEFAULT
-			&& temp1 & T1_HOOK_MODE_DEFAULT_ON
-			&& (VOTE_HOOK_MODE == T1_FREE_HOOK
-				|| VOTE_HOOK_MODE == T1_LITHIUM_HOOK))
+	if (temp1 & T1_HOOK_DEFAULT_ON)
 	{
-		if (VOTE_HOOK_MODE == T1_FREE_HOOK)
+		if (!HOOK_DEFAULT || HOOK_DEFAULT == T1_HOOK_MASK)
+			self_sprint (self, "rune");
+		else if (HOOK_DEFAULT == T1_FREE_HOOK)
 			self_sprint (self, "free");
-		else if (VOTE_HOOK_MODE == T1_LITHIUM_HOOK)
+		else if (HOOK_DEFAULT == T1_LITHIUM_HOOK)
 			self_sprint (self, "lith");
 		else
-			self_sprint (self, "rune");
+			self_sprint (self, "err ");
 	}
 	else
 		self_sprint (self, "off ");
@@ -2610,20 +2609,6 @@ vote_team_mode_default =
 	toggle_teamplay (VOTE_TEAM_MODE_DEFAULT);
 };
 
-void ()
-vote_hook_mode_default =
-{
-	if (!VOTE_HOOK_MODE_DEFAULT
-			|| !temp1 & T1_HOOK_MODE_DEFAULT_ON
-			|| (VOTE_HOOK_MODE != T1_FREE_HOOK
-				&& VOTE_HOOK_MODE != T1_LITHIUM_HOOK))
-		return;
-	if (count_players_by_ent (0))
-		return;
-
-	toggle_hook_mode (VOTE_HOOK_MODE_DEFAULT);
-};
-
 // type 0 is for self's information only
 // type 1 is when a new vote is registered
 // type 2 is by the vote counting entity
@@ -2808,7 +2793,7 @@ vote_counter_think =
 		return;
 
 	vote_team_mode_default ();
-	vote_hook_mode_default ();
+	hook_default ();
 
 	// XXX This should still think until I figure out a better way to check this.
 

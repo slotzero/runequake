@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.37 2004/05/23 04:49:12 slotzero Exp $
+/*  $Id: settings.qc,v 1.38 2004/07/08 08:55:25 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -162,8 +162,7 @@ float VOTE_TEAM_MODE_DEFAULT	= -1;	// -1 teams off, 0 disabled, 1 teams on
 // on in order for the server to reset hook automatically.
 
 float VOTE_HOOK_PERCENTAGE	= 0.51;
-float VOTE_HOOK_MODE		= 262144; // 262144 (free) or 524288 (lith)
-float VOTE_HOOK_MODE_DEFAULT	= -1;	// -1 hook off, 0 disabled, 1 free, 2 lithium
+float HOOK_DEFAULT		= 262144; // 0 (off) or 262144 (free) or 524288 (lith)
 
 // This is the number of seconds of protection that newly spawned players
 // get.  Set to 0 to disable.
