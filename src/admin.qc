@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.35 2004/07/05 23:22:50 slotzero Exp $
+/*  $Id: admin.qc,v 1.36 2004/07/06 00:27:39 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -621,6 +621,8 @@ admin_change_map =
 	if (!is_admin ())
 		return;
 
+	impulse_override_cancel ();
+
 	self.state	= 0;
 	self.aqstate	= self.aqstate | AQS_IMPOVER_MAP | AQS_ADMIN_CHANGE_MAP_MENU;
 
@@ -682,7 +684,10 @@ admin_impulse_commands =
 	}
 
 	else if (self.impulse == IMP_ADMIN_CHANGE_MAP)
+	{
 		admin_change_map ();
+		return;
+	}
 
 	impulse_override_cancel ();
 };
