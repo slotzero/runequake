@@ -1,4 +1,4 @@
-/*  $Id: customap.qc,v 1.7 2004/01/03 11:15:24 slotzero Exp $
+/*  $Id: customap.qc,v 1.8 2004/01/03 11:59:53 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -281,11 +281,8 @@ rand_custom_qw =
 	if (i <= 1 || i > tot)
 		i = tot;
 
-	if (i)
-	{
-		s = ftos (i);
-		cvar_set_infokey ("random_custom", s);
-	}
+	s = ftos (i);
+	cvar_set_infokey ("random_custom", s);
 
 	return rand_custom (i);
 };
