@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.44 2003/12/06 21:17:29 slotzero Exp $
+/*  $Id: client.qc,v 1.45 2004/01/01 06:16:59 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -697,6 +697,7 @@ PutClientInServer =
 	if (newplayer)
 	{
 		self.aqflags = self.aqflags | AQ_INIT_DONE | AQ_NO_HUD;
+		self.rqflags = self.rqflags | RQ_CYCLE_ALTERNATES;
 		player_init_spawn ();
 	}
 
