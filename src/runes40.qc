@@ -1,4 +1,4 @@
-/*  $Id: runes40.qc,v 1.17 2004/04/24 04:09:02 slotzero Exp $
+/*  $Id: runes40.qc,v 1.18 2004/04/30 08:32:46 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -807,6 +807,10 @@ Resurrect =
 		self.max_health = MAX_HEALTH_NORMAL;
 		self.health = self.max_health;
 		self.super_time = -2;
+
+		if (self.super_damage_finished < time)
+			Hat_Spawn (self, "progs/quaddama.mdl", '0 0 30', VEC_ORIGIN, 4);
+
 		self.super_damage_finished = time + 15;
 		self.items = self.items | IT_QUAD;
 		self.effects = EF_DIMLIGHT;
