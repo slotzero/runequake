@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.11 2003/10/23 23:37:44 slotzero Exp $
+/*  $Id: hunk.qc,v 1.12 2003/10/25 01:08:22 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -68,6 +68,11 @@ Read_Hunk =
 	local entity hunk;
 
 	hunk = Get_Hunk (type, offset);
+	if (!hunk)
+	{
+		dprint ("Read_Hunk: hunk is null\n");
+		return string_null;
+	}
 
 	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
 };
@@ -90,6 +95,8 @@ Read_Hunk_Float =
 void (entity hunk, string s)
 Write_Hunk_e =
 {
+	if (!hunk)
+		return dprint ("Write_Hunk_e: hunk is null\n");
 	strcpy (@AddInt(&hunk, PQUAKEC_TO_PSTRING), s);
 };
 
@@ -119,6 +126,12 @@ Read_Hunk_Max_e =
 {
 	local float i, pdata, dword;
 	local string data;
+
+	if (!hunk)
+	{
+		dprint ("Read_Hunk_Max_e: hunk is null\n");
+		return string_null;
+	}
 
 	data = allocate_string_size (bytes);
 	pdata = AddInt (&data, PSTRING_TO_PQUAKEC);
