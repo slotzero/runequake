@@ -1,4 +1,4 @@
-// $Id: defs.qc,v 1.2 2002/02/22 05:05:41 slotzero Exp $
+// $Id: defs.qc,v 1.3 2002/03/03 00:24:56 slotzero Exp $
 
 /*
 ==============================================================================
@@ -1151,8 +1151,20 @@ void (entity client, string s) self_stuffcmd	= #21;
 entity (vector org, float rad) findradius	= #22;
 
 IN_POQ([-
-void (...) bprint				= #23;
-void (entity client, ...) self_sprint		= #24;
+void (string s) bprint				= #23;
+void (string s, string s2) bprint2				= #23;
+void (string s, string s2, string s3) bprint3				= #23;
+void (string s, string s2, string s3, string s4) bprint4				= #23;
+void (string s, string s2, string s3, string s4, string s5) bprint5				= #23;
+void (string s, string s2, string s3, string s4, string s5, string s6) bprint6				= #23;
+void (string s, string s2, string s3, string s4, string s5, string s6, string s7) bprint7				= #23;
+void (entity client, string s) self_sprint	= #24;
+void (entity client, string s, string s2) self_sprint2	= #24;
+void (entity client, string s, string s2, string s3) self_sprint3	= #24;
+void (entity client, string s, string s2, string s3, string s4) self_sprint4	= #24;
+void (entity client, string s, string s2, string s3, string s4, string s5) self_sprint5	= #24;
+void (entity client, string s, string s2, string s3, string s4, string s5, string s6) self_sprint6	= #24;
+void (entity client, string s, string s2, string s3, string s4, string s5, string s6, string s7) self_sprint7	= #24;
 -])
 
 IN_QW([-
@@ -1160,7 +1172,7 @@ void (float level, string s, string s2, string s3, string s4, string s5, string 
 void (entity client, float level, string s, string s2, string s3, string s4, string s5, string s6) xself_sprint6	= #24;
 -])
 
-void (...) dprint				= #25;
+void (string s) dprint				= #25;
 string (float f) ftos				= #26;
 string (vector v) vtos				= #27;
 void () coredump				= #28;	// prints all edicts
@@ -1226,7 +1238,13 @@ void (string s) xchangelevel			= #70;
 
 void (string var, string val) cvar_set		= #72;	// sets cvar.value
 
-void (entity client, ...) self_centerprint	= #73;	// sprint, but in middle
+void (entity client, string s) self_centerprint = #73;	// sprint, but in middle
+void (entity client, string s, string s2) self_centerprint2 = #73;
+void (entity client, string s, string s2, string s3) self_centerprint3 = #73;
+void (entity client, string s, string s2, string s3, string s4) self_centerprint4 = #73;
+void (entity client, string s, string s2, string s3, string s4, string s5) self_centerprint5 = #73;
+void (entity client, string s, string s2, string s3, string s4, string s5, string s6) self_centerprint6 = #73;
+void (entity client, string s, string s2, string s3, string s4, string s5, string s6, string s7) self_centerprint7 = #73;
 
 void (vector pos, string samp, float vol, float atten) ambientsound = #74;
 

@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.3 2002/03/02 16:42:34 slotzero Exp $
+# $Id: Makefile,v 1.4 2002/03/03 00:24:56 slotzero Exp $
 #
 # Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 # See the file `Copying' in the distribution for terms.
@@ -78,7 +78,7 @@ source_list	:= \
 make_func	:= \
 	perl -0777ne 'print "$$1 $$2 $$3;\n" \
 			while /^((?:void|float|entity|string|vector)) \
-				\s* (\([\s\w(),\w]*\)) \s* (\w+) \s* =/gsmx' \
+				\s* (\([\s\w(),.]*\)) \s* (\w+) \s* =/gsmx' \
 	    $(source_list) >func.qc
 
 all: $(progs_all)
