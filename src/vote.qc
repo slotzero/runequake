@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.18 2004/07/09 07:45:40 slotzero Exp $
+/*  $Id: vote.qc,v 1.19 2004/07/09 08:53:34 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -232,9 +232,8 @@ count_votes =
 void ()
 vote_think =
 {
-	local string s;
-
 	IN_POQ([-
+		local string s;
 		// poq prevent crashing error
 		if (!HUNK_CONTEXT_MAX)
 		{
