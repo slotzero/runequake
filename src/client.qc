@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.67 2004/10/23 21:42:06 slotzero Exp $
+/*  $Id: client.qc,v 1.68 2004/11/27 01:53:59 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1205,13 +1205,12 @@ WaterMove =
 		if (self.watertype == CONTENT_LAVA)
 		{
 			// human torch: allow lava baths
-			if (self.runetype != RN_TORCH && self.dmgtime < time)
+			if (self.dmgtime < time
+					&& self.radsuit_finished < time
+					&& self.runetype != RN_TORCH
+					&& !(self.runetype == RN_FIREWALK && self.waterlevel == 1))
 			{
-				if (self.radsuit_finished > time)
-					self.dmgtime = time + 1;
-				else
-					self.dmgtime = time + 0.2;
-
+				self.dmgtime = time + 0.2;
 				T_Damage (self, world, world, 10 * self.waterlevel, "lava");
 			}
 		}
