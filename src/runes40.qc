@@ -1,4 +1,4 @@
-// $Id: runes40.qc,v 1.3 2002/04/21 03:47:37 slotzero Exp $
+// $Id: runes40.qc,v 1.4 2002/04/22 02:45:13 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -223,6 +223,10 @@ shambler_slave_respawn =
 		return;
 	}
 
+	// Shambler is frozen; unfreeze her.
+	if (sham.runevar == 2)
+		Unfreeze (sham);
+
 	// Reset the runevar so he'll be unstuck.
 	sham.runevar = 0;
 
@@ -272,6 +276,12 @@ void (float by_player)
 Rune_ShamblerReloc =
 {
 	local entity old_self;
+
+	if (self.runent.runevar == 2)
+	{
+		sprint (self, "Your shambler is frozen!\n");
+		return;
+	}
 
 	old_self = self;
 	self = self.runent;

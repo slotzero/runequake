@@ -1,8 +1,11 @@
-$Id: Changes,v 1.6 2002/04/21 03:47:26 slotzero Exp $
+$Id: Changes,v 1.7 2002/04/22 02:45:00 slotzero Exp $
 
 Version 0.3  Sat Apr 20 21:44:23 EST 2002
 
     - Bug Fixes
+
+    	- When a frozen shambler has exhausted its health, Freeze_Frozen()
+	  forces her origin back to the freeze trap.  This is fixed.
 
         - The hook releases from either the target or attacker when the Recall,
           Teleport, Phased, or Dual Recall rune is used or when attached to a

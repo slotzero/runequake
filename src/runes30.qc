@@ -1,4 +1,4 @@
-// $Id: runes30.qc,v 1.3 2002/04/21 03:47:36 slotzero Exp $
+// $Id: runes30.qc,v 1.4 2002/04/22 02:45:13 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -418,6 +418,26 @@ Freeze_Think =
 	}
 };
 
+void (entity e)
+Unfreeze =
+{
+	local entity of_e;
+
+	of_e = find (world, classname, "freeze");
+	while (of_e)
+	{
+		if (of_e.runent == e)
+		{
+			of_e.runent.attack_finished = time + 1;
+			of_e.runevar = 0;
+			sound (of_e.runent, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
+			of_e.think = SUB_Remove;
+			of_e.nextthink = time + 3;
+		}
+		of_e = find (of_e, classname, "freeze");
+	}
+};
+
 void ()
 Freeze_Frozen =
 {
@@ -467,6 +487,8 @@ Freeze_Frozen =
 				centerprint (self.runent, "Released from ice trap");
 			stuffcmd (self.runent, CSHIFT_NONE);
 		}
+		else if (self.runent.classname == "shambler_slave")
+			self.runent.runevar = 0;
 
 		sound (self, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
 		self.think = SUB_Remove;
@@ -506,6 +528,17 @@ Freeze_Touch =
 			sprint (self.owner, " is frozen in your ice trap.\n");
 		}
 	}
+	else if (other.classname == "shambler_slave")
+	{
+		other.runevar = 2;
+		sprint (other.owner, "Your shambler is frozen in ");
+		sprint (other.owner, self.owner.netname);
+		sprint (other.owner, "'s ice trap.\n");
+
+		sprint (self.owner, other.owner.netname);
+		sprint (self.owner, "'s shambler is frozen in your ice trap.\n");
+	}
+
 
 	sound (self, CHAN_BODY, "shambler/smack.wav", 1, ATTN_NORM);
 
