@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.12 2003/10/10 20:43:39 slotzero Exp $
+/*  $Id: runes60.qc,v 1.13 2003/10/18 17:24:19 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -76,7 +76,7 @@ Glue_Stuck =
 
 	setorigin (self.runent, self.origin);
 
-	self.runent.velocity	= '0 0 0';
+	self.runent.velocity	= VEC_ORIGIN;
 	self.nextthink		= time + sys_ticrate;
 };
 
@@ -253,7 +253,7 @@ Blizzard_Freeze =
 	if (tofreeze.classname == "player")
 	{
 		if (tofreeze == self)
-			sprint (tofreeze, "Ice crystals are forming around you!");
+			sprint (tofreeze, "Ice crystals are forming around you!\n");
 		else
 			sprint (tofreeze, "You're caught in a blizzard!\n");
 	}

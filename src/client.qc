@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.37 2003/10/18 05:11:43 slotzero Exp $
+/*  $Id: client.qc,v 1.38 2003/10/18 17:24:18 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -675,7 +675,7 @@ PutClientInServer =
 	setsize (self, VEC_HULL_MIN, VEC_HULL_MAX);
 
 	self.view_ofs = PLAYER_VIEW_OFFSET;
-	self.velocity = '0 0 0';
+	self.velocity = VEC_ORIGIN;
 	self.state = 0;
 	self.aqstate = self.aqstate - self.aqstate & AQS_SWITCHFIRING;
 

@@ -1,4 +1,4 @@
-/*  $Id: shalrath.qc,v 1.8 2003/06/24 22:17:44 slotzero Exp $
+/*  $Id: shalrath.qc,v 1.9 2003/10/18 17:24:19 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -162,7 +162,7 @@ ShalMissile =
 	missile.movetype = MOVETYPE_FLYMISSILE;
 	setmodel (missile, "progs/v_spike.mdl");
 
-	setsize (missile, '0 0 0', '0 0 0');
+	setsize (missile, VEC_ORIGIN, VEC_ORIGIN);
 
 	missile.origin = self.origin + '0 0 10';
 	missile.velocity = dir * 400;

@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.26 2003/10/06 11:21:52 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.27 2003/10/18 17:24:19 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -904,7 +904,7 @@ Rune_Activate =
 		self.touch = Blizzard_Touch;
 
 	/* else if (self.runetype == RN_TORNADO)
-		Hat_Spawn ("progs/w_spike.mdl", '0 0 35', '0 0 0'); */
+		Hat_Spawn ("progs/w_spike.mdl", '0 0 35', VEC_ORIGIN); */
 
 	if (self.weapon == best)
 		set_weapon (W_BestWeapon ());

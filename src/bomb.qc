@@ -1,4 +1,4 @@
-/*  $Id: bomb.qc,v 1.7 2003/06/24 22:17:34 slotzero Exp $
+/*  $Id: bomb.qc,v 1.8 2003/10/18 17:24:17 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -119,7 +119,7 @@ bomb_tick =
 	}
 
 	if (self.runevar && (self.enemy.health <= 0
-			|| self.enemy.origin == '0 0 0'))
+			|| self.enemy.origin == VEC_ORIGIN))
 	{
 		self.velocity = self.enemy.velocity;
 		self.movetype = MOVETYPE_TOSS;

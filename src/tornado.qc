@@ -1,4 +1,4 @@
-/*  $Id: tornado.qc,v 1.2 2003/10/10 20:43:39 slotzero Exp $
+/*  $Id: tornado.qc,v 1.3 2003/10/18 17:24:20 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -134,7 +134,7 @@ W_Tornado =
 	setmodel(tornado, "progs/w_spike.mdl");
 
 	// XXX get accurate sizing
-	setsize(tornado, '0 0 0', '32 32 32');
+	setsize(tornado, VEC_ORIGIN, '32 32 32');
 
 	tornado.angles		= '90 0 0';
 	tornado.runevar		= 1;

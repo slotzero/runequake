@@ -1,4 +1,4 @@
-/*  $Id: ogre.qc,v 1.6 2003/06/24 22:17:41 slotzero Exp $
+/*  $Id: ogre.qc,v 1.7 2003/10/18 17:24:19 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -86,8 +86,8 @@ OgreGrenadeTouch =
 		return;
 	}
 	sound (self, CHAN_VOICE, "weapons/bounce.wav", 1, ATTN_NORM);	// bounce sound
-	if (self.velocity == '0 0 0')
-		self.avelocity = '0 0 0';
+	if (self.velocity == VEC_ORIGIN)
+		self.avelocity = VEC_ORIGIN;
 };
 
 /*
@@ -127,7 +127,7 @@ OgreFireGrenade =
 	missile.think = OgreGrenadeExplode;
 
 	setmodel (missile, "progs/grenade.mdl");
-	setsize (missile, '0 0 0', '0 0 0');
+	setsize (missile, VEC_ORIGIN, VEC_ORIGIN);
 	setorigin (missile, self.origin);
 };
 

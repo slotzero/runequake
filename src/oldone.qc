@@ -1,4 +1,4 @@
-/*  $Id: oldone.qc,v 1.8 2003/06/24 22:17:41 slotzero Exp $
+/*  $Id: oldone.qc,v 1.9 2003/10/18 17:24:19 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -142,7 +142,7 @@ finale_1 =
 	pl = find (world, classname, "player");
 	while (pl != world)
 	{
-		pl.view_ofs = '0 0 0';
+		pl.view_ofs = VEC_ORIGIN;
 		pl.angles = other.v_angle = pos.mangle;
 		pl.fixangle = TRUE;		// turn this way immediately
 		pl.map = self.map;

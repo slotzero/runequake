@@ -1,4 +1,4 @@
-/*  $Id: misc.qc,v 1.18 2003/06/24 22:17:40 slotzero Exp $
+/*  $Id: misc.qc,v 1.19 2003/10/18 17:24:18 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -150,7 +150,7 @@ misc_explobox =
 	precache_model (self.mdl);
 	setmodel (self, self.mdl);
 	IN_QW([-
-		setsize (self, '0 0 0', '32 32 64');
+		setsize (self, VEC_ORIGIN, '32 32 64');
 	-])
 	precache_sound ("weapons/r_exp3.wav");
 
@@ -186,7 +186,7 @@ misc_explobox2 =
 	precache_model (self.mdl);
 	setmodel (self, self.mdl);
 	IN_QW([-
-		setsize (self, '0 0 0', '32 32 32');
+		setsize (self, VEC_ORIGIN, '32 32 32');
 	-])
 	precache_sound ("weapons/r_exp3.wav");
 

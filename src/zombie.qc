@@ -1,4 +1,4 @@
-/*  $Id: zombie.qc,v 1.12 2003/06/24 22:17:47 slotzero Exp $
+/*  $Id: zombie.qc,v 1.13 2003/10/18 17:24:20 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -290,7 +290,7 @@ ZombieFireGrenade =
 		setmodel (missile, "progs/lavaball.mdl");
 	else
 		setmodel (missile, "progs/zom_gib.mdl");
-	setsize (missile, '0 0 0', '0 0 0');
+	setsize (missile, VEC_ORIGIN, VEC_ORIGIN);
 	setorigin (missile, org);
 };
 

@@ -1,4 +1,4 @@
-/*  $Id: camera.qc,v 1.6 2003/06/24 22:17:35 slotzero Exp $
+/*  $Id: camera.qc,v 1.7 2003/10/18 17:24:18 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -56,7 +56,7 @@ Start_chase_cam =
 	chase_cam.angles = chase_cam.owner.angles;
 
 	setmodel (chase_cam, "progs/eyes.mdl");
-	setsize (chase_cam, '0 0 0', '0 0 0');
+	setsize (chase_cam, VEC_ORIGIN, VEC_ORIGIN);
 	setorigin (chase_cam, chase_cam.owner.origin);
 	chase_cam.classname = "chase_cam";
 
@@ -114,7 +114,7 @@ Remove_chase_cam =
 
 	// makes entity appear gone even if going into keep alive state
 	setmodel (self, "");
-	self.velocity = '0 0 0';
+	self.velocity = VEC_ORIGIN;
 
 	// set view-point back to normal
 	msg_entity = self.owner;      // target of message
