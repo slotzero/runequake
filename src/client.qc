@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.80 2005/01/08 04:51:07 slotzero Exp $
+/*  $Id: client.qc,v 1.81 2005/01/20 22:48:22 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -267,7 +267,8 @@ FindIntermission =
 	if (spot)
 		return spot;
 
-	objerror ("FindIntermission: no spot");
+	//objerror ("FindIntermission: no spot");
+	dprint_force ("FindIntermission: no spot");
 	return world;
 };
 
