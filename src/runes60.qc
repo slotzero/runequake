@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.34 2003/12/04 00:43:01 slotzero Exp $
+/*  $Id: runes60.qc,v 1.35 2003/12/04 01:40:38 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -879,11 +879,8 @@ tornado_random_move =
 	self.velocity	= self.velocity * 0.2;
 	n		= ceil (100 + (random () * 300));
 
-	v_x = rint (random () * 2);
-	if (v_x == 2)	v_x = -1;
-
-	v_y = rint (random () * 2);
-	if (v_y == 2)	v_y = -1;
+	v_x = rint (random () * 2) - 1;
+	v_y = rint (random () * 2) - 1;
 
 	self.velocity = self.velocity + (v * n);
 };
