@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.54 2003/07/26 02:00:08 slotzero Exp $
+/*  $Id: rjs.qc,v 1.55 2003/07/30 10:05:08 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1435,8 +1435,15 @@ common_impulses =
 		sprint_admin2 ("\n", string_null);
 	}
 
-	 else if (self.impulse == IMP_TEAM_STATS)
+	else if (self.impulse == IMP_TEAM_STATS)
 	 	 team_stats (0);
+
+	else if (DEVELOPER_MODE)
+	{
+		self_sprint (self, "Invalid impulse: ");
+		self_sprint_float (self, self.impulse);
+		self_sprint (self, "\n");
+	}
 };
 
 void (string dt)
@@ -1524,8 +1531,7 @@ player_init =
 	local string s;
 
 	// This is only useful for ProQuake servers version 3.1 or later.
-	cl = *SubInt(AddInt(PSTRING_TO_PQUAKEC, &self.netname), 4 * CL_NAME);
-	cl = *AddInt(cl[CL_NETCONNECTION], PC_TO_PQUAKEC);
+	cl = cl_netconnection ();
 
 	if (*cl[QS_MOD] == *MOD_QSMACK)
 	{
