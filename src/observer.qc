@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.19 2003/06/29 01:00:39 slotzero Exp $
+/*  $Id: observer.qc,v 1.20 2003/07/26 03:44:39 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -819,6 +819,8 @@ obs_join_game =
 		describe_team_mode ();
 	if (enforced_teams ())
 		assign_teams (self);
+	if (deathmatch & DM_MODE_PRACTICE)
+		centerprint (self, "\b\<practice mode\>\b");
 };
 
 void ()
