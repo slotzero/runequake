@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.17 2004/06/26 05:34:27 slotzero Exp $
+/*  $Id: hunk.qc,v 1.18 2004/06/30 03:54:52 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -98,6 +98,26 @@ Read_Hunk =
 	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
 };
 
+vector (float type, float offset)
+Read_Hunk_Vector =
+{
+	local entity hunk;
+	local vector v;
+
+	hunk = Get_Hunk (type, offset);
+	if (!hunk)
+	{
+		dprint ("Read_Hunk_Float: hunk is null\n");
+		return 0;
+	}
+
+	v_x = hunk[%0];
+	v_y = hunk[%1];
+	v_z = hunk[%2];
+
+	return v;
+};
+
 float (float type, float offset)
 Read_Hunk_Float =
 {
@@ -128,6 +148,21 @@ Write_Hunk =
 
 	hunk = Get_Hunk (type, offset);
 	Write_Hunk_e (hunk, s);
+};
+
+// requires 3 bytes
+void (float type, float offset, vector v)
+Write_Hunk_Vector =
+{
+	local entity hunk;
+
+	hunk = Get_Hunk (type, offset);
+	if (!hunk)
+		return dprint ("Write_Hunk_Vector: hunk is null\n");
+
+	hunk[%0] = v_x;
+	hunk[%1] = v_y;
+	hunk[%2] = v_z;
 };
 
 void (float type, float offset, float f)
