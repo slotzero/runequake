@@ -1,4 +1,4 @@
-// $Id: subs.qc,v 1.2 2002/04/25 07:07:08 slotzero Exp $
+// $Id: subs.qc,v 1.3 2002/04/27 00:51:04 slotzero Exp $
 
 void ()
 SUB_Null =
@@ -322,4 +322,16 @@ SUB_CheckRefire =
 		return;
 	self.cnt = 1;
 	self.think = thinkst;
+};
+
+/* ALL LIGHTS SHOULD BE 0 1 0 IN COLOR ALL OTHER ITEMS SHOULD
+BE .8 .3 .4 IN COLOR */
+
+void ()
+SUB_regen =
+{
+	self.model = self.mdl;	// restore original model
+	self.solid = SOLID_TRIGGER;	// allow it to be touched again
+	sound (self, CHAN_VOICE, "items/itembk2.wav", 1, ATTN_NORM);	// play respawn sound
+	setorigin (self, self.origin);
 };
