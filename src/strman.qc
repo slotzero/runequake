@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.25 2004/04/11 05:11:12 slotzero Exp $
+/*  $Id: strman.qc,v 1.26 2004/04/11 06:29:50 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -51,13 +51,12 @@ string_length =
 float (string s)
 strlen =
 {
-	local float i, ps;
-
 	IN_QW([-
 
 	return string_length (s);
 
 	-], [-
+	local float i, ps;
 
 	ps = AddInt (&s, PSTRING_TO_PQUAKEC);
 	for (i = 0; i < 256; i = i + 1)
