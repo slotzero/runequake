@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.3 2004/07/07 09:58:36 slotzero Exp $
+/*  $Id: vote.qc,v 1.4 2004/07/07 10:18:52 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -256,6 +256,8 @@ vote_think =
 	else
 	{
 		bprint ("\{1}Vote cancelled\n");
+		if (self.impulse == IMP_VOTE_TEAM)
+			forced_nextmap = string_null;
 		remove_bit_from_players (rqstate, RQS_VOTE_YES);
 		remove (self);
 		return;
