@@ -1,4 +1,4 @@
-/*  $Id: triggers.qc,v 1.19 2004/01/04 06:23:50 slotzero Exp $
+/*  $Id: triggers.qc,v 1.20 2004/02/29 08:21:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -501,7 +501,10 @@ teleport_touch =
 		if (other.flags & FL_ONGROUND)
 			other.flags = other.flags - other.flags & FL_ONGROUND;
 
-		other.velocity = v_forward * 300;
+		if (other.runetype == RN_DEFLECT)
+			other.velocity = VEC_ORIGIN;
+		else
+			other.velocity = v_forward * 300;
 	}
 	else
 		other.flags = other.flags - other.flags & FL_ONGROUND;
