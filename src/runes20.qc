@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.24 2004/07/28 03:02:01 slotzero Exp $
+/*  $Id: runes20.qc,v 1.25 2004/11/28 04:24:42 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -101,17 +101,22 @@ DSpot_Blow =
 void ()
 DSpot_Touch =
 {
-
-	if (other.takedamage != DAMAGE_AIM)
+	if (other == world)
 		return;
 
-	if (other.health < 1)
+	if (other.classname != "player" && !is_pet_e (other))
 		return;
 
-	if (environmental (other))
+	if (!other.takedamage)
+		return;
+
+	if (other.health <= 0)
 		return;
 
 	if (isfriend2 (self.owner, other) && self.owner != other)
+		return;
+
+	if (environmental (other))
 		return;
 
 	maybe_update_trap_count (self.owner, RN_DSPOTS);
