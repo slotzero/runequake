@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.12 2004/07/08 21:44:53 slotzero Exp $
+/*  $Id: vote.qc,v 1.13 2004/07/09 01:16:57 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -141,7 +141,7 @@ maybe_print_votes =
 // print type
 // 0 no message
 // 1 only when value positive (when in doubt, use 1)
-// 2 all
+// 2 all (observers)
 // 3 disp-info
 
 float (float type)
@@ -154,7 +154,10 @@ count_votes =
 
 	if (!vip)
 	{
-		sprint (self, "\{141} Observers can't vote\n");
+		if (type == 3)
+			sprint (self, "vote: nothing to vote on\n");
+		else if (type)
+			sprint (self, "Join the game to vote\n");
 		return 0;
 	}
 
@@ -273,7 +276,7 @@ vote =
 		if (self.impulse == vip.impulse)
 			return vote_yes ();
 
-		return self_sprint (self, "\{141} A vote is already in progress\n");
+		return self_sprint (self, "\{141} a vote is already in progress\n");
 	}
 
 	self.vote_flags = self.vote_flags | VOTE_YES;

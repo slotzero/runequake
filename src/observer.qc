@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.28 2004/07/08 09:57:56 slotzero Exp $
+/*  $Id: observer.qc,v 1.29 2004/07/09 01:16:57 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -275,7 +275,7 @@ obs_impulses =
 		else if (self.impulse >= 209 && self.impulse <= 219
 				|| self.impulse == IMP_VOTE_YES
 				|| self.impulse == IMP_VOTE_NO)
-			count_votes (1);
+			count_votes (2);
 		else
 			common_impulses ();
 	}
