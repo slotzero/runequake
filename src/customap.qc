@@ -1,4 +1,4 @@
-/*  $Id: customap.qc,v 1.3 2003/10/28 02:41:20 slotzero Exp $
+/*  $Id: customap.qc,v 1.4 2003/10/28 03:06:27 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -79,7 +79,7 @@ customs_to_hunk =
 
 void (float levsize)
 sized_customs_to_hunk =
-{
+{	IN_QW(return;)
 	local float total;
 
 	total = 0;
@@ -161,7 +161,7 @@ custom_maps =
 string (float levsize)
 select_custom =
 {
-	local float i, nmaps, sized, levsize, randomly;
+	local float i, nmaps, sized, randomly;
 	local string s;
 
 	randomly = noexit & NOEXIT_RANDOMIZE;
@@ -176,7 +176,8 @@ select_custom =
 		if (randomly)
 		{
 			i = ceil (random () * nmaps + 0.01);
-			if (i > nmaps) i = nmaps;
+			if (i > nmaps)
+				i = nmaps;
 			return remove_custom_from_hunk (levsize, i);
 		}
 		else
