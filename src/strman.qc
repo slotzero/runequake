@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.15 2003/07/01 22:35:56 slotzero Exp $
+/*  $Id: strman.qc,v 1.16 2003/07/06 00:29:04 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -93,34 +93,59 @@ allocate_string =
 //
 //  S T R C A T
 //
-//  Concatenate 's1' and 's2'.
-//
+
+string (string s1, string s2, string s3, string s4, string s5, string s6, string s7)
+strcat7 =
+{
+	local entity hunk;
+	local float max;
+
+	max = %16200;
+
+	if (!(hunk = Get_Hunk (HUNK_CONTEXT, max)))
+		return string_null;
+
+	if (s1) { Write_Hunk_e (hunk, s1); hunk = *AddInt (strlen (s1) * %1, &hunk);}
+	if (s2) { Write_Hunk_e (hunk, s2); hunk = *AddInt (strlen (s2) * %1, &hunk);}
+	if (s3) { Write_Hunk_e (hunk, s3); hunk = *AddInt (strlen (s3) * %1, &hunk);}
+	if (s4) { Write_Hunk_e (hunk, s4); hunk = *AddInt (strlen (s4) * %1, &hunk);}
+	if (s5) { Write_Hunk_e (hunk, s5); hunk = *AddInt (strlen (s5) * %1, &hunk);}
+	if (s6) { Write_Hunk_e (hunk, s6); hunk = *AddInt (strlen (s6) * %1, &hunk);}
+	if (s7) { Write_Hunk_e (hunk, s7); hunk = *AddInt (strlen (s7) * %1, &hunk);}
+
+	Write_Hunk_e (hunk, string_null);
+
+	return Read_Hunk (HUNK_CONTEXT, max);
+};
+
+string (string s1, string s2, string s3, string s4, string s5, string s6)
+strcat6 =
+{
+	return strcat7 (s1, s2, s3, s4, s5, s6, string_null);
+};
+
+string (string s1, string s2, string s3, string s4, string s5)
+strcat5 =
+{
+	return strcat7 (s1, s2, s3, s4, s5, string_null, string_null);
+};
+
+string (string s1, string s2, string s3, string s4)
+strcat4 =
+{
+	return strcat7 (s1, s2, s3, s4, string_null, string_null, string_null);
+};
+
+string (string s1, string s2, string s3)
+strcat3 =
+{
+	return strcat7 (s1, s2, s3, string_null, string_null, string_null, string_null);
+};
+
 string (string s1, string s2)
 strcat =
 {
-	local float len1, len2, bytes;
-	local string s;
-
-	len1 = strlen (s1);
-	if (!len1)
-		s1 = string_null;
-
-	len2 = strlen (s2);
-	if (!len2)
-		s2 = string_null;
-
-	bytes = len1 + len2;
-	if (bytes < 1 || bytes > 255)
-	{
-		dprint ("strcat(): bytes < 1 or bytes > 255\n");
-		return string_null;
-	}
-
-	s = allocate_string_size (bytes);
-	strcpy (s, s1);
-	strcpy (s[len1 * %1], s2);
-
-	return s;
+	return strcat7 (s1, s2, string_null, string_null, string_null, string_null, string_null);
 };
 
 //
