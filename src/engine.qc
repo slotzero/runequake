@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.12 2003/12/27 05:13:19 slotzero Exp $
+/*  $Id: engine.qc,v 1.13 2004/05/23 00:03:41 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -185,6 +185,7 @@ create_te_spike =
 void (entity e)
 trackvel =
 {
+	if (0) e = e; // frikqcc compiler warning
 	IN_QW([-
 		self.velocity = e.velocity;
 	-])

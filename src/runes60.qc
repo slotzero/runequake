@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.41 2004/05/22 23:08:11 slotzero Exp $
+/*  $Id: runes60.qc,v 1.42 2004/05/23 00:03:41 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -169,7 +169,7 @@ Rune_Glue =
 	glue.nextthink		= time;
 };
 
-void (float riders, entity of_e)
+void (float riders)
 Rune_Blizzard_sprint =
 {
 	if (self.runevar)
