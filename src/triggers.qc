@@ -1,4 +1,4 @@
-/*  $Id: triggers.qc,v 1.14 2003/11/09 09:20:59 slotzero Exp $
+/*  $Id: triggers.qc,v 1.15 2003/11/10 23:17:53 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -401,6 +401,7 @@ spawn_tdeath =
 	setorigin (death, org);
 
 	death.touch	= tdeath_touch;
+	// This was 0.2, but that might be too fast for a lower tick rate.
 	death.nextthink	= time + (sys_ticrate * 2);
 	death.think	= SUB_Remove;
 	death.owner	= death_owner;
