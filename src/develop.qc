@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.72 2004/07/12 02:36:32 slotzero Exp $
+/*  $Id: develop.qc,v 1.73 2004/07/12 04:57:24 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -120,6 +120,8 @@ float HUNK_NO_PENTS	= %1051;
 float HUNK_NO_RINGS	= %1052;
 float HUNK_NO_SUITS	= %1053;
 
+float HUNK_NO_RUNES	= %1060;
+
 void ()
 setquad =
 {
@@ -152,6 +154,12 @@ setsuit =
 	fput (HUNK_NO_SUITS, NO_SUITS);
 };
 
+void ()
+setrunes =
+{
+
+};
+
 void (float offset, float value)
 fput =
 {
@@ -180,6 +188,7 @@ Populate_Settings =
 	NO_PENTS		= fget (HUNK_NO_PENTS,		0);
 	NO_RINGS		= fget (HUNK_NO_RINGS,		0);
 	NO_SUITS		= fget (HUNK_NO_SUITS,		0);
+	// NO_RUNES		= fget (HUNK_NO_RUNES,		0);
 
 	// After settings have been populated, there are some take action on
 	// those globals that require it.
