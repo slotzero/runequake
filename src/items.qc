@@ -1,7 +1,19 @@
-// $Id: items.qc,v 1.14 2002/05/05 22:19:09 slotzero Exp $
+// $Id: items.qc,v 1.15 2002/05/06 02:13:00 slotzero Exp $
 
 /* ALL LIGHTS SHOULD BE 0 1 0 IN COLOR ALL OTHER ITEMS SHOULD
 BE .8 .3 .4 IN COLOR */
+
+/* QUAKED noclass (0 0 0) (-8 -8 -8) (8 8 8)
+prints a warning message when spawned
+*/
+/* void () noclass =
+{
+	dprint ("noclass spawned at");
+	dprint (vtos (self.origin));
+	dprint ("\n");
+	remove (self);
+};
+*/
 
 void (entity e, float chan, string samp, float vol, float atten)
 item_sound =
@@ -232,6 +244,29 @@ health_touch =
 	SUB_UseTargets (); // fire all targets / killtargets
 };
 
+/* void () item_megahealth_rot =
+{
+	other = self.owner;
+
+	if (other.health > other.max_health)
+	{
+		other.health = other.health - 1;
+		self.nextthink = time + 1;
+		return;
+	}
+
+	// it is possible for a player to die and respawn between rots,
+	// so don't just blindly subtract the flag off
+	other.items = other.items - (other.items & IT_SUPERHEALTH);
+
+	if (deathmatch & DM_RESPAWN)
+	{
+		self.nextthink = time + HEALTH_RESPAWN_TIME;
+		self.think = SUB_regen;
+	}
+};
+*/
+
 /*
 ===============================================================================
 
@@ -444,6 +479,45 @@ bound_other_ammo =
 	if (other.ammo_cells > MAX_CELLS)
 		other.ammo_cells = MAX_CELLS;
 };
+
+/* float (float w) RankForWeapon =
+{
+	if (w == IT_LIGHTNING)
+		return 1;
+	if (w == IT_ROCKET_LAUNCHER)
+		return 2;
+	if (w == IT_SUPER_NAILGUN)
+		return 3;
+	if (w == IT_GRENADE_LAUNCHER)
+		return 4;
+	if (w == IT_SUPER_SHOTGUN)
+		return 5;
+	if (w == IT_NAILGUN)
+		return 6;
+	return 7;
+};
+*/
+
+/*
+=============
+Deathmatch_Weapon
+
+Deathmatch weapon change rules for picking up a weapon
+
+.float		ammo_shells, ammo_nails, ammo_rockets, ammo_cells;
+=============
+*/
+/* void (float old, float new) Deathmatch_Weapon =
+{
+	local float or, nr;
+
+	// change self.weapon if desired
+	or = RankForWeapon (self.weapon);
+	nr = RankForWeapon (new);
+	if (nr < or)
+		set_weapon (new);
+};
+*/
 
 /*
 =============
@@ -819,6 +893,81 @@ item_cells =
 	else
 		ammo_set ("maps/b_batt0.bsp", 6, 4, "cells");
 };
+
+/*QUAKED item_weapon (0 .5 .8) (0 0 0) (32 32 32) shotgun rocket spikes big
+DO NOT USE THIS!!!! IT WILL BE REMOVED!
+*/
+
+/*
+float WEAPON_SHOTGUN	= 1;
+float WEAPON_ROCKET	= 2;
+float WEAPON_SPIKES	= 4;
+float WEAPON_BIG	= 8;
+*/
+
+/* void ()
+item_weapon =
+{
+	self.touch = ammo_touch;
+
+	if (self.spawnflags & WEAPON_SHOTGUN)
+	{
+		if (self.spawnflags & WEAPON_BIG)
+		{
+			precache_model ("maps/b_shell1.bsp");
+			setmodel (self, "maps/b_shell1.bsp");
+			self.aflag = 40;
+		}
+		else
+		{
+			precache_model ("maps/b_shell0.bsp");
+			setmodel (self, "maps/b_shell0.bsp");
+			self.aflag = 20;
+		}
+		self.weapon = 1;
+		self.netname = "shells";
+	}
+
+	if (self.spawnflags & WEAPON_SPIKES)
+	{
+		if (self.spawnflags & WEAPON_BIG)
+		{
+			precache_model ("maps/b_nail1.bsp");
+			setmodel (self, "maps/b_nail1.bsp");
+			self.aflag = 40;
+		}
+		else
+		{
+			precache_model ("maps/b_nail0.bsp");
+			setmodel (self, "maps/b_nail0.bsp");
+			self.aflag = 20;
+		}
+		self.weapon = 2;
+		self.netname = "spikes";
+	}
+
+	if (self.spawnflags & WEAPON_ROCKET)
+	{
+		if (self.spawnflags & WEAPON_BIG)
+		{
+			precache_model ("maps/b_rock1.bsp");
+			setmodel (self, "maps/b_rock1.bsp");
+			self.aflag = 10;
+		}
+		else
+		{
+			precache_model ("maps/b_rock0.bsp");
+			setmodel (self, "maps/b_rock0.bsp");
+			self.aflag = 5;
+		}
+		self.weapon = 3;
+		self.netname = "rockets";
+	}
+
+	setsize (self, VEC_ORIGIN, '32 32 56');
+	StartItem ();
+};
+*/
 
 /*
 ===============================================================================
@@ -1488,156 +1637,9 @@ drop_powerup_touch =
 
 	activator = other;
 	SUB_UseTargets (); // fire all targets / killtargets
-	remove (self); // remove duplicate blinks
-};
 
-//============================================================================
-
-/* QUAKED noclass (0 0 0) (-8 -8 -8) (8 8 8)
-prints a warning message when spawned
-*/
-/* void () noclass =
-{
-	dprint ("noclass spawned at");
-	dprint (vtos (self.origin));
-	dprint ("\n");
+	// XXX When a powerup is dropped again, blink_item() makes
+	// both models flash.  I'm not sure why that happens but
+	// I remove the entity now to prevent it.
 	remove (self);
 };
-*/
-
-/* void () item_megahealth_rot =
-{
-	other = self.owner;
-
-	if (other.health > other.max_health)
-	{
-		other.health = other.health - 1;
-		self.nextthink = time + 1;
-		return;
-	}
-
-	// it is possible for a player to die and respawn between rots,
-	// so don't just blindly subtract the flag off
-	other.items = other.items - (other.items & IT_SUPERHEALTH);
-
-	if (deathmatch & DM_RESPAWN)
-	{
-		self.nextthink = time + HEALTH_RESPAWN_TIME;
-		self.think = SUB_regen;
-	}
-};
-*/
-
-/* float (float w) RankForWeapon =
-{
-	if (w == IT_LIGHTNING)
-		return 1;
-	if (w == IT_ROCKET_LAUNCHER)
-		return 2;
-	if (w == IT_SUPER_NAILGUN)
-		return 3;
-	if (w == IT_GRENADE_LAUNCHER)
-		return 4;
-	if (w == IT_SUPER_SHOTGUN)
-		return 5;
-	if (w == IT_NAILGUN)
-		return 6;
-	return 7;
-};
-*/
-
-/*
-=============
-Deathmatch_Weapon
-
-Deathmatch weapon change rules for picking up a weapon
-
-.float		ammo_shells, ammo_nails, ammo_rockets, ammo_cells;
-=============
-*/
-/* void (float old, float new) Deathmatch_Weapon =
-{
-	local float or, nr;
-
-	// change self.weapon if desired
-	or = RankForWeapon (self.weapon);
-	nr = RankForWeapon (new);
-	if (nr < or)
-		set_weapon (new);
-};
-*/
-
-/*QUAKED item_weapon (0 .5 .8) (0 0 0) (32 32 32) shotgun rocket spikes big
-DO NOT USE THIS!!!! IT WILL BE REMOVED!
-*/
-
-/*
-float WEAPON_SHOTGUN	= 1;
-float WEAPON_ROCKET	= 2;
-float WEAPON_SPIKES	= 4;
-float WEAPON_BIG	= 8;
-*/
-
-/* void ()
-item_weapon =
-{
-	self.touch = ammo_touch;
-
-	if (self.spawnflags & WEAPON_SHOTGUN)
-	{
-		if (self.spawnflags & WEAPON_BIG)
-		{
-			precache_model ("maps/b_shell1.bsp");
-			setmodel (self, "maps/b_shell1.bsp");
-			self.aflag = 40;
-		}
-		else
-		{
-			precache_model ("maps/b_shell0.bsp");
-			setmodel (self, "maps/b_shell0.bsp");
-			self.aflag = 20;
-		}
-		self.weapon = 1;
-		self.netname = "shells";
-	}
-
-	if (self.spawnflags & WEAPON_SPIKES)
-	{
-		if (self.spawnflags & WEAPON_BIG)
-		{
-			precache_model ("maps/b_nail1.bsp");
-			setmodel (self, "maps/b_nail1.bsp");
-			self.aflag = 40;
-		}
-		else
-		{
-			precache_model ("maps/b_nail0.bsp");
-			setmodel (self, "maps/b_nail0.bsp");
-			self.aflag = 20;
-		}
-		self.weapon = 2;
-		self.netname = "spikes";
-	}
-
-	if (self.spawnflags & WEAPON_ROCKET)
-	{
-		if (self.spawnflags & WEAPON_BIG)
-		{
-			precache_model ("maps/b_rock1.bsp");
-			setmodel (self, "maps/b_rock1.bsp");
-			self.aflag = 10;
-		}
-		else
-		{
-			precache_model ("maps/b_rock0.bsp");
-			setmodel (self, "maps/b_rock0.bsp");
-			self.aflag = 5;
-		}
-		self.weapon = 3;
-		self.netname = "rockets";
-	}
-
-	setsize (self, VEC_ORIGIN, '32 32 56');
-	StartItem ();
-};
-*/

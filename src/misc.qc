@@ -1,4 +1,4 @@
-// $Id: misc.qc,v 1.8 2002/05/05 22:19:10 slotzero Exp $
+// $Id: misc.qc,v 1.9 2002/05/06 02:13:01 slotzero Exp $
 
 /*QUAKED info_null (0 0.5 0) (-4 -4 -4) (4 4 4)
 Used as a positional target for spotlights, etc.
@@ -8,6 +8,15 @@ info_null =
 {
 	remove (self);
 };
+
+/*QUAKED info_notnull (0 0.5 0) (-4 -4 -4) (4 4 4)
+Used as a positional target for lightning.
+*/
+/* void ()
+info_notnull =
+{
+};
+*/
 
 //============================================================================
 
@@ -20,6 +29,7 @@ misc_fireball =
 	self.classname	= "fireball";
 	self.nextthink	= time + 0.1 + (random () * 5);
 	self.think	= fireball_think;
+
 	if (!self.speed)
 		self.speed = 1000;
 };
@@ -72,7 +82,9 @@ respawn_barrel =
 	self.takedamage	= DAMAGE_AIM;
 	self.solid	= SOLID_BBOX;
 	self.model	= self.mdl;
+
 	sound (self, CHAN_VOICE, "items/itembk2.wav", 1, ATTN_NORM);
+
 	setorigin (self, self.origin);
 };
 
@@ -80,6 +92,7 @@ void ()
 barrel_explode =
 {
 	self.takedamage = DAMAGE_NO;
+
 	// I've modified Killed() so it sets other to the attacker which
 	// exploded me.
 	T_RadiusDamage (RADIUS_NORMAL, self, other, 160, world, "barrel");
@@ -212,8 +225,8 @@ LaunchLaser =
 {
 	local vector vec;
 
-	if (self.classname == "monster_enforcer")
-		sound (self, CHAN_WEAPON, "enforcer/enfire.wav", 1, ATTN_NORM);
+//nomonster	if (self.classname == "monster_enforcer")
+//nomonster		sound (self, CHAN_WEAPON, "enforcer/enfire.wav", 1, ATTN_NORM);
 
 	vec		= normalize (vec);
 
@@ -260,7 +273,9 @@ void ()
 shooter_think =
 {
 	spikeshooter_use ();
+
 	self.nextthink	= time + self.wait;
+
 	newmis.velocity	= self.movedir * 500;
 };
 
@@ -292,8 +307,10 @@ void ()
 trap_shooter =
 {
 	trap_spikeshooter ();
+
 	if (self.wait == 0)
 		self.wait = 1;
+
 	self.nextthink	= self.nextthink + self.wait + self.ltime;
 	self.think	= shooter_think;
 };
@@ -411,6 +428,23 @@ bubble_bob =
 	self.think	= bubble_bob;
 };
 
+/*~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>
+~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~*/
+
+/*QUAKED viewthing (0 .5 .8) (-8 -8 -8) (8 8 8)
+Just for the debugging level.  Don't use
+*/
+/* void ()
+viewthing =
+{
+	self.movetype	= MOVETYPE_NONE;
+	self.solid	= SOLID_NOT;
+
+	precache_model ("progs/player.mdl");
+	setmodel (self, "progs/player.mdl");
+};
+*/
+
 /*
 ==============================================================================
 
@@ -461,7 +495,10 @@ so players can't reenter it.
 void ()
 func_episodegate =
 {
-	remove (self);
+	if (!(serverflags & self.spawnflags))
+		return; // can still enter episode
+
+	func_wall ();
 };
 
 /*QUAKED func_bossgate (0 .5 .8) ?
@@ -470,6 +507,9 @@ This bmodel appears unless players have all of the episode sigils.
 void ()
 func_bossgate =
 {
+	if ((serverflags & SERVERFLAGS_RUNE_MASK) == SERVERFLAGS_RUNE_MASK)
+		return; // all episodes completed
+
 	func_wall ();
 };
 
