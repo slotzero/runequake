@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.29 2003/11/26 09:11:09 slotzero Exp $
+/*  $Id: runes60.qc,v 1.30 2003/11/27 00:13:42 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -904,7 +904,6 @@ void() tornado_pull =
 	else
 		self.runevar = self.runevar * 2;
 
-
 	setorigin (self, self.origin + '0 0 2');
 
 	self.movetype = MOVETYPE_FLYMISSILE;
@@ -924,7 +923,6 @@ void() tornado_pull =
 
 	org = (self.absmin + self.absmax) * 0.5;
 	e = findradius (self.origin, gDist);
-
 	while (e)
 	{
 		if (visible(e) && e.classname != "tornado"
@@ -934,23 +932,23 @@ void() tornado_pull =
 				&& !environmental (e)
 				&& e.health)
 		{
-			d = vlen(e.origin - org);
+			d = vlen (e.origin - org);
 			if (e.flags & FL_ONGROUND)
 			{
 				// raise the object a bit
-				setorigin(e, e.origin + '0 0 1');
+				setorigin (e, e.origin + '0 0 1');
 				e.flags = e.flags - FL_ONGROUND;
 			}
-			//dprint(e.classname);
+			// dprint(e.classname);
 			gPercent = 1 - (d / gDist);
 
 			// modify the velocity
 			// I added '0 0 10' to give it more lift (x y z, z being up and down)
-			e.velocity = e.velocity + '0 0 10' + normalize(self.origin - e.origin) * gPower * gPercent;
-
+			e.velocity = e.velocity + '0 0 10' + normalize (self.origin - e.origin) * gPower * gPercent;
 
 			IN_POQ([-
-				particle (e.origin + v_up*random ()*30, e.velocity, 96, 3);//Fire those particles toward the tornado
+				// Fire those particles toward the tornado
+				particle (e.origin + v_up * random () * 30, e.velocity, 96, 3);
 			-])
 		}
 			e = e.chain;
@@ -973,7 +971,7 @@ void ()
 tornado_explode =
 {
 	setmodel (self, "progs/w_spike.mdl");
-	self.attack_finished = time + 3.2;      // duration of tornado well
+	self.attack_finished = time + 3 + random ();      // duration of tornado well
 	self.touch	= tornado_touch;
 	self.effects	= self.effects | EF_BRIGHTLIGHT;
 	self.think	= tornado_pull;
@@ -985,6 +983,17 @@ void()
 Rune_Tornado =
 {
 	local entity tornado;
+
+	if (self.runevector_x > time)
+		return;
+ 	self.runevector_x = time + 1.5;
+
+	self.runevar		= self.runevar - 1;
+	if (!self.runevar)
+	{
+		sprint (self, "Max tornados spawned, rune deleted\n");
+		Rune_Delete (0);
+	}
 
 	// create a tornado object
 	tornado			= spawn();

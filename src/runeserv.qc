@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.34 2003/11/26 07:54:17 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.35 2003/11/27 00:13:42 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -85,6 +85,7 @@ Rune_Button =
 	else if (self.runetype == RN_SONAR)	Rune_Sonar ();
 	else if (self.runetype == RN_ANTIPACK)	Rune_AntiPack ();
 	else if (self.runetype == RN_BETTY)	Rune_Betty ();
+	else if (self.runetype == RN_TORNADO)	Rune_Tornado ();
 };
 
 // This doesn't always tell the riders because it can be triggered both
@@ -593,7 +594,7 @@ Rune_Tell_real =
 		d2 = ftos (MAX_BETTY);
 		d3 = " maximum";
 	}
-	/* else if (type == RN_TORNADO)
+	else if (type == RN_TORNADO)
 	{
 		desc_l = "Tornado Rune";
 		desc_s = " Trnado";
@@ -602,7 +603,7 @@ Rune_Tell_real =
 			"with super destructive winds\n";
 		d2 = ftos (MAX_TORNADO);
 		d3 = " maximum";
-	}*/
+	}
 	else if (type == RN_LITHIUM_HOOK)
 	{
 		desc_l = "Grappling Hook";
@@ -969,8 +970,11 @@ Rune_Activate =
 	else if (self.runetype == RN_BETTY)
 		self.runevar = MAX_BETTY;
 
-	/* else if (self.runetype == RN_TORNADO)
-		Hat_Spawn ("progs/w_spike.mdl", '0 0 35', VEC_ORIGIN); */
+	else if (self.runetype == RN_TORNADO)
+	{
+		self.runevar = MAX_TORNADO;
+		Hat_Spawn ("progs/w_spike.mdl", '0 0 35', VEC_ORIGIN);
+ 	}
 
 	if (self.weapon == best)
 		set_weapon (W_BestWeapon ());
