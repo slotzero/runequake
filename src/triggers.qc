@@ -1,4 +1,4 @@
-/*  $Id: triggers.qc,v 1.12 2003/10/14 01:46:14 slotzero Exp $
+/*  $Id: triggers.qc,v 1.13 2003/11/09 04:44:01 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -325,19 +325,55 @@ spawn_tfog =
 	create_te_teleport (org);
 };
 
+/*
+Whenever a player triggers (touches) a teleporter, spawn_tdeath() is called and an entity is created at
+the exit (target) of the teleporter.  The entity only thinks for 0.2 seconds and its touch function is,
+you guessed it, tdeath_touch().  Normally, if someone triggers the entity's field, also known as teledeath,
+he is toast (telefragged)!  However, what happens in the case when someone has pent?
+
+When a player cannot be telefragged, tdeath_touch() continues to be called (looping) until 'teledeath' stops
+thinking (0.2 seconds).  Because of this, and if your timing is that of a machine, you can deflect a
+telefrag and yet still managed to get telefragged!  This only happens when your pent has less than 0.2
+seconds left when you enter a teleporter.
+
+I try to prevent this by removing the entity right after a pent/deflect holder triggers the touch, this
+might prevent a normal telefrag though.  What if I shorten the length of the think?
+
+If your think isn't long enough, you don't telefrag the player but rather you are locked into position.  I
+was thinking that if I made the think() twice the tick rate, maybe this wouldn't happen.
+
+Another interesting enomally is that if someone follows you into a teleporter at just the right time,
+he'll wind up being telefragged but you'll be safe.  This happens because you're just outside the
+entity's touch, but your spawn_tdeath() is still active.  Again, perhaps if the nextthink() was shorter
+than 0.2 this might be avoidable.  I hesitate to say this because lag/ping does seem to play a big factor
+on who gets telefragged first, or at least that is the way it appears.
+*/
 void ()
 tdeath_touch =
 {
 	if (other == self.owner)
 		return;
 
+	if (other.health <= 0)
+		return;
+
 	if (other.classname == "player")
 	{
-		// frag anyone who teleports in on top of an invincible
-		// player
+		// frag anyone who teleports in on top of an invincible player
 		if (other.invincible_finished > time)
 		{
 			T_Damage (self.owner, self, other, 50000, "teledeath2");
+			remove (self);
+			return;
+		}
+
+		if (other.runetype == RN_DEFLECT)
+		{
+			if (self.owner.runetype == RN_DEFLECT)
+				T_Damage (other, self, self.owner, 50000, "teledeath3");
+			if (T_Damage (self.owner, self, other, 50000, "teledeath3"))
+				Rune_Deflect_Telefrag ();
+			remove (self);
 			return;
 		}
 
@@ -347,13 +383,9 @@ tdeath_touch =
 			T_Damage (self.owner, self, other, 50000, self.classname);
 			return;
 		}
-
 	}
 
-	if (other.health)
-	{
-		T_Damage (other, self, self.owner, 50000, "teledeath");
-	}
+	T_Damage (other, self, self.owner, 50000, "teledeath");
 };
 
 void (vector org, entity death_owner)

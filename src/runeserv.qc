@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.29 2003/11/08 05:46:17 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.30 2003/11/09 04:44:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -574,6 +574,16 @@ Rune_Tell_real =
 		d1 = "Drop backpacks that\n"
 			"take away weapons and ammo";
 	}
+	else if (type == RN_DEFLECT)
+	{
+		desc_l = "Telefrag Deflect Rune";
+		desc_s = " TelDef";
+
+		d1 = "Deflect most telefrags\n"
+			"Watch out for other deflect holders\n";
+		d2 = ftos (MAX_DEFLECT);
+		d3 = " maximum";
+	}
 	/* else if (type == RN_TORNADO)
 	{
 		desc_l = "Tornado Rune";
@@ -663,6 +673,7 @@ Rune_Tell_sprint =
 	else if (of_e.runetype == RN_GLUE)	Rune_Glue_sprint (r, of_e);
 	else if (of_e.runetype == RN_BLIZZARD)	Rune_Blizzard_sprint (r, of_e);
 	else if (of_e.runetype == RN_ANTIPACK)	Rune_AntiPack_sprint (r, of_e);
+	else if (of_e.runetype == RN_DEFLECT)	Rune_Deflect_Telefrag_sprint (r, of_e);
 };
 
 void (float type, float tell)
@@ -929,6 +940,9 @@ Rune_Activate =
 		else
 			self.class_cnt = count_class_own (self, "antipack");
 	}
+
+	else if (self.runetype == RN_DEFLECT)
+		self.runevar = MAX_DEFLECT;
 
 	/* else if (self.runetype == RN_TORNADO)
 		Hat_Spawn ("progs/w_spike.mdl", '0 0 35', VEC_ORIGIN); */

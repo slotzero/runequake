@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.15 2003/11/08 05:46:16 slotzero Exp $
+/*  $Id: runes60.qc,v 1.16 2003/11/09 04:44:00 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -691,4 +691,31 @@ Rune_AntiPack =
 
 	sound (self, CHAN_WEAPON, "demon/dhit2.wav", 1, ATTN_NORM);
 	centerprint (self, "Anti-pack dropped!");
+};
+
+void (float riders, entity of_e)
+Rune_Deflect_Telefrag_sprint =
+{
+	rprint_numdesc (self, riders, of_e.runevar, "telefrag deflect");
+	rprint (self, riders, " left\n");
+};
+
+void ()
+Rune_Deflect_Telefrag =
+{
+	local entity os;
+
+	centerprint (other, "You deflected a telefrag!");
+
+	if (other.runevar)
+		other.runevar = other.runevar - 1;
+
+	if (other.runevar <= 0)
+	{
+		sprint (other, "Max telefrags deflected, rune removed.\n");
+		os = self;
+		self = other;
+		Rune_Delete (0);
+		self = os;
+	}
 };

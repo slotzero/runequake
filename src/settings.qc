@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.24 2003/11/08 05:51:49 slotzero Exp $
+/*  $Id: settings.qc,v 1.25 2003/11/09 04:44:00 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -603,9 +603,13 @@ float MAX_GLUE			= 3;
 
 float BLIZZARD_RECHARGE		= 10;
 
-// AntiPack Rune
+// Anti-Pack Rune
 
-float MAX_ANTIPACK		= 5;
+float MAX_ANTIPACK		= 3;
+
+// Delfect Telefrag Rune
+
+float MAX_DEFLECT		= 3;
 
 // red, green, blue, scale
 
