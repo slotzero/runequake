@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.25 2003/07/02 04:10:35 slotzero Exp $
+/*  $Id: develop.qc,v 1.26 2003/07/02 09:25:35 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -38,24 +38,74 @@ Ban_Client_Level =
 	Write_Hunk_Max (HUNK_CONTEXT, offset, ip, 16);
 }; */
 
-/* void ()
+float LAST_UPDATE_TIME;
+
+float ()
+update_time =
+{
+	local float i;
+	local string s;
+
+	i = stof (Read_Hunk_Max (HUNK_CONTEXT, %4, 8));
+	i = i + floor (time - LAST_UPDATE_TIME);
+	LAST_UPDATE_TIME = time;
+	s = ftos (i);
+	Write_Hunk_Max (HUNK_CONTEXT, %4, s, 8);
+
+	return i;
+};
+
+void ()
 Log_Client =
 {
 	local float i, offset;
-	local string s, ip;
+	local string s;
 
 	// hunk offset
 	offset = %100;
-	ip = self.netname;
 
-	for (i = %14; i >= %0; i = i - %1)
+	for (i = %6; i >= %0; i = i - %1)
 	{
-		s = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 16), 16);
-		Write_Hunk_Max (HUNK_CONTEXT, offset + ((i + %1) * 16), s, 16);
-		dprint (">", s, "<\n");
+		s = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 24), 16);
+		Write_Hunk_Max (HUNK_CONTEXT, offset + ((i + %1) * 24), s, 16);
+		s = Read_Hunk_Max (HUNK_CONTEXT, offset + %16 + (i * 24), 8);
+		Write_Hunk_Max (HUNK_CONTEXT, offset + %16 + ((i + %1) * 24), s, 16);
 	}
-	Write_Hunk_Max (HUNK_CONTEXT, offset, ip, 16);
-}; */
+	Write_Hunk_Max (HUNK_CONTEXT, offset, self.netname, 16);
+	s = ftos (update_time ());
+	Write_Hunk_Max (HUNK_CONTEXT, offset + %16, s, 8);
+};
+
+void ()
+Read_Log =
+{
+	local float i, offset, last, real;
+	local string name, display;
+
+	// hunk offset
+	offset = %100;
+
+	self_sprint (self, "\n");
+	display = flen ("Name", -16);
+	self_sprint (self, display);
+	display = flen ("Time", 6);
+	self_sprint (self, display);
+	self_sprint (self, "\n----              ----\n\n");
+
+	for (i = %6; i >= %0; i = i - %1)
+	{
+		name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 24), 16);
+		last = stof (Read_Hunk_Max (HUNK_CONTEXT, offset + %16 + (i * 24), 8));
+		real = update_time ();
+		real = real - last;
+
+		display = flen (name, -16);
+		self_sprint (self, display);
+		display = flen (parse_time (real), 6);
+		self_sprint (self, display);
+		self_sprint (self, "\n");
+	}
+};
 
 void ()
 Test_Button =
@@ -63,10 +113,11 @@ Test_Button =
 	SUB_Null ();
 };
 
-void (float n)
+string (float n)
 parse_time =
 {
 	local float hours, minutes, seconds;
+	local string s, x;
 
 	seconds	= floor (n);
 	minutes	= floor (seconds / 60);
@@ -76,14 +127,16 @@ parse_time =
 
 	if (hours)
 	{
-		bprint_float (hours);
-		bprint (":");
-		if (minutes < 10) bprint ("0");
+		s = ftos (hours);
+		s = strcat (s, ":");
+		if (minutes < 10) s = strcat (s, "0");
 	}
-	bprint_float (minutes);
-	bprint (":");
-	if (seconds < 10) bprint ("0");
-	bprint_float (seconds);
+	x = ftos (minutes);
+	s = strcat (s, x);
+	s = strcat (s, ":");
+	if (seconds < 10) s = strcat (s, "0");
+	x = ftos (seconds);
+	return strcat (s, x);
 };
 
 void (float type, float offset, string ip)
