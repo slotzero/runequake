@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.57 2003/08/03 00:48:16 slotzero Exp $
+/*  $Id: rjs.qc,v 1.58 2003/09/20 02:53:41 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1814,7 +1814,7 @@ show_players =
 			{
 				if (is_qsmack_e (e))
 					self_sprint (self, " (qsmack)");
-				else
+				else if (is_admin_e (e))
 					self_sprint (self, " (admin)");
 			}
 
