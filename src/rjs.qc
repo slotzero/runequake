@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.127 2004/07/09 07:15:07 slotzero Exp $
+/*  $Id: rjs.qc,v 1.128 2004/07/10 05:11:45 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -237,7 +237,6 @@ rjs_worldspawn =
 
 	scratch1 = cvar_infokey ("scratch1");
 
-	vote_counter_spawn ();
 	frag_init ();
 	orig_serverflags = serverflags;
 	if (deathmatch & DM_DM_MASK && mapname == "start"
@@ -269,6 +268,52 @@ rjs_worldspawn =
 	// I used to do an initial change_teamplay() here to get the mod
 	// and version into the teamplay string.  See the comments in
 	// StartFrame().
+};
+
+// I don't need vote_count_think() anymore, so I just ride the 15 second
+// refresh of process_cvars.
+
+void ()
+process_misc =
+{
+	local float wanted;
+
+	if (time < LEVEL_RECONNECT_ALLOWANCE)
+		return;
+
+	ghost_check ();
+	update_server_time ();
+
+	if (intermission_running)
+		return;
+
+	// Only process the remaining functions if the server is empty.
+	if (count_players_by_ent (0))
+		return;
+
+	// vote-team
+	if (VOTE_TEAM_MODE_DEFAULT)
+		toggle_teamplay (VOTE_TEAM_MODE_DEFAULT);
+
+	// vote-hook
+	if (!temp1 & T1_HOOK_DEFAULT_ON)
+	{
+		wanted = hook_type (HOOK_DEFAULT);
+		if (wanted != hook_type (temp1))
+		{
+			if (wanted == 0)
+				toggle_free_hook ();
+			else if (wanted == 1)
+				free_hook ();
+			else if (wanted == 2)
+				lithium_hook ();
+		}
+	}
+
+	// vote-practice
+	// XXX move to settings or something
+	if (deathmatch & DM_MODE_PRACTICE)
+		mode_normal ();
 };
 
 void ()
@@ -315,6 +360,8 @@ process_cvars =
 	// XXX This shouldn't be necessary, but there's a bug with the
 	// current_hooks handling.
 	current_hooks = count_hooks ();
+
+	process_misc ();
 };
 
 // If E's health is > E.max_health, decay it by up to AMOUNT and return
@@ -2611,354 +2658,6 @@ T_RadiusLight =
 		sprint (old_self.owner, "Your flash grenade exploded\n");
 	self = old_self;
 };
-
-// type 0 is for self's information only
-// type 1 is when a new vote is registered
-// type 2 is by the vote counting entity
-// type 3 is from disp_info()
-
-/* void (float vote_type, float count_type)
-count_votes =
-{
-	local float bit, pct;
-	local string cmd, desc;
-	local float tot, voted, need, lack, force;
-	local entity e;
-	local string s;
-
-	if (vote_type == IMP_VOTE_EXIT)
-	{
-		cmd		= "vote-exit";
-		desc		= "exit level";
-		bit		= VOTE_EXIT;
-		pct		= VOTE_EXIT_PERCENTAGE;
-
-		if (forced_nextmap)
-			force = 1;
-	}
-	else if (vote_type == IMP_VOTE_TEAM)
-	{
-		if (vote_team_disabled (count_type != 2))
-			return;
-		cmd		= "vote-team";
-		if (teamplay & TEAM_TEAM_MASK)
-			desc	= "disable teams";
-		else
-			desc	= "enable teams";
-		bit		= VOTE_TEAM;
-		pct		= VOTE_TEAM_PERCENTAGE;
-	}
-	else if (vote_type == IMP_VOTE_HOOK)
-	{
-		if (vote_hook_disabled (count_type !=2))
-			return;
-		cmd		= "vote-hook";
-		if (temp1 & T1_HOOK_MASK)
-			desc	= "disable hook";
-		else
-			desc	= "enable hook";
-		bit		= VOTE_HOOK;
-		pct		= VOTE_HOOK_PERCENTAGE;
-	}
-	else
-	{
-		dprint ("invalid vote type\n");
-		return;
-	}
-
-	tot = voted = 0;
-	e = find (world, classname, "player");
-	while (e)
-	{
-		if (is_player_e (e))
-		{
-			tot = tot + 1;
-			if (e.vote_flags & bit)
-				voted = voted + 1;
-		}
-		e = find (e, classname, "player");
-	}
-
-	need = ceil (tot * pct);
-	if (need < 1) // can't happen
-		need = 1;
-	lack = need - voted;
-	s = ftos (lack);
-
-	// Don't exit right away because of this type of count.
-	if (count_type == 3)
-	{
-		self_sprint (self, cmd);
-		self_sprint (self, ": ");
-		self_sprint_float (self, tot);   self_sprint (self, " tot ");
-		self_sprint_float (self, voted); self_sprint (self, " voted ");
-		self_sprint_float (self, need);  self_sprint (self, " need ");
-		self_sprint_float (self, lack);  self_sprint (self, " lack\n");
-		return;
-	}
-
-	if (lack <= 0 && time > LEVEL_RECONNECT_ALLOWANCE)
-	{
-		if (count_type)
-		{
-			if (count_type == 2)
-				bprint ("Rune Quake");
-			else
-				bprint (self.netname);
-			bprint (" voted to ");
-			bprint (desc);
-			bprint ("\n");
-		}
-
-		if (vote_type == IMP_VOTE_EXIT)
-			NextLevel ();
-		else if (vote_type == IMP_VOTE_TEAM)
-		{
-			vote_team_time = -1;
-			toggle_teamplay (0);
-		}
-		else if (vote_type == IMP_VOTE_HOOK)
-		{
-			vote_hook_time = -1;
-			toggle_hook_mode (0);
-		}
-	}
-	else if (count_type == 0)
-	{
-		sprint (self, s);
-		sprint (self, " more vote");
-		if (lack != 1)
-			sprint (self, "s");
-		sprint (self, " needed to ");
-		sprint (self, desc);
-		sprint (self, "\n");
-	}
-	else if (count_type == 1)
-	{
-		bprint (self.netname);
-		if (force)
-		{
-			bprint (" voted for level ");
-			bprint (forced_nextmap);
-		}
-		else
-		{
-			bprint (" voted to ");
-			bprint (desc);
-		}
-
-		bprint (", ");
-		if (LEVEL_RECONNECT_ALLOWANCE > time)
-		{
-			bprint_float (voted);
-			bprint (" vote");
-			if (voted != 1)
-				bprint ("s");
-			bprint (" in queue, ");
-		}
-		else
-		{
-			bprint (s);
-			// I keep this a little shorter so it doesn't go over 2
-			// lines
-			bprint (" more vote");
-			if (lack != 1)
-				bprint ("s");
-			bprint (" needed, ");
-		}
-		bprint ("use \"");
-		bprint (cmd);
-		bprint ("\"\n");
-	}
-	else if (count_type == 2 && voted > 0)
-	{
-		bprint (s);
-		bprint (" more vote");
-		if (lack != 1)
-			bprint ("s");
-		// I'm more verbose here since this one is just over one
-		// line to start with.
-		bprint (" needed to ");
-		bprint (desc);
-		bprint (", to vote type \"");
-		bprint (cmd);
-		bprint ("\" in console\n");
-	}
-}; */
-
-void ()
-vote_counter_think =
-{
-	ghost_check ();
-	update_server_time ();
-
-	if (intermission_running)
-		return;
-
-	team_default ();
-	hook_default ();
-
-	// XXX This should still think until I figure out a better way to check this.
-
-	/* if (vote_exit_time < time && vote_exit_time > 0)
-	{
-		bprint ("\{141} Not enough votes, ");
-		if (forced_nextmap)
-			bprint (forced_nextmap);
-		else
-			bprint ("exit");
-		bprint (" vote cancelled\n");
-
-		forced_nextmap = string_null;
-		remove_bit_from_players (vote_flags, VOTE_EXIT);
-
-		vote_exit_time = -1;
-		self.nextthink = time + 5;
-		return;
-	}
-	else if (vote_team_time < time && vote_team_time > 0)
-	{
-		bprint ("\{141} Not enough votes, ");
-		bprint ("team vote cancelled\n");
-
-		remove_bit_from_players (vote_flags, VOTE_TEAM);
-
-		vote_team_time = -1;
-		self.nextthink = time + 5;
-		return;
-	}
-	else if (vote_hook_time < time && vote_hook_time > 0)
-	{
-		bprint ("\{141} Not enough votes, ");
-		bprint ("hook vote cancelled\n");
-
-		remove_bit_from_players (vote_flags, VOTE_HOOK);
-
-		vote_hook_time = -1;
-		self.nextthink = time + 5;
-		return;
-	}
-
-	if (self.runevar == 1)
-	{
-		//count_votes (0);
-		self.runevar = 2;
-	}
-	else if (self.runevar == 2)
-	{
-		//count_votes (0);
-		self.runevar = 0;
-	}
-	else
-	{
-		//count_votes (0);
-		self.runevar = 1;
-	} */
-
-	self.nextthink = time + VOTE_COUNT_PERIOD / 3;
-};
-
-void ()
-level_reconnect_allowance =
-{
-	//count_votes (IMP_VOTE_EXIT, 2);
-	//count_votes (IMP_VOTE_HOOK, 2);
-	//count_votes (IMP_VOTE_TEAM, 2);
-
-	self.runevar	= 0;
-	self.think	= vote_counter_think;
-	self.nextthink	= time + VOTE_COUNT_PERIOD / 2;
-};
-
-void ()
-vote_counter_spawn =
-{
-	local entity e;
-
-	e		= spawn ();
-	e.classname	= "vote_counter";
-	e.think		= level_reconnect_allowance;
-	e.nextthink	= time + LEVEL_RECONNECT_ALLOWANCE;
-
-	vote_exit_time	= -1;
-	vote_team_time	= -1;
-	vote_hook_time	= -1;
-};
-
-/* void ()
-vote =
-{
-	local float bit, pct;
-	local string name;
-
-	if (self.impulse == IMP_VOTE_EXIT)
-	{
-		name		= "Exit";
-		bit		= VOTE_EXIT;
-		pct		= VOTE_EXIT_PERCENTAGE;
-
-		if (vote_exit_time < 0)
-			vote_exit_time	= time + 30;
-	}
-	else if (self.impulse == IMP_VOTE_TEAM)
-	{
-		if (vote_team_disabled (1))
-			return;
-		name		= "Team";
-		bit		= VOTE_TEAM;
-		pct		= VOTE_TEAM_PERCENTAGE;
-
-		if (vote_team_time < 0)
-			vote_team_time	= time + 30;
-	}
-	else if (self.impulse == IMP_VOTE_HOOK)
-	{
-		if (vote_hook_disabled (1))
-			return;
-		name		= "Hook";
-		bit		= VOTE_HOOK;
-		pct		= VOTE_HOOK_PERCENTAGE;
-
-		if (vote_hook_time < 0)
-			vote_hook_time	= time + 30;
-	}
-	else
-	{
-		sprint (self, "Bug, unknown vote impulse ");
-		sprint_float (self, self.impulse);
-		sprint (self, "\n");
-		return;
-	}
-
-	if (pct <= 0 || pct > 1)
-	{
-		sprint (self, name);
-		sprint (self, " voting is disabled\n");
-		return;
-	}
-
-	if (teamplay & TEAM_MATCH_MODE)
-	{
-		sprint (self, "The game is in match mode, so voting is disabled\n");
-		return;
-	}
-
-	// XXX Put a timer on recalled votes so not to abuse bprint message with excessive recalls.
-	//if (use_state && self.aqstate & bit)
-	//{
-	//	self.aqstate = self.aqstate - self.aqstate & bit;
-	//	sprint (self, "You vote has been recalled\n");
-	//	return;
-	//}
-
-	if (self.vote_flags & bit)
-		count_votes (self.impulse, 0);
-	else
-	{
-		self.vote_flags = self.vote_flags | bit;
-		count_votes (self.impulse, 1);
-	}
-}; */
 
 // The rune_tell_*() code takes over these entity fields:
 //

@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.57 2004/07/09 05:23:06 slotzero Exp $
+/*  $Id: client.qc,v 1.58 2004/07/10 05:11:45 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -291,12 +291,6 @@ GotoNextMap =
 		}
 	-])
 
-	if (world.impulse)
-	{
-		makevectors (intermission_pos.angles);
-		spawn_tfog (intermission_pos.origin + 16 * v_forward);
-	}
-
 	if (forced_nextmap)
 		changelevel (forced_nextmap);
 	else if (cvar ("samelevel") & 1)	// if samelevel is set, stay on same level
@@ -338,13 +332,6 @@ IntermissionThink =
 
 	spawn_protect_off ();
 
-	// Console exited level.
-	if (world.impulse)
-	{
-		GotoNextMap ();
-		return;
-	}
-
 	if (time < intermission_exittime)
 		return;
 
@@ -365,6 +352,9 @@ move_to_intermission =
 			if (lastspawn)
 				intermission_pos 	= lastspawn;
 			e.angles			= intermission_pos.angles;
+
+			makevectors (intermission_pos.angles);
+			spawn_tfog (intermission_pos.origin + 16 * v_forward);
 		}
 		else
 			e.angles			= e.v_angle = intermission_pos.mangle;
@@ -430,6 +420,10 @@ execute_changelevel =
 	}
 
 	proto_intermission (MSG_ALL);
+
+	// hack
+	if (world.impulse < 0)
+		GotoNextMap ();
 };
 
 void ()
@@ -887,6 +881,10 @@ NextLevel =
 	local float svrf;
 
 	update_server_time ();
+
+	// Console exited level.
+	if (world.impulse > 0)
+		GotoNextMap ();
 
 	if (serverflags & SERVERFLAGS_RUNE_MASK == 0
 			&& orig_serverflags & SERVERFLAGS_RUNE_MASK == SERVERFLAGS_RUNE_MASK)

@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.25 2004/07/09 07:45:40 slotzero Exp $
+/*  $Id: team.qc,v 1.26 2004/07/10 05:11:45 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -421,18 +421,6 @@ toggle_teamplay =
 	}
 };
 
-void ()
-team_default =
-{
-	if (!VOTE_TEAM_MODE_DEFAULT)
-		return;
-
-	if (count_players_by_ent (0))
-		return;
-
-	toggle_teamplay (VOTE_TEAM_MODE_DEFAULT);
-};
-
 float (float tm, float total_teams)
 next_team =
 {
@@ -600,10 +588,23 @@ change_practice_mode =
 		return;
 	}
 
-	&%IN_POQ(368,376) = 1;
+	&%IN_POQ(368,376) = -1;
 	s = ftos (new_deathmatch);
 	cvar_set ("deathmatch", s);
 	admin_changelevel (mapname);
+};
+
+void ()
+practice_default =
+{
+	local float default;
+
+	default = 0; // XXX move to settings or hunk
+
+	if (!default)
+		return;
+
+
 };
 
 void ()

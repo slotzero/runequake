@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.20 2004/07/08 09:41:41 slotzero Exp $
+/*  $Id: hook.qc,v 1.21 2004/07/10 05:11:45 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -455,27 +455,4 @@ hook_type =
 	if (bits & T1_LITHIUM_HOOK)
 		return 2;
 	return 0;
-};
-
-void ()
-hook_default =
-{
-	local float wanted;
-
-	if (!temp1 & T1_HOOK_DEFAULT_ON)
-		return;
-
-	if (count_players_by_ent (0))
-		return;
-
-	wanted = hook_type (HOOK_DEFAULT);
-	if (wanted == hook_type (temp1))
-		return;
-
-	if (wanted == 0)
-		toggle_free_hook ();
-	else if (wanted == 1)
-		free_hook ();
-	else if (wanted == 2)
-		lithium_hook ();
 };
