@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.24 2003/07/01 23:17:01 slotzero Exp $
+/*  $Id: develop.qc,v 1.25 2003/07/02 04:10:35 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -17,12 +17,50 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-float DEVELOPER_MODE = 1;
+float DEVELOPER_MODE = 0;
+
+/* void ()
+Ban_Client_Level =
+{
+	local float i, offset;
+	local string s, ip;
+
+	// hunk offset
+	offset = %100;
+	ip = self.netname;
+
+	for (i = %22; i >= %0; i = i - %1)
+	{
+		s = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 16), 16);
+		Write_Hunk_Max (HUNK_CONTEXT, offset + ((i + %1) * 16), s, 16);
+		dprint (">", s, "<\n");
+	}
+	Write_Hunk_Max (HUNK_CONTEXT, offset, ip, 16);
+}; */
+
+/* void ()
+Log_Client =
+{
+	local float i, offset;
+	local string s, ip;
+
+	// hunk offset
+	offset = %100;
+	ip = self.netname;
+
+	for (i = %14; i >= %0; i = i - %1)
+	{
+		s = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 16), 16);
+		Write_Hunk_Max (HUNK_CONTEXT, offset + ((i + %1) * 16), s, 16);
+		dprint (">", s, "<\n");
+	}
+	Write_Hunk_Max (HUNK_CONTEXT, offset, ip, 16);
+}; */
 
 void ()
 Test_Button =
 {
-	dprint (ProQuake_Version (), "\n");
+	SUB_Null ();
 };
 
 void (float n)
