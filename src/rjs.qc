@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.131 2004/07/12 10:46:39 slotzero Exp $
+/*  $Id: rjs.qc,v 1.132 2004/07/12 11:29:52 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -310,7 +310,17 @@ process_misc =
 		}
 	}
 
-	// vote-practice
+	// Default mode for power ups.
+	if (NO_QUADS)
+		setquad ();
+	if (NO_PENTS)
+		setpent ();
+	if (NO_RINGS)
+		setring ();
+	if (NO_SUITS)
+		setsuit ();
+
+	// vote-practice (always do this last)
 	// XXX move to settings or something
 	if (deathmatch & DM_MODE_PRACTICE)
 		mode_normal ();
