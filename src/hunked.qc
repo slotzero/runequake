@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.10 2003/12/25 02:13:51 slotzero Exp $
+/*  $Id: hunked.qc,v 1.11 2004/04/06 00:20:47 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -46,7 +46,7 @@ update_server_time =
 
 string (float n)
 parse_time =
-{
+{	IN_QW(return;)
 	local float i, hours, minutes, seconds;
 	local string format = "0000:00:00";
 	local string x;
