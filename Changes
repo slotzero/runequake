@@ -1,8 +1,12 @@
-$Id: Changes,v 1.30 2002/07/18 06:13:45 slotzero Exp $
+$Id: Changes,v 1.31 2002/07/20 19:04:29 slotzero Exp $
 
 Version 0.5.1  Fri Jul 05 07:38:14 EST 2002
 
     - Bug Fixes
+
+        - I added misc_touch() which checks players, monsters, and radioactive
+          containers for players on its surface.  This allows players to stand
+          on or jump instead of just sliding with no ability to move.
 
         - There are times when a zombie can't get up.  If this occurs for
           longer than 30 seconds, I force zombie_die();
@@ -28,6 +32,10 @@ Version 0.5.1  Fri Jul 05 07:38:14 EST 2002
 	  when is NULL, crashes the server.
 
     - Notable Internal Changes
+
+        - I commented some code that will force a player to drop his armor
+          when armor of a greater type is picked up.  See armor_touch() for
+          more details.
 
         - You can control the intensity of either the gravity well or
 	  the repulsion rune from settings.qc.

@@ -1,4 +1,4 @@
-// $Id: zombie.qc,v 1.5 2002/07/18 06:14:18 slotzero Exp $
+// $Id: zombie.qc,v 1.6 2002/07/20 19:04:34 slotzero Exp $
 
 /*
 ==============================================================================
@@ -660,6 +660,7 @@ void (float type)
 monster_zombie_1 =
 {
 	self.solid	= SOLID_SLIDEBOX;
+	self.touch	= misc_touch;
 	self.movetype	= MOVETYPE_STEP;
 
 	setmodel (self, "progs/zombie.mdl");

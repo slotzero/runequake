@@ -1,4 +1,4 @@
-// $Id: client.qc,v 1.8 2002/07/15 02:31:02 slotzero Exp $
+// $Id: client.qc,v 1.9 2002/07/20 19:04:33 slotzero Exp $
 
 float modelindex_eyes, modelindex_player;
 
@@ -703,7 +703,7 @@ PutClientInServer =
 	self.last_drop_delay = 0;
 
 	//RUNE SERV: Stuff when entering
-	self.touch = SUB_Null;
+	self.touch = misc_touch;
 	self.runetime = time;
 	self.runevar = 0;
 	self.runevector = VEC_ORIGIN;

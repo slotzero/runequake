@@ -1,4 +1,4 @@
-// $Id: runeserv.qc,v 1.5 2002/06/15 21:03:06 slotzero Exp $
+// $Id: runeserv.qc,v 1.6 2002/07/20 19:04:34 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -685,7 +685,7 @@ Rune_Activate =
 	self.runevar	= 0;
 	self.class_cnt	= 0;
 	self.runevector	= VEC_ORIGIN;
-	self.touch	= SUB_Null;
+	self.touch	= misc_touch;
 	stuffcmd (self, CSHIFT_NONE);
 
 	old_rune = self.runetype;

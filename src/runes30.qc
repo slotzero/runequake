@@ -1,4 +1,4 @@
-// $Id: runes30.qc,v 1.11 2002/07/06 21:46:40 slotzero Exp $
+// $Id: runes30.qc,v 1.12 2002/07/20 19:04:33 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -754,6 +754,8 @@ IN_POQ([-
 void ()
 Impact_Touch =
 {
+	misc_touch ();
+
 	if (other == world)
 		return;
 	if (other.takedamage != DAMAGE_AIM)

@@ -1,4 +1,4 @@
-// $Id: shambler.qc,v 1.4 2002/07/17 19:35:04 slotzero Exp $
+// $Id: shambler.qc,v 1.5 2002/07/20 19:04:34 slotzero Exp $
 
 /*
 ==============================================================================
@@ -373,6 +373,7 @@ void (float type)
 monster_shambler_1 =
 {
 	self.solid	= SOLID_SLIDEBOX;
+	self.touch	= misc_touch;
 	self.movetype	= MOVETYPE_STEP;
 
 	setmodel (self, "progs/shambler.mdl");

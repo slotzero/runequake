@@ -1,4 +1,4 @@
-// $Id: runes50.qc,v 1.6 2002/07/17 07:45:59 slotzero Exp $
+// $Id: runes50.qc,v 1.7 2002/07/20 19:04:34 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -222,6 +222,8 @@ monk_touch =
 {
 	local vector v;
 
+	misc_touch ();
+
 	if (0 && self.aqflags & AQ_ADMIN && other != world)
 	{
 		local float i;
@@ -420,6 +422,8 @@ Rune_Torch =
 void ()
 Torch_Touch =
 {
+	misc_touch ();
+
 	if (other.takedamage && random () < TORCH_BURN_TOUCH_CHANCE)
 		burn_start (other, self, TORCH_BURN_TOUCH_DURATION);
 };

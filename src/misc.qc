@@ -1,4 +1,4 @@
-// $Id: misc.qc,v 1.11 2002/07/18 20:48:56 slotzero Exp $
+// $Id: misc.qc,v 1.12 2002/07/20 19:04:33 slotzero Exp $
 
 /*QUAKED info_null (0 0.5 0) (-4 -4 -4) (4 4 4)
 Used as a positional target for spotlights, etc.
@@ -126,6 +126,7 @@ misc_explobox =
 	local float oldz;
 
 	self.solid	= SOLID_BBOX;
+	self.touch	= misc_touch;
 	self.movetype	= MOVETYPE_NONE;
 	self.mdl	= "maps/b_explob.bsp";
 
@@ -161,6 +162,7 @@ misc_explobox2 =
 	local float oldz;
 
 	self.solid	= SOLID_BBOX;
+	self.touch	= misc_touch;
 	self.movetype	= MOVETYPE_NONE;
 	self.mdl	= "maps/b_exbox2.bsp";
 
@@ -513,7 +515,7 @@ func_bossgate =
 
 //============================================================================
 
-/* void ()
+void ()
 misc_touch =
 {
 	if (other.classname != "player")
@@ -525,7 +527,6 @@ misc_touch =
 	if (!other.flags & FL_ONGROUND && other.absmin_z >= self.absmax_z - 2)
 		other.flags = other.flags + FL_ONGROUND;
 };
-*/
 
 //============================================================================
 
