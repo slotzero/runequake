@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.46 2004/07/12 02:48:33 slotzero Exp $
+/*  $Id: items.qc,v 1.47 2004/07/13 09:33:42 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -492,7 +492,7 @@ armor_touch =
 void ()
 armor_cycle =
 {
-	if (!deathmatch & DM_ROTATING_ARMORS)
+	if (!ROTATE)
 		return;
 
 	if (self.runetype < time)
@@ -518,6 +518,8 @@ armor_set =
 
 	self.touch	= armor_touch;
 	self.skin	= it_skin;
+	self.impulse	= it_skin; // vote-rotate
+	self.netname	= "item_armor_all"; // vote-armor, vote-rotate
 
 	setmodel (self, "progs/armor.mdl");
 	setsize (self, '-16 -16 0', '16 16 56');

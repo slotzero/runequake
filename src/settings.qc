@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.39 2004/07/12 01:14:54 slotzero Exp $
+/*  $Id: settings.qc,v 1.40 2004/07/13 09:33:42 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -671,3 +671,6 @@ float NO_QUADS;
 float NO_PENTS;
 float NO_RINGS;
 float NO_SUITS;
+//float NO_RUNES;
+float NO_ARMORS;
+float ROTATE;

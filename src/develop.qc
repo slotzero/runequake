@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.76 2004/07/13 08:45:11 slotzero Exp $
+/*  $Id: develop.qc,v 1.77 2004/07/13 09:33:42 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -21,7 +21,7 @@
 // DEVELOPMENT FUNCTIONS
 //-------------------------------------------------------------------
 
-float DEVELOPER_MODE = 0;
+float DEVELOPER_MODE = 1;
 
 void (.float field, float bit)
 remove_bit_from_players =
@@ -107,35 +107,8 @@ setrunes =
 	}
 };
 
-float NO_ROTATE;
-
-void (float mode)
-toggle_armor =
-{
-	local entity e;
-
-	e = find (world, netname, "item_armor_all");
-	while (e)
-	{
-		if (mode)
-		{
-			e.skin		= e.impulse;
-			e.runetype	= time;
-			e.think		= SUB_regen;
-			e.nextthink	= time;
-		}
-		else
-		{
-			e.solid		= SOLID_NOT;
-			e.model		= string_null;
-			e.nextthink	= -1;
-		}
-		e = find (e, netname, "item_armor_all");
-	}
-};
-
 void ()
 Test_Button =
 {
-	SUB_Null ();
+	setrotate ();
 };

@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.2 2004/07/13 08:45:11 slotzero Exp $
+/*  $Id: toggle.qc,v 1.3 2004/07/13 09:33:42 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -21,6 +21,38 @@ float HUNK_NO_QUADS	= %1050;
 float HUNK_NO_PENTS	= %1051;
 float HUNK_NO_RINGS	= %1052;
 float HUNK_NO_SUITS	= %1053;
+//float HUNK_NO_RUNES	= %1060;
+float HUNK_NO_ARMORS	= %1065;
+float HUNK_ROTATE	= %1066;
+
+//
+// hunk functions
+//
+
+void (float offset, float value)
+fput =
+{
+	Write_Hunk_Float (HUNK_CONTEXT, offset, value);
+};
+
+float (float offset, float default)
+fget =
+{
+	local float i;
+
+	i = Read_Hunk_Float (HUNK_CONTEXT, offset);
+	if (i == 0x20202020)
+	{
+		fput (offset, default);
+		return default;
+	}
+
+	return i;
+};
+
+//
+// toggle functions
+//
 
 // types
 //
@@ -84,30 +116,53 @@ setsuit =
 	fput (HUNK_NO_SUITS, NO_SUITS);
 };
 
-void (float offset, float value)
-fput =
+void (float mode)
+toggle_armor =
 {
-	Write_Hunk_Float (HUNK_CONTEXT, offset, value);
+	local entity e;
+
+	e = find (world, netname, "item_armor_all");
+	while (e)
+	{
+		if (mode)
+		{
+			e.skin		= e.impulse;
+			e.runetype	= time;
+			e.think		= SUB_regen;
+			e.nextthink	= time;
+		}
+		else
+		{
+			e.solid		= SOLID_NOT;
+			e.model		= string_null;
+			e.nextthink	= -1;
+		}
+		e = find (e, netname, "item_armor_all");
+	}
+};
+
+void ()
+setarmor =
+{
+	toggle_armor (NO_ARMORS);
+	NO_ARMORS = !NO_ARMORS;
+	fput (HUNK_NO_ARMORS, NO_ARMORS);
+};
+
+void ()
+setrotate =
+{
+	if (NO_ARMORS)
+		return;
+
+	ROTATE = !ROTATE;
+	fput (HUNK_ROTATE, ROTATE);
+	toggle_armor (1);
 };
 
 //
 // hunk settings
 //
-
-float (float offset, float default)
-fget =
-{
-	local float i;
-
-	i = Read_Hunk_Float (HUNK_CONTEXT, offset);
-	if (i == 0x20202020)
-	{
-		fput (offset, default);
-		return default;
-	}
-
-	return i;
-};
 
 void ()
 Populate_Settings =
@@ -117,6 +172,8 @@ Populate_Settings =
 	NO_RINGS		= fget (HUNK_NO_RINGS,		0);
 	NO_SUITS		= fget (HUNK_NO_SUITS,		0);
 	NO_RUNES		= fget (HUNK_NO_RUNES,		0);
+	NO_ARMORS		= fget (HUNK_NO_ARMORS,		0);
+	ROTATE			= fget (HUNK_ROTATE,		0);
 
 	// After settings have been populated, there are some take action on
 	// those globals that require it.
@@ -148,5 +205,16 @@ Populate_Settings =
 	{
 		dprint_force ("Environmental Protection Suit disabled\n");
 		toggle_powerup ("item_artifact_envirosuit", 0);
+	}
+	// NO RUNES
+	if (NO_ARMORS)
+	{
+		dprint_force ("Armors disabled\n");
+		toggle_armor (0);
+	}
+	if (ROTATE)
+	{
+		dprint_force ("Rotating armors enabled\n");
+		toggle_armor (1);
 	}
 };
