@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.41 2004/12/23 18:18:00 slotzero Exp $
+/*  $Id: vote.qc,v 1.42 2004/12/23 18:29:06 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -276,7 +276,7 @@ vote_think =
 		bprint ("\ntype 'yes' or 'no' in console to vote\n");
 
 		// Feature request for Toyo.  XXX Remove this at some point?
-		if (self.impulse == IMP_VOTE_EXIT && !forced_nextmap)
+		if (self.impulse == IMP_VOTE_EXIT && !forced_nextmap && self.runevar == 3)
 		{
 			local entity e;
 
