@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.49 2004/07/18 14:17:28 slotzero Exp $
+/*  $Id: items.qc,v 1.50 2004/12/02 20:38:01 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -282,13 +282,18 @@ health_touch =
 	if (is_mega)
 	{
 		if (other.runetype == RN_REQUIEM)
-			amount = 5;
+			amount = 25;
 	}
 	else
 	{
-		if (other.runetype == RN_VAMP || other.runetype == RN_REQUIEM)
+		if (other.runetype == RN_VAMP)
 		{
 			amount = 5;
+			s = "items/r_item1.wav";
+		}
+		else if (other.runetype == RN_REQUIEM)
+		{
+			amount = 15;
 			s = "items/r_item1.wav";
 		}
 	}
@@ -449,8 +454,7 @@ armor_touch =
 			other.items	= other.items - (other.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + bit;
 
 		other.armortype		= type;
-		other.armorvalue	= other.armorvalue + 5;
-
+		other.armorvalue	= other.armorvalue + 15;
 	}
 	else
 	{

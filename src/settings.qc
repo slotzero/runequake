@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.48 2004/10/11 00:36:25 slotzero Exp $
+/*  $Id: settings.qc,v 1.49 2004/12/02 20:38:01 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -519,7 +519,6 @@ float MAX_HEALTH_LUMBER		= 250;
 float MAX_HEALTH_GOOD_HEALTH	= 666;
 float MAX_HEALTH_JACK		= 150;
 float MAX_HEALTH_ATHLETE	= 125;
-float MAX_HEALTH_REQUIEM	= 150;
 
 float HEALTH_BONUS_GOOD_HEALTH	= 100;
 float HEALTH_BONUS_GOOD_LUMBER	= 150;
