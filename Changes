@@ -1,5 +1,6 @@
-$Id: Changes,v 1.66 2004/06/13 01:24:30 slotzero Exp $
+$Id: Changes,v 1.67 2004/06/20 21:56:48 slotzero Exp $
 
+fixed to prevent jump sounds when frozen
 particles for death spots in qw are smaller
 true qsmack clients don't send updates
 removed punchangle from weapon attacks
@@ -8,6 +9,8 @@ added help-levels for voting
 practice mode wasn't displaying attackers health when killed
 
 // developer stuff
+remove notification for riders
+victim_address command
 add pain to hook camp instead of releasing...
 regen gives/converts your armor to red.. I eventually want to wein from using rune-use
 added some basic reflect code, not implemented
