@@ -1,15 +1,15 @@
-$Id: Changes,v 1.48 2004/02/21 09:12:40 slotzero Exp $
+$Id: Changes,v 1.49 2004/02/22 03:59:13 slotzero Exp $
 
-Sat Feb 21 03:57:24 EST 2004
-
+removed barrier from all exits (even custom)
+changed sonar distance to be more like feet using tiles in e1m2 (1 tile = 1 foot).
 increased hook speed
 added health (25) to athlete
 added practice mode to admin menu
 exit-level will go to forced map (voted)
-fixed written by to created by
+fixed written by to created by in credits
 added observer (menu off) to main menu (less confusing)
-betty spits out on death
-weakened the magic shotgun
+launch betty on death
+weakened the magic shotgun, is still slightly higher damage w/ direct shot
 
 Version 1.0  Sun Feb 15 22:26:22 EST 2004
 
@@ -20,6 +20,8 @@ Version 1.0  Sun Feb 15 22:26:22 EST 2004
         - Shamblers no longer attack you while they are frozen.
 
     - Changes
+
+        - Increased the default hook speed from 1000 to 2500 in settings.qc.
 
         - There are two new weapons: Magic Shotgun (ALT-2) and the Gas Grenades (ALT-6).
 
@@ -37,7 +39,8 @@ Version 1.0  Sun Feb 15 22:26:22 EST 2004
           type 'custom' in the console.
 
         - All of the levels that have exits teleport you to either a fixed location or a random
-          location throughout the level.  See the Notes file for fixed locations.
+          location throughout the level.  The leveles start, e1m1, e1m7, and e2m6 have fixed
+          locations.
 
         - Many of the client commands (show-settings, show-players, etc.) work from the server
           console.
