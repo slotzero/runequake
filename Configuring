@@ -1,4 +1,4 @@
-$Id: Configuring,v 1.11 2003/04/25 05:28:09 slotzero Exp $
+$Id: Configuring,v 1.12 2004/04/07 21:16:13 slotzero Exp $
 
 Starting the server
 
@@ -91,11 +91,6 @@ deathmatch
 	Only one pentagram is allowed on a level.  Additional pentagrams
 	are turned into good weapons, or armor.
 
-    32 lan mode					DM_LAN_MODE
-
-	Allow the firewalking and floating spiky cloud of death runes,
-	and allow e1m7, e1m8 and end in the random level selection code.
-
     64 exit attempt doesn't kill you		DM_EXIT_NON_FATAL
 
 	Trying to exit doesn't harm you even if noexit is set.
@@ -163,6 +158,14 @@ deathmatch
 	value SLOW_POWERUP_RESPAWN_TIME (settings.qc), will be added to
 	the current pent and quad times.
 
+    8192 crmod style practice mode              DM_PRACTICE_MODE
+
+        Practice mode allows you to focus on the fighting instead of searching
+        for the best weapon and armor.  You start out with all the weapons and
+        an endless supply of ammo.  Theh weapons and ammo are removed from the
+        level, but the armors remain.  When you do damage to a player, the
+        amount of damage is displayed on your screen.
+
 
 teamplay
 
@@ -182,7 +185,7 @@ teamplay
     16 enforce three teams			TEAM_3_TEAMS
     24 enforce four teams			TEAM_4_TEAMS
 
-    	If you add any of these in to your teamplay cvar the server uses
+    	If you add any of these in to your teamplay cvar the server u ses
 	enforced team mode.  The players are automatically assigned to
 	one of the teams when they join the game (or when enforced team
 	mode is switched on).  Players are allowed to switch teams, but
@@ -281,6 +284,16 @@ noexit
     	change the server to which they're forwarded, but you'll have to
     	edit settings.qc and recompile for that (see below).  By default
     	they're forwarded to my server.
+
+  1024 don't use custom levels                  NOEXIT_NO_CUSTOM_LEVELS
+
+	Disable the custom maps from the map rotation and vote options.
+
+  2048 don't use standard maps                  NOEXIT_CUSTOM_LEVELS_ONLY
+
+	Providing there are custom maps on the server, you can avoid
+        seeing the standard levels in the map rotation.  Voting options
+        for the standard maps are disabled as well.
 
 
 temp1
@@ -420,6 +433,13 @@ scratch1
 
         Use the four most common runes: strength, regeneration, resistance,
         and haste.
+
+  128 custom exits                              S1_CUSTOM_EXITS
+
+        If this is set, all of the level exits will teleport you instead of
+        triggering a change level.  The destinations to these teleports may
+        be stationary or random, depending on the level.
+
 
 samelevel
 
