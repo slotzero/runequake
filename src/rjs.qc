@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.154 2004/12/02 20:38:01 slotzero Exp $
+/*  $Id: rjs.qc,v 1.155 2004/12/23 17:03:12 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1252,8 +1252,11 @@ common_impulses =
 	else if (self.impulse == IMP_ADMIN_COMMAND)
 		admin_command ();
 
-	else if (self.impulse == IMP_REMOVE_FRAGS && self.frags > 0)
-		self.frags = 0;
+	else if (self.impulse == IMP_REMOVE_FRAGS)
+	{
+		if (is_observer () || self.frags > 0)
+			self.frags = 0;
+	}
 
 	else if (self.impulse == IMP_HUD_TOGGLE)
 	{
