@@ -1,6 +1,7 @@
-$Id: Changes,v 1.52 2004/02/25 23:42:50 slotzero Exp $
+$Id: Changes,v 1.53 2004/02/26 01:16:03 slotzero Exp $
 
-added practice mode to admin menu
+The unfreeze code holds you for an extra tick because the release time was hard coded.
+added practice mode to admin menu.
 
 Version 1.0  Wed Feb 25 18:41:36 EST 2004
 
