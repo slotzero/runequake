@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.16 2003/07/06 00:29:04 slotzero Exp $
+/*  $Id: strman.qc,v 1.17 2003/07/06 01:02:30 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -190,14 +190,13 @@ substr =
 string (string expr, float offset, float length, string replace)
 substr_replace =
 {
-	local string s1, s2;
+	local string cat1, cat3;
 
-	s1 = substr (expr, 0, offset);
+	cat1 = substr (expr, 0, offset);
 	offset = offset + length;
-	s2 = substr (expr, offset, 0);
-	s1 = strcat (s1, replace);
+	cat3 = substr (expr, offset, 0);
 
-	return strcat (s1, s2);
+	return strcat3 (cat1, replace, cat3);
 };
 
 //
@@ -314,6 +313,9 @@ eval_exponent =
 
 	return i;
 };
+
+// XXX This doesn't work yet because clean needs to be saved into memory before
+// it can be concated.
 
 float (string s)
 stof_any =
