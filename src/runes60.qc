@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.57 2004/12/17 01:13:06 slotzero Exp $
+/*  $Id: runes60.qc,v 1.58 2004/12/18 17:31:31 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -101,6 +101,7 @@ Glue_Touch =
 	if (!self.runevar)
 		return;
 
+	other.effects = other.effects | EF_ZERO_VELOCITY;
 	maybe_update_trap_count (self.owner, RN_GLUE);
 
 	self.solid	= SOLID_NOT;
@@ -322,6 +323,7 @@ Blizzard_Touch =
 	if (other.effects & EF_ZERO_VELOCITY)
 		return;
 
+	other.effects = other.effects | EF_ZERO_VELOCITY;
 	self.runetime = time + 3;
 	Blizzard_Freeze (other, 1);
 };

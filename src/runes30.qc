@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.39 2004/12/17 01:13:06 slotzero Exp $
+/*  $Id: runes30.qc,v 1.40 2004/12/18 17:31:31 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -446,7 +446,8 @@ Unfreeze =
 void ()
 Freeze_Frozen =
 {
-	self.runent.effects = self.runent.effects | EF_ZERO_VELOCITY;
+	if (!self.runent.effects & EF_ZERO_VELOCITY)
+		self.runent.effects = self.runent.effects | EF_ZERO_VELOCITY;
 
 	setorigin (self.runent, self.origin);
 
@@ -549,6 +550,7 @@ Freeze_Touch =
 	if (other.effects & EF_ZERO_VELOCITY)
 		return;
 
+	other.effects = other.effects | EF_ZERO_VELOCITY;
 	maybe_update_trap_count (self.owner, RN_FREEZE);
 
 	if (other.classname == "player")
