@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.23 2003/07/01 22:35:55 slotzero Exp $
+/*  $Id: develop.qc,v 1.24 2003/07/01 23:17:01 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -17,12 +17,12 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-float DEVELOPER_MODE = 0;
+float DEVELOPER_MODE = 1;
 
 void ()
 Test_Button =
 {
-	SUB_Null ();
+	dprint (ProQuake_Version (), "\n");
 };
 
 void (float n)
@@ -74,7 +74,13 @@ ProQuake_Version =
 	cl = *SubInt(AddInt(PSTRING_TO_PQUAKEC, &self.netname), 4 * CL_NAME);
 	cl = *AddInt(cl[CL_NETCONNECTION], PC_TO_PQUAKEC);
 	i = cl[QS_MOD] / %1;
-	hex32 (cl[QS_MOD]);
+
+	if (!i)
+		return "0";
+	// XXX Mod version hasn't always been present, I forget what version
+	// it was introduced, so I'm using 3.00 until I research it.
+	else if (i == 1)
+		return "< 3.00";
 
 	d = floor (i / 4096);
 	i = i - d * 4096;
