@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.8 2005/01/10 05:41:19 slotzero Exp $
+/*  $Id: arena.qc,v 1.9 2005/01/16 22:49:50 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -74,6 +74,9 @@ arena_countdown =
 {
 	local float a, b;
 	local string s;
+
+	if (intermission_running)
+		return;
 
 	a = is_player_e (self.owner);
 	b = is_player_e (self.runent);
