@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.85 2004/06/29 22:47:35 slotzero Exp $
+/*  $Id: defs.qc,v 1.86 2004/06/30 01:47:41 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1049,8 +1049,8 @@ float	framecount;
 float	skill;
 
 // cvars
-string	CVAR_CONCMD	= "nomonsters";
-string	CVAR_CONMAP	= "scratch4";
+string	CVAR_CONCMD	= "saved1";
+string	CVAR_CONMAP	= "saved2";
 
 // console commands
 float	concmd;
