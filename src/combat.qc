@@ -1,4 +1,4 @@
-// $Id: combat.qc,v 1.8 2002/07/09 12:28:05 slotzero Exp $
+// $Id: combat.qc,v 1.9 2002/07/11 14:17:19 slotzero Exp $
 
 /*
 ============
@@ -62,26 +62,33 @@ Killed
 void (entity targ, entity attacker, string dtype)
 Killed =
 {
-	local entity oself, oother;
+	local entity old_self, old_other;
 
-	oself = self;
-	self = targ;
+	old_self	= self;
+	self		= targ;
 
 	if (self.health < -99)
-		self.health = -99;		// don't let sbar look bad if a player
+		self.health = -99;	// don't let sbar look bad if a player
 
+	if (!self.th_die)
+		objerror ("self.th_die is NULL");
+
+	// doors, triggers, etc
 	if (self.movetype == MOVETYPE_PUSH || self.movetype == MOVETYPE_NONE)
-	{	// doors, triggers, etc
-		oother = other;
-		other = attacker;
+	{
+		old_other	= other;
+		other		= attacker;
+
 		self.th_die ();
-		other = oother;
-		self = oself;
+
+		other		= old_other;
+		self		= old_self;
+
 		return;
 	}
 
-	self.effects = 0;	// quad glow &c
-	self.enemy = attacker;
+	self.effects	= 0;	// quad glow &c
+	self.enemy	= attacker;
 
 	// bump the monster counter
 	if (self.flags & FL_MONSTER)
@@ -94,14 +101,14 @@ Killed =
 	if (!deathmatch & DM_DAMAGE_MATCH)
 		high_track_recalc ();
 
-	self.takedamage = DAMAGE_NO;
-	self.touch = SUB_Null;
-	self.effects = 0;
+	self.takedamage	= DAMAGE_NO;
+	self.touch	= SUB_Null;
+	self.effects	= 0;
 
 	monster_death_use ();
 	self.th_die ();
 
-	self = oself;
+	self		= old_self;
 };
 
 /*
