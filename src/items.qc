@@ -1,4 +1,4 @@
-// $Id: items.qc,v 1.9 2002/04/28 07:43:17 slotzero Exp $
+// $Id: items.qc,v 1.10 2002/04/29 23:38:52 slotzero Exp $
 
 void (entity e, float chan, string samp, float vol, float atten)
 item_sound =
@@ -6,6 +6,19 @@ item_sound =
 	sound (e, chan, samp, vol, atten);
 	stuffcmd (e, "bf\n");
 	spawn_protect_off_e (e);
+};
+
+void (entity e, string s)
+precache_noise_e =
+{
+	precache_sound (s);
+	e.noise = s;
+};
+
+void (string s)
+precache_noise =
+{
+	precache_noise_e (self, s);
 };
 
 /*
@@ -123,17 +136,19 @@ float	H_ROTTEN	= 1;
 float	H_MEGA		= 2;
 .float	healamount, healtype;
 
-void (string health_model, string health_noise, float health_amount, float health_type)
+void (string it_model, string it_noise, float it_healamount, float it_healtype)
 health_set =
 {
-	precache_model (health_model);
-	precache_sound (health_noise);
+	precache_model (it_model);
+	precache_noise (it_noise);
+
 	self.touch		= health_touch;
-	self.noise		= health_noise;
-	self.healamount		= health_amount;
-	self.healtype		= health_type;
-	setmodel (self, health_model);
+	self.healamount		= it_healamount;
+	self.healtype		= it_healtype;
+
+	setmodel (self, it_model);
 	setsize (self, VEC_ORIGIN, '32 32 56');
+
 	StartItem ();
 };
 
@@ -309,26 +324,26 @@ armor_touch =
 	SUB_UseTargets ();				// fire all targets / killtargets
 };
 
-void (float armor_skin)
-item_armor =
+void (float it_skin)
+armor_set =
 {
+	precache_model ("progs/armor.mdl");
+
 	self.touch	= armor_touch;
-	self.skin	= armor_skin;
+	self.skin	= it_skin;
+
 	setmodel (self, "progs/armor.mdl");
 	setsize (self, '-16 -16 0', '16 16 56');
+
 	StartItem ();
 };
-
-float SKIN_GREEN	= 0;
-float SKIN_YELLOW	= 1;
-float SKIN_RED		= 2;
 
 /*QUAKED item_armor1 (0 .5 .8) (-16 -16 0) (16 16 32)
 */
 void ()
 item_armor1 =
 {
-	item_armor (SKIN_GREEN);
+	armor_set (0);
 };
 
 /*QUAKED item_armor2 (0 .5 .8) (-16 -16 0) (16 16 32)
@@ -336,7 +351,7 @@ item_armor1 =
 void ()
 item_armor2 =
 {
-	item_armor (SKIN_YELLOW);
+	armor_set (1);
 };
 
 /*QUAKED item_armorInv (0 .5 .8) (-16 -16 0) (16 16 32)
@@ -345,7 +360,7 @@ item_armor2 =
 void ()
 item_armorInv =
 {
-	item_armor (SKIN_RED);
+	armor_set (2);
 };
 
 void ()
@@ -560,16 +575,19 @@ weapon_up =
 	}
 };
 
-void (string weapon_model, float it_weapon, string weapon_netname)
+void (string it_model, float it_weapon, string it_netname)
 weapon_set =
 {
 	if (!spawn_no_precache)
-		precache_model (weapon_model);
-	setmodel (self, weapon_model);
-	self.weapon	= it_weapon;
-	self.netname	= weapon_netname;
+		precache_model (it_model);
+
 	self.touch	= weapon_touch;
+	self.weapon	= it_weapon;
+	self.netname	= it_netname;
+
+	setmodel (self, it_model);
 	setsize (self, '-16 -16 0', '16 16 56');
+
 	StartItem();
 };
 
@@ -717,16 +735,19 @@ ammo_touch =
 
 float WEAPON_BIG2 = 1;
 
-void (string ammo_model, float ammo_aflag, float ammo_weapon, string ammo_netname)
+void (string it_model, float it_aflag, float it_weapon, string it_netname)
 ammo_set =
 {
-	precache_model (ammo_model);
-	setmodel (self, ammo_model);
+	precache_model (it_model);
+
 	self.touch	= ammo_touch;
-	self.aflag	= ammo_aflag;
-	self.weapon	= ammo_weapon;
-	self.netname	= ammo_netname;
+	self.aflag	= it_aflag;
+	self.weapon	= it_weapon;
+	self.netname	= it_netname;
+
+	setmodel (self, it_model);
 	setsize (self, VEC_ORIGIN, '32 32 56');
+
 	StartItem ();
 };
 
@@ -821,35 +842,29 @@ key_touch =
 };
 
 void ()
-key_sounds_set =
+key_sound =
 {
 	if (world.worldtype == 0)
-	{
-		precache_sound ("misc/medkey.wav");
-		self.noise = "misc/medkey.wav";
-	}
+		precache_noise ("misc/medkey.wav");
 	else if (world.worldtype == 1)
-	{
-		precache_sound ("misc/runekey.wav");
-		self.noise = "misc/runekey.wav";
-	}
+		precache_noise ("misc/runekey.wav");
 	else if (world.worldtype == 2)
-	{
-		precache_sound2 ("misc/basekey.wav");
-		self.noise = "misc/basekey.wav";
-	}
+		precache_noise ("misc/basekey.wav");
 };
 
-void (string key_model, string key_netname, float it_key)
+void (string it_model, string it_netname, float it_key)
 key_set =
 {
-	precache_model (key_model);
-	setmodel (self, key_model);
-	key_sounds_set ();
-	self.netname	= key_netname;
+	precache_model (it_model);
+	key_sound ();
+
 	self.touch	= key_touch;
+	self.netname	= it_netname;
 	self.items	= it_key;
+
+	setmodel (self, it_model);
 	setsize (self, '-16 -16 -24', '16 16 32');
+
 	StartItem ();
 };
 
@@ -924,41 +939,36 @@ sigil_touch =
 	SUB_UseTargets ();				// fire all targets / killtargets
 };
 
+void (string it_model)
+sigil_set =
+{
+	precache_model (it_model);
+	precache_noise ("misc/runekey.wav");
+
+	self.touch	= sigil_touch;
+
+	setmodel (self, it_model);
+	setsize (self, '-16 -16 -24', '16 16 32');
+
+	StartItem ();
+};
+
 /*QUAKED item_sigil (0 .5 .8) (-16 -16 -24) (16 16 32) E1 E2 E3 E4
 End of level sigil, pick up to end episode and return to jrstart.
 */
 void ()
 item_sigil =
 {
-	precache_sound ("misc/runekey.wav");
-	self.noise = "misc/runekey.wav";
-
 	if (self.spawnflags & 1)
-	{
-		precache_model ("progs/end1.mdl");
-		setmodel (self, "progs/end1.mdl");
-	}
+		sigil_set ("progs/end1.mdl");
 	else if (self.spawnflags & 2)
-	{
-		precache_model2 ("progs/end2.mdl");
-		setmodel (self, "progs/end2.mdl");
-	}
+		sigil_set ("progs/end2.mdl");
 	else if (self.spawnflags & 4)
-	{
-		precache_model2 ("progs/end3.mdl");
-		setmodel (self, "progs/end3.mdl");
-	}
+		sigil_set ("progs/end3.mdl");
 	else if (self.spawnflags & 8)
-	{
-		precache_model2 ("progs/end4.mdl");
-		setmodel (self, "progs/end4.mdl");
-	}
+		sigil_set ("progs/end4.mdl");
 	else
 		objerror ("no spawnflags");
-
-	self.touch = sigil_touch;
-	setsize (self, '-16 -16 -24', '16 16 32');
-	StartItem ();
 };
 
 /*
@@ -1063,17 +1073,19 @@ powerup_touch =
 	SUB_UseTargets ();				// fire all targets / killtargets
 };
 
-void (string powerup_model, string powerup_noise, string powerup_netname, float it_powerup)
+void (string it_model, string it_noise, string it_netname, float it_powerup)
 powerup_set =
 {
-	precache_model (powerup_model);
-	precache_sound (powerup_noise);
+	precache_model (it_model);
+	precache_noise (it_noise);
+
 	self.touch	= powerup_touch;
-	self.noise	= powerup_noise;
-	self.netname	= powerup_netname;
+	self.netname	= it_netname;
 	self.items	= it_powerup;
-	setmodel (self, powerup_model);
+
+	setmodel (self, it_model);
 	setsize (self, '-16 -16 -24', '16 16 32');
+
 	StartItem ();
 };
 
@@ -1257,10 +1269,10 @@ DropBackpack =
 	if (!(self.ammo_shells + self.ammo_nails + self.ammo_rockets + self.ammo_cells))
 		return;	// nothing in it
 
-	item = spawn ();
-	item.classname = "backpack";
-	item.origin = self.origin - '0 0 24';
-	item.owner = self;
+	item		= spawn ();
+	item.classname	= "backpack";
+	item.origin	= self.origin - '0 0 24';
+	item.owner	= self;
 
 	item.items = self.weapon & WEAPON_NONALT_MASK;
 	if (item.items == IT_AXE)
@@ -1282,24 +1294,25 @@ DropBackpack =
 	else
 		item.netname = string_null;
 
-	item.ammo_shells = self.ammo_shells;
-	item.ammo_nails = self.ammo_nails;
-	item.ammo_rockets = self.ammo_rockets;
-	item.ammo_cells = self.ammo_cells;
+	item.ammo_shells	= self.ammo_shells;
+	item.ammo_nails		= self.ammo_nails;
+	item.ammo_rockets	= self.ammo_rockets;
+	item.ammo_cells		= self.ammo_cells;
 
 	item.velocity_z = 300;
 	item.velocity_x = -100 + (random () * 200);
 	item.velocity_y = -100 + (random () * 200);
 
-	item.flags = FL_ITEM;
-	item.solid = SOLID_TRIGGER;
-	item.movetype = MOVETYPE_TOSS;
+	item.touch	= BackpackTouch;
+	item.flags	= FL_ITEM;
+	item.solid	= SOLID_TRIGGER;
+	item.movetype	= MOVETYPE_TOSS;
+
 	setmodel (item, "progs/backpack.mdl");
 	setsize (item, '-16 -16 0', '16 16 56');
-	item.touch = BackpackTouch;
 
-	item.nextthink = time + DROP_BACKPACK_DURATION;
-	item.think = SUB_Remove;
+	item.nextthink	= time + DROP_BACKPACK_DURATION;
+	item.think	= SUB_Remove;
 };
 
 void (string type, float finish_time)
@@ -1436,9 +1449,9 @@ drop_powerup_touch =
 		return;
 
  	item_sound (other, CHAN_AUTO, self.noise, 1, ATTN_NORM);
-	self.solid = SOLID_NOT;
-	other.items = other.items | it;
-	self.model = string_null;
+	self.solid	= SOLID_NOT;
+	other.items	= other.items | it;
+	self.model	= string_null;
 
 	if (self.netname != "biosuit")
 	{
