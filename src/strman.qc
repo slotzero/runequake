@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.2 2003/04/14 00:56:20 slotzero Exp $
+/*  $Id: strman.qc,v 1.3 2003/05/24 02:33:09 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -95,7 +95,8 @@ strcat =
 	s1_len	= strlen (s1);
 	s2_len	= strlen (s2);
 
-	if (!s1_len || !s2_len || s1_len + s2_len > 255)
+	// s1_len can be null
+	if (!s2_len || s1_len + s2_len > 255)
 	{
 		dprint ("strcat(): argument(s) is null or total length > 255\n");
 		return string_null;

@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.3 2003/05/21 23:14:12 slotzero Exp $
+/*  $Id: develop.qc,v 1.4 2003/05/24 02:33:09 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -31,8 +31,9 @@ char_to_float =
 	if (s == "7") return 7;
 	if (s == "8") return 8;
 	if (s == "9") return 9;
+	if (s == "0") return 0;
 
-	return 0;
+	return -1;
 };
 
 float (float n)
@@ -50,7 +51,58 @@ eval_exponent =
 	return i;
 };
 
-// XXX Only works on whole numbers.
+float (string s)
+prepare_stof =
+{
+	local float i, cmp, ps, pch, n, n_tot, n_frac;
+	local string s_clean, ch;
+
+	ps = AddInt (AddInt (&s, PSTRING_TO_PQUAKEC), %-3);
+	pch = AddInt (&"xxxx", PSTRING_TO_PQUAKEC);
+
+	cmp = strlen (s);
+	for (i = 0; i < cmp; i = i + 1)
+	{
+		(*pch)[%0] = (*ps)[%0];
+		pch = AddInt (pch, %3);
+
+		ch = @AddInt (pch, PQUAKEC_TO_PSTRING);
+		if (ch == ".")
+		{
+			n_frac = n_tot;
+			n = -1;
+		}
+		else
+			n = char_to_float (ch);
+
+		if (n != -1)
+		{
+			ch = @AddInt (pch, PQUAKEC_TO_PSTRING);
+			s_clean = strcat (s_clean, ch);
+			n_tot = n_tot + 1;
+		}
+
+		pch = AddInt (pch, %-3);
+		ps = AddInt (ps, %1);
+	}
+
+	if (n_frac)
+	{
+		n_frac = n_tot - n_frac;
+		n_frac = eval_exponent (n_frac + 1);
+	}
+
+	dprint (s_clean, " xxx\n");
+
+	n_tot = stof (s_clean);
+
+	if (n_frac)
+		n_tot = n_tot / n_frac;
+
+	return n_tot;
+};
+
+IN_POQ([-
 float (string s)
 stof =
 {
@@ -65,8 +117,6 @@ stof =
 		(*pch)[%0] = (*ps)[%0];
 		pch = AddInt (pch, %3);
 
-		// Make this a separate function and do away with char_to_float
-		// and eval_exponent?
 		n = char_to_float (@AddInt (pch, PQUAKEC_TO_PSTRING));
 		n = n * (eval_exponent (x));
 		sum = sum + n;
@@ -78,6 +128,7 @@ stof =
 
 	return sum;
 };
+-])
 
 void (float n)
 parse_time =
