@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.40 2004/06/28 05:28:18 slotzero Exp $
+/*  $Id: world.qc,v 1.41 2004/06/28 05:46:03 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -342,8 +342,8 @@ StartFrame =
 	skill = cvar_infokey ("skill");
 	if (skill)
 	{
-		if (skill == SKILL_LAST)
-			Client_Disconnect_Log ();
+		if (skill == SKILL_UPDATE_BINDINGS)
+			console_aliases ();
 
 		else if (skill == SKILL_SHOW_PLAYERS)
 			show_players ();
@@ -370,7 +370,7 @@ StartFrame =
 		}
 
 		else if (skill == SKILL_UPDATE_BINDINGS)
-			console_aliases ();
+			Client_Disconnect_Log ();
 
 		else if (skill == SKILL_LEVELS)
 			levels ();
