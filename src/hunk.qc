@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.32 2004/12/25 00:54:48 slotzero Exp $
+/*  $Id: hunk.qc,v 1.33 2004/12/25 00:58:48 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -144,7 +144,7 @@ Read_Hunk_String =
 	hunk = Get_Hunk (type, offset);
 	if (!hunk)
 	{
-		dprint ("Read_Hunk: hunk is null\n");
+		dprint ("Read_Hunk_String: hunk is null\n");
 		return string_null;
 	}
 
