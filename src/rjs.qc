@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.55 2003/07/30 10:05:08 slotzero Exp $
+/*  $Id: rjs.qc,v 1.56 2003/08/02 16:16:40 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1437,13 +1437,6 @@ common_impulses =
 
 	else if (self.impulse == IMP_TEAM_STATS)
 	 	 team_stats (0);
-
-	else if (DEVELOPER_MODE)
-	{
-		self_sprint (self, "Invalid impulse: ");
-		self_sprint_float (self, self.impulse);
-		self_sprint (self, "\n");
-	}
 };
 
 void (string dt)
@@ -1526,14 +1519,12 @@ player_init_switchfire_alias =
 void ()
 player_init =
 {
-	local entity e, cl;
+	local entity e;
 	local float i;
 	local string s;
 
 	// This is only useful for ProQuake servers version 3.1 or later.
-	cl = cl_netconnection ();
-
-	if (*cl[QS_MOD] == *MOD_QSMACK)
+	if (*self.cl_netconnection[QS_MOD] == *MOD_QSMACK)
 	{
 		if (!is_qsmack ())
 			self.aqflags = self.aqflags | AQ_QSMACK;
@@ -1761,7 +1752,7 @@ show_players =
 {
 	local entity e;
 
-	self_sprint (self, "Status  Name\n");
+	self_sprint (self, "\nStatus  Name\n");
 	e = find (world, classname, "player");
 	while (e)
 	{
@@ -1771,7 +1762,10 @@ show_players =
 			{
 				if (e.owner != world && (!e.aqflags & AQ_ADMIN || self.aqflags & AQ_ADMIN))
 				{
-					self_sprint (self, "rider   ");
+					if (self == e)
+						self_sprint (self, "rider  \{141}");
+					else
+						self_sprint (self, "rider   ");
 					self_sprint (self, e.netname);
 					self_sprint (self, " (on ");
 					self_sprint (self, e.owner.netname);
@@ -1779,7 +1773,10 @@ show_players =
 				}
 				else if (e.netname != string_null || self.aqflags & AQ_ADMIN)
 				{
-					self_sprint (self, "obs.    ");
+					if (self == e)
+						self_sprint (self, "obs.   \{141}");
+					else
+						self_sprint (self, "obs.    ");
 					self_sprint (self, e.netname);
 				}
 
@@ -1800,7 +1797,10 @@ show_players =
 			}
 			else if (e.netname != string_null || self.aqflags & AQ_ADMIN)
 			{
-				self_sprint (self, "player  ");
+				if (self == e)
+					self_sprint (self, "player \{141}");
+				else
+					self_sprint (self, "player  ");
 				self_sprint (self, e.netname);
 				if (e.aqstate & AQS_VOTE_EXIT)
 					self_sprint (self, " (exit vote)");
@@ -1810,8 +1810,13 @@ show_players =
 					self_sprint (self, " (hook vote)");
 			}
 
-			if (e.aqflags & AQ_ADMIN && self.aqflags & AQ_ADMIN)
+			if (is_admin ())
+			{
+				if (is_qsmack_e (e))
+					self_sprint (self, " (qsmack)");
+				else
 					self_sprint (self, " (admin)");
+			}
 
 			if (e.netname != string_null || self.aqflags & AQ_ADMIN)
 				self_sprint (self, "\n");
@@ -2804,10 +2809,6 @@ count_votes =
 	local entity e;
 	local string s;
 
-	vote_team_mode_default ();
-	vote_hook_mode_default ();
-	update_server_time ();
-
 	if (vote_type == IMP_VOTE_EXIT)
 	{
 		cmd		= "vote-exit";
@@ -2941,8 +2942,15 @@ count_votes =
 void ()
 vote_counter_think =
 {
+	ghost_check ();
+	update_server_time ();
+
 	if (intermission_running)
 		return;
+
+	vote_team_mode_default ();
+	vote_hook_mode_default ();
+
 	if (self.runevar)
 		count_votes (IMP_VOTE_EXIT, 2);
 	else

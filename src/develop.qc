@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.41 2003/07/30 10:05:08 slotzero Exp $
+/*  $Id: develop.qc,v 1.42 2003/08/02 16:16:39 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -32,6 +32,27 @@ remove_player_bit =
 	while (e)
 	{
 		e.field = e.field - e.field & bit;
+		e = find (e, classname, "player");
+	}
+};
+
+void ()
+ghost_check =
+{
+	local entity e, os;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (!e.cl_name[CL_ACTIVE])
+		{
+			os = self;
+			self = e;
+			bprint ("Ghost Player");
+			ClientDisconnect ();
+			self = os;
+		}
+
 		e = find (e, classname, "player");
 	}
 };
@@ -120,12 +141,10 @@ Client_Disconnect_Log =
 string ()
 ProQuake_Version =
 {
-	local entity cl;
 	local float i, d, sum;
 	local string s1, s2, s3;
 
-	cl = cl_netconnection ();
-	i = cl[QS_MOD] / %1;
+	i = self.cl_netconnection[QS_MOD] / %1;
 
 	if (!i)
 		return " with a non-proquake client";

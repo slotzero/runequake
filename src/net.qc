@@ -1,4 +1,4 @@
-/*  $Id: net.qc,v 1.2 2003/07/28 14:29:56 slotzero Exp $
+/*  $Id: net.qc,v 1.3 2003/08/02 16:16:39 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -22,38 +22,11 @@
 //-------------------------------------------------------------------
 
 entity (entity e)
-cl_name_e =
-{
-	return *SubInt(AddInt(PSTRING_TO_PQUAKEC, &e.netname), 4 * CL_NAME);
-};
-
-entity ()
-cl_name =
-{
-	return cl_name_e (self);
-};
-
-entity (entity e)
-cl_netconnection_e =
-{
-	local entity cl;
-
-	cl = cl_name_e (e);
-	return *AddInt(cl[CL_NETCONNECTION], PC_TO_PQUAKEC);
-};
-
-entity ()
-cl_netconnection =
-{
-	return cl_netconnection_e (self);
-};
-
-entity (entity e)
 qs_address_e =
 {
 	local entity cl;
 
-	cl = cl_netconnection_e (e);
+	cl = e.cl_netconnection;
 	return *AddInt(&cl, 4 * QS_ADDRESS);
 };
 

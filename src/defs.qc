@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.40 2003/07/30 10:52:41 slotzero Exp $
+/*  $Id: defs.qc,v 1.41 2003/08/02 16:16:39 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1334,3 +1334,6 @@ void	(vector where, float set)		multicast	= #82; // sends the temp message to a 
 
 .float	grenade_spam_time;
 .string address;
+
+.entity cl_name;
+.entity cl_netconnection;
