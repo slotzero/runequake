@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.37 2004/12/25 03:21:00 slotzero Exp $
+/*  $Id: hunk.qc,v 1.38 2004/12/27 02:13:56 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -224,8 +224,23 @@ Read_Hunk_String_Exact_e =
 	pdata	= AddInt (&data, PSTRING_TO_PQUAKEC);
 	dword	= floor (bytes / 4) * %1;
 
-	while (bytes > 3)
-		bytes = bytes - 4;
+	//while (bytes > 3)
+	//	bytes = bytes - 4;
+
+	if (bytes > 3)
+	{
+		bytes = bytes / 4;
+		bytes = bytes - floor (bytes);
+
+		if (bytes == 0.25)
+			bytes = 1;
+		else if (bytes == 0.50)
+			bytes = 2;
+		else if (bytes == 0.75)
+			bytes = 3;
+		else
+			bytes = 0;
+	}
 
 	for (i = %0; i < dword; i = i + %1)
 		(*pdata)[i] = hunk[i];
@@ -369,8 +384,23 @@ Write_Hunk_String_Exact_e =
 
 	pdata = AddInt (&data, PSTRING_TO_PQUAKEC);
 
-	while (bytes > 3)
-		bytes = bytes - 4;
+	//while (bytes > 3)
+	//	bytes = bytes - 4;
+
+	if (bytes > 3)
+	{
+		bytes = bytes / 4;
+		bytes = bytes - floor (bytes);
+
+		if (bytes == 0.25)
+			bytes = 1;
+		else if (bytes == 0.50)
+			bytes = 2;
+		else if (bytes == 0.75)
+			bytes = 3;
+		else
+			bytes = 0;
+	}
 
 	for (i = %0; i < dword; i = i + %1)
 		hunk[i] = (*pdata)[i];
