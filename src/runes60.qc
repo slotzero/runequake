@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.17 2003/11/09 09:20:58 slotzero Exp $
+/*  $Id: runes60.qc,v 1.18 2003/11/10 11:43:56 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -96,7 +96,12 @@ Glue_Touch =
 		return;
 
 	if (self.owner.runetype == RN_GLUE && self.owner.runevar > 0)
-		self.owner.runevar = self.owner.runevar - 1;
+	{
+		if (self.owner.class_cnt)
+			self.owner.class_cnt = self.owner.class_cnt - 1;
+		else
+			self.owner.runevar = self.owner.runevar - 1;
+	}
 
 	self.solid	= SOLID_NOT;
 	self.movetype	= MOVETYPE_NONE;
@@ -285,7 +290,6 @@ Blizzard_Freeze =
 	freeze.runetime		= time + freeze_time;
 	freeze.nextthink	= time;
 	freeze.think		= Freeze_Frozen;
-
 };
 
 void ()
