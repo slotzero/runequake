@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.27 2003/12/30 05:57:43 slotzero Exp $
+/*  $Id: admin.qc,v 1.28 2004/01/03 08:28:41 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -76,14 +76,7 @@ admin_toggle =
 	if (admin_passcode_cvar < 0)
 		ADMIN_PASSCODE_REAL = 123456;
 	else if (admin_passcode_cvar > 0)
-	{
-		IN_POQ([-
-			ADMIN_PASSCODE_REAL = admin_passcode_cvar;
-	    	-], [-
-			self_sprint (self, "This feature is disabled in Quakeworld\n");
-			return;
-		-])
-	}
+		ADMIN_PASSCODE_REAL = admin_passcode_cvar;
 	else
 		ADMIN_PASSCODE_REAL = ADMIN_PASSCODE;
 
