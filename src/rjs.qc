@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.62 2003/10/02 04:14:41 slotzero Exp $
+/*  $Id: rjs.qc,v 1.63 2003/10/03 23:25:49 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1539,6 +1539,83 @@ player_init_switchfire_alias =
 	self_stuffcmd (self, "\"\n");
 };
 
+void (string level, float imp)
+player_init_level_alias =
+{
+	local string s;
+
+	self_stuffcmd (self, "alias ");
+	self_stuffcmd (self, level);
+	self_stuffcmd (self, " \"cl;w5;w5;impulse ");
+	s = ftos (imp);
+	self_stuffcmd (self, s);
+	self_stuffcmd (self, "\"\n");
+};
+
+void ()
+level_aliases =
+{
+	local string s;
+
+	self_stuffcmd (self, "alias w5 \"wait;wait;wait;wait;wait\"\n");
+	self_stuffcmd (self, "alias cl \"impulse ");
+	s = ftos (IMP_ADMIN_CHANGE_MAP);
+	self_stuffcmd (self, s);
+	self_stuffcmd (self, "\"\n");
+
+	// XXX These should be scripted!! Add to map file.
+
+	// First and last.
+	player_init_level_alias ("start", 56);
+	player_init_level_alias ("end", 57);
+
+	// Episode 1
+	player_init_level_alias ("e1m1", 11);
+	player_init_level_alias ("e1m2", 12);
+	player_init_level_alias ("e1m3", 13);
+	player_init_level_alias ("e1m4", 14);
+	player_init_level_alias ("e1m5", 15);
+	player_init_level_alias ("e1m6", 16);
+	player_init_level_alias ("e1m7", 17);
+	player_init_level_alias ("e1m8", 18);
+
+	// Episode 2
+	player_init_level_alias ("e2m1", 21);
+	player_init_level_alias ("e2m2", 22);
+	player_init_level_alias ("e2m3", 23);
+	player_init_level_alias ("e2m4", 24);
+	player_init_level_alias ("e2m5", 25);
+	player_init_level_alias ("e2m6", 26);
+	player_init_level_alias ("e2m7", 27);
+
+	// Episode 3
+	player_init_level_alias ("e3m1", 31);
+	player_init_level_alias ("e3m2", 32);
+	player_init_level_alias ("e3m3", 33);
+	player_init_level_alias ("e3m4", 34);
+	player_init_level_alias ("e3m5", 35);
+	player_init_level_alias ("e3m6", 36);
+	player_init_level_alias ("e3m7", 37);
+
+	// Episode 4
+	player_init_level_alias ("e4m1", 41);
+	player_init_level_alias ("e4m2", 42);
+	player_init_level_alias ("e4m3", 43);
+	player_init_level_alias ("e4m4", 44);
+	player_init_level_alias ("e4m5", 45);
+	player_init_level_alias ("e4m6", 46);
+	player_init_level_alias ("e4m7", 47);
+	player_init_level_alias ("e4m8", 48);
+
+	// Deathmatch
+	player_init_level_alias ("dm1", 51);
+	player_init_level_alias ("dm2", 52);
+	player_init_level_alias ("dm3", 53);
+	player_init_level_alias ("dm4", 54);
+	player_init_level_alias ("dm5", 55);
+	player_init_level_alias ("dm6", 56);
+};
+
 void ()
 player_init =
 {
@@ -1584,6 +1661,9 @@ player_init =
 	player_init_impulse_alias ("weapon-toggles-toggle",	IMP_WEAPON_TOGGLES);
 	player_init_impulse_alias ("cycle-alternates",		IMP_CYCLE_ALTERNATES);
 	player_init_impulse_alias ("last",			IMP_LAST);
+	player_init_impulse_alias ("change-level",		IMP_ADMIN_CHANGE_MAP);
+
+	level_aliases ();
 
 	// Disable client-side ambient sounds.
 	if (scratch1 & S1_AMBIENT_SOUND_OFF && !is_qsmack ())
@@ -2841,7 +2921,7 @@ count_votes =
 {
 	local float use_state, bit, pct;
 	local string cmd, desc;
-	local float tot, voted, need, lack;
+	local float tot, voted, need, lack, force;
 	local entity e;
 	local string s;
 
@@ -2852,6 +2932,9 @@ count_votes =
 		use_state	= 1;
 		bit		= AQS_VOTE_EXIT;
 		pct		= VOTE_EXIT_PERCENTAGE;
+
+		if (forced_nextmap)
+			force = 1;
 	}
 	else if (vote_type == IMP_VOTE_TEAM)
 	{
@@ -2948,6 +3031,11 @@ count_votes =
 		bprint (self.netname);
 		bprint (" voted to ");
 		bprint (desc);
+		if (force)
+		{
+			bprint (" to map ");
+			bprint (forced_nextmap);
+		}
 		bprint (", ");
 		bprint (s);
 		// I keep this a little shorter so it doesn't go over 2
@@ -2986,6 +3074,19 @@ vote_counter_think =
 
 	vote_team_mode_default ();
 	vote_hook_mode_default ();
+
+	if (forced_nextmap)
+	{
+		if (forced_nextmap_time < time)
+		{
+			bprint ("Not enough votes, ");
+			bprint (forced_nextmap);
+			bprint (" vote cancelled\n");
+
+			forced_nextmap = string_null;
+			remove_player_bit (aqstate, AQS_VOTE_EXIT);
+		}
+	}
 
 	if (self.runevar)
 		count_votes (IMP_VOTE_EXIT, 2);
@@ -3061,6 +3162,14 @@ vote =
 		sprint (self, "The game is in match mode, so voting is disabled\n");
 		return;
 	}
+
+	// XXX Put a timer on recalled votes so not to abuse bprint message with excessive recalls.
+	/* if (use_state && self.aqstate & bit)
+	{
+		self.aqstate = self.aqstate - self.aqstate & bit;
+		sprint (self, "You vote has been recalled\n");
+		return;
+	} */
 
 	if ((use_state && self.aqstate & bit)
 			|| (!use_state && self.aqflags & bit))

@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.46 2003/10/02 04:14:40 slotzero Exp $
+/*  $Id: defs.qc,v 1.47 2003/10/03 23:25:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -406,6 +406,7 @@ float qsmack_status_valid;
 // If this is set it's used as the next map no matter what.  It's used
 // by the admin map changing code.
 string forced_nextmap;
+float forced_nextmap_time;
 
 // Weighted frag rate and the counter used to compute it
 .float frag_rate;

@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.19 2003/06/24 22:17:34 slotzero Exp $
+/*  $Id: admin.qc,v 1.20 2003/10/03 23:25:48 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -41,7 +41,7 @@ admin_init =
 	player_init_impulse_alias ("admin-vote-team-toggle",	IMP_ADMIN_VOTE_TEAM_TOGGLE);
 	player_init_impulse_alias ("admin-teamplay-zero",	IMP_ADMIN_TEAMPLAY_ZERO);
 	player_init_impulse_alias ("admin-unbind",		IMP_ADMIN_UNBIND);
-	player_init_impulse_alias ("change-level",		IMP_ADMIN_CHANGE_MAP);
+	// player_init_impulse_alias ("change-level",		IMP_ADMIN_CHANGE_MAP);
 	player_init_impulse_alias ("exit-level",		IMP_EXIT_LEVEL);
 	player_init_impulse_alias ("qsmack",			IMP_QSMACK_COMMAND);
 	self_sprint (self, "Admin mode activated\n");
@@ -568,14 +568,36 @@ admin_impulse_map =
 		self_sprint (self, "\n");
 	}
 	else
-		admin_changelevel (m);
+	{
+		if (is_admin ())
+			admin_changelevel (m);
+		else
+		{
+			self.impulse = IMP_VOTE_EXIT;
+
+			if (forced_nextmap)
+			{
+				sprint (self, "\{13} A vote is already in progress\n");
+				return;
+			}
+
+			if (is_player () && !self.aqstate & AQS_VOTE_EXIT)
+			{
+				forced_nextmap = m;
+				forced_nextmap_time = time + 30;
+				vote ();
+			}
+			else
+				count_votes (self.impulse, 0);
+		}
+	}
 };
 
 void ()
 admin_change_map =
 {
-	if (!is_admin ())
-		return;
+	//if (!is_admin ())
+	//	return;
 
 	self.state	= 0;
 	self.aqstate	= self.aqstate | AQS_IMPOVER_MAP;
