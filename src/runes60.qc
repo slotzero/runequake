@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.21 2003/11/16 05:34:08 slotzero Exp $
+/*  $Id: runes60.qc,v 1.22 2003/11/16 09:23:04 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -388,13 +388,13 @@ W_Sniper =
 	self.runetime = time + 0.1;
 };
 
-void (string vict, float dist, float is_next)
+void (entity e, float dist, float is_next)
 sonar_sprint =
 {
 	local string s;
 
 	if (is_next)
-		self_sprint (self, "\n  ");
+		self_sprint (self, "\n");
 	else
 	{
 		s = ftos (self.runevar);
@@ -403,14 +403,31 @@ sonar_sprint =
 		self_sprint (self, " player");
 		if (self.runevar > 1)
 			self_sprint (self, "s");
-		self_sprint (self, " detected\n\n  ");
+		self_sprint (self, " detected\n\n");
   	}
 
-	self_sprintf_len (self, vict, -16);
-	self_sprint (self, " \b(");
+	self_sprintf_len (self, e.netname, -16);
+
+	self_sprint (self, "\bD");
 	s = ftos (rint (dist));
-	self_sprint (self, s);
-	self_sprint (self, "\b)");
+	self_sprintf_len (self, s, -4);
+
+	self_sprint (self, " ");
+	if	(e.items & IT_ARMOR3 || e.armorvalue > MAX_ARMOR_3)	self_sprint (self, "\bR");
+	else if (e.items & IT_ARMOR2)					self_sprint (self, "\bY");
+	else if	(e.items & IT_ARMOR1)					self_sprint (self, "\bG");
+	else								self_sprint (self, " ");
+
+	self_sprint (self, "\bA");
+	s = ftos (e.armorvalue);
+	self_sprintf_len (self, s, -3);
+	self_sprint (self, " \bH");
+	s = ftos (e.health);
+	self_sprintf_len (self, s, -3);
+
+	self_sprint (self, " ");
+	if	(e.items & IT_INVULNERABILITY)				self_sprint (self, "\bP");
+	if	(e.items & IT_QUAD)					self_sprint (self, "\bQ");
 };
 
 void ()
@@ -423,8 +440,7 @@ Rune_Sonar =
 
 	self.runetime = time + 3;
 
-	local entity head;
-	local string n1, n2, n3, n4;
+	local entity head, e1, e2, e3, e4;
 	local float d1, d2, d3, d4, dist;
 
 	self.runevar = 0;
@@ -436,9 +452,6 @@ Rune_Sonar =
 		{
 			if (head.health > 0 && head != self)
 			{
-				//if (head.waterlevel > 1 && self.waterlevel > 1)
-				//	T_Damage (head, self, self, 10, "sonar");
-
 				if (!environmental (head) || head.runetype != RN_CLOAK)
 				{
 					// XXX Only sonar holder should hear this.
@@ -452,21 +465,21 @@ Rune_Sonar =
 						if (!d1)
 						{
 							d1 = dist;
-							n1 = head.netname;
+							e1 = head;
 						}
 						else
 						{
 							d4 = d3;
-							n4 = n3;
+							e4 = e3;
 
 							d3 = d2;
-							n3 = n2;
+							e3 = e2;
 
 							d2 = d1;
-							n2 = n1;
+							e2 = e1;
 
 							d1 = dist;
-							n1 = head.netname;
+							e1 = head;
 						}
 					}
 					else if (!d2 || dist < d2)
@@ -474,18 +487,18 @@ Rune_Sonar =
 						if (!d2)
 						{
 							d2 = dist;
-							n2 = head.netname;
+							e2 = head;
 						}
 						else
 						{
 							d4 = d3;
-							n4 = n3;
+							e4 = e3;
 
 							d3 = d2;
-							n3 = n2;
+							e3 = e2;
 
 							d2 = dist;
-							n2 = head.netname;
+							e2 = head;
 						}
 					}
 					else if (!d3 || dist < d3)
@@ -493,21 +506,21 @@ Rune_Sonar =
 						if (!d3)
 						{
 							d3 = dist;
-							n3 = head.netname;
+							e3 = head;
 						}
 						else
 						{
 							d4 = d3;
-							n4 = n3;
+							e4 = e3;
 
 							d3 = dist;
-							n3 = head.netname;
+							e3 = head;
 						}
 					}
 					else if (!d4 || dist < d4)
 					{
 						d4 = dist;
-						n4 = head.netname;
+						e4 = head;
 					}
 
 					self.runevar = self.runevar + 1;
@@ -517,17 +530,17 @@ Rune_Sonar =
 		head = head.chain;
 	}
 
-	if (n1)
+	if (e1)
 	{
-		sonar_sprint (n1, d1, FALSE);
-		if (n2)
+		sonar_sprint (e1, d1, FALSE);
+		if (e2)
 		{
-			sonar_sprint (n2, d2, TRUE);
-			if (n3)
+			sonar_sprint (e2, d2, TRUE);
+			if (e3)
 			{
-				sonar_sprint (n3, d3, TRUE);
-				if (n4)
-					sonar_sprint (n4, d4, TRUE);
+				sonar_sprint (e3, d3, TRUE);
+				if (e4)
+					sonar_sprint (e4, d4, TRUE);
 			}
 		}
 		self_sprint (self, "\n");
