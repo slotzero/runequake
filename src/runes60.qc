@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.4 2003/09/28 01:08:58 slotzero Exp $
+/*  $Id: runes60.qc,v 1.5 2003/09/28 04:05:37 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -16,6 +16,13 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
+
+void (float riders, entity of_e)
+Rune_Glue_sprint =
+{
+	rprint_numdesc (self, riders, of_e.runevar, "glue trap");
+	rprint (self, riders, " placed\n");
+};
 
 void()
 Glue_Think =
@@ -170,6 +177,13 @@ Rune_Glue =
 	glue.nextthink		= time;
 };
 
+void (float riders, entity of_e)
+Rune_Blizzard_sprint =
+{
+	if (self.runevar)
+		rprint (self, riders, "\> Recharging...\n");
+};
+
 void ()
 Rune_Blizzard =
 {
@@ -302,7 +316,8 @@ void (float riders, entity of_e)
 Rune_Tornado_sprint =
 {
 	rprint_numdesc (self, riders, of_e.runevar, "tornado");
-	rprint3 (self, riders, " out of ", ftos (RN_TORNADO), " remaining\n");};
+	rprint (self, riders, " placed\n");
+};
 
 void() tornado_touch =
 {
@@ -355,18 +370,21 @@ void() tornado_pull =
 	e = findradius(self.origin, gDist);
 
 	while (e)
+	{
+		if (visible(e) && e.classname != "tornado"
+				&& e.movetype != MOVETYPE_NONE
+				&& e.movetype != MOVETYPE_PUSH
+				&& e.movetype != MOVETYPE_NOCLIP
+				&& e.runetype != RN_ENVIRO
+				&& e.health)
 		{
-		if (visible(e) && e.classname != "tornado" && e.movetype != MOVETYPE_NONE &&
-		e.movetype != MOVETYPE_PUSH && e.movetype != MOVETYPE_NOCLIP && e.runetype != RN_ENVIRO &&
-			e.health)
-			{
 			d = vlen(e.origin - org);
 			if (e.flags & FL_ONGROUND)
-				{
+			{
 				// raise the object a bit
 				setorigin(e, e.origin + '0 0 1');
 				e.flags = e.flags - FL_ONGROUND;
-				}
+			}
 			//dprint(e.classname);
 			gPercent = 1 - (d / gDist);
 
@@ -374,11 +392,14 @@ void() tornado_pull =
 			// I added '0 0 10' to give it more lift (x y z, z being up and down)
 			e.velocity = e.velocity + '0 0 10' + normalize(self.origin - e.origin) * gPower * gPercent;
 
-			particle (e.origin + v_up*random ()*30, e.velocity, 96, 3);//Fire those particles toward the tornado
-			}
-		e = e.chain;
+
+			IN_POQ([-
+				particle (e.origin + v_up*random ()*30, e.velocity, 96, 3);//Fire those particles toward the tornado
+			-])
 		}
-self.nextthink = time + 0.1;
+			e = e.chain;
+	}
+	self.nextthink = time + 0.1;
 };
 
 void ()
@@ -391,7 +412,6 @@ tornado_explode =
 	self.think	= tornado_pull;
 	self.nextthink	= time + 0.1;
 	sound (self, CHAN_BODY, "boss1/out1.wav", 1, ATTN_NORM);
-
 };
 
 void()
@@ -401,7 +421,7 @@ Rune_Tornado =
 	local float i;
 
 	if (self.runetime > time)
-		{
+	{
 		i = self.runetime - time + 0.1;
 		if (i > 0.5)
 			{
@@ -412,11 +432,11 @@ Rune_Tornado =
 			if (i != 1)
 			sprint (self, "s");
 			sprint (self, "\n");
-			}
+		}
 		else
 			sprint (self, "Wind recharging\n");
 		return;
-		}
+	}
 
 	// create a tornado object
 	tornado = spawn();
@@ -446,18 +466,18 @@ Rune_Tornado =
 
 	// Throw away from you
 	makevectors (self.angles);
-      tornado.velocity = (v_forward * (200 + random() * 100)) + (v_up * (200 + random() * 100));
+	tornado.velocity = (v_forward * (200 + random() * 100)) + (v_up * (200 + random() * 100));
 
 	sprint (self, "Tornado unleashed!  Get out of here, quick!\n");
 
 	self.runevar = self.runevar + 1;
 
 	if (self.runevar == MAX_TORNADO)
-		{
+	{
 		sprint (self, "No tornados left, rune deleted.\n");
 		self.runevar = 0;
 		Rune_Delete (0);
-		}
+	}
 	else if (self.runevar == 1)
 		centerprint (self, "2 tornados left.\n");
 	else if (self.runevar == 2)
@@ -496,5 +516,4 @@ tornado_random_move =
 		vecman = '-1 1 0';
 
 	self.velocity = self.velocity + (vecman * torn_speed);
-
 };

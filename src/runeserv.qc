@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.21 2003/09/28 01:08:58 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.22 2003/09/28 04:05:37 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -525,8 +525,8 @@ Rune_Tell_real =
                 desc_s = " Glue  ";
 
                 d1 = "Launch sticky traps which\n"
-			"prevent your opponent from moving\n"
-			"for a few seconds";
+			"prevent your opponent from\n"
+			"moving for a few seconds\n";
 		d2 = ftos (MAX_GLUE);
 		d3 = " maximum";
 	}
@@ -543,7 +543,9 @@ Rune_Tell_real =
 		desc_s = " Trnado";
 
 		d1 = "Lets you toss tornados\n"
-			"with super destructive winds";
+			"with super destructive winds\n";
+		d2 = ftos (MAX_TORNADO);
+		d3 = " maximum";
 	}
 	else if (type == RN_LITHIUM_HOOK)
 	{
@@ -621,6 +623,8 @@ Rune_Tell_sprint =
 	else if (of_e.runetype == RN_ZOMBIE)	Rune_Zombie_sprint (r, of_e);
 	else if (of_e.runetype == RN_TORCH)	Rune_Torch_sprint (r, of_e);
 	else if (of_e.runetype == RN_PACK_RAT)	pack_rat_sprint (r, of_e);
+	else if (of_e.runetype == RN_GLUE)	Rune_Glue_sprint (r, of_e);
+	else if (of_e.runetype == RN_BLIZZARD)	Rune_Blizzard_sprint (r, of_e);
 };
 
 void (float type, float tell)
@@ -1168,6 +1172,8 @@ Rune_Type_Allowed =
 		if (type == RN_TWALK)				return 0;
 		if (type == RN_PHASE)				return 0;
 	-])
+
+	if (type == RN_TORNADO)	return 0;
 
 	return 1;
 };
