@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.36 2004/04/04 11:40:31 slotzero Exp $
+/*  $Id: items.qc,v 1.37 2004/04/04 19:15:39 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -29,10 +29,7 @@ SUB_regen =
 	sound (self, CHAN_VOICE, "items/itembk2.wav", 1, ATTN_NORM); // play respawn sound
 
 	if (self.touch == armor_touch)
-	{
-		self.think = armor_morph;
-		self.nextthink = (time + 5) - (self.skin * 4);
-	}
+		armor_cycle ();
 
 	setorigin (self, self.origin);
 };
@@ -135,10 +132,7 @@ PlaceItem =
 		}
 	}
 	else if (self.touch == armor_touch)
-	{
-		self.think	= armor_morph;
-		self.nextthink	= time;
-	}
+		armor_cycle ();
 };
 
 float did_my_items;
@@ -440,12 +434,14 @@ armor_touch =
 };
 
 void ()
-armor_morph =
+armor_cycle =
 {
 	self.skin = self.skin + 1;
 	if (self.skin > 2)
 		self.skin = 0;
-	self.nextthink = (time + 10) - (self.skin * 4);
+
+	self.nextthink	= (time + 10) - (self.skin * 4);
+	self.think	= armor_cycle;
 };
 
 void (float it_skin)
