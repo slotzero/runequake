@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.21 2005/03/31 00:24:27 slotzero Exp $
+/*  $Id: arena.qc,v 1.22 2005/03/31 23:36:16 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -329,7 +329,7 @@ arena_results =
 		{
 			os = self;
 			self = winner;
-			SetArenaParms ();
+			DecodeLevelParms ();
 			self = os;
 		}
 	}
