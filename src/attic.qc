@@ -1,4 +1,4 @@
-/*  $Id: attic.qc,v 1.2 2003/04/14 00:56:09 slotzero Exp $
+/*  $Id: attic.qc,v 1.3 2003/06/08 07:10:21 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -228,6 +228,8 @@ float(entity e) ValidateUser =
 // This algorithm is to return the distance from this point to the
 // closest player, the caller would maximize this value in choosing the
 // spawn point.
+
+.float distance;
 
 float (entity for_e, vector pos)
 player_spawn_distance =

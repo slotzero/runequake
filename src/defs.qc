@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.30 2003/06/07 07:20:18 slotzero Exp $
+/*  $Id: defs.qc,v 1.31 2003/06/08 07:10:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1180,9 +1180,9 @@ float	AS_MISSILE		= 4;
 // type.  See the comments in rjs.qc above the rune_tell_*() functions.
 .float		waitmin;
 .float		waitmax;
-.float		distance;
+
 // For players, time at which player died.
-.float		volume;
+.float	volume;
 
 //===========================================================================
 
