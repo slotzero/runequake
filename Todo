@@ -1,22 +1,33 @@
-$Id: Todo,v 1.14 2004/04/30 04:13:13 slotzero Exp $
+$Id: Todo,v 1.15 2005/01/29 02:08:54 slotzero Exp $
 
     - 2.0 release goals
 
         - better in-game help commands
         - server bots
         - vote head hunters option
-	- vote crmod practice option
 
     - suggestions
 
-        - coming soon
+        - allow phased players to pass through players [suggestion from zop]
+        - prevent exit teleport destinations from being too close together
+        - start teleport in haunted halls (e3m7) should have teleport destination
+        - user allow map via the server console [suggestion from painkiller]
+        - remove notification for riders [suggestion from toyo]
+        - add option to damage players who hook other players [suggestion from
+          mr. happy]
+        - armor piercing through shield [suggestion from mental-d]
+        - allow discharge of electric rune even though discharging is
+          disabled [suggestion from mental-d]
+        - zap monsters with bfg
 
-    - known bugs [all]
+    - bugs
 
+        - tornado out of level bug
+        - team telefrag deflect, dueling telefrag spawn shields, and dueling telefrag pents
+          should kill at least one player
+        - admin-team-change occasionally kills players
         - riders become observers when ridee leaves during intermission
-        - fix switch and like runes so that fix-angles isn't needed
-
-    - known bugs [quakeworld]
-
-        - bomb locks player down
-        - hook jitters
+        - make it so that fix-angles isn't needed
+        - prevent phase from failing so often
+        - bomb locks player down [QW]
+        - hook jitters [QW]

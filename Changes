@@ -1,50 +1,28 @@
-$Id: Changes,v 1.79 2004/12/26 06:01:12 slotzero Exp $
+$Id: Changes,v 1.80 2005/01/29 02:08:54 slotzero Exp $
 
-ideas... user allow map via the console (PK)
-armor piercing throug shield (suggestion by Mental-D Nygma)
-allow discharge of electric rune when discharge is disabled?  (mental-d)
-zap monsters with bfg?
-something is wrong with admin-team-change.. it kills players sometimes
-telefrag deflect fucked with spawn shields (both players) and same team (twobugs)
-several fixes with team.. blizzard, glue, anti-backpack, tornado,
-monsters don't trip teammate traps
-anti-backpack team particles, + tornado team particles
+Move to Todo:
 
 use skill isntead of gamecfg to set password (via command)
 make sure you inform of new cvars saved1 and saved2 internals.
-start teleport in haunted halls e3m7? should have telepor/dest, use exit one at top
-fix tornado out of level bug
-prevent teleporters from being too close.. i tried this and it's kind of tricky.
-phased through players.. i looked at this an I need to figure out a better way, actually
-i need to improve phased so that looking down slightly won't create error.
-
-latest changes:
-
-vote commands on diff impulse allowing 255 vote options
-weirdness to shamblers + zombies
-vote-team really fixed in quakeworld
-remove-frags will remove negative frags if observer
-ice traps don't stick you into another player
-anti-pack not updating weapon when current was alternate and removed
-fire walking doesn't damage you in low levels of lava
-hook activates buttons (zop)
-shootphobia no longer allows you to throw hook
-sonar was merged with cloaking
-blue stuff victims can't use rune button and can only get stuck in 1 traps at a time
-ice traps work justlike blue stuff.
-thor best weapon fires lg in water
-
 customizable cvars for console related aliases
-// developer stuff
-fix the tornado rune
-remove notification for riders
-victim_address command
-add option for pain to hook camp instead of releasing...
-regen gives/converts your armor to red.. I eventually want to wein from using rune-use
+fix Player and Configuring guides so that all vote commands etc are in
 
-Version 1.1  Sun Jun 27 04:30:50 EST 2004
+// developer stuff
+victim_address command
+
+Version 1.1  Fri Jan 28 20:42:53 EST 2005
 
     - Bug Fixes
+
+        - The anti-pack rune wasn't switching to your best weapon when your current
+          weapon was an alternate weapon and had been removed.
+
+        - The switch rune bug which causes your head to permanently tilt has been fixed.
+
+        - I finally tracked down the bug that would cause players to stick together when
+          one of them was caught in ice/glue.
+
+        - Fixed vote-team yet again in Quakeworld.
 
         - A hooking monk is now vulnerable to attacks as if he was walking.
 
@@ -54,7 +32,7 @@ Version 1.1  Sun Jun 27 04:30:50 EST 2004
         - In Quakeworld, when the level changes and team mode is on, you are no longer
           killed.
 
-        - When a player disconnected during intermission, the player entity now gets
+        - When a player disconnects during intermission, the player entity now gets
           reset properly.
 
         - Vampire no longer rots twice as fast when picked up after rotting health.
@@ -84,6 +62,33 @@ Version 1.1  Sun Jun 27 04:30:50 EST 2004
           only used when the server is run in listen mode.
 
     - Changes
+
+        - There's a new rocket arena mode (vote-arena).  The mode is compatible with arena
+          maps but they are not required to play.
+
+        - Damage and hook now activate buttons.
+
+        - The following runes were made team friendly; glue, blizzard, anti-pack, and
+          tornado.  The anti-pack and tornado particle color will be replaced with the
+          owner's team color.
+
+        - Pets no longer trip your teammates traps.
+
+        - The +sattack-best command will fire LG under water when holding thor rune.
+
+        - Sonar rune has merged with cloaking.
+
+        - A fire walker can walk in low levels of lava without damage.
+
+        - You can't activate rune when caught in glue.
+
+        - Shootphobia (weirdness rune) prevents hook usage.
+
+        - You can only get caught in one ice trap or glue spot at a time.
+
+        - The remove-frags command will remove negative frags in you are an observer.
+
+        - Shamblers and zombies feel the effects of weirdness.
 
         - The mortar (alt-7) has been replaced with reflecting rockets.
 
