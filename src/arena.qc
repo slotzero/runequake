@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.5 2005/01/08 04:51:07 slotzero Exp $
+/*  $Id: arena.qc,v 1.6 2005/01/08 04:53:26 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -15,6 +15,12 @@
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+*/
+
+// ARENA TODO (DEV)
+/*
+	// fix takedamage bug
+	* shields set takedamage to DAMAGE_AIM when they expire
 */
 
 // arena entity
