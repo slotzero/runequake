@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.22 2002/06/09 20:20:42 slotzero Exp $
+// $Id: rjs.qc,v 1.23 2002/06/15 21:03:05 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -2529,7 +2529,7 @@ draw_hud =
 			willdrop = "Ä";
 		else
 			willdrop = " ";
-		runedesc = Rune_Tell_real (0, self.runetype, 0, 1);
+		runedesc = Rune_Description (self.runetype, 0);
 		in_hud_hack = 1;
 		centerprint6 (self, "\n\n\n\n\n\n\n\n\n\n\n\n",
 			weap, "                 ",
@@ -2880,7 +2880,7 @@ Rune_Tell =
 	// If this is a simple "no rune" message, don't refresh it.
 	if (!type && !also_hook)
 	{
-		Rune_Tell_real (riders, type, also_hook, 0);
+		Rune_Tell_real (riders, type, also_hook);
 		rune_tell_stop (1);
 		return;
 	}
@@ -2904,7 +2904,7 @@ rune_tell_refresh =
 	in_runedesc_hack = 1;
 	Rune_Tell_real (self.waitmin & 8,
 			(self.waitmin - self.waitmin & 31) / 32,
-			self.waitmin & 16, 0);
+			self.waitmin & 16);
 	in_runedesc_hack = 0;
 
 	// Increment number of times I've shown it.

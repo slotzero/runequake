@@ -1,4 +1,4 @@
-// $Id: runeserv.qc,v 1.4 2002/06/15 19:27:29 slotzero Exp $
+// $Id: runeserv.qc,v 1.5 2002/06/15 21:03:06 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -65,65 +65,313 @@ Rune_Button =
 	else if (self.runetype == RN_QUAD)	quad_activate ();
 };
 
+string (float type, float long)
+Rune_Description =
+{
+	if (type == 0)
+	{
+		if (long)	return "No Rune";
+		else		return "       ";
+	}
+	else if (type == RN_HEALTH)
+	{
+		if (long)	return "Rune of Good Health";
+		else		return " Health";
+	}
+	else if (type == RN_REGEN)
+	{
+		if (long)	return "Rune of Regeneration";
+		else		return " Regen ";
+	}
+	else if (type == RN_RESIST)
+	{
+		if (long)	return "Rune of Resistance";
+		else		return " Resist";
+	}
+	else if (type == RN_HASTE)
+	{
+		if (long)	return "Rune of Haste";
+		else		return " Haste ";
+	}
+	else if (type == RN_ENVIRO)
+	{
+		if (long)	return "Rune of Environmental Protection";
+		else		return " Enviro";
+	}
+	else if (type == RN_FLY)
+	{
+		if (long)	return "Rune of Flight";
+		else		return " Flight";
+	}
+	else if (type == RN_FIREWALK)
+	{
+		if (long)	return "Rune of Fire Walking";
+		else		return " FrWalk";
+	}
+	else if (type == RN_RECALL)
+	{
+		if (long)	return "Rune of Recall";
+		else		return " Recall";
+	}
+	else if (type == RN_ZAP)
+	{
+		if (long)	return "Electric Rune";
+		else		return " Elec  ";
+	}
+	else if (type == RN_CLOAK)
+	{
+		if (long)	return "Rune of Cloaking";
+		else		return " Cloak ";
+	}
+	else if (type == RN_BOMB)
+	{
+		if (long)	return "Rune of Divine Wind";
+		else		return " Divine";
+	}
+	else if (type == RN_DSPOTS)
+	{
+		if (long)	return "Death Spots";
+		else		return " DSpots";
+	}
+	else if (type == RN_HOLO)
+	{
+		if (long)	return "Holorune";
+		else		return " Holo  ";
+	}
+	else if (type == RN_ORB)
+	{
+		if (long)	return "Orb of Death";
+		else		return " Orb   ";
+	}
+	else if (type == RN_BLINK)
+	{
+		if (long)	return "Blink Rune";
+		else		return " Blink ";
+	}
+	else if (type == RN_CAMO)
+	{
+		if (long)	return "Rune of Camouflage";
+		else		return " Camo  ";
+	}
+	else if (type == RN_JUMP)
+	{
+		if (long)	return "Rune of Uncontrollable Jumping";
+		else		return " Jumpng";
+	}
+	else if (type == RN_AMMO)
+	{
+		if (long)	return "Action Movie Arsenal";
+		else		return " Arsenl";
+	}
+	else if (type == RN_VAMP)
+	{
+		if (long)	return "Vampiric Rune";
+		else		return " Vamp  ";
+	}
+	else if (type == RN_SHIELD)
+	{
+		if (long)	return "Rune of Shielding";
+		else		return " Shield";
+	}
+	else if (type == RN_STRENGTH)
+	{
+		if (long)	return "Rune of Strength";
+		else		return " Strgth";
+	}
+	else if (type == RN_RADIO)
+	{
+		if (long)	return "Rune of Radioactivity";
+		else		return " Radio ";
+	}
+	else if (type == RN_SWITCH)
+	{
+		if (long)	return "Switch Rune";
+		else		return " Switch";
+	}
+	else if (type == RN_FREEZE)
+	{
+		if (long)	return "Ice Traps";
+		else		return " Ice   ";
+	}
+	else if (type == RN_SUCK)
+	{
+		if (long)	return "Gravity Rune";
+		else		return " Grav  ";
+	}
+	else if (type == RN_TWALK)
+	{
+		if (long)	return "The Teleport Shuffle";
+		else		return " Telprt";
+	}
+	else if (type == RN_IMPACT)
+	{
+		if (long)	return "Impact Rune";
+		else		return " Impact";
+	}
+	else if (type == RN_VENG)
+	{
+		if (long)	return "Rune of Vengeance";
+		else		return " Vengnc";
+	}
+	else if (type == RN_SHUB)
+	{
+		if (long)	return "Shub Hat";
+		else		return " Shub  ";
+	}
+	else if (type == RN_REPEL)
+	{
+		if (long)	return "Rune of Repulsion";
+		else		return " Repuls";
+	}
+	else if (type == RN_CLOUD)
+	{
+		if (long)	return "Rune of Floating Spiky Death Cloud";
+		else		return " Spikey";
+	}
+	else if (type == RN_SHAMB)
+	{
+		if (long)	return "Shambler Helper";
+		else		return " Shmblr";
+	}
+	else if (type == RN_DUAL)
+	{
+		if (long)	return "Rune of Dual Recall";
+		else		return " DualRl";
+	}
+	else if (type == RN_WEIRD)
+	{
+		if (long)	return "Rune of Weirdness";
+		else		return " Weird ";
+	}
+	else if (type == RN_PHOENIX)
+	{
+		if (long)	return "Phoenix Rune";
+		else		return " Phenix";
+	}
+	else if (type == RN_BERSERK)
+	{
+		if (long)	return "Berserker Rune";
+		else		return " Beserk";
+	}
+	else if (type == RN_PHASE)
+	{
+		if (long)	return "Phasing Rune";
+		else		return " Phase ";
+	}
+	else if (type == RN_HOOK)
+	{
+		if (long)	return "Grappling Hook";
+		else		return " Grappl";
+	}
+	else if (type == RN_ATHLETE)
+	{
+		if (long)	return "Rune of Athletics";
+		else		return " Athlet";
+	}
+	else if (type == RN_LUMBER)
+	{
+		if (long)	return "Lumberjack Rune";
+		else		return " Lumber";
+	}
+	else if (type == RN_ZOMBIE)
+	{
+		if (long)	return "Houngan Rune";
+		else		return " Houngn";
+	}
+	else if (type == RN_PIERCING)
+	{
+		if (long)	return "Rune of Armor Piercing";
+		else		return " Pierce";
+	}
+	else if (type == RN_SELFPRES)
+	{
+		if (long)	return "Rune of Self Preservation";
+		else		return " SelfPr";
+	}
+	else if (type == RN_MONK)
+	{
+		if (long)	return "Zen Monk";
+		else		return " Monk  ";
+	}
+	else if (type == RN_TORCH)
+	{
+		if (long)	return "Human Torch";
+		else		return " Torch ";
+	}
+	else if (type == RN_PACK_RAT)
+	{
+		if (long)	return "Pack Rat";
+		else		return " PckRat";
+	}
+	else if (type == RN_ARMOR)
+	{
+		if (long)	return "Rune of Good Armor";
+		else		return " Armor ";
+	}
+	else if (type == RN_QUAD)
+	{
+		if (long)	return "Rune of Quad Damage";
+		else		return " Quad  ";
+	}
+	else if (type == RN_JACK)
+	{
+		if (long)	return "Jack of All Runes";
+		else		return " Jack  ";
+	}
+	else if (type == RN_LITHIUM_HOOK)
+	{
+		if (long)	return "Grappling Hook";
+		else		return "       ";
+	}
+	else
+	{
+		if (long)	return "Invalid Rune";
+		else		return "       ";
+	}
+};
+
 // This doesn't always tell the riders because it can be triggered both
 // automatically and on request (impulse 99).  The riders are only told
 // when it's done automatically.
 
-string (float riders, float type, float also_hook, float return_string)
+void (float riders, float type, float also_hook)
 Rune_Tell_real =
 {
-	local string s, s1, s2, s3, s4, d1, d2, d3, r;
-
-	d2 = string_null;
-	d3 = string_null;
+	local string s1, s2, s3, s4, desc, d1, d2, d3;
 
 	if (riders && self.aqflags & AQ_QUIET)
 		return;
 
 	if (type == 0)
 	{
-		s = "No Rune";
-		r = "       ";
 		d1 = string_null;
-	}
+  	}
 	else if (type == RN_HEALTH)
 	{
-		s = "Rune of Good Health";
-		r = " Health";
 		d1 = "Maximum health now set to ";
 		d2 = ftos (MAX_HEALTH_GOOD_HEALTH);
 	}
 	else if (type == RN_REGEN)
 	{
-		s = "Rune of Regeneration";
-		r = " Regen ";
 		d1 = "Health and armor regenerate";
 		d2 = "\nActivate to instantly\nincrease health and armor";
 		d3 = "\nRune is removed when activated";
 	}
 	else if (type == RN_RESIST)
 	{
-		s = "Rune of Resistance";
-		r = " Resist";
 		d1 = "You take half damage";
 	}
 	else if (type == RN_HASTE)
 	{
-		s = "Rune of Haste";
-		r = " Haste ";
 		d1 = "Shoot weapons faster";
 	}
 	else if (type == RN_ENVIRO)
 	{
-		s = "Rune of Environmental Protection";
-		r = " Enviro";
 		d1 = "Protection from some runes\nSlime and lava give health";
 	}
 	else if (type == RN_FLY)
 	{
-		s = "Rune of Flight";
-		r = " Flight";
-		if (FLY_TIMER_ON)
+		if (FLY_TIMER_ON) // XXX Add to bit settings.
 		{
 			d1 = "Gravity does not affect you\nfor ";
 			d2 = ftos (FLY_TIMER_DURATION);
@@ -137,106 +385,74 @@ Rune_Tell_real =
 	}
 	else if (type == RN_FIREWALK)
 	{
-		s = "Rune of Fire Walking";
-		r = " FrWalk";
 		d1 = "Fire left when you walk burns foes";
 	}
 	else if (type == RN_RECALL)
 	{
-		s = "Rune of Recall";
-		r = " Recall";
 		d1 = "Use once to set your recall point";
 		d2 = "\nUse again to go back to that point";
 	}
 	else if (type == RN_ZAP)
 	{
-		s = "Electric Rune";
-		r = " Elec  ";
 		d1 = "Enemies attacked with electricity\nwhen they get too close";
 		d2 = "\nAvoid water!";
 	}
 	else if (type == RN_CLOAK)
 	{
-		s = "Rune of Cloaking";
-		r = " Cloak ";
 		d1 = "You are always silent\nYou are invisible unless you fire";
-	}
+   	}
 	else if (type == RN_BOMB)
 	{
-		s = "Rune of Divine Wind";
-		r = " Divine";
 		d1 = "Kamikaze attack kills\neveryone in view";
 	}
 	else if (type == RN_DSPOTS)
 	{
-		s = "Death Spots";
-		r = " DSpots";
 		d1 = "Leave multicolored traps\nwhich kill when touched\n";
 		d2 = ftos (MAX_DSPOTS);
 		d3 = " maximum";
 	}
 	else if (type == RN_HOLO)
 	{
-		s = "Holorune";
-		r = " Holo  ";
 		d1 = "Duke Nukem-style holograms\n";
 		d2 = ftos (MAX_HOLO);
 		d3 = " maximum";
 	}
 	else if (type == RN_ORB)
 	{
-		s = "Orb of Death";
-		r = " Orb   ";
 		d1 = "Sphere of death circles you and\ndamages enemies upon contact";
 	}
 	else if (type == RN_BLINK)
 	{
-		s = "Blink Rune";
-		r = " Blink ";
 		d1 = "\"Random\" teleportation";
 	}
 	else if (type == RN_CAMO)
 	{
-		s = "Rune of Camouflage";
-		r = " Camo  ";
 		d1 = "Full invisibility when still";
 	}
 	else if (type == RN_JUMP)
 	{
-		s = "Rune of Uncontrollable Jumping";
-		r = " Jumpng";
 		d1 = "Enemies jump uncontrollably\nwhen in sight";
 	}
 	else if (type == RN_AMMO)
 	{
-		s = "Action Movie Arsenal";
-		r = " Arsenl";
 		d1 = "Gives ammo and weapons";
 	}
 	else if (type == RN_VAMP)
 	{
-		s = "Vampiric Rune";
-		r = " Vamp  ";
 		d1 = "Damage other players to\nget their health";
 	}
 	else if (type == RN_SHIELD)
 	{
-		s = "Rune of Shielding";
-		r = " Shield";
 		d1 = "Invulnerability for ";
 		d2 = ftos (RN_SHIELD_DURATION);
 		d3 = "\nseconds when activated";
 	}
 	else if (type == RN_STRENGTH)
 	{
-		s = "Rune of Strength";
-		r = " Strgth";
 		d1 = "Your attacks do double damage";
 	}
 	else if (type == RN_RADIO)
 	{
-		s = "Rune of Radioactivity";
-		r = " Radio ";
 		d1 = "Irradiate areas, opponents die\nslowly but you are healed\n";
 		d2 = ftos (MAX_RADIO);
 		if (MAX_RADIO == 1)
@@ -246,147 +462,101 @@ Rune_Tell_real =
 	}
 	else if (type == RN_SWITCH)
 	{
-		s = "Switch Rune";
-		r = " Switch";
 		d1 = "Switch place, items, ammo\nand powerups with enemy";
 	}
 	else if (type == RN_FREEZE)
 	{
-		s = "Ice Traps";
-		r = " Ice   ";
 		d1 = "Leave icy traps which\nimmobilize when touched\n";
 		d2 = ftos (MAX_FREEZE);
 		d3 = " maximum";
 	}
 	else if (type == RN_SUCK)
 	{
-		s = "Gravity Rune";
-		r = " Grav  ";
 		d1 = "Sphere of gravity sucks\nin enemies and items";
-	}
+  	}
 	else if (type == RN_TWALK)
 	{
-		s = "The Teleport Shuffle";
-		r = " Telprt";
 		d1 = "Teleport anywhere you can see\nTelefrag your enemies";
 	}
 	else if (type == RN_IMPACT)
 	{
-		s = "Impact Rune";
-		r = " Impact";
 		d1 = "Attacks move foes around and\nhurt more, hockey-style checking";
 		d2 = "\ndoes serious damage";
 	}
 	else if (type == RN_VENG)
 	{
-		s = "Rune of Vengeance";
-		r = " Vengnc";
 		d1 = "Damage done to you\nalso done to attacker";
-	}
+  	}
 	else if (type == RN_SHUB)
 	{
-		s = "Shub Hat";
-		r = " Shub  ";
 		d1 = "A hologram of Shub-Niggurath\nsurrounds you, most people";
 		d2 = "\nshould delete this rune";
 	}
 	else if (type == RN_REPEL)
 	{
-		s = "Rune of Repulsion";
-		r = " Repuls";
 		d1 = "Push rockets, death spots,\nand people back from you";
 		d2 = "\nTry your grenade launcher";
 	}
 	else if (type == RN_CLOUD)
 	{
-		s = "Rune of Floating Spiky Death Cloud";
-		r = " Spikey";
 		d1 = "Cloud above you spews balls\nwhich damage foes";
 	}
 	else if (type == RN_SHAMB)
 	{
-		s = "Shambler Helper";
-		r = " Shmblr";
 		d1 = "Your own personal shambler\nto attack your foes";
 	}
 	else if (type == RN_DUAL)
 	{
-		s = "Rune of Dual Recall";
-		r = " DualRl";
 		d1 = "Activate to teleport to last\nplace where you activated it";
 		d2 = "\nTelefrag your enemies";
 	}
 	else if (type == RN_WEIRD)
 	{
-		s = "Rune of Weirdness";
-		r = " Weird ";
 		d1 = "Small blue balls induce\ndrug-like effects in foes";
 	}
 	else if (type == RN_PHOENIX)
 	{
-		s = "Phoenix Rune";
-		r = " Phenix";
 		d1 = "Respawn with quad and items\n3 respawns maximum";
 	}
 	else if (type == RN_BERSERK)
 	{
-		s = "Berserker Rune";
-		r = " Beserk";
 		d1 = "Deal 6x damage\nTake 3x damage";
 	}
 	else if (type == RN_PHASE)
 	{
-		s = "Phasing Rune";
-		r = " Phase ";
 		d1 = "Walk through walls";
 	}
 	else if (type == RN_HOOK)
 	{
-		s = "Grappling Hook";
-		r = " Grappl";
 		d1 = "Activate to throw hook and\nattach to what you hit";
 		d2 = "\nActivate again to release";
 	}
 	else if (type == RN_ATHLETE)
 	{
-		s = "Rune of Athletics";
-		r = " Athlet";
 		d1 = "Jump Higher\nSwim Farther";
 	}
 	else if (type == RN_LUMBER)
 	{
-		s = "Lumberjack Rune";
-		r = " Lumber";
 		d1 = "More health\nBetter axe\nMore damage";
 	}
 	else if (type == RN_ZOMBIE)
 	{
-		s = "Houngan Rune";
-		r = " Houngn";
 		d1 = "Activate to place camping zombies";
 	}
 	else if (type == RN_PIERCING)
 	{
-		s = "Rune of Armor Piercing";
-		r = " Pierce";
 		d1 = "Your attacks ignore\nyour opponent's armor";
 	}
 	else if (type == RN_SELFPRES)
 	{
-		s = "Rune of Self Preservation";
-		r = " SelfPr";
 		d1 = "Your attacks can't hurt you";
 	}
 	else if (type == RN_MONK)
 	{
-		s = "Zen Monk";
-		r = " Monk  ";
 		d1 = "Mostly invulnerable when\nnot moving or shooting";
 	}
 	else if (type == RN_TORCH)
 	{
-		s = "Human Torch";
-		r = " Torch ";
 		d1 = "Better flame weapons\n";
 		d2 = ftos (MAX_TORCH);
 		if (MAX_TORCH == 1)
@@ -396,20 +566,14 @@ Rune_Tell_real =
 	}
 	else if (type == RN_PACK_RAT)
 	{
-		s = "Pack Rat";
-		r = " PckRat";
 		d1 = "Collect runes to score\nbonus frags with each kill";
 	}
 	else if (type == RN_ARMOR)
 	{
-		s = "Rune of Good Armor";
-		r = " Armor ";
 		d1 = "All armor is red armor\nCollect lots\nArmor color shows amount left";
 	}
 	else if (type == RN_QUAD)
 	{
-		s = "Rune of Quad Damage";
-		r = " Quad  ";
 		d1 = "Quad damage for ";
 		d2 = ftos (RN_QUAD_DURATION);
 		if (RN_QUAD_DURATION == 1)
@@ -419,21 +583,15 @@ Rune_Tell_real =
 	}
 	else if (type == RN_JACK)
 	{
-		s = "Jack of All Runes";
-		r = " Jack  ";
 		d1 = "A smattering of other\nrunes' abilities\nin less potent form";
 	}
 	else if (type == RN_LITHIUM_HOOK)
 	{
-		s = "Grappling Hook";
-		r = "       ";
 		d1 = "Non-rune grappling hook,\nuse with axe toggle or +hook";
 		d2 = "\nor hook-on or hook-toggle";
 	}
 	else
 	{
-		s = "Invalid Rune";
-		r = "       ";
 		d1 = string_null;
 	}
 
@@ -444,21 +602,12 @@ Rune_Tell_real =
 		s2 = string_null;
 	s3 = "\nùûûûûûûûûûûûûûûûûûûûûü\nè ";
 	s4 = " è\nùûûûûûûûûûûûûûûûûûûûûü\n";
+	desc = Rune_Description (type, 1);
 
-	if (return_string)
-	{
-		if (return_string == 2)
-			return s;
-		else
-			return r;
-	}
+	if (riders)
+		centerprint7 (self, s2, s3, desc, s4, d1, d2, d3);
 	else
-	{
-		if (riders)
-			centerprint7 (self, s2, s3, s, s4, d1, d2, d3);
-		else
-			self_centerprint (self, s2, s3, s, s4, d1, d2, d3);
-	}
+		self_centerprint (self, s2, s3, desc, s4, d1, d2, d3);
 };
 
 void (float r, entity of_e)

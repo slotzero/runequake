@@ -1,4 +1,4 @@
-// $Id: observer.qc,v 1.8 2002/06/09 20:20:42 slotzero Exp $
+// $Id: observer.qc,v 1.9 2002/06/15 21:03:05 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -594,8 +594,7 @@ obs_player_detect =
 					{
 						s = string_null;
 						s1 = wanted.netname;
-						s2 = Rune_Tell_real
-								(0, wanted.runetype, 0, 2);
+						s2 = Rune_Description (wanted.runetype, 1);
 						if (s2 == "No Rune")
 							s2 = string_null;
 					}

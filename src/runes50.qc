@@ -1,4 +1,4 @@
-// $Id: runes50.qc,v 1.4 2002/06/08 05:42:36 slotzero Exp $
+// $Id: runes50.qc,v 1.5 2002/06/15 21:03:05 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -472,7 +472,7 @@ pack_rat_rune_touch =
 	local entity old_self;
 	local string s;
 
-	s = Rune_Tell_real (0, self.runetype, 0, 1);
+	s = Rune_Description (self.runetype, 0);
 	sprint3 (other, "You've picked up", s, "\n");
 	old_self = self;
 	self = other;
