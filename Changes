@@ -1,27 +1,33 @@
-$Id: Changes,v 1.16 2002/06/01 03:24:29 slotzero Exp $
+$Id: Changes,v 1.17 2002/06/07 02:58:43 slotzero Exp $
 
 Version ?  Tue May 28 23:29:44 EST 2002
 
     - CVAR Changes
 
-        - You can use gamecfg to enter a new passcode and it will override
-          the passcode in settings.qc.  If you enter a negative value, it
-          will disable the passcode completely.
+	- gamecfg
 
-        - scratch2, using forwards... (move to scratch1??)
+	    You can set/change the admin passcode by using the 'gamecfg'
+	    console variable.  The passcode has the same restrictions set
+	    forth in settings.qc.  A value of zero will force the game to
+	    use the passcode in settings.qc.  A negative value will disable
+	    admin.
+
+	- scratch1
+
+	    Changes... (FIX ME)
 
 Version 0.2.8  Mon May 13 17:02:51 EST 2002
 
     - Bug Fixes
 
-        Oops!  Some of the special characters (right pointing arrow, etc)
-        were changed by my incorrectly configured text editor.  [fixed]
+	Oops!  Some of the special characters (right pointing arrow, etc)
+	were changed by my incorrectly configured text editor.  [fixed]
 
 Version 0.2.7  Sun May 12 16:11:55 EST 2002
 
     - Bug Fixes
 
-    	- Dead bodies can no longer trigger buttons.
+	- Dead bodies can no longer trigger buttons.
 
 	- > If you ride a player, enter admin, change level, and then
 	  > join the game, you join with the player your riding.  You can

@@ -1,4 +1,4 @@
-// $Id: light.qc,v 1.4 2002/05/05 00:52:28 slotzero Exp $
+// $Id: light.qc,v 1.5 2002/06/07 02:58:54 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -11,22 +11,14 @@ float START_OFF = 1;
 void ()
 Light_Setup =
 {
-	local float n;
-	local string s;
-
-	if (scratch1 & S1_LIGHT_SETUP_ALL_BRIGHT && scratch1 & S1_LIGHT_SETUP_ALL_DARK)
-		s = "r";
-	else if (scratch1 & S1_LIGHT_SETUP_ALL_BRIGHT)
-		s = "z";
-	else if (scratch1 & S1_LIGHT_SETUP_ALL_DARK)
-		s = "a";
-
- 	if (s)
+	if (scratch1 & S1_EQUALIZE_LIGHTSTYLE)
 	{
+		local float n;
+
 		n = 0;
 		while (n <= 63)
 		{
-			lightstyle (n, s);
+			lightstyle (n, "r");
 			n = n + 1;
 		}
 		return;

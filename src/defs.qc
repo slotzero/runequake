@@ -1,4 +1,4 @@
-// $Id: defs.qc,v 1.6 2002/06/01 03:24:32 slotzero Exp $
+// $Id: defs.qc,v 1.7 2002/06/07 02:58:54 slotzero Exp $
 
 /*
 ==============================================================================
@@ -663,10 +663,9 @@ float T1_RUNE_DROP_DELAY_INF	= 197120;	// 7
 
 // scratch1 bit settings
 float scratch1;
-float S1_LIGHT_SETUP_ALL_BRIGHT	= 1;
-float S1_LIGHT_SETUP_ALL_DARK	= 2;
-float S1_AMBIENT_SOUND_OFF	= 4;
-float S1_LIGHT_MAKESTATIC_OFF	= 8;
+float S1_EQUALIZE_LIGHTSTYLE	= 1;
+float S1_AMBIENT_SOUND_OFF	= 2;
+float S1_LIGHT_MAKESTATIC_OFF	= 4;
 
 // scratch2 bit settings
 float scratch2;

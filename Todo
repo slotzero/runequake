@@ -1,7 +1,9 @@
-$Id: Todo,v 1.3 2002/05/29 03:34:28 slotzero Exp $
+$Id: Todo,v 1.4 2002/06/07 02:58:44 slotzero Exp $
 
     - Unsorted
 
+    	- Before latest release, please look over Changes and example.cfg and
+	  all other related information files!
         - Document gamecfg, providing you decide to use it.
 	- Sort through the Artifact-RJS Todo file.
 	- Do riders carry across levels when not in high/fast track?
