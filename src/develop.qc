@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.17 2003/06/10 22:18:33 slotzero Exp $
+/*  $Id: develop.qc,v 1.18 2003/06/12 00:43:46 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -49,7 +49,7 @@ stof1 =
 				frac = tot;
 		}
 
-		ch = ctos (world[%5] / %1);
+		ch = ftoc (world[%5] / %1);
 		if (ch)
 		{
 			clean = strcat (clean, ch);
@@ -140,10 +140,10 @@ stof2 =
 };
 
 IN_POQ([-
-float (string s)
+/* float (string s)
 stof =
 {
-	local float i, ps, pch, cmp, x, n, sum;
+	local float i, ps, pch, cmp, n, sum;
 
 	ps = AddInt (AddInt (&s, PSTRING_TO_PQUAKEC), %-3);
 	pch = AddInt (&"xxxx", PSTRING_TO_PQUAKEC);
@@ -155,13 +155,36 @@ stof =
 		pch = AddInt (pch, %3);
 
 		n = ctof (@AddInt (pch, PQUAKEC_TO_PSTRING));
-		n = n * (eval_exponent (x));
+		n = n * (eval_exponent (cmp - i));
 		sum = sum + n;
 
 		pch = AddInt (pch, %-3);
 		ps = AddInt (ps, %1);
-		x = x - 1;
 	}
+
+	return sum;
+}; */
+
+float (string s)
+stof =
+{
+	local float f, i, ps, cmp, sum;
+
+	&%116 = 0;
+	ps = AddInt(AddInt(&s, PSTRING_TO_PQUAKEC), %-3);
+
+	cmp = strlen (s);
+	for (i = 0; i < cmp; i = i + 1)
+	{
+		&%113 = (*ps)[0];
+
+		f = atof (world[%5] / %1);
+		f = f * (eval_exponent (cmp - i));
+		sum = sum + f;
+
+		ps = AddInt (ps, %1);
+	}
+	ps = AddInt (ps, %3);
 
 	return sum;
 };

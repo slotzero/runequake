@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.10 2003/06/10 01:52:21 slotzero Exp $
+/*  $Id: strman.qc,v 1.11 2003/06/12 00:43:46 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -232,7 +232,7 @@ ctof =
 };
 
 string (float n)
-ctos =
+ftoc =
 {
 	local float i, asc;
 
@@ -246,6 +246,23 @@ ctos =
 	}
 
 	return string_null;
+};
+
+float (float n)
+atof =
+{
+	local float i, asc;
+
+	i = 0;
+	for (asc = 48; asc < 58; asc = asc + 1)
+	{
+		if (n == asc)
+			return i;
+
+		i = i + 1;
+	}
+
+	return -1;
 };
 
 float (float n)
