@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.19 2004/07/08 08:55:25 slotzero Exp $
+/*  $Id: hook.qc,v 1.20 2004/07/08 09:41:41 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -454,6 +454,7 @@ hook_type =
 		return 1;
 	if (bits & T1_LITHIUM_HOOK)
 		return 2;
+	return 0;
 };
 
 void ()

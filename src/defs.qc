@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.95 2004/07/08 08:55:25 slotzero Exp $
+/*  $Id: defs.qc,v 1.96 2004/07/08 09:41:41 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -501,15 +501,21 @@ float RN_MAX_ALL	= 60;
 
 float IMP_VOTE_YES		= 255;
 float IMP_VOTE_NO		= 254;
-//				= 238 - 253 [weapon aliases]
-//				= 220 - 237 [qsmack]
+//				= 238 - 253	[weapon aliases]
+//				= 220 - 237	[qsmack]
+float IMP_VOTE_EXIT		= 219;
+float IMP_VOTE_TEAM		= 218;
+float IMP_VOTE_HOOK		= 217;
+float IMP_VOTE_FREE		= 216;
+float IMP_VOTE_LITHIUM		= 215;
+
 float IMP_CUSTOM_SOUNDS		= 210;
 float IMP_HELP_LEVELS		= 205;
 float IMP_COMMANDS		= 204;
 float IMP_CUSTOM		= 203;
 float IMP_LEVELS		= 202;
 float IMP_LAST			= 201;
-//				= 200 - 101 [cheat impulses]
+//				= 200 - 101	[cheat impulses]
 float IMP_RUNE_CHEAT_BASE	= 101;
 float IMP_RUNE_USE		= 100;
 float IMP_RUNE_TELL		= 99;
@@ -527,7 +533,7 @@ float IMP_HOOK_ON		= 88;
 float IMP_HOOK_OFF		= 87;
 float IMP_WEAPON_MODE		= 86;
 float IMP_ADMIN_COMMAND		= 85;
-float IMP_VOTE_HOOK		= 84;
+//				= 84;		[free]
 float IMP_DISP_INFO_ALL		= 83;
 float IMP_REMOVE_FRAGS		= 82;
 float IMP_HUD_TOGGLE		= 81;
@@ -536,18 +542,17 @@ float IMP_SHOW_POS		= 79;
 float IMP_VOTE_PRACTICE		= 78;
 float IMP_QUIET_TOGGLE		= 77;
 float IMP_HOOK_TOGGLE		= 76;
-//				= 75; [free]
+//				= 75;		[free]
 float IMP_WEAPON_TOGGLES	= 74;
 // reserve 73 for QSMACK_IMPULSE_1
-float IMP_VOTE_EXIT		= 72;
+//				= 72;		[free]
 float IMP_TEAM_STATS		= 71;
 float IMP_CHANGE_MAP		= 70;
-float IMP_VOTE_TEAM		= 69;
-//				= 68 - 60 [free]
+//				= 69 - 60	[free]
 float IMP_CYCLE_ALTERNATES	= 59;
-//				= 58; [free]
+//				= 58;		[free]
 float IMP_SWITCHFIRE_BEST	= 57;
-//				= 57 - 41 [sattack aliases]
+//				= 57 - 41	[sattack aliases]
 float IMP_SWITCHFIRE_BASE	= 41;
 float IMP_SWITCHFIRE_OFF	= 40;
 float IMP_SWITCHFIRE_COUNT	= 16;

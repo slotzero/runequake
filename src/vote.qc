@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.9 2004/07/08 08:03:11 slotzero Exp $
+/*  $Id: vote.qc,v 1.10 2004/07/08 09:41:41 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -318,10 +318,36 @@ vote =
 		e.frag_rate	= VOTE_HOOK_PERCENTAGE;
 		e.think1	= toggle_free_hook;
 
-		if (temp1 & T1_HOOK_MASK)
+		if (hook_type (temp1))
 			e.netname	= "disable hook";
 		else
-			e.netname	= "enable hook";
+			e.netname	= "enable free hook";
+	}
+	else if (self.impulse == IMP_VOTE_FREE)
+	{
+		cancel		= vote_hook_disabled (1);
+		e.frag_rate	= VOTE_HOOK_PERCENTAGE;
+		e.think1	= free_hook;
+		e.netname	= "enable free hook";
+
+		if (hook_type (temp1) == 1)
+		{
+			cancel	= 1;
+			self_sprint (self, "Free hook already enabled\n");
+		}
+	}
+	else if (self.impulse == IMP_VOTE_LITHIUM)
+	{
+		cancel		= vote_hook_disabled (1);
+		e.frag_rate	= VOTE_HOOK_PERCENTAGE;
+		e.think1	= lithium_hook;
+		e.netname	= "enable lithium hook";
+
+		if (hook_type (temp1) == 2)
+		{
+			cancel	= 1;
+			self_sprint (self, "Lithium hook already enabled\n");
+		}
 	}
 	else if (self.impulse == IMP_VOTE_PRACTICE)
 	{
