@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.13 2004/07/09 01:16:57 slotzero Exp $
+/*  $Id: vote.qc,v 1.14 2004/07/09 02:22:50 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -78,22 +78,33 @@ vote_hook_disabled =
 	return FALSE;
 };
 
+entity ()
+find_vip =
+{
+	return find (world, classname, "vote_in_progress");
+};
+
 void (entity vip)
 vote_action =
 {
 	if (!vip)
 		return dprint ("vote_action: vip is null\n");
 
-	// XXX owner could be dead
-	if (self.classname != "player")
-		bprint (vip.owner.netname);
+	if (self.classname == "player")
+		vip.netname = self.netname;
+	else if (vip.owner.classname == "player")
+		vip.netname = vip.owner.netname;
 	else
-		bprint (self.netname);
+		vip.netname = "Someone";
 
-	bprint (" voted to ");
 	bprint (vip.netname);
-	if (vip.map)
-		bprint (vip.map);
+	bprint (" voted to ");
+	if (vip.noise1)
+		bprint (vip.noise1);
+	if (vip.noise2)
+		bprint (vip.noise2);
+	if (vip.noise3)
+		bprint (vip.noise3);
 	bprint ("\n");
 
 	vip.think1 ();
@@ -130,9 +141,12 @@ maybe_print_votes =
 			if (value != 1)
 				sprint (self, "s");
 			sprint (self, " needed to ");
-			sprint (self, vip.netname);
-			if (vip.map)
-				sprint (self, vip.map);
+			if (vip.noise1)
+				sprint (self, vip.noise1);
+			if (vip.noise2)
+				sprint (self, vip.noise2);
+			if (vip.noise3)
+				sprint (self, vip.noise3);
 			sprint (self, "\n");
 		}
 	}
@@ -150,8 +164,7 @@ count_votes =
 	local entity e, vip;
 	local float tot, lack, need, voted, is_queue;
 
-	vip = find (world, classname, "vote_in_progress");
-
+	vip = find_vip ();
 	if (!vip)
 	{
 		if (type == 3)
@@ -229,18 +242,24 @@ vote_think =
 			// poq broadcast
 			s = allocate_string_size (64);
 			s = "\{1}Request to ";
-			s = strcat (s, self.netname);
-			if (self.map)
-				s = strcat (s, self.map);
+			if (self.noise1)
+				s = strcat (s, self.noise1);
+			if (self.noise2)
+				s = strcat (s, self.noise2);
+			if (self.noise3)
+				s = strcat (s, self.noise3);
 
 			bprint (s);
 		-], [-
-			// qw
+			// qw broadcast
 			bprint ("\{1}");
 			bprint ("Request to ");
-			bprint (self.netname);
-			if (self.map)
-			bprint (self.map);
+			if (self.noise1)
+				bprint (self.noise1);
+			if (self.noise2)
+				bprint (self.noise2);
+			if (self.noise3)
+				bprint (self.noise3);
 		-])
 
 		// all
@@ -251,6 +270,7 @@ vote_think =
 	else
 	{
 		bprint ("\{1}Vote cancelled\n");
+		// XXX Don't like this... do it elsehwere?
 		if (self.impulse == IMP_VOTE_EXIT)
 			forced_nextmap = string_null;
 		remove_bit_from_players (vote_flags, VOTE_YES);
@@ -258,6 +278,7 @@ vote_think =
 		return;
 	}
 
+	// XXX I don't like the way this works with queued votes.
 	if (LEVEL_RECONNECT_ALLOWANCE > time)
 		self.nextthink = LEVEL_RECONNECT_ALLOWANCE;
 	else
@@ -270,7 +291,7 @@ vote =
 	local entity e, vip;
 	local float cancel;
 
-	vip = find (world, classname, "vote_in_progress");
+	vip = find_vip ();
 	if (vip)
 	{
 		if (self.impulse == vip.impulse)
@@ -281,18 +302,20 @@ vote =
 
 	self.vote_flags = self.vote_flags | VOTE_YES;
 
+	// entity init
+	//
 	e		= spawn ();
 	e.classname	= "vote_in_progress";
-	e.runevar	= 3; // request attempts
-	e.impulse	= self.impulse;
-	e.owner		= self;
 
-	// add vote type help
-	//
-	// frag_rate	= vote percentage
-	// think1	= function that does the action
-	// netname	= vote description for bprint
-	// map		= appended to vote description (if not null)
+	e.runevar	= 3;		// request attempts
+	e.impulse	= self.impulse;	// impulse command
+	e.owner		= self;		// owner
+
+	e.frag_rate	= 0;		// vote percentage
+	e.think		= SUB_Null;	// vote action
+	e.noise1	= string_null;	// bprint 1
+	e.noise2	= string_null;	// bprint 2
+	e.noise3	= string_null;	// bprint 3
 
 	if (self.impulse == IMP_VOTE_EXIT)
 	{
@@ -301,11 +324,11 @@ vote =
 
 		if (forced_nextmap)
 		{
-			e.map		= forced_nextmap;
-			e.netname	= "change map to ";
+			e.noise1	= "change map to ";
+			e.noise2	= forced_nextmap;
 		}
 		else
-			e.netname	= "change to a random map";
+			e.noise1	= "change to a random map";
 	}
 	else if (self.impulse == IMP_VOTE_TEAM)
 	{
@@ -314,9 +337,9 @@ vote =
 		e.think1	= toggle_teamplay;	// XXX Fix me, cause I predict this will create
 							// compile errors in Frikqcc.
 		if (teamplay & TEAM_TEAM_MASK)
-			e.netname	= "disable teams";
+			e.noise1	= "disable teams";
 		else
-			e.netname	= "enable teams";
+			e.noise1	= "enable teams";
 	}
 	else if (self.impulse == IMP_VOTE_HOOK)
 	{
@@ -325,16 +348,16 @@ vote =
 		e.think1	= toggle_free_hook;
 
 		if (hook_type (temp1))
-			e.netname	= "disable hook";
+			e.noise1	= "disable hook";
 		else
-			e.netname	= "enable free hook";
+			e.noise1	= "enable free hook";
 	}
 	else if (self.impulse == IMP_VOTE_FREE)
 	{
 		cancel		= vote_hook_disabled (1);
 		e.frag_rate	= VOTE_HOOK_PERCENTAGE;
 		e.think1	= free_hook;
-		e.netname	= "enable free hook";
+		e.noise1	= "enable free hook";
 
 		if (hook_type (temp1) == 1)
 		{
@@ -348,7 +371,7 @@ vote =
 		cancel		= vote_hook_disabled (1);
 		e.frag_rate	= VOTE_HOOK_PERCENTAGE;
 		e.think1	= lithium_hook;
-		e.netname	= "enable lithium hook";
+		e.noise1	= "enable lithium hook";
 
 		if (hook_type (temp1) == 2)
 		{
@@ -362,7 +385,7 @@ vote =
 		cancel = -1; // XXX This isn't ready yet.
 		e.frag_rate	= 0.51;	// XXX settings.
 		e.think1	= mode_practice;
-		e.netname	= "change mode to practice";
+		e.noise1	= "change mode to practice";
 
 		if (deathmatch & DM_MODE_PRACTICE)
 		{
@@ -397,7 +420,7 @@ vote_yes =
 {
 	local entity vip;
 
- 	vip = find (world, classname, "vote_in_progress");
+ 	vip = find_vip ();
  	if (!vip)
 		return self_sprint (self, "\{141} Nothing to vote on\n");
 
@@ -419,7 +442,7 @@ vote_no =
 {
 	local entity vip;
 
-	vip = find (world, classname, "vote_in_progress");
+	vip = find_vip ();
 	if (!vip)
 		return self_sprint (self, "\{141} Nothing to vote on\n");
 
