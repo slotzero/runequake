@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.5 2004/07/08 01:32:55 slotzero Exp $
+/*  $Id: vote.qc,v 1.6 2004/07/08 02:38:53 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -29,12 +29,21 @@
 	* perhaps a new function to give refresh message, use disabled function maybe?
 
 	// no
-	* there's still no active 'no' command
+	* there's still no active 'no' command, should there be?
+
+	// observer
+	* this kinda works
+
+	// warnings
+	* make sure that you don't try to assign value to a world entity (!vip for example)!!!
 */
 
 void (entity vip)
 vote_action =
 {
+	if (!vip)
+		return dprint ("vote_action: vip is null\n");
+
 	if (self.classname != "player")
 		bprint (vip.owner.classname);
 	else
@@ -50,11 +59,6 @@ vote_action =
 	remove_bit_from_players (vote_flags, VOTE_YES);
 	remove (vip);
 };
-
-// 0 no message
-// 1 only when value positive
-// 2 all
-// 3 disp-info
 
 void (entity vip, float msg_type, float is_queue, float value)
 maybe_print_votes =
@@ -93,6 +97,12 @@ maybe_print_votes =
 	}
 };
 
+// print type
+// 0 no message
+// 1 only when value positive (when in doubt, use 1)
+// 2 all
+// 3 disp-info
+
 float (float type)
 count_votes =
 {
@@ -100,8 +110,12 @@ count_votes =
 	local float tot, lack, need, voted, is_queue;
 
 	vip = find (world, classname, "vote_in_progress");
+
 	if (!vip)
+	{
+		sprint (self, "\{141} Nothing to vote on\n");
 		return 0;
+	}
 
 	is_queue = LEVEL_RECONNECT_ALLOWANCE > time;
 
@@ -143,88 +157,6 @@ count_votes =
 	else
 		return lack;
 };
-
-// type
-//  0 self_sprint (client) / dprint  (world)
-//  1 sprint      (client) / bprint  (world)
-//  2 bprint	  (client) / bprint  (world)
-
-/* float (float type)
-print_count_votes =
-{
-	local entity e, vip;
-	local float lack;
-
-	vip = find (world, classname, "vote_in_progress");
-	if (!vip)
-		return 0;
-
-	lack = xcount_votes (0);
-	if (!lack)
-	{
-		vip.nextthink = time;
-		return 0;
-	}
-
-	if (LEVEL_RECONNECT_ALLOWANCE > time)
-	{
-		if (type)
-		{
-			if (type == 1)
-				e = self;
-			else
-				e = world;
-
-			sprint_float (e, lack);
-			sprint (e, " vote");
-			if (lack != 1)
-				sprint (e, "s");
-			sprint (e, " in queue\n");
-		}
-		else
-		{
-			self_sprint_float (e, lack);
-			self_sprint (e, " vote");
-			if (lack != 1)
-				self_sprint (e, "s");
-			self_sprint (e, " in queue\n");
-		}
-	}
-	else
-	{
-		if (type)
-		{
-			if (type == 1)
-				e = self;
-			else
-				e = world;
-
-			sprint_float (e, lack);
-			sprint (e, " more vote");
-			if (lack != 1)
-				sprint (e, "s");
-			sprint (e, " needed to ");
-			sprint (e, vip.netname);
-			if (vip.map)
-				sprint (e, vip.map);
-			sprint (e, "\n");
-		}
-		else
-		{
-			self_sprint_float (self, lack);
-			self_sprint (self, " more vote");
-			if (lack != 1)
-				self_sprint (self, "s");
-			self_sprint (self, " needed to ");
-			self_sprint (self, vip.netname);
-			if (vip.map)
-				self_sprint (self, vip.map);
-			self_sprint (self, "\n");
-		}
-	}
-
-	return lack;
-}; */
 
 void ()
 vote_think =
@@ -396,7 +328,7 @@ vote_yes =
  	if (!vip)
 		return self_sprint (self, "\{141} Nothing to vote on\n");
 
-	if (self.vote_flags & VOTE_YES)
+	if (self.vote_flags & VOTE_YES || is_observer ())
 	{
 		count_votes (1);
 		return;

@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.26 2004/07/07 09:58:36 slotzero Exp $
+/*  $Id: observer.qc,v 1.27 2004/07/08 02:38:53 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -118,9 +118,12 @@ dead_impulses =
 		self.runetype = 0;
 		centerprint (self, "Rune Removed");
 	}
+	else if (self.impulse == IMP_VOTE_YES)
+		vote_yes ();
 	else if (self.impulse == IMP_VOTE_EXIT
 			|| self.impulse == IMP_VOTE_TEAM
-			|| self.impulse == IMP_VOTE_HOOK)
+			|| self.impulse == IMP_VOTE_HOOK
+			|| self.impulse == IMP_VOTE_PRACTICE)
 		vote ();
 	else
 		common_impulses ();
@@ -274,7 +277,9 @@ obs_impulses =
 			rune_tell_toggle (0, self.owner);
 		else if (self.impulse == IMP_VOTE_EXIT
 				|| self.impulse == IMP_VOTE_TEAM
-				|| self.impulse == IMP_VOTE_HOOK)
+				|| self.impulse == IMP_VOTE_HOOK
+				|| self.impulse == IMP_VOTE_PRACTICE
+				|| self.impulse == IMP_VOTE_YES)
 			count_votes (1);
 		else
 			common_impulses ();
