@@ -1,4 +1,15 @@
-$Id: Changes,v 1.47 2004/02/16 04:01:43 slotzero Exp $
+$Id: Changes,v 1.48 2004/02/21 09:12:40 slotzero Exp $
+
+Sat Feb 21 03:57:24 EST 2004
+
+increased hook speed
+added health (25) to athlete
+added practice mode to admin menu
+exit-level will go to forced map (voted)
+fixed written by to created by
+added observer (menu off) to main menu (less confusing)
+betty spits out on death
+weakened the magic shotgun
 
 Version 1.0  Sun Feb 15 22:26:22 EST 2004
 
