@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.72 2004/04/24 04:09:02 slotzero Exp $
+/*  $Id: defs.qc,v 1.73 2004/04/28 00:41:37 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -502,6 +502,7 @@ float RN_MAX_ALL	= 59;
 float IMP_SHOW_POS		= 254;
 //				= 238 - 253 [weapon aliases]
 //				= 220 - 237 [qsmack]
+float IMP_ADMIN_CHANGE_MAP	= 211;
 float IMP_CUSTOM_SOUNDS		= 210;
 float IMP_COMMANDS		= 204;
 float IMP_CUSTOM		= 203;
@@ -539,7 +540,7 @@ float IMP_WEAPON_TOGGLES	= 74;
 // reserve 73 for QSMACK_IMPULSE_1
 float IMP_VOTE_EXIT		= 72;
 float IMP_TEAM_STATS		= 71;
-float IMP_ADMIN_CHANGE_MAP	= 70;
+float IMP_CHANGE_MAP		= 70;
 float IMP_VOTE_TEAM		= 69;
 float IMP_ADMIN_TEAM_CHANGE	= 68;
 float IMP_ADMIN_JOIN		= 67;
@@ -717,6 +718,7 @@ float AQS_RIDE_HIGH		= 262144;
 float AQS_BURNING		= 1048576;
 float AQS_SPAWN_PROTECT		= 2097152;
 float AQS_SWITCH_WEAPON_WAS_BEST = 4194304;
+float AQS_ADMIN_CHANGE_MAP_MENU	= 8388608;
 
 // temp1 flags
 float temp1;

@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.93 2004/04/11 07:10:42 slotzero Exp $
+/*  $Id: rjs.qc,v 1.94 2004/04/28 00:41:37 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1208,6 +1208,9 @@ common_impulses =
 
 	else if (self.impulse == IMP_ADMIN_TEAM_CHANGE)
 		admin_team_change ();
+
+	else if (self.impulse == IMP_CHANGE_MAP)
+		change_map ();
 
 	else if (self.impulse == IMP_ADMIN_CHANGE_MAP)
 		admin_change_map ();

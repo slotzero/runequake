@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.14 2004/04/05 22:24:50 slotzero Exp $
+/*  $Id: bindings.qc,v 1.15 2004/04/28 00:41:37 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -136,7 +136,7 @@ player_aliases =
 
 	self_stuffcmd (self, "alias w5 \"wait;wait;wait;wait;wait;\"\n");
 	self_stuffcmd (self, "alias cl \"impulse ");
-	s = ftos (IMP_ADMIN_CHANGE_MAP);
+	s = ftos (IMP_CHANGE_MAP);
 	self_stuffcmd (self, s);
 	self_stuffcmd (self, "\"\n");
 
@@ -185,9 +185,9 @@ player_aliases =
 void ()
 admin_aliases =
 {
-	player_init_impulse_alias ("admin-eyes",		IMP_ADMIN_EYES);
 	player_init_impulse_alias ("admin-cycle",		IMP_ADMIN_CYCLE);
 	player_init_impulse_alias ("admin-cycle-show",		IMP_ADMIN_CYCLE_SHOW);
+	player_init_impulse_alias ("admin-eyes",		IMP_ADMIN_EYES);
 	player_init_impulse_alias ("admin-join",		IMP_ADMIN_JOIN);
 	player_init_impulse_alias ("admin-kick",		IMP_ADMIN_KICK);
 	player_init_impulse_alias ("admin-kill",		IMP_ADMIN_KILL);
@@ -198,6 +198,7 @@ admin_aliases =
 	player_init_impulse_alias ("admin-vote-team-toggle",	IMP_ADMIN_VOTE_TEAM_TOGGLE);
 	player_init_impulse_alias ("admin-teamplay-zero",	IMP_ADMIN_TEAMPLAY_ZERO);
 	player_init_impulse_alias ("admin-unbind",		IMP_ADMIN_UNBIND);
+	player_init_impulse_alias ("change-level",		IMP_ADMIN_CHANGE_MAP);
 	player_init_impulse_alias ("exit-level",		IMP_EXIT_LEVEL);
 	player_init_impulse_alias ("qsmack",			IMP_QSMACK_COMMAND);
 };

@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.29 2004/02/21 07:31:35 slotzero Exp $
+/*  $Id: admin.qc,v 1.30 2004/04/28 00:41:37 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -515,45 +515,53 @@ admin_changelevel =
 void ()
 admin_impulse_map =
 {
+	local float admin_menu;
 	local string m;
 
-	/* if (self.state)
+	admin_menu = self.aqstate & AQS_ADMIN_CHANGE_MAP_MENU;
+	if (admin_menu)
 	{
-		self.impulse = self.impulse + 10 * self.state;
-		self.state = 0;
+		if (self.state)
+		{
+			self.impulse = self.impulse + 10 * self.state;
+			self.state = 0;
+		}
+		else if (self.impulse >= 1 && self.impulse <= 5)
+		{
+			self.state = self.impulse;
+			aq_menu_set (AQS_MENU_EPISODE + self.state);
+			return;
+		}
+		else if (self.impulse == 6)
+		{
+			impulse_override_cancel ();
+			aq_menu_set (0);
+			admin_changelevel (string_null);
+			return;
+		}
 	}
-	else if (self.impulse >= 1 && self.impulse <= 5)
-	{
-		self.state = self.impulse;
-		aq_menu_set (AQS_MENU_EPISODE + self.state);
-		return;
-	}
-	else if (self.impulse == 6)
-	{
-		impulse_override_cancel ();
-		aq_menu_set (0);
-		admin_changelevel (string_null);
-		return;
-	} */
 
 	impulse_override_cancel ();
 	aq_menu_set (0);
 	m = impulse_to_map ();
 
-	if (noexit & NOEXIT_NO_CUSTOM_LEVELS && self.impulse > 58)
+	if (!admin_menu)
 	{
-		if (custom_size (m))
+		if (noexit & NOEXIT_NO_CUSTOM_LEVELS && self.impulse > 58)
 		{
-			self_sprint (self, "Custom map voting disabled\n");
-			return;
+			if (custom_size (m))
+			{
+				self_sprint (self, "Custom map voting disabled\n");
+				return;
+			}
 		}
-	}
-	else if (noexit & NOEXIT_CUSTOM_LEVELS_ONLY && self.impulse < 59)
-	{
-		if (map_size (m))
+		else if (noexit & NOEXIT_CUSTOM_LEVELS_ONLY && self.impulse < 59)
 		{
-			self_sprint (self, "Standard map voting disabled\n");
-			return;
+			if (map_size (m))
+			{
+				self_sprint (self, "Standard map voting disabled\n");
+				return;
+			}
 		}
 	}
 
@@ -565,6 +573,12 @@ admin_impulse_map =
 	}
 	else
 	{
+		if (admin_menu)
+		{
+			admin_changelevel (m);
+			return;
+		}
+
 		self.impulse = IMP_VOTE_EXIT;
 
 		if (forced_nextmap)
@@ -589,13 +603,26 @@ admin_impulse_map =
 		else
 			count_votes (self.impulse, 0);
 	}
+
+	if (admin_menu)
+		self.aqstate = self.aqstate - self.aqstate & AQS_ADMIN_CHANGE_MAP_MENU;
+};
+
+void ()
+change_map =
+{
+	self.state	= 0;
+	self.aqstate	= self.aqstate | AQS_IMPOVER_MAP;
 };
 
 void ()
 admin_change_map =
 {
-	self.state	= 0;
-	self.aqstate	= self.aqstate | AQS_IMPOVER_MAP;
+	if (!is_admin ())
+		return;
 
-	// aq_menu_set (AQS_MENU_EPISODE);
+	self.state	= 0;
+	self.aqstate	= self.aqstate | AQS_IMPOVER_MAP | AQS_ADMIN_CHANGE_MAP_MENU;
+
+	aq_menu_set (AQS_MENU_EPISODE);
 };
