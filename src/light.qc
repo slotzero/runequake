@@ -1,4 +1,4 @@
-// $Id: light.qc,v 1.1 2002/02/22 03:10:59 slotzero Exp $
+// $Id: light.qc,v 1.2 2002/02/23 05:47:54 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -13,7 +13,7 @@ Light_Setup =
 	//
 
 	// 0 normal
-	lightstyle (0, "m");
+	lightstyle (0, "r");
 
 	// 1 FLICKER (first variety)
 	lightstyle (1, "mmnmmommommnonmmonqnmmo");
@@ -59,7 +59,7 @@ light_switch =
 {
 	if (self.spawnflags & START_OFF)
 	{
-		lightstyle (self.style, "m");
+		lightstyle (self.style, "r");
 		self.spawnflags = self.spawnflags - self.spawnflags & START_OFF;
 	}
 	else
@@ -77,7 +77,7 @@ light_use =
 		if (self.spawnflags & START_OFF)
 			lightstyle (self.style, "a");
 		else
-			lightstyle (self.style, "m");
+			lightstyle (self.style, "r");
 
 		self.use = light_switch;
 	}
