@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.75 2004/05/23 01:12:14 slotzero Exp $
+/*  $Id: defs.qc,v 1.76 2004/05/23 04:49:12 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -478,12 +478,13 @@ float RN_ANTIPACK	= 55;
 float RN_DEFLECT	= 56;
 float RN_BETTY		= 57;
 float RN_TORNADO	= 58;
-float RN_MAX		= 58;
+float RN_REQUIEM	= 59;
+float RN_MAX		= 59;
 
 // Only partially runes.
 
-float RN_LITHIUM_HOOK	= 59;
-float RN_MAX_ALL	= 59;
+float RN_LITHIUM_HOOK	= 60;
+float RN_MAX_ALL	= 60;
 
 // impulses
 

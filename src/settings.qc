@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.36 2004/05/23 01:48:06 slotzero Exp $
+/*  $Id: settings.qc,v 1.37 2004/05/23 04:49:12 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -608,6 +608,25 @@ float TORCH_TRAP_BURN_DURATION	= 15;
 
 float PACK_RAT_BONUS_PERCENT	= 0.33;
 
+// Good armor
+
+float ARMOR_BONUS_GOOD_ARMOR	= 200;
+float MAX_ARMOR_GOOD_ARMOR	= 767;
+float ARMOR_DECAY_RATE		= 5;
+
+// Quad
+
+float RN_QUAD_DURATION		= 3;
+float RN_QUAD_RECHARGE		= 6;
+
+// Jack of all runes
+
+float RN_JACK_REGEN_HEALTH	= 0.33;		// portion of max_health
+float RN_JACK_REGEN_ARMOR	= 0.5;		// portion of max armor
+float RN_JACK_RESIST		= 0.8;		// saved damage
+float RN_JACK_STRENGTH		= 1.2;		// extra damage
+float RN_JACK_PIERCING		= 0.8;		// portion which hits armor
+
 // Glue Gun Rune
 
 float MAX_GLUE			= 3;
@@ -633,6 +652,10 @@ float MAX_LAUNCH_BETTY		= 5;
 
 float AMMO_TORNADO		= 30;
 
+// Requiem Rune
+
+float RN_REQUIEM_RECHARGE	= 0.5;
+
 // red, green, blue, scale
 
 string	CSHIFT_BLIND		= "v_cshift 256 256 256 200\n";
@@ -640,22 +663,3 @@ string	CSHIFT_CLOAK		= "v_cshift   0   0   0  75\n";
 string	CSHIFT_FREEZE		= "v_cshift  50  50 256 100\n";
 string	CSHIFT_NONE		= "v_cshift   0   0   0   0\n";
 string	CSHIFT_SHIELD		= "v_cshift 100 100   0 100\n";
-
-// Good armor
-
-float ARMOR_BONUS_GOOD_ARMOR	= 200;
-float MAX_ARMOR_GOOD_ARMOR	= 767;
-float ARMOR_DECAY_RATE		= 5;
-
-// Quad
-
-float RN_QUAD_DURATION		= 3;
-float RN_QUAD_RECHARGE		= 6;
-
-// Jack of all runes
-
-float RN_JACK_REGEN_HEALTH	= 0.33;		// portion of max_health
-float RN_JACK_REGEN_ARMOR	= 0.5;		// portion of max armor
-float RN_JACK_RESIST		= 0.8;		// saved damage
-float RN_JACK_STRENGTH		= 1.2;		// extra damage
-float RN_JACK_PIERCING		= 0.8;		// portion which hits armor

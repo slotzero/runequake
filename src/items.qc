@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.42 2004/05/15 23:05:28 slotzero Exp $
+/*  $Id: items.qc,v 1.43 2004/05/23 04:49:12 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -239,15 +239,31 @@ health_touch =
 	if (other.classname != "player")
 		return;
 
+	if (other.runetype == RN_REQUIEM)
+	{
+		if (other.runevector_y > time)
+			return;
+	}
+
 	is_mega = self.healtype == 2;
 	amount = self.healamount;
 	s = self.noise;
 	// Vampires only get 5 health from non-mega health boxes.
-	if (!is_mega && other.runetype == RN_VAMP)
+
+	if (is_mega)
 	{
-		amount = 5;
-		s = "items/r_item1.wav";
+		if (other.runetype == RN_REQUIEM)
+			amount = 15;
 	}
+	else
+	{
+		if (other.runetype == RN_VAMP || other.runetype == RN_REQUIEM)
+		{
+			amount = 5;
+			s = "items/r_item1.wav";
+		}
+	}
+
 	if (!T_Heal (other, amount, is_mega))
 		return;
 
@@ -261,23 +277,32 @@ health_touch =
 	// health touch sound
 	item_sound (other, CHAN_ITEM, s, 1, ATTN_NORM);
 
-	self.model = string_null;
-	self.solid = SOLID_NOT;
-
-	// Set up a health decaying entity for megahealth if necessary.
-	if (is_mega)
-		decay_health_spawn (other, 1);
-	if (deathmatch & DM_RESPAWN)
+	if (other.runetype == RN_REQUIEM)
 	{
+		other.runevector_y = time + RN_REQUIEM_RECHARGE;
 		if (is_mega)
-			self.nextthink = time + MEGAHEALTH_RESPAWN_TIME;
-		else
-			self.nextthink = time + HEALTH_RESPAWN_TIME;
-		self.think = SUB_regen;
+			decay_health_spawn (other, 1);
 	}
+	else
+	{
+		self.model = string_null;
+		self.solid = SOLID_NOT;
 
-	activator = other;
-	SUB_UseTargets (); // fire all targets / killtargets
+		// Set up a health decaying entity for megahealth if necessary.
+		if (is_mega)
+			decay_health_spawn (other, 1);
+		if (deathmatch & DM_RESPAWN)
+		{
+			if (is_mega)
+				self.nextthink = time + MEGAHEALTH_RESPAWN_TIME;
+			else
+				self.nextthink = time + HEALTH_RESPAWN_TIME;
+			self.think = SUB_regen;
+		}
+
+		activator = other;
+		SUB_UseTargets (); // fire all targets / killtargets
+	}
 };
 
 /* void () item_megahealth_rot =
@@ -325,6 +350,12 @@ armor_touch =
 	// Someone touched me, so don't cycle if configured.
 	self.runetype	= time + 5;
 
+	if (other.runetype == RN_REQUIEM)
+	{
+		if (other.runevector_z > time)
+			return;
+	}
+
 	if (self.runevar)
 	{
 		type	= self.armortype;
@@ -368,6 +399,11 @@ armor_touch =
 		if (other.armorvalue >= get_max_armor_e (other))
 			return;
 	}
+	else if (other.runetype == RN_REQUIEM)
+	{
+		if (other.armorvalue && other.armortype >= type && other.armorvalue >= get_max_armor_e (other))
+			return;
+	}
 	else if (other_tot >= this_tot)
 		return;
 
@@ -375,6 +411,17 @@ armor_touch =
 	{
 		other.armortype		= ARMOR_TYPE_3;
 		other.armorvalue	= other.armorvalue + value;
+	}
+	else if (other.runetype == RN_REQUIEM)
+	{
+		if (other.armortype > type)
+			type = other.armortype;
+		else
+			other.items	= other.items - (other.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + bit;
+
+		other.armortype		= type;
+		other.armorvalue	= other.armorvalue + 5;
+
 	}
 	else
 	{
@@ -418,23 +465,28 @@ armor_touch =
 	// armor touch sound
 	item_sound (other, CHAN_ITEM, "items/armor1.wav", 1, ATTN_NORM);
 
-	if (self.runevar)
+	if (other.runetype == RN_REQUIEM)
+		other.runevector_z = time + RN_REQUIEM_RECHARGE;
+	else
 	{
-		remove (self);
-		return;
+		if (self.runevar)
+		{
+			remove (self);
+			return;
+		}
+
+		self.solid = SOLID_NOT;
+		self.model = string_null;
+		if (deathmatch & DM_RESPAWN)
+			self.nextthink = time + ARMOR_RESPAWN_TIME;
+		self.think = SUB_regen;
+
+		// Stop burning, for levels with no water.
+		other.aqstate = other.aqstate - other.aqstate & AQS_BURNING;
+
+		activator = other;
+		SUB_UseTargets (); // fire all targets / killtargets
 	}
-
-	self.solid = SOLID_NOT;
-	self.model = string_null;
-	if (deathmatch & DM_RESPAWN)
-		self.nextthink = time + ARMOR_RESPAWN_TIME;
-	self.think = SUB_regen;
-
-	// Stop burning, for levels with no water.
-	other.aqstate = other.aqstate - other.aqstate & AQS_BURNING;
-
-	activator = other;
-	SUB_UseTargets (); // fire all targets / killtargets
 };
 
 void ()
@@ -607,11 +659,18 @@ weapon_touch
 void ()
 weapon_touch =
 {
-	local float charged, hadammo, best, new, old, leave;
+	local float charged, hadammo, best, new, old, leave, requiem;
 	local entity stemp;
 
 	if (!other.flags & FL_CLIENT)
 		return;
+
+	requiem = other.runetype == RN_REQUIEM;
+	if (requiem)
+	{
+		if (other.runevector_x > time)
+			return;
+	}
 
 	// if the player was using his best weapon, change up to the new
 	// one if better
@@ -621,6 +680,7 @@ weapon_touch =
 	self = stemp;
 
 	charged = time >= self.runetime;
+
 	if (deathmatch & DM_WEAPONS_STAY || coop)
 		leave = 1;
 	else
@@ -634,7 +694,11 @@ weapon_touch =
 		new = IT_NAILGUN;
 		if (hadammo >= MAX_NAILS && other.items & new)
 			return;
-		other.ammo_nails = other.ammo_nails + 30;
+
+		if (requiem)
+			other.ammo_nails = other.ammo_nails + 5;
+		else
+			other.ammo_nails = other.ammo_nails + 30;
 	}
 	else if (self.classname == "weapon_supernailgun")
 	{
@@ -644,7 +708,11 @@ weapon_touch =
 		new = IT_SUPER_NAILGUN;
 		if (hadammo >= MAX_NAILS && other.items & new)
 			return;
-		other.ammo_nails = other.ammo_nails + 30;
+
+		if (requiem)
+			other.ammo_nails = other.ammo_nails + 5;
+		else
+			other.ammo_nails = other.ammo_nails + 30;
 	}
 	else if (self.classname == "weapon_supershotgun")
 	{
@@ -686,7 +754,11 @@ weapon_touch =
 		new = IT_LIGHTNING;
 		if (hadammo >= MAX_CELLS && other.items & new)
 			return;
-		other.ammo_cells = other.ammo_cells + 15;
+
+		if (requiem)
+			other.ammo_cells = other.ammo_cells + 5;
+		else
+			other.ammo_cells = other.ammo_cells + 15;
 	}
 	else
 		objerror ("weapon_touch: unknown classname");
@@ -699,6 +771,9 @@ weapon_touch =
 	}
 	// weapon touch sound
 	item_sound (other, CHAN_ITEM, "weapons/pkup.wav", 1, ATTN_NORM);
+
+	if (requiem && other.items & new)
+		charged = 0;
 
 	bound_other_ammo ();
 
@@ -729,18 +804,24 @@ weapon_touch =
 			self.think = weapon_up;
 			self.nextthink = self.runetime;
 		}
-		return;
+		if (!requiem)
+			return;
 	}
 
 	// remove it in single player, or setup for respawning in deathmatch
-	self.model = string_null;
-	self.solid = SOLID_NOT;
-	if (deathmatch & DM_RESPAWN)
-		self.nextthink = time + WEAPON_RESPAWN_TIME;
-	self.think = SUB_regen;
+	if (other.runetype == RN_REQUIEM)
+		other.runevector_x = time + RN_REQUIEM_RECHARGE;
+	else
+	{
+		self.model = string_null;
+		self.solid = SOLID_NOT;
+		if (deathmatch & DM_RESPAWN)
+			self.nextthink = time + WEAPON_RESPAWN_TIME;
+		self.think = SUB_regen;
 
-	activator = other;
-	SUB_UseTargets (); // fire all targets / killtargets
+		activator = other;
+		SUB_UseTargets (); // fire all targets / killtargets
+	}
 };
 
 void ()
@@ -835,12 +916,21 @@ void ()
 ammo_touch =
 {
 	local entity stemp;
-	local float best;
+	local float best, ammo_flag;
 
 	if (other.classname != "player")
 		return;
 	if (other.health <= 0)
 		return;
+	if (other.runetype == RN_REQUIEM)
+	{
+		if (other.runevector_x > time)
+			return;
+
+		ammo_flag = 5;
+	}
+	else
+		ammo_flag = self.aflag;
 
 	// if the player was using his best weapon, change up to the new one if better
 	stemp = self;
@@ -853,7 +943,7 @@ ammo_touch =
 	{
 		if (other.ammo_shells >= MAX_SHELLS)
 			return;
-		other.ammo_shells = other.ammo_shells + self.aflag;
+		other.ammo_shells = other.ammo_shells + ammo_flag;
 	}
 
 	// spikes
@@ -861,7 +951,7 @@ ammo_touch =
 	{
 		if (other.ammo_nails >= MAX_NAILS)
 			return;
-		other.ammo_nails = other.ammo_nails + self.aflag;
+		other.ammo_nails = other.ammo_nails + ammo_flag;
 	}
 
 	// rockets
@@ -869,7 +959,7 @@ ammo_touch =
 	{
 		if (other.ammo_rockets >= MAX_ROCKETS)
 			return;
-		other.ammo_rockets = other.ammo_rockets + self.aflag;
+		other.ammo_rockets = other.ammo_rockets + ammo_flag;
 	}
 
 	// cells
@@ -877,7 +967,7 @@ ammo_touch =
 	{
 		if (other.ammo_cells >= MAX_CELLS)
 			return;
-		other.ammo_cells = other.ammo_cells + self.aflag;
+		other.ammo_cells = other.ammo_cells + ammo_flag;
 	}
 
 	bound_other_ammo ();
@@ -907,14 +997,19 @@ ammo_touch =
 	self = stemp;
 
 	// remove it in single player, or setup for respawning in deathmatch
-	self.model = string_null;
-	self.solid = SOLID_NOT;
-	if (deathmatch & DM_RESPAWN)
-		self.nextthink = time + AMMO_RESPAWN_TIME;
-	self.think = SUB_regen;
+	if (other.runetype == RN_REQUIEM)
+		other.runevector_x = time + RN_REQUIEM_RECHARGE;
+	else
+	{
+		self.model = string_null;
+		self.solid = SOLID_NOT;
+		if (deathmatch & DM_RESPAWN)
+			self.nextthink = time + AMMO_RESPAWN_TIME;
+		self.think = SUB_regen;
 
-	activator = other;
-	SUB_UseTargets (); // fire all targets / killtargets
+		activator = other;
+		SUB_UseTargets (); // fire all targets / killtargets
+	}
 };
 
 float WEAPON_BIG2 = 1;
