@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.102 2004/06/28 05:22:57 slotzero Exp $
+/*  $Id: rjs.qc,v 1.103 2004/06/28 05:33:43 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -260,7 +260,7 @@ rjs_worldspawn =
 	}
 
 	// Must be zero or self_sprint() will always be dprint().
-	cvar_set_infokey ("scratch4", "0");
+	cvar_set_infokey ("skill", "0");
 
 	// XXX I don't like doing this every level, maybe find a better way to do this.
 	if (!map_size (mapname))

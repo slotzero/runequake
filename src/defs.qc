@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.81 2004/06/28 05:17:57 slotzero Exp $
+/*  $Id: defs.qc,v 1.82 2004/06/28 05:33:43 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1048,19 +1048,17 @@ float	framecount;
 
 float	skill;
 
-float	scratch4;
-
-float	S4_LAST			= 1;
-float	S4_SHOW_PLAYERS		= 2;
-float	S4_SHOW_SETTINGS	= 3;
-float	S4_TOGGLE_RUNE_CHEAT	= 4;
-float	S4_UPDATE_BINDINGS	= 5;
-float	S4_LEVELS		= 6;
-float	S4_CUSTOM		= 7;
-float	S4_COMMANDS		= 8;
-float	S4_LEVEL_TIME		= 9;
-float	S4_MODE_PRACTICE	= 10;
-float	S4_MODE_NORMAL		= 11;
+float	SKILL_LAST			= 1;
+float	SKILL_SHOW_PLAYERS		= 2;
+float	SKILL_SHOW_SETTINGS		= 3;
+float	SKILL_TOGGLE_RUNE_CHEAT		= 4;
+float	SKILL_UPDATE_BINDINGS		= 5;
+float	SKILL_LEVELS			= 6;
+float	SKILL_CUSTOM			= 7;
+float	SKILL_COMMANDS			= 8;
+float	SKILL_LEVEL_TIME		= 9;
+float	SKILL_MODE_PRACTICE		= 10;
+float	SKILL_MODE_NORMAL		= 11;
 
 // levels
 float	crosshair;
