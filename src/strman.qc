@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.33 2004/12/25 02:13:52 slotzero Exp $
+/*  $Id: strman.qc,v 1.34 2005/01/07 00:24:08 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -112,8 +112,24 @@ allocate_string_size =
 	p	= AddInt (&"    \{0}   ", PSTRING_TO_PQUAKEC);
 
 	dword	= floor (bytes / 4) * %1;
-	while (bytes > 3)
-		bytes = bytes - 4;
+
+	//while (bytes > 3)
+	//	bytes = bytes - 4;
+
+	if (bytes > 3)
+	{
+		bytes = bytes / 4;
+		bytes = bytes - floor (bytes);
+
+		if (bytes == 0.25)
+			bytes = 1;
+		else if (bytes == 0.50)
+			bytes = 2;
+		else if (bytes == 0.75)
+			bytes = 3;
+		else
+			bytes = 0;
+	}
 
 	for (i = %0; i < dword; i = i + %1)
 		array[i] = (*p)[%0];
