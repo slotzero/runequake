@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.21 2004/07/03 07:21:23 slotzero Exp $
+/*  $Id: hunk.qc,v 1.22 2004/07/03 07:54:29 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -87,26 +87,9 @@ Get_Hunk =
 	return *AddInt(&hunk, 4 * offset);
 };
 
-string (entity hunk)
-Read_Hunk_e =
-{
-	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
-};
-
-string (float type, float offset)
-Read_Hunk =
-{
-	local entity hunk;
-
-	hunk = Get_Hunk (type, offset);
-	if (!hunk)
-	{
-		dprint ("Read_Hunk: hunk is null\n");
-		return string_null;
-	}
-
-	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
-};
+//-------------------------------------------------------------------
+// READ HUNK
+//-------------------------------------------------------------------
 
 vector (float type, float offset)
 Read_Hunk_Vector =
@@ -143,65 +126,25 @@ Read_Hunk_Float =
 	return hunk[%0];
 };
 
-void (entity hunk, string s)
-Write_Hunk_e =
+string (entity hunk)
+Read_Hunk_e =
 {
-	if (!hunk)
-		return dprint ("Write_Hunk_e: hunk is null\n");
-	strcpy (@AddInt(&hunk, PQUAKEC_TO_PSTRING), s);
+	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
 };
 
-void (float type, float offset, string s)
-Write_Hunk =
-{
-	local entity hunk;
-
-	hunk = Get_Hunk (type, offset);
-	Write_Hunk_e (hunk, s);
-};
-
-void (float type, float offset, vector v)
-Write_Hunk_Vector =
+string (float type, float offset)
+Read_Hunk =
 {
 	local entity hunk;
 
 	hunk = Get_Hunk (type, offset);
 	if (!hunk)
-		return dprint ("Write_Hunk_Vector: hunk is null\n");
+	{
+		dprint ("Read_Hunk: hunk is null\n");
+		return string_null;
+	}
 
-	hunk[%0] = v_x;
-	hunk[%1] = v_y;
-	hunk[%2] = v_z;
-};
-
-void (float type, float offset, float f)
-Write_Hunk_Float =
-{
-	local entity hunk;
-
-	hunk = Get_Hunk (type, offset);
-	if (!hunk)
-		return dprint ("Write_Hunk_Float: hunk is null\n");
-
-	hunk[%0] = f;
-};
-
-// in development.
-void (float type, float offset, string s)
-Write_Hunk_String =
-{
-	local entity hunk;
-	local float i, ps, max;
-
-	hunk = Get_Hunk (type, offset);
-	if (!hunk)
-		return dprint ("Write_Hunk_String: hunk is null\n");
-
-	max = ceil ((strlen (s) + 1) / 4) * %1;
-	ps = AddInt (&s, PSTRING_TO_PQUAKEC);
-
-	for (i = %0; i < max; i = i + %1)
-		hunk[i] = (*ps)[i];
+	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
 };
 
 string (entity hunk, float bytes)
@@ -292,6 +235,74 @@ Read_Hunk_String_Max =
 	hunk = Get_Hunk (type, offset);
 
 	return Read_Hunk_String_Max_e (hunk, bytes);
+};
+
+//-------------------------------------------------------------------
+// WRITE HUNK
+//-------------------------------------------------------------------
+
+void (float type, float offset, vector v)
+Write_Hunk_Vector =
+{
+	local entity hunk;
+
+	hunk = Get_Hunk (type, offset);
+	if (!hunk)
+		return dprint ("Write_Hunk_Vector: hunk is null\n");
+
+	hunk[%0] = v_x;
+	hunk[%1] = v_y;
+	hunk[%2] = v_z;
+};
+
+void (float type, float offset, float f)
+Write_Hunk_Float =
+{
+	local entity hunk;
+
+	hunk = Get_Hunk (type, offset);
+	if (!hunk)
+		return dprint ("Write_Hunk_Float: hunk is null\n");
+
+	hunk[%0] = f;
+};
+
+void (entity hunk, string s)
+Write_Hunk_e =
+{
+	if (!hunk)
+		return dprint ("Write_Hunk_e: hunk is null\n");
+	strcpy (@AddInt(&hunk, PQUAKEC_TO_PSTRING), s);
+};
+
+void (float type, float offset, string s)
+Write_Hunk =
+{
+	local entity hunk;
+
+	hunk = Get_Hunk (type, offset);
+	Write_Hunk_e (hunk, s);
+};
+
+// This function uses the smallest dword possible to fit the string
+// into the hunk, not the exact bytes.  While this is less accurate
+// thank Write_Hunk_Max(), it's much faster.  A null termination is
+// included as well.
+void (float type, float offset, string s)
+Write_Hunk_String =
+{
+	local entity hunk;
+	local float i, ps, dword;
+
+	hunk = Get_Hunk (type, offset);
+	if (!hunk)
+		return dprint ("Write_Hunk_String: hunk is null\n");
+
+	dword = ceil ((strlen (s) + 1) / 4) * %1;
+	ps = AddInt (&s, PSTRING_TO_PQUAKEC);
+
+	for (i = %0; i < dword; i = i + %1)
+		hunk[i] = (*ps)[i];
 };
 
 // This will always force a null termination.  The actual
