@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.4 2003/05/25 02:03:44 slotzero Exp $
+/*  $Id: strman.qc,v 1.5 2003/05/25 09:44:08 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -99,34 +99,31 @@ allocate_string =
 string (string s1, string s2)
 strcat =
 {
-	local float s1_len, s2_len, pconcat, ps2, dword, i;
-	local string concat;
+	local float len1, len2, bytes;
+	local string s, temp;
 
-	s1_len	= strlen (s1);
-	s2_len	= strlen (s2);
+	len1 = strlen (s1);
+	if (!len1)
+		s1 = string_null;
 
-	// s1_len can be null
-	if (!s2_len || s1_len + s2_len > 255)
+	len2 = strlen (s2);
+	if (!len2)
+		s2 = string_null;
+
+	bytes = len1 + len2;
+	if (bytes < 1 || bytes > 255)
 	{
-		dprint ("strcat(): argument(s) is null or total length > 255\n");
+		dprint ("strcat(): bytes < 1 or bytes > 255\n");
 		return string_null;
 	}
 
-	concat	= allocate_string_size (s1_len + s2_len);
-	strcpy (concat, s1);
+	s = allocate_string_size (bytes);
+	strcpy (s, s1);
 
-	s1_len	= s1_len * %1;
-	pconcat	= AddInt (AddInt (&concat, PSTRING_TO_PQUAKEC), s1_len);
-	ps2	= AddInt (&s2, PSTRING_TO_PQUAKEC);
-	dword	= (s2_len / 4 + 1) * %1;
+	temp = @AddInt (&s, len1 * %1);
+	strcpy (temp, s2);
 
-	for (i = %0; i < dword; i = i + %1)
-		(*pconcat)[i] = (*ps2)[i];
-
-	s1_len	= NegInt (SubInt (s1_len, s1_len * %2));
-	pconcat	= AddInt (pconcat, s1_len);
-
-	return @AddInt (pconcat, PQUAKEC_TO_PSTRING);
+	return s;
 };
 
 //
