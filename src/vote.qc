@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.21 2004/07/12 02:36:32 slotzero Exp $
+/*  $Id: vote.qc,v 1.22 2004/07/12 02:48:33 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -420,7 +420,7 @@ vote =
 		e.think1	= setquad;
 		e.noise2	= " Quad Damage";
 
-		if (NO_QUAD)
+		if (NO_QUADS)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";

@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.45 2004/06/28 02:04:45 slotzero Exp $
+/*  $Id: items.qc,v 1.46 2004/07/12 02:48:33 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1317,16 +1317,12 @@ powerup_denied =
 	e = find (world, classname, "player");
 	while (e)
 	{
+		// XXX I think dead people can still see this message, or there's a race.
 		if (e != other && is_player_e (e) && e.health > 0)
 		{
 			dist = vlen (self.origin - e.origin);
 			if (dist < 125)
-			{
-				if (e.rqflags & RQ_CUSTOM_SOUNDS)
-					self_sound (e, "denied.wav");
-				else
-					self_sprint (e, "\{141} \bdenied!\n");
-			}
+				self_sprint (e, "\{141} \bdenied!\n");
 		}
 		e = find (e, classname, "player");
 	}
