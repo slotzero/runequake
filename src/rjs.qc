@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.19 2002/06/02 09:45:46 slotzero Exp $
+// $Id: rjs.qc,v 1.20 2002/06/08 02:21:06 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -1571,6 +1571,10 @@ player_init =
 	player_init_impulse_alias ("weapon-toggles",	IMP_WEAPON_TOGGLES);
 	player_init_impulse_alias ("weapon-toggles-toggle",
 							IMP_WEAPON_TOGGLES);
+
+	// Disable client-side ambient sounds.
+	if (scratch1 & S1_AMBIENT_SOUND_OFF)
+		self_stuffcmd (self, "ambient_level 0\n");
 
 	i = 1;
 	while (i <= IMP_SWITCHFIRE_COUNT)
