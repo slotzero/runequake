@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.29 2002/08/23 23:55:16 slotzero Exp $
+// $Id: rjs.qc,v 1.30 2002/08/24 01:28:12 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -1088,18 +1088,17 @@ fix_map =
 {
 	local entity e;
 
-	if (world.model == "maps/start.bsp")
+	if (scratch1 & S1_ORIGINAL_LEVELS)
+	{
+		SUB_Null ();
+	}
+	else if (world.model == "maps/start.bsp")
 	{
 		// Add a destination for the end map teleporter.
 		e = spawn ();
 		e.targetname = "t11";
 		e.mangle = '0 -90 0';
 		setorigin (e, '545.1 679.5 353.0');
-	}
-
-	if (scratch1 & S1_ORIGINAL_LEVELS)
-	{
-		SUB_Null ();
 	}
 	else if (world.model == "maps/e1m2.bsp")
 	{

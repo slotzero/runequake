@@ -1,4 +1,4 @@
-// $Id: triggers.qc,v 1.5 2002/06/08 05:42:37 slotzero Exp $
+// $Id: triggers.qc,v 1.6 2002/08/24 01:28:13 slotzero Exp $
 
 entity s_tfog;
 
@@ -469,6 +469,15 @@ trigger_teleport =
 		remove (self);
 		return;
 	}
+
+	if (scratch1 & S1_ORIGINAL_LEVELS)
+	{
+		if (world.model == "maps/start.bsp" && self.target == "t11")
+		{
+			remove (self);
+			return;
+		}
+	}
 	// Add destination to level-exit teleporter.
 	else if ((world.model == "maps/e1m7.bsp" && self.target == "t15"))
 	{
@@ -479,7 +488,6 @@ trigger_teleport =
 		self.flags = self.flags | FL_ITEM;
 		self.origin = self.origin + '1000 56 -1048';
 	}
-
 	// Add destination to level-exit teleporter.
 	else if ((world.model == "maps/e2m6.bsp" && self.target == "t88"))
 	{
@@ -506,7 +514,7 @@ trigger_teleport =
 			o = (self.mins + self.maxs)*0.5;
 			ambientsound (o, "ambience/hum1.wav", 0.5, ATTN_STATIC);
 		}
-	
+
 	}
 };
 

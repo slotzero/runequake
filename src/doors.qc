@@ -1,4 +1,4 @@
-// $Id: doors.qc,v 1.3 2002/06/08 05:42:34 slotzero Exp $
+// $Id: doors.qc,v 1.4 2002/08/24 01:28:12 slotzero Exp $
 
 float DOOR_START_OPEN	= 1;
 float DOOR_DONT_LINK	= 4;
@@ -98,7 +98,8 @@ door_go_up =
 	self.state	= STATE_UP;
 
 	// Speed up the crusher on E4M5.
-	if (world.model == "maps/e4m5.bsp" && self.targetname == "t87")
+	if (!scratch1 & S1_ORIGINAL_LEVELS && world.model == "maps/e4m5.bsp"
+			&& self.targetname == "t87")
 		SUB_CalcMove (self.pos2, 150, door_hit_top);
 	else
 		SUB_CalcMove (self.pos2, self.speed, door_hit_top);

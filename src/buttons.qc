@@ -1,4 +1,4 @@
-// $Id: buttons.qc,v 1.4 2002/06/26 20:42:33 slotzero Exp $
+// $Id: buttons.qc,v 1.5 2002/08/24 01:28:11 slotzero Exp $
 
 // button and multiple button
 
@@ -116,7 +116,8 @@ func_button =
 		precache_noise ("buttons/switch04.wav");
 
 	// Activate bridge button on E1M7.
-	if (world.model == "maps/e1m7.bsp" && self.target == "t9")
+	if (!scratch1 & S1_ORIGINAL_LEVELS && world.model == "maps/e1m7.bsp"
+			&& self.target == "t9")
 	{
 		self.state = STATE_BOTTOM;
 		self.speed = 40;
