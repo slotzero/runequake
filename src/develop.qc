@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.16 2003/06/10 20:24:38 slotzero Exp $
+/*  $Id: develop.qc,v 1.17 2003/06/10 22:18:33 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -166,52 +166,6 @@ stof =
 	return sum;
 };
 -])
-
-entity (float type, float offset)
-Get_Hunk =
-{
-	local entity hunk;
-
-	if (!HUNK_CONTEXT_MAX)
-		return world;
-
-	hunk = *AddInt(AddInt(&progs, %-16), type);
-	if (*hunk[%0] != *HUNK_SENTINAL)
-		dprint ("Write_Hunk(): hunk != HUNK_SENTINAL\n");
-
-	return *AddInt(&hunk, 4 * offset);
-};
-
-string (entity hunk)
-Read_Hunk_e =
-{
-	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
-};
-
-string (float type, float offset)
-Read_Hunk =
-{
-	local entity hunk;
-
-	hunk = Get_Hunk (type, offset);
-
-	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
-};
-
-void (entity hunk, string s)
-Write_Hunk_e =
-{
-	strcpy (@AddInt(&hunk, PQUAKEC_TO_PSTRING), s);
-};
-
-void (float type, float offset, string s)
-Write_Hunk =
-{
-	local entity hunk;
-
-	hunk = Get_Hunk (type, offset);
-	Write_Hunk_e (hunk, s);
-};
 
 void (float n)
 parse_time =

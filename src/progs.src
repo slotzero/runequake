@@ -1,4 +1,4 @@
-// $Id: progs.src,v 1.9 2003/05/25 00:11:29 slotzero Exp $
+// $Id: progs.src,v 1.10 2003/06/10 22:18:34 slotzero Exp $
 
 PROGS_FILE
 
@@ -6,6 +6,7 @@ defs.qc
 settings.qc
 func.qc
 internal.qc
+hunk.qc
 strman.qc
 develop.qc
 version.qc
