@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.97 2004/05/30 00:45:02 slotzero Exp $
+/*  $Id: rjs.qc,v 1.98 2004/05/30 01:06:13 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1643,10 +1643,14 @@ show_players =
 			}
 			else if (e.netname != string_null || self_admin)
 			{
-				if (self == e)
-					self_sprint (self, "player \{141}");
+				if (e.deadflag)
+					self_sprint (self, "dead  ");
 				else
-					self_sprint (self, "player  ");
+					self_sprint (self, "player");
+
+				if (self == e)
+					self_sprint (self, " \{141}");
+
 				self_sprint (self, e.netname);
 				if (e.vote_flags & VOTE_EXIT)
 					self_sprint (self, " (exit vote)");
