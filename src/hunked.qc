@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.23 2004/07/20 12:38:42 slotzero Exp $
+/*  $Id: hunked.qc,v 1.24 2004/12/25 02:30:08 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -176,13 +176,13 @@ Log_Client_Disconnect =
 		if (i != max)
 		{
 			e_name = Read_Hunk_String_Max (HUNK_CONTEXT, offset + (i * 5), 16);
-			Write_Hunk_Max (HUNK_CONTEXT, offset + ((i + %1) * 5), e_name, 16);
+			Write_Hunk_String_Max (HUNK_CONTEXT, offset + ((i + %1) * 5), e_name, 16);
 			e_time = Read_Hunk_Float (HUNK_CONTEXT, offset + %4 + (i * 5));
 			Write_Hunk_Float (HUNK_CONTEXT, offset + %4 + ((i + %1) * 5), e_time);
 		}
 	}
 
-	Write_Hunk_Max (HUNK_CONTEXT, offset, self.netname, 16);
+	Write_Hunk_String_Max (HUNK_CONTEXT, offset, self.netname, 16);
 	Write_Hunk_Float (HUNK_CONTEXT, offset + %4, elapsed);
 };
 
