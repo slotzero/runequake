@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.18 2003/06/24 22:17:44 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.19 2003/09/27 02:22:09 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -77,6 +77,7 @@ Rune_Button =
 	else if (self.runetype == RN_ZOMBIE)	Rune_Zombie ();
 	else if (self.runetype == RN_TORCH)	Rune_Torch ();
 	else if (self.runetype == RN_QUAD)	quad_activate ();
+	else if (self.runetype == RN_GLUE)	Rune_Glue ();
 };
 
 // This doesn't always tell the riders because it can be triggered both
@@ -514,6 +515,17 @@ Rune_Tell_real =
 		d1 = "A smattering of other\n"
 			"runes' abilities\n"
 			"in less potent form";
+	}
+	else if (type == RN_GLUE)
+	{
+                desc_l = "Glue Rune";
+                desc_s = " Glue  ";
+
+                d1 = "Launch sticky traps which\n"
+			"immobilize when touched\n"
+			"You can still attack\n";
+		d2 = ftos (MAX_GLUE);
+		d3 = " maximum";
 	}
 	else if (type == RN_LITHIUM_HOOK)
 	{
@@ -1125,20 +1137,17 @@ Rune_Spawn =
 float (float type)
 Rune_Type_Allowed =
 {
-	if (type == RN_SHUB)					return 0;
-	if (type == RN_HOLO)					return 0;
 	if (type == RN_HOOK	&& temp1 & T1_HOOK_MASK)	return 0;
-	if (type == RN_SUCK	&& sv_gravity != DEFAULT_GRAVITY) return 0;
-	if (type == RN_CLOUD	&& !deathmatch & DM_LAN_MODE)	return 0;
-	if (type == RN_FIREWALK	&& !deathmatch & DM_LAN_MODE)	return 0;
+	if (type == RN_SUCK
+			&& sv_gravity != DEFAULT_GRAVITY)	return 0;
 	if (type == RN_SELFPRES && teamplay & TEAM_SELF_HEALTH_PROT
-			&& teamplay & TEAM_SELF_ARMOR_PROT)
-								return 0;
+			&& teamplay & TEAM_SELF_ARMOR_PROT)	return 0;
 	IN_QW([-
 		if (type == RN_FLY)				return 0;
 		if (type == RN_TWALK)				return 0;
 		if (type == RN_PHASE)				return 0;
 	-])
+
 	return 1;
 };
 

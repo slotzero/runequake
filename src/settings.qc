@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.16 2003/06/24 22:17:44 slotzero Exp $
+/*  $Id: settings.qc,v 1.17 2003/09/27 02:22:10 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -402,8 +402,8 @@ float AMMO_BFG			= 30;
 // modes.  If the damage is 0 you can't hook creatures with that kind of
 // hook.
 
-float HOOK_DAMAGE_FREE		= 0;
-float HOOK_DAMAGE_LITHIUM	= 1;
+float HOOK_DAMAGE_FREE		= 1;
+float HOOK_DAMAGE_LITHIUM	= 2;
 float HOOK_DAMAGE_RUNE		= 4;
 
 // Maximum length of the hook's chain.
@@ -593,6 +593,10 @@ float TORCH_TRAP_BURN_DURATION	= 15;
 // Pack rat
 
 float PACK_RAT_BONUS_PERCENT	= 0.33;
+
+// Glue Gun Rune
+
+float MAX_GLUE			= 3;
 
 // red, green, blue, scale
 

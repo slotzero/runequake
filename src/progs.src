@@ -1,4 +1,4 @@
-// $Id: progs.src,v 1.13 2003/07/28 13:47:51 slotzero Exp $
+// $Id: progs.src,v 1.14 2003/09/27 02:22:09 slotzero Exp $
 
 PROGS_FILE
 
@@ -27,6 +27,7 @@ runes20.qc
 runes30.qc
 runes40.qc
 runes50.qc
+runes60.qc
 runeserv.qc
 
 admin.qc

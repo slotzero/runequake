@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.18 2003/09/21 17:49:22 slotzero Exp $
+/*  $Id: world.qc,v 1.19 2003/09/27 02:22:10 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -212,6 +212,13 @@ worldspawn =
 	precache_sound ("knight/sword1.wav");		// lumberjack axe
 	precache_sound ("knight/sword2.wav");		// lumberjack axe
 	precache_sound ("shalrath/sight.wav");		// player connect
+
+	// developer runes
+
+	// RN_GLUE
+	precache_model ("progs/tarbaby.mdl");
+	precache_sound ("blob/hit1.wav");
+	precache_sound ("blob/sight1.wav");
 
 	// For the Shambler Helper
 	precache_model ("progs/shambler.mdl");
