@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#    $Id: map,v 1.18 2003/11/01 18:25:40 slotzero Exp $
+#    $Id: map,v 1.19 2003/12/24 02:13:34 slotzero Exp $
 
 use strict;
 use warnings;
@@ -102,6 +102,20 @@ my @custom_lev = (
 		'rcdm7',
 		'xntrick',
 		'baldm6',
+		'arena',
+		'boxing',
+		'break010',
+		'deathole',
+		'dethcrss',
+		'dome7b',
+		'field',
+		'hockey',
+		'mortis',
+		'muny03',
+		'muny10',
+		'pain',
+		'pasta',
+		'warzone',
 	],
 
 	[ # medium
@@ -148,6 +162,18 @@ my @custom_lev = (
 		'chesdm2',
 		'efdm10',
 		'efdm13',
+		'chillers',
+		'cmania3',
+		'dizzy',
+		'dthspwn2',
+		'efdm3',
+		'flood',
+		'g12',
+		'highrise',
+		'hillking',
+		'house',
+		'my_home',
+		'warzone2',
 	],
 
 	[ # large
@@ -166,6 +192,9 @@ my @custom_lev = (
 		'dead',
 		'fragtwn7',
 		'hip1m1',
+		'hip1m2',
+		'hip1m4',
+		'hip1m5',
 		'hip2m1',
 		'hip2m4',
 		'hip2m5',
@@ -175,6 +204,14 @@ my @custom_lev = (
 		'q1edge',
 		'sofdm1',
 		'sofdm3',
+		'disv1',
+		'dranzdm7',
+		'fragtwn5',
+		'fragtwn6',
+		'mncrdrug',
+		'noircity',
+		'oldwest',
+		'triumph',
 	],
 );
 
