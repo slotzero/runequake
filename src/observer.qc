@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.24 2004/07/05 11:20:35 slotzero Exp $
+/*  $Id: observer.qc,v 1.25 2004/07/06 00:32:13 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -164,13 +164,11 @@ obs_impulses =
 		else if (self.impulse == 4)
 			self.impulse = IMP_ADMIN_CHANGE_MAP;
 		else if (self.impulse == 5)
-		{
 			self.impulse = IMP_ADMIN_EYES;
-			admin_impulse_commands ();
-			self.impulse = 0;
-		}
 
-		if (self.impulse)
+		if (self.impulse >= 4)
+			admin_impulse_commands ();
+		else
 			common_impulses ();
 	}
 
