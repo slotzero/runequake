@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.39 2003/11/23 06:25:32 slotzero Exp $
+/*  $Id: client.qc,v 1.40 2003/11/27 06:31:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1915,8 +1915,6 @@ ClientObituary =
 				bprint (" died of his own radioactivity\n");
 			else if (dt == "dspotdrop")
 				bprint (" placed one too many death spots\n");
-			else if (dt == "tornado")
-				bprint (" chased after his own tornado\n");
 			else if (dt == "admin-kill")
 			{
 				f = 0;
@@ -1954,6 +1952,8 @@ ClientObituary =
 				bprint (" sniped a little too much\n");
 			else if (dt == "betty")
 				bprint (" was chased down by his own betty\n");
+			else if (dt == "tornado")
+				bprint (" chased after his own tornado\n");
 			else if (dt == "bombhit")
 				bprint (" struck himself with his own bomb\n");
 			else if (dt == "bombed")
@@ -2080,6 +2080,11 @@ ClientObituary =
 			s1 = " was chased down by ";
 			s2 = "'s betty\n";
 		}
+		else if (dt == "tornado")
+		{
+			s1 = " couldn't outrun ";
+			s2 = "'s tornado\n";
+		}
 		else if (dt == "hook")
 		{
 			s1 = " was grappled down by ";
@@ -2148,10 +2153,10 @@ ClientObituary =
 				s1 = " rides ";
 			s2 = "'s rocket\n";
 		}
-		else if (dt == "tornado")
+		else if (dt == "magic-shotgun")
 		{
-			s1 = " couldn't outrun ";
-			s2 = "'s tornado\n";
+			s1 = " feels the spell of ";
+			s2 = "'s magic shotgun\n";
 		}
 		else if (dt == "lavagun")
 		{
