@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.13 2003/07/11 04:23:38 slotzero Exp $
+/*  $Id: runes20.qc,v 1.14 2003/11/10 22:52:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -86,16 +86,8 @@ Bomb_Spawn =
 void ()
 DSpot_Blow =
 {
-	if (self.owner.runetype == RN_DSPOTS && self.owner.runevar > 0)
-	{
-		if (self.owner.class_cnt)
-			self.owner.class_cnt = self.owner.class_cnt - 1;
-		else
-		{
-			sprint (self.owner, "A death spot exploded\n");
-			self.owner.runevar = self.owner.runevar - 1;
-		}
-	}
+	if (maybe_update_trap_count (self.owner, RN_DSPOTS))
+		sprint (self.owner, "A death spot exploded\n");
 
 	create_te_explosion (self.origin, IN_POQ(1, 0));
 	monk_radius_hack = 1;
@@ -109,8 +101,6 @@ DSpot_Blow =
 void ()
 DSpot_Touch =
 {
-	//if (other.classname == "info_player_deathmatch") {DSpot_Blow (); return;}
-	//if (other.classname == "info_teleport_destination") {DSpot_Blow (); return;}
 
 	if (other.takedamage != DAMAGE_AIM)
 		return;
@@ -124,13 +114,7 @@ DSpot_Touch =
 	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;
 
-	if (self.owner.runetype == RN_DSPOTS && self.owner.runevar > 0)
-	{
-		if (self.owner.class_cnt)
-			self.owner.class_cnt = self.owner.class_cnt - 1;
-		else
-			self.owner.runevar = self.owner.runevar - 1;
-	}
+	maybe_update_trap_count (self.owner, RN_DSPOTS);
 
 	T_Damage (other, self, self.owner, KILL_DAMAGE, "dspot");
 
@@ -150,16 +134,16 @@ DSpot_Think =
 {
 	self.nextthink = time + 0.6;
 	IN_POQ([-
-	particle (self.origin, VEC_ORIGIN, PARTICLE_DEATH_SPOT, 40);
-	if (teamplay & TEAM_TEAM_MASK)
-	{
-		local float particle_team;
+		particle (self.origin, VEC_ORIGIN, PARTICLE_DEATH_SPOT, 40);
+		if (teamplay & TEAM_TEAM_MASK)
+		{
+			local float particle_team;
 
-		particle_team = team_to_particle (self.owner.team);
-		particle (self.origin, '0 0 -10', particle_team, 10);
-	}
+			particle_team = team_to_particle (self.owner.team);
+			particle (self.origin, '0 0 -10', particle_team, 10);
+		}
 	-], [-
-	create_te_gunshot (self.origin, 20);
+		create_te_gunshot (self.origin, 20);
 	-])
 	if (self.runetime < time)
 		DSpot_Blow ();
@@ -168,15 +152,15 @@ DSpot_Think =
 void ()
 DSpot_Arm =
 {
-	self.runetime = time + 120;
-	self.nextthink = time;
-	self.think = DSpot_Think;
-	self.touch = DSpot_Touch;
+	self.runetime	= time + 120;
+	self.nextthink	= time;
+	self.think	= DSpot_Think;
+	self.touch	= DSpot_Touch;
 	IN_POQ([-
-	setmodel (self, string_null);
+		setmodel (self, string_null);
 	-], [-
-	// setmodel (self, "progs/s_light.spr");
-	self.effects = self.effects - self.effects & EF_DIMLIGHT;
+		// setmodel (self, "progs/s_light.spr");
+		self.effects = self.effects - self.effects & EF_DIMLIGHT;
 	-])
 	sound (self, CHAN_VOICE, "items/inv1.wav", 1, ATTN_NORM);
 };
@@ -231,11 +215,9 @@ Holo_Think =
 {
 	if (self.runetime < time)
 	{
-		if (self.owner.runetype == RN_HOLO && self.owner.runevar > 0)
-		{
+		if (maybe_update_trap_count (self.owner, RN_HOLO))
 			sprint (self.owner, "A hologram burned out\n");
-			self.owner.runevar = self.owner.runevar - 1;
-		}
+
 		spawn_tfog (self.origin);
 		remove (self);
 		return;
@@ -270,6 +252,7 @@ Rune_Holo =
 	hologram.movetype = MOVETYPE_NONE;
 	hologram.solid = SOLID_NOT;
 	hologram.owner = self;
+	hologram.classname = "hologram";
 	setmodel (hologram, "progs/player.mdl");
 	setorigin (hologram, self.origin);
 	setsize (hologram, VEC_ORIGIN, VEC_ORIGIN);
@@ -335,11 +318,11 @@ Orb_Think =
 		// dropping runes.
 		if (self.owner.health < 1) self.runetime = time + 20;
 
-		self.movetype = MOVETYPE_BOUNCE;
-		self.nextthink = time;
-		self.think = Orb_WanderThink;
-		self.flags = self.flags-(self.flags & FL_ONGROUND);
-		self.velocity = '0 0 1';
+		self.movetype	= MOVETYPE_BOUNCE;
+		self.nextthink	= time;
+		self.think	= Orb_WanderThink;
+		self.flags	= self.flags-(self.flags & FL_ONGROUND);
+		self.velocity	= '0 0 1';
 
 		return;
 	}

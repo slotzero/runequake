@@ -1,4 +1,4 @@
-/*  $Id: runes50.qc,v 1.14 2003/09/27 05:32:07 slotzero Exp $
+/*  $Id: runes50.qc,v 1.15 2003/11/10 22:52:16 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -276,16 +276,8 @@ Torch_Trap_Think =
 	if (time >= self.runetime)
 	{
 		// XXX swap torch-for-torch bug
-		if (self.owner.runetype == RN_TORCH && self.owner.runevar > 0)
-		{
-			if (self.owner.class_cnt)
-				self.owner.class_cnt = self.owner.class_cnt - 1;
-			else
-			{
-				sprint (self.owner, "A fire trap exploded\n");
-				self.owner.runevar = self.owner.runevar - 1;
-			}
-		}
+		if (maybe_update_trap_count (self.owner, RN_TORCH))
+			sprint (self.owner, "A fire trap exploded\n");
 
 		monk_radius_hack = 1;
 		T_RadiusDamage (RADIUS_NORMAL, self, self.owner,
@@ -347,8 +339,7 @@ Torch_Trap_Touch =
 	sound (self, CHAN_WEAPON, "boss1/throw.wav", 1, ATTN_NORM);
 
 	// XXX swap torch-for-torch bug
-	if (self.owner.runetype == RN_TORCH && self.owner.runevar > 0)
-		self.owner.runevar = self.owner.runevar - 1;
+	maybe_update_trap_count (self.owner, RN_TORCH);
 
 	T_Damage (other, self, self.owner, TORCH_TRAP_TOUCH_DAMAGE,
 			"ftraptouch");
@@ -379,13 +370,7 @@ Torch_Trap_Touch =
 void ()
 Torch_Trap_Remove =
 {
-	if (self.owner.runetype == RN_TORCH && self.owner.runevar > 0)
-	{
-		if (self.owner.class_cnt)
-			self.owner.class_cnt = self.owner.class_cnt - 1;
-		else
-			self.owner.runevar = self.owner.runevar - 1;
-	}
+	maybe_update_trap_count (self.owner, RN_TORCH);
 	remove (self);
 };
 

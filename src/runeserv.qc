@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.31 2003/11/09 09:20:59 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.32 2003/11/10 22:52:17 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -798,6 +798,14 @@ Rune_Activate =
 			self.class_cnt = count_class_own (self, "dspot");
 	}
 
+	else if (self.runetype == RN_HOLO)
+	{
+		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
+			self.runevar = count_class_own (self, "hologram");
+		else
+			self.class_cnt = count_class_own (self, "hologram");
+	}
+
 	else if (self.runetype == RN_ORB)
 		Orb_Spawn ();
 
@@ -805,16 +813,20 @@ Rune_Activate =
 		Hat_Spawn ("progs/s_bubble.spr", '-4 2 31', VEC_ORIGIN);
 
 	else if (self.runetype == RN_RADIO)
+	{
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar = count_class_own (self, "radioactive");
 		else
 			self.class_cnt = count_class_own (self, "radioactive");
+	}
 
 	else if (self.runetype == RN_FREEZE)
+	{
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar = count_class_own (self, "freeze");
 		else
 			self.class_cnt = count_class_own (self, "freeze");
+	}
 
 	else if (self.runetype == RN_VENG)
 		VengHead_Spawn ();
@@ -856,7 +868,7 @@ Rune_Activate =
 	else if (self.runetype == RN_IMPACT)
 	{
 		IN_POQ([-
-		self.touch = Impact_Touch;
+			self.touch = Impact_Touch;
 		-])
 		Hat_Spawn ("progs/s_spike.mdl", '-8 1 30', VEC_ORIGIN);
 	}

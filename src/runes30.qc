@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.24 2003/11/08 05:46:16 slotzero Exp $
+/*  $Id: runes30.qc,v 1.25 2003/11/10 22:52:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -34,16 +34,9 @@ Radio_Think =
 
 	if (self.runetime < time)
 	{
-		if (self.owner.runetype == RN_RADIO && self.owner.runevar > 0)
-		{
-			if (self.owner.class_cnt)
-				self.owner.class_cnt = self.owner.class_cnt - 1;
-			else
-			{
-				sprint (self.owner, "Your radiation expired\n");
-				self.owner.runevar = self.owner.runevar - 1;
-			}
-		}
+		if (maybe_update_trap_count (self.owner, RN_RADIO))
+			sprint (self.owner, "Your radiation expired\n");
+
 		remove (self);
 		return;
 	}
@@ -423,16 +416,9 @@ Freeze_Think =
 	-])
 	if (self.runetime < time)
 	{
-		if (self.owner.runetype == RN_FREEZE && self.owner.runevar > 0)
-		{
-			if (self.owner.class_cnt)
-				self.owner.class_cnt = self.owner.class_cnt - 1;
-			else
-			{
-				sprint (self.owner, "A freeze trap timed out\n");
-				self.owner.runevar = self.owner.runevar - 1;
-			}
-		}
+		if (maybe_update_trap_count (self.owner, RN_FREEZE))
+			sprint (self.owner, "A freeze trap timed out\n");
+
 		remove (self);
 	}
 };
@@ -462,11 +448,11 @@ Freeze_Frozen =
 {
 	setorigin (self.runent, self.origin);
 
-	self.runent.angles = self.angles;
-	self.runent.fixangle = 1;
-	self.runent.attack_finished = time + 30;	// magic in W_WeaponFrame()
-	self.runent.frame = self.runevar;
-	self.runent.velocity = VEC_ORIGIN;
+	self.runent.angles		= self.angles;
+	self.runent.fixangle		= 1;
+	self.runent.attack_finished	= time + 30;	// magic in W_WeaponFrame()
+	self.runent.frame		= self.runevar;
+	self.runent.velocity		= VEC_ORIGIN;
 
 	self.nextthink = time + sys_ticrate;
 
@@ -476,9 +462,9 @@ Freeze_Frozen =
 		self.attack_finished = time + 0.15;
 		makevectors (self.angles);
 		IN_POQ([-
-		particle (self.origin + v_up*random ()*30, '0 0 -10' + v_forward*crandom ()*5 + v_right*crandom ()*5, PARTICLE_FREEZE_TRAP, 20);
+			particle (self.origin + v_up*random ()*30, '0 0 -10' + v_forward*crandom ()*5 + v_right*crandom ()*5, PARTICLE_FREEZE_TRAP, 20);
 		-], [-
-		create_te_gunshot (self.origin + v_up*random ()*30, 2);
+			create_te_gunshot (self.origin + v_up*random ()*30, 2);
 		-])
 
 		// Speed up the process for people while they are
@@ -558,8 +544,7 @@ Freeze_Touch =
 	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;
 
-	if (self.owner.runetype == RN_FREEZE && self.owner.runevar > 0)
-		self.owner.runevar = self.owner.runevar - 1;
+	maybe_update_trap_count (self.owner, RN_FREEZE);
 
 	if (other.classname == "player")
 	{
@@ -614,14 +599,14 @@ Freeze_Touch =
 void ()
 Freeze_Arm =
 {
-	self.nextthink = time;
-	self.runetime = time + 120;
-	self.think = Freeze_Think;
-	self.touch = Freeze_Touch;
+	self.nextthink	= time;
+	self.runetime	= time + 120;
+	self.think	= Freeze_Think;
+	self.touch	= Freeze_Touch;
 	IN_POQ([-
-	setmodel (self, string_null);
+		setmodel (self, string_null);
 	-], [-
-	self.effects = self.effects - self.effects & EF_DIMLIGHT;
+		self.effects = self.effects - self.effects & EF_DIMLIGHT;
 	-])
 	sound (self, CHAN_BODY, "fish/bite.wav", 1, ATTN_NORM);
 };
@@ -649,22 +634,24 @@ Rune_Freeze =
 	}
 	self.runevar = self.runevar + 1;
 
-	freeze = spawn ();
-	freeze.movetype = MOVETYPE_FLY;
-	freeze.solid = SOLID_TRIGGER;
-	freeze.owner = self;
-	freeze.classname = "freeze";
-	freeze.angles = self.angles;
-	freeze.v_angle = self.v_angle;
+	freeze			= spawn ();
+	freeze.movetype		= MOVETYPE_FLY;
+	freeze.solid		= SOLID_TRIGGER;
+	freeze.owner		= self;
+	freeze.classname	= "freeze";
+	freeze.angles		= self.angles;
+	freeze.v_angle		= self.v_angle;
+
 	setorigin (freeze, self.origin + '0 0 10');
 	setmodel (freeze, "progs/s_bubble.spr");
 	setsize (freeze, VEC_ORIGIN, VEC_ORIGIN);
 	IN_QW([-
-		freeze.effects = freeze.effects | EF_DIMLIGHT;
+		freeze.effects	= freeze.effects | EF_DIMLIGHT;
 	-])
 
-	freeze.think = Freeze_Arm;
-	freeze.nextthink = time + 3;
+	freeze.think		= Freeze_Arm;
+	freeze.nextthink	= time + 3;
+
 	sound (self, CHAN_AUTO, "enforcer/sight2.wav", 1, ATTN_NORM);
 	sound (freeze, CHAN_WEAPON, "buttons/switch04.wav", 1, ATTN_NORM);
 
@@ -816,11 +803,11 @@ Impact_Touch =
 
 	self.runetime = time + 0.5;
 
-	other.flags = other.flags-(other.flags & FL_ONGROUND);
-	other.velocity = other.velocity + '0 0 200' + self.velocity*3;
-	self.velocity = VEC_ORIGIN - self.velocity;
+	other.flags	= other.flags - (other.flags & FL_ONGROUND);
+	other.velocity	= other.velocity + '0 0 200' + self.velocity * 3;
+	self.velocity	= VEC_ORIGIN - self.velocity;
 	sound (self, CHAN_AUTO, "zombie/z_miss.wav", 1, ATTN_NORM);
-	T_Damage (other, self, self, (40+random ()*10), "bodycheck");
+	T_Damage (other, self, self, (40 + random () * 10), "bodycheck");
 };
 -])
 

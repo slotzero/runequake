@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.18 2003/11/10 11:43:56 slotzero Exp $
+/*  $Id: runes60.qc,v 1.19 2003/11/10 22:52:17 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -29,16 +29,9 @@ Glue_Think =
 {
 	if (self.runevar)
 	{
-		if (self.owner.runetype == RN_GLUE && self.owner.runevar > 0)
-		{
-			if (self.owner.class_cnt)
-				self.owner.class_cnt = self.owner.class_cnt - 1;
-			else
-			{
-				sprint (self.owner, "A glue trap evaporated\n");
-				self.owner.runevar = self.owner.runevar - 1;
-			}
-		}
+		if (maybe_update_trap_count (self.owner, RN_GLUE))
+			sprint (self.owner, "A glue trap evaporated\n");
+
 		create_te_tarexplosion (self.origin);
 		remove (self);
 		return;
@@ -95,13 +88,7 @@ Glue_Touch =
 	if (!self.runevar)
 		return;
 
-	if (self.owner.runetype == RN_GLUE && self.owner.runevar > 0)
-	{
-		if (self.owner.class_cnt)
-			self.owner.class_cnt = self.owner.class_cnt - 1;
-		else
-			self.owner.runevar = self.owner.runevar - 1;
-	}
+	maybe_update_trap_count (self.owner, RN_GLUE);
 
 	self.solid	= SOLID_NOT;
 	self.movetype	= MOVETYPE_NONE;
@@ -571,9 +558,7 @@ AntiPack_Think =
 
 	if (self.runetime < time)
 	{
-		if (self.owner.runetype == RN_ANTIPACK && self.owner.runevar > 0)
-		         self.owner.runevar = self.owner.runevar - 1;
-
+		maybe_update_trap_count (self.owner, RN_ANTIPACK);
 		remove (self);
 	}
 };
@@ -617,8 +602,7 @@ AntiPack_Touch =
 	if (other == self.owner)
 		return;
 
-	if (self.owner.runetype == RN_ANTIPACK && self.owner.runevar > 0)
-		self.owner.runevar = self.owner.runevar - 1;
+	maybe_update_trap_count (self.owner, RN_ANTIPACK);
 
 	if (other.classname == "player")
 	{
@@ -707,10 +691,9 @@ Rune_Deflect_Telefrag_sprint =
 
 // Deflect telefrag can't be dropped directly after a deflect because tdeath_touch()
 // is still looping and will telefrag you as soon as it detects your rune is gone.
-// This function puts the delay just outside, but the more I think about what could
-// go wrong the more I just want to call it quits.
+// This function drops the rune at the same time tdeath_expires.
 void ()
-delayed_rune_removal =
+deflect_rune_removal =
 {
 	local entity os;
 
@@ -745,6 +728,6 @@ Rune_Deflect_Telefrag =
 		rune_delete		= spawn ();
 		rune_delete.owner	= other;
 		rune_delete.nextthink	= time + sys_ticrate * 2;
-		rune_delete.think	= delayed_rune_removal;
+		rune_delete.think	= deflect_rune_removal;
 	}
 };
