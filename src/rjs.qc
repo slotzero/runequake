@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.46 2003/04/25 05:28:15 slotzero Exp $
+/*  $Id: rjs.qc,v 1.47 2003/06/01 11:15:58 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1380,6 +1380,8 @@ common_impulses =
 			self.rqflags = self.rqflags - RQ_CYCLE_ALTERNATES;
 			sprint (self, "Alternate weapons do not cycle\n");
 		}
+		else if (deathmatch & DM_NO_ALT_WEAPONS)
+			sprint (self, "Alternate weapons are disabled\n");
 		else
 		{
 			self.rqflags = self.rqflags | RQ_CYCLE_ALTERNATES;
@@ -2478,12 +2480,12 @@ W_ChangeWeapon =
 void ()
 CycleWeaponCommand =
 {
-	local float	w;
+	local float w;
 
 	w = self.weapon;
 	while (1)
 	{
-		if (self.rqflags & RQ_CYCLE_ALTERNATES)
+		if (self.rqflags & RQ_CYCLE_ALTERNATES && !deathmatch & DM_NO_ALT_WEAPONS)
 		{
 			if (w == IT_AXE)			w = IT_SHOTGUN;
 			else if (w == IT_SHOTGUN)		w = IT_SUPER_SHOTGUN;
@@ -2535,7 +2537,7 @@ CycleWeaponReverseCommand =
 	w = self.weapon;
 	while (1)
 	{
-		if (self.rqflags & RQ_CYCLE_ALTERNATES)
+		if (self.rqflags & RQ_CYCLE_ALTERNATES && !deathmatch & DM_NO_ALT_WEAPONS)
 		{
 			if (w == WEAPON_BFG)			w = WEAPON_MORTAR;
 			else if (w == WEAPON_MORTAR)		w = WEAPON_FLASH_GRENADE;
@@ -2551,9 +2553,9 @@ CycleWeaponReverseCommand =
 			else if (w == IT_NAILGUN)		w = IT_SUPER_SHOTGUN;
 			else if (w == IT_SUPER_SHOTGUN)		w = IT_SHOTGUN;
 			else if (w == IT_SHOTGUN)		w = IT_AXE;
-		else					w = WEAPON_BFG;
+			else					w = WEAPON_BFG;
 		}
-		else
+			else
 		{
 			if (w == WEAPON_BFG)			w = IT_LIGHTNING;
 			else if (w == WEAPON_MORTAR)		w = IT_ROCKET_LAUNCHER;
