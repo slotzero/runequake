@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.110 2004/07/05 01:26:49 slotzero Exp $
+/*  $Id: rjs.qc,v 1.111 2004/07/05 04:33:21 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1157,12 +1157,6 @@ common_impulses =
 		}
 	}
 
-	else if (self.impulse == IMP_EXIT_LEVEL && self.aqflags & AQ_ADMIN)
-		admin_changelevel (forced_nextmap);
-
-	else if (self.impulse == IMP_ADMIN_KICK)
-		admin_kick ();
-
 	else if (self.impulse == IMP_REMOVE_FRAGS && self.frags > 0)
 		self.frags = 0;
 
@@ -1177,41 +1171,8 @@ common_impulses =
 	else if (self.impulse == IMP_TEAM_ROTATE)
 		team_rotate (world);
 
-	else if (self.impulse == IMP_ADMIN_JOIN)
-		admin_join ();
-
-	else if (self.impulse == IMP_ADMIN_KILL)
-		admin_kill ();
-
-	else if (self.impulse == IMP_ADMIN_VOTE_TEAM_TOGGLE)
-		admin_vote_team_toggle ();
-
-	else if (self.impulse == IMP_ADMIN_TEAMPLAY_ZERO)
-		admin_teamplay_zero ();
-
-	else if (self.impulse == IMP_ADMIN_UNBIND)
-		admin_unbind ();
-
-	else if (self.impulse == IMP_ADMIN_RENAME)
-		admin_rename ();
-
-	else if (self.impulse == IMP_ADMIN_EYES)
-		admin_eyes ();
-
-	else if (self.impulse == IMP_ADMIN_CYCLE)
-		admin_cycle (0);
-
-	else if (self.impulse == IMP_ADMIN_CYCLE_SHOW)
-		admin_cycle (1);
-
-	else if (self.impulse == IMP_ADMIN_TEAM_CHANGE_TOGGLE)
-		admin_team_change_toggle ();
-
-	else if (self.impulse == IMP_ADMIN_RUNE_DELETE)
-		admin_rune_delete ();
-
-	else if (self.impulse == IMP_ADMIN_TEAM_CHANGE)
-		admin_team_change ();
+	else if (self.impulse == IMP_ADMIN_COMMAND)
+		admin_command ();
 
 	else if (self.impulse == IMP_CHANGE_MAP)
 		change_map ();
@@ -1299,12 +1260,6 @@ common_impulses =
 			&& self.impulse < IMP_QSMACK_KICK_BASE
 						+ IMP_QSMACK_KICK_COUNT)
 		localcmd_kick (self.impulse - IMP_QSMACK_KICK_BASE + 1);
-
-	else if (self.aqflags & AQ_ADMIN && self.impulse == IMP_QSMACK_COMMAND)
-	{
-		sprint_admin2 ("#qsmack_command# ", self.netname);
-		sprint_admin2 ("\n", string_null);
-	}
 
 	else if (self.impulse == IMP_TEAM_STATS)
 	 	 team_stats (0);

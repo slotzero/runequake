@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.89 2004/07/04 21:36:06 slotzero Exp $
+/*  $Id: defs.qc,v 1.90 2004/07/05 04:33:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -527,36 +527,25 @@ float IMP_EXIT_LEVEL		= 89;
 float IMP_HOOK_ON		= 88;
 float IMP_HOOK_OFF		= 87;
 float IMP_WEAPON_MODE		= 86;
-float IMP_ADMIN_KICK		= 85;
+float IMP_ADMIN_COMMAND		= 85;
 float IMP_VOTE_HOOK		= 84;
 float IMP_DISP_INFO_ALL		= 83;
 float IMP_REMOVE_FRAGS		= 82;
 float IMP_HUD_TOGGLE		= 81;
 float IMP_TEAM_ROTATE		= 80;
-float IMP_ADMIN_KILL		= 79;
-float IMP_ADMIN_RUNE_DELETE	= 78;
+//				= 79 - 78 [free]
 float IMP_QUIET_TOGGLE		= 77;
 float IMP_HOOK_TOGGLE		= 76;
-float IMP_ADMIN_TEAM_CHANGE_TOGGLE = 75;
+//				= 75; [free]
 float IMP_WEAPON_TOGGLES	= 74;
 // reserve 73 for QSMACK_IMPULSE_1
 float IMP_VOTE_EXIT		= 72;
 float IMP_TEAM_STATS		= 71;
 float IMP_CHANGE_MAP		= 70;
 float IMP_VOTE_TEAM		= 69;
-float IMP_ADMIN_TEAM_CHANGE	= 68;
-float IMP_ADMIN_JOIN		= 67;
-
-// admin menu 2
-float IMP_ADMIN_UNBIND		= 66;
-float IMP_ADMIN_RENAME		= 65;
-float IMP_ADMIN_EYES		= 64;
-float IMP_ADMIN_VOTE_TEAM_TOGGLE = 63;
-float IMP_ADMIN_TEAMPLAY_ZERO	= 62;
-float IMP_ADMIN_CYCLE		= 61;
-float IMP_ADMIN_CYCLE_SHOW	= 60;
-
+//				= 68 - 60 [free]
 float IMP_CYCLE_ALTERNATES	= 59;
+//				= 58; [free]
 float IMP_SWITCHFIRE_BEST	= 57;
 //				= 57 - 41 [sattack aliases]
 float IMP_SWITCHFIRE_BASE	= 41;
@@ -571,6 +560,21 @@ float IMP_QSMACK_LOOKING	= 220;
 float IMP_QSMACK_KICK_BASE	= 221;
 float IMP_QSMACK_KICK_COUNT	= 16;
 float IMP_QSMACK_COMMAND	= 237;
+
+// admin impulse commands
+float IMP_ADMIN_KICK		= 1;
+float IMP_ADMIN_KILL		= 2;
+float IMP_ADMIN_RUNE_DELETE	= 3;
+float IMP_ADMIN_TEAM_CHANGE_TOGGLE = 4;
+float IMP_ADMIN_TEAM_CHANGE	= 5;
+float IMP_ADMIN_JOIN		= 6;
+float IMP_ADMIN_UNBIND		= 7;
+float IMP_ADMIN_RENAME		= 8;
+float IMP_ADMIN_EYES		= 9;
+float IMP_ADMIN_VOTE_TEAM_TOGGLE = 10;
+float IMP_ADMIN_TEAMPLAY_ZERO	= 11;
+float IMP_ADMIN_CYCLE		= 12;
+float IMP_ADMIN_CYCLE_SHOW	= 13;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;

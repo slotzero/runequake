@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.26 2004/06/30 23:49:32 slotzero Exp $
+/*  $Id: bindings.qc,v 1.27 2004/07/05 04:33:21 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -82,6 +82,20 @@ player_init_impulse_alias =
 	self_stuffcmd (self, "\"\n");
 };
 
+void (string cmd, float imp)
+player_admin_impulse_alias =
+{
+	local string s;
+
+	self_stuffcmd (self, "alias ");
+	self_stuffcmd (self, cmd);
+	self_stuffcmd (self, " \"");
+	self_stuffcmd (self, "ac;w5;w5;impulse ");
+	s = ftos (imp);
+	self_stuffcmd (self, s);
+	self_stuffcmd (self, ";w5\"\n");
+};
+
 void ()
 player_bindings_think =
 {
@@ -133,6 +147,9 @@ void ()
 player_aliases =
 {
 	local string s;
+
+	// A fix for CRMod users...
+	self_stuffcmd (self, "alias ignorethis \"echo Welcome Rune Quake player!\"\n");
 
 	self_stuffcmd (self, "alias w5 \"wait;wait;wait;wait;wait;\"\n");
 	self_stuffcmd (self, "alias cl \"impulse ");
@@ -186,22 +203,29 @@ player_aliases =
 void ()
 admin_aliases =
 {
-	player_init_impulse_alias ("admin-cycle",		IMP_ADMIN_CYCLE);
-	player_init_impulse_alias ("admin-cycle-show",		IMP_ADMIN_CYCLE_SHOW);
-	player_init_impulse_alias ("admin-eyes",		IMP_ADMIN_EYES);
-	player_init_impulse_alias ("admin-join",		IMP_ADMIN_JOIN);
-	player_init_impulse_alias ("admin-kick",		IMP_ADMIN_KICK);
-	player_init_impulse_alias ("admin-kill",		IMP_ADMIN_KILL);
-	player_init_impulse_alias ("admin-rename",		IMP_ADMIN_RENAME);
-	player_init_impulse_alias ("admin-rune-delete",		IMP_ADMIN_RUNE_DELETE);
-	player_init_impulse_alias ("admin-team-change",		IMP_ADMIN_TEAM_CHANGE);
-	player_init_impulse_alias ("admin-team-change-toggle",	IMP_ADMIN_TEAM_CHANGE_TOGGLE);
-	player_init_impulse_alias ("admin-vote-team-toggle",	IMP_ADMIN_VOTE_TEAM_TOGGLE);
-	player_init_impulse_alias ("admin-teamplay-zero",	IMP_ADMIN_TEAMPLAY_ZERO);
-	player_init_impulse_alias ("admin-unbind",		IMP_ADMIN_UNBIND);
-	player_init_impulse_alias ("change-level",		IMP_ADMIN_CHANGE_MAP);
-	player_init_impulse_alias ("exit-level",		IMP_EXIT_LEVEL);
-	player_init_impulse_alias ("qsmack",			IMP_QSMACK_COMMAND);
+	local string s;
+
+	self_stuffcmd (self, "alias ac \"impulse ");
+	s = ftos (IMP_ADMIN_COMMAND);
+	self_stuffcmd (self, s);
+	self_stuffcmd (self, "\"\n");
+
+	player_admin_impulse_alias ("admin-cycle",		IMP_ADMIN_CYCLE);
+	player_admin_impulse_alias ("admin-cycle-show",		IMP_ADMIN_CYCLE_SHOW);
+	player_admin_impulse_alias ("admin-eyes",		IMP_ADMIN_EYES);
+	player_admin_impulse_alias ("admin-join",		IMP_ADMIN_JOIN);
+	player_admin_impulse_alias ("admin-kick",		IMP_ADMIN_KICK);
+	player_admin_impulse_alias ("admin-kill",		IMP_ADMIN_KILL);
+	player_admin_impulse_alias ("admin-rename",		IMP_ADMIN_RENAME);
+	player_admin_impulse_alias ("admin-rune-delete",	IMP_ADMIN_RUNE_DELETE);
+	player_admin_impulse_alias ("admin-team-change",	IMP_ADMIN_TEAM_CHANGE);
+	player_admin_impulse_alias ("admin-team-change-toggle",	IMP_ADMIN_TEAM_CHANGE_TOGGLE);
+	player_admin_impulse_alias ("admin-vote-team-toggle",	IMP_ADMIN_VOTE_TEAM_TOGGLE);
+	player_admin_impulse_alias ("admin-teamplay-zero",	IMP_ADMIN_TEAMPLAY_ZERO);
+	player_admin_impulse_alias ("admin-unbind",		IMP_ADMIN_UNBIND);
+	player_admin_impulse_alias ("change-level",		IMP_ADMIN_CHANGE_MAP);
+	player_admin_impulse_alias ("exit-level",		IMP_EXIT_LEVEL);
+	player_admin_impulse_alias ("qsmack",			IMP_QSMACK_COMMAND);
 };
 
 void (string level, float imp)
