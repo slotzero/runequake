@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.19 2005/03/28 23:02:06 slotzero Exp $
+/*  $Id: arena.qc,v 1.20 2005/03/30 00:02:10 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -175,7 +175,7 @@ arena_countdown =
 		if (self.state == 0)
 		{
 			bprint (self.owner.netname);
-			if (self.owner == self.dmg_inflictor)
+			if (self.owner == self.dmg_inflictor && self.dmg_take > 1)
 			{
 				bprint (" \[");
 				bprint_float (self.dmg_take);
@@ -183,12 +183,6 @@ arena_countdown =
 			}
 			bprint (" vs ");
 			bprint (self.runent.netname);
-			if (self.runent == self.dmg_inflictor)
-			{
-				bprint (" \[");
-				bprint_float (self.dmg_take);
-				bprint ("\]");
-			}
 			bprint ("\n");
 
 			arena_game_queue_announce ();
