@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.48 2004/07/09 08:50:50 slotzero Exp $
+/*  $Id: runes60.qc,v 1.49 2004/09/18 04:09:05 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -53,16 +53,22 @@ Glue_Think =
 void ()
 Glue_Stuck =
 {
+	local float release;
+
 	if (self.runetime < time)
 	{
 		centerprint (self.runent, "Released from glue trap");
 		sound (self, CHAN_WEAPON, "blob/death1.wav", 1, ATTN_NORM);
-		remove (self);
-		return;
+		release = 1;
 	}
+	else if (self.runent.health <= 0)
+		release = 1;
+	else if (environmental (self.runent))
+		release = 1;
 
-	if (self.runent.health <= 0)
+	if (release)
 	{
+		self.runent.effects = self.runent.effects - self.runent.effects & EF_GLUE;
 		remove (self);
 		return;
 	}
@@ -85,6 +91,9 @@ Glue_Touch =
 	if (environmental (other))
 		return;
 
+	if (other.effects & EF_GLUE)
+		return;
+
 	if (!self.runevar)
 		return;
 
@@ -103,6 +112,8 @@ Glue_Touch =
 
 	setmodel (self, "progs/tarbaby.mdl");
 	sound (self, CHAN_WEAPON, "blob/hit1.wav", 1, ATTN_NORM);
+
+	other.effects	= other.effects | EF_GLUE;
 
 	centerprint(other, "You are stuck!");
 
@@ -153,7 +164,7 @@ Rune_Glue =
 
 	makevectors (self.v_angle);
 
-	glue.velocity		= v_forward * 600 + v_up * 200;
+	glue.velocity		= v_forward * (600 + random() * 100) + v_up * 200 + v_right * (random() * 100 - random() * 100);
 	glue.avelocity		= '0 600 0';
 
 	setmodel (glue, "progs/tarbaby.mdl");

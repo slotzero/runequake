@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.118 2004/09/16 01:34:31 slotzero Exp $
+/*  $Id: defs.qc,v 1.119 2004/09/18 04:09:05 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1021,6 +1021,7 @@ float	EF_MUZZLEFLASH 			= 2;
 -])
 float	EF_BRIGHTLIGHT 			= 4;
 float	EF_DIMLIGHT 			= 8;
+float	EF_GLUE				= 16;
 
 // messages
 float	MSG_BROADCAST			= IN_POQ(0, 4);	// unreliable to all
