@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.48 2003/10/25 01:18:40 slotzero Exp $
+/*  $Id: develop.qc,v 1.49 2003/10/26 08:04:45 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -55,99 +55,6 @@ ghost_check =
 
 		e = find (e, classname, "player");
 	}
-};
-
-string EPISODE_ONE = "e1m1   ":"e1m2   ":"e1m3   ":"e1m4   ":"e1m5   ":"e1m6   ":"e1m7   ":"e1m8   ":;
-
-float ()
-num_levels_in_hunk =
-{
-	return floor (Read_Hunk_Float (HUNK_CONTEXT, %20));
-};
-
-void ()
-Write_Levels_To_Hunk =
-{
-	local float x, tot;
-	local string s;
-
-	tot = 0;
-
-	for (x = %0; x < %8; x = x + %1)
-	{
-		s = EPISODE_ONE[x * 8];
-		if (s != string_null)
-		{
-			Write_Hunk (HUNK_CONTEXT, %200 + (x * 2), s);
-			tot = tot + 1;
-		}
-	}
-
-	Write_Hunk_Float (HUNK_CONTEXT, %20, tot);
-	bprint_float (tot);
-	bprint (" levels written to hunk\n");
-};
-
-void ()
-Read_Levels_From_Hunk =
-{
-	local float x, tot;
-
-	tot = num_levels_in_hunk ();
-	if (!tot)
-		return bprint ("No levels in hunk\n");
-
-	tot = tot * %1;
-	for (x = %0; x < tot; x = x + %1)
-	{
-		bprint (">");
-		bprint (Read_Hunk (HUNK_CONTEXT, %200 + (x * 2)));
-		bprint ("<\n");
-	}
-};
-
-float (float pos)
-pop_level_from_hunk =
-{
-	local float max, tot;
-	local string new;
-
-	tot = num_levels_in_hunk ();
-	bprint_float (tot);
-	bprint (" levels total\n");
-	if (!tot)
-	{
-		dprint ("No levels in hunk\n");
-		return 0;
-	}
-
-	max = (tot - 1) * %1;
-	pos = pos * %1;
-	if (*max == *pos)
-	{
-		tot = tot - 1;
-		bprint (Read_Hunk (HUNK_CONTEXT, %200 + (pos * 2)));
-		bprint (" is the current level, last in hunk\n");
-	}
-	else if (max < pos)
-	{
-		dprint ("Level position too high\n");
-		return 0;
-	}
-	else
-	{
-		tot = tot - 1;
-		bprint (Read_Hunk (HUNK_CONTEXT, %200 + (pos * 2)));
-		bprint (" is the current level\n");
-		new = Read_Hunk (HUNK_CONTEXT, %200 + (max * 2));
-		Write_Hunk (HUNK_CONTEXT, %200 + (pos * 2), new);
-		bprint (new);
-		bprint (" replaced the previous level\n");
-	}
-	Write_Hunk_Float (HUNK_CONTEXT, %20, tot);
-	bprint_float (tot);
-	bprint (" levels total\n");
-	return 1;
 };
 
 void ()

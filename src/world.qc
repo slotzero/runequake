@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.24 2003/10/18 20:25:23 slotzero Exp $
+/*  $Id: world.qc,v 1.25 2003/10/26 08:04:45 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -321,6 +321,19 @@ StartFrame =
 		obs_process_game_queue ();
 	}
 
+	crosshair = cvar_infokey ("crosshair");
+	if (crosshair)
+	{
+		&%IN_POQ(368,360) = crosshair;
+		s = impulse_to_map ();
+		if (s)
+			admin_changelevel (s);
+		else
+			dprint ("Invalid level impulse\n");
+
+		cvar_set ("crosshair", "0");
+	}
+
 	// XXX This doesn't work in QW yet.
 	skill = cvar_infokey ("skill");
 	if (skill)
@@ -358,18 +371,8 @@ StartFrame =
 		else if (skill == SKILL_LEVELS)
 			levels ();
 
-		// level impulses (11 = e1m1, 58 = end)
-		else if (skill >= 11 && skill <= 58)
-		{
-			&%IN_POQ(368,360) = skill;
-			s = impulse_to_map ();
-			if (s)
-				admin_changelevel (s);
-			else
-				dprint ("Invalid level impulse\n");
-		}
 		else
-			dprint ("Unknown command\n");
+			dprint ("skill: unknown command\n");
 
 		cvar_set ("skill", "0");
 	}

@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.1 2003/10/10 22:30:30 slotzero Exp $
+/*  $Id: bindings.qc,v 1.2 2003/10/26 08:04:44 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -164,7 +164,7 @@ player_console_init_level_alias =
 	{
 		localcmd ("alias ");
 		localcmd (level);
-		localcmd (" \"skill ");
+		localcmd (" \"crosshair ");
 		s = ftos (imp);
 		localcmd (s);
 		localcmd ("\"\n");
@@ -209,4 +209,5 @@ console_aliases =
 	console_init_cvar_alias ("levels",		"skill",	SKILL_LEVELS);
 
 	level_aliases ();
+	custom_maps ();
 };

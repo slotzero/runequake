@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.51 2003/10/18 20:25:22 slotzero Exp $
+/*  $Id: defs.qc,v 1.52 2003/10/26 08:04:44 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -614,6 +614,9 @@ float NOEXIT_MARLINSPIKE_LEVELS	= 16;
 float NOEXIT_DM_NO_LOOP		= 32;
 float NOEXIT_FORWARD_MULT	= 64;
 float NOEXIT_FORWARD_MASK	= 960;
+float NOEXIT_NO_CUSTOM_LEVELS	= 1024;
+float NOEXIT_CUSTOM_LEVELS_ONLY	= 2048;
+
 
 // aqflags flags (saved accross levels)
 float AQ_INIT_DONE		= 1;
@@ -1027,7 +1030,9 @@ float	SKILL_SHOW_SETTINGS		= 3;
 float	SKILL_TOGGLE_RUNE_CHEAT		= 4;
 float	SKILL_UPDATE_BINDINGS		= 5;
 float	SKILL_LEVELS			= 6;
-// SKILL 11 - 58 (level impulses, 11 = e1m1, 58 = end)
+
+// levels
+float	crosshair;
 
 IN_QW([-
 //
