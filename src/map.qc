@@ -1,4 +1,4 @@
-/*  $Id: map.qc,v 1.14 2003/11/01 01:42:53 slotzero Exp $
+/*  $Id: map.qc,v 1.15 2004/01/03 11:15:25 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -304,8 +304,11 @@ select_map =
 	IN_POQ([-
 		if (i)
 			s = select_custom (levsize);
-		else
+	-], [-
+		if (i && noexit & NOEXIT_RANDOMIZE)
+			s = rand_custom_qw ();
 	-])
+	else
 		s = string_null;
 
 	reps = 0;

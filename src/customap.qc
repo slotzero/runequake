@@ -1,4 +1,4 @@
-/*  $Id: customap.qc,v 1.6 2003/11/04 00:30:58 slotzero Exp $
+/*  $Id: customap.qc,v 1.7 2004/01/03 11:15:24 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -266,3 +266,27 @@ select_custom =
 		return remove_custom_from_hunk (i, randomly);
 	}
 };
+
+IN_QW([-
+string ()
+rand_custom_qw =
+{
+	local float i, tot;
+	local string s;
+
+	i = cvar_infokey ("random_custom");
+	tot = total_customs ();
+
+	i = i - 1;
+	if (i <= 1 || i > tot)
+		i = tot;
+
+	if (i)
+	{
+		s = ftos (i);
+		cvar_set_infokey ("random_custom", s);
+	}
+
+	return rand_custom (i);
+};
+-])

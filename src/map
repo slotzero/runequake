@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#    $Id: map,v 1.19 2003/12/24 02:13:34 slotzero Exp $
+#    $Id: map,v 1.20 2004/01/03 11:15:25 slotzero Exp $
 
 use strict;
 use warnings;
@@ -215,7 +215,7 @@ my @custom_lev = (
 	],
 );
 
-@custom_lev = ();
+#@custom_lev = ();
 
 # Construct %wan, the list of levels which aren't in %lan.
 my %wan;
@@ -381,14 +381,9 @@ print "};\n";
 
 my $custom = keys %custom;
 print "\n";
-print "string ()\n";
+print "string (float i)\n";
 print "rand_custom =\n";
 print "{\n";
-print "\tlocal float i, n;\n";
-print "\n";
-print "\tn = $custom;\n";
-print "\n";
-print "\ti = ceil (random () * n);\n";
 $i = 0;
 for my $map (keys %custom)
 {
@@ -398,8 +393,7 @@ for my $map (keys %custom)
 	else			{ $cmp = "=="; }
 	print "\tif (i $cmp $i) return \"$map\";\n";
 }
-print "\terror (\"invalid map number\");\n";
-print "\treturn \"invalid map number\";\n";
+print "\treturn \"string_null\";\n";
 print "};\n";
 
 
