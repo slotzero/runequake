@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.48 2004/07/16 11:24:31 slotzero Exp $
+/*  $Id: items.qc,v 1.49 2004/07/18 14:17:28 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -91,27 +91,23 @@ maybe_disable_item =
 {
 	if (self.touch == powerup_touch)
 	{
-		if (self.classname == "item_artifact_super_damage" && !voteflags & C3_NO_QUAD)
+		if (self.classname == "item_artifact_super_damage" && NO_QUAD)
 			return;
-		if (self.classname == "item_artifact_invulnerability" && !voteflags & C3_NO_PENT)
+		if (self.classname == "item_artifact_invulnerability" && NO_PENT)
 			return;
-		if (self.classname == "item_artifact_invisibility" && !voteflags & C3_NO_RING)
+		if (self.classname == "item_artifact_invisibility" && NO_RING)
 			return;
-		if (self.classname == "item_artifact_envirosuit" && !voteflags & C3_NO_SUIT)
+		if (self.classname == "item_artifact_envirosuit" && NO_SUIT)
 			return;
 	}
 	else if (self.touch == armor_touch)
 	{
-		 if (!voteflags & C3_NO_ARMOR)
-		 {
-		 	armor_cycle ();
-			return;
-		 }
+		if (NO_ARMOR)
+		 	return;
 	}
 
-	self.model	= string_null;
-	self.solid	= SOLID_NOT;
-	self.nextthink	= -1;
+	self.think	= SUB_regen;
+	self.nextthink	= time;
 };
 
 /*
@@ -160,7 +156,12 @@ PlaceItem =
 		}
 	}
 	else if (self.touch == powerup_touch || self.touch == armor_touch)
-		maybe_disable_item ();
+	{
+		self.model	= string_null;
+		self.solid	= SOLID_NOT;
+		self.think	= maybe_disable_item;
+		self.nextthink	= time + 2;
+	}
 };
 
 float did_my_items;
@@ -520,7 +521,7 @@ armor_touch =
 void ()
 armor_cycle =
 {
-	if (!voteflags & C3_ROTATE)
+	if (!ROTATE)
 		return;
 
 	if (self.runetype < time)

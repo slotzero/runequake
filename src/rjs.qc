@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.144 2004/07/18 10:25:40 slotzero Exp $
+/*  $Id: rjs.qc,v 1.145 2004/07/18 14:17:28 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -236,7 +236,6 @@ rjs_worldspawn =
 	if (!sys_ticrate) sys_ticrate = 0.1;
 
 	scratch1	= cvar_infokey ("scratch1");
-	voteflags	= cvar_infokey (CVAR_C3);
 
 	frag_init ();
 	orig_serverflags = serverflags;
@@ -271,6 +270,19 @@ rjs_worldspawn =
 	// StartFrame().
 };
 
+void ()
+set_runemax =
+{
+	if (NO_RUNES)
+		runemax = 0;
+	else
+	{
+		runemax = temp1 & T1_NRUNES_MASK;
+		if (runemax == 0)
+			runemax = DEFAULT_RUNEMAX;
+	}
+};
+
 // I don't need vote_count_think() anymore, so I just ride the 15 second
 // refresh of process_cvars.
 
@@ -282,6 +294,7 @@ process_misc =
 	if (time < LEVEL_RECONNECT_ALLOWANCE)
 		return;
 
+	set_runemax ();
 	ghost_check ();
 	update_server_time ();
 
@@ -312,21 +325,21 @@ process_misc =
 	}
 
 	// XXX All of code below is hard coded and should be fixed.
-	if (voteflags & C3_NO_QUAD)
+	if (NO_QUAD)
 		setquad ();
-	if (voteflags & C3_NO_PENT)
+	if (NO_PENT)
 		setpent ();
-	if (voteflags & C3_NO_RING)
+	if (NO_RING)
 		setring ();
-	if (voteflags & C3_NO_SUIT)
+	if (NO_SUIT)
 		setsuit ();
-	if (voteflags & C3_NO_ARMOR)
+	if (NO_ARMOR)
 		setarmor ();
-	if (!voteflags & C3_ROTATE)
+	else if (!ROTATE)
 		setrotate ();
-	if (voteflags & C3_NO_RUNES)
+	if (NO_RUNES)
 		setrunes ();
-	if (voteflags & C3_NO_ALTS)
+	if (NO_ALT_WEAPONS)
 		setalts ();
 
 	// vote-practice (always do this last)
@@ -349,14 +362,6 @@ process_cvars =
 		FORWARD_MAX_PLAYERS_REAL = FORWARD_MAX_PLAYERS;
 
 	temp1 = cvar_infokey ("temp1");
-	if (voteflags & C3_NO_RUNES)
-		runemax = 0;
-	else
-	{
-		runemax = temp1 & T1_NRUNES_MASK;
-		if (runemax == 0)
-			runemax = DEFAULT_RUNEMAX;
-	}
 
 	i = temp1 & T1_RUNE_DROP_DELAY_MASK;
 	if (i == T1_RUNE_DROP_DELAY_0)		rune_drop_delay = 0;
@@ -1285,7 +1290,7 @@ common_impulses =
 			self.rqflags = self.rqflags - RQ_CYCLE_ALTERNATES;
 			sprint (self, "Alternate weapons do not cycle\n");
 		}
-		else if (voteflags & C3_NO_ALTS)
+		else if (NO_ALT_WEAPONS)
 			sprint (self, "Alternate weapons are disabled\n");
 		else
 		{
@@ -1819,7 +1824,7 @@ show_settings =
 	self_sprint (self, "\n  quad replace   ");	self_sprint_boolean (self, deathmatch & DM_QUAD_REPLACEMENT);
 	self_sprint (self, "  no dischrg  ");		self_sprint_boolean (self, deathmatch & DM_NO_DISCHARGE);
 	self_sprint (self, "\n  no drop powup  ");	self_sprint_boolean (self, deathmatch & DM_NO_DROP_POWERUP);
-	self_sprint (self, "  no altweap  ");		self_sprint_boolean (self, voteflags & C3_NO_ALTS);
+	self_sprint (self, "  no altweap  ");		self_sprint_boolean (self, NO_ALT_WEAPONS);
 	self_sprint (self, "\n  no drop armor  ");	self_sprint_boolean (self, deathmatch & DM_NO_DROP_ARMOR);
 	self_sprint (self, "  dmg frags   ");		self_sprint_boolean (self, deathmatch & DM_DAMAGE_MATCH);
 	self_sprint (self, "\n  sv_maxspeed    ");
@@ -2110,7 +2115,7 @@ float (float it)
 weapon_it_to_alt_bit =
 {
 	if (it == IT_AXE)			return AQ_ALT_1;
-	if (voteflags & C3_NO_ALTS)		return 0;
+	if (NO_ALT_WEAPONS)			return 0;
 	if (it == IT_SHOTGUN)			return AQ_ALT_2;
 	if (it == IT_SUPER_SHOTGUN)		return AQ_ALT_3;
 	if (it == IT_NAILGUN)			return AQ_ALT_4;
@@ -2330,7 +2335,7 @@ weapon_mode =
 {
 	local float bit;
 
-	if (voteflags & C3_NO_ALTS)
+	if (NO_ALT_WEAPONS)
 	{
 		sprint (self, "Alternate weapons are disabled\n");
 		return;
@@ -2378,7 +2383,7 @@ W_ChangeWeapon =
 		return FALSE;
 	}
 
-	if (use_alt && (!voteflags & C3_NO_ALTS || it & IT_AXE))
+	if (use_alt && (!NO_ALT_WEAPONS || it & IT_AXE))
 	{
 		if (!self.aqflags & AQ_NO_WEAPON_TOGGLE
 				&& self.weapon | WEAPON_ALT == it | WEAPON_ALT
@@ -2393,7 +2398,7 @@ W_ChangeWeapon =
 			it = it + WEAPON_ALT;
 	}
 
-	if (it & WEAPON_ALT && voteflags & C3_NO_ALTS && it != WEAPON_HOOK)
+	if (it & WEAPON_ALT && NO_ALT_WEAPONS && it != WEAPON_HOOK)
 	{
 		sprint (self, "Alternate weapons are disabled\n");
 		return FALSE;
@@ -2436,7 +2441,7 @@ CycleWeaponCommand =
 	w = self.weapon;
 	while (1)
 	{
-		if (self.rqflags & RQ_CYCLE_ALTERNATES && !voteflags & C3_NO_ALTS)
+		if (self.rqflags & RQ_CYCLE_ALTERNATES && !NO_ALT_WEAPONS)
 		{
 			if (w == IT_AXE)			w = IT_SHOTGUN;
 			else if (w == IT_SHOTGUN)		w = IT_SUPER_SHOTGUN;
@@ -2490,7 +2495,7 @@ CycleWeaponReverseCommand =
 	w = self.weapon;
 	while (1)
 	{
-		if (self.rqflags & RQ_CYCLE_ALTERNATES && !voteflags & C3_NO_ALTS)
+		if (self.rqflags & RQ_CYCLE_ALTERNATES && !NO_ALT_WEAPONS)
 		{
 			if (w == WEAPON_BFG)			w = WEAPON_MORTAR;
 			else if (w == WEAPON_MORTAR)		w = WEAPON_FLASH_GRENADE;

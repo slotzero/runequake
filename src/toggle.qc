@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.9 2004/07/17 09:45:29 slotzero Exp $
+/*  $Id: toggle.qc,v 1.10 2004/07/18 14:17:28 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -16,27 +16,6 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
-
-/* void (float offset, float value)
-fput =
-{
-	Write_Hunk_Float (HUNK_CONTEXT, offset, value);
-}; */
-
-/* float (float offset, float default)
-fget =
-{
-	local float i;
-
-	i = Read_Hunk_Float (HUNK_CONTEXT, offset);
-	if (i == 0x20202020)
-	{
-		fput (offset, default);
-		return default;
-	}
-
-	return i;
-}; */
 
 // types
 //
@@ -71,29 +50,29 @@ toggle_powerup =
 void ()
 setquad =
 {
-	toggle_powerup ("item_artifact_super_damage", voteflags & C3_NO_QUAD);
-	voteflags = toggle_cvar_bit (CVAR_C3, C3_NO_QUAD);
+	toggle_powerup ("item_artifact_super_damage", NO_QUAD);
+	NO_QUAD = fput (HUNK_NO_QUAD, !NO_QUAD);
 };
 
 void ()
 setpent =
 {
-	toggle_powerup ("item_artifact_invulnerability", voteflags & C3_NO_PENT);
-	voteflags = toggle_cvar_bit (CVAR_C3, C3_NO_PENT);
+	toggle_powerup ("item_artifact_invulnerability", NO_PENT);
+	NO_PENT = fput (HUNK_NO_PENT, !NO_PENT);
 };
 
 void ()
 setring =
 {
-	toggle_powerup ("item_artifact_invisibility", voteflags & C3_NO_RING);
-	voteflags = toggle_cvar_bit (CVAR_C3, C3_NO_RING);
+	toggle_powerup ("item_artifact_invisibility", NO_RING);
+	NO_RING = fput (HUNK_NO_RING, !NO_RING);
 };
 
 void ()
 setsuit =
 {
-	toggle_powerup ("item_artifact_envirosuit", voteflags & C3_NO_SUIT);
-	voteflags = toggle_cvar_bit (CVAR_C3, C3_NO_SUIT);
+	toggle_powerup ("item_artifact_envirosuit", NO_SUIT);
+	NO_SUIT = fput (HUNK_NO_SUIT, !NO_SUIT);
 };
 
 void (float mode)
@@ -124,18 +103,18 @@ toggle_armor =
 void ()
 setarmor =
 {
-	toggle_armor (voteflags & C3_NO_ARMOR);
-	voteflags = toggle_cvar_bit (CVAR_C3, C3_NO_ARMOR);
+	toggle_armor (NO_ARMOR);
+	NO_ARMOR = fput (HUNK_NO_ARMOR, !NO_ARMOR);
 };
 
 void ()
 setrotate =
 {
-	if (voteflags & C3_NO_ARMOR)
+	if (NO_ARMOR)
 		return;
 
 	toggle_armor (1);
-	voteflags = toggle_cvar_bit (CVAR_C3, C3_ROTATE);
+	ROTATE = fput (HUNK_ROTATE, !ROTATE);
 };
 
 void ()
@@ -143,8 +122,8 @@ setrunes =
 {
 	local entity e, os;
 
-	voteflags = toggle_cvar_bit (CVAR_C3, C3_NO_RUNES);
-	if (voteflags & C3_NO_RUNES)
+	NO_RUNES = fput (HUNK_NO_RUNES, !NO_RUNES);
+	if (NO_RUNES)
 	{
 		runemax		= 0;
 		runecurrent	= 0;
@@ -167,9 +146,7 @@ setrunes =
 	}
 	else
 	{
-		runemax = temp1 & T1_NRUNES_MASK;
-		if (runemax == 0)
-			runemax = DEFAULT_RUNEMAX;
+		set_runemax ();
 		runespawntime	= time;
 	}
 };
@@ -177,5 +154,5 @@ setrunes =
 void ()
 setalts =
 {
-	voteflags = toggle_cvar_bit (CVAR_C3, C3_NO_ALTS);
+	NO_ALT_WEAPONS = fput (HUNK_NO_ALT_WEAPONS, !NO_ALT_WEAPONS);
 };

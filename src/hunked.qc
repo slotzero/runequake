@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.18 2004/07/03 08:45:09 slotzero Exp $
+/*  $Id: hunked.qc,v 1.19 2004/07/18 14:17:28 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -24,6 +24,14 @@
 float LAST_TIME_UPDATE;
 float HUNK_SERVER_TIME		= %10;
 float HUNK_CLIENT_DISCONNECT	= %100;
+float HUNK_NO_QUAD		= %1010;
+float HUNK_NO_PENT		= %1012;
+float HUNK_NO_RING		= %1014;
+float HUNK_NO_SUIT		= %1016;
+float HUNK_NO_ARMOR		= %1018;
+float HUNK_ROTATE		= %1020;
+float HUNK_NO_RUNES		= %1022;
+float HUNK_NO_ALT_WEAPONS	= %1024;
 
 float ()
 server_time =
@@ -220,4 +228,41 @@ Client_Disconnect_Log =
 	}
 	if (!e_time)
 		self_sprint (self, "No entries found.\n");
+};
+
+float (float offset, float value)
+fput =
+{
+	Write_Hunk_Float (HUNK_CONTEXT, offset, value);
+	return value;
+};
+
+float (float offset, float default)
+fget =
+{
+	local float i;
+
+	i = Read_Hunk_Float (HUNK_CONTEXT, offset);
+	if (i == 0x20202020)
+	{
+		fput (offset, default);
+		return default;
+	}
+
+	return i;
+};
+
+void ()
+Hunk_Settings =
+{
+	NO_QUAD		= fget (HUNK_NO_QUAD,		0);
+	NO_PENT		= fget (HUNK_NO_PENT,		0);
+	NO_RING		= fget (HUNK_NO_RING,		0);
+	NO_SUIT		= fget (HUNK_NO_SUIT,		0);
+	NO_ARMOR	= fget (HUNK_NO_ARMOR,		0);
+	ROTATE		= fget (HUNK_ROTATE,		0);
+	NO_RUNES	= fget (HUNK_NO_RUNES,		0);
+	NO_ALT_WEAPONS	= fget (HUNK_NO_ALT_WEAPONS,	0);
+
+	set_runemax ();
 };

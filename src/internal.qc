@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.29 2004/07/16 11:24:31 slotzero Exp $
+/*  $Id: internal.qc,v 1.30 2004/07/18 14:17:28 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -524,7 +524,10 @@ SearchHunk =
 				if (hname == "iplog")
 					HUNK_IPLOG = SubInt (4 * i, framecount * %131072);
 				else if (hname == "context")
+				{
 					HUNK_CONTEXT = SubInt (4 * i, framecount * %131072);
+					Hunk_Settings ();
+				}
 				else if (hname == "zone")
 				{
 					HUNK_ZONE = SubInt (4 * i, framecount * %131072);

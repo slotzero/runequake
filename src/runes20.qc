@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.22 2004/07/16 12:02:11 slotzero Exp $
+/*  $Id: runes20.qc,v 1.23 2004/07/18 14:17:28 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -893,7 +893,7 @@ Rune_Shield =
 		// disabling runes, it's removal can be prevented.  To
 		// prevent its use, I remove it when an activation is
 		// attempted.
-		if (voteflags & C3_NO_RUNES)
+		if (NO_RUNES)
 		{
 			Rune_Delete (0);
 			return;

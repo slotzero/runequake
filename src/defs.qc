@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.112 2004/07/18 10:25:39 slotzero Exp $
+/*  $Id: defs.qc,v 1.113 2004/07/18 14:17:28 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1070,7 +1070,6 @@ float	skill;
 // custom cvars
 string	CVAR_C1	= "saved1";	// levels
 string	CVAR_C2	= "saved2";	// console commands
-string	CVAR_C3	= "saved3";	// server vote flags
 
 // console commands
 float	C2_UPDATE_BINDINGS	= 1;
@@ -1101,17 +1100,6 @@ float	C2_RUNESON		= 25;
 float	C2_RUNESOFF		= 26;
 float	C2_ALTSON		= 27;
 float	C2_ALTSOFF		= 28;
-
-// server vote flags
-float	voteflags;
-float	C3_NO_QUAD		= 1;
-float	C3_NO_PENT		= 2;
-float	C3_NO_RING		= 4;
-float	C3_NO_SUIT		= 8;
-float	C3_NO_ARMOR		= 16;
-float	C3_ROTATE		= 32;
-float	C3_NO_RUNES		= 64;
-float	C3_NO_ALTS		= 128;
 
 IN_QW([-
 //

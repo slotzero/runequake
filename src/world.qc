@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.54 2004/07/17 09:45:29 slotzero Exp $
+/*  $Id: world.qc,v 1.55 2004/07/18 14:17:28 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -391,7 +391,7 @@ StartFrame =
 
 		else if (i == C2_QUADON)
 		{
-			if (voteflags & C3_NO_QUAD)
+			if (NO_QUAD)
 			{
 				dprint_force ("Quad enabled\n");
 				setquad ();
@@ -400,7 +400,7 @@ StartFrame =
 
 		else if (i == C2_QUADOFF)
 		{
-			if (!voteflags & C3_NO_QUAD)
+			if (!NO_QUAD)
 			{
 				dprint_force ("Quad disabled\n");
 				setquad ();
@@ -409,7 +409,7 @@ StartFrame =
 
 		else if (i == C2_PENTON)
 		{
-			if (voteflags & C3_NO_PENT)
+			if (NO_PENT)
 			{
 				dprint_force ("Pentagram enabled\n");
 				setpent ();
@@ -418,7 +418,7 @@ StartFrame =
 
 		else if (i == C2_PENTOFF)
 		{
-			if (!voteflags & C3_NO_PENT)
+			if (!NO_PENT)
 			{
 				dprint_force ("Pentagram disabled\n");
 				setpent ();
@@ -427,7 +427,7 @@ StartFrame =
 
 		else if (i == C2_RINGON)
 		{
-			if (voteflags & C3_NO_RING)
+			if (NO_RING)
 			{
 				dprint_force ("Ring of shadows enabled\n");
 				setring ();
@@ -436,7 +436,7 @@ StartFrame =
 
 		else if (i == C2_RINGOFF)
 		{
-			if (!voteflags & C3_NO_RING)
+			if (!NO_RING)
 			{
 				dprint_force ("Ring of shadows disabled\n");
 				setring ();
@@ -445,7 +445,7 @@ StartFrame =
 
 		else if (i == C2_SUITON)
 		{
-			if (voteflags & C3_NO_SUIT)
+			if (NO_RING)
 			{
 				dprint_force ("Environmental protection suit enabled\n");
 				setsuit ();
@@ -454,7 +454,7 @@ StartFrame =
 
 		else if (i == C2_SUITOFF)
 		{
-			if (!voteflags & C3_NO_SUIT)
+			if (!NO_RING)
 			{
 				dprint_force ("Environmental protection suit disabled\n");
 				setsuit ();
@@ -463,7 +463,7 @@ StartFrame =
 
 		else if (i == C2_ARMORON)
 		{
-			if (voteflags & C3_NO_ARMOR)
+			if (NO_ARMOR)
 			{
 				dprint_force ("Armor enabled\n");
 				setarmor ();
@@ -472,7 +472,7 @@ StartFrame =
 
 		else if (i == C2_ARMOROFF)
 		{
-			if (!voteflags & C3_NO_ARMOR)
+			if (!NO_ARMOR)
 			{
 				dprint_force ("Armor disabled\n");
 				setarmor ();
@@ -481,7 +481,7 @@ StartFrame =
 
 		else if (i == C2_ROTATEON)
 		{
-			if (!voteflags & C3_ROTATE)
+			if (!ROTATE)
 			{
 				dprint_force ("Rotating armors enabled\n");
 				setrotate ();
@@ -490,7 +490,7 @@ StartFrame =
 
 		else if (i == C2_ROTATEOFF)
 		{
-			if (voteflags & C3_ROTATE)
+			if (ROTATE)
 			{
 				dprint_force ("Rotating armors disabled\n");
 				setrotate ();
@@ -499,7 +499,7 @@ StartFrame =
 
 		else if (i == C2_RUNESON)
 		{
-			if (voteflags & C3_NO_RUNES)
+			if (NO_RUNES)
 			{
 				dprint_force ("Runes enabled\n");
 				setrunes ();
@@ -508,7 +508,7 @@ StartFrame =
 
 		else if (i == C2_RUNESOFF)
 		{
-			if (!voteflags & C3_NO_RUNES)
+			if (!NO_RUNES)
 			{
 				dprint_force ("Runes disabled\n");
 				setrunes ();
@@ -519,7 +519,7 @@ StartFrame =
 		{
 			if (deathmatch & DM_MODE_PRACTICE)
 				dprint_force ("Alternate weapons disabled in practice mode\n");
-			else if (voteflags & C3_NO_ALTS)
+			else if (NO_ALT_WEAPONS)
 			{
 				dprint_force ("Alternate weapons enabled\n");
 				setalts ();
@@ -528,7 +528,7 @@ StartFrame =
 
 		else if (i == C2_ALTSOFF)
 		{
-			if (!voteflags & C3_NO_ALTS)
+			if (!NO_ALT_WEAPONS)
 			{
 				dprint_force ("Alternate weapons disabled\n");
 				setalts ();
