@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.112 2004/07/05 07:46:28 slotzero Exp $
+/*  $Id: rjs.qc,v 1.113 2004/07/05 08:06:44 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -3295,13 +3295,13 @@ toggle_cvar_bit =
 	{
 		var = var - var & bits;
 		self_sprint (self, msg);
-		self_sprint (self, " off\n");
+		self_sprint (self, "off\n");
 	}
 	else
 	{
 		var = var | bits;
 		self_sprint (self, msg);
-		self_sprint (self, " on\n");
+		self_sprint (self, "on\n");
 	}
 
 	new = ftos (var);
