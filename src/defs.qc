@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.93 2004/07/07 08:42:19 slotzero Exp $
+/*  $Id: defs.qc,v 1.94 2004/07/08 01:32:55 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -322,9 +322,6 @@ entity runespawn;
 // state information, not retained across levels
 .float aqstate;
 
-// state information, not retained across levels
-.float rqstate;
-
 // vote information
 .float vote_flags;
 
@@ -536,7 +533,7 @@ float IMP_REMOVE_FRAGS		= 82;
 float IMP_HUD_TOGGLE		= 81;
 float IMP_TEAM_ROTATE		= 80;
 float IMP_SHOW_POS		= 79;
-//				= 78; [free]
+float IMP_VOTE_PRACTICE		= 78;
 float IMP_QUIET_TOGGLE		= 77;
 float IMP_HOOK_TOGGLE		= 76;
 //				= 75; [free]
@@ -678,9 +675,6 @@ float AQ_QSMACK			= 2097152;
 float RQ_CYCLE_ALTERNATES	= 1;
 float RQ_CUSTOM_SOUNDS		= 2;
 
-// rqstate flags (not saved across levels)
-float RQS_VOTE_YES		= 1;
-
 // aqstate flags (not saved across levels)
 float AQS_MENU_MASK		= 31;
 float AQS_MENU_SPLASH		= 1;
@@ -785,9 +779,8 @@ float S1_NOQUAD			= 256;
 float S1_NOPENT			= 512;
 
 // vote flags
-float VOTE_EXIT			= 1;
-float VOTE_TEAM			= 2;
-float VOTE_HOOK			= 4;
+float VOTE_YES			= 1;
+float VOTE_NO			= 2;
 
 // Bit settings for POWERUP_PICKUP_WARN in settings.qc.
 float ITEM_PENT = 1;

@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.22 2004/06/25 05:21:04 slotzero Exp $
+/*  $Id: team.qc,v 1.23 2004/07/08 01:32:55 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -402,7 +402,8 @@ change_teamplay =
 		bprint ("Match mode disabled\n");
 
 	// Remove the vote bit from all players.
-	remove_bit_from_players (vote_flags, VOTE_TEAM);
+	// The new vote code should handle this. :)
+	//remove_bit_from_players (vote_flags, VOTE_TEAM);
 };
 
 void (float check_state)
@@ -591,4 +592,17 @@ change_practice_mode =
 	s = ftos (new_deathmatch);
 	cvar_set ("deathmatch", s);
 	admin_changelevel (mapname);
+};
+
+void ()
+mode_practice =
+{
+	change_practice_mode (1);
+};
+
+// XXX When more modes are added, make sure to redo this.
+void ()
+mode_normal =
+{
+	change_practice_mode (0);
 };

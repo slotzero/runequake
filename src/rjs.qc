@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.119 2004/07/07 09:58:36 slotzero Exp $
+/*  $Id: rjs.qc,v 1.120 2004/07/08 01:32:55 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1637,12 +1637,17 @@ show_players =
 					self_sprint (self, "  ");
 
 				self_sprint (self, e.netname);
-				if (e.vote_flags & VOTE_EXIT)
+
+				// XXX Hmm.  Can I make so votes are recongized, or just
+				// have it so it's voted?
+				if (e.vote_flags & VOTE_YES)
+					self_sprint (self, " (vote yes)");
+				/* if (e.vote_flags & VOTE_EXIT)
 					self_sprint (self, " (exit vote)");
 				if (e.vote_flags & VOTE_TEAM)
 					self_sprint (self, " (team vote)");
 				if (e.vote_flags & VOTE_HOOK)
-					self_sprint (self, " (hook vote)");
+					self_sprint (self, " (hook vote)"); */
 			}
 
 			if (self_admin)
@@ -2836,7 +2841,9 @@ vote_counter_think =
 	vote_team_mode_default ();
 	vote_hook_mode_default ();
 
-	if (vote_exit_time < time && vote_exit_time > 0)
+	// XXX This should still think until I figure out a better way to check this.
+
+	/* if (vote_exit_time < time && vote_exit_time > 0)
 	{
 		bprint ("\{141} Not enough votes, ");
 		if (forced_nextmap)
@@ -2889,7 +2896,7 @@ vote_counter_think =
 	{
 		//count_votes (0);
 		self.runevar = 1;
-	}
+	} */
 
 	self.nextthink = time + VOTE_COUNT_PERIOD / 3;
 };

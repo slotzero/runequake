@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.16 2004/04/09 01:32:10 slotzero Exp $
+/*  $Id: hook.qc,v 1.17 2004/07/08 01:32:55 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -438,7 +438,8 @@ change_hook_mode =
 		cvar_set_infokey ("temp1", s);
 
 		// Remove the vote bit from all players.
-		remove_bit_from_players (vote_flags, VOTE_HOOK);
+		// I'm pretty sure the new vote code handles this. :)
+		//remove_bit_from_players (vote_flags, VOTE_HOOK);
 	}
 };
 
@@ -446,6 +447,8 @@ void (float force_type)
 toggle_hook_mode =
 {
 	local float curr_type, wanted_type, wanted_bit;
+
+	force_type = rint (force_type); // XXX floats return as 0.0 (TRUE) when called from a think().
 
 	curr_type		= hook_bit_to_type (temp1);
 	if (force_type)

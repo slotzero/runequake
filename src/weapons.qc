@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.38 2004/07/07 01:17:07 slotzero Exp $
+/*  $Id: weapons.qc,v 1.39 2004/07/08 01:32:55 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1396,7 +1396,8 @@ ImpulseCommands =
 
 	else if (self.impulse == IMP_VOTE_EXIT
 			|| self.impulse == IMP_VOTE_TEAM
-			|| self.impulse == IMP_VOTE_HOOK)
+			|| self.impulse == IMP_VOTE_HOOK
+			|| self.impulse == IMP_VOTE_PRACTICE)
 		vote ();
 
 	else

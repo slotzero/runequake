@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.4 2004/07/07 10:18:52 slotzero Exp $
+/*  $Id: vote.qc,v 1.5 2004/07/08 01:32:55 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -17,8 +17,20 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-float VOTE_PRACTICE	= 8;
-float VOTE_NORMAL	= 16;
+// VOTE TODO (DEV)
+/*
+	// hook
+	* fix hook voting so that vote-hook is always always-on.
+	* add vote-lithium to always turn on lithium hook (but not off)
+	* vote-hook will turn off lithium hook or full hook
+
+	// practice
+	* add disabled for practice mode
+	* perhaps a new function to give refresh message, use disabled function maybe?
+
+	// no
+	* there's still no active 'no' command
+*/
 
 void (entity vip)
 vote_action =
@@ -28,11 +40,14 @@ vote_action =
 	else
 		bprint (self.classname);
 
-	bprint (" performed an action\n");	// XXX fix me
+	bprint (" voted to ");
+	bprint (vip.netname);
+	if (vip.map)
+		bprint (vip.map);
+	bprint ("\n");
 
 	vip.think1 ();
-	remove_bit_from_players (rqstate, RQS_VOTE_YES);
-
+	remove_bit_from_players (vote_flags, VOTE_YES);
 	remove (vip);
 };
 
@@ -97,7 +112,7 @@ count_votes =
 		if (is_player_e (e))
 		{
 			tot = tot + 1;
-			if (e.rqstate & RQS_VOTE_YES)
+			if (e.vote_flags & VOTE_YES)
 				voted = voted + 1;
 		}
 		e = find (e, classname, "player");
@@ -216,12 +231,14 @@ vote_think =
 {
 	local string s;
 
-	// poq prevent error crashing
-	if (!HUNK_CONTEXT_MAX)
-	{
-		self.nextthink = time + sys_ticrate;
-		return;
-	}
+	IN_POQ([-
+		// poq prevent crashing error
+		if (!HUNK_CONTEXT_MAX)
+		{
+			self.nextthink = time + sys_ticrate;
+			return;
+		}
+	-])
 
 	if (!count_votes (0))
 	{
@@ -231,22 +248,23 @@ vote_think =
 
 	if (self.runevar)
 	{
-		// poq
-		s = allocate_string_size (64);
-		s = "\{1}Request to ";
-		s = strcat (s, self.netname);
-		if (self.map)
-			s = strcat (s, self.map);
+		IN_POQ([-
+			// poq broadcast
+			s = allocate_string_size (64);
+			s = "\{1}Request to ";
+			s = strcat (s, self.netname);
+			if (self.map)
+				s = strcat (s, self.map);
 
-		// poq
-		bprint (s);
-
-		// qw
-		/* bprint ("\{1}");
-		bprint ("Request to ");
-		bprint (self.netname);
-		if (e.map)
-		bprint (self.map); */
+			bprint (s);
+		-], [-
+			// qw
+			bprint ("\{1}");
+			bprint ("Request to ");
+			bprint (self.netname);
+			if (self.map)
+			bprint (self.map);
+		-])
 
 		// all
 		bprint ("\ntype 'yes' or 'no' in console to vote\n");
@@ -256,9 +274,9 @@ vote_think =
 	else
 	{
 		bprint ("\{1}Vote cancelled\n");
-		if (self.impulse == IMP_VOTE_TEAM)
+		if (self.impulse == IMP_VOTE_EXIT)
 			forced_nextmap = string_null;
-		remove_bit_from_players (rqstate, RQS_VOTE_YES);
+		remove_bit_from_players (vote_flags, VOTE_YES);
 		remove (self);
 		return;
 	}
@@ -284,7 +302,7 @@ vote =
 		return self_sprint (self, "\{141} A vote is already in progress\n");
 	}
 
-	self.rqstate = self.rqstate | RQS_VOTE_YES;
+	self.vote_flags = self.vote_flags | VOTE_YES;
 
 	e		= spawn ();
 	e.classname	= "vote_in_progress";
@@ -292,7 +310,12 @@ vote =
 	e.impulse	= self.impulse;
 	e.owner		= self;
 
-	// XXX I want to make adding vote types very easy, so I need to elaborate on this.
+	// add vote type help
+	//
+	// frag_rate	= vote percentage
+	// think1	= function that does the action
+	// netname	= vote description for bprint
+	// map		= appended to vote description (if not null)
 
 	if (self.impulse == IMP_VOTE_EXIT)
 	{
@@ -329,6 +352,19 @@ vote =
 		else
 			e.netname	= "enable hook";
 	}
+	else if (self.impulse == IMP_VOTE_PRACTICE)
+	{
+		// cancel = XXX add me
+		e.frag_rate	= 0.51;	// XXX settings.
+		e.think1	= mode_practice;
+		e.netname	= "change mode to practice";
+
+		if (deathmatch & DM_MODE_PRACTICE)
+		{
+			cancel = 1;
+			self_sprint (self, "Already in Practice mode\n");
+		}
+	}
 	else
 		cancel = -1;
 
@@ -341,7 +377,7 @@ vote =
 			sprint (self, "\n");
 		}
 
-		remove_bit_from_players (rqstate, RQS_VOTE_YES);
+		remove_bit_from_players (vote_flags, VOTE_YES);
 		remove (e);
 	}
 	else
@@ -360,13 +396,13 @@ vote_yes =
  	if (!vip)
 		return self_sprint (self, "\{141} Nothing to vote on\n");
 
-	if (self.rqstate & RQS_VOTE_YES)
+	if (self.vote_flags & VOTE_YES)
 	{
 		count_votes (1);
 		return;
 	}
 
-	self.rqstate = self.rqstate | RQS_VOTE_YES;
+	self.vote_flags = self.vote_flags | VOTE_YES;
 
 	if (!count_votes (1))
 		vote_action (vip);
