@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.83 2005/02/01 22:21:00 slotzero Exp $
+/*  $Id: client.qc,v 1.84 2005/02/04 02:28:49 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -808,7 +808,21 @@ PutClientInServer =
 		player_init_spawn ();
 	}
 	else if (!self.rqflags & RQ_BINDINGS_RECEIVED)
-		spawn_player_bindings ();
+	{
+		local entity e;
+
+		// check to make sure bindings aren't already being sent
+		e = find (world, classname, "spawn_player_bindings");
+		while (e)
+		{
+			if (e.owner == self)
+				newplayer = 1;
+			e = find (e, classname, "spawn_player_bindings");
+		}
+
+		if (!newplayer)
+			spawn_player_bindings ();
+	}
 
 	if (spawn_as_observer)
 	{

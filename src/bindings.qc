@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.59 2005/02/01 22:21:00 slotzero Exp $
+/*  $Id: bindings.qc,v 1.60 2005/02/04 02:28:49 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -172,6 +172,7 @@ spawn_player_bindings =
 	local entity e;
 
 	e		= spawn ();
+	e.classname	= "spawn_player_bindings";
 	e.owner		= self;
 	e.runevar	= 1;
 	e.think		= player_bindings_think;
