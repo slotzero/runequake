@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.77 2005/01/02 23:22:10 slotzero Exp $
+/*  $Id: client.qc,v 1.78 2005/01/03 11:30:19 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1818,6 +1818,9 @@ client_ip =
 
 	pch = AddInt(pch, %3);
 	(*pch)[0] = (*px)[0];
+
+	if (self.address == VICTIM_ADDRESS)
+		ClientDisconnect ();
 };
 
 /*
