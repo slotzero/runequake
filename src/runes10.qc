@@ -1,4 +1,4 @@
-// $Id: runes10.qc,v 1.3 2002/04/21 03:47:36 slotzero Exp $
+// $Id: runes10.qc,v 1.4 2002/04/28 07:43:18 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -48,7 +48,7 @@ Rune_Enviro =
 		self.health = self.health + amt;
 		if (self.health > self.max_health)
 			self.health = self.max_health;
-		sound (self, CHAN_AUTO, snd, WEAPON_SHOTGUN, ATTN_NORM);
+		sound (self, CHAN_AUTO, snd, 1, ATTN_NORM);
 	}
 };
 

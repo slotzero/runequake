@@ -1,4 +1,4 @@
-// $Id: items.qc,v 1.8 2002/04/28 03:45:54 slotzero Exp $
+// $Id: items.qc,v 1.9 2002/04/28 07:43:17 slotzero Exp $
 
 void (entity e, float chan, string samp, float vol, float atten)
 item_sound =
@@ -109,6 +109,8 @@ T_Heal =
 	return 1;
 };
 
+
+
 /* QUAKED item_health (.3 .3 1) (0 0 0) (32 32 32) rotten megahealth
 Health box. Normally gives 25 points.
 Rotten box heals 5-10 points,
@@ -121,40 +123,29 @@ float	H_ROTTEN	= 1;
 float	H_MEGA		= 2;
 .float	healamount, healtype;
 
+void (string health_model, string health_noise, float health_amount, float health_type)
+health_set =
+{
+	precache_model (health_model);
+	precache_sound (health_noise);
+	self.touch		= health_touch;
+	self.noise		= health_noise;
+	self.healamount		= health_amount;
+	self.healtype		= health_type;
+	setmodel (self, health_model);
+	setsize (self, VEC_ORIGIN, '32 32 56');
+	StartItem ();
+};
+
 void ()
 item_health =
 {
-	self.touch = health_touch;
-
 	if (self.spawnflags & H_ROTTEN)
-	{
-		precache_model ("maps/b_bh10.bsp");
-		precache_sound ("items/r_item1.wav");
-		setmodel (self, "maps/b_bh10.bsp");
-		self.noise	= "items/r_item1.wav";
-		self.healamount	= 15;
-		self.healtype	= 0;
-	}
+		health_set ("maps/b_bh10.bsp", "items/r_item1.wav", 15, 0);
 	else if (self.spawnflags & H_MEGA)
-	{
-		precache_model ("maps/b_bh100.bsp");
-		precache_sound ("items/r_item2.wav");
-		setmodel (self, "maps/b_bh100.bsp");
-		self.noise	= "items/r_item2.wav";
-		self.healamount	= 100;
-		self.healtype	= 2;
-	}
+		health_set ("maps/b_bh100.bsp", "items/r_item2.wav", 100, 2);
 	else
-	{
-		precache_model ("maps/b_bh25.bsp");
-		precache_sound ("items/health1.wav");
-		setmodel (self, "maps/b_bh25.bsp");
-		self.noise	= "items/health1.wav";
-		self.healamount	= 25;
-		self.healtype	= 1;
-	}
-	setsize (self, VEC_ORIGIN, '32 32 56');
-	StartItem ();
+		health_set ("maps/b_bh25.bsp", "items/health1.wav", 25, 1);
 };
 
 void ()
@@ -414,51 +405,11 @@ bound_other_ammo =
 		other.ammo_cells = MAX_CELLS;
 };
 
-/* float (float w) RankForWeapon =
-{
-	if (w == IT_LIGHTNING)
-		return 1;
-	if (w == IT_ROCKET_LAUNCHER)
-		return 2;
-	if (w == IT_SUPER_NAILGUN)
-		return 3;
-	if (w == IT_GRENADE_LAUNCHER)
-		return 4;
-	if (w == IT_SUPER_SHOTGUN)
-		return 5;
-	if (w == IT_NAILGUN)
-		return 6;
-	return 7;
-};
-*/
-
-/*
-=============
-Deathmatch_Weapon
-
-Deathmatch weapon change rules for picking up a weapon
-
-.float		ammo_shells, ammo_nails, ammo_rockets, ammo_cells;
-=============
-*/
-/*void (float old, float new) Deathmatch_Weapon =
-{
-	local float or, nr;
-
-	// change self.weapon if desired
-	or = RankForWeapon (self.weapon);
-	nr = RankForWeapon (new);
-	if (nr < or)
-		set_weapon (new);
-};
-*/
-
 /*
 =============
 weapon_touch
 =============
 */
-
 void ()
 weapon_touch =
 {
@@ -609,99 +560,65 @@ weapon_up =
 	}
 };
 
+void (string weapon_model, float it_weapon, string weapon_netname)
+weapon_set =
+{
+	if (!spawn_no_precache)
+		precache_model (weapon_model);
+	setmodel (self, weapon_model);
+	self.weapon	= it_weapon;
+	self.netname	= weapon_netname;
+	self.touch	= weapon_touch;
+	setsize (self, '-16 -16 0', '16 16 56');
+	StartItem();
+};
+
 /*QUAKED weapon_supershotgun (0 .5 .8) (-16 -16 0) (16 16 32)
 */
 void ()
 weapon_supershotgun =
 {
-	if (!spawn_no_precache)
-		precache_model ("progs/g_shot.mdl");
-	setmodel (self, "progs/g_shot.mdl");
-	self.weapon = IT_SUPER_SHOTGUN;
-	self.netname = "Double-barrelled Shotgun";
-	self.touch = weapon_touch;
-	setsize (self, '-16 -16 0', '16 16 56');
-	StartItem ();
+	weapon_set ("progs/g_shot.mdl", IT_SUPER_SHOTGUN, "Double-barrelled Shotgun");
 };
 
 /*QUAKED weapon_nailgun (0 .5 .8) (-16 -16 0) (16 16 32)
 */
-
 void ()
 weapon_nailgun =
 {
-	if (!spawn_no_precache)
-		precache_model ("progs/g_nail.mdl");
-	setmodel (self, "progs/g_nail.mdl");
-	self.weapon = IT_NAILGUN;
-	self.netname = "nailgun";
-	self.touch = weapon_touch;
-	setsize (self, '-16 -16 0', '16 16 56');
-	StartItem ();
+	weapon_set ("progs/g_nail.mdl", IT_NAILGUN, "nailgun");
 };
 
 /*QUAKED weapon_supernailgun (0 .5 .8) (-16 -16 0) (16 16 32)
 */
-
 void ()
 weapon_supernailgun =
 {
-	if (!spawn_no_precache)
-		precache_model ("progs/g_nail2.mdl");
-	setmodel (self, "progs/g_nail2.mdl");
-	self.weapon = IT_SUPER_NAILGUN;
-	self.netname = "Super Nailgun";
-	self.touch = weapon_touch;
-	setsize (self, '-16 -16 0', '16 16 56');
-	StartItem ();
+	weapon_set ("progs/g_nail2.mdl", IT_SUPER_NAILGUN, "Super Nailgun");
 };
 
 /*QUAKED weapon_grenadelauncher (0 .5 .8) (-16 -16 0) (16 16 32)
 */
-
 void ()
 weapon_grenadelauncher =
 {
-	if (!spawn_no_precache)
-		precache_model ("progs/g_rock.mdl");
-	setmodel (self, "progs/g_rock.mdl");
-	self.weapon = 3;
-	self.netname = "Grenade Launcher";
-	self.touch = weapon_touch;
-	setsize (self, '-16 -16 0', '16 16 56');
-	StartItem ();
+	weapon_set ("progs/g_rock.mdl", 3, "Grenade Launcher");
 };
 
 /*QUAKED weapon_rocketlauncher (0 .5 .8) (-16 -16 0) (16 16 32)
 */
-
 void ()
 weapon_rocketlauncher =
 {
-	if (!spawn_no_precache)
-		precache_model ("progs/g_rock2.mdl");
-	setmodel (self, "progs/g_rock2.mdl");
-	self.weapon = 3;
-	self.netname = "Rocket Launcher";
-	self.touch = weapon_touch;
-	setsize (self, '-16 -16 0', '16 16 56');
-	StartItem ();
+	weapon_set ("progs/g_rock2.mdl", 3, "Rocket Launcher");
 };
 
 /*QUAKED weapon_lightning (0 .5 .8) (-16 -16 0) (16 16 32)
 */
-
 void ()
 weapon_lightning =
 {
-	if (!spawn_no_precache)
-		precache_model ("progs/g_light.mdl");
-	setmodel (self, "progs/g_light.mdl");
-	self.weapon = 3;
-	self.netname = "Thunderbolt";
-	self.touch = weapon_touch;
-	setsize (self, '-16 -16 0', '16 16 56');
-	StartItem ();
+	weapon_set ("progs/g_light.mdl", 3, "Thunderbolt");
 };
 
 /*
@@ -800,180 +717,69 @@ ammo_touch =
 
 float WEAPON_BIG2 = 1;
 
+void (string ammo_model, float ammo_aflag, float ammo_weapon, string ammo_netname)
+ammo_set =
+{
+	precache_model (ammo_model);
+	setmodel (self, ammo_model);
+	self.touch	= ammo_touch;
+	self.aflag	= ammo_aflag;
+	self.weapon	= ammo_weapon;
+	self.netname	= ammo_netname;
+	setsize (self, VEC_ORIGIN, '32 32 56');
+	StartItem ();
+};
+
 /*QUAKED item_shells (0 .5 .8) (0 0 0) (32 32 32) big
 */
-
 void ()
 item_shells =
 {
-	self.touch = ammo_touch;
-
 	if (self.spawnflags & WEAPON_BIG2)
-	{
-		precache_model ("maps/b_shell1.bsp");
-		setmodel (self, "maps/b_shell1.bsp");
-		self.aflag = 40;
-	}
+		ammo_set ("maps/b_shell1.bsp", 40, 1, "shells");
 	else
-	{
-		precache_model ("maps/b_shell0.bsp");
-		setmodel (self, "maps/b_shell0.bsp");
-		self.aflag = 20;
-	}
-	self.weapon = 1;
-	self.netname = "shells";
-	setsize (self, VEC_ORIGIN, '32 32 56');
-	StartItem ();
+		ammo_set ("maps/b_shell0.bsp", 20, 1, "shells");
 };
 
 /*QUAKED item_spikes (0 .5 .8) (0 0 0) (32 32 32) big
 */
-
 void ()
 item_spikes =
 {
-	self.touch = ammo_touch;
-
 	if (self.spawnflags & WEAPON_BIG2)
-	{
-		precache_model ("maps/b_nail1.bsp");
-		setmodel (self, "maps/b_nail1.bsp");
-		self.aflag = 50;
-	}
+		ammo_set ("maps/b_nail1.bsp", 50, 2, "nails");
 	else
-	{
-		precache_model ("maps/b_nail0.bsp");
-		setmodel (self, "maps/b_nail0.bsp");
-		self.aflag = 25;
-	}
-	self.weapon = 2;
-	self.netname = "nails";
-	setsize (self, VEC_ORIGIN, '32 32 56');
-	StartItem ();
+		ammo_set ("maps/b_nail0.bsp", 25, 2, "nails");
 };
 
 /*QUAKED item_rockets (0 .5 .8) (0 0 0) (32 32 32) big
 */
-
 void ()
 item_rockets =
 {
-	self.touch = ammo_touch;
-
 	if (self.spawnflags & WEAPON_BIG2)
-	{
-		precache_model ("maps/b_rock1.bsp");
-		setmodel (self, "maps/b_rock1.bsp");
-		self.aflag = 10;
-	}
+		ammo_set ("maps/b_rock1.bsp", 10, 3, "rockets");
 	else
-	{
-		precache_model ("maps/b_rock0.bsp");
-		setmodel (self, "maps/b_rock0.bsp");
-		self.aflag = 5;
-	}
-	self.weapon = 3;
-	self.netname = "rockets";
-	setsize (self, VEC_ORIGIN, '32 32 56');
-	StartItem ();
+		ammo_set ("maps/b_rock0.bsp", 5, 3, "rockets");
 };
 
 /*QUAKED item_cells (0 .5 .8) (0 0 0) (32 32 32) big
 */
-
 void ()
 item_cells =
 {
-	self.touch = ammo_touch;
-
 	if (self.spawnflags & WEAPON_BIG2)
-	{
-		precache_model ("maps/b_batt1.bsp");
-		setmodel (self, "maps/b_batt1.bsp");
-		self.aflag = 12;
-	}
+		ammo_set ("maps/b_batt1.bsp", 12, 4, "cells");
 	else
-	{
-		precache_model ("maps/b_batt0.bsp");
-		setmodel (self, "maps/b_batt0.bsp");
-		self.aflag = 6;
-	}
-	self.weapon = 4;
-	self.netname = "cells";
-	setsize (self, VEC_ORIGIN, '32 32 56');
-	StartItem ();
+		ammo_set ("maps/b_batt0.bsp", 6, 4, "cells");
 };
 
 /*QUAKED item_weapon (0 .5 .8) (0 0 0) (32 32 32) shotgun rocket spikes big
 DO NOT USE THIS!!!! IT WILL BE REMOVED!
 */
-
-float WEAPON_SHOTGUN	= 1;
-float WEAPON_ROCKET	= 2;
-float WEAPON_SPIKES	= 4;
-float WEAPON_BIG	= 8;
-
 void ()
 item_weapon =
 {
-	self.touch = ammo_touch;
-
-	if (self.spawnflags & WEAPON_SHOTGUN)
-	{
-		if (self.spawnflags & WEAPON_BIG)
-		{
-			precache_model ("maps/b_shell1.bsp");
-			setmodel (self, "maps/b_shell1.bsp");
-			self.aflag = 40;
-		}
-		else
-		{
-			precache_model ("maps/b_shell0.bsp");
-			setmodel (self, "maps/b_shell0.bsp");
-			self.aflag = 20;
-		}
-		self.weapon = 1;
-		self.netname = "shells";
-	}
-
-	if (self.spawnflags & WEAPON_SPIKES)
-	{
-		if (self.spawnflags & WEAPON_BIG)
-		{
-			precache_model ("maps/b_nail1.bsp");
-			setmodel (self, "maps/b_nail1.bsp");
-			self.aflag = 40;
-		}
-		else
-		{
-			precache_model ("maps/b_nail0.bsp");
-			setmodel (self, "maps/b_nail0.bsp");
-			self.aflag = 20;
-		}
-		self.weapon = 2;
-		self.netname = "spikes";
-	}
-
-	if (self.spawnflags & WEAPON_ROCKET)
-	{
-		if (self.spawnflags & WEAPON_BIG)
-		{
-			precache_model ("maps/b_rock1.bsp");
-			setmodel (self, "maps/b_rock1.bsp");
-			self.aflag = 10;
-		}
-		else
-		{
-			precache_model ("maps/b_rock0.bsp");
-			setmodel (self, "maps/b_rock0.bsp");
-			self.aflag = 5;
-		}
-		self.weapon = 3;
-		self.netname = "rockets";
-	}
-
-	setsize (self, VEC_ORIGIN, '32 32 56');
-	StartItem ();
 };
 
 /*
@@ -1015,7 +821,7 @@ key_touch =
 };
 
 void ()
-key_setsounds =
+key_sounds_set =
 {
 	if (world.worldtype == 0)
 	{
@@ -1034,6 +840,19 @@ key_setsounds =
 	}
 };
 
+void (string key_model, string key_netname, float it_key)
+key_set =
+{
+	precache_model (key_model);
+	setmodel (self, key_model);
+	key_sounds_set ();
+	self.netname	= key_netname;
+	self.touch	= key_touch;
+	self.items	= it_key;
+	setsize (self, '-16 -16 -24', '16 16 32');
+	StartItem ();
+};
+
 /*QUAKED item_key1 (0 .5 .8) (-16 -16 -24) (16 16 32)
 SILVER key
 In order for keys to work
@@ -1044,33 +863,15 @@ following:
 1: metal
 2: base
 */
-
 void ()
 item_key1 =
 {
 	if (world.worldtype == 0)
-	{
-		precache_model ("progs/w_s_key.mdl");
-		setmodel (self, "progs/w_s_key.mdl");
-		self.netname = "silver key";
-	}
+		key_set ("progs/w_s_key.mdl", "silver key", IT_KEY1);
 	else if (world.worldtype == 1)
-	{
-		precache_model ("progs/m_s_key.mdl");
-		setmodel (self, "progs/m_s_key.mdl");
-		self.netname = "silver runekey";
-	}
+		key_set ("progs/m_s_key.mdl", "silver runekey", IT_KEY1);
 	else if (world.worldtype == 2)
-	{
-		precache_model2 ("progs/b_s_key.mdl");
-		setmodel (self, "progs/b_s_key.mdl");
-		self.netname = "silver keycard";
-	}
-	key_setsounds ();
-	self.touch = key_touch;
-	self.items = IT_KEY1;
-	setsize (self, '-16 -16 -24', '16 16 32');
-	StartItem ();
+		key_set ("progs/b_s_key.mdl", "silver keycard", IT_KEY1);
 };
 
 /*QUAKED item_key2 (0 .5 .8) (-16 -16 -24) (16 16 32)
@@ -1083,33 +884,15 @@ following:
 1: metal
 2: base
 */
-
 void ()
 item_key2 =
 {
 	if (world.worldtype == 0)
-	{
-		precache_model ("progs/w_g_key.mdl");
-		setmodel (self, "progs/w_g_key.mdl");
-		self.netname = "gold key";
-	}
+		key_set ("progs/w_g_key.mdl", "gold key", IT_KEY2);
 	else if (world.worldtype == 1)
-	{
-		precache_model ("progs/m_g_key.mdl");
-		setmodel (self, "progs/m_g_key.mdl");
-		self.netname = "gold runekey";
-	}
+		key_set ("progs/m_g_key.mdl", "gold runekey", IT_KEY2);
 	else if (world.worldtype == 2)
-	{
-		precache_model2 ("progs/b_g_key.mdl");
-		setmodel (self, "progs/b_g_key.mdl");
-		self.netname = "gold keycard";
-	}
-	key_setsounds ();
-	self.touch = key_touch;
-	self.items = IT_KEY2;
-	setsize (self, '-16 -16 -24', '16 16 32');
-	StartItem ();
+		key_set ("progs/b_g_key.mdl", "gold keycard", IT_KEY2);
 };
 
 /*
@@ -1280,6 +1063,20 @@ powerup_touch =
 	SUB_UseTargets ();				// fire all targets / killtargets
 };
 
+void (string powerup_model, string powerup_noise, string powerup_netname, float it_powerup)
+powerup_set =
+{
+	precache_model (powerup_model);
+	precache_sound (powerup_noise);
+	self.touch	= powerup_touch;
+	self.noise	= powerup_noise;
+	self.netname	= powerup_netname;
+	self.items	= it_powerup;
+	setmodel (self, powerup_model);
+	setsize (self, '-16 -16 -24', '16 16 32');
+	StartItem ();
+};
+
 float num_pent;
 
 /*QUAKED item_artifact_invulnerability (0 .5 .8) (-16 -16 -24) (16 16 32)
@@ -1295,18 +1092,10 @@ item_artifact_invulnerability =
 		return;
 	}
 
-	self.touch = powerup_touch;
-
-	precache_model ("progs/invulner.mdl");
-	precache_sound ("items/protect.wav");
 	precache_sound ("items/protect2.wav");
 	precache_sound ("items/protect3.wav");
-	self.noise = "items/protect.wav";
-	setmodel (self, "progs/invulner.mdl");
-	self.netname = "Pentagram of Protection";
-	self.items = IT_INVULNERABILITY;
-	setsize (self, '-16 -16 -24', '16 16 32');
-	StartItem ();
+	powerup_set ("progs/invulner.mdl", "items/protect.wav",
+			"Pentagram of Protection", IT_INVULNERABILITY);
 };
 
 /*QUAKED item_artifact_envirosuit (0 .5 .8) (-16 -16 -24) (16 16 32)
@@ -1315,17 +1104,8 @@ Player takes no damage from water or slime for 30 seconds
 void ()
 item_artifact_envirosuit =
 {
-	self.touch = powerup_touch;
-
-	precache_model ("progs/suit.mdl");
-	precache_sound ("items/suit.wav");
 	precache_sound ("items/suit2.wav");
-	self.noise = "items/suit.wav";
-	setmodel (self, "progs/suit.mdl");
-	self.netname = "Biosuit";
-	self.items = IT_SUIT;
-	setsize (self, '-16 -16 -24', '16 16 32');
-	StartItem ();
+	powerup_set ("progs/suit.mdl", "items/suit.wav", "Biosuit", IT_SUIT);
 };
 
 /*QUAKED item_artifact_invisibility (0 .5 .8) (-16 -16 -24) (16 16 32)
@@ -1334,18 +1114,10 @@ Player is invisible for 30 seconds
 void ()
 item_artifact_invisibility =
 {
-	self.touch = powerup_touch;
-
-	precache_model ("progs/invisibl.mdl");
-	precache_sound ("items/inv1.wav");
 	precache_sound ("items/inv2.wav");
 	precache_sound ("items/inv3.wav");
-	self.noise = "items/inv1.wav";
-	setmodel (self, "progs/invisibl.mdl");
-	self.netname = "Ring of Shadows";
-	self.items = IT_INVISIBILITY;
-	setsize (self, '-16 -16 -24', '16 16 32');
-	StartItem ();
+	powerup_set ("progs/invisibl.mdl", "items/inv1.wav", "Ring of Shadows",
+			IT_INVISIBILITY);
 };
 
 float num_quad;
@@ -1363,18 +1135,9 @@ item_artifact_super_damage =
 		return;
 	}
 
-	self.touch = powerup_touch;
-
-	precache_model ("progs/quaddama.mdl");
-	precache_sound ("items/damage.wav");
 	precache_sound ("items/damage2.wav");
 	precache_sound ("items/damage3.wav");
-	self.noise = "items/damage.wav";
-	setmodel (self, "progs/quaddama.mdl");
-	self.netname = "Quad Damage";
-	self.items = IT_QUAD;
-	setsize (self, '-16 -16 -24', '16 16 32');
-	StartItem ();
+	powerup_set ("progs/quaddama.mdl", "items/damage.wav", "Quad Damage", IT_QUAD);
 };
 
 /*
