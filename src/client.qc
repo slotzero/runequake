@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.27 2003/07/28 13:47:50 slotzero Exp $
+/*  $Id: client.qc,v 1.28 2003/07/28 14:29:56 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1665,7 +1665,7 @@ PlayerPostThink =
 void ()
 client_ip =
 {
-	local float px, pch, dot, i;
+	local float px, pch, i;
 	local string new;
 
 	new = net_address ();

@@ -1,4 +1,4 @@
-/*  $Id: net.qc,v 1.1 2003/07/28 13:47:51 slotzero Exp $
+/*  $Id: net.qc,v 1.2 2003/07/28 14:29:56 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -54,7 +54,7 @@ qs_address_e =
 	local entity cl;
 
 	cl = cl_netconnection_e (e);
-	return AddInt(&cl, 4 * QS_ADDRESS);
+	return *AddInt(&cl, 4 * QS_ADDRESS);
 };
 
 entity ()
