@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.7 2003/06/28 05:19:26 slotzero Exp $
+/*  $Id: hunk.qc,v 1.8 2003/07/16 09:56:10 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -53,6 +53,16 @@ Read_Hunk =
 	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
 };
 
+float (float type, float offset)
+Read_Hunk_Float =
+{
+	local entity hunk;
+
+	hunk = Get_Hunk (type, offset);
+
+	return hunk[%0];
+};
+
 void (entity hunk, string s)
 Write_Hunk_e =
 {
@@ -66,6 +76,15 @@ Write_Hunk =
 
 	hunk = Get_Hunk (type, offset);
 	Write_Hunk_e (hunk, s);
+};
+
+void (float type, float offset, float f)
+Write_Hunk_Float =
+{
+	local entity hunk;
+
+	hunk = Get_Hunk (type, offset);
+	hunk[%0] = f;
 };
 
 string (entity hunk, float bytes)
