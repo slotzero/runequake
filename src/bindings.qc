@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.50 2004/12/27 03:36:34 slotzero Exp $
+/*  $Id: bindings.qc,v 1.51 2004/12/27 22:03:06 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -266,6 +266,7 @@ vote_aliases =
 	player_vote_impulse_alias ("setring",			IMP_VOTE_RING);		// CRMod
 	player_vote_impulse_alias ("setsuit",			IMP_VOTE_SUIT);		// CRMod
 	player_vote_impulse_alias ("vote-alts",			IMP_VOTE_ALTS);
+	player_vote_impulse_alias ("vote-alt-weapons",		IMP_VOTE_ALTS);
 	player_vote_impulse_alias ("vote-armor",		IMP_VOTE_ARMOR);
 	player_vote_impulse_alias ("vote-exit",			IMP_VOTE_EXIT);
 	player_vote_impulse_alias ("vote-free",			IMP_VOTE_FREE);
@@ -477,21 +478,14 @@ help_vote =
 {
 	//                      1234567890123456789012345678901234567\n
 	self_sprint (self, "\n          \b\<vote commands\>\b\n\n");
-	self_sprint (self, "\bvote-exit\b     vote for random map\n");
-	self_sprint (self, "\b<mapname>\b     vote for specific map\n");
-	self_sprint (self, "\bvote-hook\b     vote to toggle hook\n");
-	self_sprint (self, "\bvote-free\b     vote for free hook\n");
-	self_sprint (self, "\bvote-lithium\b  vote for lithium hook\n");
-	self_sprint (self, "\bvote-practice\b vote for practice mode\n");
-	self_sprint (self, "\bvote-normal\b   vote for normal mode\n");
-	self_sprint (self, "\bvote-quad\b     vote to toggle quad\n");
-	self_sprint (self, "\bvote-pent\b     vote to toggle pent\n");
-	self_sprint (self, "\bvote-ring\b     vote to toggle ring\n");
-	self_sprint (self, "\bvote-suit\b     vote to toggle suit\n");
-	self_sprint (self, "\bvote-armor\b    vote to toggle armor\n");
-	self_sprint (self, "\bvote-rotate\b   toggle rotating armors\n");
-	self_sprint (self, "\bvote-runes\b    vote to toggle runes\n");
-	self_sprint (self, "\bvote-alts\b     toggle alt weapons\n");
-	self_sprint (self, "\bvote-shields\b  toggle spawn shields\n");
+	self_sprint (self, "\bvote-exit       <mapname>\b (ex: start)\n");
+	self_sprint (self, "\bvote-hook       vote-hook-damage\n");
+	self_sprint (self, "\bvote-free       vote-lithium\n");
+	self_sprint (self, "\bvote-practice   vote-normal\n");
+	self_sprint (self, "\bvote-quad       vote-pent\n");
+	self_sprint (self, "\bvote-ring       vote-suit\n");
+	self_sprint (self, "\bvote-armor      vote-rotate\n");
+	self_sprint (self, "\bvote-runes      vote-alt-weapons\n");
+	self_sprint (self, "\bvote-shields\n");
 	self_sprint (self, "\n");
 };
