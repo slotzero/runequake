@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.6 2003/11/01 20:01:38 slotzero Exp $
+/*  $Id: bindings.qc,v 1.7 2003/11/16 03:04:16 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -134,7 +134,7 @@ player_aliases =
 {
 	local string s;
 
-	self_stuffcmd (self, "alias w5 \"wait;wait;wait;wait;wait\"\n");
+	self_stuffcmd (self, "alias w5 \"wait;wait;wait;wait;wait;\"\n");
 	self_stuffcmd (self, "alias cl \"impulse ");
 	s = ftos (IMP_ADMIN_CHANGE_MAP);
 	self_stuffcmd (self, s);
