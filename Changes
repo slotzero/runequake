@@ -1,4 +1,4 @@
-$Id: Changes,v 1.33 2002/08/23 21:58:52 slotzero Exp $
+$Id: Changes,v 1.34 2002/08/23 23:55:09 slotzero Exp $
 
 Version 0.5.3  Fri Aug 23 14:58:07 EST 2002
 
@@ -35,6 +35,18 @@ Version 0.5.3  Fri Aug 23 14:58:07 EST 2002
 
         - I replaced the nail gun with a super nail gun on E3M2.  I also
           added a red armor.
+
+    - Cvar Changes
+
+        - scratch1
+
+            - You can prevent the levels from having additional items added or
+              replaced.  This setting doesn't revert the changes that will
+              allow the map to crash.
+
+            - Some engines don't print the death messages (bprints) to the server
+              console (specifically with dedicated servers).  This option
+              will force these messages to the console.
 
     - Notable Internal Changes
 

@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.28 2002/08/23 21:58:59 slotzero Exp $
+// $Id: rjs.qc,v 1.29 2002/08/23 23:55:16 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -384,6 +384,9 @@ spawn_item =
 void ()
 place_my_items =
 {
+	if (scratch1 & S1_ORIGINAL_LEVELS)
+		return;
+
 	if (mapname == "e1m1")
 	{
 		// Same room as environmetal protection suit.
@@ -391,7 +394,7 @@ place_my_items =
 		// Top of crate next to level exit.
 		spawn_item ("weapon_rocketlauncher", 0, '1445 608 -192', 0);
 	}
-	if (mapname == "e1m2")
+	else if (mapname == "e1m2")
 	{
 		// Replace the RL.
 		spawn_item ("item_armorInv", 0, '680.0 728.0 184.0', 0);
@@ -1092,6 +1095,11 @@ fix_map =
 		e.targetname = "t11";
 		e.mangle = '0 -90 0';
 		setorigin (e, '545.1 679.5 353.0');
+	}
+
+	if (scratch1 & S1_ORIGINAL_LEVELS)
+	{
+		SUB_Null ();
 	}
 	else if (world.model == "maps/e1m2.bsp")
 	{
