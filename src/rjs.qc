@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.162 2005/01/08 04:03:15 slotzero Exp $
+/*  $Id: rjs.qc,v 1.163 2005/01/09 22:39:51 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2332,7 +2332,8 @@ is_player_start_class =
 		|| c == "info_player_start"
 		|| c == "info_player_start2"
 		|| c == "info_player_coop"
-		|| c == "info_player_deathmatch";
+		|| c == "info_player_deathmatch"
+		|| c == "info_teleport_destination";
 };
 
 float (entity spot)
