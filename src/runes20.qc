@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.15 2003/11/23 06:25:33 slotzero Exp $
+/*  $Id: runes20.qc,v 1.16 2003/12/13 03:46:18 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -583,18 +583,20 @@ Hat_Spawn =
 {
 	local entity dot;
 
-	dot = spawn ();
-	dot.movetype = MOVETYPE_FLY;
-	dot.solid = SOLID_NOT;
-	dot.owner = self;
-	dot.runetype = self.runetype;
+	dot		= spawn ();
+	dot.movetype	= MOVETYPE_FLY;
+	dot.solid	= SOLID_NOT;
+	dot.owner	= self;
+	dot.runetype	= self.runetype;
+
 	setorigin (dot, self.origin);
 	setsize (dot, VEC_ORIGIN, VEC_ORIGIN);
 	setmodel (dot, tmodel);
-	dot.runevector = offs;
-	dot.mangle = ang;
-	dot.think = Hat_Think;
-	dot.nextthink = time;
+
+	dot.runevector	= offs;
+	dot.mangle	= ang;
+	dot.think	= Hat_Think;
+	dot.nextthink	= time;
 };
 
 void ()
