@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.5 2003/11/01 18:22:33 slotzero Exp $
+/*  $Id: bindings.qc,v 1.6 2003/11/01 20:01:38 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -103,7 +103,7 @@ player_bindings_think =
 	}
 	else
 	{
-		self_sprint (self, "Sending standard bindings\n");
+		self_sprint (self, "Sending player bindings\n");
 		player_aliases ();
 	}
 	self = os;
