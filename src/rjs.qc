@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.45 2003/04/14 00:56:17 slotzero Exp $
+/*  $Id: rjs.qc,v 1.46 2003/04/25 05:28:15 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -20,14 +20,14 @@
 void ()
 timelimit_countdown =
 {
-	local float timelimit, seconds, minutes, n;
+	local float time_limit, seconds, minutes, n;
 	local string s1, s2;
 
-	timelimit = cvar ("timelimit") * 60;
-	if (!timelimit)
+	time_limit = cvar ("timelimit") * 60;
+	if (!time_limit)
 		return;
 
-	seconds = ceil (timelimit - time);
+	seconds = ceil (time_limit - time);
 	minutes = ceil (seconds / 60);
 
 	n = 1;
@@ -1210,6 +1210,7 @@ set_viewport =
 		//WriteAngle (MSG_ONE, targ.angles_y);
 		//WriteAngle (MSG_ONE, targ.angles_z);
 	-], [-
+		if (0) targ = targ;	// prevent frikqcc compiler warning
 		SUB_Null ();
 	-])
 };

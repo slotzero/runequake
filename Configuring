@@ -1,4 +1,4 @@
-$Id: Configuring,v 1.10 2003/04/14 00:56:04 slotzero Exp $
+$Id: Configuring,v 1.11 2003/04/25 05:28:09 slotzero Exp $
 
 Starting the server
 
@@ -410,6 +410,16 @@ scratch1
    16 keep existing level items                 S1_ORIGINAL_LEVELS
 
         Do not place any additonal items on the level.
+
+   32 limit max traps per rune                  S1_MAX_TRAPS_FOR_LEVEL
+
+        If you're rune-delete delay is low, you can prevent a build-up of traps
+        when you enable this feature.
+
+   64 basic/lite runes                          S1_BASIC_RUNES
+
+        Use the four most common runes: strength, regeneration, resistance,
+        and haste.
 
 samelevel
 

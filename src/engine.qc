@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.9 2003/04/14 00:56:12 slotzero Exp $
+/*  $Id: engine.qc,v 1.10 2003/04/25 05:28:15 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -236,6 +236,7 @@ bigkick =
 			kick_size = -4;
 		self.punchangle_x = kick_size;
 	-], [-
+		if (0) kick_size = kick_size;	// prevent frikqcc compiler warning
 		msg_entity = self;
 		WriteByte (MSG_ONE, SVC_SMALLKICK);
 	-])

@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.17 2003/04/14 00:56:11 slotzero Exp $
+/*  $Id: client.qc,v 1.18 2003/04/25 05:28:14 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -869,15 +869,15 @@ Exit deathmatch games upon conditions
 void ()
 CheckRules =
 {
-	local float timelimit;
+	local float time_limit;
 
 	if (gameover)	// someone else quit the game already
 		return;
 
-	timelimit = cvar ("timelimit") * 60;
-	fraglimit = cvar ("fraglimit");
+	time_limit = cvar ("timelimit") * 60;
+	fraglimit  = cvar ("fraglimit");
 
-	if (timelimit && time >= timelimit)
+	if (time_limit && time >= time_limit)
 	{
 		NextLevel ();
 		return;
@@ -894,7 +894,22 @@ PlayerDeathThink =
 {
 	local float forward;
 
+	IN_QW([-
+		// XXX The phoenix rune allows you to respawn at odd locations.
+		// Occasionally you can get stuck in walls.  In addtion, when you
+		// die in liquid, you don't hit the ground immediately and since
+		// you can't fire until you've stopped moving, this can be annoying.
+		//
+		// Mr. Happy requested that I implement the old-style phoenix until
+		// a fix is implemented.
+		local float OLD_STYLE_PHOENIX = 1;
+	-])
+
 	// Warn phoenix users.
+
+	IN_QW([-
+		if (!OLD_STYLE_PHOENIX)
+	-])
 	if (self.runetype == RN_PHOENIX)
 		centerprint (self, "\<\bwarning\b\>\nphoenix rune detected\nuse jump to respawn");
 
@@ -926,6 +941,9 @@ PlayerDeathThink =
 		}
 	}
 
+	IN_QW([-
+		if (!OLD_STYLE_PHOENIX)
+	-])
 	// Don't let phoenixes respawn until they come to a rest.
 	// Allows you to respawn if your corpse gets pushed outside the level.
 	if ((self.runetype == RN_PHOENIX && !self.flags & FL_ONGROUND)
@@ -941,6 +959,9 @@ PlayerDeathThink =
 		return;
 	}
 
+	IN_QW([-
+		if (!OLD_STYLE_PHOENIX)
+	-])
 	// Prevent phoenix holders from firing.
 	if (self.runetype == RN_PHOENIX)
 	{

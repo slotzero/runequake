@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.28 2003/04/14 00:56:11 slotzero Exp $
+/*  $Id: defs.qc,v 1.29 2003/04/25 05:28:15 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -414,7 +414,8 @@ string forced_nextmap;
 float update_frag_rates_time;
 
 // Rune constants (NONE MAY BE OVER 100!)
-float RN_HEALTH		= 1;
+
+float RN_STRENGTH	= 1;
 float RN_REGEN		= 2;
 float RN_RESIST		= 3;
 float RN_HASTE		= 4;
@@ -434,7 +435,7 @@ float RN_JUMP		= 17;
 float RN_AMMO		= 18;
 float RN_VAMP		= 19;
 float RN_SHIELD		= 20;
-float RN_STRENGTH	= 21;
+float RN_HEALTH		= 21;
 float RN_RADIO		= 22;
 float RN_SWITCH		= 23;
 float RN_FREEZE		= 24;
@@ -731,6 +732,8 @@ float S1_AMBIENT_SOUND_OFF	= 2;
 float S1_LIGHT_MAKESTATIC_OFF	= 4;
 float S1_BPRINT_TO_CONSOLE	= 8;
 float S1_ORIGINAL_LEVELS	= 16;
+float S1_MAX_TRAPS_FOR_LEVEL	= 32;
+float S1_BASIC_RUNES		= 64;
 
 // Bit settings for POWERUP_PICKUP_WARN in settings.qc.
 float ITEM_PENT = 1;

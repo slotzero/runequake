@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.16 2003/04/14 00:56:18 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.17 2003/04/25 05:28:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -709,7 +709,12 @@ Rune_Activate =
 		Bomb_Spawn ();
 
 	else if (self.runetype == RN_DSPOTS)
-		self.class_cnt = count_class_own (self, "dspot");
+	{
+		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
+			self.runevar = count_class_own (self, "dspot");
+		else
+			self.class_cnt = count_class_own (self, "dspot");
+	}
 
 	else if (self.runetype == RN_ORB)
 		Orb_Spawn ();
@@ -718,10 +723,16 @@ Rune_Activate =
 		Hat_Spawn ("progs/s_bubble.spr", '-4 2 31', VEC_ORIGIN);
 
 	else if (self.runetype == RN_RADIO)
-		self.class_cnt = count_class_own (self, "radioactive");
+		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
+			self.runevar = count_class_own (self, "radioactive");
+		else
+			self.class_cnt = count_class_own (self, "radioactive");
 
 	else if (self.runetype == RN_FREEZE)
-		self.class_cnt = count_class_own (self, "freeze");
+		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
+			self.runevar = count_class_own (self, "freeze");
+		else
+			self.class_cnt = count_class_own (self, "freeze");
 
 	else if (self.runetype == RN_VENG)
 		VengHead_Spawn ();
@@ -786,7 +797,10 @@ Rune_Activate =
 	else if (self.runetype == RN_TORCH)
 	{
 		self.touch = Torch_Touch;
-		self.class_cnt = count_class_own (self, "torchtrap");
+		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
+			self.runevar = count_class_own (self, "torchtrap");
+		else
+			self.class_cnt = count_class_own (self, "torchtrap");
 		Hat_Spawn ("progs/flame2.mdl", '-4 1 35', VEC_ORIGIN);
 	}
 
@@ -1140,7 +1154,10 @@ Rune_SpawnAll =
 		temp = SelectRuneSpawnPoint ();
 		do
 		{
-			type = random ()*RN_MAX;
+			if (scratch1 & S1_BASIC_RUNES)
+				type = random () * 4;
+			else
+				type = random () * RN_MAX;
 			type = ceil (type);
 		} while (!Rune_Type_Allowed (type));
 		Rune_Spawn (temp.origin, 500, 500, 500, type, world, world);

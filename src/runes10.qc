@@ -1,4 +1,4 @@
-/*  $Id: runes10.qc,v 1.9 2003/04/14 00:56:17 slotzero Exp $
+/*  $Id: runes10.qc,v 1.10 2003/04/25 05:28:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -90,6 +90,8 @@ Enviro_Jump =
 void ()
 Regen_Activate =
 {
+	if (scratch1 & S1_BASIC_RUNES)
+		return;
 	if (self.armorvalue >= MAX_ARMOR_3 && self.health >= self.max_health)
 		return;
 

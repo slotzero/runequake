@@ -1,12 +1,28 @@
-$Id: Changes,v 1.43 2003/04/22 05:33:17 slotzero Exp $
+$Id: Changes,v 1.44 2003/04/25 05:28:09 slotzero Exp $
 
-Version 0.8.1  Mon Apr 21 23:19:01 EST 2003
+Version 0.8.2  Fri Apr 25 00:44:32 EST 2003
+
+    - Cvar Changes
+
+        - scratch1
+
+            - You can limit the maximum number of traps (per rune) that a player
+              can leave on a level by adding the S1_MAX_TRAPS_FOR_LEVEL bit.
+
+            - If you're just looking for a taste of runes, add S1_BASIC_RUNES
+              to scratch1 and only the four basic runes will be permitted.  These
+              are; strength, regeneration, resistance, and haste.
+
+    - Notable Internal Changes
+
+        - I switched RN_HEALTH with RN_STRENGTH to accomodate the S1_BASIC_RUNES
+          mode.
 
     - Team Changes
 
-        - ice traps are team distinguishable
+        - Ice traps are team distinguishable
 
-        - prevent shirt color from being changed when enforced teams
+        - Prevent shirt color from being changed when enforced teams
 
 Version 0.8  Sun Apr 13 20:54:23 EST 2003
 
@@ -15,11 +31,11 @@ Version 0.8  Sun Apr 13 20:54:23 EST 2003
 
     - Bug Fixes
 
-        - recall was reporting the wrong set value for riders
+        - Recall was reporting the wrong set value for riders
 
     - Notable Internal Changes
 
-        -  I made use of parm14 for another field, rqflags.
+        - I made use of parm14 for another field, rqflags.
 
     - Other Changes
 
@@ -33,7 +49,7 @@ Version 0.7.5  Sun Mar 16 01:07:11 EST 2003  [POQ ONLY RELEASE]
 
     - Bug Fixes
 
-        - you will recloak if you continue to fire the nail or lightning gun [fixed]
+        - You will recloak if you continue to fire the nail or lightning gun [fixed]
 
     - Admin Changes
 
