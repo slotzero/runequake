@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.14 2003/06/24 22:17:38 slotzero Exp $
+/*  $Id: internal.qc,v 1.15 2003/07/01 04:25:34 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -72,6 +72,9 @@ float CL_PING_TIMES		= %2033;
 float CL_NUM_PINGS		= %2049;
 float CL_SPAWN_PARMS		= %2050;
 float CL_OLD_FRAGS		= %2066;
+float CL_SPAM_TIME		= %2068;
+float CL_CHANGE_TIME            = %2070;
+float CL_NOMAP			= %2072;
 
 float QS_ADDR			;// = %4118; - might need to change this for linux/mac
 float QS_IN_ADDR		;// = %4119; - might need to change this for linux/mac
