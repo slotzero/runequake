@@ -1,4 +1,4 @@
-/*  $Id: bomb.qc,v 1.11 2003/12/07 05:59:27 slotzero Exp $
+/*  $Id: bomb.qc,v 1.12 2005/02/09 23:51:56 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -101,9 +101,16 @@ bomb_arm =
 	else
 		self.ltime = time + 5;
 
-	self.velocity = VEC_ORIGIN;
-	self.think = bomb_tick;
-	self.dropdelay = self.nextthink = time;
+	self.velocity	= VEC_ORIGIN;
+
+	// XXX The bomb locks the player down in Quakeworld.  I work around it
+	// here.
+	IN_QW([-
+		self.solid	= SOLID_NOT;
+	-])
+
+	self.think	= bomb_tick;
+	self.dropdelay	= self.nextthink = time;
 };
 
 void ()
