@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.14 2003/08/03 00:48:16 slotzero Exp $
+/*  $Id: team.qc,v 1.15 2003/12/30 05:57:44 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -402,13 +402,7 @@ change_teamplay =
 		bprint ("Match mode disabled\n");
 
 	// Remove the vote bit from all players.
-	/* e = find (world, classname, "player");
-	while (e)
-	{
-		e.aqflags = e.aqflags - e.aqflags & AQ_VOTE_TEAM;
-		e = find (e, classname, "player");
-	}*/
-	remove_player_bit (aqflags, AQ_VOTE_TEAM);
+	remove_player_bit (vote_flags, VOTE_TEAM);
 };
 
 void (float check_state)

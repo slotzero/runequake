@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.64 2003/12/28 08:31:21 slotzero Exp $
+/*  $Id: defs.qc,v 1.65 2003/12/30 05:57:43 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -321,6 +321,9 @@ entity runespawn;
 
 // state information, not retained across levels
 .float aqstate;
+
+// vote information
+.float vote_flags;
 
 // if 0 player hasn't suicided yet this level, if positive the time of
 // the last suicide.
@@ -656,9 +659,7 @@ float AQ_QUIET			= 131072;
 float AQ_NO_WEAPON_TOGGLE	= 262144;
 float AQ_NO_HUD			= 524288;
 float AQ_HOOK			= 1048576;
-float AQ_VOTE_TEAM		= 2097152;
-float AQ_QSMACK			= 4194304;
-float AQ_VOTE_HOOK		= 8388608;
+float AQ_QSMACK			= 2097152;
 
 float RQ_CYCLE_ALTERNATES	= 1;
 
@@ -710,9 +711,8 @@ float AQS_RIDE_FAST		= 131072;
 float AQS_RIDE_HIGH		= 262144;
 
 float AQS_BURNING		= 1048576;
-float AQS_VOTE_EXIT		= 2097152;
-float AQS_SPAWN_PROTECT		= 4194304;
-float AQS_SWITCH_WEAPON_WAS_BEST = 8388608;
+float AQS_SPAWN_PROTECT		= 2097152;
+float AQS_SWITCH_WEAPON_WAS_BEST = 4194304;
 
 // temp1 flags
 float temp1;
@@ -758,6 +758,11 @@ float S1_ORIGINAL_LEVELS	= 16;
 float S1_MAX_TRAPS_FOR_LEVEL	= 32;
 float S1_BASIC_RUNES		= 64;
 float S1_CUSTOM_EXITS		= 128;
+
+// vote flags
+float VOTE_EXIT			= 1;
+float VOTE_TEAM			= 2;
+float VOTE_HOOK			= 4;
 
 // Bit settings for POWERUP_PICKUP_WARN in settings.qc.
 float ITEM_PENT = 1;

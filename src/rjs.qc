@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.84 2003/12/28 08:31:22 slotzero Exp $
+/*  $Id: rjs.qc,v 1.85 2003/12/30 05:57:44 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1630,11 +1630,11 @@ show_players =
 				else
 					self_sprint (self, "player  ");
 				self_sprint (self, e.netname);
-				if (e.aqstate & AQS_VOTE_EXIT)
+				if (e.vote_flags & VOTE_EXIT)
 					self_sprint (self, " (exit vote)");
-				if (e.aqflags & AQ_VOTE_TEAM)
+				if (e.vote_flags & VOTE_TEAM)
 					self_sprint (self, " (team vote)");
-				if (e.aqflags & AQ_VOTE_HOOK)
+				if (e.vote_flags & VOTE_HOOK)
 					self_sprint (self, " (hook vote)");
 			}
 
@@ -2641,7 +2641,7 @@ vote_hook_mode_default =
 void (float vote_type, float count_type)
 count_votes =
 {
-	local float use_state, bit, pct;
+	local float bit, pct;
 	local string cmd, desc;
 	local float tot, voted, need, lack, force;
 	local entity e;
@@ -2651,8 +2651,7 @@ count_votes =
 	{
 		cmd		= "vote-exit";
 		desc		= "exit level";
-		use_state	= 1;
-		bit		= AQS_VOTE_EXIT;
+		bit		= VOTE_EXIT;
 		pct		= VOTE_EXIT_PERCENTAGE;
 
 		if (forced_nextmap)
@@ -2667,8 +2666,7 @@ count_votes =
 			desc	= "disable teams";
 		else
 			desc	= "enable teams";
-		use_state	= 0;
-		bit		= AQ_VOTE_TEAM;
+		bit		= VOTE_TEAM;
 		pct		= VOTE_TEAM_PERCENTAGE;
 	}
 	else if (vote_type == IMP_VOTE_HOOK)
@@ -2680,8 +2678,7 @@ count_votes =
 			desc	= "disable hook";
 		else
 			desc	= "enable hook";
-		use_state	= 0;
-		bit		= AQ_VOTE_HOOK;
+		bit		= VOTE_HOOK;
 		pct		= VOTE_HOOK_PERCENTAGE;
 	}
 	else
@@ -2697,8 +2694,7 @@ count_votes =
 		if (is_player_e (e))
 		{
 			tot = tot + 1;
-			if ((use_state && e.aqstate & bit)
-					|| (!use_state && e.aqflags & bit))
+			if (e.vote_flags & bit)
 				voted = voted + 1;
 		}
 		e = find (e, classname, "player");
@@ -2833,7 +2829,7 @@ vote_counter_think =
 		bprint (" vote cancelled\n");
 
 		forced_nextmap = string_null;
-		remove_player_bit (aqstate, AQS_VOTE_EXIT);
+		remove_player_bit (vote_flags, VOTE_EXIT);
 
 		vote_exit_time = -1;
 		self.nextthink = time + 5;
@@ -2844,7 +2840,7 @@ vote_counter_think =
 		bprint ("\{141} Not enough votes, ");
 		bprint ("team vote cancelled\n");
 
-		remove_player_bit (aqflags, AQ_VOTE_TEAM);
+		remove_player_bit (vote_flags, VOTE_TEAM);
 
 		vote_team_time = -1;
 		self.nextthink = time + 5;
@@ -2855,7 +2851,7 @@ vote_counter_think =
 		bprint ("\{141} Not enough votes, ");
 		bprint ("hook vote cancelled\n");
 
-		remove_player_bit (aqflags, AQ_VOTE_HOOK);
+		remove_player_bit (vote_flags, VOTE_HOOK);
 
 		vote_hook_time = -1;
 		self.nextthink = time + 5;
@@ -2911,14 +2907,13 @@ vote_counter_spawn =
 void ()
 vote =
 {
-	local float use_state, bit, pct;
+	local float bit, pct;
 	local string name;
 
 	if (self.impulse == IMP_VOTE_EXIT)
 	{
 		name		= "Exit";
-		use_state	= 1;
-		bit		= AQS_VOTE_EXIT;
+		bit		= VOTE_EXIT;
 		pct		= VOTE_EXIT_PERCENTAGE;
 
 		if (vote_exit_time < 0)
@@ -2929,8 +2924,7 @@ vote =
 		if (vote_team_disabled (1))
 			return;
 		name		= "Team";
-		use_state	= 0;
-		bit		= AQ_VOTE_TEAM;
+		bit		= VOTE_TEAM;
 		pct		= VOTE_TEAM_PERCENTAGE;
 
 		if (vote_team_time < 0)
@@ -2941,8 +2935,7 @@ vote =
 		if (vote_hook_disabled (1))
 			return;
 		name		= "Hook";
-		use_state	= 0;
-		bit		= AQ_VOTE_HOOK;
+		bit		= VOTE_HOOK;
 		pct		= VOTE_HOOK_PERCENTAGE;
 
 		if (vote_hook_time < 0)
@@ -2977,15 +2970,11 @@ vote =
 		return;
 	} */
 
-	if ((use_state && self.aqstate & bit)
-			|| (!use_state && self.aqflags & bit))
+	if (self.vote_flags & bit)
 		count_votes (self.impulse, 0);
 	else
 	{
-		if (use_state)
-			self.aqstate = self.aqstate | bit;
-		else
-			self.aqflags = self.aqflags | bit;
+		self.vote_flags = self.vote_flags | bit;
 		count_votes (self.impulse, 1);
 	}
 };
