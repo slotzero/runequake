@@ -1,0 +1,117 @@
+$Id: Notes,v 1.1 2002/02/21 21:47:40 slotzero Exp $
+
+Source editing and compilation
+
+    The mod builds for both POQ (plain old Quake) and QW (Quake World).
+    The files in the src directory are used to generate files in the poq
+    and qw directories, the latter are what's actually compiled.  You
+    can edit the files in the src directory if you've got a Unix-like
+    system with GNU make and m4 (I usually use Linux, but it also works
+    with Cygwin).  Otherwise, if you just want to make some simple
+    changes and recompile for your server, you should edit the files in
+    the poq or qw directories and compile from there.
+
+DM_WEAPONS_STAY
+
+    Originally I had weapons which were charged with ammo blink
+    occasionally, but this caused them to sometimes disappear and I
+    couldn't fix it.  At Matthew's suggestion I tried raising them
+    up a little when they're full with ammo.  Not only does this not
+    cause any bugs, it's also a nicer effect.
+
+Impulses
+
+    Normally Quake ignores impulse commands while you're in the middle of
+    an attack animation (for most weapons) or while you're attacking at all
+    (for the nail and lightning guns).  This makes things look a little
+    nicer (for the player, because of the weapon animation, and from the
+    outside, because of the player animation).  It causes impulse commands
+    to be lost if more than one is sent to the game before it checks for
+    them, though (only the last one received works).  I've changed it so
+    that the game always pays attention to impulse commands, even if you're
+    in the middle of attacking.
+
+    For most people, the most important thing this will affect is that
+    you can use your rune even while attacking.  Eg, if you shoot a
+    rocket and then activate the shield rune, the shield will come up
+    immediately rather than waiting until the rocket animation finishes.
+
+    Additionally, if you're using a complex binding scheme to do client
+    side switch firing, it will generally work better because the only
+    time an impulse command is lost is when two are sent in the same
+    game tick.  Use the "wait" command to make sure the impulses each
+    arrive in a different tick.
+
+Player entities
+
+    The player entites are numbered from 1 to maxplayers.  (0 is the
+    world edict.)  You use nextent() to access them that way.
+
+Damage
+
+    	    	    	rate	damage		damage/second
+    shotgun		1/0.5	24 max		 48
+    super shotgun	1/0.7	56 max		 80
+    flame		1/0.15	15		100
+    nail		1/0.1	 9		 90
+    lava		1/0.1	 9		 90
+    super nail		1/0.1	18		180
+    grenade		1/0.6	112 approx	186
+    rocket		1/0.8	110 approx	138
+    lightning		1/0.1	30		300
+
+Rune models
+
+    To find the model a rune will get, take the rune number (RN_*),
+    divide by 4, and check the remainder:
+
+    	0 earth magic
+	1 black magic
+	2 hell magic
+	3 elder magic
+
+spawnflags
+
+     256 don't spawn if skill is 0 (easy)
+     512 don't spawn if skill is 1 (medium)
+    1024 don't spawn if skill is 2 (hard) (map specs say "and nightmare", ?)
+    2048 don't spawn if deathmatch != 0
+
+Default gamespy source for POQ servers
+
+    http://www.runequake.com/servers/gamespy-quake
+    http://www.gameaholic.com/servers/qspy-quake
+
+Angles
+
+    pitch	vertical plane, v_angle is negative going up, angle opposite
+    yaw		horizontal plane, -180 to 180, 0 is right at start
+    flip	?
+
+    pitch for v_angle is opposite from pitch for angles.
+
+    vectoangles() works with angles (positive for up pitch) not v_angle:
+    makevectors() works with v_angle
+
+rint()
+
+     -1.9 -> -2
+     -1.5 -> -2
+     -1.1 -> -1
+     -1.0 -> -1
+     -0.9 -> -1
+     -0.5 -> -1
+     -0.1 ->  0
+      0.0 ->  0
+      0.1 ->  0
+      0.5 ->  1
+      0.9 ->  1
+      1.0 ->  1
+      1.1 ->  1
+      1.5 ->  2
+      1.9 ->  2
+
+URLs
+
+    ftp://ftp.runequake.com/quake/idstuff/wq100.zip
+    ftp://ftp.runequake.com/quake/idstuff/quakeworld/qw230.exe

@@ -1,0 +1,694 @@
+// $Id: combat.qc,v 1.1 2002/02/21 21:47:49 slotzero Exp $
+
+/*
+============
+CanDamage
+
+Returns true if the inflictor can directly damage the target.  Used for
+explosions and melee attacks.
+============
+*/
+
+float (entity targ, entity inflictor)
+CanDamage =
+{
+	// bmodels need special checking because their origin is 0,0,0
+	if (targ.movetype == MOVETYPE_PUSH)
+	{
+		traceline (inflictor.origin, 0.5 * (targ.absmin + targ.absmax), TRUE, self);
+		if (trace_fraction == 1)
+			return TRUE;
+		if (trace_ent == targ)
+			return TRUE;
+		return FALSE;
+	}
+
+	traceline (inflictor.origin, targ.origin, TRUE, self);
+	if (trace_fraction == 1)
+		return TRUE;
+	traceline (inflictor.origin, targ.origin + '15 15 0', TRUE, self);
+	if (trace_fraction == 1)
+		return TRUE;
+	traceline (inflictor.origin, targ.origin + '-15 -15 0', TRUE, self);
+	if (trace_fraction == 1)
+		return TRUE;
+	traceline (inflictor.origin, targ.origin + '-15 15 0', TRUE, self);
+	if (trace_fraction == 1)
+		return TRUE;
+	traceline (inflictor.origin, targ.origin + '15 -15 0', TRUE, self);
+	if (trace_fraction == 1)
+		return TRUE;
+
+	return FALSE;
+};
+
+/*
+============
+Killed
+============
+*/
+
+void (entity targ, entity attacker, string dtype)
+Killed =
+{
+	local entity oself, oother;
+
+	oself = self;
+	self = targ;
+
+	if (self.health < -99)
+		self.health = -99;		// don't let sbar look bad if a player
+
+	if (self.movetype == MOVETYPE_PUSH || self.movetype == MOVETYPE_NONE)
+	{	// doors, triggers, etc
+		oother = other;
+		other = attacker;
+		self.th_die ();
+		other = oother;
+		self = oself;
+		return;
+	}
+
+	self.effects = 0;	// quad glow &c
+	self.enemy = attacker;
+
+	// bump the monster counter
+	if (self.flags & FL_MONSTER)
+	{
+		killed_monsters = killed_monsters + 1;
+		WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
+	}
+
+	ClientObituary (self, attacker, dtype);
+	if (!deathmatch & DM_DAMAGE_MATCH)
+		high_track_recalc ();
+
+	self.takedamage = DAMAGE_NO;
+	self.touch = SUB_Null;
+	self.effects = 0;
+
+	monster_death_use ();
+	self.th_die ();
+
+	self = oself;
+};
+
+/*
+============
+T_Damage
+
+The damage is coming from inflictor, but get mad at attacker
+This should be the only function that ever reduces health.
+
+This fucntion returns a boolean which indicates whether any armor or
+health was taken.
+============
+*/
+float (entity targ, entity inflictor, entity attacker, float damage, string dtype)
+T_Damage =
+{
+	local vector dir;
+	local entity oldself;
+	local float save, take, real_take;
+
+	if (!targ.takedamage)
+		return 0;
+
+	// used by buttons and triggers to set activator for target firing
+	damage_attacker = attacker;
+
+	// check for quad damage powerup on the attacker or it's owner
+	// (for pets)
+	if (attacker.super_damage_finished >= time
+			|| attacker.owner.super_damage_finished >= time)
+		damage = damage * 4;
+
+	// environmental protection suit enhancement
+	if (targ.radsuit_finished > time && (inflictor.classname == "deathorb"
+			|| dtype == "lavagun"
+			|| dtype == "flamethrower"))
+		damage = 0;
+
+	if (attacker.runetype)
+	{
+		// impact and lumberjack rune do more
+		if (attacker.runetype == RN_IMPACT
+				|| attacker.runetype == RN_LUMBER)
+			damage = damage * 1.1;
+
+		// Rune of Strength deals twice damage.
+		else if (attacker.runetype == RN_STRENGTH)
+			damage = damage * 2;
+
+		// Berserker rune
+		else if (attacker.runetype == RN_BERSERK)
+			damage = damage * 6;
+
+		// Shambler Helper stuff
+		else if (attacker.runetype == RN_SHAMB && targ == attacker.runent)
+			damage = 0;
+
+		else if (attacker.runetype == RN_JACK)
+			damage = damage * RN_JACK_STRENGTH;
+	}
+
+	if (targ.runetype)
+	{
+		// Athlete's Rune reduces damage slightly
+		if (targ.runetype == RN_ATHLETE)
+			damage = damage * 0.9;
+
+		// The Rune of Resistance cuts damage taken.
+		else if (targ.runetype == RN_RESIST)
+		{
+			damage = damage * 0.5;
+			sound (targ, CHAN_BODY, "items/protect3.wav", 1, ATTN_NORM);
+		}
+
+		else if (targ.runetype == RN_BERSERK)
+			damage = damage * 3;
+
+		// Uncloak when hurt
+		else if (targ.runetype == RN_CLOAK)
+			targ.runetime = time + RECLOAK_DELAY;
+
+		// Enviro rune protections
+		else if (targ.runetype == RN_ENVIRO &&
+				((attacker.solid == SOLID_BSP && attacker != world) ||
+				attacker.classname == "trap_shooter" ||
+				attacker.classname == "fireball" ||
+				inflictor.classname == "deathorb" ||
+				inflictor.classname == "gfire" ||
+				inflictor.classname == "radioactive" ||
+				attacker.classname == "trap_spikeshooter" ||
+				attacker.classname == "trigger_hurt" ||
+				dtype == "barrel" ||
+				dtype == "squish" ||
+				dtype == "lavagun" ||
+				dtype == "flamethrower" ||
+				dtype == "kamikaze"))
+			damage = 0;
+
+		else if (targ.runetype == RN_MONK
+				&& targ.runevar
+				&& attacker.runetype != RN_BERSERK
+				&& dtype != "kamikaze"
+				&& dtype != "bfgtouch"
+				&& dtype != "bfgblast"
+				&& dtype != "teledeath"
+				&& dtype != "teledeath2"
+				&& dtype != "lumber")
+		{
+			damage = 0;
+			monk_protect (targ);
+		}
+
+		else if (targ.runetype == RN_TORCH && attacker.classname == "fireball")
+			damage = 0;
+
+		else if (targ.runetype == RN_JACK)
+		{
+			damage = damage * RN_JACK_RESIST;
+			if (targ.runevar == 1 && targ.runetime < time)
+			{
+				targ.runetime = time + 1;
+				sound (targ, CHAN_BODY, "items/protect3.wav",
+					1, ATTN_NORM);
+				targ.runevar = targ.runevar + 1;
+			}
+		}
+	}
+
+	// I don't want the zombie campers to be killable at all.  If I
+	// just set them to have a large amount of health, though, you
+	// can switch with them to get that health.  I cap the amount of
+	// damage here so they don't have to be able to absorb more than
+	// this at once.  See zombie_pain().
+	if (targ.classname == "zombie_camper" && damage > 90)
+		damage = 90;
+
+	damage = ceil (damage);
+	if (damage == 0)
+		return 0;
+
+	// calculations based on adjusted damage
+	if (attacker.runetype == RN_TORCH && dtype != "burn")
+	{
+		if (random () < TORCH_BURN_ATTACK_CHANCE * damage / 100)
+		{
+			burn_start (targ, attacker,
+					TORCH_BURN_ATTACK_DURATION);
+		}
+	}
+
+	if (0)
+	{
+		bprint_float (time);
+		bprint (" ");
+		bprint_float (damage);
+		bprint (" ");
+		sprint_entity (world, attacker);
+		bprint (" ");
+		sprint_entity (world, targ);
+		bprint (" ");
+		bprint (dtype);
+		bprint ("\n");
+		return;
+	}
+
+	damage_inflictor = inflictor;
+
+	// figure momentum add
+	if (inflictor != world && targ.movetype == MOVETYPE_WALK
+			&& (targ.runetype != RN_MONK || targ == attacker))
+	{
+		dir = targ.origin - (inflictor.absmin + inflictor.absmax) * 0.5;
+		dir = normalize (dir);
+
+		//RUNE SERV: Impact rune pushes more.
+		if (attacker.runetype == RN_IMPACT)
+			targ.velocity = targ.velocity + dir*damage*70;
+		else
+			targ.velocity = targ.velocity + dir*damage*8;
+
+		IN_QW([-
+			// Rocket Jump modifiers
+			if (rj > 1 && targ == attacker)
+				targ.velocity = targ.velocity + dir * damage * rj;
+		-])
+	}
+
+	// Activate self preservation after the momentum change so
+	// rocket jumping works.
+	if (targ.runetype == RN_SELFPRES
+			&& attacker == targ
+			&& damage < SURE_KILL_DAMAGE)
+		damage = 0;
+
+	// save damage based on the target's armor level
+	save = 0;
+
+	if (teamplay & TEAM_ARMOR_PROT
+			&& teamplay & TEAM_SELF_ARMOR_PROT
+			&& targ.team > 0
+			&& targ.team == attacker.team
+			&& dtype != "kamiself")
+		0;
+	else if (teamplay & TEAM_ARMOR_PROT
+			&& targ.team > 0
+			&& targ.team == attacker.team
+			&& targ != attacker)
+		0;
+	else if (targ.armorvalue == 0)
+		0;
+	else if (attacker.runetype == RN_PIERCING && targ.runetype != RN_ENVIRO)
+		sound (targ, CHAN_AUTO, "weapons/ric1.wav", 1, ATTN_NORM);
+	else
+	{
+		save = ceil (targ.armortype * damage);
+		if (attacker.runetype == RN_JACK)
+		{
+			save = ceil (save * RN_JACK_PIERCING);
+			if (attacker.runevar == 3)
+			{
+				sound (targ, CHAN_AUTO, "weapons/ric1.wav",
+					1, ATTN_NORM);
+				attacker.runevar = attacker.runevar + 1;
+			}
+		}
+		if (save >= targ.armorvalue)
+		{
+			// lost all armor
+			save = targ.armorvalue;
+			targ.armortype = 0;
+			targ.items = targ.items
+				- (targ.items & (IT_ARMOR1 | IT_ARMOR2
+							| IT_ARMOR3));
+		}
+
+		// When calculating armor damage, make sure there is at least
+		// 1 health point taken away.
+		if (damage > 0 && damage - save == 0)
+		{
+			if (damage == 1)
+				damage = 2;
+			else
+				save = save - 1;
+		}
+	
+		targ.armorvalue = targ.armorvalue - save;
+		if (targ.runetype == RN_ARMOR)
+			good_armor_set_armor_items_e (targ);
+	}
+	take = damage - save;
+
+	// god mode
+	if (targ.flags & FL_GODMODE)
+		take = 0;
+
+	// invincibility
+	else if (targ.invincible_finished >= time
+			|| targ.owner.invincible_finished >= time)
+	{
+		if (self.invincible_sound < time)
+		{
+			sound (targ, CHAN_ITEM, "items/protect3.wav", 1, ATTN_NORM);
+			self.invincible_sound = time + 2;
+		}
+		take = 0;
+	}
+
+	// team play damage avoidance
+	else if (teamplay & TEAM_HEALTH_PROT
+			&& teamplay & TEAM_SELF_HEALTH_PROT
+			&& targ.team > 0
+			&& targ.team == attacker.team
+			&& dtype != "kamiself")
+		take = 0;
+	else if (teamplay & TEAM_HEALTH_PROT
+			&& targ.team > 0
+			&& targ.team == attacker.team
+			&& targ != attacker)
+		take = 0;
+
+	if (take > targ.health)
+		real_take = targ.health;
+	else
+		real_take = take;
+
+	// damage match
+	if (deathmatch & DM_DAMAGE_MATCH
+			&& targ.takedamage == DAMAGE_AIM
+			&& dtype != "kamiself"
+			&& dtype != "teamchange"
+			&& dtype != "admin-kill")
+		see_damage (attacker, targ, save + real_take);
+
+	// Vampiric Rune gives back, but only the actual health taken
+	// (not armor, and none for invincible players or teammates in
+	// protected mode).  XXX The server crashes when two vampires
+	// telefrag each other.  I guess this is because they both
+	// try to respawn in the same spot?  I've also got reports that
+	// this happens to targs with rune types other than vamp so I
+	// just prevent healing on teledeath entirely.
+	if (attacker.runetype == RN_VAMP && targ.runetype != RN_ENVIRO
+			&& dtype != "teledeath")
+		Vamp_Heal (attacker, targ, real_take);
+
+	// Vengeance Rune does equal damage back to the attacker, but
+	// cap damage so it doesn't exceed targ's armor/health unless
+	// it is excessive.  (SURE_KILL_DAMAGE)
+	if (targ.runetype == RN_VENG
+			&& attacker != targ
+			&& attacker != world
+			&& attacker.runetype != RN_VENG
+			&& attacker.runetype != RN_SELFPRES)
+		if (damage >= SURE_KILL_DAMAGE)
+			T_Damage (attacker, targ, targ, SURE_KILL_DAMAGE, "vengeance");
+		else
+			T_Damage (attacker, targ, targ, real_take + save, "vengeance");
+
+	// add to the damage total for clients, which will be sent as a
+	// single message at the end of the frame
+	// FIXME: remove after combining shotgun blasts?
+	//
+	// This is what controls the red pain flash and view jerk, but
+	// not the velocity change.  I don't want to trigger these two
+	// unless you're really going to be hurt (either health or
+	// armor, important in some team modes), so I've moved this to
+	// after the actual calculation of whether you're actually
+	// going to take damage.  In that case take and save are both
+	// 0, so no red flash.
+	if (targ.flags & FL_CLIENT)
+	{
+		targ.dmg_take = targ.dmg_take + take;
+		targ.dmg_save = targ.dmg_save + save;
+		targ.dmg_inflictor = inflictor;
+
+		// Put it on riders, too, so they get the flash and
+		// jerk.
+		if (targ.aqstate & AQS_HAS_RIDERS)
+		{
+			local entity e;
+
+			e = find (world, classname, "player");
+			while (e)
+			{
+				if (ridee_e (e) == targ)
+				{
+					e.dmg_take = targ.dmg_take;
+					e.dmg_save = targ.dmg_save;
+					e.dmg_inflictor = inflictor;
+				}
+				e = find (e, classname, "player");
+			}
+		}
+	}
+
+	if (take == 0)
+		return save > 0;
+
+	// do the damage
+	targ.health = targ.health - take;
+
+	// useful for determining player pain and death sounds
+	if (targ.classname == "player")
+		targ.damage_type = dtype;
+
+	if (targ.health <= 0)
+	{
+		//RUNE SERV: Shambler teleports to owner if takes enough health.
+		if (targ.classname == "shambler_slave")
+		{
+			shambler_slave_respawn (targ, 1);
+			return 1;
+		}
+
+		if (targ.classname == "zombie_camper"
+				&& targ.owner.runevar == RN_ZOMBIE
+				&& targ.owner.runetime <= targ.runetime
+				&& targ.owner.runevar > 0)
+			targ.owner.runevar = targ.owner.runevar - 1;
+
+		if (targ.classname == "player")
+			stuffcmd (targ, CSHIFT_NONE);
+
+		if (targ.runetype != 0)
+		{
+			//RUNE SERV: Radioactive types irradiate when killed
+			if (targ.runetype == RN_RADIO)
+			{
+				local entity stemp;
+				stemp = self; self = targ;
+				Rune_Radio ();
+				self = stemp;
+			}
+
+			//RUNE SERV: Weird bubbles when killed
+			else if (targ.runetype == RN_WEIRD)
+			{
+				oldself = self;
+				self = targ;
+				self.runevar = 0;
+				while (self.runevar < 7)
+				{
+					self.runevar = self.runevar + 1;
+					Spawn_Weird ();
+					self.runent.nextthink = self.runent.nextthink + 5;
+				}
+				self = oldself;
+			}
+
+			else if (targ.runetype == RN_SHAMB)
+			{
+				shambler_slave_retribution (targ.runent,
+								attacker);
+			}
+
+			if (!temp1 & T1_NO_DROP_ON_DEATH
+
+				// I disabled the bomb just because of
+				// the exploding aspect.  There's a good
+				// chance it would do bad things to
+				// gameplay as well, but I always had it
+				// disabled so I don't know empirically.
+					&& targ.runetype != RN_BOMB
+
+				// You can't drop this else the phoenix
+				// runes multiply (since she spawns with
+				// it in addition to dropping it).
+					&& targ.runetype != RN_PHOENIX
+
+				// People tend to kill themselves with
+				// death spots, if they then drop it you
+				// get huge concentrations of death
+				// spots.
+					&& targ.runetype != RN_DSPOTS)
+
+				Rune_Spawn (targ.origin, 0, 0, 0, targ.runetype, targ, attacker);
+		}
+
+		Killed (targ, attacker, dtype);
+		return 1;
+	}
+
+	//
+	// REACT TO THE DAMAGE
+	//
+
+	oldself = self;
+	self = targ;
+
+	// monsters: get mad unless of the same class (except for soldiers)
+	if ((self.flags & FL_MONSTER) && attacker != world)
+	{
+		if (ai_valid_enemy (attacker) && attacker != self.enemy)
+		{
+			if ((self.classname != attacker.classname)
+			|| (self.classname == "monster_army"))
+			{
+				if (self.enemy.classname == "player")
+					self.oldenemy = self.enemy;
+				self.enemy = attacker;
+				FoundTarget ();
+			}
+		}
+	}
+
+	// all: show pain and play pain sound
+	if (self.th_pain)
+		self.th_pain (attacker, take);
+
+	self = oldself;
+	return 1;
+};
+
+/*
+============
+T_RadiusDamage
+============
+*/
+void (float attn, entity inflictor, entity attacker, float damage, entity ignore, string dtype)
+T_RadiusDamage =
+{
+	local	float 	dist, save, points;
+	local	entity	head;
+	local	vector	org;
+
+	if (attn == RADIUS_150)
+		dist = 10000;
+	else if (attn == RADIUS_MORTAR)
+		dist = MORTAR_RADIUS;
+	else
+		dist = damage+40;
+	head = findradius (inflictor.origin, dist);
+
+	while (head)
+	{
+		if (head != ignore)
+		{
+			if (head.takedamage)
+			{
+				org = head.origin + (head.mins + head.maxs)*0.5;
+				dist = vlen (inflictor.origin - org);
+				points = damage;
+				save = 0;
+				// Full strength up to 150 units, then
+				// dropping off linearly.
+				if (attn == RADIUS_150)
+				{
+					if (dist > 150)
+						points = damage * 150 / dist;
+				}
+				else if (attn == RADIUS_MORTAR)
+					save = MORTAR_TAPER * dist;
+				// Save a half point for each unit of
+				// distance.
+				else
+					save = 0.5 * dist;
+				if (save < 0)
+					save = 0;
+				points = points - save;
+				if (0)
+				{
+					bprint ("dist ");
+					bprint_float (dist);
+					bprint (" save ");
+					bprint_float (save);
+					bprint (" points ");
+					bprint_float (points);
+					bprint ("\n");
+				}
+				if (head == attacker
+						&& monk_radius_hack
+						&& dtype != "mortar")
+					points = points * 0.5;
+				if (head.runetype == RN_MONK
+						&& head != attacker
+						&& attacker.runetype != RN_BERSERK
+						&& monk_radius_hack)
+				{
+					points = 0;
+					monk_protect (head);
+				}
+				else if (head.runetype == RN_TORCH
+						&& dtype == "ftrapexplode")
+					points = 0;
+				else if (discharge_hack
+					&& ((deathmatch & DM_NO_DISCHARGE
+							&& head != attacker)
+						|| head.waterlevel == 0))
+					points = 0;
+				if (points > 0)
+				{
+					if (CanDamage (head, inflictor))
+					{	// shambler takes half damage from all explosions
+						if (head.classname == "monster_shambler")
+							T_Damage (head, inflictor, attacker, points*0.5, dtype);
+						else
+							T_Damage (head, inflictor, attacker, points, dtype);
+					}
+				}
+			}
+		}
+		head = head.chain;
+	}
+};
+
+/*
+============
+T_BeamDamage
+============
+*/
+void (entity attacker, float damage, string dtype)
+T_BeamDamage =
+{
+	local	float 	points;
+	local	entity	head;
+
+	head = findradius (attacker.origin, damage+40);
+
+	while (head)
+	{
+		if (head.takedamage)
+		{
+			points = 0.5*vlen (attacker.origin - head.origin);
+			if (points < 0)
+				points = 0;
+			points = damage - points;
+			if (head == attacker)
+				points = points * 0.5;
+			if (points > 0)
+			{
+				if (CanDamage (head, attacker))
+				{
+					if (head.classname == "monster_shambler")
+						T_Damage (head, attacker, attacker, points*0.5, dtype);
+					else
+						T_Damage (head, attacker, attacker, points, dtype);
+				}
+			}
+		}
+		head = head.chain;
+	}
+};

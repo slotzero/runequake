@@ -1,0 +1,171 @@
+// $Id: bomb.qc,v 1.1 2002/02/21 21:47:48 slotzero Exp $
+//
+// Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
+// See the file `Copying' in the distribution for terms.
+
+// The idea for this weapon comes from W. Harris' DM Plus mod.  I looked
+// at his source code to get the specific sounds and damages and such
+// that he used, but since I couldn't find the copyright for the code I
+// implemented it from scratch.
+
+void ()
+W_Bomb =
+{
+	local entity e;
+
+	makevectors (self.v_angle);
+
+	e = spawn ();
+	e.classname = "bomb";
+	e.owner = self;
+	e.solid = SOLID_BBOX;
+	e.movetype = MOVETYPE_FLYMISSILE;
+	e.velocity = 1000 * aim (e.owner, 1000);
+	e.angles = vectoangles (e.velocity);
+	e.touch = bomb_arm;
+	e.enemy = world;
+
+	setmodel (e, "progs/missile.mdl");
+	setsize (e, VEC_ORIGIN, VEC_ORIGIN);
+	setorigin (e, self.origin + v_forward*8 + PLAYER_WEAPON_OFFSET);
+
+	sound (self, CHAN_WEAPON, "weapons/rocket1i.wav", 1, ATTN_NORM);
+
+	e.think = SUB_Remove;
+	e.nextthink = time + 60;
+};
+
+void ()
+bomb_arm =
+{
+	self.touch = SUB_Null;
+
+	if (pointcontents (self.origin) == CONTENT_SKY)
+	{
+		remove (self);
+		return;
+	}
+
+	// If it stricks a person or monster, do some damage plus stick
+	// to it as it moves around.
+	if (other.takedamage == DAMAGE_AIM)
+	{
+		T_Damage (other, self, self.owner, 30, "bombhit");
+		self.runevar = 1;
+		self.enemy = other;
+
+		// v_angle is used to keep the bomb pointing in the
+		// right direction.  It stores the difference between
+		// the bomb's angles and the target's angles, then this
+		// is added to the target's current angles to get the
+		// bomb's current angles.
+
+		self.v_angle	= self.angles - self.enemy.angles;
+
+		// runevector and runetime doe a similar thing for
+		// position.  I find the angles between the bomb's
+		// position and the target's origin, and I save the
+		// distance between the two.
+
+		self.runevector	= self.origin - self.enemy.origin;
+		self.runetime	= vlen (self.runevector);
+		self.runevector	= vectoangles (self.runevector);
+		self.runevector	= self.runevector - self.enemy.angles;
+
+		if (self.runetime > 15)
+			self.runetime = 15;
+	}
+	else
+		self.runevar = 0;
+
+	// dropdelay is tick time
+	// ltime is explode time
+	if (self.owner.runetype == RN_HASTE)
+		self.ltime = time + 2.5;
+	else if (self.owner.runetype == RN_JACK)
+		self.ltime = time + 4.375;
+	else
+		self.ltime = time + 5;
+
+	self.velocity = VEC_ORIGIN;
+	self.think = bomb_tick;
+	self.dropdelay = self.nextthink = time;
+};
+
+void ()
+bomb_tick =
+{
+	local vector a;
+	local float timeleft;
+
+	if (pointcontents (self.origin) == CONTENT_SOLID)
+	{
+		remove (self);
+		return;
+	}
+
+	if (self.runevar && (self.enemy.health <= 0
+			|| self.enemy.origin == '0 0 0'))
+	{
+		self.velocity = self.enemy.velocity;
+		self.movetype = MOVETYPE_TOSS;
+		self.runevar = 0;
+	}
+
+	if (self.runevar)
+	{
+		// XXX I'm not sure this is quite right for differences
+		// in pitch.
+
+		self.angles = self.enemy.angles + self.v_angle;
+
+		// XXX I know this fails for differences in pitch if
+		// the bomb strikes the player from behind (but it
+		// works otherwise).  I spent a long time trying to
+		// make this work right and this was the best I came up
+		// with before getting too tired of it.
+
+		// makevectors() uses e.v_angle-style angles rather than
+		// e.angles-style.  The pitch goes the other way.
+		a = self.enemy.angles + self.runevector;
+		a_x = 0 - a_x;
+		makevectors (a);
+		setorigin (self, self.enemy.origin
+					+ v_forward * self.runetime);
+	}
+
+	if (self.ltime <= time)
+	{
+		bomb_explode ();
+		return;
+	}
+
+	if (self.dropdelay <= time)
+	{
+		if (self.owner.runetype != RN_CLOAK)
+		{
+			sound (self, CHAN_WEAPON, "doors/runetry.wav",
+				1, ATTN_NORM);
+		}
+
+		timeleft = self.ltime - time;
+		timeleft = (timeleft + 1) / 5;
+		self.dropdelay = time + timeleft;
+	}
+
+	if (self.runevar)
+		self.nextthink = time + TICK;
+	else
+		self.nextthink = self.dropdelay;
+};
+
+void ()
+bomb_explode =
+{
+	if (self.runevar)
+		T_Damage (self.enemy, self, self.owner, 100, "bombed");
+	else
+		self.enemy = world;
+	T_RadiusDamage (RADIUS_150, self, self.owner, 150, self.enemy, "bomb");
+	create_te_explosion (self.origin, 1);
+};

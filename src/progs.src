@@ -1,0 +1,65 @@
+// $Id: progs.src,v 1.1 2002/02/21 21:47:57 slotzero Exp $
+
+PROGS_FILE
+
+defs.qc
+settings.qc
+func.qc
+version.qc
+subs.qc
+fight.qc
+ai.qc
+combat.qc
+items.qc
+weapons.qc
+world.qc
+client.qc
+player.qc
+
+runes10.qc
+runes20.qc
+runes30.qc
+runes40.qc
+runes50.qc
+runeserv.qc
+
+admin.qc
+bfg.qc
+bomb.qc
+burn.qc
+engine.qc
+hook.qc
+lp.qc
+map-auto.qc
+map.qc
+menu.qc
+observer.qc
+rjs.qc
+team.qc
+
+monsters.qc
+doors.qc
+buttons.qc
+triggers.qc
+plats.qc
+misc.qc
+
+// The //nomonster comments are used by the Makefile to build the version
+// with monsters.
+
+nomonst.qc
+//nomonster ogre.qc
+//nomonster demon.qc
+shambler.qc
+//nomonster knight.qc
+//nomonster soldier.qc
+//nomonster wizard.qc
+//nomonster dog.qc
+zombie.qc
+//nomonster boss.qc
+//nomonster tarbaby.qc		// registered
+//nomonster hknight.qc		// registered
+//nomonster fish.qc		// registered
+//nomonster shalrath.qc		// registered
+//nomonster enforcer.qc		// registered
+//nomonster oldone.qc		// registered

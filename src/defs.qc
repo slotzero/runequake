@@ -1,0 +1,1266 @@
+// $Id: defs.qc,v 1.1 2002/02/21 21:47:49 slotzero Exp $
+
+/*
+==============================================================================
+
+			SOURCE FOR GLOBALVARS_T C STRUCTURE
+
+==============================================================================
+*/
+
+//
+// system globals
+//
+entity		self;
+entity		other;
+entity		world;
+float		time;
+float		frametime;
+
+IN_QW([-
+entity          newmis;                         // if this is set, the entity that just
+								// run created a new missile that should
+								// be simulated immediately
+-])
+
+float		force_retouch;		// force all entities to touch triggers
+								// next frame.  this is needed because
+								// non-moving things don't normally scan
+								// for triggers, and when a trigger is
+								// created (like a teleport trigger), it
+								// needs to catch everything.
+								// decremented each frame, so set to 2
+								// to guarantee everything is touched
+string		mapname;
+
+IN_POQ([-
+float		deathmatch;
+float		coop;
+float		teamplay;
+-])
+
+float		serverflags;		// propagated from level to level, used to
+								// keep track of completed episodes
+
+float		total_secrets;
+float		total_monsters;
+
+float		found_secrets;		// number of secrets found
+float		killed_monsters;	// number of monsters killed
+
+// spawnparms are used to encode information about clients across server
+// level changes
+float		parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16;
+
+//
+// global variables set by built in functions
+//
+vector		v_forward, v_up, v_right;	// set by makevectors()
+
+// set by traceline / tracebox
+float		trace_allsolid;
+float		trace_startsolid;
+float		trace_fraction;
+vector		trace_endpos;
+vector		trace_plane_normal;
+float		trace_plane_dist;
+entity		trace_ent;
+float		trace_inopen;
+float		trace_inwater;
+
+entity		msg_entity;				// destination of single entity writes
+
+//
+// required prog functions
+//
+void () main;						// only for testing
+
+void ()	StartFrame;
+
+void () PlayerPreThink;
+void () PlayerPostThink;
+
+void ()	ClientKill;
+void ()	ClientConnect;
+void () PutClientInServer;				// call after setting the parm1... parms
+void ()	ClientDisconnect;
+
+// called when a client first connects to a server. sets parms so they
+// can be saved off for restarts
+void ()	SetNewParms;
+
+// call to set parms for self so they can be saved for a level transition
+void ()	SetChangeParms;
+
+//================================================
+void		end_sys_globals;		// flag for structure dumping
+//================================================
+
+/*
+==============================================================================
+
+			SOURCE FOR ENTVARS_T C STRUCTURE
+
+==============================================================================
+*/
+
+//
+// system fields (*** = do not set in prog code, maintained by C code)
+//
+.float		modelindex;		// *** model index in the precached list
+.vector		absmin, absmax;	// *** origin + mins / maxs
+
+.float		ltime;			// local time for entity
+IN_QW([-
+.float          lastruntime;    // *** to allow entities to run out of sequence
+-])
+.float		movetype;
+.float		solid;
+
+.vector		origin;			// ***
+.vector		oldorigin;		// ***
+.vector		velocity;
+.vector		angles;
+.vector		avelocity;
+
+IN_POQ([-
+.vector		punchangle;		// temp angle adjust from damage or recoil
+-])
+
+.string		classname;		// spawn function
+.string		model;
+.float		frame;
+.float		skin;
+.float		effects;
+
+.vector		mins, maxs;		// bounding box extents reletive to origin
+.vector		size;			// maxs - mins
+
+.void ()		touch;
+.void ()		use;
+.void ()		think;
+.void ()		blocked;		// for doors or plats, called when can't push other
+
+.float		nextthink;
+.entity		groundentity;
+
+// stats
+.float		health;
+.float		frags;
+.float		weapon;			// one of the IT_SHOTGUN, etc flags
+.string		weaponmodel;
+.float		weaponframe;
+.float		currentammo;
+.float		ammo_shells, ammo_nails, ammo_rockets, ammo_cells;
+
+.float		items;			// bit flags
+
+.float		takedamage;
+.entity		chain;
+.float		deadflag;
+
+.vector		view_ofs;			// add to origin to get eye point
+
+.float		button0;		// fire
+.float		button1;		// use
+.float		button2;		// jump
+
+.float		impulse;		// weapon changes
+
+.float		fixangle;
+.vector		v_angle;		// view / targeting angle for players
+IN_POQ([-
+.float		idealpitch;		// calculated pitch angle for lookup up slopes
+-])
+
+.string		netname;
+
+.entity 	enemy;
+
+.float		flags;
+
+.float		colormap;
+.float		team;
+
+.float		max_health;		// players maximum health is stored here
+
+.float		teleport_time;	// don't back up
+
+.float		armortype;		// save this fraction of incoming damage
+.float		armorvalue;
+
+.float		waterlevel;		// -1 = dead (?), 0 = not in, 1 = feet, 2 = wast, 3 = eyes
+.float		watertype;		// a contents value
+
+.float		ideal_yaw;
+.float		yaw_speed;
+
+.entity		aiment;
+
+.entity 	goalentity;		// a movetarget or an enemy
+
+.float		spawnflags;
+
+.string		target;
+.string		targetname;
+
+// damage is accumulated through a frame. and sent as one single
+// message, so the super shotgun doesn't generate huge messages
+.float		dmg_take;
+.float		dmg_save;
+.entity		dmg_inflictor;
+
+.entity		owner;		// who launched a missile
+.vector		movedir;	// mostly for doors, but also used for waterjump
+
+.string		message;		// trigger messages
+
+.float		sounds;		// either a cd track number or sound number
+
+.string		noise, noise1, noise2, noise3;	// contains names of wavs to play
+
+//================================================
+void		end_sys_fields;			// flag for structure dumping
+//================================================
+
+/*
+==============================================================================
+
+				VARS NOT REFERENCED BY C CODE
+
+==============================================================================
+*/
+
+/****************\
+* Rune Serv vars *
+\****************/
+
+// Global total rune var and current in-level var
+float runemax;
+float runecurrent;
+
+// Param for every so often, a new rune enters the level.
+float runespawntime;
+
+// Needed for SelectSpawnPoint, but I'm not sure why it can't be local
+entity runespawn;
+
+// Each players' rune type. Runes' runetype used for what they are.
+.float runetype;
+
+// Time at which you can drop your rune.  If negative, you've already
+// requested the drop, this is 0 - the time it will be dropped.
+.float dropdelay;
+
+// vars for 'special' things that different runes do.
+.entity runent;
+
+// For players, various functions based on rune.  For observers, time at
+// which to tell ridee of new rider.  For weapons, time at which it will
+// be charged in DM_WEAPONS_STAY mode.
+.float runetime;
+// For players, various functions based on rune.  For observers, time at
+// which joined game queue.  For weapons, primary model index.
+.float runevar;
+.vector runevector;
+
+// various per-player flags, some retained accross levels
+.float aqflags;
+
+// state information, not retained accross levels
+.float aqstate;
+
+// if 0 player hasn't suicided yet this level, if positive the time of
+// the last suicide.
+.float last_suicide;
+
+// For players, keeps count of existing rune related entities.  For observers,
+// length of time to centerprint display player identification.
+.float class_cnt;
+
+// For players, holds the number of the player to perform an admin action against.
+.float admin_victim_num;
+
+// Countdown timer.
+float countdown;
+
+// If true the T_RadiusDamage() won't harm people out of water.  This is
+// a hack to restrict lightning gun discharge to harming people in the
+// water.  It isn't perfect in that it doesn't require the water the
+// victim is in to be connected to the water the attacker is in.
+float discharge_hack;
+
+// A similar hack.  Monks are protected against a couple of kinds of radius
+// damage.  This is set when one of those is calling T_RadiusDamage().
+float monk_radius_hack;
+
+// Another hack.  This one tells the spawn functions not to precache
+// their models.  It's used to call the spawn functions after the level
+// has started.  You're responsible for precaching the models yourself.
+float spawn_no_precache;
+
+// Another hack!  This communicates to centerprint() that it's really the
+// HUD that's being output, so don't update the hud refresh time.
+float in_hud_hack;
+
+// This is used similarly for printing the rune description.
+float in_runedesc_hack;
+
+// This allows me to use the same function to forward players
+// via the admin menu or by amount of players.
+float check_forward;
+
+// This is used to return a second value from team_stats_1().
+float team_stats_1_lead;
+float NO_FRAGS = -23000;
+
+// Various cvars initialized only at the start of the level.
+float sys_ticrate;
+float sv_gravity;
+
+// Used to save off the serverflags to prevent the start map hole, yet
+// still detect when its time to play the DM maps.
+float orig_serverflags;
+
+// In T1_LITHIUM_HOOK mode, this counts the number of hooks either held
+// by players or lying on the ground.
+float current_hooks;
+
+// XXX BFG hack
+.float last_bfg_zap;
+
+// Track the amount of damage done by each player in DM_DAMAGE_MATCH
+// mode.
+.float damage_done;
+
+// Hack used to simply add_frag() handling.
+float damage_match_hack;
+
+// This is a hack used to detect phantom players.  There are circumstances
+// in which a player can be disconnected yet ClientDisconnect() never
+// runs.  In this case the game doesn't think for the player, so I detect
+// such a player by their not having thought for a while.
+//
+// XXX This should be extended a bit, perhaps a periodic check for such
+// players (this can be fast because you only have to check the first
+// maxplayers entities) and manual ClientDisconnect() for them.
+.float last_thought;
+
+// This is used by Qsmack to prevent kick races as players leave and join.
+float qsmack_status_valid;
+
+// If this is set it's used as the next map no matter what.  It's used
+// by the admin map changing code.
+string forced_nextmap;
+
+// Weighted frag rate and the counter used to compute it
+.float frag_rate;
+.float recent_frags;
+float update_frag_rates_time;
+
+// Rune constants (NONE MAY BE OVER 100!)
+float RN_HEALTH		= 1;
+float RN_REGEN		= 2;
+float RN_RESIST		= 3;
+float RN_HASTE		= 4;
+float RN_ENVIRO		= 5;
+float RN_FLY		= 6;
+float RN_BERSERK	= 7;
+float RN_RECALL		= 8;
+float RN_ZAP		= 9;
+float RN_CLOAK		= 10;
+float RN_BOMB		= 11;
+float RN_DSPOTS		= 12;
+float RN_HOLO		= 13;
+float RN_ORB		= 14;
+float RN_BLINK		= 15;
+float RN_CAMO		= 16;
+float RN_JUMP		= 17;
+float RN_AMMO		= 18;
+float RN_VAMP		= 19;
+float RN_SHIELD		= 20;
+float RN_STRENGTH	= 21;
+float RN_RADIO		= 22;
+float RN_SWITCH		= 23;
+float RN_FREEZE		= 24;
+float RN_SUCK		= 25;
+float RN_TWALK		= 26;
+float RN_IMPACT		= 27;
+float RN_VENG		= 28;
+float RN_SHUB		= 29;
+float RN_REPEL		= 30;
+float RN_PHASE		= 31;
+float RN_SHAMB		= 32;
+float RN_DUAL		= 33;
+float RN_WEIRD		= 34;
+float RN_PHOENIX	= 35;
+float RN_CLOUD		= 36;
+float RN_FIREWALK	= 37;
+float RN_HOOK		= 38;
+float RN_ATHLETE	= 39;
+float RN_LUMBER		= 40;
+float RN_ZOMBIE		= 41;
+float RN_PIERCING	= 42;
+float RN_SELFPRES	= 43;
+float RN_MONK		= 44;
+float RN_TORCH		= 45;
+float RN_PACK_RAT	= 46;
+float RN_ARMOR		= 47;
+float RN_QUAD		= 48;
+float RN_JACK		= 49;
+float RN_MAX		= 49;
+
+// Only partially runes.
+
+float RN_LITHIUM_HOOK	= 50;
+float RN_MAX_ALL	= 50;
+
+// impulses
+
+//    1-8 weapon selection
+//      9 idkfa cheat
+//     10 next weapon
+//     11 serverflags cheat
+//     12 previous weapon
+//     20 don't use (drop ammo in CTF)
+//     21 don't use (drop weapon in CTF)
+//     22 don't use (grapple in CTF)
+//     23 don't use (flag info in CTF)
+//    255 quad cheat
+
+float IMP_SHOW_POS		= 192;
+float IMP_RUNE_CHEAT_BASE	= 101;
+float IMP_RUNE_USE		= 100;
+float IMP_RUNE_TELL		= 99;
+float IMP_RUNE_DELETE		= 98;
+float IMP_SHOW_PLAYERS		= 97;
+float IMP_SHOW_RIDERS		= 96;
+float IMP_FIX_BATMAN		= 95;
+float IMP_SHOW_SETTINGS		= 94;
+float IMP_DISP_INFO		= 93;
+float IMP_BEST_WEAPON		= 92;
+float IMP_ADMIN_TOGGLE		= 91;
+float IMP_RIDER_HIDE		= 90;
+float IMP_EXIT_LEVEL		= 89;
+float IMP_HOOK_ON		= 88;
+float IMP_HOOK_OFF		= 87;
+float IMP_WEAPON_MODE		= 86;
+float IMP_ADMIN_KICK		= 85;
+//float				= 84;
+float IMP_DISP_INFO_ALL		= 83;
+float IMP_REMOVE_FRAGS		= 82;
+float IMP_HUD_TOGGLE		= 81;
+float IMP_TEAM_ROTATE		= 80;
+float IMP_ADMIN_KILL		= 79;
+float IMP_ADMIN_RUNE_DELETE	= 78;
+float IMP_QUIET_TOGGLE		= 77;
+float IMP_HOOK_TOGGLE		= 76;
+float IMP_ADMIN_TEAM_CHANGE_TOGGLE = 75;
+float IMP_WEAPON_TOGGLES	= 74;
+// reserve 73 for QSMACK_IMPULSE_1
+float IMP_VOTE_EXIT		= 72;
+float IMP_TEAM_STATS		= 71;
+float IMP_ADMIN_CHANGE_MAP	= 70;
+float IMP_VOTE_TEAM		= 69;
+float IMP_ADMIN_TEAM_CHANGE	= 68;
+float IMP_ADMIN_JOIN		= 67;
+
+// Admin Menu 2
+float IMP_ADMIN_FORWARD		= 66;
+//float IMP_ADMIN_DISCONNECT	= 65; [FREE]
+float IMP_ADMIN_UNBIND		= 64;
+float IMP_ADMIN_RENAME		= 63;
+float IMP_ADMIN_EYES		= 62;
+float IMP_ADMIN_VOTE_TEAM_TOGGLE = 61;
+float IMP_ADMIN_TEAMPLAY_ZERO	= 60;
+float IMP_ADMIN_CYCLE		= 59;
+float IMP_ADMIN_CYCLE_SHOW	= 58;
+
+float IMP_SWITCHFIRE_OFF	= 40;
+float IMP_SWITCHFIRE_BASE	= 41;
+float IMP_SWITCHFIRE_COUNT	= 16;
+float IMP_SWITCHFIRE_BEST	= 57;
+float IMP_WEAPON_BASE		= 161;
+float IMP_WEAPON_START		= 1;
+float IMP_WEAPON_COUNT		= 16;
+
+float IMP_QSMACK_LOOKING	= 220;
+float IMP_QSMACK_KICK_BASE	= 221;
+float IMP_QSMACK_KICK_COUNT	= 16;
+float IMP_QSMACK_COMMAND	= 237;
+
+
+// deathmatch flags
+float DM_RESPAWN		= 1;
+float DM_WEAPONS_STAY		= 2;
+float DM_LONG_QUAD_RESPAWN	= 4;
+float DM_QUAD_REPLACEMENT	= 8;
+float DM_PENT_REPLACEMENT	= 16;
+float DM_LAN_MODE		= 32;
+float DM_EXIT_NON_FATAL		= 64;
+float DM_NO_DISCHARGE		= 128;
+float DM_NO_DROP_POWERUP	= 256;
+float DM_NO_ALT_WEAPONS		= 512;
+float DM_NO_DROP_ARMOR		= 1024;
+float DM_DAMAGE_MATCH		= 2048;
+
+// This mask includes the DM_* bits which indicates that the game is in
+// an actual deathmatch mode.  Bits other than these make sense in
+// single player or coop mode.
+//
+// 1 + 2 + 4 + 64
+float DM_DM_MASK = 71;
+
+// teamplay flags
+float TEAM_HEALTH_PROT	= 1;
+float TEAM_FRAG_PENALTY	= 2;
+float TEAM_ARMOR_PROT	= 4;
+float TEAM_ENFORCE_MASK	= 24;
+float TEAM_2_TEAMS	= 8;
+float TEAM_3_TEAMS	= 16;
+float TEAM_4_TEAMS	= 24;
+float TEAM_MATCH_MODE	= 32;
+float TEAM_CHANGE_MASK	= 192;
+float TEAM_CHANGE_NONE	= 0;
+float TEAM_CHANGE_ANY	= 64;
+float TEAM_CHANGE_TOPDOG = 128;
+float TEAM_NO_VOTE	= 256;
+float TEAM_SELF_HEALTH_PROT = 512;
+float TEAM_SELF_ARMOR_PROT = 1024;
+
+// This masks teamplay bits which actually correspond to a team mode,
+// like DM_DM_MASK.
+//
+// 1 + 2 + 4 + 24
+float TEAM_TEAM_MASK = 31;
+
+// noexit flags.  New flags should just control the logic used to select
+// the next map, else update the logic in changelevel_touch().
+float noexit;
+float NOEXIT_NO_EXITING			= 1;
+float NOEXIT_ALLOW_EXITING_START	= 2;
+float NOEXIT_RANDOMIZE			= 4;
+float NOEXIT_CHOOSE_BY_NPLAYERS		= 8;
+float NOEXIT_MARLINSPIKE_LEVELS		= 16;
+float NOEXIT_DM_NO_LOOP			= 32;
+float NOEXIT_FORWARD_MULT		= 64;
+float NOEXIT_FORWARD_MASK		= 960;
+
+// aqflags flags (saved accross levels)
+float AQ_INIT_DONE	= 1;
+float AQ_TEAM_MASK	= 14;	// bits 2, 4, 8, but currently only 6 values
+float AQ_TEAM_NIL	= 2;
+float AQ_TEAM_1		= 4;
+float AQ_TEAM_2		= 6;
+float AQ_TEAM_3		= 8;
+float AQ_TEAM_4		= 10;
+float AQ_OBSERVER	= 16;
+float AQ_NAME_WARN	= 32;
+float AQ_KICKED		= 64;
+float AQ_ADMIN		= 128;
+float AQ_RIDER_HIDE	= 256;
+
+// The AQ_ALT_* bits provide one of the interfaces to weapon selection.
+// They're used to select which weapon the user gets when she uses one
+// of the standard weapon selection impulses (1-8).
+float AQ_ALT_1		= 512;
+float AQ_ALT_2		= 1024;
+float AQ_ALT_3		= 2048;
+float AQ_ALT_4		= 4096;
+float AQ_ALT_5		= 8192;
+float AQ_ALT_6		= 16384;
+float AQ_ALT_7		= 32768;
+float AQ_ALT_8		= 65536;
+
+float AQ_QUIET		= 131072;
+float AQ_NO_WEAPON_TOGGLE = 262144;
+float AQ_NO_HUD		= 524288;
+float AQ_HOOK		= 1048576;
+float AQ_VOTE_TEAM	= 2097152;
+
+// aqstate flags (not saved accross levels)
+float AQS_MENU_MASK		= 31;
+float AQS_MENU_SPLASH		= 1;
+float AQS_MENU_MAIN		= 2;
+float AQS_MENU_CREDITS		= 3;
+float AQS_MENU_ADMIN		= 4;
+float AQS_MENU_EPISODE		= 5;
+float AQS_MENU_EPISODE_1	= 6;
+float AQS_MENU_EPISODE_2	= 7;
+float AQS_MENU_EPISODE_3	= 8;
+float AQS_MENU_EPISODE_4	= 9;
+float AQS_MENU_EPISODE_5	= 10;
+float AQS_MENU_FORWARD		= 11;
+float AQS_MENU_HELP_FIRST	= 12;
+float AQS_MENU_HELP_LAST	= 26;
+float AQS_MENU_ADMIN_2		= 27;
+float AQS_SWITCHFIRING		= 32;
+
+// The weapon used before switchfiring is encoded in bits 64, 128, 256,
+// and 512.  It's the weapon number (1-16) minus 1 (0-15).
+float AQS_SWITCH_WEAPON_MASK	= 960;
+float AQS_SWITCH_WEAPON_MULT	= 64;
+
+// Bits 1024 and 2048 hold the number of failed attempts at admin mode.
+float AQS_ADMIN_ATTEMPTS_MASK	= 3072;
+float AQS_ADMIN_ATTEMPTS_MULT	= 1024;
+
+// Bits 4096 and 8192 control impulse overrides.  If one of these is set
+// the normal impulse commands aren't used, the impulses are used to
+// gather input for a previous command.
+float AQS_IMPOVER_MASK		= 12288;
+float AQS_IMPOVER_PASSWORD	= 4096;
+float AQS_IMPOVER_QSMACK_PASSWORD = 8192;
+float AQS_IMPOVER_MAP		= 12288;
+
+float AQS_HOOK			= 16384;
+float AQS_FORWARDED		= 32768;
+float AQS_HAS_RIDERS		= 65536;
+
+// It would be possible to combine these with non-observer state flags.
+// NB:  The number of bits here is hardcoded in the parm13 calculations.
+float AQS_RIDE_MASK		= 393216;
+float AQS_RIDE_DIV		= 131072;
+float AQS_RIDE_FAST		= 131072;
+float AQS_RIDE_HIGH		= 262144;
+
+float AQS_BURNING		= 1048576;
+float AQS_VOTE_EXIT		= 2097152;
+float AQS_SPAWN_PROTECT		= 4194304;
+float AQS_SWITCH_WEAPON_WAS_BEST = 8388608;
+
+// temp1 flags
+float temp1;
+float T1_NRUNES_MASK		= 63;
+float T1_RUNE_CHEAT		= 64;
+float T1_NO_DROP_ON_DEATH	= 128;
+float T1_CAN_GET_OWN_RUNE	= 256;
+// drop delay			= 512;
+float T1_RANDOM_RUNE_MODELS	= 1024;
+float T1_FAST_RUNE_SPAWN	= 2048;
+float T1_MAX_PLAYERS_MULT	= 4096;
+float T1_MAX_PLAYERS_MASK	= 61440;
+// drop delay			= 65536;
+// drop delay			= 131072;
+float T1_HOOK_MASK		= 786432;
+float T1_FREE_HOOK		= 262144;
+float T1_LITHIUM_HOOK		= 524288;
+
+// Three bits set the rune drop delay, they're 512, 65536 and 131072.
+// They aren't contiguous, and the delay for 60 is out of order, for
+// compatibility's sake.
+
+.float last_drop_delay;
+float rune_drop_delay;
+float T1_RUNE_DROP_DELAY_MASK	= 197120;	// 7
+float T1_RUNE_DROP_DELAY_0	= 65536;	// 2
+float T1_RUNE_DROP_DELAY_15	= 66048;	// 3
+float T1_RUNE_DROP_DELAY_30	= 131072;	// 4
+float T1_RUNE_DROP_DELAY_60	= 512;		// 1
+float T1_RUNE_DROP_DELAY_120	= 131584;	// 5
+float T1_RUNE_DROP_DELAY_240	= 196608;	// 6
+float T1_RUNE_DROP_DELAY_INF	= 197120;	// 7
+
+// Bit settings for POWERUP_PICKUP_WARN in settings.qc.
+float ITEM_PENT = 1;
+float ITEM_QUAD = 2;
+float ITEM_EYES = 4;
+float ITEM_SUIT = 8;
+
+// These belong in settings.qc, but you can't initialize a string global.
+// I'm declaring them here to keep it less confusing there.
+float FORWARD_MAX_PLAYERS;
+string FORWARD_DEST, FORWARD_NAME;
+string ADMIN_DEST, ADMIN_FORWARD;
+string START_LEVEL_EXEC;
+string SPLASH_1, SPLASH_2, SPLASH_3, SPLASH_4;
+string CSHIFT_BLIND, CSHIFT_CLOAK, CSHIFT_FREEZE, CSHIFT_NONE, CSHIFT_SHIELD;
+string SOUND_RUNE_PICKUP;
+
+// miscellaneous constants which should have been defined
+float SERVERFLAGS_RUNE_MASK	= 15;
+vector PLAYER_WEAPON_OFFSET	= '0 0 16';
+vector PLAYER_VIEW_OFFSET	= '0 0 22';
+float TICK			= 0.1;
+float CENTERPRINT_TIME		= 2;		// default scr_centertime
+float CENTERPRINT_REFRESH	= 1.5;		// a little less
+
+// attenuations used by T_RadiusDamage()
+float RADIUS_NORMAL		= 0;
+float RADIUS_150		= 1;
+float RADIUS_MORTAR		= 2;
+float MIN_TEAM			= 1;
+float MAX_TEAM			= 14;
+float SURE_KILL_DAMAGE		= 50000;
+float DEFAULT_GRAVITY		= 800;
+
+// message protocol defines
+float SVC_SETVIEWPORT	= 5;
+float SVC_SETVIEWANGLES	= 10;
+
+// free player entity variable
+// '.float speed'  bit-flag defines:
+float CHSCAM_ALT    = 4;
+float CHSCAM_ON     = 2;
+float LASERTARG_ON  = 1;
+
+/********************\
+* Rune Serv vars end *
+\********************/
+
+//
+// constants
+//
+
+float	FALSE				= 0;
+float 	TRUE				= 1;
+
+// edict.flags
+float	FL_FLY				= 1;
+float	FL_SWIM				= 2;
+float	FL_CLIENT			= 8;	// set for all client edicts
+float	FL_INWATER			= 16;	// for enter / leave water splash
+float	FL_MONSTER			= 32;
+float	FL_GODMODE			= 64;	// player cheat
+float	FL_NOTARGET			= 128;	// player cheat
+float	FL_ITEM				= 256;	// extra wide size for bonus items
+float	FL_ONGROUND			= 512;	// standing on something
+float	FL_PARTIALGROUND		= 1024;	// not all corners are valid
+float	FL_WATERJUMP			= 2048;	// player jumping out of water
+float	FL_JUMPRELEASED			= 4096;	// for jump debouncing
+
+// edict.movetype values
+float	MOVETYPE_NONE			= 0;	// never moves
+//float	MOVETYPE_ANGLENOCLIP		= 1;
+//float	MOVETYPE_ANGLECLIP		= 2;
+float	MOVETYPE_WALK			= 3;	// players only
+float	MOVETYPE_STEP			= 4;	// discrete, not real time unless fall
+float	MOVETYPE_FLY			= 5;
+float	MOVETYPE_TOSS			= 6;	// gravity
+float	MOVETYPE_PUSH			= 7;	// no clip to world, push and crush
+float	MOVETYPE_NOCLIP			= 8;
+float	MOVETYPE_FLYMISSILE		= 9;	// fly with extra size against monsters
+float	MOVETYPE_BOUNCE			= 10;
+float	MOVETYPE_BOUNCEMISSILE		= 11;	// bounce with extra size
+
+// edict.solid values
+float	SOLID_NOT			= 0;	// no interaction with other objects
+float	SOLID_TRIGGER			= 1;	// touch on edge, but not blocking
+float	SOLID_BBOX			= 2;	// touch on edge, block
+float	SOLID_SLIDEBOX			= 3;	// touch on edge, but not an onground
+float	SOLID_BSP			= 4;	// bsp clip, touch on edge, block
+
+// range values
+float	RANGE_MELEE			= 0;
+float	RANGE_NEAR			= 1;
+float	RANGE_MID			= 2;
+float	RANGE_FAR			= 3;
+
+// deadflag values
+
+float	DEAD_NO				= 0;
+float	DEAD_DYING			= 1;
+float	DEAD_DEAD			= 2;
+float	DEAD_RESPAWNABLE		= 3;
+
+// takedamage values
+
+float	DAMAGE_NO			= 0;
+float	DAMAGE_YES			= 1;
+float	DAMAGE_AIM			= 2;
+
+// items
+float	IT_AXE				= 4096;
+float	IT_SHOTGUN			= 1;
+float	IT_SUPER_SHOTGUN		= 2;
+float	IT_NAILGUN			= 4;
+float	IT_SUPER_NAILGUN		= 8;
+float	IT_GRENADE_LAUNCHER		= 16;
+float	IT_ROCKET_LAUNCHER		= 32;
+float	IT_LIGHTNING			= 64;
+// XXX used differently by me
+//IN_QW([-
+//float   IT_EXTRA_WEAPON                 = 128;
+//-])
+
+// In the standard source self.weapon is a simple IT_* constant.  In
+// this mod it's an IT_* constant combined with one of these to indicate
+// the mode the weapon is in.
+//
+// XXX You can't define these in terms of other constants.
+float WEAPON_NONALT_MASK		= 4223;
+float WEAPON_ALT			= 128;
+float WEAPON_HOOK			= 4224;
+float WEAPON_FLAMETHROWER		= 130;
+float WEAPON_LAVA			= 132;
+float WEAPON_BOMB			= 136;
+float WEAPON_FLASH_GRENADE		= 144;
+float WEAPON_MORTAR			= 160;
+float WEAPON_BFG			= 192;
+
+float	IT_SHELLS			= 256;
+float	IT_NAILS			= 512;
+float	IT_ROCKETS			= 1024;
+float	IT_CELLS			= 2048;
+
+float	IT_ARMOR1			= 8192;
+float	IT_ARMOR2			= 16384;
+float	IT_ARMOR3			= 32768;
+float	IT_SUPERHEALTH			= 65536;
+
+float	IT_KEY1				= 131072;
+float	IT_KEY2				= 262144;
+
+float	IT_INVISIBILITY			= 524288;
+float	IT_INVULNERABILITY		= 1048576;
+float	IT_SUIT				= 2097152;
+float	IT_QUAD				= 4194304;
+
+// point content values
+
+float	CONTENT_EMPTY			= -1;
+float	CONTENT_SOLID			= -2;
+float	CONTENT_WATER			= -3;
+float	CONTENT_SLIME			= -4;
+float	CONTENT_LAVA			= -5;
+float	CONTENT_SKY			= -6;
+
+float	STATE_TOP			= 0;
+float	STATE_BOTTOM			= 1;
+float	STATE_UP			= 2;
+float	STATE_DOWN			= 3;
+
+vector	VEC_ORIGIN			= '0 0 0';
+vector	VEC_HULL_MIN			= '-16 -16 -24';
+vector	VEC_HULL_MAX			= '16 16 32';
+
+vector	VEC_HULL2_MIN			= '-32 -32 -24';
+vector	VEC_HULL2_MAX			= '32 32 64';
+
+// protocol bytes
+float	SVC_TEMPENTITY			= 23;
+float	SVC_KILLEDMONSTER		= 27;
+float	SVC_FOUNDSECRET			= 28;
+float	SVC_INTERMISSION		= 30;
+float	SVC_FINALE			= 31;
+float	SVC_CDTRACK			= 32;
+float	SVC_SELLSCREEN			= 33;
+IN_QW([-
+float   SVC_SMALLKICK			= 34;
+float   SVC_BIGKICK                     = 35;
+float   SVC_MUZZLEFLASH			= 39;
+-])
+
+float	TE_SPIKE			= 0;
+float	TE_SUPERSPIKE			= 1;
+float	TE_GUNSHOT			= 2;
+float	TE_EXPLOSION			= 3;
+float	TE_TAREXPLOSION			= 4;
+float	TE_LIGHTNING1			= 5;
+float	TE_LIGHTNING2			= 6;
+float	TE_WIZSPIKE			= 7;
+float	TE_KNIGHTSPIKE			= 8;
+float	TE_LIGHTNING3			= 9;
+float	TE_LAVASPLASH			= 10;
+float	TE_TELEPORT			= 11;
+IN_QW([-
+float   TE_BLOOD			= 12;
+float   TE_LIGHTNINGBLOOD		= 13;
+-])
+
+// sound channels
+// channel 0 never willingly overrides
+// other channels (1-7) allways override a playing sound on that channel
+float	CHAN_AUTO			= 0;
+float	CHAN_WEAPON			= 1;
+float	CHAN_VOICE			= 2;
+float	CHAN_ITEM			= 3;
+float	CHAN_BODY			= 4;
+float	CHAN_JUMP			= 5;
+float	CHAN_FLUID			= 6;
+float   CHAN_NO_PHS_ADD			= IN_QW(8, 0);    // ie: CHAN_BODY+CHAN_NO_PHS_ADD
+
+float	ATTN_NONE			= 0;
+float	ATTN_NORM			= 1;
+float	ATTN_IDLE			= 2;
+float	ATTN_STATIC			= 3;
+
+// update types
+
+float	UPDATE_GENERAL			= 0;
+float	UPDATE_STATIC			= 1;
+float	UPDATE_BINARY			= 2;
+float	UPDATE_TEMP			= 3;
+
+// entity effects
+
+float	EF_BRIGHTFIELD			= IN_POQ(1, 8);
+IN_POQ([-
+float	EF_MUZZLEFLASH 			= 2;
+-])
+float	EF_BRIGHTLIGHT 			= 4;
+float	EF_DIMLIGHT 			= 8;
+
+// messages
+float	MSG_BROADCAST			= IN_POQ(0, 4);	// unreliable to all
+float	MSG_ONE				= 1;		// reliable to one (msg_entity)
+float	MSG_ALL				= 2;		// reliable to all
+float	MSG_INIT			= 3;		// write to the init string
+
+IN_QW([-
+// message levels
+float   PRINT_LOW               = 0;            // pickup messages
+float   PRINT_MEDIUM		= 1;            // death messages
+float   PRINT_HIGH              = 2;            // critical messages
+float   PRINT_CHAT              = 3;            // also goes to chat console
+-])
+
+// multicast sets.  These are defined in POQ because multicast() is
+// defined as a no-op there.
+float   MSG_MULTICAST			= 4;            // for multicast() call
+float   MULTICAST_ALL   = 0;            // every client
+float   MULTICAST_PHS   = 1;            // within hearing
+float   MULTICAST_PVS   = 2;            // within sight
+float   MULTICAST_ALL_R = 3;            // every client, reliable
+float   MULTICAST_PHS_R = 4;            // within hearing, reliable
+float   MULTICAST_PVS_R = 5;            // within sight, reliable
+
+//================================================
+
+//
+// globals
+//
+float	movedist;
+float	gameover;		// set when a rule exits
+
+string	string_null;	// null string, nothing should be held here
+float	empty_float;
+
+IN_POQ([-
+entity	newmis;			// launch_spike sets this after spawning it
+-])
+
+entity	activator;		// the entity that activated a trigger or brush
+
+entity	damage_attacker;	// set by T_Damage
+entity  damage_inflictor;
+float	framecount;
+
+float		skill;
+
+IN_QW([-
+//
+// cvars checked each frame
+//
+float           teamplay;
+float           timelimit;
+float           fraglimit;
+float           deathmatch;
+float           rj;
+float		coop;
+-])
+
+float	intermission_running;
+float	intermission_exittime;
+float	fraglimit;
+
+//================================================
+
+//
+// world fields (FIXME: make globals)
+//
+.string		wad;
+.string 	map;
+.float		worldtype;	// 0=medieval 1=metal 2=base
+
+//================================================
+
+.string		killtarget;
+
+//
+// quakeed fields
+//
+.float		light_lev;		// not used by game, but parsed by light util
+.float		style;
+
+//
+// monster ai
+//
+.void ()		th_stand;
+.void ()		th_walk;
+.void ()		th_run;
+.void ()		th_missile;
+.void ()		th_melee;
+.void (entity attacker, float damage)		th_pain;
+.void ()		th_die;
+
+.entity		oldenemy;		// mad at this player before taking damage
+
+.float		speed;
+
+.float	lefty;
+
+.float	search_time;
+.float	attack_state;
+
+float	AS_STRAIGHT		= 1;
+float	AS_SLIDING		= 2;
+float	AS_MELEE		= 3;
+float	AS_MISSILE		= 4;
+
+//
+// player only fields
+//
+.float		walkframe;
+
+.float 		attack_finished;
+.float		pain_finished;
+
+.float		invincible_finished;
+.float		invisible_finished;
+.float		super_damage_finished;
+.float		radsuit_finished;
+
+.float		invincible_time, invincible_sound;
+.float		invisible_time, invisible_sound;
+.float		super_time, super_sound;
+.float		rad_time, rad_sound;
+.float		fly_sound;
+
+.string		damage_type;	// useful for determining pain & death sounds.
+.float		show_hostile;	// set to time+0.2 whenever a client fires a
+							// weapon or takes damage.  Used to alert
+							// monsters that otherwise would let the player go
+.float		jump_flag;		// player jump flag
+.float		swim_flag;		// player swimming sound flag
+.float		air_finished;	// when time > air_finished, start drowning
+.float		next_breath;	// controls how quickly your drown
+.float		bubble_count;	// keeps track of the number of bubbles
+
+//
+// object stuff
+//
+.string		mdl;
+.vector		mangle;			// angle at start
+
+.vector		oldorigin;		// only used by secret door
+
+.float		t_length, t_width;
+
+//
+// doors, etc
+//
+.vector		dest, dest1, dest2;
+.float		wait;			// time from firing to restarting
+.float		delay;			// time from activation to firing
+.entity		trigger_field;	// door's trigger entity
+.string		noise4;
+
+//
+// monsters
+//
+.float 		pausetime;
+.entity 	movetarget;
+
+//
+// doors
+//
+.float		aflag;
+.float		dmg;			// damage done by door when hit
+
+//
+// misc
+//
+.float		cnt; 			// misc flag, next hud print time
+
+//
+// subs
+//
+.void ()		think1;
+.vector		finaldest, finalangle;
+
+//
+// triggers
+//
+// For players, time at which to redisplay the menu.
+.float		count;			// for counting triggers
+
+//
+// plats / doors / buttons
+//
+// For players, time at which to check nick.
+// For burn thinkers, time at which to do burn damage.
+// For zombie campers, amount of damage taken since getting up.
+// For runes, time dropped by a pack rat.
+.float		lip;
+// For players, currently entered part of password.  If in a qsmack init
+// sequence, the sequence number of the last code received, plus 8 if
+// the password was wrong.
+.float		state;
+// pos1 is used to store angles for dual teleport and recall runes
+// pos1 is used for misc. settings for flaming missiles
+.vector		pos1, pos2;		// top and bottom positions
+// For players, time last ran fix-angles.
+// For zombie campers, whether a quick pain sequence was done since getting up.
+.float		height;
+
+//
+// sounds
+//
+// For players waitmin and waitmax are used for displaying the rune
+// type.  See the comments in rjs.qc above the rune_tell_*() functions.
+.float		waitmin, waitmax;
+.float		distance;
+// For players, time at which player died.
+.float		volume;
+
+//===========================================================================
+
+//
+// builtin functions
+//
+
+void (vector ang)	makevectors		= #1;	// sets v_forward, etc globals
+void (entity e, vector o) setorigin		= #2;
+void (entity e, string m) setmodel		= #3;	// set movetype and solid first
+void (entity e, vector min, vector max) setsize	= #4;
+// #5 was removed
+void () break					= #6;
+float () random					= #7;	// returns 0 - 1
+void (entity e, float chan, string samp, float vol, float atten) xsound	= #8;
+vector (vector v) normalize			= #9;
+void (string e) error				= #10;
+void (string e) objerror			= #11;
+float (vector v) vlen				= #12;
+float (vector v) vectoyaw			= #13;
+entity () spawn					= #14;
+void (entity e) remove				= #15;
+
+// sets trace_* globals
+// nomonsters can be:
+// An entity will also be ignored for testing if forent == test,
+// forent->owner == test, or test->owner == forent
+// a forent of world is ignored
+void (vector v1, vector v2, float nomonsters, entity forent) traceline = #16;
+
+entity () checkclient				= #17;	// returns a client to look for
+entity (entity start, .string fld, string match) find = #18;
+string (string s) precache_sound		= #19;
+string (string s) precache_model		= #20;
+void (entity client, string s) self_stuffcmd	= #21;
+entity (vector org, float rad) findradius	= #22;
+
+IN_POQ([-
+void (string s) bprint				= #23;
+void (string s, string s2) bprint2				= #23;
+void (string s, string s2, string s3) bprint3				= #23;
+void (string s, string s2, string s3, string s4) bprint4				= #23;
+void (string s, string s2, string s3, string s4, string s5) bprint5				= #23;
+void (string s, string s2, string s3, string s4, string s5, string s6) bprint6				= #23;
+void (string s, string s2, string s3, string s4, string s5, string s6, string s7) bprint7				= #23;
+void (entity client, string s) self_sprint	= #24;
+void (entity client, string s, string s2) self_sprint2	= #24;
+void (entity client, string s, string s2, string s3) self_sprint3	= #24;
+void (entity client, string s, string s2, string s3, string s4) self_sprint4	= #24;
+void (entity client, string s, string s2, string s3, string s4, string s5) self_sprint5	= #24;
+void (entity client, string s, string s2, string s3, string s4, string s5, string s6) self_sprint6	= #24;
+void (entity client, string s, string s2, string s3, string s4, string s5, string s6, string s7) self_sprint7	= #24;
+-])
+
+IN_QW([-
+void (float level, string s, string s2, string s3, string s4, string s5, string s6, string s7) xbprint7				= #23;
+void (entity client, float level, string s, string s2, string s3, string s4, string s5, string s6) xself_sprint6	= #24;
+-])
+
+void (string s) dprint				= #25;
+string (float f) ftos				= #26;
+string (vector v) vtos				= #27;
+void () coredump				= #28;	// prints all edicts
+void () traceon					= #29;	// turns statment trace on
+void () traceoff				= #30;
+void (entity e) eprint				= #31;	// prints an entire edict
+float (float yaw, float dist) walkmove		= #32;	// returns TRUE or FALSE
+// #33 was removed
+float (float yaw, float dist) droptofloor	= #34;	// TRUE if landed on floor
+void (float style, string value) lightstyle	= #35;
+float (float v) rint				= #36;	// round to nearest int
+float (float v) floor				= #37;	// largest integer <= v
+float (float v) ceil				= #38;	// smallest integer >= v
+// #39 was removed
+float (entity e) checkbottom			= #40;	// true if self is on ground
+float (vector v) pointcontents			= #41;	// returns a CONTENT_*
+// #42 was removed
+float (float f) fabs				= #43;
+vector (entity e, float speed) aim		= #44;	// returns the shooting vector
+float (string s) cvar				= #45;						// return cvar.value
+void (string s) localcmd			= #46;					// put string into local que
+entity (entity e) nextent			= #47;					// for looping through all ents
+IN_POQ([-
+void (vector o, vector d, float color, float count) particle = #48; // start a particle effect
+-])
+void () ChangeYaw				= #49;						// turn towards self.ideal_yaw
+											// at self.yaw_speed
+// #50 was removed
+vector (vector v) vectoangles			= #51;
+
+//
+// direct client message generation
+//
+void (float to, float f) WriteByte		= #52;
+void (float to, float f) WriteChar		= #53;
+void (float to, float f) WriteShort		= #54;
+void (float to, float f) WriteLong		= #55;
+void (float to, float f) WriteCoord		= #56;
+void (float to, float f) WriteAngle		= #57;
+void (float to, string s) WriteString		= #58;
+void (float to, entity s) WriteEntity		= #59;
+
+//
+// broadcast client message generation
+//
+
+// void (float f) bWriteByte			= #59;
+// void (float f) bWriteChar			= #60;
+// void (float f) bWriteShort			= #61;
+// void (float f) bWriteLong			= #62;
+// void (float f) bWriteCoord			= #63;
+// void (float f) bWriteAngle			= #64;
+// void (string s) bWriteString			= #65;
+// void (entity e) bWriteEntity			= #66;
+
+void (float step) movetogoal			= #67;
+
+string (string s) precache_file			= #68;	// no effect except for -copy
+void (entity e) makestatic			= #69;
+void (string s) xchangelevel			= #70;
+
+//#71 was removed
+
+void (string var, string val) cvar_set		= #72;	// sets cvar.value
+
+void (entity client, string s) self_centerprint = #73;	// sprint, but in middle
+void (entity client, string s, string s2) self_centerprint2 = #73;
+void (entity client, string s, string s2, string s3) self_centerprint3 = #73;
+void (entity client, string s, string s2, string s3, string s4) self_centerprint4 = #73;
+void (entity client, string s, string s2, string s3, string s4, string s5) self_centerprint5 = #73;
+void (entity client, string s, string s2, string s3, string s4, string s5, string s6) self_centerprint6 = #73;
+void (entity client, string s, string s2, string s3, string s4, string s5, string s6, string s7) self_centerprint7 = #73;
+
+void (vector pos, string samp, float vol, float atten) ambientsound = #74;
+
+string (string s) precache_model2		= #75;	// registered version only
+string (string s) precache_sound2		= #76;	// registered version only
+string (string s) precache_file2		= #77;	// registered version only
+
+void (entity e) setspawnparms			= #78;	// set parm1... to the
+												// values at level start
+												// for coop respawn
+
+IN_QW([-
+void(entity killer, entity killee) logfrag	= #79; // add to stats
+string(entity e, string key) infokey		= #80; // get a key value (world = serverinfo)
+float(string s) stof				= #81; // convert string to float
+void(vector where, float set) multicast		= #82; // sends the temp message to a set
+-])
+
+//============================================================================

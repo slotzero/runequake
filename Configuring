@@ -1,0 +1,585 @@
+$Id: Configuring,v 1.1 2002/02/21 21:47:40 slotzero Exp $
+
+Starting the server
+
+    To set up a server under Windows:
+
+    	- Get Winquake from www.quakeworld.net, unpack it in your Quake
+    	  directory,
+
+    	- unzip this distribution into a directory called runequake
+    	  in your Quake directory (this is the name it unpacks into by
+    	  default),
+
+    	- copy example.cfg to autoexec.cfg in the runequake directory,
+    	  edit as desired (at a minimum, just change the hostname setting),
+    	  and
+
+    	- run
+
+	    winquake -game runes -dedicated 16
+
+    	  for a dedicated server, or
+
+	    winquake -game runes -listen 16
+
+	  if you just want to play against some friends.
+
+    Under other OSes it's mostly the same, but the game executable
+    differs.  Under Unix systems use unixded, it's also available at
+    www.quakeworld.net.
+
+    This doesn't address re-starting the server if it crashes.  I don't
+    know how to do that under Windows (a simplistic batch file doesn't
+    work because the server detaches itself).  Under Unix I use a short
+    script which guards against a server which is crashing repeatedly
+    (and mails me when it crashes).  Mail me if you'd like a copy.
+
+    If you're setting up a permanant public server, the last step is to
+    add it to the server lists so that Gamespy can find it.  The version of
+    Gamespy I had a look at before writing this section queried 4 sources
+    for servers out of the box, but three of them (Pipo, Stomped, and Ironman)
+    have since been shut down.  The only one which is still up is:
+
+	http://www.gameaholic.com/servers/quake/
+
+    Once your server is up and running visit the URL and use the
+    server addition form.
+
+    Finally, for a public server you probably also want to run Qsmack.
+    See the info on it later in this file.
+
+
+Configuration
+
+    Most configuration is done by setting bits in the deathmatch,
+    teamplay, noexit and temp1 console variables.  Basically, you add
+    together the numbers for the settings you want to turn on and set
+    the variable to the total.  See the example.cfg file for a sample.
+    You can create a file called "autoexec.cfg" in the runequake
+    directory which contains the settings you want to use for your
+    server.
+
+    In Quakeworld the noexit and temp1 console variables don't exist, so
+    use serverinfo there instead.
+
+    The next few sections detail the settings which can be configured
+    this way.  Other things can be configured via settings.qc, that's
+    explained a little further on.
+
+
+deathmatch
+
+    1 items respawn				DM_RESPAWN
+
+	Items (armor, health, ammo, powerups) respawn.
+
+    2 weapons stay				DM_WEAPONS_STAY
+
+	Weapons stay instead of being picked up.  You can only pick up a
+	particular type of weapon once.  Ammo respawn times are halved.
+
+    4 long quad respawn				DM_LONG_QUAD_RESPAWN
+
+	Quads take 5 minutes rather than 60 seconds to respawn.
+
+    8 quad replacement				DM_QUAD_REPLACEMENT
+
+	Only one quad is allowed on a level.  Additional quads are
+	turned into good weapons, or armor.
+
+    16 pentagram replacement			DM_PENT_REPLACEMENT
+
+	Only one pentagram is allowed on a level.  Additional pentagrams
+	are turned into good weapons, or armor.
+
+    32 lan mode					DM_LAN_MODE
+
+	Allow the firewalking and floating spiky cloud of death runes,
+	and allow e1m7, e1m8 and end in the random level selection code.
+
+    64 exit attempt doesn't kill you		DM_EXIT_NON_FATAL
+
+	Trying to exit doesn't harm you even if noexit is set.
+
+    128 no discharging				DM_NO_DISCHARGE
+
+    	Using a lightning gun under water, or jumping into water with
+    	the electricity rune, only hurts the person who does it.
+
+    256 powerups don't drop			DM_NO_DROP_POWERUP
+
+	Normally, if a player is killed while she has a powerup (a quad,
+	ring or envirosuit) the powerup will drop, like a backpack.
+	Anybody can pick it up and use the remaining time.  The time
+	continues to tick while the powerup lies on the ground.
+	Setting this bit disables this behavior.
+
+    512 no alternate weapons			DM_NO_ALT_WEAPONS
+
+    	Disable the alternate weapons.
+
+   1024 armor doesn't drop			DM_NO_DROP_ARMOR
+
+    	Normally a player drops any armor she has left when she's killed.
+	If you set this bit that behavior is disabled.
+
+	The resulting armor acts like normal armor in that you won't
+	pick it up if it contains less total protection than you've
+	got already.  An alternative would be to have it add to your
+	current armor (scaled, of course), but I think this way is
+	better because it helps good players less than others (the
+	others need the armor more, good players already prioritize
+	getting armor).
+
+    2048 damage-based frag scoring		DM_DAMAGE_MATCH
+
+    	In this mode frags are scored not by killing people, but by
+    	doing damage to them.  This isn't an original idea, I read about
+    	it a few years ago.  My implementation might differ from the
+    	original, though, I didn't consult it.
+
+	Here's how it works:
+
+	    - You get credit for doing damage to other players, regardless
+	      of whether you're damaging their health or their armor.
+
+	    - You lose credit for doing damage to yourself, be it by
+	      suicide, rocket jumping, swimming in lava, or whatever.
+
+	    - A frag is equal to 150 points of damage.  You have a
+	      running counter of damage done which hasn't added up to a
+	      frag yet.  If it climbs to 150 you get a frag, if it
+	      drops to -150 you lose a frag.  You can get multiple
+	      frags from a single kill (by killing somebody with 300
+	      health with kamikaze or berserk or quad, eg).
+
+	The rules are simple, but some of the implications are surprising.
+	Eg, piercing becomes a much less desirable rune because you get
+	less benefit from each kill.
+
+
+teamplay
+
+    1 health protect				TEAM_HEALTH_PROT
+
+	Your teammates don't lose health when you shoot them.
+
+    2 frag penalty				TEAM_FRAG_PENALTY
+
+	You lose a frag for killing a teammate.
+
+    4 armor protect				TEAM_ARMOR_PROT
+
+	Your teammates don't lose armor when you shoot them.
+
+     8 enforce two teams			TEAM_2_TEAMS
+    16 enforce three teams			TEAM_3_TEAMS
+    24 enforce four teams			TEAM_4_TEAMS
+
+    	If you add any of these in to your teamplay cvar the server uses
+	enforced team mode.  The players are automatically assigned to
+	one of the teams when they join the game (or when enforced team
+	mode is switched on).  Players are allowed to switch teams, but
+	only to a team which has fewer players.
+
+    32 match mode				TEAM_MATCH_MODE
+
+    	In match mode observers are on teams and each team can have only
+    	a single observer.  This might control other behaviors some day.
+
+    64 team change any				TEAM_CHANGE_ANY
+   128 team change top dog			TEAM_CHANGE_TOPDOG
+
+    	When enforced teams are on players are normally only allowed to
+    	switch teams if the team they're joining has fewer players than
+    	all other teams.  These settings change that.
+
+	In TEAM_CHANGE_ANY mode anybody can switch to any valid team.
+
+	In TEAM_CHANGE_TOPDOG mode the player with the most frags can
+	switch to any valid team.
+
+    256 no team voting				TEAM_NO_VOTE
+
+    	Normally players can use the vote-team command to turn team mode
+    	on and off.  (The team mode used for this is VOTE_TEAM_MODE,
+    	define in settings.qc.)  If you set this bit in your teamplay
+    	variable team voting will be disabled.  Team voting is also
+    	disabled if teamplay is set to a value other than 0 or the mode
+    	from settings.qc.
+
+    512 team self health protect		TEAM_SELF_HEALTH_PROT
+
+	When TEAM_HEALTH_PROT is set, you can't do damage to your own
+	health.  This setting is similiar to the old-style teamplay 1
+	setting.
+
+   1024 team self armor protect			TEAM_SELF_ARMOR_PROT
+
+   	When TEAM_ARMOR_PROT is set, you can't do damage to your own
+	armor.
+
+
+noexit
+
+    1 no exiting				NOEXIT_NO_EXITING
+
+	Don't allow exiting levels.  You can control whether the attempt
+	kills players with the DM_EXIT_NON_FATAL configuration bit of
+	the deathmatch cvar.
+
+    2 allow star level exit			NOEXIT_ALLOW_EXITING_START
+
+	Players are allowed to exit the start map.
+
+	As a special case, setting noexit to 2 exactly is just like
+	setting it to 3.  This is for compatibility with Quake's
+	standard usage of this variable.
+
+    4 randomize					NOEXIT_RANDOMIZE
+
+	Select the next level to play randomly.  This never chooses e1m7,
+	e1m8 or end unless you're also using NOEXIT_CHOOSE_BY_NPLAYERS,
+	or you've got the DM_LAN_MODE bit set in the deathmatch cvar.
+
+    8 select level by number of players		NOEXIT_CHOOSE_BY_NPLAYERS
+
+	Select the level to play based on the number of players.  More
+	players means larger levels (with a little randomization thrown
+	in for spice).
+
+    16 use Marlinspike levels			NOEXIT_MARLINSPIKE_LEVELS
+
+    	This sets the server to use what I consider to be a good set of
+    	levels for deathmatch.  If you don't want to use the same set I
+    	do, you can customize the levels which are allowed by editing
+    	the user_allowed_map() function in the settings.qc file and
+    	recompiling instead of (or in addition to) setting this bit.
+
+    32 don't loop back to dm1 after dm6		NOEXIT_DM_NO_LOOP
+
+    	Ordinarily the game will play the dm1 level after finishing dm6.
+    	If you turn this bit on then it will loop back to the start
+    	level instead.  This also makes it so that the server plays the
+    	DM maps between episode 4 and episode 1 when it chooses which
+    	level to play, and it makes it so the DM maps are played if a
+    	player chooses the end map exit from the start level.
+
+    64 * max players before forwarding		NOEXIT_FORWARD_MULT
+
+    	If you use this setting then the game will automatically forward
+    	players to a different server once the game gets too full.  Eg,
+    	if you add 640 into your noexit value the game will forward any
+    	players who connect when there are already 10 people online
+    	(regardless of whether they're playing or observing).  You can
+    	change the server to which they're forwarded, but you'll have to
+    	edit settings.qc and recompile for that (see below).  By default
+    	they're forwarded to my server.
+
+
+temp1
+
+    1-63 number of runes			T1_NRUNES_MASK
+
+	The base for the temp1 cvar is the number of runes which are
+	allowed on the level at once.  It has to be 63 or less.  The
+	default is 16.
+
+	This only counts runes which are actually lying around on the
+	level.  Runes which players are using don't count towards this
+	quota.
+
+    64 rune selection by impulse		T1_RUNE_CHEAT
+
+	Allow selecting runes by impulse.  This is mainly for debugging.
+	Impulses 101 and up (up to the maximum number of runes) will
+	give you particular runes.  See the Playing guide for a list of
+	what's what, and the aliases.cfg file for a way to select runes
+	by name.
+
+    128 runes don't drop when killed		T1_NO_DROP_ON_DEATH
+
+	You don't drop your rune when you are killed.
+
+    256 can pick up own rune			T1_CAN_GET_OWN_RUNE
+
+	You can pick up a rune you dropped when you were killed.  This
+	bit is ignored if T1_NO_DROP_ON_DEATH is set.
+
+    1024 random rune models			T1_RANDOM_RUNE_MODELS
+
+	The model chosen for a particular rune is random.  Normally they
+	are consistent (eg, the flight rune will always use the hell
+	magic model).
+
+    2048 fast rune spawn			T1_FAST_RUNE_SPAWN
+
+	Spawn runes immediately.  Normally there's a delay of between 1
+	and 16 seconds between rune spawns.  When this bit is set they
+	all spawn at once.
+
+    4096 * max players				T1_MAX_PLAYERS_MULT
+
+    	You can limit the number of players allowed in the game by
+	adding 4096 times the maximum number of players you want to
+	allow (up to 15) to the temp1 value.  Players in excess of this
+	remain observers until somebody stops playing.  (The observer
+	chosen to join the game is the one who asked to join it first.)
+
+	For example, I have my server set up to allow 16 people to
+	connect, but I limit the game to 10 players by adding 40960 to
+	the temp1 value.
+
+    262144 free hook				T1_FREE_HOOK
+    524288 Lithium hook				T1_LITHIUM_HOOK
+
+    	Normally the grappling hook is a rune like any other.  You can
+    	use one of these settings to change that.  If either of these is
+    	set then the grappling hook doesn't appear as a regular rune.
+
+    	In free hook mode everybody gets the grappling hook.  I
+    	don't recommend this setting.  It makes for worse gameplay
+    	because it screws up the relative value of many of the runes
+    	(flight, gravity, jumping, teleport shuffle, and others) and
+	often subverts the map designer's intentions.
+
+	In Lithium hook mode players get a grappling hook by picking up
+    	vore balls (little spiky purple balls).  These spawn randomly on
+    	the level.  The number of such hooks available is normally 1/3
+    	the number of players, rounding up (7 players means 3 hooks).
+
+     65536 no rune drop delay			T1_RUNE_DROP_DELAY_0
+     66048  15 second rune drop delay		T1_RUNE_DROP_DELAY_15
+    131072  30 second rune drop delay		T1_RUNE_DROP_DELAY_30
+       512  60 second rune drop delay		T1_RUNE_DROP_DELAY_60
+    131584 120 second rune drop delay		T1_RUNE_DROP_DELAY_120
+    196608 240 second rune drop delay		T1_RUNE_DROP_DELAY_240
+    197120 rune dropping disabled   		T1_RUNE_DROP_DELAY_INF
+
+    	Choose one of these numbers to specify how long players have to
+    	hold on to their runes before they can delete them.  The default
+    	delay is 5 seconds, it is used if you don't use any of these in
+    	your temp1 setting.
+
+    	I think that an interesting variation on the game is to disable
+    	rune deleting (or set it to a minute or more), set random rune
+    	models, and set it so you don't drop your rune when you die.
+
+
+samelevel
+
+    If you use the samelevel variable, only set it to 0 or to 1.  The
+    rest of the bits in the variable are used internally by the mod.
+
+
+settings.qc
+
+    You can also configure some other things by editing the settings.qc
+    file and recompiling the server.  Download the source distribution
+    and read the instructions at the top of settings.qc.  You can control
+    the item and powerup respawn times, the amount of ammo players can
+    hold, the enforced team colors and other things this way.
+
+    Some items which can be changed via settings.qc of particular interest:
+
+    	You can change the contents of the splash screen (the screen
+    	players see when they first connect).  A lot of people like to
+    	put the server's name and the server admin's email address here.
+
+	You can control precisely which maps will be played.  Maps you
+	tell the server not to play will be skipped in all level selection
+	modes.
+
+    	You can enable the administrator mode.  This is disabled by
+    	default, you have to set the passcode in settings.qc and
+    	recompile in order to use it.  See below.
+
+    	You can set up forwarding.  This makes it so players who connect
+    	to the server when there are already a given number playing are
+    	forwarded to a different server (or to a different port on the
+    	same server).
+
+    	You can enable the Qsmack support.  Qsmack is a program which
+    	will allow you to do more flexible and extensive banning than
+    	POQ provides, among other things.  See
+    	http://lemur.stanford.edu/clan9/qsmack/ for more info.
+	Some useful ban patterns:
+
+	    unmodified Stooge bot:	ban_name ^SBot\x1c
+	    newline or CR in name:	ban_name [\r\n]
+	    blank-looking name:
+		ban_name ^[\x0a\x0c\x0d\x20\x22\x8a\x8c]+$
+
+
+Admin mode
+
+    In order to use administrator mode you have to compile the
+    progs.dat yourself in order to define your passcode.  See the
+    section on settings.qc above.
+
+    Turn on administrator mode by choosing the admin menu from the
+    observer menu, or by running "admin-toggle" in the console.  The
+    game will prompt you for the passcode, the console has to be closed
+    when you type it.  There's an alternate way to turn admin mode on,
+    using the Qsmack support.  See below for info on that.
+
+    Innate administrator abilities are:
+
+    	- You won't be forwarded from a full game,
+
+	- you can join a full game,
+
+	- when you ride people they won't be told about it (coupled with
+	  an assumed name, this is useful for spotting bots),
+
+	- you can use the administrator menu and commands,
+
+	- you can observe a match mode team game without being on a
+	  team,
+
+    	- you can get the camouflage rune at any time, to help spot
+    	  cheaters.  Use impulse 116 for this (this is the same impulse
+    	  you'd use to get this run in T1_RUNE_CHEAT mode).  Stand in an
+    	  obscure place and see if the suspect acts as if he can see
+    	  you.  I don't know for sure, but since this sets you not to
+    	  use a model at all I suspect this won't help spot people who
+    	  have modified the player model to have long spikes sticking
+    	  out of it or the like, and,
+
+	- as a non-riding observer, you can can toggle your eyes so that
+	  everyone sees them.  This is useful for detecting bots and pak
+	  users.
+
+
+Automatically turning admin mode on when you connect
+
+    You can also piggy-back on the Qsmack code to turn on admin mode
+    automatically when you connect to your server.  Create a config file
+    like this to connect to your server:
+
+	alias init	"echo init;   impulse 73; alias init   x"
+	alias init01	"echo init01; impulse  1; alias init01 x"
+	alias init02	"echo init02; impulse  2; alias init02 x"
+	alias init03	"echo init03; impulse  3; alias init03 x"
+	alias init04	"echo init04; impulse  4; alias init04 x"
+	connect myserver
+
+    (substituting the init01 through init04 impulses for your Qsmack
+    passcode, and "myserver" for your server name), then create an alias
+    in your autoexec.cfg to run it, like:
+
+    	alias c exec myserver.cfg
+
+    I suggest going to this trouble to set up these aliases only when
+    you connect to your own server so that you don't inadvertently
+    reveal your Qsmack passcode to other servers.
+
+
+Admin mode commands
+
+    Many of these are also available on the administrator menu.
+
+    The commands which act on a player act on the player you are currently
+    riding.  They won't work if you aren't riding anybody.  Because of
+    this interface administrators are allowed to ride observers.  Riding
+    observers doesn't really work (though I wish it did), it's allowed
+    just so you can use these commands.
+
+    command admin-toggle
+
+    	This command turns admin mode on or off.  Close the console
+    	before typing in your passcode when you turn it on.
+
+    command admin-cycle
+
+    	Since you can't ride players while you're playing, use this
+    	command to cycle through a list of players.  When you land
+	on the one the player you want, just type the admin action
+	in the console.
+
+    command admin-cycle-show
+
+    	Once you've selected a player using admin-cycle, use
+	this command to display your current victim.
+
+    command admin-eyes
+
+    	As a non-riding observer, toggle your model eyes to be visible
+	by all players.
+
+    command admin-forward
+
+	If you set the ADMIN_FORWARD address in settings.qc, you can
+	manually forward players to that address with this command.
+
+    command admin-join
+
+    	This puts the player you're riding into the game, even if the
+    	game is full.
+
+    command admin-kick
+
+    	Kick the player you are riding.
+
+    command admin-kill
+
+    	Kill the player you are riding.
+
+    command admin-rename
+
+    	Rename players using the same function that is used when a player
+	uses a null name.
+
+    command admin-rune-delete
+
+    	Remove the rune from the player you are riding.
+
+    command admin-team-change
+
+    	Change the team of the player you're riding (in enforced team mode).
+
+    command admin-team-change-toggle
+
+    	In enforced teams mode, toggle the ability of players to join a
+    	teams freely.  When this isn't enabled players can only join
+    	smaller teams.
+
+    command admin-teamplay-zero
+
+    	Reset the teamplay bit to 0.
+
+    command admin-unbind
+
+    	Unbind a player's keys and set her sensitivity to 0.  Initially
+	this was used as an alternative for kicking, but it's also useful
+	for detecting bots.
+
+    command admin-vote-team-toggle
+
+    	Turn vote-team on and off.
+
+    command change-level
+
+    	This will bring up a menu which allows you to pick a new level
+    	to play.
+
+	Most people will want to use the menu, but it's possible to
+	select the next level by impulse, too.  After giving the
+	change-level command the next impulse you type can determine the
+	level which will be selected.  Episode X map Y is selected with
+	impulse XY.  Eg, impulse 11 selects e1m1, impulse 23 selects
+	e2m3, and so on.  For the deathmatch maps use 5x (so impulse 54
+	selects dm4).  As a special case, the start map is impulse 57
+	and the end map is impulse 58.
+
+    command exit-level
+
+    	This command causes the current level to finish, just as if the
+    	time or frag limit has been reached.
+
+    command qsmack
+
+    	This only works if you're using Qsmack (see above).  It's used
+    	to trigger Qsmack commands you put in your name.  See the Qsmack
+    	documentation.

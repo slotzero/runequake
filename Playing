@@ -1,0 +1,953 @@
+$Id: Playing,v 1.1 2002/02/21 21:47:40 slotzero Exp $
+
+This is the user documentation for Rune Quake.  You can learn
+more about Rune Quake at http://www.runequake.com.
+
+
+Finding Servers
+---------------
+
+    If you use Gamespy (http://www.gamespy.com) to find servers, you can
+    use the tab I made to single out the Rune Quake games.  It's in
+    the distribution, and you can download it from
+
+	ftp://ftp.runequake.com/quake/runequake/runequake.qst
+
+    Save it to your disk and run View/Custom Tab/Import from Gamespy.
+
+    If you don't use Gamespy, you can find a list of the servers I know
+    about on the Rune Quake web page (URL above).
+
+
+Observer Mode
+-------------
+
+    You start the game as an observer with the main menu up.  The menu
+    contains these commands:
+
+	1. View instructions
+
+	    This shows you an abbreviated version of the instructions.
+
+	    Alternately, this puts the menu up on your screen if you're
+	    observing or riding.
+
+	2. Join the game
+
+	    This is how you start playing the game.  Because the game
+	    sends an "init" command to you when you connect, you can
+	    automatically join when you connect if you set
+
+		alias init impulse 2
+
+	    in your autoexec.cfg file.
+
+	    If the game is full when you press 2, you'll join the game
+	    queue but remain an observer.  When one of the players
+	    leaves the game or becomes an observer, the person at the
+	    front of the game queue will automatically join the game,
+	    and everybody else in the queue will move forward in the
+	    line.  You can press 2 once you're in the queue to see how
+	    close you are to the front of the line.
+
+	3. View credits
+
+	    This displays the Rune Quake credits.
+
+	4. Observe
+
+	    Since you're already an observer when you're looking at the
+	    menu, this really just turns the menu off.
+
+	5. Ride next player
+
+	    Rider mode is an observer mode similar to a chase cam, but
+	    it's more intimate.  You'll see through the eyes of the
+	    person you're riding.  It's a bit choppy, I hope to do
+	    something about that in a future release.
+
+	    If you press 5 while you're an observer you'll be made a
+	    rider and put into fast track mode.  In this mode you'll
+	    always ride the person who has the highest weighted frag
+	    rate.  (The rate is weighted to give more recent frags more
+	    oomph.  The idea is for the game to put you on somebody who
+	    is probably interesting to watch.)
+
+	    If you press 5 a second time you'll enter high track mode.
+	    This causes you to ride the person who has the most frags.
+
+    	    Pressing 5 a third time causes you to ride somebody else.
+	    You'll stay riding that person until you change by pressing
+	    5 again (or 4 to stop riding and observe, or 2 to join the
+	    game).
+
+	    If you're a player you'll get a message when somebody starts
+	    riding you, plus the gold key will light up in your status bar
+	    to let you know you have a rider.  The show-riders command
+	    will list who is riding you, or who you're riding.
+
+	6. Admin menu
+
+	    This activates the admin menu (if you've already entered
+	    your admin passcode) or prompts you for the passcode (if you
+	    haven't).  See the Configuring file for information about
+	    admin mode and the admin commands.
+
+	7. Weapon toggles
+
+	    If alternate weapons are enabled normally pressing a weapon
+	    selection command multiple times toggles between the regular
+	    and alternate weapons available from that key.  Eg, if you
+	    press the 3 key repeatedly you'll switch from the super
+	    shotgun to the flamethrower and back again.  This is useful
+	    for most people, but it interferes with some client-side
+	    weapon selection setups (quick-rocket keys and the like).
+	    If you run this menu item then the toggling behavior of the
+	    weapon selection impulses will be disabled.
+
+	8. Bind default keys
+
+	    This command binds the most useful commands to a set of
+	    pre-defined keys.  The keys which are used are listed with
+	    the command descriptions below.
+
+    You can use these commands any time when you're an observer or a
+    rider, you don't have to have the menu up for them to work.  Pressing
+    1 brings the menu up.
+
+    If you press 4 while you're dead you'll become an observer again.
+
+
+Player Commands
+---------------
+
+    You'll need to bind at least two keys in order to use the runes
+    effectively.  It's useful to bind a few other keys as well, but you
+    can get by with just two.
+
+    On the main menu there's a command which will bind the most useful
+    commands to standard keys.  The keys which are used are listed along
+    with the descriptions of the commands below.
+
+    command rune-use, key X
+
+	This command is needed to activate some of the runes, such as
+	death spots and radiation.  Most runes don't require activation.
+
+    command rune-delete, key Q
+
+	This command deletes your current rune.  Since you can only have
+	one rune at a time, you have to do this to get a different rune.
+
+    command rune-tell, key C
+
+	This command tells you what rune you currently have.
+
+	If your rune description is already on your screen (either from
+	using rune-tell or just from picking up a rune), this command
+	removes it.  Jumping and firing will also remove the description
+	from your screen.
+
+    command show-riders, key [
+
+	This will list the observers currently riding you.  If you're a
+	rider, it also lists who you're riding.  If you have any riders
+	the gold key will light up in your status bar.
+
+    command fix-angles, key ]
+
+	There's a bug which causes your view to be tilted to the side, I
+	call it batman villain syndrome.  You can fix it by teleporting,
+	or by using this command.
+
+	Also, sometimes you're left with a one of the weirdness affects
+	inappropriately.  The fix-angles command will take care of that,
+	too.
+
+    command show-players
+
+	This command lists the players connected to the server, and
+	whether each is playing, observing or riding.
+
+    command show-settings
+
+	This command shows how the mod is currently configured.  The
+	"Configuring" document explains what all the settings mean.
+
+    command best-weapon
+
+	This command will make current the best safe weapon for which
+	you've got ammo.
+
+    command rider-hide
+
+	This toggles rider-hide mode.  If you have this rider-hide mode
+	enabled then your riders won't be able to see your armor, health,
+	ammo or items.  They'll still be able to see your current weapon,
+	for aesthetic reasons.  The idea behind this is not to make
+	available to riders more info then they'd be able to glean from
+	observer mode.  This is necessary because some people have a
+	better time ruining other people's games then having one of
+	their own.
+
+	This command is not available in the default server.  The server
+	admin has to enable this mode and recompile the sources if she
+	wants the players to be able to use it.
+
+    command hook-on
+    command hook-off
+    command hook-toggle
+    command +hook
+
+	There are five different ways to operate the grappling hook.
+	These five commands are three of them.  hook-on and hook-off do
+	what you'd think.  hook-toggle fires the hook if it isn't out, or
+	drops it if it is.  When bound directly to a key, +hook will fire
+	the hook when you press the key and drop it when you release.
+
+	The other two ways are by selecting the alternate axe (by
+	pressing it twice or any of the other ways you can select a
+	weapon alternate) and using the fire key, and by using
+	rune-use if you've got the grappling hook as your main rune
+	(which behaves just like hook-toggle).
+
+    command remove-frags
+
+	This drops your frags to zero, if they're greater than that.
+
+    command weapon-mode, key 9
+
+	This is one of ways you can select alternate weapons.  See the
+	alternate weapon section for more info.
+
+    command hud-toggle
+
+	 This enables or disables the HUD.  The HUD isn't quite ready
+	 for prime time yet, so it isn't on by default.  Eg, it's only
+	 properly placed if you're running in 320x200 mode.  A future
+	 version will have ways to configure this.
+
+    command quiet-toggle
+
+	This toggles quiet mode.  In quiet mode you don't get the
+	centerprinted messages about runes being picked up or deleted.
+	You might want to use this if you use the HUD.
+
+    command team-change
+
+	This changes the team you're on in enforced team mode.  What
+	teams you can join depend on the current teamplay settings.  This
+	command will cycle you through all the teams you're allowed to
+	switch to.  It's always safe to use this, if you aren't allowed
+	to switch teams nothing bad will happen.
+
+    command team-stats
+
+	This shows how many frags each team has, and which team is
+	winning.  It's run automatically at the end of every level when
+	the game is in team mode, but you can run it yourself any time
+	you like (even if the game isn't in team mode).
+
+    command weapon-toggles
+    command weapon-toggles-toggle
+
+	These toggle the state of weapon toggles.  See the "weapon toggles"
+	entry in the observer mode section for more information.
+
+    command vote-exit
+
+	If enough players vote to exit the level, the level will end.
+	(This only works for players, riders and observers can't vote.)
+	The number of people who need to vote in order to exit the
+	level can be changed by the server operator, by default it's
+	50% (rounded up).
+
+	If you give the vote-exit command after you've already voted, or
+	if you do it while you're an observer or rider, the game will
+	tell you how many more votes are needed to exit the level.  The
+	show-players list shows which players have voted.
+
+    command vote-team
+
+    	This does a similar thing for team mode.  When team mode isn't on
+    	using vote-team means you want to turn it on, otherwise it means
+    	you want to turn it off.  Your team vote stays with you across
+    	levels, you don't have to vote again.
+
+	Just like with vote-exit, using vote-team as an observer or after
+	you've voted will tell you how many more votes are required to
+	change modes, and the show-players command lists people who have
+	voted to change the team mode.
+
+
+Alternate Weapons
+-----------------
+
+    The server supplies a number of new weapons (though they can be
+    turned off by the server operator).  There are several ways to
+    access them.
+
+    Most people will use the weapon toggles.  Eg, the flame thrower is
+    the alternate for the super shotgun.  Pressing 3 while you're already
+    wielding the super shotgun will switch to the flamethrower.  Pressing
+    it while you're wielding the flamethrower will switch back to the
+    super shotgun.  (If you don't care for this behavior you can turn it
+    off via the observer menu or the weapon-toggles command.)
+
+    The regular Quake weapon cycling commands (impulses 10 and 12) work
+    with the alternate weapons.  You reach the alternates by going up
+    from the lightning gun or down from the axe.  They cycle around in
+    the usual manner.
+
+    If you use the weapon-mode command you will change the default mode
+    you use for the currently selected weapon.  This only affects what
+    happens when you use the regular weapon selection impulses (and the
+    mode of the weapon you're wielding right now), you can still use
+    the other methods of selecting the weapons.  Eg, if you haven't
+    used weapon-mode before and you press it while you've got the 3 gun
+    selected, then later pressing the 3 button will cause you to select
+    the flame thrower rather than the super shotgun.  You can still
+    toggle or use one of the other methods to get at the super shotgun.
+
+    You can also bind keys to select the alternate weapons directly.
+    Bind to the commands weapon9 (grappling hook) through weapon16
+    (BFG).  This works for weapon1 through weapon8 as well.  These
+    don't toggle even when you haven't turned weapon toggles off.
+
+    Finally, you can use switch firing to select them.  See the section
+    on switch firing for details.
+
+    Here are the alternate weapons:
+
+	grappling hook
+
+	    This can always be selected as an alternate weapon, but it
+	    isn't always available -- sometimes everybody gets it,
+	    sometimes it's a rune and sometimes it's a special item you
+	    can pick up.  See the section on the grappling hook for
+	    details.
+
+	flame thrower (alternate for super shotgun)
+
+	    This weapon throws flames that do a fair amount of damage
+	    but don't travel very far.  They might set the target on
+	    fire.  You can hurt yourself with the flames if you're too
+	    close to them.
+
+	    There are multiple levels of burning -- the more flames you
+	    get hit by the more damage the fire itself does to you.  You
+	    can douse the flames by jumping in water (or slime) or by
+	    getting armor.  Don't touch a burning player, or you might be
+	    set on fire yourself.
+
+	lava gun (alternate for nail gun)
+
+	    This is another burning missile weapon, but the blobs of
+	    flame shoot in an arcing pattern (though they can go further)
+	    and do a bit less damage.  It can still set people on fire.
+
+	bomb (alternate for super nail gun)
+
+	    The bomb launches like a rocket, but it sticks to whatever
+	    it hits.  It ticks for a few seconds then explodes.  It does
+	    quite a bit of damage near to the explosion, and some damage
+	    a long way away for people in line of sight.  It takes 10
+	    rockets to fire one.
+
+	    The idea for this weapon came from DM Plus.
+
+	flash grenades (alternate for grenade launcher)
+
+	    When flash grenades explode anybody looking in their
+	    direction will be blinded for a few seconds.  They don't do
+	    any physical damage.  It takes 3 rockets to launch one.
+
+    	mortar (alternate for rocket launcher)
+
+    	    This is missile with a ballistic flight path.  It does a bit
+    	    less damage than a rocket (and over a smaller area), but it
+    	    can be directed at places you couldn't hit with a rocket.
+
+	    The idea for this weapon comes from Expert Quake.
+
+	BFG (alternate for lightning gun)
+
+	    This is like Quake 2's BFG rather than Doom's.  When you
+	    fire it a lava ball appears in front of you.  This is the
+	    shot you're going to fire, but it takes a couple of seconds
+	    to warm up.  When it fires the lavaball flies off (at rather
+	    a slow pace).  It zaps people that it flies near, then does
+	    a huge amount of damage when it impacts.  It takes 30 cells
+	    to fire.
+
+
+Weapons Stay (aka. Deathmatch 3 Mode)
+-------------------------------------
+
+    In the version of deathmatch 3 mode the server implements, you can
+    get ammo from a weapon even if you have it already, just like in
+    normal deathmatch mode.  So, the same amount of ammo is available,
+    but you never have to wait around for a weapon.
+
+    When a weapon is charged with ammo it is raised up a bit.  If you
+    see a weapon which is higher than normal it means that you can get
+    ammo from it, even if you have that kind of weapon already.
+
+
+Team Mode
+---------
+
+    The server can be configured to use a team mode in which everybody
+    is forced to be on one of the teams the server op has set up.  When
+    you join the game you'll automatically be assigned to the team with
+    the fewest players.  You can change teams, but only to a team which
+    has fewer players than the one you are already on (this can happen
+    as people leave the game).  The game can also be set so that the
+    winning player can change to any team.  If you try to change teams
+    by setting your color but you're not allowed to be on the team you
+    choose, the game will kill you.  To avoid that use the team-change
+    command to try to change teams, it will do nothing if you aren't
+    allowed.
+
+    The team-stats command lists the current team frag counts.
+
+
+Spawn Protection
+----------------
+
+    When you first spawn you'll be invulnerable (and surrounded by
+    orbiting yellow dots) for a little while.  This is to help cut down
+    on spawn camping.  The invulnerability will stop immediately if you
+    pick something up or attack.
+
+
+Grappling Hook Modes
+--------------------
+
+    Normally the grappling hook is a rune like any other.  The server
+    can be configured to treat the hook specially, though.  You can use
+    the show-settings command to see which hook mode the server is using.
+
+    In free hook mode everybody gets the hook.
+
+    In Lithium hook mode vore balls (little spiky purple balls) appear on
+    the level, picking one up gives you a hook. There's one of these for
+    every three players (rounding up -- 7 players means 3 hooks). You
+    don't drop the hook when you die, so you have to get lucky to
+    find one.
+
+    See the commands section for information on how to activate the
+    hook.
+
+
+Switch Firing
+-------------
+
+    Unlike in normal Quake, impulses work even when you are attacking.
+    For most people, the most important thing this will affect is that
+    you can use your rune even while attacking.  Eg, if you shoot a
+    rocket and then activate the shield rune, the shield will come up
+    immediately rather than waiting until the rocket animation finishes.
+
+    Additionally, if you're using a complex binding scheme to do client
+    side switch firing, it will generally work better because the only
+    time an impulse command is lost is when two are sent in the same
+    game tick.  Use the "wait" command to make sure the impulses each
+    arrive in a different tick.
+
+    There's a server side switch firing system in place to allow easier
+    and more robust quick-rocket and quick-grenade and the like bindings.
+    Eg:
+
+	bind s +sattack7	// quick rocket
+	bind d +sattack6	// quick grenade
+
+    You can use +sattack1 (axe) through +sattack8 (lightning gun) for the
+    normal weapons, and +sttack9 (grappling hook) through sattack16 (BFG)
+    for the alternate weapons.  You can also bind to +sattack-best to
+    have it choose your best safe close-combat weapon (as the best-weapon
+    command would choose).
+
+    The idea for server side switch firing came from Expert Quake.  Part
+    of what they were trying to solve is mostly fixed by my other impulse
+    command change, but I implemented the switch firing anyway because
+    dropped impulses are still a problem.
+
+    The way I currently use this is my main attack binding uses
+    +sattack-best, and I also use separate keys for firing rockets and
+    grenades (and slightly harder to reach bindings for firing bombs,
+    the BFG, flash grenades and mortars).  Using +sattack-best rather
+    than +attack means I'm never in danger of zapping myself under
+    water.  This isn't perfect, though, because there's no way to
+    override the game's idea of what weapon is best (other than via the
+    weapon-mode hints), so it's inconvenient to stop using the flaming
+    guns while berserk, eg.  I hope to make this more configurable in
+    the future.
+
+
+Rune Descriptions
+-----------------
+
+    Rune of Good Health (1)
+
+	Your maximum health value is 666, plus you get 100 health just
+	for picking up the rune.
+
+    Rune of Regeneration (2)
+
+	Your health and armor both regenerate up to their normal limits or
+	instantly restore them by activating your rune.  Rune is removed
+	upon activation.
+
+    Rune of Resistance (3)
+
+	You only take half damage from any attack.  This applies both to
+	your health and to your armor.
+
+    Rune of Haste (4)
+
+	Your attacks happen faster or go farther or the like.  The axe,
+	shotgun, super shotgun, grenade, and rocket fire twice as fast,
+	nails fly twice as fast, and the lightning gun reaches twice as
+	far.
+
+    Rune of Environmental Protection (5)
+
+	The most obvious effect of this rune is that water, slime and
+	lava, which normally hurt you, heal you instead.  It also
+	protects you from many of the other runes, however, which can
+	be at least as useful.  You're impervious to death spots, ice
+	traps, death orbs, weirdness, radiation, and other things.
+
+	If you've got this rune then the rune-use button acts as a super
+	jump if you're in a liquid.  This can be used to get out of lava
+	and slime that the level designers didn't expect you to survive.
+	Point yourself up out of the liquid and hit the button a few
+	times in quick succession.
+
+    Rune of Flight (6)
+
+	With this fine rune you can fly (hover, really).  Stay away from
+	the ceilings and walls as you dodge and you are very hard to
+	hit.
+
+    Berserker Rune (7)
+
+	All of your attacks do 6x as much damage, but all damage you
+	sustain hurts 3x as much as normal.  Plus, you get to quiver and
+	bleed in a disturbing manner.
+
+    Rune of Recall (8)
+
+	Activate rune-use and you'll set your recall location.  Go
+	elsewhere and press it again and you'll teleport to your
+	location.  You place your location somewhere else by pressing
+	rune-use twice, this will forget your old location so you can
+	set a new one.
+
+    Electric Rune (9)
+
+	You zap anybody who gets too close to you.  Each zap uses up a
+	cell, the rune comes with 10 of them, plus you generate 1 every
+	5 seconds.
+
+    Rune of Cloaking (10)
+
+	You never make any noise.  Also, if you don't attack and aren't
+	hurt for a few seconds, you become invisible (as with the ring
+	of shadows).
+
+    Rune of Divine Wind (11)
+
+	You explode when killed, doing a fair amount of damage and so
+	often taking some other players out with you.  If you activate
+	your rune via rune-use, you explode much more violently,
+	gibbing anybody within line of sight.  You don't lose a frag
+	for activating the rune.
+
+    Death Spots (12)
+
+	When you activate this rune you place a multicolored death spot
+	which will arm in a few seconds.  The spot will kill anybody who
+	touches it (including you, so be careful).  Beware of somebody
+	with vengeance hitting your death spot!
+
+    Holorune (13)
+
+	Activating this rune leaves a holographic image of yourself
+	behind.  The image stays in place but otherwise is animated just
+	as you are.  The image goes away after 30 seconds.  You can have
+	up to 5 holograms active at a time.
+
+    Orb of Death (14)
+
+	An orange orb replete with yellow spots orbits around you.  It
+	does a huge amount of damage to any of your foes that it contacts.
+
+    Blink Rune (15)
+
+	This is a semi-random teleport.  It teleports you onto objects
+	around the level.  You can normally use it often, but if you
+	keep using it to quickly it will require some time to recharge.
+
+	This rune puts a bubble over your head.  I'm not sure why.
+
+    Rune of Camouflage (16)
+
+	If you stand still, don't fire, and aren't being hurt, you are
+	completely invisible, not even your eyes show.  You can still
+	look around without becoming visible.  This rune is a camper's
+	delight.
+
+    Rune of Uncontrollable Jumping (17)
+
+	Everybody is so happy to see you that they jump for joy, though
+	there are red slippers overtones.  Also known as the rune of
+	dancing.  "Now you will dance for me."
+
+    Action Movie Arsenal (18)
+
+	Just like Arnold in the latest big budget shoot-em-up, you have
+	a virtually inexhaustible supply of ammunition.  (All of your
+	ammo is replenished at a steady rate.)  In addition, when you
+	become full of any particular type of ammo, you're given the
+	guns which go along with it.  It is a fine thing to pull
+	out a lightning gun in one of the episode one levels.
+
+	In Lithium hook mode, having all weapons and ammo gives you the
+	hook.
+
+    Vampiric Rune (19)
+
+	When you damage other players, you get their health.  (You don't
+	get back the damage you do to their armor.)  You can go above
+	100 health this way, but your health above 100 rots away very
+	fast.  Normal health boxes, which normally give you 15 or 25
+	points of health, only give you 5 points when you're a vampire.
+
+	If you leech enough some health after you die (by hurting somebody
+	with a grenade you fired before you died, for example) to bring
+	your own health back above 0, you come back to life!  This only
+	works if you're still dead, of course, so don't respawn too quickly
+	when you die while you have this rune.
+
+    Rune of Shielding (20)
+
+	When you press the button you're rendered invulnerable for 3
+	seconds.  (Your opponents can tell this has happened both by
+	the invulnerability fading sound and by the yellow dots which
+	surround you.)  The shield takes 4.5 seconds to recharge after
+	use.  If you press the button while the shield is recharging
+	it will activate again as soon as it can.  (If you press the
+	button a second time before it activates, the pending activation
+	is canceled.)
+
+    Rune of Strength (21)
+
+	All of your attacks do double damage.
+
+    Rune of Radioactivity (22)
+
+	When you press the button you drop a radiation point.  After it
+	arms in a few seconds, it does damage to any of your foes which
+	it can see (save those with radiation runes or enviro suits).
+	Additionally, if you are within its zone of influence and you
+	haven't gotten rid of the radiation rune, it heals you.
+
+	You can have three of these spots extant at a time.  You can't
+	drop them within sight of each other, but if you try you can set
+	it up so that two or even three radiation points have overlapping
+	fields in certain areas.  This is very powerful.
+
+    Switch Rune (23)
+
+	Point at another creature and activate the button and you'll
+	switch with them.  You'll swap positions, health, armor, ammo,
+	items and powerups, but not runes.
+
+    Ice Traps (24)
+
+	Pressing the button with this rune creates a freeze trap which
+	will arm in a few seconds.  Anybody who touches this trap
+	(including you) is frozen in place for an excruciatingly long
+	while.  If nobody touches the trap for a couple of minutes it
+	disappears.  You can have 6 traps active at once.
+
+    Gravity Rune (25)
+
+	Pressing the button drops an orange globe which attracts
+	everything but you and (if in team mode) your teammates.
+	Pressing the button again recalls the gravity well.  If you
+	place it right the other players will be sucked into orbit
+	around it.  It's usually possible to escape the orbit, but it
+	can be tricky.  This rune can also be very useful for denying
+	your opponents access to certain key items, such as the red
+	armor in The Ogre Citadel.
+
+    The Teleport Shuffle (26)
+
+	Aim a little above the floor at some distant point and press
+	the button and you'll (usually) be teleported there.  (I'll be
+	working on the code to make this easier to use.)  Additionally,
+	point it at a player and you have a chance of telefragging
+	them.  If the dice don't roll in your favor for the telefrag,
+	you'll switch places with them.
+
+    Impact Rune (27)
+
+	Your attacks move people around much more than normal, your
+	attacks do a little more damage than normal, and if you touch
+	somebody you'll do a bunch of damage to them.  You'll have a
+	spike over your head so the other players can know to try to
+	stay away from you.
+
+    Rune of Vengeance (28)
+
+	You get an enormous bleeding head.  As if that weren't enough,
+	any damage people do to you is visited right back upon them, and
+	if that kills them, you get the frag.
+
+    Shub Hat (29)
+
+	You're surrounded by a holographic projection of Shub-Niggurath.
+	After you get past the surprise factor, this is useful both
+	because it can be deceptively hard to hit somebody wearing a
+	shub hat, and because the other players won't see which way
+	you're facing and when you're firing.
+
+    Rune of Repulsion (30)
+
+	Most things in the game, including players, projectiles and
+	death spots, are repulsed away from you.  It is a lot of fun to
+	use the grenade launcher when you have this rune.
+
+    Phasing Rune (31)
+
+	You can walk through walls.  You'll have to experiment a little
+	to get the technique down, get close to a wall and activate your
+	rune.  If you should fall in the lava, activate your rune to 'blink'
+	to a new location.
+
+    Shambler Helper (32)
+
+	You'll get a pet shambler of your very own.  He'll follow you
+	around and attack anybody he sees (including your teammates
+	right now, I'll be fixing that).  If you press the button or if
+	he absorbs too much damage he'll teleport to you.
+
+    Rune of Dual Recall (33)
+
+	This is another teleport rune, this one teleports you back
+	to the last place at which you activated it.  Telefragging
+	is a popular attack with this rune, but it's also great for
+	getting out of a fight to someplace where you can juice up,
+	then teleporting back into the fight.  This maneuver is
+	called "the pause that refreshes."  This rune puts an
+	upward-pointing spike over your head so your opponents know not
+	to let you get close.
+
+    Rune of Weirdness (34)
+
+	Little bubbles float off of you (or are pushed off, if you press
+	the button) and wander randomly.  If your enemy touches one
+	he'll experience one of a variety of unpleasant effects for a
+	while.  When you die you give off a bunch of bubbles all at
+	once.
+
+    Phoenix Rune (35)
+
+	When you are killed you respawn right where your body landed,
+	with all your items and 15 seconds of quad damage.  You can do
+	this three times.
+
+	When somebody dies with the phoenix rune they don't drop a
+	backpack.  Watch for that and don't run over their body (or
+	gibbed head) lest you be fragged when they respawn.  Also,
+	when you die, you can't respawn using the fire button.  There
+	will be a warning message to indicate such.
+
+    Rune of Floating Spiky Death Cloud (36)
+
+	A large cloud floats above you, randomly giving off little spiky
+	balls which bounce and cause a lot of damage if they hit an enemy.
+	This rune is only present when the server has LAN mode enabled.
+
+    Rune of Fire Walking (37)
+
+	You leave spots of fire behind when you walk.  The fire does a
+	lot of damage to your foes.  This rune is only present when the
+	server has LAN mode enabled.
+
+    Grappling Hook (38)
+
+	This rune gives you a grappling hook.  See the section on the
+	grappling hook for details.
+
+    Rune of Athletics (39)
+
+	This allows you to swim further, and the button performs a
+	really big jump.  I'd like to have it let you run faster,
+	but I don't think there's a safe way to do that in POQ.
+
+    Lumberjack Rune (40)
+
+	Being a hale and hearty sort accustomed to a fit life in the
+	wilds of Canada, your maximum health is 250 rather than the
+	paltry 100 allotted lesser men and women.  Also, of course, you
+	work with your axe much more effectively.  It does a lot more
+	damage, and you've got a longer reach with it.  As a bit of a
+	bonus, your attacks do a little more damage than normal, as with
+	the impact rune.
+
+    Houngan Rune (41)
+
+	When you activate this rune you'll place a camping zombie slave.
+	The zombie will stay right where you put him and attack anybody
+	who comes near.  He's more robust than the zombies found in the
+	normal game, he can't be killed (even with rockets) and he gets
+	up faster when you knock him down.  He also reacts to enemies
+	faster, fires more frequently, does more damage with each flesh
+	whack, and is more accurate at targeting.  You can have three
+	zombie campers.  If you try to place a fourth you'll really just
+	move the one you'd placed least recently.
+
+	A houngan is a Vodun (aka Voodoo) priest.
+
+    Rune of Armor Piercing (42)
+
+	Your attacks ignore your opponent's armor.  This is nice both in
+	that it lets you kill them more easily (most people die with
+	just 1 rocket), and in that there's more armor left for you when
+	they die.  This is a powerful rune, but not so bad as you might
+	at first think, mostly because when you damage yourself you
+	pierce your own armor.
+
+    Rune of Self Preservation (43)
+
+	This rune is a rocket jumper's delight.  When you've got it
+	your own attacks don't hurt you.  (This is nicer than the buggy
+	teamplay 1 rules, not even your armor is affected.)  This lets
+	you be a real menace with the BFG and (on servers which haven't
+	disabled it) underwater discharge.
+
+    Zen Monk (44)
+
+	You're mostly invulnerable if you stand still if you haven't
+	attacked for a few seconds.  You're still vulnerable to kamikaze,
+	berserk, lumberjack axe, and BFG blast/hit attacks.  Damage doesn't
+	move you around.  You're not affected by most kinds of splash damage.
+	Plus, of course, you don't take damage from falling.
+
+    Human Torch (45)
+
+	Lava doesn't hurt you (though you can still drown in it if you
+	stay submerged), but water does.  Bumping into people can set
+	them on fire (but it lasts longer than the fire caused by
+	bumping into a non-torch burning person).  Flaming weapons
+	(alt 3 and 4) don't hurt you, and attacks you do with them do
+	more damage.  You can toss flaming traps which ignite people
+	when they're triggered.
+
+    Pack Rat (46)
+
+	You can pick up extra runes and carry them around.  (You don't
+	actually use them, you just carry them.)  This helps you in
+	several ways:
+
+	    - If you pick up enough, you get bonus frags for every kill.
+	      By default you get 1 bonus frag for each 33% of the runes
+	      which you're holding, so with the default maximum of 16
+	      runes you'll get 1 bonus frag per kill if you have 6 to 10
+	      runes, 2 bonus frags for 11 to 15 runes, and 3 bonus frags
+	      for each kill if you've got all 16 runes.
+
+	    - The runes you hold are kept out of the game, so it gets
+	      harder for the other players to get runes.  Of course, that
+	      will make you a juicy target for the runeless multitudes.
+
+	    - In team games, you can give the runes to your teammates.
+	      Use your rune-delete key to drop the runes you're carrying.
+	      (Use it a second time to actually delete the pack rat
+	      rune, in which case you can pick up one of the runes you
+	      were holding.)
+
+	    - As you pick up each rune, the name of that rune is displayed.
+	      This makes pack rat useful as a rune finder, when you find the
+	      rune you want, just drop it, delete pack rat, and pick up your
+	      new rune!
+
+      You can't pick up a rune if you killed the owner (that would
+      make it too easy for good players).
+
+    Rune of Good Armor (47)
+
+	When you have this rune all the armor you get counts as red
+	armor, plus you can hold a ton of the stuff.
+
+	Quake won't display an armor value over 255, though.  So, I've
+	set it to use the armor color to give you an idea of how much
+	armor you've got.  If you have this rune then your status bar
+	shows green armor for armor values from 0 through 255, yellow
+	armor for 256 through 511, and red armor for 512 through 767.
+	In other words,
+
+	    color on status bar		actual amount of armor
+	    -------------------		---------------------------
+	    green			displayed value
+	    yellow			displayed value + 256
+	    red				displayed value + 256 + 256
+
+	No matter what color is displayed, the armor you've got works at
+	80% absorption, just like red armor.
+
+    Rune of Quad Damage (48)
+
+	Activating this rune gives you quad damage for a few seconds.  As
+	with the shield rune, there's a delay while the rune recharges
+	before you can activate it again.
+
+    Jack of All Runes (49)
+
+	You get the abilities of a number of other runes but in less
+    	potent form.  It gives you some of the features of regen, good
+    	health, resistance, strength, haste, piercing, and action movie
+    	arsenal.
+
+    Lithium Hook (50)
+
+	This isn't a standard rune, it's the quasi-rune used to give you
+	a grappling hook in Lithium hook mode.  You can use impulse 146
+	to get a Lithium hook in rune cheating is turned on.
+
+
+Rune Models
+-----------
+
+    Unless the server operator has disabled this (you can tell with the
+    show-settings command), a particular type of rune always uses a
+    particular model.  Here's how they match up:
+
+	Earth magic:  haste, recall, death spots, camouflage, shielding,
+	ice traps, vengeance, shambler, floating cloud, lumberjack,
+	monk, quad
+
+	Black magic:  good health, environmental protection, electricity,
+	holograms, jumping, strength, gravity, Shub hat, dual recall,
+	firewalking, houngan, torch, jack of all runes
+
+	Hell magic:  regeneration, flight, cloaking, orb of death,
+	action movie arsenal, radiation, teleport shuffle, repulsion,
+	weirdness, grappling hook, piercing, pack rat
+
+	Elder magic:  resistance, berserk, divine wind, blink, vampiric,
+	switch, impact, phasing, phoenix, athlete, self preservation,
+	good armor
+
+
+End
+---
+
+That's it!  Have fun playing the game, and please mail me if you find
+bugs or have suggestions.
+
+Rune Quake Development Team <slotzero@runequake.com>
