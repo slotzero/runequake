@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.35 2003/10/13 22:02:48 slotzero Exp $
+/*  $Id: client.qc,v 1.36 2003/10/14 01:46:13 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -427,6 +427,9 @@ trigger_changelevel =
 {
 	if (!self.map)
 		objerror ("changelevel trigger doesn't have map");
+
+	if (1)
+		place_my_targets ();
 
 	InitTrigger ();
 

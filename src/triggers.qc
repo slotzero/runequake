@@ -1,4 +1,4 @@
-/*  $Id: triggers.qc,v 1.11 2003/06/24 22:17:46 slotzero Exp $
+/*  $Id: triggers.qc,v 1.12 2003/10/14 01:46:14 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -479,51 +479,24 @@ trigger_teleport =
 {
 	local vector o;
 
-	// Remove bogus teleporters which have no destination.
-	if ((world.model == "maps/e4m5.bsp" && self.target == "t178")
-		|| (world.model == "maps/e4m8.bsp" && self.target == "t273"))
+	// Remove bogus teleporters, some of which have no destination.
+	if ((mapname == "e4m5" && self.target == "t178")
+		|| (mapname == "e4m8" && self.target == "t273")
+		|| (mapname == "start" && self.target == "t11")
+		|| (mapname == "e1m7" && self.target == "t15")
+		|| (mapname == "e2m6" && self.target == "t88"))
 	{
 		remove (self);
 		return;
 	}
 
-	if (scratch1 & S1_ORIGINAL_LEVELS)
-	{
-		if (world.model == "maps/start.bsp" && self.target == "t11")
-		{
-			remove (self);
-			return;
-		}
-	}
-	// Add destination to level-exit teleporter.
-	else if ((world.model == "maps/e1m7.bsp" && self.target == "t15"))
-	{
-		self.target = "t11";
-		self.mangle = self.angles;
-		self.angles = VEC_ORIGIN;
-		self.model = string_null;
-		self.flags = self.flags | FL_ITEM;
-		self.origin = self.origin + '1000 56 -1048';
-	}
-	// Add destination to level-exit teleporter.
-	else if ((world.model == "maps/e2m6.bsp" && self.target == "t88"))
-	{
-		self.target = "t74";
-		self.mangle = self.angles;
-		self.angles = VEC_ORIGIN;
-		self.model = string_null;
-		self.flags = self.flags | FL_ITEM;
-		self.origin = self.origin + '-609 496 -984';
-	}
-
 	InitTrigger ();
 	self.touch = teleport_touch;
-	// find the destination
 	if (!self.target)
 		objerror ("no target");
 	self.use = teleport_use;
 
-	if (!(self.spawnflags & SILENT))
+	if (!self.spawnflags & SILENT)
 	{
 		if (!scratch1 & S1_AMBIENT_SOUND_OFF)
 		{
@@ -531,7 +504,6 @@ trigger_teleport =
 			o = (self.mins + self.maxs)*0.5;
 			ambientsound (o, "ambience/hum1.wav", 0.5, ATTN_STATIC);
 		}
-
 	}
 };
 

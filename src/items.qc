@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.27 2003/10/02 15:18:34 slotzero Exp $
+/*  $Id: items.qc,v 1.28 2003/10/14 01:46:13 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1078,7 +1078,9 @@ following:
 void ()
 item_key1 =
 {
-	if (world.worldtype == 0)
+	if (deathmatch & DM_DM_MASK)
+		remove (self);
+	else if (world.worldtype == 0)
 		key_set ("progs/w_s_key.mdl", "silver key", IT_KEY1);
 	else if (world.worldtype == 1)
 		key_set ("progs/m_s_key.mdl", "silver runekey", IT_KEY1);
@@ -1099,7 +1101,9 @@ following:
 void ()
 item_key2 =
 {
-	if (world.worldtype == 0)
+	if (deathmatch & DM_DM_MASK)
+		remove (self);
+	else if (world.worldtype == 0)
 		key_set ("progs/w_g_key.mdl", "gold key", IT_KEY2);
 	else if (world.worldtype == 1)
 		key_set ("progs/m_g_key.mdl", "gold runekey", IT_KEY2);
@@ -1156,7 +1160,9 @@ End of level sigil, pick up to end episode and return to jrstart.
 void ()
 item_sigil =
 {
-	if (self.spawnflags & 1)
+	if (deathmatch & DM_DM_MASK)
+		remove (self);
+	else if (self.spawnflags & 1)
 		sigil_set ("progs/end1.mdl");
 	else if (self.spawnflags & 2)
 		sigil_set ("progs/end2.mdl");
