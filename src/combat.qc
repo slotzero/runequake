@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.27 2004/11/28 07:42:17 slotzero Exp $
+/*  $Id: combat.qc,v 1.28 2005/01/02 08:38:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -114,7 +114,10 @@ Killed =
 		WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
 	}
 
-	ClientObituary (self, attacker, dtype);
+	if (mode_arena ())
+		arena_death (targ, attacker);
+	else
+		ClientObituary (self, attacker, dtype);
 
 	if (deathmatch & DM_MODE_PRACTICE)
 	{

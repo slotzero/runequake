@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.160 2004/12/29 04:31:52 slotzero Exp $
+/*  $Id: rjs.qc,v 1.161 2005/01/02 08:38:48 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -259,6 +259,9 @@ rjs_worldspawn =
 	e = spawn ();
 	e.think = update_frag_rates;
 	e.nextthink = update_frag_rates_time = time + 60;
+
+	if (deathmatch & DM_MODE_ROCKET_ARENA)
+		arena = spawn ();
 
 	if (START_LEVEL_EXEC != string_null)
 	{
@@ -919,6 +922,9 @@ get_max_armor =
 float ()
 max_players =
 {
+	if (mode_arena ())
+		return 2;
+
 	return (temp1 & T1_MAX_PLAYERS_MASK) / T1_MAX_PLAYERS_MULT;
 };
 

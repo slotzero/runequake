@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.51 2004/09/18 01:36:00 slotzero Exp $
+/*  $Id: weapons.qc,v 1.52 2005/01/02 08:38:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1075,6 +1075,9 @@ W_Attack =
 {
 	local	float	do_ammo, base_weapon, is_alt, haste_mult, r, t;
 	local	string	s;
+
+	if (mode_arena () && arena.state)
+		return;
 
 	spawn_protect_off ();
 

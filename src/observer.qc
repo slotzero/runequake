@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.34 2004/12/26 05:08:44 slotzero Exp $
+/*  $Id: observer.qc,v 1.35 2005/01/02 08:38:48 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -535,6 +535,9 @@ obs_become =
 		bprint (self.netname);
 		bprint (" became an observer for idling as a corpse\n");
 	}
+	// arena
+	else if (tell_type == 3)
+		SUB_Null ();
 	else if (tell_type)
 	{
 		bprint (self.netname);
@@ -546,7 +549,12 @@ obs_become =
 	stuffcmd (self, CSHIFT_NONE);
 
 	if (!is_observer ())
-		self.runevar	= 0;
+	{
+		if (mode_arena () && tell_type == 3)
+			self.runevar = time;
+		else
+			self.runevar = 0;
+	}
 	self.aqflags		= self.aqflags | AQ_OBSERVER;
 	// Look for classname tests if you try changing this.
 	//self.classname	= "observer";
@@ -843,8 +851,12 @@ obs_join_game =
 	SetNewParms ();
 	persistent_parms ();
 	PutClientInServer ();
-	bprint (self.netname);
-	bprint (" joined the game\n");
+
+	if (!mode_arena ())
+	{
+		bprint (self.netname);
+		bprint (" joined the game\n");
+	}
 
 	if (self.items & IT_KEY2)
 		self.items = self.items - self.items & IT_KEY2;

@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.73 2005/01/01 04:52:24 slotzero Exp $
+/*  $Id: client.qc,v 1.74 2005/01/02 08:38:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -139,6 +139,33 @@ SetNewParms =
 };
 
 void ()
+DecodeArenaParms =
+{
+	self.items		= parm1 = IT_AXE | IT_SHOTGUN | IT_SUPER_SHOTGUN | IT_NAILGUN | IT_SUPER_NAILGUN
+						| IT_GRENADE_LAUNCHER | IT_ROCKET_LAUNCHER | IT_LIGHTNING
+						| IT_ARMOR3;
+	self.health		= MAX_HEALTH_NORMAL;
+	self.armorvalue		= MAX_ARMOR_3;
+	self.ammo_shells	= 30;
+	self.ammo_nails		= 80;
+	self.ammo_rockets	= 30;
+	self.ammo_cells		= 30;
+
+	// Setting self.weapon is necessary because you retain your
+	// weapon setting across deaths.  If you die with the single
+	// shotgun set_weapon() won't do anything when this tries to set
+	// your weapon because it thinks you're already wielding that.
+	self.weapon = 0;
+	set_weapon (IT_ROCKET_LAUNCHER);
+
+	// XXX For some strange reason, multiplying parm9 by 0.01 returns
+	// the wrong value for red armor (0.79 instead of 0.80).  The result
+	// is picking up red armor when you don't need it.  I work around it
+	// by dividing by 100 instead.
+	self.armortype = ARMOR_TYPE_3;
+};
+
+void ()
 DecodePracticeParms =
 {
 	self.items		= parm1 = IT_AXE | IT_SHOTGUN | IT_SUPER_SHOTGUN | IT_NAILGUN | IT_SUPER_NAILGUN
@@ -178,6 +205,11 @@ DecodeLevelParms =
 		return;
 	}
 
+	if (mode_arena ())
+		DecodeArenaParms ();
+	else
+	{
+
 	self.items		= parm1;
 	self.health		= parm2;
 	self.armorvalue		= parm3;
@@ -198,6 +230,8 @@ DecodeLevelParms =
 	// is picking up red armor when you don't need it.  I work around it
 	// by dividing by 100 instead.
 	self.armortype = parm9 / 100;
+
+	}
 
 	Rune_Activate (parm10, 0);
 	self.aqflags		= parm11;
@@ -738,7 +772,18 @@ PutClientInServer =
 	if (newplayer || is_observer())
 		spawn_as_observer = 1;
 	else
-		spawn_as_observer = 0;
+	{
+		if (mode_arena ())
+		{
+			self.takedamage = 0;
+			if (put_client_in_arena ())
+				arena_init ();
+			else
+				spawn_as_observer = 1;
+		}
+		else
+			spawn_as_observer = 0;
+	}
 
 	// You can't do the player init here because stuffcmd doesn't
 	// work yet, but doing it from a newly spawned entity's think
@@ -997,6 +1042,12 @@ void ()
 PlayerDeathThink =
 {
 	local float forward;
+
+	if (mode_arena ())
+	{
+		arena_death_think ();
+		return;
+	}
 
 	IN_QW([-
 		// XXX The phoenix rune allows you to respawn at odd locations.
@@ -1804,6 +1855,10 @@ ClientDisconnect =
 	local float i;
 
 	qsmack_status_valid = 0;
+
+	if (mode_arena ())
+		//i =
+		arena_client_disconnect ();
 
 	// Don't print the disconnect message for players forwarding or
 	// think()ing about forwarding.
