@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.13 2003/10/18 17:24:19 slotzero Exp $
+/*  $Id: runes60.qc,v 1.14 2003/10/18 20:25:22 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -396,4 +396,155 @@ W_Sniper =
 
 	smallkick ();
 	self.runetime = time + 0.1;
+};
+
+void (string vict, float dist, float is_next)
+sonar_sprint =
+{
+	local string s;
+
+	if (is_next)
+		self_sprint (self, "\n  ");
+	else
+	{
+		s = ftos (self.runevar);
+		self_sprint (self, "\{13} ");
+		self_sprint (self, s);
+		self_sprint (self, " player");
+		if (self.runevar > 1)
+			self_sprint (self, "s");
+		self_sprint (self, " detected\n\n  ");
+  	}
+
+	self_sprintf_len (self, vict, -16);
+	self_sprint (self, " \b(");
+	s = ftos (rint (dist));
+	self_sprint (self, s);
+	self_sprint (self, "\b)");
+};
+
+void ()
+Rune_Sonar =
+{
+
+
+	if (self.runetime > time)
+		return;
+
+	self.runetime = time + 3;
+
+	local entity head;
+	local string n1, n2, n3, n4;
+	local float d1, d2, d3, d4, dist;
+
+	self.runevar = 0;
+
+	head = findradius (self.origin, 1500);
+	while (head)
+	{
+		if (head.classname == "player")
+		{
+			if (head.health > 0 && head != self)
+			{
+				//if (head.waterlevel > 1 && self.waterlevel > 1)
+				//	T_Damage (head, self, self, 10, "sonar");
+
+				if (!environmental (head) || head.runetype != RN_CLOAK)
+				{
+					// XXX Only sonar holder should hear this.
+					sound (head, CHAN_WEAPON, "enforcer/sight3.wav", 1, ATTN_NORM);
+
+					traceline (self.origin, head.origin, TRUE, self);
+					dist = vlen (head.origin - self.origin);
+
+					if (!d1 || dist < d1)
+					{
+						if (!d1)
+						{
+							d1 = dist;
+							n1 = head.netname;
+						}
+						else
+						{
+							d4 = d3;
+							n4 = n3;
+
+							d3 = d2;
+							n3 = n2;
+
+							d2 = d1;
+							n2 = n1;
+
+							d1 = dist;
+							n1 = head.netname;
+						}
+					}
+					else if (!d2 || dist < d2)
+					{
+						if (!d2)
+						{
+							d2 = dist;
+							n2 = head.netname;
+						}
+						else
+						{
+							d4 = d3;
+							n4 = n3;
+
+							d3 = d2;
+							n3 = n2;
+
+							d2 = dist;
+							n2 = head.netname;
+						}
+					}
+					else if (!d3 || dist < d3)
+					{
+						if (!d3)
+						{
+							d3 = dist;
+							n3 = head.netname;
+						}
+						else
+						{
+							d4 = d3;
+							n4 = n3;
+
+							d3 = dist;
+							n3 = head.netname;
+						}
+					}
+					else if (!d4 || dist < d4)
+					{
+						d4 = dist;
+						n4 = head.netname;
+					}
+
+					self.runevar = self.runevar + 1;
+				}
+			}
+		}
+		head = head.chain;
+	}
+
+	if (n1)
+	{
+		sonar_sprint (n1, d1, FALSE);
+		if (n2)
+		{
+			sonar_sprint (n2, d2, TRUE);
+			if (n3)
+			{
+				sonar_sprint (n3, d3, TRUE);
+				if (n4)
+					sonar_sprint (n4, d4, TRUE);
+			}
+		}
+		self_sprint (self, "\n");
+	}
+
+	if (self.waterlevel > 1)
+		sound (self, CHAN_WEAPON, "fish/idle.wav", 1.0, ATTN_NORM);
+	else
+		sound (self, CHAN_WEAPON, "wizard/widle1.wav", 0.8, ATTN_NORM);
 };

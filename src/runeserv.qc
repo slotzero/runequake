@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.27 2003/10/18 17:24:19 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.28 2003/10/18 20:25:22 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -82,6 +82,7 @@ Rune_Button =
 	else if (self.runetype == RN_GLUE)	Rune_Glue ();
 	else if (self.runetype == RN_BLIZZARD)	Rune_Blizzard ();
 	else if (self.runetype == RN_SNIPER)	W_Sniper ();
+	else if (self.runetype == RN_SONAR)	Rune_Sonar ();
 };
 
 // This doesn't always tell the riders because it can be triggered both
@@ -555,6 +556,14 @@ Rune_Tell_real =
 			"Single shot kills anything\n"
 			"Damage to self increases\n"
 			"with each kill";
+	}
+	else if (type == RN_SONAR)
+	{
+		desc_l = "Sonar Rune";
+		desc_s = " Sonar ";
+
+		d1 = "Emits a sonic wave which\n"
+			"detects nearby players";
 	}
 	/* else if (type == RN_TORNADO)
 	{
