@@ -1,4 +1,4 @@
-/*  $Id: bomb.qc,v 1.10 2003/11/30 08:08:39 slotzero Exp $
+/*  $Id: bomb.qc,v 1.11 2003/12/07 05:59:27 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -190,6 +190,7 @@ void (float damage, float radius)
 Gas_Cloud_Damage =
 {
 	local entity head;
+	local float head_dmg;
 
 	head = findradius (self.origin, radius);
 	while (head)
@@ -197,23 +198,23 @@ Gas_Cloud_Damage =
 		if (head.health > 0)
 		{
 			if (!(CanDamage (head, self)))
-				damage = damage * 0.25;
+				head_dmg = damage * 0.25;
 
 			if (head.classname == "player")
 			{
 				if (environmental (head))
-					damage = 0;
+					head_dmg = 0;
 				else if (head == self.owner)
-						damage = damage * 0.5;
+						head_dmg = damage * 0.5;
 			}
 			else if (is_pet_e (head))
-				damage = damage * 0.5;
+				head_dmg = damage * 0.5;
 			else
-				damage = 0;
+				head_dmg = 0;
 
-			damage = ceil (damage);
-			if (damage)
-				T_Damage (head, self, self.owner, damage, "gas");
+			head_dmg = ceil (head_dmg);
+			if (head_dmg)
+				T_Damage (head, self, self.owner, head_dmg, "gas");
 		}
 		head = head.chain;
 	}
