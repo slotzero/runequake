@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.51 2003/12/30 09:47:55 slotzero Exp $
+/*  $Id: develop.qc,v 1.52 2004/02/29 02:46:25 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -60,27 +60,22 @@ ghost_check =
 void (float mode)
 change_practice_mode =
 {
-	local float new_deathmatch;
+	local float new_deathmatch, bits;
 	local string s;
 
-
+	bits = DM_MODE_PRACTICE | DM_NO_ALT_WEAPONS;
 	new_deathmatch = cvar ("deathmatch");
 
 	if (mode)
 	{
 		if (!new_deathmatch & DM_MODE_PRACTICE)
-			new_deathmatch = new_deathmatch | DM_MODE_PRACTICE;
-		if (!new_deathmatch & DM_NO_ALT_WEAPONS)
-			new_deathmatch = new_deathmatch | DM_NO_ALT_WEAPONS;
+			new_deathmatch = new_deathmatch | bits;
 	}
 	else
 	{
 		if (new_deathmatch & DM_MODE_PRACTICE)
-			new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_PRACTICE;
-		if (new_deathmatch & DM_NO_ALT_WEAPONS)
-			new_deathmatch = new_deathmatch - new_deathmatch & DM_NO_ALT_WEAPONS;
+			new_deathmatch = new_deathmatch - new_deathmatch & bits;
 	}
-
 
 	s = ftos (new_deathmatch);
 	cvar_set ("deathmatch", s);
