@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.53 2004/04/09 01:15:57 slotzero Exp $
+/*  $Id: develop.qc,v 1.54 2004/04/09 01:32:10 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -24,7 +24,7 @@
 float DEVELOPER_MODE = 0;
 
 void (.float field, float bit)
-remove_player_bit =
+remove_bit_from_players =
 {
 	local entity e;
 

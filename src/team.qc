@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.15 2003/12/30 05:57:44 slotzero Exp $
+/*  $Id: team.qc,v 1.16 2004/04/09 01:32:11 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -402,7 +402,7 @@ change_teamplay =
 		bprint ("Match mode disabled\n");
 
 	// Remove the vote bit from all players.
-	remove_player_bit (vote_flags, VOTE_TEAM);
+	remove_bit_from_players (vote_flags, VOTE_TEAM);
 };
 
 void (float check_state)

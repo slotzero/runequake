@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.91 2004/04/04 01:30:09 slotzero Exp $
+/*  $Id: rjs.qc,v 1.92 2004/04/09 01:32:10 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2853,7 +2853,7 @@ vote_counter_think =
 		bprint (" vote cancelled\n");
 
 		forced_nextmap = string_null;
-		remove_player_bit (vote_flags, VOTE_EXIT);
+		remove_bit_from_players (vote_flags, VOTE_EXIT);
 
 		vote_exit_time = -1;
 		self.nextthink = time + 5;
@@ -2864,7 +2864,7 @@ vote_counter_think =
 		bprint ("\{141} Not enough votes, ");
 		bprint ("team vote cancelled\n");
 
-		remove_player_bit (vote_flags, VOTE_TEAM);
+		remove_bit_from_players (vote_flags, VOTE_TEAM);
 
 		vote_team_time = -1;
 		self.nextthink = time + 5;
@@ -2875,7 +2875,7 @@ vote_counter_think =
 		bprint ("\{141} Not enough votes, ");
 		bprint ("hook vote cancelled\n");
 
-		remove_player_bit (vote_flags, VOTE_HOOK);
+		remove_bit_from_players (vote_flags, VOTE_HOOK);
 
 		vote_hook_time = -1;
 		self.nextthink = time + 5;
