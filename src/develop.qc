@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.34 2003/07/09 04:08:51 slotzero Exp $
+/*  $Id: develop.qc,v 1.35 2003/07/10 05:27:11 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -83,10 +83,8 @@ Client_Disconnect_Log =
 	max = %6;	// length of list (actual length is + 1)
 
 	self_sprint (self, "\n");
-	display = flen ("Name", -16);
-	self_sprint (self, display);
-	display = flen ("Time", 8);
-	self_sprint (self, display);
+	self_sprintf_len (self, "Name", -16);
+	self_sprintf_len (self, "Time", 8);
 	self_sprint (self, "\n----                ----\n\n");
 
 	server_t = server_time ();
@@ -99,10 +97,9 @@ Client_Disconnect_Log =
 		if (e_time)
 		{
 			e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 6), 16);
-			display = flen (e_name, -16);
-			self_sprint (self, display);
-			display = flen (parse_time (e_away), 8);
-			self_sprint (self, display);
+			self_sprintf_len (self, e_name, -16);
+			e_name = parse_time (e_away);
+			self_sprintf_len (self, e_name, 8);
 			self_sprint (self, "\n");
 		}
 	}
