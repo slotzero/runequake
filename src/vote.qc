@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.15 2004/07/09 06:10:02 slotzero Exp $
+/*  $Id: vote.qc,v 1.16 2004/07/09 06:47:07 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -450,6 +450,13 @@ vote_yes =
  	if (!vip)
 		return self_sprint (self, "\{141} Nothing to vote on\n");
 
+	if (self.vote_flags & VOTE_NO)
+	{
+		self.vote_flags = self.vote_flags - self.vote_flags & VOTE_NO;
+		self_sprint (self, "You recalled your \bno\b vote\n");
+		return;
+	}
+
 	if (self.vote_flags & VOTE_YES || is_observer ())
 	{
 		count_votes (1);
@@ -472,23 +479,78 @@ vote_no =
 	if (!vip)
 		return self_sprint (self, "\{141} Nothing to vote on\n");
 
-	// I like this, but I have to figure out how to prevent it being abused.
-	/* if (vip.owner == self)
-	{
-		remove_bit_from_players (vote_flags, VOTE_YES | VOTE_NO);
-		vip.runevar = 0;
-		vip.nextthink = time;
-		return;
-	} else */
 	if (self.vote_flags & VOTE_YES)
 	{
 		self.vote_flags = self.vote_flags - self.vote_flags & VOTE_YES;
-		self_sprint (self, "You recalled your vote\n");
+		self_sprint (self, "You recalled your \byes\b vote\n");
 		return;
 	}
 
-	if (!self.vote_flags & VOTE_NO)
-		self.vote_flags = self.vote_flags | VOTE_NO;
+	if (self.vote_flags & VOTE_NO || is_observer ())
+	{
+		count_votes (1);
+		return;
+	}
+
+	self.vote_flags = self.vote_flags | VOTE_NO;
 
 	count_votes (1);
+};
+
+void ()
+show_votes =
+{
+	local entity e;
+	local float yes, no;
+
+	e = find_vip ();
+	if (e)
+		self_sprint (self, "Votes:\n\n");
+	else
+	{
+		self_sprint (self, "No votes in progress\n");
+		return;
+	}
+
+	yes = no = 0;
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (e.vote_flags & VOTE_YES)
+		{
+			if (e == self)
+				self_sprint (self, "\byes\b - ");
+			else
+				self_sprint (self, "yes - ");
+
+			self_sprint (self, e.netname);
+			self_sprint (self, "\n");
+			yes = yes + 1;
+		}
+		e = find (e, classname, "player");
+	}
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (e.vote_flags & VOTE_NO)
+		{
+			if (e == self)
+				self_sprint (self, " \bno\b - ");
+			else
+				self_sprint (self, " no - ");
+			self_sprint (self, e.netname);
+			self_sprint (self, "\n");
+			no = no + 1;
+		}
+		e = find (e, classname, "player");
+	}
+	if (no || yes)
+	{
+		self_sprint (self, "\n");
+		self_sprint_float (self, yes); self_sprint (self, " yes / ");
+		self_sprint_float (self, no); self_sprint (self, " no\n");
+	}
+	else
+		self_sprint (self, "No votes\n");
 };

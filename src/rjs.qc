@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.125 2004/07/09 02:30:19 slotzero Exp $
+/*  $Id: rjs.qc,v 1.126 2004/07/09 06:47:07 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1642,6 +1642,8 @@ show_players =
 				// have it so it's voted?
 				if (e.vote_flags & VOTE_YES)
 					self_sprint (self, " (vote yes)");
+				else if (e.vote_flags & VOTE_NO)
+					self_sprint (self, " (vote no)");
 				/* if (e.vote_flags & VOTE_EXIT)
 					self_sprint (self, " (exit vote)");
 				if (e.vote_flags & VOTE_TEAM)
