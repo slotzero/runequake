@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.21 2004/02/21 07:40:08 slotzero Exp $
+/*  $Id: observer.qc,v 1.22 2004/04/05 01:59:07 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -354,7 +354,8 @@ obs_pre_think =
 		e = findradius (self.origin, 75);
 		while (e)
 		{
-			if (e.classname == "trigger_teleport")
+			if (e.classname == "trigger_teleport"
+					|| (e.touch == teleport_touch && e.classname == "trigger_changelevel"))
 			{
 				observer_teleport (e);
 				e = world;
