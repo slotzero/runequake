@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.29 2003/04/25 05:28:15 slotzero Exp $
+/*  $Id: defs.qc,v 1.30 2003/06/07 07:20:18 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -172,7 +172,6 @@ IN_POQ([-
 // bounding box extents reletive to origin
 .vector	mins;
 .vector	maxs;
-
 .vector	size;		// maxs - mins
 
 .void()	touch;
@@ -1081,10 +1080,14 @@ float	AS_MISSILE		= 4;
 .float		super_damage_finished;
 .float		radsuit_finished;
 
-.float		invincible_time, invincible_sound;
-.float		invisible_time, invisible_sound;
-.float		super_time, super_sound;
-.float		rad_time, rad_sound;
+.float		invincible_time;
+.float		invincible_sound;
+.float		invisible_time;
+.float		invisible_sound;
+.float		super_time;
+.float		super_sound;
+.float		rad_time;
+.float		rad_sound;
 .float		fly_sound;
 
 .string		damage_type;	// useful for determining pain & death sounds.
@@ -1103,14 +1106,18 @@ float	AS_MISSILE		= 4;
 .string		mdl;
 .vector		mangle;			// angle at start
 
-.vector		oldorigin;		// only used by secret door
+// XXX oldorigin has already been declared
+// .vector		oldorigin;		// only used by secret door
 
-.float		t_length, t_width;
+.float		t_length;
+.float		t_width;
 
 //
 // doors, etc
 //
-.vector		dest, dest1, dest2;
+.vector		dest;
+.vector		dest1;
+.vector		dest2;
 .float		wait;			// time from firing to restarting
 .float		delay;			// time from activation to firing
 .entity		trigger_field;	// door's trigger entity
@@ -1137,7 +1144,8 @@ float	AS_MISSILE		= 4;
 // subs
 //
 .void ()		think1;
-.vector		finaldest, finalangle;
+.vector		finaldest;
+.vector		finalangle;
 
 //
 // triggers
@@ -1159,7 +1167,8 @@ float	AS_MISSILE		= 4;
 .float		state;
 // pos1 is used to store angles for dual teleport and recall runes
 // pos1 is used for misc. settings for flaming missiles
-.vector		pos1, pos2;		// top and bottom positions
+.vector		pos1;
+.vector		pos2;		// top and bottom positions
 // For players, time last ran fix-angles.
 // For zombie campers, whether a quick pain sequence was done since getting up.
 .float		height;
@@ -1169,7 +1178,8 @@ float	AS_MISSILE		= 4;
 //
 // For players waitmin and waitmax are used for displaying the rune
 // type.  See the comments in rjs.qc above the rune_tell_*() functions.
-.float		waitmin, waitmax;
+.float		waitmin;
+.float		waitmax;
 .float		distance;
 // For players, time at which player died.
 .float		volume;
