@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.6 2003/05/28 23:00:14 slotzero Exp $
+/*  $Id: develop.qc,v 1.7 2003/05/28 23:05:37 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -29,7 +29,6 @@ void (string s)
 Context =
 {
 	local entity e;
-	local string s;
 	local float p, i;
 
 	p = AddInt(&s, PSTRING_TO_PQUAKEC);
