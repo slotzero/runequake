@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.60 2003/09/24 21:49:04 slotzero Exp $
+/*  $Id: rjs.qc,v 1.61 2003/09/24 22:16:52 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -299,7 +299,7 @@ process_cvars =
 	else if (i == T1_RUNE_DROP_DELAY_120)	rune_drop_delay = 120;
 	else if (i == T1_RUNE_DROP_DELAY_240)	rune_drop_delay = 240;
 	else if (i == T1_RUNE_DROP_DELAY_INF)	rune_drop_delay = -1;
-	else					rune_drop_delay = 5;
+	else					rune_drop_delay = 3;
 
 	// The game sets deathmatch at the start of each level.  I
 	// update it here so that it has the same semantics of the other
