@@ -1,4 +1,4 @@
-$Id: Playing,v 1.6 2003/04/14 00:56:04 slotzero Exp $
+$Id: Playing,v 1.7 2004/04/07 02:22:28 slotzero Exp $
 
 This is the user documentation for Rune Quake.  You can learn
 more about Rune Quake at http://www.runequake.com.
@@ -279,6 +279,17 @@ Player Commands
 	change modes, and the show-players command lists people who have
 	voted to change the team mode.
 
+    command levels
+
+	You can vote for a specific level by typing its map name into the
+	quake console.  The levels command provides a list of the standard
+	Quake levels.
+
+    command custom
+
+	This provides a list of all custom maps on the server.  To vote for a
+	custom map, simply its name in the Quake console.
+
 
 Alternate Weapons
 -----------------
@@ -327,6 +338,13 @@ Alternate Weapons
 	    can pick up.  See the section on the grappling hook for
 	    details.
 
+	magic shotgun (alternate for shotgun)
+
+	    Like the shotgun, you the damage done is instantaneous.  Instead
+	    of shotgun pellets though you dish out magic powder that produces
+	    a blast radius similar to the rocket launcher, but much less
+	    effective.
+
 	flame thrower (alternate for super shotgun)
 
 	    This weapon throws flames that do a fair amount of damage
@@ -356,11 +374,11 @@ Alternate Weapons
 
 	    The idea for this weapon came from DM Plus.
 
-	flash grenades (alternate for grenade launcher)
+	gas grenades (alternate for grenade launcher)
 
-	    When flash grenades explode anybody looking in their
-	    direction will be blinded for a few seconds.  They don't do
-	    any physical damage.  It takes 3 rockets to launch one.
+	    This weapon is much like a mini-version of the radio activity
+	    rune.  After your grenade exlplodes, a cloud of red particles
+	    appear and inflict damage to anyone around them.
 
     	mortar (alternate for rocket launcher)
 
@@ -463,7 +481,7 @@ Switch Firing
 	bind d +sattack6	// quick grenade
 
     You can use +sattack1 (axe) through +sattack8 (lightning gun) for the
-    normal weapons, and +sttack9 (grappling hook) through sattack16 (BFG)
+    normal weapons, and +sattack9 (grappling hook) through sattack16 (BFG)
     for the alternate weapons.  You can also bind to +sattack-best to
     have it choose your best safe close-combat weapon (as the best-weapon
     command would choose).
@@ -488,10 +506,9 @@ Switch Firing
 Rune Descriptions
 -----------------
 
-    Rune of Good Health (1)
+    Rune of Strength (1)
 
-	Your maximum health value is 666, plus you get 100 health just
-	for picking up the rune.
+	All of your attacks do double damage.
 
     Rune of Regeneration (2)
 
@@ -641,9 +658,10 @@ Rune Descriptions
 	button a second time before it activates, the pending activation
 	is canceled.)
 
-    Rune of Strength (21)
+    Rune of Good Health (21)
 
-	All of your attacks do double damage.
+	Your maximum health value is 666, plus you get 100 health just
+	for picking up the rune.
 
     Rune of Radioactivity (22)
 
@@ -769,13 +787,11 @@ Rune Descriptions
 
 	A large cloud floats above you, randomly giving off little spiky
 	balls which bounce and cause a lot of damage if they hit an enemy.
-	This rune is only present when the server has LAN mode enabled.
 
     Rune of Fire Walking (37)
 
 	You leave spots of fire behind when you walk.  The fire does a
-	lot of damage to your foes.  This rune is only present when the
-	server has LAN mode enabled.
+	lot of damage to your foes.
 
     Grappling Hook (38)
 
@@ -912,10 +928,60 @@ Rune Descriptions
     	health, resistance, strength, haste, piercing, and action movie
     	arsenal.
 
-    Lithium Hook (50)
+    Super Blue Stuff (50)
+
+	Also known as The Glun Gun, launch a glob of blue glue that locks
+	a player down for a little bit before releasing.  Your opponent can
+	still pivot and fire.
+
+    Blizzard Rune (51)
+
+	Send out a blast of cold air that freezes everyone in site.  The
+	storm only lasts a second or two but it's enough to get off the
+	first shot!  You can pick up ice traps for a longer burst.
+
+    Rune of Thor (52)
+
+	Supplies you with a lightning gun and 50 cells.  Your ammo will
+	rapidly increase until weapon is full.  Your BFG range also
+	increases.
+
+    Sniper Rune (53)
+
+	Activate your rune to gib just about anyone. You start off losing
+	health with each activation. Your potential health loss will
+	increase with every kill. There is no recharge time!
+
+    Sonar Rune (54)
+
+	Activate your rune to detect the 4 closest players within a set
+	radius. You emit a sound after each pulse, and when a player is
+	detected, they too emit a sound.
+
+    Anti-Packs Rune (55)
+
+	Drop backpacks that remove ammo and weapons from your enemies. The
+	backpacks will bleed to indicate they are not standard backpacks.
+
+    Telefrag Deflect Rune (56)
+
+	Deflects most telefrags!
+
+    Bouncing Betty Rune (57)
+
+	Also known as cluster grenades. You launch a single grenade which
+	after a second spawns multiple clusters of grenades. A real
+	crowd pleaser!
+
+    Tornado Rune (58)
+
+	Launch a massive tornado that sucks you, and everyone else into its
+	center. If you touch the center you will be gibbed.
+
+    Lithium Hook (59)
 
 	This isn't a standard rune, it's the quasi-rune used to give you
-	a grappling hook in Lithium hook mode.  You can use impulse 146
+	a grappling hook in Lithium hook mode.  You can use impulse 159
 	to get a Lithium hook in rune cheating is turned on.
 
 

@@ -1,4 +1,4 @@
-$Id: Changes,v 1.61 2004/04/06 00:15:22 slotzero Exp $
+$Id: Changes,v 1.62 2004/04/07 02:22:28 slotzero Exp $
 
 added level-time for console
 added armors that cycle through all types
@@ -10,6 +10,7 @@ added practice mode to admin menu
 
 Todo:
 
+switch rune will remove lg with thor?
 consider a new console command, cvars.. in case your forget!
 fix admin level by menu
 
