@@ -1,4 +1,4 @@
-// $Id: runes30.qc,v 1.7 2002/06/08 05:42:36 slotzero Exp $
+// $Id: runes30.qc,v 1.8 2002/06/23 17:47:27 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -48,9 +48,9 @@ Radio_Think =
 			if (CanDamage (head, self))
 			{
 				IN_POQ([-
-				particle (head.origin, '0 0 10', PARTICLE_RADIATION, 150);
+					particle (head.origin, '0 0 10', PARTICLE_RADIATION, 150);
 				-], [-
-				create_te_lightningblood (head.origin);
+					create_te_lightningblood (head.origin);
 				-])
 				// don't harm the owner or anyone with a
 				// radiation rune or a rad suit
@@ -58,13 +58,10 @@ Radio_Think =
 				{
 					// heal the owner if she still
 					// has radiation
-					if (head.runetype == RN_RADIO
-							&& T_Heal (head,
-							RADIO_HEAL, 0))
+					if (head.runetype == RN_RADIO)
 					{
-						sound (head, CHAN_AUTO,
-							"items/r_item1.wav",
-							1, ATTN_NORM);
+						if (T_Heal (head, RADIO_HEAL, 0))
+							sound (head, CHAN_AUTO, "items/r_item1.wav", 1, ATTN_NORM);
 					}
 				}
 				else if (head.runetype == RN_RADIO)
@@ -500,6 +497,11 @@ void ()
 Freeze_Touch =
 {
 	if (!other.health || other == world)
+		return;
+
+	if (other.classname != "player"
+			&& other.classname != "shambler_slave"
+			&& other.classname != "zombie_camper")
 		return;
 
 	if (other.runetype == RN_ENVIRO

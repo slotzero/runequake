@@ -1,4 +1,4 @@
-// $Id: settings.qc,v 1.5 2002/06/09 20:20:43 slotzero Exp $
+// $Id: settings.qc,v 1.6 2002/06/23 17:47:27 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -12,14 +12,16 @@
 // who will be working on the source more extensively should see the the
 // "source editing" section of the Notes file in the source distribution.
 //
-// To recompile ../progs.dat or ../qwprogs.dat, get the fastqcc.exe
-// program from the
-// ftp://ftp.runequake.com/quake/quakec/compilers/fqcc101.zip distribution
-// and run it from inside this directory.
+// To recompile ../progs.dat or ../qwprogs.dat, you'll need a Quake-C
+// compiler.  The complete list of compilers is at,
 //
-// You can't compile with the original qcc distributed by Id.  This
-// seems to be due to various bogus arbitrary limits in their compiler.
-// Use fastqcc or something else.
+//     ftp://ftp.runequake.com/quake/quakec/compilers/
+//
+// After you unzip the compiler, run it in either the poq or qw folder.
+//
+// ### IMPORTANT: As of Rune Quake version 0.5, you are limited to using
+//                the qccx or frikqcc compiler.                      ###
+
 
 // This is the password used to activate admin mode.  It must be 6
 // digits long and it must not contain any 9s or 0s.  The special value

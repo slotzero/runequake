@@ -1,10 +1,11 @@
-$Id: Todo,v 1.5 2002/06/09 20:20:31 slotzero Exp $
+$Id: Todo,v 1.6 2002/06/23 17:47:24 slotzero Exp $
 
     - Unsorted
 
-        - A frozen shambler can still attack you.
-    	- Before latest release, please look over Changes and example.cfg and
+        - a frozen shambler can still attack you.
+    	- before latest release, please look over Changes and example.cfg and
 	  all other related information files!
-        - Document gamecfg, providing you decide to use it.
-	- Sort through the Artifact-RJS Todo file.
-	- Do riders carry across levels when not in high/fast track?
+        - document gamecfg, providing you decide to use it.
+	- sort through the Artifact-RJS Todo file.
+	- do riders carry across levels when not in high/fast track?
+	- investigate function to check for healthy enemy, not just player.
