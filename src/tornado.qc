@@ -1,6 +1,6 @@
-/*  $Id: tornado.qc,v 1.1 2003/10/02 04:14:42 slotzero Exp $
+/*  $Id: tornado.qc,v 1.2 2003/10/10 20:43:39 slotzero Exp $
 
-    Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
+    Copyright (C) 2003  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

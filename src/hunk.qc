@@ -1,6 +1,6 @@
-/*  $Id: hunk.qc,v 1.9 2003/07/19 00:58:58 slotzero Exp $
+/*  $Id: hunk.qc,v 1.10 2003/10/10 20:43:38 slotzero Exp $
 
-    Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
+    Copyright (C) 2003  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

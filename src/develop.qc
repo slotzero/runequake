@@ -1,6 +1,6 @@
-/*  $Id: develop.qc,v 1.45 2003/10/02 05:08:49 slotzero Exp $
+/*  $Id: develop.qc,v 1.46 2003/10/10 20:43:38 slotzero Exp $
 
-    Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
+    Copyright (C) 2003  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
