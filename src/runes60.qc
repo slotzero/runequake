@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.46 2004/06/25 06:19:43 slotzero Exp $
+/*  $Id: runes60.qc,v 1.47 2004/07/09 08:03:18 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -366,8 +366,6 @@ Rune_Sniper =
 
 	if (!W_CheckNoAmmo ())
 		return;
-
-	//use_ammo ();
 
 	T_Damage (self, self, self, (25 + (random () * self.runevar)), "sniped");
 	sound (self, CHAN_WEAPON, "weapons/ric3.wav", 1, ATTN_NORM);
