@@ -1,4 +1,4 @@
-// $Id: engine.qc,v 1.3 2002/06/16 00:28:47 slotzero Exp $
+// $Id: engine.qc,v 1.4 2002/06/17 01:22:16 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -14,6 +14,24 @@ multicast =
 };
 
 //-----------------------------------------------------------------------------
+-], [-
+//-----------------------------------------------------------------------------
+
+void (string s) bprint = { xbprint7 (PRINT_HIGH, s, string_null, string_null, string_null, string_null, string_null, string_null); };
+void (string s, string s2) bprint2 = { xbprint7 (PRINT_HIGH, s, s2, string_null, string_null, string_null, string_null, string_null); };
+void (string s, string s2, string s3) bprint3 = { xbprint7 (PRINT_HIGH, s, s2, s3, string_null, string_null, string_null, string_null); };
+void (string s, string s2, string s3, string s4) bprint4 = { xbprint7 (PRINT_HIGH, s, s2, s3, s4, string_null, string_null, string_null); };
+void (string s, string s2, string s3, string s4, string s5) bprint5 = { xbprint7 (PRINT_HIGH, s, s2, s3, s4, s5, string_null, string_null); };
+void (string s, string s2, string s3, string s4, string s5, string s6) bprint6 = { xbprint7 (PRINT_HIGH, s, s2, s3, s4, s5, s6, string_null); };
+void (string s, string s2, string s3, string s4, string s5, string s6, string s7) bprint7 = { xbprint7 (PRINT_HIGH, s, s2, s3, s4, s5, s6, s6); };
+
+void (entity client, string s) self_sprint = { xself_sprint6 (client, PRINT_HIGH, s, string_null, string_null, string_null, string_null, string_null); };
+void (entity client, string s, string s2) self_sprint2 = { xself_sprint6 (client, PRINT_HIGH, s, s2, string_null, string_null, string_null, string_null); };
+void (entity client, string s, string s2, string s3) self_sprint3 = { xself_sprint6 (client, PRINT_HIGH, s, s2, s3, string_null, string_null, string_null); };
+void (entity client, string s, string s2, string s3, string s4) self_sprint4 = { xself_sprint6 (client, PRINT_HIGH, s, s2, s3, s4, string_null, string_null); };
+void (entity client, string s, string s2, string s3, string s4, string s5) self_sprint5 = { xself_sprint6 (client, PRINT_HIGH, s, s2, s3, s4, s5, string_null); };
+void (entity client, string s, string s2, string s3, string s4, string s5, string s6) self_sprint6 = { xself_sprint6 (client, PRINT_HIGH, s, s2, s3, s4, s5, s6); };
+void (entity client, string s, string s2, string s3, string s4, string s5, string s6, string s7) self_sprint7 = { xself_sprint6 (client, PRINT_HIGH, s, s2, s3, s4, s5, s6); };
 
 -])
 

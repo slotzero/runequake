@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.24 2002/06/16 00:28:47 slotzero Exp $
+// $Id: rjs.qc,v 1.25 2002/06/17 01:22:16 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -47,7 +47,12 @@ countdown_timer =
 		else
 			s2 = " minute";
 
-		bprintx ("ç ", s, s2, s3, " remaining\n");
+		bprint ("ç ");
+		bprint (s);
+		bprint (s2);
+		bprint (s3);
+		bprint (" remaining\n");
+
 		if (timer == 2)
 			sound (self, CHAN_BODY, "misc/talk.wav", 1, ATTN_NONE);
 	}

@@ -1,16 +1,21 @@
-// $Id: print.qc,v 1.5 2002/06/16 00:28:47 slotzero Exp $
+// $Id: print.qc,v 1.6 2002/06/17 01:22:16 slotzero Exp $
+//
+// Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
+// See the file `Copying' in the distribution for terms.
 
 //=============================================================================
 // bprint
 
+IN_POQ([-
 void (string s)
 bprint =
 {
-	bprintx (IN_QW([-PRINT_HIGH, -])s);
+	xbprint (s);
 
 	if (scratch1 & S1_BPRINT_TO_CONSOLE)
 		force_dprint (s);
 };
+-])
 
 void (float n)
 bprint_float =
@@ -212,7 +217,7 @@ rprint5 =
 	if (riders)
 		sprint5 (e, s1, s2, s3, s4, s5);
 	else
-		self_sprintx (e, s1, s2, s3, s4, s5);
+		self_sprint5 (e, s1, s2, s3, s4, s5);
 };
 
 void (entity e, float riders, string s1, string s2, string s3, string s4)
@@ -279,17 +284,17 @@ sprint7 =
 
 	if (!e)
 	{
-		bprintx (s1, s2, s3, s4, s5, s6, s7);
+		bprint7 (s1, s2, s3, s4, s5, s6, s7);
 		return;
 	}
-	self_sprintx (e, s1, s2, s3, s4, s5, s6, s7);
+	self_sprint7 (e, s1, s2, s3, s4, s5, s6, s7);
 	if (!e.aqstate & AQS_HAS_RIDERS)
 		return;
 	o = find (world, classname, "player");
 	while (o)
 	{
 		if (ridee_e (o) == e)
-			self_sprintx (o, s1, s2, s3, s4, s5, s6, s7);
+			self_sprint7 (o, s1, s2, s3, s4, s5, s6, s7);
 		o = find (o, classname, "player");
 	}
 };
@@ -359,7 +364,7 @@ sprint_admin2 =
 	while (e)
 	{
 		if (is_admin_e (e))
-			self_sprintx (e, s1, s2);
+			self_sprint2 (e, s1, s2);
 		e = find (e, classname, "player");
 	}
 };
@@ -379,7 +384,7 @@ sprint_obs2 =
 	while (e)
 	{
 		if (is_observer_e (e))
-			self_sprintx (e, s1, s2);
+			self_sprint2 (e, s1, s2);
 		e = find (e, classname, "player");
 	}
 };
@@ -449,12 +454,6 @@ sprint_float_f =
 
 //=============================================================================
 // self_sprint
-
-void (entity e, string s)
-self_sprint =
-{
-	self_sprintx (e, IN_QW([-PRINT_HIGH, -])s);
-};
 
 void (entity e, float n)
 self_sprint_float =
