@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.11 2003/06/01 07:58:36 slotzero Exp $
+/*  $Id: internal.qc,v 1.12 2003/06/07 00:29:24 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -127,10 +127,11 @@ entity sv;
 // proquake
 float MOD_QSMACK = %2;
 
-// proquake constants [wqpro-3.50.exe]
-float HUNK_IPLOG	= %-2097600;
-float HUNK_CONTEXT	= %-2437760;
-float HUNK_ZONE		= %-3773392;
+// hunk
+float HUNK_IPLOG	;//= %-2097600;
+float HUNK_CONTEXT	;//= %-2437760;
+float HUNK_CONTEXT_MAX	;//= %65552;
+float HUNK_ZONE		;//= %-3773392;
 
 //-------------------------------------------------------------------
 // HEXADECIMAL PRINTING FUNCTIONS
@@ -446,7 +447,7 @@ string hunkname = "00000000";
 string prevname = "00000001";
 
 void ()
-InitHunkSearch =
+InitSearchHunk =
 {
 	lasth = currh = *AddInt(&progs, %-16);
 };
@@ -473,7 +474,7 @@ PrintHunk =
 	samecount = 0;
 	samesize = 0;
 
-	dprint("--- HUNK ---\n");
+	// dprint("--- HUNK ---\n");
 
 	h2 = h;
 	while (1)
@@ -488,8 +489,10 @@ PrintHunk =
 		{
 			if (samecount)
 			{
-				dprint(ftos(samecount), " x ", prevname, " : ");
-				dprint(ftos(samesize / %1), "\n");
+				if (prevname == "context")
+					HUNK_CONTEXT_MAX = samesize;
+				// dprint(ftos(samecount), " x ", prevname, " : ");
+				// dprint(ftos(samesize / %1), "\n");
 			}
 			samecount = 1;
 			samesize = (*h)[%1];
@@ -511,7 +514,7 @@ SearchHunk =
 
 	p = AddInt(&hname, PSTRING_TO_PQUAKEC);
 
-	dprint("-- SeachHunk --\n");
+	// dprint("-- SeachHunk --\n");
 
 	currh = *AddInt(&currh, %-131072);
 	for (i = %32764 ; i >= %0 ; i = i - %4)
@@ -522,10 +525,17 @@ SearchHunk =
 			{
 				(*p)[%0] = currh[i + %2];
 				(*p)[%1] = currh[i + %3];
-				dprint("found ", hname, "\n");
+				//dprint("found ", hname, "\n");
 				lasth = *AddInt(&currh, 4 * i);
+
+				if (hname == "iplog")
+					HUNK_IPLOG = SubInt (4 * i, framecount * %131072);
+				else if (hname == "context")
+						HUNK_CONTEXT = SubInt (4 * i, framecount * %131072);
+
 				if (hname == "zone")
 				{
+					HUNK_ZONE = SubInt (4 * i, framecount * %131072);
 					PrintHunk(&lasth);
 					dprint("Found start of hunk in ");
 					dprint(ftos(framecount), " frames\n");

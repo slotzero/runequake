@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.12 2003/06/05 23:50:37 slotzero Exp $
+/*  $Id: develop.qc,v 1.13 2003/06/07 00:29:24 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -160,6 +160,9 @@ entity (float type, float offset)
 Get_Hunk =
 {
 	local entity hunk;
+
+	if (!HUNK_CONTEXT_MAX)
+		return world;
 
 	hunk = *AddInt(AddInt(&progs, %-16), type);
 	if (*hunk[%0] != *HUNK_SENTINAL)

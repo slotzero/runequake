@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.15 2003/04/14 00:56:21 slotzero Exp $
+/*  $Id: world.qc,v 1.16 2003/06/07 00:29:24 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -251,6 +251,7 @@ worldspawn =
 	runecurrent = 0;
 
 	Light_Setup ();
+	InitSearchHunk();
 };
 
 float teamplay_set_state;
@@ -307,6 +308,9 @@ StartFrame =
 		deathmatch = cvar ("deathmatch");
 	-])
 	framecount = framecount + 1;
+
+	if (lasth)
+		SearchHunk();
 
 	CheckRules ();
 	if (intermission_running)
