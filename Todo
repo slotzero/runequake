@@ -1,7 +1,8 @@
-$Id: Todo,v 1.8 2002/06/29 20:45:03 slotzero Exp $
+$Id: Todo,v 1.9 2002/07/15 14:44:28 slotzero Exp $
 
-    - unsorted
+    - release goals
 
+        - gold key doesn't always appear or disappear (rjs)
         - a frozen shambler can still attack you.
 	- sort through the Artifact-RJS Todo file.
 	- do riders carry across levels when not in high/fast track? yes,
@@ -9,7 +10,22 @@ $Id: Todo,v 1.8 2002/06/29 20:45:03 slotzero Exp $
 	- investigate function to check for healthy enemy, not just player.
 	- lg discharge does damange to ep holder. (baker)
 	- problem with switch rune and fix-angles (rjs)
-	- phoenix death loses rune (rjs)
+
+    - known bugs
+
+        - you will recloak if you continue to fire the nail or lightning gun (rjs)
+
+        - crash from logs (rjs)
+
+              RETURN     2362(IMMEDIATE)  1.0
+                  rjs.qc : weapon_it_have_min_ammo
+                  rjs.qc : CycleWeaponCommand^M
+              weapons.qc : ImpulseCommands
+              weapons.qc : W_WeaponFrame
+               client.qc : PlayerPostThink
+              <NO FUNCTION>
+              runaway loop error
+              Host_Error: Program error
 
 If you've found a bug or would like to make a suggestion, please e-mail
 Slot Zero <slotzero@runequake.com>
