@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.1 2002/02/21 21:47:57 slotzero Exp $
+// $Id: rjs.qc,v 1.2 2002/02/22 05:05:42 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -12,7 +12,7 @@ admin_sprint2 =
 	while (e)
 	{
 		if (is_admin_e (e))
-			self_sprint2 (e, s1, s2);
+			self_sprint (e, s1, s2);
 		e = find (e, classname, "player");
 	}
 };
@@ -26,7 +26,7 @@ observer_sprint2 =
 	while (e)
 	{
 		if (is_observer_e (e))
-			self_sprint2 (e, s1, s2);
+			self_sprint (e, s1, s2);
 		e = find (e, classname, "player");
 	}
 };
@@ -281,7 +281,7 @@ countdown_timer =
 		else
 			s2 = " minute";
 
-		bprint5 ("ç ", s, s2, s3, " remaining\n");
+		bprint ("ç ", s, s2, s3, " remaining\n");
 		if (timer == 2)
 			sound (self, CHAN_BODY, "misc/talk.wav", 1, ATTN_NONE);
 	}

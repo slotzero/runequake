@@ -1,4 +1,4 @@
-// $Id: admin.qc,v 1.1 2002/02/21 21:47:47 slotzero Exp $
+// $Id: admin.qc,v 1.2 2002/02/22 05:05:41 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -306,7 +306,7 @@ admin_Try_Cycle =
 			self_sprint (self, "ç Nobody to select\n");
 	}
 	else
-		self_sprint5 (self, "ç ê#", s, "ë ", e.netname, " selected\n");
+		self_sprint (self, "ç ê#", s, "ë ", e.netname, " selected\n");
 };
 
 void (float configured)
