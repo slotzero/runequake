@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.37 2004/02/22 03:53:52 slotzero Exp $
+/*  $Id: runes60.qc,v 1.38 2004/02/29 05:01:35 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -588,25 +588,6 @@ antipack_maybe_remove_ammo =
 		other.ammo_type = 0;
 };
 
-/* void (float it)
-antipack_maybe_remove_weapon =
-{
-	if (other.items & it)
-	{
-		if (random () < 0.35)
-			other.items = other.items - other.items & it;
-	}
-
-		// Moved from AntiPack_Touch ()
-		antipack_maybe_remove_weapon (IT_SUPER_SHOTGUN);
-		antipack_maybe_remove_weapon (IT_NAILGUN);
-		antipack_maybe_remove_weapon (IT_SUPER_NAILGUN);
-		antipack_maybe_remove_weapon (IT_GRENADE_LAUNCHER);
-		antipack_maybe_remove_weapon (IT_ROCKET_LAUNCHER);
-		antipack_maybe_remove_weapon (IT_LIGHTNING);
-
-}; */
-
 void ()
 AntiPack_Touch =
 {
@@ -652,10 +633,13 @@ AntiPack_Touch =
 			}
 		}
 
-		os = self;
-		self = other;
-		set_weapon (W_BestWeapon ());
-		self = os;
+		if (other.weapon == it)
+		{
+			os = self;
+			self = other;
+			set_weapon (W_BestWeapon ());
+			self = os;
+		}
 
 		remove (self);
 	}
