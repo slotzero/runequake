@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.82 2005/01/21 00:45:58 slotzero Exp $
+/*  $Id: client.qc,v 1.83 2005/02/01 22:21:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -807,6 +807,8 @@ PutClientInServer =
 		self.rqflags = self.rqflags | RQ_CYCLE_ALTERNATES;
 		player_init_spawn ();
 	}
+	else if (!self.rqflags & RQ_BINDINGS_RECEIVED)
+		spawn_player_bindings ();
 
 	if (spawn_as_observer)
 	{
