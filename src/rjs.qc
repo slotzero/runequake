@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.164 2005/01/11 00:13:34 slotzero Exp $
+/*  $Id: rjs.qc,v 1.165 2005/01/11 01:57:41 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -323,21 +323,6 @@ process_misc =
 	// vote-team
 	if (VOTE_TEAM_MODE_DEFAULT)
 		toggle_teamplay (VOTE_TEAM_MODE_DEFAULT);
-
-	// vote-hook
-	if (temp1 & T1_HOOK_DEFAULT_ON)
-	{
-		wanted = hook_type (HOOK_DEFAULT);
-		if (wanted != hook_type (temp1))
-		{
-			if (wanted == 0)
-				toggle_free_hook ();
-			else if (wanted == 1)
-				free_hook ();
-			else if (wanted == 2)
-				lithium_hook ();
-		}
-	}
 
 	// XXX All of code below is hard coded and should be fixed.
 	if (NO_QUAD)
