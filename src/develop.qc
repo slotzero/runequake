@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.54 2004/04/09 01:32:10 slotzero Exp $
+/*  $Id: develop.qc,v 1.55 2004/04/09 06:52:45 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -87,6 +87,8 @@ Test_Button =
 {
 	SUB_Null ();
 };
+
+float HUNK_CLIENT_DISCONNECT	= %100;
 
 void ()
 Log_Client_Disconnect =

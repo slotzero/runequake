@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.20 2004/04/09 01:39:49 slotzero Exp $
+/*  $Id: internal.qc,v 1.21 2004/04/09 06:52:45 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -135,10 +135,6 @@ float HUNK_IPLOG;
 float HUNK_CONTEXT;
 float HUNK_CONTEXT_MAX;
 float HUNK_ZONE;
-
-// hunk context allocation
-float HUNK_SERVER_TIME		= %10;
-float HUNK_CLIENT_DISCONNECT	= %100;
 
 //-------------------------------------------------------------------
 // HEXADECIMAL PRINTING FUNCTIONS
