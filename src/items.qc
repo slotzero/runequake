@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.43 2004/05/23 04:49:12 slotzero Exp $
+/*  $Id: items.qc,v 1.44 2004/05/23 05:05:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -253,7 +253,7 @@ health_touch =
 	if (is_mega)
 	{
 		if (other.runetype == RN_REQUIEM)
-			amount = 15;
+			amount = 5;
 	}
 	else
 	{

@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.46 2004/05/23 01:48:05 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.47 2004/05/23 05:05:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -599,7 +599,16 @@ Rune_Tell_real =
 		desc_s = " Trnado";
 
 		d1 = "Lets you toss tornados\n"
-			"with super destructive winds\n";
+			"with super destructive winds\n"
+			"(requires cells)";
+	}
+	else if (type == RN_REQUIEM)
+	{
+		desc_l = "Requiem Rune";
+		desc_s = " Requim";
+
+		d1 = "Items continously recharge\n"
+			"when you touch them";
 	}
 	else if (type == RN_LITHIUM_HOOK)
 	{
@@ -680,7 +689,6 @@ Rune_Tell_sprint =
 	else if (of_e.runetype == RN_GLUE)	Rune_Glue_sprint (r, of_e);
 	else if (of_e.runetype == RN_BLIZZARD)	Rune_Blizzard_sprint (r);
 	else if (of_e.runetype == RN_ANTIPACK)	Rune_AntiPack_sprint (r, of_e);
-	else if (of_e.runetype == RN_TORNADO)	Rune_Tornado_sprint (r, of_e);
 };
 
 void (float type, float tell)
