@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.23 2002/06/15 21:03:05 slotzero Exp $
+// $Id: rjs.qc,v 1.24 2002/06/16 00:28:47 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -47,7 +47,7 @@ countdown_timer =
 		else
 			s2 = " minute";
 
-		bprint5 ("ç ", s, s2, s3, " remaining\n");
+		bprintx ("ç ", s, s2, s3, " remaining\n");
 		if (timer == 2)
 			sound (self, CHAN_BODY, "misc/talk.wav", 1, ATTN_NONE);
 	}
@@ -767,7 +767,11 @@ disp_info =
 	if (all || 0)
 	{
 		if (FORWARD_NAME)
-			self_sprint3 (self, "forward dest: ", FORWARD_NAME, "\n");
+		{
+			self_sprint (self, "forward dest: ");
+			self_sprint (self, FORWARD_NAME);
+			self_sprint (self, "\n");
+		}
 	}
 };
 

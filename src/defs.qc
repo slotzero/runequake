@@ -1,4 +1,4 @@
-// $Id: defs.qc,v 1.10 2002/06/15 19:27:29 slotzero Exp $
+// $Id: defs.qc,v 1.11 2002/06/16 00:28:47 slotzero Exp $
 
 /*
 ==============================================================================
@@ -661,6 +661,7 @@ float scratch1;
 float S1_EQUALIZE_LIGHTSTYLE	= 1;
 float S1_AMBIENT_SOUND_OFF	= 2;
 float S1_LIGHT_MAKESTATIC_OFF	= 4;
+float S1_BPRINT_TO_CONSOLE	= 8;
 
 // Bit settings for POWERUP_PICKUP_WARN in settings.qc.
 float ITEM_PENT = 1;
@@ -1144,29 +1145,8 @@ string (string s) precache_sound		= #19;
 string (string s) precache_model		= #20;
 void (entity client, string s) self_stuffcmd	= #21;
 entity (vector org, float rad) findradius	= #22;
-
-IN_POQ([-
-void (string s) bprint				= #23;
-void (string s, string s2) bprint2				= #23;
-void (string s, string s2, string s3) bprint3				= #23;
-void (string s, string s2, string s3, string s4) bprint4				= #23;
-void (string s, string s2, string s3, string s4, string s5) bprint5				= #23;
-void (string s, string s2, string s3, string s4, string s5, string s6) bprint6				= #23;
-void (string s, string s2, string s3, string s4, string s5, string s6, string s7) bprint7				= #23;
-void (entity client, string s) self_sprint	= #24;
-void (entity client, string s, string s2) self_sprint2	= #24;
-void (entity client, string s, string s2, string s3) self_sprint3	= #24;
-void (entity client, string s, string s2, string s3, string s4) self_sprint4	= #24;
-void (entity client, string s, string s2, string s3, string s4, string s5) self_sprint5	= #24;
-void (entity client, string s, string s2, string s3, string s4, string s5, string s6) self_sprint6	= #24;
-void (entity client, string s, string s2, string s3, string s4, string s5, string s6, string s7) self_sprint7	= #24;
--])
-
-IN_QW([-
-void (float level, string s, string s2, string s3, string s4, string s5, string s6, string s7) xbprint7				= #23;
-void (entity client, float level, string s, string s2, string s3, string s4, string s5, string s6) xself_sprint6	= #24;
--])
-
+void (...) bprintx				= #23;
+void (entity client, ...) self_sprintx		= #24;
 void (string s, ...) dprint			= #25;
 string (float f) ftos				= #26;
 string (vector v) vtos				= #27;
