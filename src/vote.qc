@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.2 2004/07/07 08:46:10 slotzero Exp $
+/*  $Id: vote.qc,v 1.3 2004/07/07 09:58:36 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -36,18 +36,61 @@ vote_action =
 	remove (vip);
 };
 
-float ()
-xcount_votes =
+// 0 no message
+// 1 only when value positive
+// 2 all
+// 3 disp-info
+
+void (entity vip, float msg_type, float is_queue, float value)
+maybe_print_votes =
+{
+	if (!msg_type)
+		return;
+
+	if (is_queue)
+	{
+		if (msg_type < 3)
+		{
+			sprint_float (self, value);
+			sprint (self, " vote");
+			if (value != 1)
+				sprint (self, "s");
+			sprint (self, " in queue\n");
+		}
+	}
+	else
+	{
+		if (msg_type < 3)
+		{
+			if (msg_type == 1 && value <= 0)
+				return;
+
+			sprint_float (self, value);
+			sprint (self, " more vote");
+			if (value != 1)
+				sprint (self, "s");
+			sprint (self, " needed to ");
+			sprint (self, vip.netname);
+			if (vip.map)
+				sprint (self, vip.map);
+			sprint (self, "\n");
+		}
+	}
+};
+
+float (float type)
+count_votes =
 {
 	local entity e, vip;
-	local float tot, lack, need, voted;
+	local float tot, lack, need, voted, is_queue;
 
 	vip = find (world, classname, "vote_in_progress");
 	if (!vip)
 		return 0;
 
-	tot = voted = 0;
+	is_queue = LEVEL_RECONNECT_ALLOWANCE > time;
 
+	tot = voted = 0;
 	e = find (world, classname, "player");
 	while (e)
 	{
@@ -65,16 +108,22 @@ xcount_votes =
 		need = 1;
 	lack = need - voted;
 
-	if (0)
+	if (is_queue)
+		maybe_print_votes (vip, type, is_queue, voted);
+	else
+		maybe_print_votes (vip, type, is_queue, lack);
+
+	// disp-info()
+	if (type == 3)
 	{
-		bprint ("debug: ");
+		bprint ("vote: ");
 		bprint_float (tot);   bprint (" tot ");
 		bprint_float (voted); bprint (" voted ");
 		bprint_float (need);  bprint (" need ");
 		bprint_float (lack);  bprint (" lack\n");
 	}
 
-	if (LEVEL_RECONNECT_ALLOWANCE > time)
+	if (is_queue)
 		return voted;
 	else
 		return lack;
@@ -85,7 +134,7 @@ xcount_votes =
 //  1 sprint      (client) / bprint  (world)
 //  2 bprint	  (client) / bprint  (world)
 
-float (float type)
+/* float (float type)
 print_count_votes =
 {
 	local entity e, vip;
@@ -95,7 +144,7 @@ print_count_votes =
 	if (!vip)
 		return 0;
 
-	lack = xcount_votes ();
+	lack = xcount_votes (0);
 	if (!lack)
 	{
 		vip.nextthink = time;
@@ -160,7 +209,7 @@ print_count_votes =
 	}
 
 	return lack;
-};
+}; */
 
 void ()
 vote_think =
@@ -174,7 +223,7 @@ vote_think =
 		return;
 	}
 
-	if (!xcount_votes ())
+	if (!count_votes (0))
 	{
 		vote_action (self);
 		return;
@@ -218,8 +267,8 @@ vote_think =
 		self.nextthink = time + 8; // broadcast interval
 };
 
-void (float vote_type)
-vote_spawn =
+void ()
+vote =
 {
 	local entity e, vip;
 	local float cancel;
@@ -227,7 +276,7 @@ vote_spawn =
 	vip = find (world, classname, "vote_in_progress");
 	if (vip)
 	{
-		if (vote_type == vip.impulse)
+		if (self.impulse == vip.impulse)
 			return vote_yes ();
 
 		return self_sprint (self, "\{141} A vote is already in progress\n");
@@ -238,12 +287,12 @@ vote_spawn =
 	e		= spawn ();
 	e.classname	= "vote_in_progress";
 	e.runevar	= 3; // request attempts
-	e.impulse	= vote_type;
+	e.impulse	= self.impulse;
 	e.owner		= self;
 
 	// XXX I want to make adding vote types very easy, so I need to elaborate on this.
 
-	if (vote_type == VOTE_EXIT)
+	if (self.impulse == IMP_VOTE_EXIT)
 	{
 		e.frag_rate	= VOTE_EXIT_PERCENTAGE;
 		e.think1	= NextLevel;
@@ -256,7 +305,7 @@ vote_spawn =
 		else
 			e.netname	= "change to a random map";
 	}
-	else if (vote_type == VOTE_TEAM)
+	else if (self.impulse == IMP_VOTE_TEAM)
 	{
 		cancel	= vote_team_disabled (1);
 		e.frag_rate	= VOTE_TEAM_PERCENTAGE;
@@ -267,7 +316,7 @@ vote_spawn =
 		else
 			e.netname	= "enable teams";
 	}
-	else if (vote_type == VOTE_HOOK)
+	else if (self.impulse == IMP_VOTE_HOOK)
 	{
 		cancel	= vote_hook_disabled (1);
 		e.frag_rate	= VOTE_HOOK_PERCENTAGE;
@@ -284,7 +333,11 @@ vote_spawn =
 	if (cancel)
 	{
 		if (cancel < 0)
-			dprint ("Invalid vote type\n");
+		{
+			sprint (self, "Bug, unknown vote impulse ");
+			sprint_float (self, self.impulse);
+			sprint (self, "\n");
+		}
 
 		remove_bit_from_players (rqstate, RQS_VOTE_YES);
 		remove (e);
@@ -307,12 +360,12 @@ vote_yes =
 
 	if (self.rqstate & RQS_VOTE_YES)
 	{
-		print_count_votes (1);
+		count_votes (1);
 		return;
 	}
 
 	self.rqstate = self.rqstate | RQS_VOTE_YES;
 
-	if (!print_count_votes (1))
+	if (!count_votes (1))
 		vote_action (vip);
 };

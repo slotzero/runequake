@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.36 2004/07/06 00:27:39 slotzero Exp $
+/*  $Id: admin.qc,v 1.37 2004/07/07 09:58:36 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -601,7 +601,7 @@ admin_impulse_map =
 			vote ();
 		}
 		else
-			count_votes (self.impulse, 0);
+			count_votes (1);
 	}
 
 	if (admin_menu)

@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.118 2004/07/06 01:30:25 slotzero Exp $
+/*  $Id: rjs.qc,v 1.119 2004/07/07 09:58:36 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -672,9 +672,10 @@ disp_info =
 	// vote-exit/vote-team
 	if (all || 0)
 	{
-		count_votes (IMP_VOTE_TEAM, 3);
-		count_votes (IMP_VOTE_EXIT, 3);
-		count_votes (IMP_VOTE_HOOK, 3);
+		count_votes (3);
+		//count_votes (IMP_VOTE_TEAM, 3);
+		//count_votes (IMP_VOTE_EXIT, 3);
+		//count_votes (IMP_VOTE_HOOK, 3);
 	}
 
 	// damage
@@ -2654,7 +2655,7 @@ vote_hook_mode_default =
 // type 2 is by the vote counting entity
 // type 3 is from disp_info()
 
-void (float vote_type, float count_type)
+/* void (float vote_type, float count_type)
 count_votes =
 {
 	local float bit, pct;
@@ -2821,7 +2822,7 @@ count_votes =
 		bprint (cmd);
 		bprint ("\" in console\n");
 	}
-};
+}; */
 
 void ()
 vote_counter_think =
@@ -2876,17 +2877,17 @@ vote_counter_think =
 
 	if (self.runevar == 1)
 	{
-		count_votes (IMP_VOTE_HOOK, 2);
+		//count_votes (0);
 		self.runevar = 2;
 	}
 	else if (self.runevar == 2)
 	{
-		count_votes (IMP_VOTE_TEAM, 2);
+		//count_votes (0);
 		self.runevar = 0;
 	}
 	else
 	{
-		count_votes (IMP_VOTE_EXIT, 2);
+		//count_votes (0);
 		self.runevar = 1;
 	}
 
@@ -2896,9 +2897,9 @@ vote_counter_think =
 void ()
 level_reconnect_allowance =
 {
-	count_votes (IMP_VOTE_EXIT, 2);
-	count_votes (IMP_VOTE_HOOK, 2);
-	count_votes (IMP_VOTE_TEAM, 2);
+	//count_votes (IMP_VOTE_EXIT, 2);
+	//count_votes (IMP_VOTE_HOOK, 2);
+	//count_votes (IMP_VOTE_TEAM, 2);
 
 	self.runevar	= 0;
 	self.think	= vote_counter_think;
@@ -2920,7 +2921,7 @@ vote_counter_spawn =
 	vote_hook_time	= -1;
 };
 
-void ()
+/* void ()
 vote =
 {
 	local float bit, pct;
@@ -2979,12 +2980,12 @@ vote =
 	}
 
 	// XXX Put a timer on recalled votes so not to abuse bprint message with excessive recalls.
-	/* if (use_state && self.aqstate & bit)
-	{
-		self.aqstate = self.aqstate - self.aqstate & bit;
-		sprint (self, "You vote has been recalled\n");
-		return;
-	} */
+	//if (use_state && self.aqstate & bit)
+	//{
+	//	self.aqstate = self.aqstate - self.aqstate & bit;
+	//	sprint (self, "You vote has been recalled\n");
+	//	return;
+	//}
 
 	if (self.vote_flags & bit)
 		count_votes (self.impulse, 0);
@@ -2993,7 +2994,7 @@ vote =
 		self.vote_flags = self.vote_flags | bit;
 		count_votes (self.impulse, 1);
 	}
-};
+}; */
 
 // The rune_tell_*() code takes over these entity fields:
 //
