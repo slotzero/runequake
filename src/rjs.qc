@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.147 2004/07/20 12:46:48 slotzero Exp $
+/*  $Id: rjs.qc,v 1.148 2004/07/24 03:09:22 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -302,6 +302,9 @@ process_misc =
 	update_server_time ();
 
 	if (intermission_running)
+		return;
+
+	if (scratch1 & S1_NO_DEFAULT)
 		return;
 
 	// Only process the remaining functions if the server is empty.
