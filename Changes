@@ -1,4 +1,4 @@
-$Id: Changes,v 1.69 2004/06/24 21:27:52 slotzero Exp $
+$Id: Changes,v 1.70 2004/06/26 04:27:55 slotzero Exp $
 
 // developer stuff
 fix the tornado rune
@@ -11,6 +11,10 @@ added some basic reflect code, not implemented
 Version 1.1  Sat Jun 12 14:39:35 EST 2004
 
     - Bug Fixes
+
+        - All of the hunk specific commands (ex: last, level-time), now check to make sure
+          HUNK_CONTEXT_MAX exists before proceeding.  This prevents massive dprint() messages
+          from appearing before it is set.
 
         - Dropped clients no longer leave quad/pent hat behind.
 
@@ -27,6 +31,11 @@ Version 1.1  Sat Jun 12 14:39:35 EST 2004
         - Using rcon <map> while infokey_maps is set will no longer crash the server.
 
     - Changes
+
+        - New server commands, 'practice' and 'normal'.  These will switch the mode that the server
+          is in much like how CRMod does it.
+
+        - CRMod style intermisson_pos when level change is immediate.
 
         - Punchangle is no longer used in weapons attacks.
 
