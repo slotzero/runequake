@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.55 2004/04/09 06:52:45 slotzero Exp $
+/*  $Id: develop.qc,v 1.56 2004/04/09 07:18:48 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -105,7 +105,7 @@ Log_Client_Disconnect =
 
 	for (i = max; i >= %0; i = i - %1)
 	{
-		e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 6), 16);
+		e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 5), 16);
 		if (e_name == self.netname)
 			n = i;
 	}
@@ -117,10 +117,10 @@ Log_Client_Disconnect =
 	{
 		if (i != max)
 		{
-			e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 6), 16);
-			Write_Hunk_Max (HUNK_CONTEXT, offset + ((i + %1) * 6), e_name, 16);
-			e_time = Read_Hunk_Float (HUNK_CONTEXT, offset + %4 + (i * 6));
-			Write_Hunk_Float (HUNK_CONTEXT, offset + %4 + ((i + %1) * 6), e_time);
+			e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 5), 16);
+			Write_Hunk_Max (HUNK_CONTEXT, offset + ((i + %1) * 5), e_name, 16);
+			e_time = Read_Hunk_Float (HUNK_CONTEXT, offset + %4 + (i * 5));
+			Write_Hunk_Float (HUNK_CONTEXT, offset + %4 + ((i + %1) * 5), e_time);
 		}
 	}
 
@@ -151,12 +151,12 @@ Client_Disconnect_Log =
 	server_t = server_time ();
 	for (i = max; i >= %0; i = i - %1)
 	{
-		e_time = floor (Read_Hunk_Float (HUNK_CONTEXT, offset + %4 + (i * 6)));
+		e_time = floor (Read_Hunk_Float (HUNK_CONTEXT, offset + %4 + (i * 5)));
 		e_away = server_t - e_time;
 
 		if (e_time)
 		{
-			e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 6), 16);
+			e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 5), 16);
 			self_sprintf_len (self, e_name, -16);
 			e_name = parse_time (e_away);
 			self_sprintf_len (self, e_name, 10);
