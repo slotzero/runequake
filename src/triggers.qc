@@ -1,4 +1,4 @@
-/*  $Id: triggers.qc,v 1.15 2003/11/10 23:17:53 slotzero Exp $
+/*  $Id: triggers.qc,v 1.16 2003/11/30 20:28:29 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -532,7 +532,7 @@ trigger_teleport =
 		if (!scratch1 & S1_AMBIENT_SOUND_OFF)
 		{
 			precache_sound ("ambience/hum1.wav");
-			o = (self.mins + self.maxs)*0.5;
+			o = (self.mins + self.maxs) * 0.5;
 			ambientsound (o, "ambience/hum1.wav", 0.5, ATTN_STATIC);
 		}
 	}
@@ -546,7 +546,7 @@ trigger_setskill
 ==============================================================================
 */
 
-void ()
+/* void ()
 trigger_skill_touch =
 {
 	if (other.classname != "player")
@@ -554,7 +554,7 @@ trigger_skill_touch =
 
 	if (!deathmatch & DM_DM_MASK)
 		cvar_set ("skill", self.message);
-};
+}; */
 
 /*QUAKED trigger_setskill (.5 .5 .5) ?
 sets skill level to the value of "message".
@@ -563,8 +563,9 @@ Only used on start map.
 void ()
 trigger_setskill =
 {
-	InitTrigger ();
-	self.touch = trigger_skill_touch;
+	remove (self);
+	// InitTrigger ();
+	// self.touch = trigger_skill_touch;
 };
 
 /*
@@ -575,7 +576,7 @@ ONLY REGISTERED TRIGGERS
 ==============================================================================
 */
 
-void ()
+/* void ()
 trigger_onlyregistered_touch =
 {
 	if (other.classname != "player")
@@ -599,7 +600,7 @@ trigger_onlyregistered_touch =
 			sound (other, CHAN_BODY, "misc/talk.wav", 1, ATTN_NORM);
 		}
 	}
-};
+}; */
 
 /*QUAKED trigger_onlyregistered (.5 .5 .5) ?
 Only fires if playing the registered version, otherwise prints the message
@@ -607,9 +608,11 @@ Only fires if playing the registered version, otherwise prints the message
 void ()
 trigger_onlyregistered =
 {
-	precache_sound ("misc/talk.wav");
+	// precache_sound ("misc/talk.wav");
 	InitTrigger ();
-	self.touch = trigger_onlyregistered_touch;
+	self.nextthink = time + 1;
+	self.think = DelayThink;
+	//self.touch = trigger_onlyregistered_touch;
 };
 
 //============================================================================
