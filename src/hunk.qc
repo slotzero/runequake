@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.12 2003/10/25 01:08:22 slotzero Exp $
+/*  $Id: hunk.qc,v 1.13 2004/04/09 05:59:54 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -24,6 +24,11 @@
 	// server_time(), update_server_time()
 	%10  - ?	= float time
 
+	// sized_customs_count(), update_customs_count()
+	%21		= float small levels left in map rotation
+	%22		= float medium levels left in map rotation
+	%23		= float large levels left in map rotation
+
 	// Log_Client_Disconnect(), Client_Disconnect_Log()
 	%100 - %103	= string netname	%104 - %105	= float elapsed
 	%106 - %109	= string netname	%110 - %111	= float elapsed
@@ -35,6 +40,14 @@
 	%142 - %145	= string netname	%146 - %147	= float elapsed
 	%148 - %151	= string netname	%152 - %153	= float elapsed
 	%154 - %157	= string netname	%158 - %159	= float elapsed
+
+	// custom_hunk_pos()
+	%200 - %399	= string (12 bytes) containing small level names
+	%400 - %599	= string (12 bytes) containing medium level names
+	%600 - %799	= string (12 bytes) containing large level names
+
+	// strman.qc
+	%3000 - %4000	= memory for string manipulation functions
 */
 
 //-------------------------------------------------------------------
