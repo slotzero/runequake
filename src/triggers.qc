@@ -1,4 +1,4 @@
-/*  $Id: triggers.qc,v 1.20 2004/02/29 08:21:35 slotzero Exp $
+/*  $Id: triggers.qc,v 1.21 2004/04/05 03:30:36 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -411,8 +411,6 @@ spawn_tdeath =
 
 	force_retouch	= 2;		// make sure even still objects get hit
 };
-
-entity last_teleport;
 
 entity ()
 find_info_teleport_destination =

@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.22 2004/04/05 01:59:07 slotzero Exp $
+/*  $Id: observer.qc,v 1.23 2004/04/05 03:30:36 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -594,20 +594,28 @@ observer_teleport =
 	if (v1 * v2 <= 0.1)
 		return;
 
-	targ = find (world, targetname, tele.target);
+	if (!tele.target)
+	{
+		if (last_teleport)
+			targ = last_teleport;
+		else
+			targ = find_info_teleport_destination ();
+	}
+	else
+		targ = find (world, targetname, tele.target);
+
 	if (!targ)
 	{
-		dprint ("observer_teleport: no targ for teleporter at ");
-		dprint_vec (tele.origin);
-		dprint ("\n");
+		dprint ("teleport_touch(): couldn't find target!\n");
 		return;
 	}
+
 	setorigin (self, targ.origin);
-	self.angles = targ.mangle;
-	self.fixangle = 1;
+	self.angles		= targ.mangle;
+	self.fixangle		= 1;
 	makevectors (targ.mangle);
-	self.velocity = v_forward * 300;
-	self.teleport_time = time + 0.7;
+	self.velocity		= v_forward * 300;
+	self.teleport_time	= time + 0.7;
 };
 
 void ()
