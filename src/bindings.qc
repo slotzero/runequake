@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.53 2005/01/08 04:20:12 slotzero Exp $
+/*  $Id: bindings.qc,v 1.54 2005/01/10 22:59:55 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -484,6 +484,7 @@ help_vote =
 	self_sprint (self, "\bvote-exit       <mapname>\b (ex: start)\n");
 	self_sprint (self, "\bvote-hook       vote-hook-damage\n");
 	self_sprint (self, "\bvote-free       vote-lithium\n");
+	self_sprint (self, "\bvote-team       vote-arena\n");
 	self_sprint (self, "\bvote-practice   vote-normal\n");
 	self_sprint (self, "\bvote-quad       vote-pent\n");
 	self_sprint (self, "\bvote-ring       vote-suit\n");
