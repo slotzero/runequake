@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.42 2004/05/15 04:29:52 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.43 2004/05/20 21:09:24 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -584,8 +584,6 @@ Rune_Tell_real =
 		desc_s = " TelDef";
 
 		d1 = "Deflects most telefrags\n";
-		d2 = ftos (MAX_DEFLECT);
-		d3 = " maximum";
 	}
 	else if (type == RN_BETTY)
 	{
