@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.17 2004/07/09 07:05:25 slotzero Exp $
+/*  $Id: vote.qc,v 1.18 2004/07/09 07:45:40 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -55,7 +55,9 @@ vote_team_disabled =
 	if (teamplay & TEAM_NO_VOTE
 			|| (teamplay != 0 && teamplay != VOTE_TEAM_MODE)
 			|| VOTE_TEAM_PERCENTAGE	<= 0
-			|| VOTE_TEAM_PERCENTAGE > 1)
+			|| VOTE_TEAM_PERCENTAGE > 1
+			IN_QW(|| 1) // XXX QW team support still broken
+			)
 	{
 		if (tell)
 			self_sprint (self, "Team voting is disabled\n");

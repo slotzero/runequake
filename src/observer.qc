@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.30 2004/07/09 07:15:07 slotzero Exp $
+/*  $Id: observer.qc,v 1.31 2004/07/09 07:45:40 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -774,6 +774,7 @@ void (float force)
 obs_join_game =
 {
 	local float maxp, i;
+	local string s1, s2, sx;
 
 	if (!force && self.runevar)
 	{
@@ -848,11 +849,21 @@ obs_join_game =
 	if (self.items & IT_KEY2)
 		self.items = self.items - self.items & IT_KEY2;
 	if (teamplay & TEAM_TEAM_MASK)
+	{
 		describe_team_mode ();
+		s1 = "\bteam";
+	}
 	if (enforced_teams ())
 		assign_teams (self);
 	if (deathmatch & DM_MODE_PRACTICE)
-		centerprint (self, "\b\<practice mode\>\b");
+		s2 = "\bpractice";
+
+	if (s1 != string_null || s2 != string_null)
+	{
+		if (s1 != string_null && s2 != string_null)
+			sx = " ";
+		centerprint5 (self, "\b\<", s1, sx, s2, "\b mode\>");
+	}
 };
 
 void ()

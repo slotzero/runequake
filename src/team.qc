@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.24 2004/07/08 22:21:42 slotzero Exp $
+/*  $Id: team.qc,v 1.25 2004/07/09 07:45:40 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -513,7 +513,7 @@ team_rotate =
 void ()
 describe_team_mode =
 {
-	centerprint (self, "Note:  Team mode is on");
+	// centerprint (self, "Note:  Team mode is on");
 	sprint (self, "Team settings:");
 	if (teamplay & TEAM_HEALTH_PROT)	sprint (self, " health-prot");
 	if (teamplay & TEAM_ARMOR_PROT)		sprint (self, " armor-prot");
