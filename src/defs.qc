@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.121 2004/10/17 02:45:34 slotzero Exp $
+/*  $Id: defs.qc,v 1.122 2004/10/23 21:42:06 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -741,7 +741,6 @@ float AQS_BURNING		= 1048576;
 float AQS_SPAWN_PROTECT		= 2097152;
 float AQS_SWITCH_WEAPON_WAS_BEST = 4194304;
 float AQS_ADMIN_CHANGE_MAP_MENU	= 8388608;
-float AQS_FORWARDED		= 16777216;
 
 // temp1 flags
 float temp1;

@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.149 2004/10/11 00:36:25 slotzero Exp $
+/*  $Id: rjs.qc,v 1.150 2004/10/23 21:42:06 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1525,6 +1525,7 @@ player_init =
 		admin_toggle (0, 0);
 
 		e		= spawn ();
+		e.classname	= "player_forward_think";
 		e.aqstate	= 0;
 		e.owner		= self;
 		e.think		= player_forward_think;
@@ -1605,8 +1606,6 @@ player_forward_think =
 		bprint ("Forwarding ");
 		bprint (self.owner.netname);
 		bprint ("\n");
-
-		self.owner.aqstate = self.owner.aqstate | AQS_FORWARDED;
 
 		self_stuffcmd (self.owner, "connect \"");
 		self_stuffcmd (self.owner, FORWARD_DEST);

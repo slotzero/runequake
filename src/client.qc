@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.66 2004/09/27 22:42:06 slotzero Exp $
+/*  $Id: client.qc,v 1.67 2004/10/23 21:42:06 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1798,10 +1798,22 @@ called when a player disconnects from a server
 void ()
 ClientDisconnect =
 {
+	local entity e;
+	local float i;
+
 	qsmack_status_valid = 0;
 
-	// let everyone else know
-	if (!self.aqstate & AQS_FORWARDED)
+	// Don't print the disconnect message for players forwarding or
+	// think()ing about forwarding.
+	e = find (world, classname, "player_forward_think");
+	while (e)
+	{
+		if (e.owner == self)
+			i = 1;
+		e = find (e, classname, "player_forward_think");
+	}
+
+	if (!i)
 	{
 		bprint (self.netname);
 		bprint (" left the game with ");
@@ -1810,22 +1822,25 @@ ClientDisconnect =
 		sound (self, CHAN_BODY, "player/tornoff2.wav", 1, ATTN_NONE);
 	}
 
-	//RUNE SERV: Various
 	spawn_protect_off ();
 	forget_rune_owner ();
+
 	if (is_rider ())
 		obs_rider_drop (0);
-	self.classname = "deader";
-	self.health = 0;
-	self.runetype = 0;
-	self.aqflags = 0;	// for AQ_INIT_DONE, for is_valid_player()
-	self.rqflags = 0;
-	self.vote_flags = 0;
-	self.effects = 0;
+
+	self.classname	= "deader";
+	self.health	= 0;
+	self.runetype	= 0;
+	self.aqflags	= 0;	// for AQ_INIT_DONE, for is_valid_player()
+	self.rqflags	= 0;
+	self.vote_flags	= 0;
+	self.effects	= 0;
+
 	// Set frags so the "unconnected" status list entry for the next
 	// player to get this slot (which can last for a while) isn't
 	// confusing.
-	self.frags = -99;
+	self.frags	= -99;
+
 	set_suicide_frame ();
 	obs_process_game_queue ();
 	lose_riders ();
