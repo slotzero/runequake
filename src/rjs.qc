@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.3 2002/02/23 22:54:01 slotzero Exp $
+// $Id: rjs.qc,v 1.4 2002/02/24 10:08:10 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -750,6 +750,15 @@ place_my_items =
 		// Top of crate next to level exit.
 		spawn_item ("weapon_rocketlauncher", 0, '1445 608 -192', 0);
 	}
+	if (mapname == "e1m2")
+	{
+		// Replace the RL.
+		spawn_item ("item_armorInv", 0, '680.0 728.0 184.0', 0);
+		// Place new RL.
+		spawn_item ("weapon_rocketlauncher", 0, '-96.0 605.0 320.0', 0);
+		// Place new RL.
+		spawn_item ("weapon_rocketlauncher", 0, '1104.0 640.0 312.0');
+	}
 	else if (mapname == "e1m6")
 	{
 		// Under the stairs.
@@ -766,6 +775,13 @@ place_my_items =
 	{
 		// Same room as the RA that's near quad.
 		spawn_item ("weapon_grenadelauncher", 0, '1178.5 1965 24', 0);
+	}
+	else if (mapname == "e2m4")
+	{
+		// Armor added near the start of level.
+		spawn_item ("item_armor1", 0, '832.0 465.0 32.0', 0);
+		// Added LG in water near SNG.
+		spawn_item ("weapon_grenadelauncher", 0, '1015.0 941.5 -168', 0);
 	}
 	else if (mapname == "e2m6")
 	{
@@ -1381,8 +1397,8 @@ count_hooks =
 	return n_ent + n_player;
 };
 
-void (string class)
-remove_classname =
+void (string class, vector orig)
+remove_classname_origin =
 {
 	local entity e, next_e;
 
@@ -1390,9 +1406,31 @@ remove_classname =
 	while (e)
 	{
 		next_e = find (e, classname, class);
-		remove (e);
+
+		// debug
+		if (1)
+		{
+			local string s;
+
+			s = vtos (e.origin);
+			cvar_set ("scratch1", s);
+		}
+
+		if (orig == VEC_ORIGIN)
+			remove (e);
+		else if (e.origin == orig)
+		{
+			remove (e);
+			break;
+		}
 		e = next_e;
 	}
+};
+
+void (string class)
+remove_classname =
+{
+	remove_classname_origin (class, VEC_ORIGIN);
 };
 
 void ()
@@ -1408,18 +1446,23 @@ fix_map =
 		e.mangle = '0 -90 0';
 		setorigin (e, '545.1 679.5 353.0');
 	}
+	if (world.model == "maps/e1m2.bsp")
+	{
+		// Remove rocket launcher.
+		remove_classname_origin ("weapon_rocketlauncher", '680.0 728.0 184.0');
+	}
 	else if (world.model == "maps/e1m7.bsp")
 	{
 		// Add a destination for the level-exit teleporter.
 		e = spawn ();
 		e.targetname = "t11";
-		e.mangle = '0 0 0';
+		e.mangle = VEC_ORIGIN;
 		setorigin (e, '-450 64 366');
 	}
 	else if (world.model == "maps/dm1.bsp")
 	{
 		// Remove yellow armor.
-		remove_classname ("item_armor2");
+		remove_classname_origin ("item_armor2", '-392.0 1416.0 0.0');
 	}
 
 	// Remove keys and runes.  Hell's Atrium has a key which isn't
