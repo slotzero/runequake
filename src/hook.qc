@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.12 2003/12/30 05:57:44 slotzero Exp $
+/*  $Id: hook.qc,v 1.13 2004/03/09 23:06:00 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -207,7 +207,8 @@ HookTouch =
 	if (isfriend2 (self.owner, other)
 			|| (!d && other.takedamage == DAMAGE_AIM)
 			|| other.items & IT_SUIT
-			|| other.runetype == RN_ENVIRO)
+			|| other.runetype == RN_ENVIRO
+			|| other.aqstate & AQS_SPAWN_PROTECT)
 	{
 		sound (self, CHAN_AUTO, "weapons/bounce.wav", 1, ATTN_NORM);
 		DropHook ();
