@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.49 2004/07/08 06:23:29 slotzero Exp $
+/*  $Id: world.qc,v 1.50 2004/07/08 06:49:32 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -435,7 +435,7 @@ StartFrame =
 				Rune_SpawnAll (1);
 		}
 
-		if (temp1 & T1_HOOK_MASK == T1_FREE_HOOK)
+		if (temp1 & T1_HOOK_MASK == T1_LITHIUM_HOOK)
 		{
 			i = count_players (0);
 			i = ceil (i / 3);
