@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.35 2003/07/10 05:27:11 slotzero Exp $
+/*  $Id: develop.qc,v 1.36 2003/07/11 02:44:18 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -76,7 +76,7 @@ Client_Disconnect_Log =
 {
 	IN_QW(return;)
 	local float i, max, offset, e_time, e_away, server_t;
-	local string e_name, display;
+	local string e_name;
 
 	// hunk offset [must match Log_Client_Disconnect]
 	offset = %100;	// position in hunk
@@ -84,8 +84,8 @@ Client_Disconnect_Log =
 
 	self_sprint (self, "\n");
 	self_sprintf_len (self, "Name", -16);
-	self_sprintf_len (self, "Time", 8);
-	self_sprint (self, "\n----                ----\n\n");
+	self_sprintf_len (self, "Time", 10);
+	self_sprint (self, "\n----                  ----\n\n");
 
 	server_t = server_time ();
 	for (i = max; i >= %0; i = i - %1)
@@ -99,42 +99,12 @@ Client_Disconnect_Log =
 			e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 6), 16);
 			self_sprintf_len (self, e_name, -16);
 			e_name = parse_time (e_away);
-			self_sprintf_len (self, e_name, 8);
+			self_sprintf_len (self, e_name, 10);
 			self_sprint (self, "\n");
 		}
 	}
 	if (!e_time)
 		self_sprint (self, "No entries found.\n");
-};
-
-string (float n)
-parse_time =
-{
-	local float hours, minutes, seconds;
-	local string s1, s2, s3, s4;
-
-	seconds	= floor (n);
-	minutes	= floor (seconds / 60);
-	hours	= floor (minutes / 60);
-	seconds	= seconds - floor (minutes * 60);
-	minutes	= minutes - floor (hours * 60);
-
-	if (hours)
-	{
-		s1 = ftos (hours);
-		s2 = ":";
-		if (minutes < 10) s3 = "0";
-	}
-
-	s1 = strcat3 (s1, s2, s3);
-	s2 = ftos (minutes);
-	s3 = ":";
-	if (seconds < 10) s4 = "0";
-
-	s1 = strcat4 (s1, s2, s3, s4);
-	s2 = ftos (seconds);
-
-	return strcat (s1, s2);
 };
 
 string ()
