@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.123 2004/07/08 08:55:25 slotzero Exp $
+/*  $Id: rjs.qc,v 1.124 2004/07/08 22:21:42 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2597,18 +2597,6 @@ T_RadiusLight =
 	self = old_self;
 };
 
-void ()
-vote_team_mode_default =
-{
-	if (!VOTE_TEAM_MODE_DEFAULT)
-		return;
-
-	if (count_players_by_ent (0))
-		return;
-
-	toggle_teamplay (VOTE_TEAM_MODE_DEFAULT);
-};
-
 // type 0 is for self's information only
 // type 1 is when a new vote is registered
 // type 2 is by the vote counting entity
@@ -2792,7 +2780,7 @@ vote_counter_think =
 	if (intermission_running)
 		return;
 
-	vote_team_mode_default ();
+	team_default ();
 	hook_default ();
 
 	// XXX This should still think until I figure out a better way to check this.

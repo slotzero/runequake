@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.23 2004/07/08 01:32:55 slotzero Exp $
+/*  $Id: team.qc,v 1.24 2004/07/08 22:21:42 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -419,6 +419,18 @@ toggle_teamplay =
 		if (check_state >= 0)
 			change_teamplay (VOTE_TEAM_MODE, 1);
 	}
+};
+
+void ()
+team_default =
+{
+	if (!VOTE_TEAM_MODE_DEFAULT)
+		return;
+
+	if (count_players_by_ent (0))
+		return;
+
+	toggle_teamplay (VOTE_TEAM_MODE_DEFAULT);
 };
 
 float (float tm, float total_teams)
