@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.19 2003/11/10 22:52:17 slotzero Exp $
+/*  $Id: runes60.qc,v 1.20 2003/11/16 05:17:11 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -563,22 +563,19 @@ AntiPack_Think =
 	}
 };
 
-void (.float ammo_type, float max)
+void (.float ammo_type)
 antipack_maybe_remove_ammo =
 {
 	local float n;
 
-	n = ceil (random () * max);
+	n = floor (random () * (other.ammo_type / 2));
 	if (n <= other.ammo_type)
 		other.ammo_type = other.ammo_type - n;
 	else
-	{
-		n = other.ammo_type;
 		other.ammo_type = 0;
-	}
 };
 
-void (float it)
+/* void (float it)
 antipack_maybe_remove_weapon =
 {
 	if (other.items & it)
@@ -586,12 +583,22 @@ antipack_maybe_remove_weapon =
 		if (random () < 0.35)
 			other.items = other.items - other.items & it;
 	}
-};
+
+		// Moved from AntiPack_Touch ()
+		antipack_maybe_remove_weapon (IT_SUPER_SHOTGUN);
+		antipack_maybe_remove_weapon (IT_NAILGUN);
+		antipack_maybe_remove_weapon (IT_SUPER_NAILGUN);
+		antipack_maybe_remove_weapon (IT_GRENADE_LAUNCHER);
+		antipack_maybe_remove_weapon (IT_ROCKET_LAUNCHER);
+		antipack_maybe_remove_weapon (IT_LIGHTNING);
+
+}; */
 
 void ()
 AntiPack_Touch =
 {
 	local entity os;
+	local float i, it;
 
 	if (other.health <= 0 || other == world)
 		return;
@@ -617,17 +624,20 @@ AntiPack_Touch =
 
 		stuffcmd (other, "bf\n");
 
-		antipack_maybe_remove_ammo (ammo_shells, MAX_SHELLS);
-		antipack_maybe_remove_ammo (ammo_nails, MAX_NAILS);
-		antipack_maybe_remove_ammo (ammo_rockets, MAX_ROCKETS);
-		antipack_maybe_remove_ammo (ammo_cells, MAX_CELLS);
+		antipack_maybe_remove_ammo (ammo_shells);
+		antipack_maybe_remove_ammo (ammo_nails);
+		antipack_maybe_remove_ammo (ammo_rockets);
+		antipack_maybe_remove_ammo (ammo_cells);
 
-		antipack_maybe_remove_weapon (IT_SUPER_SHOTGUN);
-		antipack_maybe_remove_weapon (IT_NAILGUN);
-		antipack_maybe_remove_weapon (IT_SUPER_NAILGUN);
-		antipack_maybe_remove_weapon (IT_GRENADE_LAUNCHER);
-		antipack_maybe_remove_weapon (IT_ROCKET_LAUNCHER);
-		antipack_maybe_remove_weapon (IT_LIGHTNING);
+		for (i = 8; i > 2; i = i - 1)
+		{
+			it = weapon_num_to_it (i);
+			if (other.items & it)
+			{
+				other.items = other.items - other.items & it;
+				i = -1;
+			}
+		}
 
 		os = self;
 		self = other;
