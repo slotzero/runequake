@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.14 2003/10/18 20:25:22 slotzero Exp $
+/*  $Id: runes60.qc,v 1.15 2003/11/08 05:46:16 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -230,7 +230,7 @@ Rune_Blizzard =
 			sprint (self, "s");
 		sprint (self, "\n");
 
-		self.runetime = time + (RN_BLIZZARD_RECHARGE * i);
+		self.runetime = time + (BLIZZARD_RECHARGE * i);
 	}
 	else
 		self.runetime = time + 3;
@@ -353,11 +353,10 @@ void ()
 Sniper_Touch =
 {
 	if (other.solid == SOLID_TRIGGER)
-		return;	// trigger field, do nothing
+		return;
 
 	if (other.takedamage)
 	{
-		//spawn_touchblood (18);
 		T_Damage (other, self, self.owner, SURE_KILL_DAMAGE, "sniped");
 
 		if (other.classname == "player")
@@ -547,4 +546,149 @@ Rune_Sonar =
 		sound (self, CHAN_WEAPON, "fish/idle.wav", 1.0, ATTN_NORM);
 	else
 		sound (self, CHAN_WEAPON, "wizard/widle1.wav", 0.8, ATTN_NORM);
+};
+
+void (float riders, entity of_e)
+Rune_AntiPack_sprint =
+{
+	rprint_numdesc (self, riders, of_e.runevar, "anti-pack");
+	rprint (self, riders, " placed\n");
+};
+
+void ()
+AntiPack_Think =
+{
+	self.nextthink = time + 1;
+	IN_POQ([-
+		particle (self.origin, '0 0 10', 73, 20);
+	-], [-
+		create_te_blood (self.origin, 1);
+	-])
+
+	if (self.runetime < time)
+	{
+		if (self.owner.runetype == RN_ANTIPACK && self.owner.runevar > 0)
+		         self.owner.runevar = self.owner.runevar - 1;
+
+		remove (self);
+	}
+};
+
+void (.float ammo_type, float max)
+antipack_maybe_remove_ammo =
+{
+	local float n;
+
+	n = ceil (random () * max);
+	if (n <= other.ammo_type)
+		other.ammo_type = other.ammo_type - n;
+	else
+	{
+		n = other.ammo_type;
+		other.ammo_type = 0;
+	}
+};
+
+void (float it)
+antipack_maybe_remove_weapon =
+{
+	if (other.items & it)
+	{
+		if (random () < 0.35)
+			other.items = other.items - other.items & it;
+	}
+};
+
+void ()
+AntiPack_Touch =
+{
+	local entity os;
+
+	if (other.health <= 0 || other == world)
+		return;
+
+	if (environmental (other))
+		return;
+
+	if (other == self.owner)
+		return;
+
+	if (self.owner.runetype == RN_ANTIPACK && self.owner.runevar > 0)
+		self.owner.runevar = self.owner.runevar - 1;
+
+	if (other.classname == "player")
+	{
+		centerprint (other, "You picked up an anti-pack!");
+		bprint (other.netname);
+		bprint (" picked up ");
+		bprint (self.owner.netname);
+		bprint ("'s anti-pack!\n");
+
+		sound (other, CHAN_ITEM, "weapons/lock4.wav", 1, ATTN_NORM);
+		sound (other, CHAN_BODY, "demon/ddeath.wav", 1, ATTN_NORM);
+
+		stuffcmd (other, "bf\n");
+
+		antipack_maybe_remove_ammo (ammo_shells, MAX_SHELLS);
+		antipack_maybe_remove_ammo (ammo_nails, MAX_NAILS);
+		antipack_maybe_remove_ammo (ammo_rockets, MAX_ROCKETS);
+		antipack_maybe_remove_ammo (ammo_cells, MAX_CELLS);
+
+		antipack_maybe_remove_weapon (IT_SUPER_SHOTGUN);
+		antipack_maybe_remove_weapon (IT_NAILGUN);
+		antipack_maybe_remove_weapon (IT_SUPER_NAILGUN);
+		antipack_maybe_remove_weapon (IT_GRENADE_LAUNCHER);
+		antipack_maybe_remove_weapon (IT_ROCKET_LAUNCHER);
+		antipack_maybe_remove_weapon (IT_LIGHTNING);
+
+		os = self;
+		self = other;
+		set_weapon (W_BestWeapon ());
+		self = os;
+
+		remove (self);
+	}
+};
+
+void ()
+AntiPack_Arm =
+{
+   self.nextthink	= time;
+   self.runetime	= time + 120;
+   self.think		= AntiPack_Think;
+   self.touch		= AntiPack_Touch;
+};
+
+void ()
+Rune_AntiPack =
+{
+	local entity antipack;
+	local string s, s1;
+
+	if (self.runevar >= MAX_ANTIPACK)
+	{
+		s = ftos (MAX_ANTIPACK);
+		if (MAX_ANTIPACK != 1)
+			s1 = "s";
+		centerprint5 (self, "Only ", s, " anti-pack", s1, " allowed");
+		return;
+	}
+	self.runevar		= self.runevar + 1;
+
+	antipack		= spawn ();
+	antipack.flags		= FL_ITEM;
+	antipack.solid		= SOLID_TRIGGER;
+	antipack.movetype	= MOVETYPE_TOSS;
+	antipack.owner		= self;
+	antipack.classname	= "antipack";
+
+	setorigin (antipack, self.origin - '0 0 24');
+	setmodel (antipack, "progs/backpack.mdl");
+	setsize (antipack,'-16 -16 0', '16 16 56');
+
+	antipack.think		= AntiPack_Arm;
+	antipack.nextthink	= time + 3;
+
+	sound (self, CHAN_WEAPON, "demon/dhit2.wav", 1, ATTN_NORM);
+	centerprint (self, "Anti-pack dropped!");
 };

@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.23 2003/10/05 05:25:11 slotzero Exp $
+/*  $Id: runes30.qc,v 1.24 2003/11/08 05:46:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -668,7 +668,7 @@ Rune_Freeze =
 	sound (self, CHAN_AUTO, "enforcer/sight2.wav", 1, ATTN_NORM);
 	sound (freeze, CHAN_WEAPON, "buttons/switch04.wav", 1, ATTN_NORM);
 
-	centerprint (self, "Ice trap created\nRUN!");
+	centerprint (self, "Ice trap created!");
 };
 
 void (entity sucker)

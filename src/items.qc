@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.28 2003/10/14 01:46:13 slotzero Exp $
+/*  $Id: items.qc,v 1.29 2003/11/08 05:46:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -758,7 +758,7 @@ weapon_supershotgun =
 void ()
 weapon_nailgun =
 {
-	weapon_set ("progs/g_nail.mdl", IT_NAILGUN, "nailgun");
+	weapon_set ("progs/g_nail.mdl", IT_NAILGUN, "Nailgun");
 };
 
 /*QUAKED weapon_supernailgun (0 .5 .8) (-16 -16 0) (16 16 32)

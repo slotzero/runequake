@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.22 2003/10/05 06:26:21 slotzero Exp $
+/*  $Id: settings.qc,v 1.23 2003/11/08 05:46:17 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -601,7 +601,11 @@ float MAX_GLUE			= 3;
 
 // Blizzard Rune
 
-float RN_BLIZZARD_RECHARGE	= 10;
+float BLIZZARD_RECHARGE		= 10;
+
+// AntiPack Rune
+
+float MAX_ANTIPACK		= 5;
 
 // red, green, blue, scale
 

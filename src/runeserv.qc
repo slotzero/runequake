@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.28 2003/10/18 20:25:22 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.29 2003/11/08 05:46:17 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -83,6 +83,7 @@ Rune_Button =
 	else if (self.runetype == RN_BLIZZARD)	Rune_Blizzard ();
 	else if (self.runetype == RN_SNIPER)	W_Sniper ();
 	else if (self.runetype == RN_SONAR)	Rune_Sonar ();
+	else if (self.runetype == RN_ANTIPACK)	Rune_AntiPack ();
 };
 
 // This doesn't always tell the riders because it can be triggered both
@@ -565,6 +566,14 @@ Rune_Tell_real =
 		d1 = "Emits a sonic wave which\n"
 			"detects nearby players";
 	}
+	else if (type == RN_ANTIPACK)
+	{
+		desc_l = "Anti-Pack Rune";
+		desc_s = " AntiPk";
+
+		d1 = "Drop backpacks that\n"
+			"take away weapons and ammo";
+	}
 	/* else if (type == RN_TORNADO)
 	{
 		desc_l = "Tornado Rune";
@@ -653,6 +662,7 @@ Rune_Tell_sprint =
 	else if (of_e.runetype == RN_PACK_RAT)	pack_rat_sprint (r, of_e);
 	else if (of_e.runetype == RN_GLUE)	Rune_Glue_sprint (r, of_e);
 	else if (of_e.runetype == RN_BLIZZARD)	Rune_Blizzard_sprint (r, of_e);
+	else if (of_e.runetype == RN_ANTIPACK)	Rune_AntiPack_sprint (r, of_e);
 };
 
 void (float type, float tell)
@@ -911,6 +921,14 @@ Rune_Activate =
 
 	else if (self.runetype == RN_BLIZZARD)
 		self.touch = Blizzard_Touch;
+
+	else if (self.runetype == RN_ANTIPACK)
+	{
+		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
+			self.runevar = count_class_own (self, "antipack");
+		else
+			self.class_cnt = count_class_own (self, "antipack");
+	}
 
 	/* else if (self.runetype == RN_TORNADO)
 		Hat_Spawn ("progs/w_spike.mdl", '0 0 35', VEC_ORIGIN); */

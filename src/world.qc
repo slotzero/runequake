@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.25 2003/10/26 08:04:45 slotzero Exp $
+/*  $Id: world.qc,v 1.26 2003/11/08 05:46:17 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -229,6 +229,9 @@ worldspawn =
 	precache_sound ("enforcer/sight3.wav");
 	precache_sound ("wizard/widle1.wav");
 	precache_sound ("fish/idle.wav");
+
+	// RN_ANTIPACK
+	precache_sound ("demon/ddeath.wav");
 
 	// For the Shambler Helper
 	precache_model ("progs/shambler.mdl");
