@@ -1,4 +1,4 @@
-/*  $Id: triggers.qc,v 1.18 2003/12/07 04:50:03 slotzero Exp $
+/*  $Id: triggers.qc,v 1.19 2004/01/04 06:23:50 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -412,6 +412,21 @@ spawn_tdeath =
 	force_retouch	= 2;		// make sure even still objects get hit
 };
 
+entity last_teleport;
+
+entity ()
+find_info_teleport_destination =
+{
+	local entity spot;
+
+	spot = find (last_teleport, classname, "info_teleport_destination");
+	if (!spot)
+		spot = find (spot, classname, "info_teleport_destination");
+
+	last_teleport = spot;
+	return spot;
+};
+
 void ()
 teleport_touch =
 {
@@ -419,12 +434,17 @@ teleport_touch =
 	local vector org;
 
 	if (self.targetname)
+	{
+		// not fired yet
 		if (self.nextthink < time)
-			return; // not fired yet
+			return;
+	}
 
 	if (self.spawnflags & PLAYER_ONLY)
+	{
 		if (other.classname != "player")
 			return;
+	}
 
 	// only teleport living creatures
 	if (other.health <= 0 || other.solid != SOLID_SLIDEBOX)
@@ -436,15 +456,23 @@ teleport_touch =
 	if (other.runetype != RN_CLOAK)
 		spawn_tfog (other.origin);
 
-	t = find (world, targetname, self.target);
+	if (self.target)
+		t = find (world, targetname, self.target);
+	else
+		t = find_info_teleport_destination ();
+
 	if (!t)
-		objerror ("couldn't find target");
+	{
+		// objerror ("couldn't find target");
+		dprint ("teleport_touch(): couldn't find target!\n");
+		remove (self);
+		return;
+	}
 
 	// spawn a tfog flash in front of the destination
 	makevectors (t.mangle);
 	org = t.origin + 32 * v_forward;
 
-	//RUNE SERV: unless cloaked
 	if (other.runetype != RN_CLOAK)
 		spawn_tfog (org);
 
@@ -454,8 +482,7 @@ teleport_touch =
 	if (!other.health)
 	{
 		other.origin	= t.origin;
-		other.velocity	= (v_forward * other.velocity_x)
-					+ (v_forward * other.velocity_y);
+		other.velocity	= (v_forward * other.velocity_x) + (v_forward * other.velocity_y);
 		return;
 	}
 
@@ -465,18 +492,19 @@ teleport_touch =
 
 	if (other.classname == "player")
 	{
-		other.fixangle		= 1; // turn this way immediately
+		other.fixangle		= TRUE; // turn this way immediately
 		other.teleport_time	= time + 0.7;
 
 		HookOff_e (other);
 		HookOff_by_targ_e (other);
 
 		if (other.flags & FL_ONGROUND)
-			other.flags = other.flags - FL_ONGROUND;
+			other.flags = other.flags - other.flags & FL_ONGROUND;
 
 		other.velocity = v_forward * 300;
 	}
-	other.flags = other.flags - other.flags & FL_ONGROUND;
+	else
+		other.flags = other.flags - other.flags & FL_ONGROUND;
 };
 
 /*QUAKED info_teleport_destination (.5 .5 .5) (-8 -8 -8) (8 8 32)
