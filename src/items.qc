@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.37 2004/04/04 19:15:39 slotzero Exp $
+/*  $Id: items.qc,v 1.38 2004/04/04 21:41:18 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -322,6 +322,8 @@ armor_touch =
 	if (other.classname != "player")
 		return;
 
+	self.runetype	= time + 5;
+
 	if (self.runevar)
 	{
 		type	= self.armortype;
@@ -349,6 +351,7 @@ armor_touch =
 
 	this_tot	= type * value;
 	other_tot	= other.armortype * other.armorvalue;
+
 
 	if (other.runetype == RN_REGEN)
 	{
@@ -436,11 +439,15 @@ armor_touch =
 void ()
 armor_cycle =
 {
-	self.skin = self.skin + 1;
-	if (self.skin > 2)
-		self.skin = 0;
+	if (self.runetype < time)
+	{
+		self.skin = self.skin + 1;
+		if (self.skin > 2)
+			self.skin = 0;
+	}
 
-	self.nextthink	= (time + 10) - (self.skin * 4);
+	// self.nextthink	= (time + 5) - (self.skin * 1);
+	self.nextthink	= time + 1;
 	self.think	= armor_cycle;
 };
 
