@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.22 2003/12/27 06:47:33 slotzero Exp $
+/*  $Id: strman.qc,v 1.23 2003/12/27 08:42:53 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -34,7 +34,7 @@ strlen =
 	// XXX Split these into separate functions.
 	IN_QW([-
 
-	i = %0;
+	i = ps = %0;
 	while (i < %256)
  	{
 		if (s[i] == string_null)
