@@ -1,4 +1,4 @@
-/*  $Id: map.qc,v 1.8 2003/06/24 22:17:40 slotzero Exp $
+/*  $Id: map.qc,v 1.9 2003/10/06 11:21:51 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -379,4 +379,10 @@ select_map =
 		return s;
 	else
 		return mapname;
+};
+
+void ()
+player_change_map =
+{
+
 };

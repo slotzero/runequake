@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.48 2003/10/05 23:16:49 slotzero Exp $
+/*  $Id: defs.qc,v 1.49 2003/10/06 11:21:51 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -464,16 +464,16 @@ float RN_PACK_RAT	= 46;
 float RN_ARMOR		= 47;
 float RN_QUAD		= 48;
 float RN_JACK		= 49;
-
 float RN_GLUE		= 50;
 float RN_BLIZZARD	= 51;
 float RN_THOR		= 52;
-float RN_MAX		= 52;
+float RN_SNIPER		= 53;
+float RN_MAX		= 53;
 
 // Only partially runes.
 
-float RN_LITHIUM_HOOK	= 53;
-float RN_MAX_ALL	= 53;
+float RN_LITHIUM_HOOK	= 54;
+float RN_MAX_ALL	= 54;
 
 // impulses
 
@@ -489,6 +489,7 @@ float RN_MAX_ALL	= 53;
 //    255 quad cheat
 
 float IMP_SHOW_POS		= 192;
+float IMP_LEVELS		= 178;
 float IMP_LAST			= 177;
 //				= 176 - 161 [weapon aliases]
 //				= 150 - 101 [cheat impulses]

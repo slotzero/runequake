@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.10 2003/10/05 23:16:49 slotzero Exp $
+/*  $Id: runes60.qc,v 1.11 2003/10/06 11:21:52 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -347,4 +347,53 @@ Rune_Thor =
 		self.ammo_cells = 50;
 
 	set_current_ammo ();
+};
+
+void ()
+Sniper_Touch =
+{
+	if (other.solid == SOLID_TRIGGER)
+		return;	// trigger field, do nothing
+
+	if (other.takedamage)
+	{
+		//spawn_touchblood (18);
+		T_Damage (other, self, self.owner, SURE_KILL_DAMAGE, "sniped");
+
+		if (other.classname == "player")
+			self.owner.runevar = self.owner.runevar + 25;
+	}
+	else
+		create_te_spike (TE_SUPERSPIKE, self.origin);
+
+	remove (self);
+};
+
+void ()
+W_Sniper =
+{
+	local vector dir;
+	local float n;
+
+	if (self.runetime > time)
+		return;
+
+	if (!W_CheckNoAmmo ())
+		return;
+
+	//use_ammo ();
+
+	T_Damage (self, self, self, (25 + (random () * self.runevar)), "sniped");
+	sound (self, CHAN_WEAPON, "weapons/ric3.wav", 1, ATTN_NORM);
+
+	dir = aim (self, 1000) * 2;
+	launch_spike (self.origin + PLAYER_WEAPON_OFFSET, dir);
+
+	newmis.touch = Sniper_Touch;
+
+	setmodel (newmis, "progs/s_spike.mdl");
+	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
+
+	smallkick ();
+	self.runetime = time + 0.1;
 };

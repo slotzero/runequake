@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.65 2003/10/05 05:25:10 slotzero Exp $
+/*  $Id: rjs.qc,v 1.66 2003/10/06 11:21:51 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1274,6 +1274,9 @@ common_impulses =
 	else if (self.impulse == IMP_ADMIN_TOGGLE)
 		admin_toggle (1, 1);
 
+	else if (self.impulse == IMP_LEVELS)
+		levels ();
+
 	else if (self.impulse == IMP_LAST)
 		Client_Disconnect_Log ();
 
@@ -1539,6 +1542,22 @@ player_init_switchfire_alias =
 	self_stuffcmd (self, "\"\n");
 };
 
+void ()
+levels =
+{
+	self_sprint (self,
+		"\n\bTo change levels, enter the name of\n"
+		"\bthe level in console\n"
+		"\nstart, end"
+		"\ne1m1-e1m8  \b(episode 1)"
+		"\ne2m1-e2m7  \b(episode 2)"
+		"\ne3m1-e1m8  \b(episode 3)"
+		"\ne4m1-e1m8  \b(episode 4)"
+		"\ndm1-dm6    \b(deathmatch)\n"
+		"\n"
+	);
+};
+
 void (string level, float imp)
 player_init_level_alias =
 {
@@ -1661,7 +1680,9 @@ player_init =
 	player_init_impulse_alias ("weapon-toggles-toggle",	IMP_WEAPON_TOGGLES);
 	player_init_impulse_alias ("cycle-alternates",		IMP_CYCLE_ALTERNATES);
 	player_init_impulse_alias ("last",			IMP_LAST);
-	player_init_impulse_alias ("change-level",		IMP_ADMIN_CHANGE_MAP);
+	player_init_impulse_alias ("levels",			IMP_LEVELS);
+	player_init_impulse_alias ("change-level",		IMP_LEVELS);
+	player_init_impulse_alias ("vote-level",		IMP_LEVELS);
 
 	level_aliases ();
 
@@ -3002,13 +3023,17 @@ count_votes =
 
 	if (lack <= 0 && time > LEVEL_RECONNECT_ALLOWANCE)
 	{
-		if (count_type == 1)
+		if (count_type)
 		{
-			bprint (self.netname);
+			if (count_type == 2)
+				bprint ("Rune Quake");
+			else
+				bprint (self.netname);
 			bprint (" voted to ");
 			bprint (desc);
 			bprint ("\n");
 		}
+
 		if (vote_type == IMP_VOTE_EXIT)
 			NextLevel ();
 		else if (vote_type == IMP_VOTE_TEAM)
@@ -3029,10 +3054,9 @@ count_votes =
 	else if (count_type == 1)
 	{
 		bprint (self.netname);
-
 		if (force)
 		{
-			bprint (" voted level ");
+			bprint (" voted for level ");
 			bprint (forced_nextmap);
 		}
 		else
@@ -3040,14 +3064,27 @@ count_votes =
 			bprint (" voted to ");
 			bprint (desc);
 		}
+
 		bprint (", ");
-		bprint (s);
-		// I keep this a little shorter so it doesn't go over 2
-		// lines
-		bprint (" more vote");
-		if (lack != 1)
-			bprint ("s");
-		bprint (" needed, use \"");
+		if (LEVEL_RECONNECT_ALLOWANCE > time)
+		{
+			bprint_float (voted);
+			bprint (" vote");
+			if (voted != 1)
+				bprint ("s");
+			bprint (" in queue, ");
+		}
+		else
+		{
+			bprint (s);
+			// I keep this a little shorter so it doesn't go over 2
+			// lines
+			bprint (" more vote");
+			if (lack != 1)
+				bprint ("s");
+			bprint (" needed, ");
+		}
+		bprint ("use \"");
 		bprint (cmd);
 		bprint ("\"\n");
 	}
@@ -3092,15 +3129,35 @@ vote_counter_think =
 		}
 	}
 
-	if (self.runevar)
-		count_votes (IMP_VOTE_EXIT, 2);
-	else
+	if (self.runevar == 1)
+	{
+		count_votes (IMP_VOTE_HOOK, 2);
+		self.runevar = 0;
+	}
+	else if (self.runevar == 2)
 	{
 		count_votes (IMP_VOTE_TEAM, 2);
-		count_votes (IMP_VOTE_HOOK, 2);
+		self.runevar = 3;
 	}
-	self.runevar = !self.runevar;
-	self.nextthink = time + VOTE_COUNT_PERIOD / 2;
+	else
+	{
+		count_votes (IMP_VOTE_EXIT, 2);
+		self.runevar = 2;
+	}
+
+	self.nextthink = time + VOTE_COUNT_PERIOD / 3;
+};
+
+void ()
+level_reconnect_allowance =
+{
+	count_votes (IMP_VOTE_EXIT, 2);
+	count_votes (IMP_VOTE_HOOK, 2);
+	count_votes (IMP_VOTE_TEAM, 2);
+
+	self.runevar	= 0;
+	self.think	= vote_counter_think;
+	self.nextthink	= time + VOTE_COUNT_PERIOD / 2;
 };
 
 void ()
@@ -3108,11 +3165,10 @@ vote_counter_spawn =
 {
 	local entity e;
 
-	e = spawn ();
-	e.classname = "vote_counter";
-	e.think = vote_counter_think;
-	e.runevar = 0;
-	e.nextthink = time + VOTE_COUNT_PERIOD / 2;
+	e		= spawn ();
+	e.classname	= "vote_counter";
+	e.think		= level_reconnect_allowance;
+	e.nextthink	= time + LEVEL_RECONNECT_ALLOWANCE;
 };
 
 void ()
@@ -3127,6 +3183,12 @@ vote =
 		use_state	= 1;
 		bit		= AQS_VOTE_EXIT;
 		pct		= VOTE_EXIT_PERCENTAGE;
+
+		if (!forced_nextmap && !self.aqstate & bit)
+		{
+			levels ();
+			return;
+		}
 	}
 	else if (self.impulse == IMP_VOTE_TEAM)
 	{

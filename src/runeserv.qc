@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.25 2003/10/05 23:16:49 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.26 2003/10/06 11:21:52 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -81,6 +81,7 @@ Rune_Button =
 	else if (self.runetype == RN_QUAD)	quad_activate ();
 	else if (self.runetype == RN_GLUE)	Rune_Glue ();
 	else if (self.runetype == RN_BLIZZARD)	Rune_Blizzard ();
+	else if (self.runetype == RN_SNIPER)	W_Sniper ();
 };
 
 // This doesn't always tell the riders because it can be triggered both
@@ -544,6 +545,16 @@ Rune_Tell_real =
 
 		d1 = "Lightning gun and constant\n"
 			"supply of ammo\n";
+	}
+	else if (type == RN_SNIPER)
+	{
+		desc_l = "Sniper Rifle Rune";
+		desc_s = " Sniper";
+
+		d1 = "Activate to fire rifle\n"
+			"Single shot kills anything\n"
+			"Damage to self increases\n"
+			"with each kill";
 	}
 	/* else if (type == RN_TORNADO)
 	{

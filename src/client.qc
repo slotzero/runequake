@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.32 2003/10/02 05:08:48 slotzero Exp $
+/*  $Id: client.qc,v 1.33 2003/10/06 11:21:50 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1939,6 +1939,9 @@ ClientObituary =
 					&& targ.armorvalue > 0)
 				bprint (" pierced himself to the core\n");
 
+
+			else if (dt == "sniped")
+				bprint (" sniped a little too much\n");
 			else if (dt == "bombhit")
 				bprint (" struck himself with his own bomb\n");
 			else if (dt == "bombed")
@@ -2054,6 +2057,11 @@ ClientObituary =
 		{
 			s1 = " was crushed in ";
 			s2 = "'s gravity well\n";
+		}
+		else if (dt == "sniped")
+		{
+			s1 = " couldn't escape ";
+			s2 = "'s scope\n";
 		}
 		else if (dt == "hook")
 		{

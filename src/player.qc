@@ -1,4 +1,4 @@
-/*  $Id: player.qc,v 1.8 2003/06/24 22:17:42 slotzero Exp $
+/*  $Id: player.qc,v 1.9 2003/10/06 11:21:51 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -298,6 +298,8 @@ PainSound =
 
 	// no self-pain with rl
 	if (dt == "missile" && damage_attacker == self)
+		return;
+	else if (dt == "sniped" && damage_attacker == self)	// RN_SNIPER
 		return;
 
 	if (damage_attacker.classname == "teledeath")
