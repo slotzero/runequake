@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.64 2004/09/16 01:00:50 slotzero Exp $
+/*  $Id: client.qc,v 1.65 2004/09/25 22:44:57 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1685,6 +1685,15 @@ PlayerPostThink =
 	{
 		obs_post_think ();
 		return;
+	}
+
+	// XXX This prevents batman villain syndrome (w/ switch).  I am not
+	// satisfied with how I do this as I still need to know why it
+	// occurs.
+	if (ceil (self.v_angle_z))
+	{
+		self.angles_z = 0;
+		self.fixangle = 1;
 	}
 
 	// do weapon stuff
