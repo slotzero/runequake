@@ -1,8 +1,13 @@
-$Id: Changes,v 1.8 2002/04/24 02:10:36 slotzero Exp $
+$Id: Changes,v 1.9 2002/04/24 04:18:52 slotzero Exp $
 
 Version 0.3  Sat Apr 20 21:44:23 EST 2002
 
     - Bug Fixes
+
+	- > If you ride a player, enter admin, change level, and then
+	  > join the game, you join with the player your riding.  You can
+	  > see through his eyes, yet you're in the game.  The server
+	  > occasionally crashes too.  [Fixed]
 
     	- Bombs placed under a lift while the lift is down causes the
 	  explosion to be felt on a good portion of the level.  This

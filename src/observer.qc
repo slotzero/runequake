@@ -1,4 +1,4 @@
-// $Id: observer.qc,v 1.4 2002/03/04 21:33:12 slotzero Exp $
+// $Id: observer.qc,v 1.5 2002/04/24 04:18:57 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -1078,6 +1078,13 @@ rider_wait_think =
 
 	// Give up waiting after a while.
 	if (time > self.runetime)
+	{
+		remove (self);
+		return;
+	}
+
+	// Make sure the rider is still an observer.
+	if (is_player_e (self.owner))
 	{
 		remove (self);
 		return;
