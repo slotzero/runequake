@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.20 2003/09/27 05:32:08 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.21 2003/09/28 01:08:58 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -38,6 +38,7 @@ Rune_Think =
 	if (self.runetype == RN_BERSERK)	Berserk_Bleed (); else
 	if (self.runetype == RN_QUAD)		quad_think (); else
 	if (self.runetype == RN_JACK)		jack_think (); else
+	if (self.runetype == RN_BLIZZARD)	Blizzard_Think (); else
 	return;
 };
 
@@ -78,6 +79,8 @@ Rune_Button =
 	else if (self.runetype == RN_TORCH)	Rune_Torch ();
 	else if (self.runetype == RN_QUAD)	quad_activate ();
 	else if (self.runetype == RN_GLUE)	Rune_Glue ();
+	else if (self.runetype == RN_BLIZZARD)	Rune_Blizzard ();
+	else if (self.runetype == RN_TORNADO)	Rune_Tornado ();
 };
 
 // This doesn't always tell the riders because it can be triggered both
@@ -523,9 +526,24 @@ Rune_Tell_real =
 
                 d1 = "Launch sticky traps which\n"
 			"prevent your opponent from moving\n"
-			"for a few seconds\n";
+			"for a few seconds";
 		d2 = ftos (MAX_GLUE);
 		d3 = " maximum";
+	}
+	else if (type == RN_BLIZZARD)
+	{
+		desc_l = "Blizzard Rune";
+		desc_s = " Blizrd";
+
+		d1 = "Activate to freeze everyone in sight";
+	}
+	else if (type == RN_TORNADO)
+	{
+		desc_l = "Tornado Rune";
+		desc_s = " Trnado";
+
+		d1 = "Lets you toss tornados\n"
+			"with super destructive winds";
 	}
 	else if (type == RN_LITHIUM_HOOK)
 	{
@@ -850,6 +868,9 @@ Rune_Activate =
 				self.health = self.max_health;
 		}
 	}
+
+	else if (self.runetype == RN_TORNADO)
+		Hat_Spawn ("progs/w_spike.mdl", '0 0 35', '0 0 0');
 
 	if (self.weapon == best)
 		set_weapon (W_BestWeapon ());

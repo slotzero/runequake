@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.19 2003/09/27 02:22:10 slotzero Exp $
+/*  $Id: world.qc,v 1.20 2003/09/28 01:08:59 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -219,6 +219,10 @@ worldspawn =
 	precache_model ("progs/tarbaby.mdl");
 	precache_sound ("blob/hit1.wav");
 	precache_sound ("blob/sight1.wav");
+
+	// RN_TORNADO
+	precache_model ("progs/w_spike.mdl");
+	precache_sound ("boss1/out1.wav");
 
 	// For the Shambler Helper
 	precache_model ("progs/shambler.mdl");
