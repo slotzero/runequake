@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.79 2005/01/03 11:30:58 slotzero Exp $
+/*  $Id: client.qc,v 1.80 2005/01/08 04:51:07 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -780,7 +780,7 @@ PutClientInServer =
 	{
 		if (mode_arena ())
 		{
-			self.takedamage = 0;
+			self.takedamage = DAMAGE_NO;
 			if (put_client_in_arena ())
 				arena_init ();
 			else

@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.4 2005/01/06 02:21:21 slotzero Exp $
+/*  $Id: arena.qc,v 1.5 2005/01/08 04:51:07 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -123,9 +123,9 @@ arena_results =
 	// This is done here so that any damage done after the first death
 	// can be acted out upon.
 	if (self.owner)
-		self.owner.takedamage = 0;
+		self.owner.takedamage = DAMAGE_NO;
 	if (self.runent)
-		self.runent.takedamage = 0;
+		self.runent.takedamage = DAMAGE_NO;
 
 	// suicider always loses
 	if (self.enemy == self.oldenemy || self.enemy == self.aiment)
