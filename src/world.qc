@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.41 2004/06/28 05:46:03 slotzero Exp $
+/*  $Id: world.qc,v 1.42 2004/06/28 06:39:46 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -369,7 +369,7 @@ StartFrame =
 			cvar_set_infokey ("temp1", s);
 		}
 
-		else if (skill == SKILL_UPDATE_BINDINGS)
+		else if (skill == SKILL_LAST)
 			Client_Disconnect_Log ();
 
 		else if (skill == SKILL_LEVELS)
@@ -392,6 +392,9 @@ StartFrame =
 
 		else if (skill == SKILL_MODE_NORMAL)
 			change_practice_mode (0);
+
+		else if (skill == SKILL_TOGGLE_ALTERNATES)
+			toggle_alternates ();
 
 		else
 			dprint ("skill: unknown command\n");
