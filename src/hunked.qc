@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.16 2004/06/26 04:01:21 slotzero Exp $
+/*  $Id: hunked.qc,v 1.17 2004/06/26 04:07:49 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -60,7 +60,7 @@ parse_time =
 	local string x;
 
 	if (!HUNK_CONTEXT_MAX)
-		return "Command not supported on this server.\n";
+		return "Command not supported on this server.";
 
 	seconds	= floor (n);
 	minutes	= floor (seconds / 60);
