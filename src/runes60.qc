@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.56 2004/12/15 22:04:40 slotzero Exp $
+/*  $Id: runes60.qc,v 1.57 2004/12/17 01:13:06 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -68,17 +68,12 @@ Glue_Stuck =
 
 	if (release)
 	{
-		self.runent.reffects = self.runent.reffects - self.runent.reffects & REF_GLUE;
+		self.runent.effects = self.runent.effects - self.runent.effects & EF_ZERO_VELOCITY;
 		remove (self);
 		return;
 	}
 
-	// Lock the player down by forcing his origin inside a solid object.  This assures
-	// his origin will always be the same as the entities.  XXX Without this, a frozen
-	// player who is attempting to move will lock down any player who is touching him
-	// in the area where he (the frozen player) is attemping to move away from.
-	self.solid		= SOLID_BBOX;
-	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	self.runent.effects	= self.runent.effects | EF_ZERO_VELOCITY;
 	setorigin (self.runent, self.origin);
 
 	self.runent.velocity	= VEC_ORIGIN;
@@ -100,7 +95,7 @@ Glue_Touch =
 	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;
 
-	if (other.reffects & REF_GLUE)
+	if (other.effects & EF_ZERO_VELOCITY)
 		return;
 
 	if (!self.runevar)
@@ -121,8 +116,6 @@ Glue_Touch =
 
 	setmodel (self, "progs/tarbaby.mdl");
 	sound (self, CHAN_WEAPON, "blob/hit1.wav", 1, ATTN_NORM);
-
-	other.reffects	= other.reffects | REF_GLUE;
 
 	centerprint(other, "You are stuck!");
 
@@ -216,7 +209,7 @@ Rune_Blizzard =
 					&& e.runetype != RN_BLIZZARD
 					&& e.runetype != RN_FREEZE
 					&& !(isfriend2 (self, e) && self != e)
-					&& !e.reffects & REF_ICE)
+					&& !e.effects & EF_ZERO_VELOCITY)
 			{
 				if (e.health > 0 && e != self && e.owner != self)
 				{
@@ -326,7 +319,7 @@ Blizzard_Touch =
 		return;
 	if (isfriend (other) && self != other)
 		return;
-	if (other.reffects & REF_ICE)
+	if (other.effects & EF_ZERO_VELOCITY)
 		return;
 
 	self.runetime = time + 3;

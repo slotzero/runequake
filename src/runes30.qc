@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.38 2004/12/16 00:22:31 slotzero Exp $
+/*  $Id: runes30.qc,v 1.39 2004/12/17 01:13:06 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -432,7 +432,7 @@ Unfreeze =
 	{
 		if (freeze.runent == wanted)
 		{
-			freeze.runent.reffects		= freeze.runent.reffects - freeze.runent.reffects & REF_ICE;
+			freeze.runent.effects		= freeze.runent.effects - freeze.runent.effects & EF_ZERO_VELOCITY;
 			freeze.runent.attack_finished	= time + sys_ticrate;
 
 			sound (freeze.runent, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
@@ -446,12 +446,8 @@ Unfreeze =
 void ()
 Freeze_Frozen =
 {
-	// Lock the player down by forcing his origin inside a solid object.  This assures
-	// his origin will always be the same as the entities.  XXX Without this, a frozen
-	// player who is attempting to move will lock down any player who is touching him
-	// in the area where he (the frozen player) is attemping to move away from.
-	self.solid			= SOLID_BBOX;
-	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	self.runent.effects = self.runent.effects | EF_ZERO_VELOCITY;
+
 	setorigin (self.runent, self.origin);
 
 	self.runent.angles		= self.angles;
@@ -492,7 +488,7 @@ Freeze_Frozen =
 			|| (self.runent.runetype == RN_BLIZZARD && self.runent.runevector_x < time)
 			|| self.runent.items & IT_SUIT)
 	{
-		self.runent.reffects		= self.runent.reffects - self.runent.reffects & REF_ICE;
+		self.runent.effects		= self.runent.effects - self.runent.effects & EF_ZERO_VELOCITY;
 		self.runent.attack_finished	= time + sys_ticrate;
 
 		if (self.runent.classname == "player")
@@ -550,10 +546,9 @@ Freeze_Touch =
 		return;
 	}
 
-	if (other.reffects & REF_ICE)
+	if (other.effects & EF_ZERO_VELOCITY)
 		return;
 
-	other.reffects = other.reffects | REF_ICE;
 	maybe_update_trap_count (self.owner, RN_FREEZE);
 
 	if (other.classname == "player")
