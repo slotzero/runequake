@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.111 2004/07/05 04:33:21 slotzero Exp $
+/*  $Id: rjs.qc,v 1.112 2004/07/05 07:46:28 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -3281,4 +3281,29 @@ maybe_update_trap_count =
 		}
 	}
 	return FALSE;
+};
+
+void (string c_var, float bits, string msg)
+toggle_cvar_bit =
+{
+	local float var;
+	local string new;
+
+	var = cvar (c_var);
+
+	if (var & bits)
+	{
+		var = var - var & bits;
+		self_sprint (self, msg);
+		self_sprint (self, " off\n");
+	}
+	else
+	{
+		var = var | bits;
+		self_sprint (self, msg);
+		self_sprint (self, " on\n");
+	}
+
+	new = ftos (var);
+	cvar_set (c_var, new);
 };
