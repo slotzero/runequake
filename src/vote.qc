@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.37 2004/07/20 12:27:59 slotzero Exp $
+/*  $Id: vote.qc,v 1.38 2004/07/26 18:59:55 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -43,7 +43,7 @@ vote_team_disabled =
 			|| (teamplay != 0 && teamplay != VOTE_TEAM_MODE)
 			|| VOTE_TEAM_PERCENTAGE	<= 0
 			|| VOTE_TEAM_PERCENTAGE > 1
-			IN_QW(|| 1) // XXX QW team support still broken
+			// IN_QW(|| 1) // XXX QW team support still broken
 			)
 	{
 		if (tell)
