@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.49 2004/07/19 06:32:12 slotzero Exp $
+/*  $Id: weapons.qc,v 1.50 2004/07/28 03:02:02 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1296,8 +1296,8 @@ ImpulseCommands =
 		wanted = self.impulse - IMP_RUNE_CHEAT_BASE + 1;
 		if (wanted == self.runetype)
 			wanted = 0;
-		if (wanted && self.runetype == RN_SHIELD && self.runevar == 1)
-			wanted = 0;
+		//if (wanted && self.runetype == RN_SHIELD && self.runevar == 1)
+		//	wanted = 0;
 		if (wanted
 				&& deathmatch & DM_DM_MASK
 				&& !temp1 & T1_RUNE_CHEAT

@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.49 2004/07/09 08:50:50 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.50 2004/07/28 03:02:01 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -51,10 +51,14 @@ Rune_PostThink =
 void ()
 Rune_Button =
 {
-	spawn_protect_off ();
 	rune_tell_stop (0);
-	if (!self.runetype) return;
-	else if (self.runetype == RN_REGEN)		Regen_Activate ();
+
+	if (!self.runetype)
+		return;
+
+	spawn_protect_off ();
+
+	if 	(self.runetype == RN_REGEN)		Regen_Activate ();
 	else if (self.runetype == RN_FLY)		Rune_Fly_Activate ();
 	else if (self.runetype == RN_RECALL)		Rune_Recall ();
 	else if (self.runetype == RN_BOMB)		Bomb_Arm ();
@@ -745,6 +749,13 @@ Rune_Activate =
 		decay_armor_spawn (self, ARMOR_DECAY_RATE);
 		set_armor_items_e (self);
 	}
+	else if (old_rune == RN_SHIELD)
+	{
+		if (self.effects & EF_BRIGHTFIELD)
+			self.effects = self.effects - self.effects & EF_BRIGHTFIELD;
+		if (!self.takedamage)
+			self.takedamage = DAMAGE_AIM;
+	}
 
 	self.runetype	= type;
 
@@ -1008,7 +1019,7 @@ Rune_Activate =
 void (float tell)
 Rune_Delete =
 {
-	if (self.runetype && !(self.runetype == RN_SHIELD && self.runevar == 1))
+	if (self.runetype) // && !(self.runetype == RN_SHIELD && self.runevar == 1))
 		Rune_Activate (0, tell);
 };
 
