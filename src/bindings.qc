@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.16 2004/05/30 00:45:02 slotzero Exp $
+/*  $Id: bindings.qc,v 1.17 2004/06/07 00:29:20 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -227,7 +227,7 @@ player_console_init_level_alias =
 		self_stuffcmd (self, " \"cl;w5;w5;impulse ");
 		s = ftos (imp);
 		self_stuffcmd (self, s);
-		self_stuffcmd (self, "\"\n");
+		self_stuffcmd (self, ";w5\"\n");
 	}
 };
 
@@ -279,7 +279,7 @@ commands =
 	self_sprintf_len (self, "\brune-delete", i);		self_sprint (self, "delete your rune\n");
 	self_sprintf_len (self, "\brune-tell", i);		self_sprint (self, "rune description\n");
 	self_sprintf_len (self, "\brune-use", i);		self_sprint (self, "activate rune\n");
-	self_sprintf_len (self, "\bweapon-mode", i);		self_sprint (self, "switch weapon to safest\n");
+	self_sprintf_len (self, "\bweapon-mode", i);		self_sprint (self, "switch weapon to alt\n");
 	self_sprintf_len (self, "\bshow-riders", i);		self_sprint (self, "show players riding you\n");
 	self_sprintf_len (self, "\bfix-angles", i);		self_sprint (self, "fix frozen screen tilt\n");
 	self_sprintf_len (self, "\bshow-players", i);		self_sprint (self, "status of all players\n");
