@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.20 2003/07/08 05:17:22 slotzero Exp $
+/*  $Id: strman.qc,v 1.21 2003/07/11 03:58:10 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -428,7 +428,7 @@ atof =
 		i = i + 1;
 	}
 
-	return 0;
+	return -1;
 };
 
 float (float n)
@@ -512,6 +512,7 @@ stof =
 		&%113 = (*ps)[0];
 
 		f = atof (world[%5] / %1);
+		if (f < 0) return 0;
 		f = f * (eval_exponent (cmp - i));
 		sum = sum + f;
 
