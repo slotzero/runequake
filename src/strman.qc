@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.8 2003/06/06 22:48:06 slotzero Exp $
+/*  $Id: strman.qc,v 1.9 2003/06/08 10:56:07 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -134,7 +134,7 @@ strcat =
 string (string expr, float offset, float length)
 substr =
 {
-	local float p, psub, sublen;
+	local float sub_length;
 	local string s, sub;
 
 	if (offset < 0)
@@ -146,48 +146,52 @@ substr =
 	if (length < 1)
 		return sub;
 
-	sublen = strlen (sub);
-	if (length >= sublen)
+	sub_length = strlen (sub);
+	if (length >= sub_length)
 		return sub;
 
-	psub = AddInt (AddInt (&sub, PSTRING_TO_PQUAKEC), length * %1);
-	p = AddInt (&string_null, PSTRING_TO_PQUAKEC);
-	(*psub)[%0] = (*p)[%0];
+	strcpy (s[(length + offset) * %1], string_null);
+
 	return sub;
 };
 
 //
 //  S U B S T R _ R E P L A C E
 //
-//  Replace a substring in 's' with 'replace'.  The substring is extracted
-//  starting at 'off' characters from the front of the string.  If 'len'
-//  is zero or greater than the remaining length of 's', everything to the
-//  end of the string is returned.
+//  Replace a substring in 'expr' with 'replace'.  The substring is replaced
+//  starting at 'offset' characters from the front of the string.  If 'length'
+//  is zero, 'replace' is inserted at 'offset'.
 //
-string (string s, float off, float len, string replace)
+string (string expr, float offset, float length, string replace)
 substr_replace =
 {
 	local string s1, s2;
 
-	s1 = substr (s, 0, off);
-	off = off + len;
-	s2 = substr (s, off, 0);
-
+	s1 = substr (expr, 0, offset);
+	offset = offset + length;
+	s2 = substr (expr, offset, 0);
 	s1 = strcat (s1, replace);
+
 	return strcat (s1, s2);
 };
 
 //
-// F L E N
+//  F L E N
 //
-// Return 's' to the size of 'max'.  The string is right justified unless
-// 'side' is true.
+//  Return 's' to the size of 'max'.  If 'max' is negative, the string is left
+//  justified.
 //
-string (string s, float max, float side)
+string (string s, float max)
 flen =
 {
-	local float i, slen;
+	local float i, slen, side;
 	local string space;
+
+	if (max < 0)
+	{
+		side = 1;
+		max = fabs (max);
+	}
 
 	slen = strlen (s);
 	if (slen == max)
