@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.47 2004/12/28 08:18:28 slotzero Exp $
+/*  $Id: vote.qc,v 1.48 2004/12/28 08:19:47 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -310,8 +310,6 @@ vote_think =
 		// Feature request for Toyo.  XXX Remove this at some point?
 		if (self.impulse == IMP_VOTE_EXIT && !forced_nextmap && self.runevar == 3)
 		{
-			local entity e;
-
 			e		= spawn ();
 			e.owner		= self.owner;
 			e.think		= toyo_bot;
