@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.26 2003/07/27 12:43:11 slotzero Exp $
+/*  $Id: client.qc,v 1.27 2003/07/28 13:47:50 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1662,6 +1662,33 @@ PlayerPostThink =
 		draw_hud (0);
 };
 
+void ()
+client_ip =
+{
+	local float px, pch, dot, i;
+	local string new;
+
+	new = net_address ();
+	self.address = @AddInt (&new, %32);
+	strcpy (self.address, new);
+
+	px = AddInt(&"\{0}  ", PSTRING_TO_PQUAKEC);
+	pch = AddInt(AddInt(&self.address, PSTRING_TO_PQUAKEC), %-3);
+
+	&%116 = 0;
+	for (i = 0; i < 16; i = i + 1)
+	{
+		pch = AddInt (pch, %1);
+		&%113 = (*pch)[0];
+
+		if (world[%5] == ':')
+			i = 16;
+	}
+
+	pch = AddInt(pch, %3);
+	(*pch)[0] = (*px)[0];
+};
+
 /*
 ===========
 ClientConnect
@@ -1672,6 +1699,8 @@ called when a player connects to a server
 void ()
 ClientConnect =
 {
+	client_ip ();
+
 	// I wanted to change the "Foo entered the game" message
 	// depending on whether this is a new connection or a new
 	// level.  This function is called before DecodeLevelParms(),
