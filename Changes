@@ -1,5 +1,7 @@
-$Id: Changes,v 1.59 2004/04/04 03:15:46 slotzero Exp $
+$Id: Changes,v 1.60 2004/04/04 20:19:08 slotzero Exp $
 
+added armors that cycle through all types
+added hat to quad and pent
 added custom sound, denied.wav for q3 style message
 added command custom-sounds
 added q3 style denied message
