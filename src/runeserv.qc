@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.47 2004/05/23 05:05:35 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.48 2004/07/01 07:06:23 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -20,34 +20,32 @@
 void ()
 Rune_Think =
 {
-	if (self.runetype == RN_REGEN)		Rune_Regen (); else
-	if (self.runetype == RN_FIREWALK)	Rune_Firewalk (); else
-	if (self.runetype == RN_ZAP)		Rune_Zap (); else
-	if (self.runetype == RN_BOMB)		Rune_Bomb (); else
-	if (self.runetype == RN_CLOAK)		Rune_Cloak (); else
-	if (self.runetype == RN_CAMO)		Rune_Camo (); else
-	if (self.runetype == RN_JUMP)		Rune_Jump (); else
-	if (self.runetype == RN_AMMO)		Rune_Ammo (); else
-	if (self.runetype == RN_SHIELD)		Shield_On (); else
-	if (self.runetype == RN_REPEL)		Rune_Repel (); else
-	if (self.runetype == RN_FLY)		Rune_Fly (); else
-	if (self.runetype == RN_WEIRD)		Rune_Weird (); else
+	if	(self.runetype == RN_REGEN)		Rune_Regen ();
+	else if (self.runetype == RN_FIREWALK)		Rune_Firewalk ();
+	else if (self.runetype == RN_ZAP)		Rune_Zap ();
+	else if (self.runetype == RN_BOMB)		Rune_Bomb ();
+	else if (self.runetype == RN_CLOAK)		Rune_Cloak ();
+	else if (self.runetype == RN_CAMO)		Rune_Camo ();
+	else if (self.runetype == RN_JUMP)		Rune_Jump ();
+	else if (self.runetype == RN_AMMO)		Rune_Ammo ();
+	else if (self.runetype == RN_SHIELD)		Shield_On ();
+	else if (self.runetype == RN_REPEL)		Rune_Repel ();
+	else if (self.runetype == RN_FLY)		Rune_Fly ();
+	else if (self.runetype == RN_WEIRD)		Rune_Weird ();
 	IN_QW([-
-		if (self.runetype == RN_IMPACT)		Rune_Impact (); else
+	else if (self.runetype == RN_IMPACT)		Rune_Impact ();
 	-])
-	if (self.runetype == RN_BERSERK)	Berserk_Bleed (); else
-	if (self.runetype == RN_QUAD)		quad_think (); else
-	if (self.runetype == RN_JACK)		jack_think (); else
-	if (self.runetype == RN_BLIZZARD)	Blizzard_Think (); else
-	if (self.runetype == RN_THOR)		Rune_Thor (); else
-	return;
+	else if (self.runetype == RN_BERSERK)		Berserk_Bleed ();
+	else if (self.runetype == RN_QUAD)		quad_think ();
+	else if (self.runetype == RN_JACK)		jack_think ();
+	else if (self.runetype == RN_BLIZZARD)		Blizzard_Think ();
+	else if (self.runetype == RN_THOR)		Rune_Thor ();
 };
 
 void ()
 Rune_PostThink =
 {
-	if (self.runetype == RN_MONK)		monk_think (); else
-	return;
+	if	(self.runetype == RN_MONK)		monk_think ();
 };
 
 void ()
@@ -56,36 +54,36 @@ Rune_Button =
 	spawn_protect_off ();
 	rune_tell_stop (0);
 	if (!self.runetype) return;
-	else if (self.runetype == RN_REGEN)	Regen_Activate ();
-	else if (self.runetype == RN_FLY)	Rune_Fly_Activate ();
-	else if (self.runetype == RN_RECALL)	Rune_Recall ();
-	else if (self.runetype == RN_BOMB)	Bomb_Arm ();
-	else if (self.runetype == RN_DSPOTS)	Rune_DSpots ();
-	else if (self.runetype == RN_HOLO)	Rune_Holo ();
-	else if (self.runetype == RN_BLINK)	Rune_Blink (0);
-	else if (self.runetype == RN_SHIELD)	Rune_Shield ();
-	else if (self.runetype == RN_RADIO)	Rune_Radio ();
-	else if (self.runetype == RN_SWITCH)	Rune_Switch ();
-	else if (self.runetype == RN_FREEZE)	Rune_Freeze ();
-	else if (self.runetype == RN_SUCK)	Suck_Button ();
-	else if (self.runetype == RN_ENVIRO)	Enviro_Jump ();
-	else if (self.runetype == RN_TWALK)	Rune_Twalk ();
-	else if (self.runetype == RN_PHASE)	Wall_Check ();
-	else if (self.runetype == RN_SHAMB)	Rune_ShamblerReloc (1);
-	else if (self.runetype == RN_DUAL)	Rune_Dual ();
-	else if (self.runetype == RN_WEIRD)	Weird_Throw ();
-	else if (self.runetype == RN_HOOK)	HookToggle ();
-	else if (self.runetype == RN_ATHLETE)	Athlete_Jump ();
-	else if (self.runetype == RN_ZOMBIE)	Rune_Zombie ();
-	else if (self.runetype == RN_TORCH)	Rune_Torch ();
-	else if (self.runetype == RN_QUAD)	quad_activate ();
-	else if (self.runetype == RN_GLUE)	Rune_Glue ();
-	else if (self.runetype == RN_BLIZZARD)	Rune_Blizzard ();
-	else if (self.runetype == RN_SNIPER)	Rune_Sniper ();
-	else if (self.runetype == RN_SONAR)	Rune_Sonar ();
-	else if (self.runetype == RN_ANTIPACK)	Rune_AntiPack ();
-	else if (self.runetype == RN_BETTY)	Rune_Betty ();
-	else if (self.runetype == RN_TORNADO)	Rune_Tornado ();
+	else if (self.runetype == RN_REGEN)		Regen_Activate ();
+	else if (self.runetype == RN_FLY)		Rune_Fly_Activate ();
+	else if (self.runetype == RN_RECALL)		Rune_Recall ();
+	else if (self.runetype == RN_BOMB)		Bomb_Arm ();
+	else if (self.runetype == RN_DSPOTS)		Rune_DSpots ();
+	else if (self.runetype == RN_HOLO)		Rune_Holo ();
+	else if (self.runetype == RN_BLINK)		Rune_Blink (0);
+	else if (self.runetype == RN_SHIELD)		Rune_Shield ();
+	else if (self.runetype == RN_RADIO)		Rune_Radio ();
+	else if (self.runetype == RN_SWITCH)		Rune_Switch ();
+	else if (self.runetype == RN_FREEZE)		Rune_Freeze ();
+	else if (self.runetype == RN_SUCK)		Suck_Button ();
+	else if (self.runetype == RN_ENVIRO)		Enviro_Jump ();
+	else if (self.runetype == RN_TWALK)		Rune_Twalk ();
+	else if (self.runetype == RN_PHASE)		Wall_Check ();
+	else if (self.runetype == RN_SHAMB)		Rune_ShamblerReloc (1);
+	else if (self.runetype == RN_DUAL)		Rune_Dual ();
+	else if (self.runetype == RN_WEIRD)		Weird_Throw ();
+	else if (self.runetype == RN_HOOK)		HookToggle ();
+	else if (self.runetype == RN_ATHLETE)		Athlete_Jump ();
+	else if (self.runetype == RN_ZOMBIE)		Rune_Zombie ();
+	else if (self.runetype == RN_TORCH)		Rune_Torch ();
+	else if (self.runetype == RN_QUAD)		quad_activate ();
+	else if (self.runetype == RN_GLUE)		Rune_Glue ();
+	else if (self.runetype == RN_BLIZZARD)		Rune_Blizzard ();
+	else if (self.runetype == RN_SNIPER)		Rune_Sniper ();
+	else if (self.runetype == RN_SONAR)		Rune_Sonar ();
+	else if (self.runetype == RN_ANTIPACK)		Rune_AntiPack ();
+	else if (self.runetype == RN_BETTY)		Rune_Betty ();
+	else if (self.runetype == RN_TORNADO)		Rune_Tornado ();
 };
 
 // This doesn't always tell the riders because it can be triggered both
