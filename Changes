@@ -1,4 +1,11 @@
-$Id: Changes,v 1.23 2002/06/29 20:45:02 slotzero Exp $
+$Id: Changes,v 1.24 2002/07/05 11:42:16 slotzero Exp $
+
+Version 0.5.1  Fri Jul 05 07:38:14 EST 2002
+
+    - Notable Internal Changes
+
+        - You can control the intensity of either the gravity well or
+	  the repulsion rune from settings.qc.
 
 Version 0.5  Sat Jun 29 16:42:54 EST 2002
 

@@ -1,4 +1,4 @@
-// $Id: runes30.qc,v 1.9 2002/06/24 23:06:32 slotzero Exp $
+// $Id: runes30.qc,v 1.10 2002/07/05 11:42:21 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -648,7 +648,7 @@ Suck =
 					suckdir = sucker.origin - suckee.origin;
 					suckdist = vlen (suckdir);
 					suckdir = normalize (suckdir);
-					suckforce = suckdir * IN_QW(0.35, 0.25) * (dist - suckdist);
+					suckforce = suckdir * SUCK_FORCE * (dist - suckdist);
 					suckee.velocity = suckee.velocity + suckforce;
 				}
 			}

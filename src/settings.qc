@@ -1,4 +1,4 @@
-// $Id: settings.qc,v 1.6 2002/06/23 17:47:27 slotzero Exp $
+// $Id: settings.qc,v 1.7 2002/07/05 11:42:21 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -525,6 +525,14 @@ float RADIO_INTERVAL		= 0.8;
 // The number of ice traps to place.
 
 float MAX_FREEZE		= 6;
+
+// The intensity of the gravity well.
+
+float SUCK_FORCE		= IN_QW(0.35, 0.25);
+
+// The intensity of the repulsion rune.
+
+float PUSH_FORCE		= 0.65;
 
 // The number of zombie campers a houngan gets.
 
