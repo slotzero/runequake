@@ -1,4 +1,4 @@
-// $Id: settings.qc,v 1.7 2002/07/05 11:42:21 slotzero Exp $
+// $Id: settings.qc,v 1.8 2002/09/22 20:10:04 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -350,10 +350,10 @@ float LEVEL_RECONNECT_ALLOWANCE	= 15;
 
 float SET_PARMS_WITH_NEW_LEVEL	= 0;
 
-// Countdown timer.  Use 1 to enable timer, 2 to enable audible timer,
+// Timelimit countdown.  Use 1 to enable timer, 2 to enable audible timer,
 // and 0 to disable.
 
-float COUNTDOWN_TIMER		= 0;
+float TIMELIMIT_COUNTDOWN	= 0;
 
 // If you want to display a warning message to all players when someone
 // picks up the Pentagram of Protection, Quad Damage, Ring of Shadows,

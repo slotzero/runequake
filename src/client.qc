@@ -1,4 +1,4 @@
-// $Id: client.qc,v 1.10 2002/08/15 09:20:41 slotzero Exp $
+// $Id: client.qc,v 1.11 2002/09/22 20:10:03 slotzero Exp $
 
 float modelindex_eyes, modelindex_player;
 
@@ -996,8 +996,8 @@ CheckRules =
 		return;
 	}
 
-	// XXX I'd like to change this to a bit setting.
-	countdown_timer (COUNTDOWN_TIMER);
+	if (TIMELIMIT_COUNTDOWN)
+		timelimit_countdown ();
 };
 
 //============================================================================

@@ -1,20 +1,14 @@
-// $Id: rjs.qc,v 1.31 2002/08/24 22:43:21 slotzero Exp $
+// $Id: rjs.qc,v 1.32 2002/09/22 20:10:03 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
 
-void (float timer)
-countdown_timer =
+void ()
+timelimit_countdown =
 {
 	local float timelimit, seconds, minutes, n;
-	local string s, s2, s3;
+	local string s1, s2;
 
-	if (!timer)
-		return;
-	if (!deathmatch)
-		return;
-	if (gameover)
-		return;
 	timelimit = cvar ("timelimit") * 60;
 	if (!timelimit)
 		return;
@@ -23,7 +17,7 @@ countdown_timer =
 	minutes = ceil (seconds / 60);
 
 	n = 1;
-	s3 = "s";
+	s2 = "s";
 
 	if ((minutes == 25 || minutes == 20 || minutes == 15 || minutes == 10
 			|| minutes == 5) && countdown != minutes)
@@ -31,7 +25,7 @@ countdown_timer =
 	else if (minutes == 1 && countdown != minutes && seconds >= 60)
 	{
 		countdown = minutes;
-		s3 = "";
+		s2 = "";
 	}
 	else if ((seconds == 30 || seconds == 15 || seconds == 5)
 			&& countdown != seconds)
@@ -41,19 +35,18 @@ countdown_timer =
 
 	if (n)
 	{
-		s = ftos (countdown);
 		if (seconds < 60)
-			s2 = " second";
+			s1 = " second";
 		else
-			s2 = " minute";
+			s1 = " minute";
 
 		bprint (" ");
-		bprint (s);
+		bprint_float (countdown);
+		bprint (s1);
 		bprint (s2);
-		bprint (s3);
 		bprint (" remaining\n");
 
-		if (timer == 2)
+		if (TIMELIMIT_COUNTDOWN == 2)
 			sound (self, CHAN_BODY, "misc/talk.wav", 1, ATTN_NONE);
 	}
 };
