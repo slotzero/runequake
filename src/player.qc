@@ -1,4 +1,4 @@
-/*  $Id: player.qc,v 1.14 2004/12/11 23:01:47 slotzero Exp $
+/*  $Id: player.qc,v 1.15 2004/12/29 04:34:56 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -519,6 +519,7 @@ ThrowGib =
 	new.nextthink	= time + 10 + random ()*10;
 	new.frame	= 0;
 	new.flags	= 0;
+	new.effects	= EF_MAYBE_DRAW;
 };
 
 void (string gibname, float dm)
