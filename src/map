@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#    $Id: map,v 1.12 2003/10/26 08:04:45 slotzero Exp $
+#    $Id: map,v 1.13 2003/10/26 23:42:08 slotzero Exp $
 
 use strict;
 use warnings;
@@ -117,6 +117,8 @@ my @custom_lev = (
 	],
 );
 
+@custom_lev = ();
+
 # Construct %wan, the list of levels which aren't in %lan.
 my %wan;
 for my $size (1..$#lev)
@@ -175,7 +177,10 @@ for my $size (1..$#custom_lev)
 	my $max = scalar @{ $custom_lev[$size] };
 	print "\tif (levsize == $size) return $max;\n";
 }
-print "\terror (\"invalid arg\");\n";
+if (!$#custom_lev)
+{
+	print "\terror (\"invalid arg\");\n";
+}
 print "\treturn FALSE;\n";
 print "};\n";
 
@@ -215,8 +220,11 @@ for my $size (1..$#custom_lev)
 	}
 	print "\t}\n";
 }
-print "\terror (\"invalid arg\");\n";
-print "\treturn \"invalid arg\";\n";
+if (!$#custom_lev)
+{
+	print "\terror (\"invalid arg\");\n";
+}
+print "\treturn string_null;\n";
 print "};\n";
 
 
