@@ -1,4 +1,4 @@
-// $Id: engine.qc,v 1.1 2002/02/21 21:47:50 slotzero Exp $
+// $Id: engine.qc,v 1.2 2002/06/15 19:47:54 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -10,7 +10,7 @@ IN_POQ([-
 void (vector where, float set)
 multicast =
 {
-	0;
+	SUB_Null ();
 };
 
 //-----------------------------------------------------------------------------
