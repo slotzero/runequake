@@ -1,4 +1,4 @@
-/*  $Id: misc.qc,v 1.20 2003/11/30 23:29:04 slotzero Exp $
+/*  $Id: misc.qc,v 1.21 2004/02/22 03:26:43 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -482,12 +482,6 @@ This is just a solid wall if not inhibitted
 void ()
 func_wall =
 {
-	if (remove_func_wall ())
-	{
-		remove (self);
-		return;
-	}
-
 	self.angles	= VEC_ORIGIN;
 	self.movetype	= MOVETYPE_PUSH; // so it doesn't get pushed by anything
 	self.solid	= SOLID_BSP;

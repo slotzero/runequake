@@ -1,4 +1,4 @@
-/*  $Id: spawn.qc,v 1.7 2003/12/24 03:23:34 slotzero Exp $
+/*  $Id: spawn.qc,v 1.8 2004/02/22 03:26:43 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -17,9 +17,12 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-void ()
+float ()
 place_my_targets =
 {
+	if (!scratch1 & S1_CUSTOM_EXITS)
+		return FALSE;
+
 	if (mapname == "start")
 	{
 		if	(self.map == "end")
@@ -52,6 +55,8 @@ place_my_targets =
 			setorigin (self, '-609 496 -984');
 		}
 	}
+
+	return TRUE;
 };
 
 void (string ec, float ea, vector eo, float es)
@@ -310,57 +315,57 @@ place_my_items =
 void ()
 remove_my_items =
 {
-	if (world.model == "maps/e1m2.bsp")
+	if (mapname == "e1m2")
 	{
 		// Remove rocket launcher.
 		remove_classname_origin ("weapon_rocketlauncher", '680.0 728.0 184.0');
 	}
-	else if (world.model == "maps/e3m2.bsp")
+	else if (mapname == "e3m2")
 	{
 		// Remove nail gun.
 		remove_classname_origin ("weapon_nailgun", '-384 384 8');
 	}
-	else if (world.model == "maps/dm1.bsp")
+	else if (mapname == "dm1")
 	{
 		// Remove yellow armor.
 		remove_classname_origin ("item_armor2", '-392.0 1416.0 0.0');
 	}
 };
 
-float ()
-remove_func_wall =
+void ()
+remove_exit_wall =
 {
-	if (!scratch1 & S1_CUSTOM_EXITS)
-		return FALSE;
+	local entity exit, wall;
+	local float dist;
 
-	if (self.classname != "func_wall")
-		return FALSE;
+	exit = find (world, classname, "trigger_changelevel");
+	while (exit)
+	{
+		wall = find (world, classname, "func_wall");
+		while (wall)
+		{
+			dist = vlen (wall.absmin - exit.absmin);
+			if (dist < 140)
+				remove (wall);
 
-	if (mapname == "start")
-	{
-		if (self.model == "*30" || self.model == "*31" || self.model == "*32" || self.model == "*33")
-			return TRUE;
+			wall = find (wall, classname, "func_wall");
+		}
+		exit = find (exit, classname, "trigger_changelevel");
 	}
-	else if (mapname == "e1m1")
-	{
-		if (self.model == "*57")
-			return TRUE;
-	}
-	else if (mapname == "e2m6")
-	{
-		if (self.model == "*84")
-			return TRUE;
-	}
-
-	return FALSE;
 };
 
 void ()
 fix_map =
 {
-	// XXX Do this check in rjs_worldspawn?
 	if (!scratch1 & S1_ORIGINAL_LEVELS)
 		remove_my_items ();
+
+	if (scratch1 & S1_CUSTOM_EXITS)
+	{
+		// e1m1 wall needed for rl on top of crate
+		if (mapname != "e1m1")
+			remove_exit_wall ();
+	}
 
 	remove (self);
 };
