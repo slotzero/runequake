@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.92 2004/04/09 01:32:10 slotzero Exp $
+/*  $Id: rjs.qc,v 1.93 2004/04/11 07:10:42 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -889,16 +889,14 @@ float (entity e_wanted)
 player_ent_to_num =
 {
 	local entity e;
-	local float n;
+	local float i;
 
-	e = nextent (world);
-	n = 1;
-	while (e != world && e.classname != "bodyque" && n < 100)
+	e = world;
+	for (i = 0;i <= 16; i = i + 1)
 	{
 		if (e == e_wanted)
-			return n;
+			return i;
 		e = nextent (e);
-		n = n + 1;
 	}
 	return 0;
 };
