@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.24 2003/10/02 04:14:42 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.25 2003/10/05 23:16:49 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -39,6 +39,7 @@ Rune_Think =
 	if (self.runetype == RN_QUAD)		quad_think (); else
 	if (self.runetype == RN_JACK)		jack_think (); else
 	if (self.runetype == RN_BLIZZARD)	Blizzard_Think (); else
+	if (self.runetype == RN_THOR)		Rune_Thor (); else
 	return;
 };
 
@@ -535,6 +536,14 @@ Rune_Tell_real =
 		desc_s = " Blizrd";
 
 		d1 = "Activate to freeze everyone in sight";
+	}
+	else if (type == RN_THOR)
+	{
+		desc_l = "Rune of Thor";
+		desc_s = " Thor  ";
+
+		d1 = "Lightning gun and constant\n"
+			"supply of ammo\n";
 	}
 	/* else if (type == RN_TORNADO)
 	{

@@ -1,4 +1,4 @@
-/*  $Id: bfg.qc,v 1.7 2003/06/24 22:17:34 slotzero Exp $
+/*  $Id: bfg.qc,v 1.8 2003/10/05 23:16:48 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -166,17 +166,20 @@ W_BFG =
 
 	self.effects = self.effects | EF_BRIGHTLIGHT;
 
-	missile = spawn ();
-	missile.owner = self;
-	missile.movetype = MOVETYPE_NONE;
-	missile.solid = SOLID_BBOX;
-	missile.classname = "bfg";
-	missile.count = 0;
-	missile.ltime = time;	// start time
+	missile			= spawn ();
+	missile.owner		= self;
+	missile.movetype	= MOVETYPE_NONE;
+	missile.solid		= SOLID_BBOX;
+	missile.classname	= "bfg";
+	missile.count		= 0;
+	missile.ltime		= time;	// start time
 
 	setmodel (missile, "progs/lavaball.mdl");
 	setsize (missile, VEC_ORIGIN, VEC_ORIGIN);
 
-	missile.nextthink = time;
-	missile.think = BFG_Warmup;
+	missile.nextthink	= time;
+	missile.think		= BFG_Warmup;
+
+	if (self.runetype == RN_THOR)
+		self.runetime = time + 10;
 };

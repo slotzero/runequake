@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.9 2003/10/05 05:25:11 slotzero Exp $
+/*  $Id: runes60.qc,v 1.10 2003/10/05 23:16:49 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -324,4 +324,27 @@ Blizzard_Touch =
 
 	self.runetime = time + 3;
 	Blizzard_Freeze (other, 1);
+};
+
+void ()
+Rune_Thor =
+{
+	if (!self.items & IT_LIGHTNING)
+		self.items = self.items | IT_LIGHTNING;
+
+	if (self.ammo_cells >= MAX_CELLS)
+		return;
+
+	if (self.runetime > time)
+		return;
+
+	self.runetime = time + 0.6;
+
+	if (self.ammo_cells < MAX_CELLS)
+		self.ammo_cells = self.ammo_cells + 1;
+
+	if (self.ammo_cells < 50)
+		self.ammo_cells = 50;
+
+	set_current_ammo ();
 };
