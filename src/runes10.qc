@@ -1,4 +1,4 @@
-/*  $Id: runes10.qc,v 1.16 2004/11/28 04:18:20 slotzero Exp $
+/*  $Id: runes10.qc,v 1.17 2004/11/28 05:33:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -228,10 +228,7 @@ GFire_Touch =
 	if (other.classname != "player" && !is_pet_e (other))
 		return;
 
-	if (!other.takedamage)
-		return;
-
-	if (other.health <= 0)
+	if (!other.takedamage || other.health <= 0)
 		return;
 
 	if (isfriend2 (self.owner, other))

@@ -1,4 +1,4 @@
-/*  $Id: runes40.qc,v 1.20 2004/11/27 06:39:18 slotzero Exp $
+/*  $Id: runes40.qc,v 1.21 2004/11/28 05:33:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -649,22 +649,37 @@ Weird_Touch =
 		return;
 	}
 
-	if (environmental (other))
+	if (other.classname != "player" && !is_pet_e (other))
 		return;
 
-	if (other.classname != "player" || other.health <= 0)
+	if (other.health <= 0)
 		return;
 
 	if (isfriend2 (other, self.owner))
 		return;
 
-	self.runent = other;
-	self.runetime = time + 15;
-	self.touch = SUB_Null;
-	self.think = Weird_Think;
-	self.nextthink = time;
-	self.runevar = ceil (random ()* IN_POQ(WEIRD_MAX_POQ, WEIRD_MAX_QW));
+	if (environmental (other))
+		return;
+
+	self.runent	= other;
+	self.runetime	= time + 15;
+	self.touch	= SUB_Null;
+	self.think	= Weird_Think;
+	self.nextthink	= time;
+	self.runevar	= ceil (random ()* IN_POQ(WEIRD_MAX_POQ, WEIRD_MAX_QW));
+
 	setmodel (self, string_null);
+
+	// shambler/zombie
+	if (other.classname != "player")
+	{
+		if (self.runevar == WEIRD_SHROOMS
+				|| self.runevar == WEIRD_TWIRLY
+				|| self.runevar == WEIRD_VERTIGO
+				|| self.runevar == WEIRD_BLIND
+				|| self.runevar == WEIRD_DRUNK)
+		self.runevar = WEIRD_JUMPING;
+	}
 
 	sound (self, CHAN_BODY, "boss2/idle.wav", 1, ATTN_NORM);
 	if (self.runevar == WEIRD_SHROOMS)
@@ -723,7 +738,16 @@ Weird_Touch =
 		other_desc);
 
 	sprint (self.owner, "You weirded out ");
-	sprint (self.owner, other.netname);
+	if (other.classname != "player")
+	{
+		sprint (self.owner, other.owner.netname);
+		if (other.classname == "shambler_slave")
+			sprint (self.owner, "'s shambler");
+		else if (other.classname == "zombie_camper")
+			sprint (self.owner, "'s zombie");
+	}
+	else
+		sprint (self.owner, other.netname);
 	sprint (self.owner, " with ");
 	sprint (self.owner, self_desc);
 	sprint (self.owner, ".\n");

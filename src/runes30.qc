@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.34 2004/11/06 00:10:06 slotzero Exp $
+/*  $Id: runes30.qc,v 1.35 2004/11/28 05:33:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -518,10 +518,16 @@ Freeze_Frozen =
 void ()
 Freeze_Touch =
 {
-	if (other.health <= 0 || other == world)
+	if (other == world)
 		return;
 
 	if (other.classname != "player" && !is_pet_e (other))
+		return;
+
+	if (!other.takedamage || other.health <= 0)
+		return;
+
+	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;
 
 	if (environmental (other) || other.runetype == RN_FREEZE)
@@ -539,9 +545,6 @@ Freeze_Touch =
 		remove (self);
 		return;
 	}
-
-	if (isfriend2 (self.owner, other) && self.owner != other)
-		return;
 
 	if (other.effects & EF_ICE)
 		return;
@@ -721,12 +724,18 @@ Suck_Think =
 void ()
 Suck_Touch =
 {
-	if (other.solid == SOLID_BSP)
+	if (other == world)
 		return;
-	if (other.health < 1)
+
+	if (other.classname != "player" && !is_pet_e (other))
 		return;
+
+	if (!other.takedamage)
+		return;
+
 	if (isfriend2 (self.owner, other))
 		return;
+
 	if (environmental (other))
 		return;
 

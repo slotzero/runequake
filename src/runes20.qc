@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.25 2004/11/28 04:24:42 slotzero Exp $
+/*  $Id: runes20.qc,v 1.26 2004/11/28 05:33:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -107,10 +107,7 @@ DSpot_Touch =
 	if (other.classname != "player" && !is_pet_e (other))
 		return;
 
-	if (!other.takedamage)
-		return;
-
-	if (other.health <= 0)
+	if (!other.takedamage || other.health <= 0)
 		return;
 
 	if (isfriend2 (self.owner, other) && self.owner != other)
