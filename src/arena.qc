@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.12 2005/01/17 22:07:33 slotzero Exp $
+/*  $Id: arena.qc,v 1.13 2005/01/18 00:48:39 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -84,15 +84,15 @@ arena_countdown =
 
 	if (self.state < 0)
 	{
-		if (a && b)
+		if (self.owner.deadflag || self.runent.deadflag)
 		{
-			if (self.owner.deadflag || self.runent.deadflag)
-			{
 				arena.deadflag = 1;
 				self.nextthink = time + 1;
 				return;
-			}
+		}
 
+		if (a && b)
+		{
 			bprint (self.runent.netname);
 			bprint (" is the new challenger\n");
 
@@ -184,7 +184,9 @@ arena_results =
 	else
 		winner = self.enemy;
 
+   	self.movetarget = winner;
 	self.deadflag = 1;
+
 	if (winner)
 	{
 		// check for new challenger
@@ -194,12 +196,6 @@ arena_results =
 			self.owner = winner;
 			self.runent = os;
 		}
-
-		// kill command
-		if (arena.state == -3)
-			return;
-
-		self.movetarget = winner;
 
 		add_frag (winner, 1);
 		bprint (winner.netname);
@@ -271,10 +267,7 @@ arena_death_think =
 void (entity targ, entity attacker, string dtype)
 arena_death =
 {
-	if (dtype == "suicide")
-		arena.state = -3;
-	else
-		arena.state = -1;
+	arena.state = -1;
 
 	if (attacker.classname != "player")
 		attacker = targ;
@@ -289,7 +282,12 @@ arena_death =
 	arena.aiment	= targ;
 
 	arena.think	= arena_results;
-	arena.nextthink	= time + 1;
+
+	// kill command
+	if (dtype == "suicide")
+		arena.nextthink = time + 4;
+	else
+		arena.nextthink	= time + 1;
 };
 
 void ()
@@ -328,6 +326,8 @@ put_client_in_arena =
 float ()
 arena_client_disconnect =
 {
+	local entity os;
+
 	if (self != arena.owner && self != arena.runent)
 		return FALSE;
 
@@ -340,6 +340,14 @@ arena_client_disconnect =
 	}
 	else
 		arena.runent = world;
+
+	if (is_player_e (arena.owner) && !arena.owner.deadflag)
+	{
+		os = self;
+		self = arena.owner;
+		SetArenaParms ();
+		self = os;
+	}
 
 	arena.think = arena_countdown;
 	arena.nextthink = time;
