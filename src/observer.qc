@@ -1,4 +1,4 @@
-// $Id: observer.qc,v 1.3 2002/03/03 00:24:57 slotzero Exp $
+// $Id: observer.qc,v 1.4 2002/03/04 21:33:12 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -810,9 +810,11 @@ obs_process_game_queue =
 		}
 		if (!any)
 			return;
+
 		e = self;
 		self = ehead;
 		obs_join_game (1);
+		self_sound (self, "boss2/pop2.wav");
 		self = e;
 		curp = curp + 1;
 	}

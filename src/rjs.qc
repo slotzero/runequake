@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.8 2002/03/03 00:24:57 slotzero Exp $
+// $Id: rjs.qc,v 1.9 2002/03/04 21:33:12 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -449,6 +449,14 @@ cloaked_sound =
 	xsound (e, chan, samp, vol, atten);
 };
 
+void (entity e, string samp)
+self_sound =
+{
+	self_stuffcmd (e, "play ");
+	self_stuffcmd (e, samp);
+	self_stuffcmd (e, "\n");
+};
+
 void (string samp)
 observer_sound =
 {
@@ -463,11 +471,8 @@ observer_sound =
 		// init_* from the manual self.impulses.
 	
 		if (is_observer_e (e) && e.netname != string_null)
-		{
-			self_stuffcmd (e, "play ");
-			self_stuffcmd (e, samp);
-			self_stuffcmd (e, "\n");
-		}
+			self_sound (e, samp);
+
 		e = find (e, classname, "player");
 	}
 };
