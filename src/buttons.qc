@@ -1,4 +1,4 @@
-/*  $Id: buttons.qc,v 1.11 2004/11/27 04:25:18 slotzero Exp $
+/*  $Id: buttons.qc,v 1.12 2004/12/26 04:04:04 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -85,10 +85,13 @@ button_touch =
 		return;
 
     	// don't trigger when dead
-	if (other.health <= 0 && other.classname != "hook-head")
+	if (other.classname == "player" && other.health <= 0)
 		return;
 
-	self.enemy = other;
+	if (other.classname == "hook-head")
+		self.enemy = other.owner;
+	else
+		self.enemy = other;
 
 	button_fire ();
 };
