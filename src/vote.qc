@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.36 2004/07/20 11:15:16 slotzero Exp $
+/*  $Id: vote.qc,v 1.37 2004/07/20 12:27:59 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -560,6 +560,25 @@ vote =
 		{
 			if (!cancel)
 				self_sprint (self, "disable practice mode first\n");
+			cancel = 1;
+		}
+	}
+	else if (self.impulse == IMP_VOTE_SHIELDS)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= setshields;
+		e.noise2	= " spawn shields ";
+
+		if (NO_SPAWN_SHIELDS)
+			e.noise1	= "enable";
+		else
+			e.noise1	= "disable";
+
+		if (!SPAWN_PROTECT_DURATION)
+		{
+			if (!cancel)
+				self_sprint (self, "Spawn shields voting disabled\n");
 			cancel = 1;
 		}
 	}

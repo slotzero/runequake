@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.21 2004/07/18 16:46:01 slotzero Exp $
+/*  $Id: hunked.qc,v 1.22 2004/07/20 12:27:59 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -32,6 +32,7 @@ float HUNK_NO_ARMOR		= %1014;
 float HUNK_ROTATE		= %1015;
 float HUNK_NO_RUNES		= %1016;
 float HUNK_NO_ALT_WEAPONS	= %1017;
+float HUNK_NO_SPAWN_SHIELDS	= %1018;
 
 float ()
 server_time =
@@ -313,14 +314,15 @@ fget =
 void ()
 Hunk_Settings =
 {
-	NO_QUAD		= fget (HUNK_NO_QUAD,		0);
-	NO_PENT		= fget (HUNK_NO_PENT,		0);
-	NO_RING		= fget (HUNK_NO_RING,		0);
-	NO_SUIT		= fget (HUNK_NO_SUIT,		0);
-	NO_ARMOR	= fget (HUNK_NO_ARMOR,		0);
-	ROTATE		= fget (HUNK_ROTATE,		0);
-	NO_RUNES	= fget (HUNK_NO_RUNES,		0);
-	NO_ALT_WEAPONS	= fget (HUNK_NO_ALT_WEAPONS,	0);
+	NO_QUAD			= fget (HUNK_NO_QUAD,		0);
+	NO_PENT			= fget (HUNK_NO_PENT,		0);
+	NO_RING			= fget (HUNK_NO_RING,		0);
+	NO_SUIT			= fget (HUNK_NO_SUIT,		0);
+	NO_ARMOR		= fget (HUNK_NO_ARMOR,		0);
+	ROTATE			= fget (HUNK_ROTATE,		0);
+	NO_RUNES		= fget (HUNK_NO_RUNES,		0);
+	NO_ALT_WEAPONS		= fget (HUNK_NO_ALT_WEAPONS,	0);
+	NO_SPAWN_SHIELDS	= fget (HUNK_NO_SPAWN_SHIELDS,	0);
 
 	set_runemax ();
 };

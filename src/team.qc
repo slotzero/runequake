@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.33 2004/07/18 14:17:28 slotzero Exp $
+/*  $Id: team.qc,v 1.34 2004/07/20 12:27:59 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -585,6 +585,8 @@ change_practice_mode =
 
 	if (mode)
 	{
+		if (!NO_SPAWN_SHIELDS)
+			NO_SPAWN_SHIELDS = fput (HUNK_NO_SPAWN_SHIELDS, !NO_SPAWN_SHIELDS);
 		if (!NO_ALT_WEAPONS)
 			NO_ALT_WEAPONS = fput (HUNK_NO_ALT_WEAPONS, !NO_ALT_WEAPONS);
 		if (!new_deathmatch & DM_MODE_PRACTICE)
@@ -594,6 +596,8 @@ change_practice_mode =
 	{
 		if (NO_ALT_WEAPONS)
 			NO_ALT_WEAPONS = fput (HUNK_NO_ALT_WEAPONS, !NO_ALT_WEAPONS);
+		if (NO_SPAWN_SHIELDS)
+			NO_SPAWN_SHIELDS = fput (HUNK_NO_SPAWN_SHIELDS, !NO_SPAWN_SHIELDS);
 		if (new_deathmatch & DM_MODE_PRACTICE)
 			new_deathmatch = new_deathmatch - new_deathmatch & bits;
 	}

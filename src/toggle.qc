@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.12 2004/07/18 14:50:10 slotzero Exp $
+/*  $Id: toggle.qc,v 1.13 2004/07/20 12:27:59 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -170,4 +170,10 @@ setalts =
 			e = find (e, classname, "player");
 		}
 	}
+};
+
+void ()
+setshields =
+{
+	NO_SPAWN_SHIELDS = fput (HUNK_NO_SPAWN_SHIELDS, !NO_SPAWN_SHIELDS);
 };

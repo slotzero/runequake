@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.113 2004/07/18 14:17:28 slotzero Exp $
+/*  $Id: defs.qc,v 1.114 2004/07/20 12:27:59 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -518,7 +518,8 @@ float IMP_VOTE_ARMOR		= 208;
 float IMP_VOTE_ROTATE		= 207;
 float IMP_VOTE_RUNES		= 206;
 float IMP_VOTE_ALTS		= 205;
-//				= 204 - 201	[free]
+float IMP_VOTE_SHIELDS		= 204;
+//				= 203 - 201	[free]
 //				= 200 - 101	[cheat impulses]
 float IMP_RUNE_CHEAT_BASE	= 101;
 float IMP_RUNE_USE		= 100;

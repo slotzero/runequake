@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.46 2004/07/17 09:09:04 slotzero Exp $
+/*  $Id: bindings.qc,v 1.47 2004/07/20 12:27:59 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -214,6 +214,7 @@ player_aliases =
 	player_init_impulse_alias ("vote-ring",			IMP_VOTE_RING);
 	player_init_impulse_alias ("vote-runes",		IMP_VOTE_RUNES);
 	player_init_impulse_alias ("vote-rotate",		IMP_VOTE_ROTATE);
+	player_init_impulse_alias ("vote-shields",		IMP_VOTE_SHIELDS);
 	player_init_impulse_alias ("vote-suit",			IMP_VOTE_SUIT);
 	player_init_impulse_alias ("vote-team",			IMP_VOTE_TEAM);
 	player_init_impulse_alias ("vote-hook",			IMP_VOTE_HOOK);
@@ -462,5 +463,6 @@ help_vote =
 	self_sprint (self, "\bvote-rotate\b   toggle rotating armors\n");
 	self_sprint (self, "\bvote-runes\b    vote to toggle runes\n");
 	self_sprint (self, "\bvote-alts\b     toggle alt weapons\n");
+	self_sprint (self, "\bvote-shields\b  toggle spawn shields\n");
 	self_sprint (self, "\n");
 };
