@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.41 2003/11/30 08:08:40 slotzero Exp $
+/*  $Id: client.qc,v 1.42 2003/11/30 20:10:25 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1954,6 +1954,8 @@ ClientObituary =
 				bprint (" was chased down by his own betty\n");
 			else if (dt == "tornado")
 				bprint (" chased after his own tornado\n");
+			else if (dt == "magic-shotgun")
+				bprint (" performs his magic death trick\n");
 			else if (dt == "bombhit")
 				bprint (" struck himself with his own bomb\n");
 			else if (dt == "bombed")
