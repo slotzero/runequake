@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.88 2004/06/30 23:42:22 slotzero Exp $
+/*  $Id: defs.qc,v 1.89 2004/07/04 21:36:06 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -698,16 +698,19 @@ float AQS_SWITCH_WEAPON_MULT	= 64;
 float AQS_ADMIN_ATTEMPTS_MASK	= 3072;
 float AQS_ADMIN_ATTEMPTS_MULT	= 1024;
 
-// Bits 4096 and 8192 control impulse overrides.  If one of these is set
-// the normal impulse commands aren't used, the impulses are used to
-// gather input for a previous command.
-float AQS_IMPOVER_MASK		= 12288;
+// Bits 4096, 8192, and 16384 control impulse overrides.  If one of
+// these is set the normal impulse commands aren't used, the impulses
+// are used to gather input for a previous command.
+float AQS_IMPOVER_MASK		= 28672;
 float AQS_IMPOVER_PASSWORD	= 4096;
 float AQS_IMPOVER_QSMACK_PASSWORD = 8192;
 float AQS_IMPOVER_MAP		= 12288;
+float AQS_IMPOVER_ADMIN_COMMANDS = 16384;
+//				= 20480;
+//				= 24576
+//				= 28672
 
-float AQS_HOOK			= 16384;
-float AQS_FORWARDED		= 32768;
+float AQS_HOOK			= 32768;
 float AQS_HAS_RIDERS		= 65536;
 
 // It would be possible to combine these with non-observer state flags.
@@ -721,6 +724,7 @@ float AQS_BURNING		= 1048576;
 float AQS_SPAWN_PROTECT		= 2097152;
 float AQS_SWITCH_WEAPON_WAS_BEST = 4194304;
 float AQS_ADMIN_CHANGE_MAP_MENU	= 8388608;
+float AQS_FORWARDED		= 16777216;
 
 // temp1 flags
 float temp1;
