@@ -1,4 +1,4 @@
-/*  $Id: map.qc,v 1.10 2003/10/07 02:18:11 slotzero Exp $
+/*  $Id: map.qc,v 1.11 2003/10/26 21:06:43 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -196,7 +196,7 @@ pick_map_size =
 	{
 		if (LEVSIZE_NON_RANDOM)	{ levsize = 3; }
 		else if (i <= 5)	{ levsize = 1; }
-		else if (i <= 25)	{ levsize = 2; }
+		else if (i <= 20)	{ levsize = 2; }
 		else			{ levsize = 3; }
 	}
 
@@ -275,7 +275,21 @@ select_map =
 	curmap = mapname;
 	curnextmap = nextmap;
 
+	i = 0;
+	if (!noexit & NOEXIT_NO_CUSTOM_LEVELS)
+	{
+		if (noexit & NOEXIT_CUSTOM_LEVELS_ONLY)
+			i = 2;
+		else if (use_lp)
+			i = floor (random () * 2);
+	}
+
 	dprint ("select_map()\n");
+	if (i)
+		s = select_custom();
+	else
+		s = string_null;
+
 	if (sized)
 	{
 		levsize = pick_map_size ();
@@ -288,8 +302,8 @@ select_map =
 		if (!randomly)
 			curmap = "dm6";
 	}
+
 	reps = 0;
-	s = string_null;
 	while (reps < 100 && s == string_null)
 	{
 		reps = reps + 1;
@@ -298,7 +312,8 @@ select_map =
 		{
 			if (randomly)
 			{
-				i = ceil (random () * nmaps);
+				i = ceil (random () * nmaps + 0.01);
+				if (i > nmaps) i = nmaps;
 				s = sized_map (levsize, i);
 			}
 			else
@@ -365,9 +380,15 @@ select_map =
 			// We probably played all the levels in this size group,
 			// clear them out of levels_played.
 			if (sized)
+			{
 				lp_clear_levsize (levsize);
+				sized_customs_to_hunk (levsize);
+			}
 			else
+			{
 				lp_clear_all ();
+				sized_customs_to_hunk (0);
+			}
 			// Start back at the current level.
 			if (randomly)
 				curmap = mapname;

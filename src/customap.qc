@@ -1,4 +1,4 @@
-/*  $Id: customap.qc,v 1.1 2003/10/26 08:04:44 slotzero Exp $
+/*  $Id: customap.qc,v 1.2 2003/10/26 21:06:42 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -20,6 +20,8 @@
 float (float levsize)
 sized_customs_count =
 {
+	local float i;
+
 	if (levsize == 1)	return floor (Read_Hunk_Float (HUNK_CONTEXT, %21));
 	else if (levsize == 2)	return floor (Read_Hunk_Float (HUNK_CONTEXT, %22));
 	else if (levsize == 3)	return floor (Read_Hunk_Float (HUNK_CONTEXT, %23));
@@ -38,9 +40,9 @@ update_customs_count =
 float (float levsize)
 customs_hunk_pos =
 {
-	if (levsize == 1)	return %1000;
-	else if (levsize == 2)	return %2000;
-	else			return %3000;
+	if (levsize == 1)	return %200;
+	else if (levsize == 2)	return %400;
+	else			return %600;
 };
 
 float (float levsize, float pos)
@@ -72,6 +74,11 @@ void (float levsize)
 sized_customs_to_hunk =
 {
 	local float i, pos, total;
+
+	// This can be triggered if maps are sized, so no need to
+	// load them if you can't play them.
+	if (noexit & NOEXIT_NO_CUSTOM_LEVELS)
+		return;
 
 	total = 0;
 
@@ -127,7 +134,7 @@ remove_custom_from_hunk =
 	total = sized_customs_count (levsize);
 	if (!total)
 	{
-		dprint ("No more maps for size, refreshing hunk\n");
+		dprint ("No more maps for levsize, populating hunk\n");
 		sized_customs_to_hunk (levsize);
 		total = sized_customs_count (levsize);
 	}
@@ -162,4 +169,106 @@ custom_maps =
 		return;
 
 	sized_customs_to_hunk (0);
+};
+
+string ()
+select_custom =
+{
+	local float i, nmaps, sized, levsize, randomly;
+	local string s;
+
+	sized = noexit & NOEXIT_CHOOSE_BY_NPLAYERS;
+	randomly = noexit & NOEXIT_RANDOMIZE;
+
+	dprint ("select_custom()\n");
+	if (sized)
+	{
+		levsize = pick_map_size ();
+		nmaps = sized_customs_count (levsize);
+		if (!nmaps && !noexit & NOEXIT_CUSTOM_LEVELS_ONLY)
+			return string_null;
+		if (randomly)
+		{
+			i = ceil (random () * nmaps + 0.01);
+			if (i > nmaps) i = nmaps;
+			return remove_custom_from_hunk (levsize, i);
+		}
+		else
+			return remove_custom_from_hunk (levsize, 0);
+	}
+	else
+	{
+		// XXX Do this with bitwise ops instead?
+		i = ceil (random () * 3);
+		if (i == 1)
+		{
+			nmaps = sized_customs_count (1);
+			if (!nmaps)
+			{
+				nmaps = sized_customs_count (2);
+				i = 2;
+			}
+			if (!nmaps)
+			{
+				nmaps = sized_customs_count (3);
+				i = 3;
+			}
+			if (!nmaps)
+			{
+				// no maps left, populate hunk
+				sized_customs_to_hunk (0);
+				nmaps = sized_customs_count (1);
+				i = 1;
+			}
+			randomly = ceil (random () * nmaps);
+			return remove_custom_from_hunk (i, randomly);
+		}
+		else if (i == 2)
+		{
+			nmaps = sized_customs_count (2);
+			if (!nmaps)
+			{
+				nmaps = sized_customs_count (1);
+				i = 1;
+			}
+			if (!nmaps)
+			{
+				nmaps = sized_customs_count (3);
+				i = 3;
+			}
+			if (!nmaps)
+			{
+				// no maps left, populate hunk
+				sized_customs_to_hunk (0);
+				nmaps = sized_customs_count (2);
+				i = 2;
+			}
+			randomly = ceil (random () * nmaps);
+			return remove_custom_from_hunk (i, randomly);
+		}
+		else
+		{
+			i = 3;
+			nmaps = sized_customs_count (3);
+			if (!nmaps)
+			{
+				nmaps = sized_customs_count (1);
+				i = 1;
+			}
+			if (!nmaps)
+			{
+				nmaps = sized_customs_count (2);
+				i = 2;
+			}
+			if (!nmaps)
+			{
+				// no maps left, populate hunk
+				sized_customs_to_hunk (0);
+				nmaps = sized_customs_count (3);
+				i = 3;
+			}
+			randomly = ceil (random () * nmaps);
+			return remove_custom_from_hunk (i, randomly);
+		}
+	}
 };
