@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.44 2004/05/23 05:24:38 slotzero Exp $
+/*  $Id: runes60.qc,v 1.45 2004/06/06 08:43:17 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -144,10 +144,6 @@ Rune_Glue =
 	self.runevar		= self.runevar + 1;
 
 	sound (self, CHAN_WEAPON, "blob/sight1.wav", 1, ATTN_NORM);
-
-	IN_POQ([-
-		self.punchangle_x = -2;
-	-])
 
 	glue			= spawn();
 	glue.owner		= self;
