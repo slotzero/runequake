@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.69 2003/10/10 22:30:31 slotzero Exp $
+/*  $Id: rjs.qc,v 1.70 2003/10/11 01:13:47 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1506,7 +1506,6 @@ player_init =
 {
 	local entity e;
 	local float i;
-	local string s;
 
 	// This is only useful for ProQuake servers version 3.1 or later.
 	if (*self.netconnection[QS_MOD] == *MOD_QSMACK)
