@@ -1,6 +1,15 @@
-$Id: Changes,v 1.77 2004/11/27 07:35:22 slotzero Exp $
+$Id: Changes,v 1.78 2004/11/28 01:11:16 slotzero Exp $
 
 ideas... user allow map via the console (PK)
+armor piercing throug shield (suggestion by Mental-D Nygma)
+allow discharge of electric rune when discharge is disabled?  (mental-d)
+zap monsters with bfg?
+something is wrong with admin-team-change.. it kills players sometimes
+telefrag deflect fucked with spawn shields (both players) and same team (twobugs)
+several fixes with team.. blizzard, glue, anti-backpack, tornado,
+monsters don't trip teammate traps
+anti-backpack team particles, + tornado team particles
+
 use skill isntead of gamecfg to set password (via command)
 make sure you inform of new cvars saved1 and saved2 internals.
 start teleport in haunted halls e3m7? should have telepor/dest, use exit one at top
