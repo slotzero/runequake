@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.35 2004/06/24 02:07:10 slotzero Exp $
+/*  $Id: weapons.qc,v 1.36 2004/06/28 06:42:19 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1546,4 +1546,28 @@ SuperDamageSound =
 		}
 	}
 	return;
+};
+
+void ()
+toggle_alternates =
+{
+	local float new_deathmatch, bits;
+	local string s;
+
+	bits = DM_NO_ALT_WEAPONS;
+	new_deathmatch = cvar ("deathmatch");
+
+	if (!new_deathmatch & bits)
+	{
+		new_deathmatch = new_deathmatch | bits;
+		self_sprint (self, "Alternate weapons off.\n");
+	}
+	else
+	{
+		new_deathmatch = new_deathmatch - new_deathmatch & bits;
+		self_sprint (self, "Alternate weapons on.\n");
+	}
+
+	s = ftos (new_deathmatch);
+	cvar_set ("deathmatch", s);
 };
