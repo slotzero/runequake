@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.16 2004/04/09 01:32:11 slotzero Exp $
+/*  $Id: team.qc,v 1.17 2004/04/28 01:32:08 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -368,6 +368,7 @@ change_teamplay =
 		localcmd (version);
 		if (FORWARD_MAX_PLAYERS_REAL < 0)
 			localcmd (" [forward server]");
+		localcmd (" Alpha");	// REMOVE ME!!!!
 		localcmd ("\"\n");
 	}
 
