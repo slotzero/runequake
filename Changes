@@ -1,6 +1,6 @@
-$Id: Changes,v 1.12 2002/05/12 03:43:35 slotzero Exp $
+$Id: Changes,v 1.13 2002/05/12 20:13:09 slotzero Exp $
 
-Version 0.3  Sat May 11 21:44:23 EST 2002
+Version 0.2.7  Sun May 12 16:11:55 EST 2002
 
     - Bug Fixes
 
@@ -9,14 +9,13 @@ Version 0.3  Sat May 11 21:44:23 EST 2002
 	- > If you ride a player, enter admin, change level, and then
 	  > join the game, you join with the player your riding.  You can
 	  > see through his eyes, yet you're in the game.  The server
-	  > occasionally crashes too.  [Fixed]
+	  > occasionally crashes too. [fixed]
 
-    	- Bombs placed under a lift while the lift is down causes the
-	  explosion to be felt on a good portion of the level.  This
-	  is fixed.
+    	- > Bombs placed under a lift while the lift is down causes the
+	  > explosion to be felt on a good portion of the level. [fixed]
 
-    	- When a frozen shambler has exhausted its health, Freeze_Frozen()
-	  forces her origin back to the freeze trap.  This is fixed.
+    	- > When a frozen shambler has exhausted its health, Freeze_Frozen()
+	  > forces her origin back to the freeze trap. [fixed]
 
         - The hook releases from either the target or attacker when the Recall,
           Teleport, Phased, or Dual Recall rune is used or when attached to a
@@ -25,12 +24,6 @@ Version 0.3  Sat May 11 21:44:23 EST 2002
     - Rune Changes
 
 	- The EP suit/rune is protected against hooks.
-
-    - Notable Internal Changes
-
-        - The map script checks your mod's maps directory for any custom
-          maps.  The custom maps can only be played automatically when the
-          server's noexit setting is configured for randomized levels.
 
     - Other Changes
 
