@@ -1,4 +1,4 @@
-// $Id: misc.qc,v 1.10 2002/06/09 20:20:42 slotzero Exp $
+// $Id: misc.qc,v 1.11 2002/07/18 20:48:56 slotzero Exp $
 
 /*QUAKED info_null (0 0.5 0) (-4 -4 -4) (4 4 4)
 Used as a positional target for spotlights, etc.
@@ -510,6 +510,22 @@ func_bossgate =
 
 	func_wall ();
 };
+
+//============================================================================
+
+/* void ()
+misc_touch =
+{
+	if (other.classname != "player")
+		return;
+
+	if (other.health <= 0)
+		return;
+
+	if (!other.flags & FL_ONGROUND && other.absmin_z >= self.absmax_z - 2)
+		other.flags = other.flags + FL_ONGROUND;
+};
+*/
 
 //============================================================================
 
