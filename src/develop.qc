@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.60 2004/06/27 07:44:07 slotzero Exp $
+/*  $Id: develop.qc,v 1.61 2004/06/27 07:44:56 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -21,7 +21,7 @@
 // DEVELOPMENT FUNCTIONS
 //-------------------------------------------------------------------
 
-float DEVELOPER_MODE = 1;
+float DEVELOPER_MODE = 0;
 
 void (.float field, float bit)
 remove_bit_from_players =
@@ -76,8 +76,5 @@ maxplayers =
 void ()
 Test_Button =
 {
-	hex32 (ALLOCATE_HUNK); hex32 (ALLOCATE_HUNK_NEXT);
-	allocate_hunk (8);
-	hex32 (ALLOCATE_HUNK); hex32 (ALLOCATE_HUNK_NEXT);
-	dprint ("----\n");
+	SUB_Null ();
 };
