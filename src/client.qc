@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.63 2004/09/06 03:01:48 slotzero Exp $
+/*  $Id: client.qc,v 1.64 2004/09/16 01:00:50 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -699,7 +699,7 @@ PutClientInServer =
 	self.th_die = PlayerDie;
 
 	self.deadflag = DEAD_NO;
-	self.volume = 0;
+	self.aflag = 0;
 	// paustime is set by teleporters to keep the player from moving
 	// a while
 	self.pausetime = 0;
@@ -1028,9 +1028,9 @@ PlayerDeathThink =
 	// observers.
 	if (AUTO_CORPSE_OBSERVER > 0)
 	{
-		if (!self.volume)
-			self.volume = time + AUTO_CORPSE_OBSERVER;
-		else if (time <= self.volume)
+		if (!self.aflag)
+			self.aflag = time + AUTO_CORPSE_OBSERVER;
+		else if (time <= self.aflag)
 			SUB_Null ();
 		else
 		{
@@ -1038,7 +1038,7 @@ PlayerDeathThink =
 				return;
 			// She couldn't become an observer, don't try
 			// again immediately.
-			self.volume = time + AUTO_CORPSE_OBSERVER;
+			self.aflag = time + AUTO_CORPSE_OBSERVER;
 		}
 	}
 

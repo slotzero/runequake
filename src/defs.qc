@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.116 2004/09/16 00:36:39 slotzero Exp $
+/*  $Id: defs.qc,v 1.117 2004/09/16 01:00:50 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1229,6 +1229,8 @@ float	AS_MISSILE		= 4;
 // doors
 //
 
+// For dead players, the time left to idle as a corpse.
+// For ammo items, the amount of ammo for that item.
 .float	aflag;
 .float	dmg;		// damage done by door when hit
 
@@ -1285,10 +1287,6 @@ float	AS_MISSILE		= 4;
 // type.  See the comments in rjs.qc above the rune_tell_*() functions.
 .float	waitmin;
 .float	waitmax;
-
-// For (dead) players, the amount of time to morph from a corpse to an observer when
-// dead.
-.float	volume;
 
 //===========================================================================
 

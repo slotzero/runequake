@@ -1,4 +1,4 @@
-/*  $Id: runes40.qc,v 1.18 2004/04/30 08:32:46 slotzero Exp $
+/*  $Id: runes40.qc,v 1.19 2004/09/16 01:00:50 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -848,7 +848,7 @@ Resurrect =
 	self.th_die = PlayerDie;
 
 	self.deadflag = DEAD_NO;
-	self.volume = 0;
+	self.aflag = 0;
 	self.pausetime = 0;
 
 	self.modelindex = modelindex_player;

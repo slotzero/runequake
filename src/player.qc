@@ -1,4 +1,4 @@
-/*  $Id: player.qc,v 1.12 2004/09/16 00:36:39 slotzero Exp $
+/*  $Id: player.qc,v 1.13 2004/09/16 01:00:50 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -596,7 +596,7 @@ PlayerDie =
 	self.solid			= SOLID_NOT;
 	self.flags			= self.flags - self.flags & FL_ONGROUND;
 	self.movetype			= MOVETYPE_TOSS;
-	self.volume			= 0;
+	self.aflag			= 0;
 
 	if (self.velocity_z < 10)
 		self.velocity_z = self.velocity_z + random () * 300;
