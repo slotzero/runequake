@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.55 2005/01/17 08:40:48 slotzero Exp $
+/*  $Id: bindings.qc,v 1.56 2005/01/23 03:37:23 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -117,7 +117,20 @@ player_bindings_think =
 
 	os = self;
 	self = self.owner;
-	if (os.runevar)
+
+	// trickle the aliases or else client crashes
+	if (os.runevar == 1)
+	{
+		self_sprint (self, "Sending player bindings\n");
+		player_aliases ();
+		switchfire_aliases ();
+   	}
+	else if (os.runevar == 2)
+	{
+		vote_aliases ();
+		level_aliases ();
+	}
+  	else if (os.runevar == 3 && total_customs ())
 	{
 		custom_aliases ();
 
@@ -138,19 +151,15 @@ player_bindings_think =
 			}
 		}
 	}
-	else
-	{
-		self_sprint (self, "Sending player bindings\n");
-		player_aliases ();
-	}
+
 	self = os;
 
-	if (self.runevar || !total_customs ())
+	if (self.runevar > 2)
 		remove (self);
 	else
 	{
-		self.runevar = 1;
-		self.nextthink = time + 2;
+		self.runevar = self.runevar + 1;
+		self.nextthink = time + 1;
 	}
 };
 
@@ -161,7 +170,7 @@ spawn_player_bindings =
 
 	e		= spawn ();
 	e.owner		= self;
-	e.runevar	= 0;
+	e.runevar	= 1;
 	e.think		= player_bindings_think;
 	e.nextthink	= time + 2;
 };
@@ -223,10 +232,6 @@ player_aliases =
 	player_init_impulse_alias ("weapon-toggles",		IMP_WEAPON_TOGGLES);
 	player_init_impulse_alias ("weapon-toggles-toggle",	IMP_WEAPON_TOGGLES);
 	player_init_impulse_alias ("yes",			IMP_VOTE_YES);
-
-	switchfire_aliases ();
-	vote_aliases ();
-	level_aliases ();
 };
 
 void ()
