@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.27 2004/07/08 02:38:53 slotzero Exp $
+/*  $Id: observer.qc,v 1.28 2004/07/08 09:57:56 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -120,10 +120,7 @@ dead_impulses =
 	}
 	else if (self.impulse == IMP_VOTE_YES)
 		vote_yes ();
-	else if (self.impulse == IMP_VOTE_EXIT
-			|| self.impulse == IMP_VOTE_TEAM
-			|| self.impulse == IMP_VOTE_HOOK
-			|| self.impulse == IMP_VOTE_PRACTICE)
+	else if (self.impulse >= 209 && self.impulse <= 219)
 		vote ();
 	else
 		common_impulses ();
@@ -275,11 +272,9 @@ obs_impulses =
 			bind_keys ();
 		else if (self.impulse == IMP_RUNE_TELL && self.owner != world)
 			rune_tell_toggle (0, self.owner);
-		else if (self.impulse == IMP_VOTE_EXIT
-				|| self.impulse == IMP_VOTE_TEAM
-				|| self.impulse == IMP_VOTE_HOOK
-				|| self.impulse == IMP_VOTE_PRACTICE
-				|| self.impulse == IMP_VOTE_YES)
+		else if (self.impulse >= 209 && self.impulse <= 219
+				|| self.impulse == IMP_VOTE_YES
+				|| self.impulse == IMP_VOTE_NO)
 			count_votes (1);
 		else
 			common_impulses ();

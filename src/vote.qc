@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.10 2004/07/08 09:41:41 slotzero Exp $
+/*  $Id: vote.qc,v 1.11 2004/07/08 09:57:56 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -20,10 +20,11 @@
 // VOTE TODO (DEV)
 /*
 	// hook
-	* fix hook voting so that vote-hook is always always-on.
-	* add vote-lithium to always turn on lithium hook (but not off)
-	* vote-hook will turn off lithium hook or full hook
-	* qw vote-hook is fucked.. go figure.. rint = 1 perhaps?
+	* fix hook voting so that vote-hook is always always-on. [DONE]
+	* add vote-lithium to always turn on lithium hook (but not off) [DONE]
+	* add vote-free to always turn on free hook (but not off) [DONE]
+	* vote-hook will turn off lithium hook or full hook [DONE]
+	* qw vote-hook is fucked.. go figure.. rint = 1 perhaps? (SHOULD BE DONE, DOUBLE CHECK)
 
 	// practice
 	* add disabled for practice mode
@@ -36,7 +37,7 @@
 	* there's still no active 'no' command, should there be?
 
 	// observer
-	* ready for beta testing
+	* I still don't like how this works.  Aside from that, disp-info-all prints observer message.
 
 	// warnings
 	* make sure that you don't try to assign value to a world entity (!vip for example)!!!
