@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.74 2004/07/12 06:19:34 slotzero Exp $
+/*  $Id: develop.qc,v 1.75 2004/07/13 08:37:21 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -171,6 +171,33 @@ setrunes =
 	{
 		runemax = DEFAULT_RUNEMAX;
 		runespawntime = time;
+	}
+};
+
+float NO_ROTATE;
+
+void (float mode)
+toggle_armor =
+{
+	local entity e;
+
+	e = find (world, netname, "item_armor_all");
+	while (e)
+	{
+		if (mode)
+		{
+			e.skin		= e.impulse;
+			e.runetype	= time;
+			e.think		= SUB_regen;
+			e.nextthink	= time;
+		}
+		else
+		{
+			e.solid		= SOLID_NOT;
+			e.model		= string_null;
+			e.nextthink	= -1;
+		}
+		e = find (e, netname, "item_armor_all");
 	}
 };
 
