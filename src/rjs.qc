@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.26 2002/06/29 20:45:07 slotzero Exp $
+// $Id: rjs.qc,v 1.27 2002/08/04 07:04:07 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -2606,6 +2606,10 @@ T_RadiusLight =
 				sprint (old_self.owner, "You've blinded yourself!\n");
 			else
 			{
+				sprint (self, "You were blinded by ");
+				sprint (self, old_self.owner.netname);
+				sprint (self, "'s flash grenade!\n");
+
 				sprint (old_self.owner, self.netname);
 				sprint (old_self.owner, " was blinded by your flash grenade\n");
 			}
