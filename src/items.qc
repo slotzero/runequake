@@ -1,4 +1,4 @@
-// $Id: items.qc,v 1.2 2002/04/25 06:42:03 slotzero Exp $
+// $Id: items.qc,v 1.3 2002/04/25 07:07:07 slotzero Exp $
 
 /* ALL LIGHTS SHOULD BE 0 1 0 IN COLOR ALL OTHER ITEMS SHOULD
 BE .8 .3 .4 IN COLOR */
@@ -80,9 +80,10 @@ Sets the clipping size and plants the object on the floor
 void ()
 StartItem =
 {
-	self.nextthink = time + 0.2;	// items start after other solids
-	self.think = PlaceItem;
-	if (!did_my_items) {
+	self.nextthink	= time + 0.2;	// items start after other solids
+	self.think	= PlaceItem;
+	if (!did_my_items)
+	{
 		did_my_items = 1;
 		place_my_items ();
 	}
@@ -220,29 +221,6 @@ health_touch =
 	SUB_UseTargets ();				// fire all targets / killtargets
 };
 
-/* void () item_megahealth_rot =
-{
-	other = self.owner;
-
-	if (other.health > other.max_health)
-	{
-		other.health = other.health - 1;
-		self.nextthink = time + 1;
-		return;
-	}
-
-	// it is possible for a player to die and respawn between rots,
-	// so don't just blindly subtract the flag off
-	other.items = other.items - (other.items & IT_SUPERHEALTH);
-
-	if (deathmatch & DM_RESPAWN)
-	{
-		self.nextthink = time + HEALTH_RESPAWN_TIME;
-		self.think = SUB_regen;
-	}
-};
-*/
-
 /*
 ===============================================================================
 
@@ -258,36 +236,38 @@ armor_touch =
 
 	if (other.health <= 0)
 		return;
+
 	if (other.classname != "player")
 		return;
 
 	if (self.runevar)
 	{
-		type = self.armortype;
-		value = self.armorvalue;
-		bit = self.aqstate;
+		type	= self.armortype;
+		value	= self.armorvalue;
+		bit	= self.aqstate;
 	}
 	else if (self.classname == "item_armor1")
 	{
-		type = ARMOR_TYPE_1;
-		value = MAX_ARMOR_1;
-		bit = IT_ARMOR1;
+		type	= ARMOR_TYPE_1;
+		value	= MAX_ARMOR_1;
+		bit	= IT_ARMOR1;
 	}
 	else if (self.classname == "item_armor2")
 	{
-		type = ARMOR_TYPE_2;
-		value = MAX_ARMOR_2;
-		bit = IT_ARMOR2;
+		type	= ARMOR_TYPE_2;
+		value	= MAX_ARMOR_2;
+		bit	= IT_ARMOR2;
 	}
 	else if (self.classname == "item_armorInv")
 	{
-		type = ARMOR_TYPE_3;
-		value = MAX_ARMOR_3;
-		bit = IT_ARMOR3;
+		type	= ARMOR_TYPE_3;
+		value	= MAX_ARMOR_3;
+		bit	= IT_ARMOR3;
 	}
 
-	this_tot = type * value;
-	other_tot = other.armortype * other.armorvalue;
+	this_tot	= type * value;
+	other_tot	= other.armortype * other.armorvalue;
+
 	if (other.runetype == RN_REGEN)
 	{
 		// Don't go to a worse type if you have regen, even if
@@ -307,14 +287,14 @@ armor_touch =
 
 	if (other.runetype == RN_ARMOR)
 	{
-		other.armortype = ARMOR_TYPE_3;
-		other.armorvalue = other.armorvalue + value;
+		other.armortype		= ARMOR_TYPE_3;
+		other.armorvalue	= other.armorvalue + value;
 	}
 	else
 	{
-		other.armortype = type;
-		other.armorvalue = value;
-		other.items = other.items - (other.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + bit;
+		other.armortype		= type;
+		other.armorvalue	= value;
+		other.items		= other.items - (other.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + bit;
 	}
 
 	// Bound the armor in case she got good armor dropped by a rune
@@ -1657,6 +1637,7 @@ drop_powerup_touch =
 
 	if (other.classname != "player")
 		return;
+
 	if (other.health <= 0)
 		return;
 

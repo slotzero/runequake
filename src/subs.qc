@@ -1,4 +1,4 @@
-// $Id: subs.qc,v 1.1 2002/02/21 21:48:00 slotzero Exp $
+// $Id: subs.qc,v 1.2 2002/04/25 07:07:08 slotzero Exp $
 
 void ()
 SUB_Null =
@@ -234,7 +234,7 @@ SUB_UseTargets =
 	// check for a delay
 	if (self.delay)
 	{
-	// create a temp object to fire at a later time
+		// create a temp object to fire at a later time
 		t = spawn ();
 		t.classname = "DelayedUse";
 		t.nextthink = time + self.delay;

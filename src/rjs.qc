@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.9 2002/03/04 21:33:12 slotzero Exp $
+// $Id: rjs.qc,v 1.10 2002/04/25 07:07:08 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -1412,21 +1412,12 @@ remove_classname_origin =
 	{
 		next_e = find (e, classname, class);
 
-		// debug
-		if (0)
-		{
-			local string s;
-
-			s = vtos (e.origin);
-			cvar_set ("scratch1", s);
-		}
-
 		if (orig == VEC_ORIGIN)
 			remove (e);
 		else if (e.origin == orig)
 		{
 			remove (e);
-			break;
+			return;
 		}
 		e = next_e;
 	}
