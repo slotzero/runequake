@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.50 2003/12/25 01:52:41 slotzero Exp $
+/*  $Id: develop.qc,v 1.51 2003/12/30 09:47:55 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -55,6 +55,36 @@ ghost_check =
 
 		e = find (e, classname, "player");
 	}
+};
+
+void (float mode)
+change_practice_mode =
+{
+	local float new_deathmatch;
+	local string s;
+
+
+	new_deathmatch = cvar ("deathmatch");
+
+	if (mode)
+	{
+		if (!new_deathmatch & DM_MODE_PRACTICE)
+			new_deathmatch = new_deathmatch | DM_MODE_PRACTICE;
+		if (!new_deathmatch & DM_NO_ALT_WEAPONS)
+			new_deathmatch = new_deathmatch | DM_NO_ALT_WEAPONS;
+	}
+	else
+	{
+		if (new_deathmatch & DM_MODE_PRACTICE)
+			new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_PRACTICE;
+		if (new_deathmatch & DM_NO_ALT_WEAPONS)
+			new_deathmatch = new_deathmatch - new_deathmatch & DM_NO_ALT_WEAPONS;
+	}
+
+
+	s = ftos (new_deathmatch);
+	cvar_set ("deathmatch", s);
+	admin_changelevel (mapname);
 };
 
 void ()
