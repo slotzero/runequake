@@ -1,18 +1,8 @@
-$Id: Changes,v 1.51 2004/02/25 20:37:44 slotzero Exp $
+$Id: Changes,v 1.52 2004/02/25 23:42:50 slotzero Exp $
 
-thor can use lg underwater.
-electric rune takes 1/2 damage from lightning gun attacks while building ammo.
-removed barrier from all exits (even custom)
-changed sonar distance to be more like feet using tiles by quad in e1m2 (1 tile = 1 foot).
-added health (25) to athlete
 added practice mode to admin menu
-exit-level will go to forced map (voted)
-fixed written by to created by in credits
-added observer (menu off) to main menu (less confusing)
-launch betty on death
-weakened the magic shotgun, is still slightly higher damage w/ direct shot
 
-Version 1.0  Sun Feb 15 22:26:22 EST 2004
+Version 1.0  Wed Feb 25 18:41:36 EST 2004
 
     - Bug Fixes
 
@@ -21,6 +11,30 @@ Version 1.0  Sun Feb 15 22:26:22 EST 2004
         - Shamblers no longer attack you while they are frozen.
 
     - Changes
+
+        - The Thor rune can fire under water/slime/lava!
+
+        - The electric rune does half damage from the lightning gun.  The damage is actually
+          converted into cells.
+
+        - All of the exit walls, even in custom maps, are removed automatically when
+          the server is configured to do so.
+
+        - Sonar uses my interpretation of feet instead of the default unit of measure.  I
+          use the tiles in e1m2 (by quad) to judge what 1 foot is.
+
+        - Athletics rune carries an extra 25 health.  You also get a bonus of 25 health when
+          you pick up the rune.
+
+        - Admins can type exit-level in the middle of a vote to force the voted level instead
+          of a random one.
+
+        - Betty launches on death.
+
+        - Weakened the magic shotgun, it is still slightly higher damage w/ direct shot
+          than shotgun.
+
+        - I added "(menu off)" on the main menu to make it easier for new players.
 
         - Increased the default hook speed from 1000 to 2500 in settings.qc.
 
