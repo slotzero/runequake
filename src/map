@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#    $Id: map,v 1.25 2005/01/23 02:52:54 slotzero Exp $
+#    $Id: map,v 1.26 2005/02/15 00:07:59 slotzero Exp $
 
 use strict;
 use warnings;
@@ -258,7 +258,8 @@ my @arena_lev = (
 		'chamber1',
 		'dom2_1ra',
 		'football',
-		'gearpr0n',
+#		'gearpr0n',
+		'gear8',
 		'gnurena',
 		'id3',
 		'lowgrav',
