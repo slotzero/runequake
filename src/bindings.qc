@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.25 2004/06/30 23:42:22 slotzero Exp $
+/*  $Id: bindings.qc,v 1.26 2004/06/30 23:49:32 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -245,7 +245,7 @@ console_init_cvar_alias =
 	localcmd (cvr);
 	localcmd (" ");
 	localcmd (s);
-	localcmd ("\"\n");
+	localcmd (";wait;\"\n");
 };
 
 void ()
