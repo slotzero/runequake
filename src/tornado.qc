@@ -1,4 +1,4 @@
-/*  $Id: tornado.qc,v 1.4 2003/11/22 04:53:58 slotzero Exp $
+/*  $Id: tornado.qc,v 1.5 2003/11/26 07:54:17 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -111,7 +111,7 @@ tornado_explode =
 };
 
 void()
-W_Tornado =
+Rune_Tornado =
 {
 	local entity tornado;
 

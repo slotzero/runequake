@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.17 2003/11/23 06:25:34 slotzero Exp $
+/*  $Id: weapons.qc,v 1.18 2003/11/26 07:54:17 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1113,7 +1113,7 @@ W_Attack =
 	{
 		if (is_alt)
 		{
-			W_Tornado ();
+			Rune_Tornado ();
 			t = 0.8;
 		}
 		else

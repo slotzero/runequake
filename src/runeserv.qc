@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.33 2003/11/23 06:25:34 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.34 2003/11/26 07:54:17 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -81,7 +81,7 @@ Rune_Button =
 	else if (self.runetype == RN_QUAD)	quad_activate ();
 	else if (self.runetype == RN_GLUE)	Rune_Glue ();
 	else if (self.runetype == RN_BLIZZARD)	Rune_Blizzard ();
-	else if (self.runetype == RN_SNIPER)	W_Sniper ();
+	else if (self.runetype == RN_SNIPER)	Rune_Sniper ();
 	else if (self.runetype == RN_SONAR)	Rune_Sonar ();
 	else if (self.runetype == RN_ANTIPACK)	Rune_AntiPack ();
 	else if (self.runetype == RN_BETTY)	Rune_Betty ();

@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.23 2003/11/23 06:25:33 slotzero Exp $
+/*  $Id: runes60.qc,v 1.24 2003/11/26 07:54:17 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -360,7 +360,7 @@ Sniper_Touch =
 };
 
 void ()
-W_Sniper =
+Rune_Sniper =
 {
 	local vector dir;
 	local float n;
@@ -906,8 +906,6 @@ Rune_Betty =
 	s = ftos (self.runevar);
 	if (s == "1")
 		sprint (self, "\{141} \b[warning]\b 1 betty left\n");
-	/* else
-		centerprint2 (self, s, " bettys left\n"); */
 
 	if (!self.runevar)
 	{
