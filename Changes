@@ -1,17 +1,10 @@
-$Id: Changes,v 1.67 2004/06/20 21:56:48 slotzero Exp $
-
-fixed to prevent jump sounds when frozen
-particles for death spots in qw are smaller
-true qsmack clients don't send updates
-removed punchangle from weapon attacks
-fixed voting for level
-added help-levels for voting
-practice mode wasn't displaying attackers health when killed
+$Id: Changes,v 1.68 2004/06/24 18:49:51 slotzero Exp $
 
 // developer stuff
+fix the tornado rune
 remove notification for riders
 victim_address command
-add pain to hook camp instead of releasing...
+add option for pain to hook camp instead of releasing...
 regen gives/converts your armor to red.. I eventually want to wein from using rune-use
 added some basic reflect code, not implemented
 
@@ -19,9 +12,27 @@ Version 1.1  Sat Jun 12 14:39:35 EST 2004
 
     - Bug Fixes
 
+        - Practice mode wasn't displaying your attacker's health when killed.
+
+        - A major bug that originated in id's code was fixed pertaining to the lightning
+          gun.  The bug allowed multiple shafts, which where invisible, to be present
+          on the level.
+
+        - Ice traps/blizzard no longer make jumping noises when frozen.
+
+        - Level voting no longer returns invalid impulse when enter key is bound.
+
         - Using rcon <map> while infokey_maps is set will no longer crash the server.
 
     - Changes
+
+        - Punchangle is no longer used in weapons attacks.
+
+        - Genuine QSmack clients don't receive updates from the engine.
+
+        - Quakeworld particles for death spots are now smaller (normal).
+
+        - New command, help-levels, lists the full name of all of the standard levels.
 
         - Added requiem rune.
 
