@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.7 2005/01/10 03:52:26 slotzero Exp $
+/*  $Id: arena.qc,v 1.8 2005/01/10 05:41:19 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -151,6 +151,7 @@ arena_results =
 {
 	local entity winner, os;
 	local float draw;
+	local string x;
 
 	// This is done here so that any damage done after the first death
 	// can be acted out upon.
@@ -189,6 +190,36 @@ arena_results =
 			self.runent = os;
 		}
 
+		add_frag (winner, 1);
+		bprint (winner.netname);
+		bprint (" won the round");
+
+		if (winner == self.enemy || winner == self.oldenemy)
+		{
+			bprint ("\n");
+			if (winner.health >= 100 && winner.armorvalue >= 200)
+				bprint ("\bFLAWLESS VICTORY!\n");
+			else
+			{
+				x = ftos (winner.health);
+				bprint (winner.netname);
+				bprint (" had ");
+				bprint (x);
+				bprint (" health and ");
+
+				if (winner.armorvalue)
+				{
+					x = ftos (winner.armorvalue);
+					bprint (x);
+					bprint (" armor\n");
+				}
+				else
+					bprint ("no armor\n");
+			}
+		}
+		else
+			bprint (" by default\n");
+
 		// if winner isn't dead, set her parms
 		if (!self.oldenemy)
 		{
@@ -197,10 +228,6 @@ arena_results =
 			SetArenaParms ();
 			self = os;
 		}
-
-		add_frag (winner, 1);
-		bprint (winner.netname);
-		bprint (" won the round\n");
 	}
 	else
 	{

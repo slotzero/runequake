@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.30 2005/01/05 22:23:10 slotzero Exp $
+/*  $Id: combat.qc,v 1.31 2005/01/10 05:41:19 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -119,30 +119,7 @@ Killed =
 	{
 		arena_death (targ, attacker);
 
-		if (attacker != targ)
-		{
-			if (attacker.classname == "player" && targ.classname == "player")
-			{
-				if (attacker.health >= 100 && attacker.armorvalue >= 200)
-					bprint ("\bFLAWLESS VICTORY!\n");
-				else
-				{
-				x = ftos (attacker.health);
-				self_sprint (targ, attacker.netname);
-				self_sprint (targ, " had ");
-				self_sprint (targ, x);
-				self_sprint (targ, " health and ");
-				if (attacker.armorvalue)
-				{
-					x = ftos (attacker.armorvalue);
-					self_sprint (targ, x);
-					self_sprint (targ, " armor\n");
-				}
-				else
-					self_sprint (targ, "no armor\n");
-				}
-			}
-		}
+
 	}
 	else
 		ClientObituary (self, attacker, dtype);
