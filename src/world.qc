@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.30 2003/12/30 09:59:12 slotzero Exp $
+/*  $Id: world.qc,v 1.31 2004/01/03 11:50:49 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -337,7 +337,6 @@ StartFrame =
 			dprint ("Invalid level impulse\n");
 	}
 
-	// XXX This doesn't work in QW yet.
 	skill = cvar_infokey ("skill");
 	if (skill)
 	{
@@ -352,7 +351,7 @@ StartFrame =
 
 		else if (skill == SKILL_TOGGLE_RUNE_CHEAT)
 		{
-			// XXX Move this to its own function, so player can use!
+			// XXX Move this to its own function, for in-game use.
 			temp1 = cvar_infokey ("temp1");
 			if (temp1 & T1_RUNE_CHEAT)
 			{
@@ -391,8 +390,11 @@ StartFrame =
 
 		if (!cvar_infokey ("console_bindings"))
 		{
-			console_aliases ();
-			cvar_set_infokey ("console_bindings", "1");
+			if (time > 3)
+			{
+				console_aliases ();
+				cvar_set_infokey ("console_bindings", "1");
+			}
 		}
 	-])
 	framecount = framecount + 1;
