@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.43 2003/11/30 23:29:03 slotzero Exp $
+/*  $Id: client.qc,v 1.44 2003/12/06 21:17:29 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -431,14 +431,14 @@ trigger_changelevel =
 		objerror ("changelevel trigger doesn't have map");
 
 	if (scratch1 & S1_CUSTOM_EXITS)
+	{
 		place_my_targets ();
-
-	InitTrigger ();
-
-	if (self.target)
 		self.touch = teleport_touch;
+ 	}
 	else
 		self.touch = changelevel_touch;
+
+	InitTrigger ();
 };
 
 /*
