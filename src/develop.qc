@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.33 2003/07/09 04:07:04 slotzero Exp $
+/*  $Id: develop.qc,v 1.34 2003/07/09 04:08:51 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -21,14 +21,12 @@
 // DEVELOPMENT FUNCTIONS
 //-------------------------------------------------------------------
 
-float DEVELOPER_MODE = 1;
-
-float my_float;
+float DEVELOPER_MODE = 0;
 
 void ()
 Test_Button =
 {
-	Log_Client_Disconnect ();
+	SUB_Null ();
 };
 
 void ()
