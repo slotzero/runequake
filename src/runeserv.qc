@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.40 2004/04/04 09:44:47 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.41 2004/04/30 00:15:36 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -1283,7 +1283,10 @@ Rune_Type_Allowed =
 	if (type == RN_SELFPRES && teamplay & TEAM_SELF_HEALTH_PROT
 			&& teamplay & TEAM_SELF_ARMOR_PROT)	return 0;
 	IN_QW([-
-		if (type == RN_FLY)				return 0;
+		// On some servers, this rune doesn't work right.  I use zquake
+		// version 0.15-dev, which seems to correct the problem.
+		// if (type == RN_FLY)				return 0;
+
 		if (type == RN_TWALK)				return 0;
 		if (type == RN_PHASE)				return 0;
 	-])
