@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.23 2004/11/27 04:25:19 slotzero Exp $
+/*  $Id: hook.qc,v 1.24 2004/11/27 06:39:18 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -91,6 +91,11 @@ MaybeDropHook =
 	else if (environmental (self.enemy))
 		dropit = 1;
 
+	// weirded with shootphobia
+	else if (self.owner.effects & EF_WEIRD)
+		dropit = 1;
+
+	// active button
 	else if (self.enemy.classname == "func_button" && self.enemy.state)
 		dropit = 1;
 
