@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.20 2004/02/25 20:31:05 slotzero Exp $
+/*  $Id: combat.qc,v 1.21 2004/05/16 05:27:34 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -115,6 +115,21 @@ Killed =
 	}
 
 	ClientObituary (self, attacker, dtype);
+
+	if (deathmatch & DM_MODE_PRACTICE)
+	{
+		if (attacker != targ)
+		{
+			if (attacker.classname == "player" && targ.classname == "player")
+			{
+				local string x;
+
+				x = ftos (attacker.health);
+				centerprint5 (targ, "\n\n\n", attacker.netname, " has ", x, " health");
+			}
+		}
+	}
+
 	if (!deathmatch & DM_DAMAGE_MATCH)
 		high_track_recalc ();
 
