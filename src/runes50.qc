@@ -1,4 +1,4 @@
-// $Id: runes50.qc,v 1.5 2002/06/15 21:03:05 slotzero Exp $
+// $Id: runes50.qc,v 1.6 2002/07/17 07:45:59 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -286,7 +286,7 @@ Torch_Trap_Think =
 	i = pointcontents (self.origin);
 	if (i == CONTENT_SLIME || i == CONTENT_WATER)
 	{
-		bubbles (5, self.origin);
+		bubbles (3, self.origin);
 		// Wait before actually removing it so there's a choke
 		// on repeatedly throwing traps into water, lagging
 		// people out with clouds of bubbles.
@@ -298,8 +298,8 @@ Torch_Trap_Think =
 		return;
 	}
 
-	// Don't bother think any more if I've come to a stop.
-	if (self.velocity)
+	// Don't bother to think any more if I've come to a stop.
+	if (self.velocity != VEC_ORIGIN)
 		self.nextthink	= time + sys_ticrate;
 	else
 	{
