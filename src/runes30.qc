@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.29 2004/09/11 22:38:04 slotzero Exp $
+/*  $Id: runes30.qc,v 1.30 2004/09/16 18:38:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -419,23 +419,24 @@ Freeze_Think =
 	}
 };
 
-void (entity e)
+void (entity wanted)
 Unfreeze =
 {
-	local entity of_e;
+	local entity freeze;
 
-	of_e = find (world, classname, "freeze");
-	while (of_e)
+	freeze = find (world, classname, "freeze");
+	while (freeze)
 	{
-		if (of_e.runent == e)
+		if (freeze.runent == wanted)
 		{
-			of_e.runent.attack_finished = time + sys_ticrate;
-			of_e.runevar = 0;
-			sound (of_e.runent, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
-			of_e.think = SUB_Remove;
-			of_e.nextthink = time + 3;
+			freeze.runent.attack_finished	= time + sys_ticrate;
+
+			sound (freeze.runent, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
+
+			freeze.think				= SUB_Remove;
+			freeze.nextthink			= time + 3;
 		}
-		of_e = find (of_e, classname, "freeze");
+		freeze = find (freeze, classname, "freeze");
 	}
 };
 
