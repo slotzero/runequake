@@ -1,4 +1,4 @@
-/*  MERGE COMPLETE
+/*  $Id: rjs.qc,v 1.45 2003/04/14 00:56:17 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -232,7 +232,6 @@ rjs_worldspawn =
 {
 	local entity e;
 
-	set_version ();
 	sys_ticrate = cvar ("sys_ticrate");
 	vote_counter_spawn ();
 	frag_init ();

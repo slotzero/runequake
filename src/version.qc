@@ -1,4 +1,4 @@
-/*  MERGE COMPLETE
+/*  $Id: version.qc,v 1.11 2003/04/14 00:56:21 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -17,10 +17,4 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-string version;
-
-void ()
-set_version =
-{
-	version = "0.7.11";
-};
+string version = "0.8";

@@ -1,4 +1,4 @@
-/*  MERGE COMPLETE
+/*  $Id: models.qc,v 1.5 2003/04/14 00:56:15 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 

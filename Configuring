@@ -1,4 +1,4 @@
-$Id: Configuring,v 1.9 2002/10/14 19:08:34 slotzero Exp $
+$Id: Configuring,v 1.10 2003/04/14 00:56:04 slotzero Exp $
 
 Starting the server
 
@@ -209,7 +209,7 @@ teamplay
 
     	Normally players can use the vote-team command to turn team mode
     	on and off.  (The team mode used for this is VOTE_TEAM_MODE,
-    	define in settings.qc.)  If you set this bit in your teamplay
+    	defined in settings.qc.)  If you set this bit in your teamplay
     	variable team voting will be disabled.  Team voting is also
     	disabled if teamplay is set to a value other than 0 or the mode
     	from settings.qc.
@@ -353,6 +353,19 @@ temp1
     	vore balls (little spiky purple balls).  These spawn randomly on
     	the level.  The number of such hooks available is normally 1/3
     	the number of players, rounding up (7 players means 3 hooks).
+
+   1048576 no hook voting			T1_HOOK_NO_VOTE
+
+	By default, the hook is a rune and you must find the rune in order
+	to grapple.  Using the vote-hook command will change the mode of
+        the hook to either free or lithium hook (defined in settings.qc as
+	VOTE_HOOK_MODE).
+
+   2097152 empty server resets hook vote	T1_HOOK_MODE_DEFAULT_ON
+
+        The server will automatically reset the hook mode setting when
+        there are no players on and when process_cvars() is called.  The
+	default mode can be set in settings.qc (VOTE_HOOK_MODE_DEFAULT).
 
      65536 no rune drop delay			T1_RUNE_DROP_DELAY_0
      66048  15 second rune drop delay		T1_RUNE_DROP_DELAY_15

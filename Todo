@@ -1,25 +1,29 @@
-$Id: Todo,v 1.9 2002/07/15 14:44:28 slotzero Exp $
+$Id: Todo,v 1.10 2003/04/14 00:56:05 slotzero Exp $
 
-    - release goals
+    - 1.0 release goals
 
+        - add lite rune mode, suggestion from shmack (keep only 4 basic runes)
         - gold key doesn't always appear or disappear (rjs)
         - a frozen shambler can still attack you.
-	- sort through the Artifact-RJS Todo file.
 	- do riders carry across levels when not in high/fast track? yes,
 	  but not if the player leaves (or is dead?) during intermission.
 	- investigate function to check for healthy enemy, not just player.
 	- lg discharge does damange to ep holder. (baker)
 	- problem with switch rune and fix-angles (rjs)
 
-    - known bugs
+    - future goals
 
-        - you will recloak if you continue to fire the nail or lightning gun (rjs)
+        - add popular "fun" rune variants to make it easier for upgrades?
+        - add frikbots option
+        - add head hunters option
+
+    - known bugs
 
         - crash from logs (rjs)
 
               RETURN     2362(IMMEDIATE)  1.0
                   rjs.qc : weapon_it_have_min_ammo
-                  rjs.qc : CycleWeaponCommand^M
+                  rjs.qc : CycleWeaponCommand
               weapons.qc : ImpulseCommands
               weapons.qc : W_WeaponFrame
                client.qc : PlayerPostThink

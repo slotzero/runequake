@@ -1,4 +1,76 @@
-$Id: Changes,v 1.40 2002/10/14 19:08:34 slotzero Exp $
+$Id: Changes,v 1.41 2003/04/14 00:56:03 slotzero Exp $
+
+Version 0.8  Sun Apr 13 20:54:23 EST 2003
+
+    Support for Quakeworld is back!  Version 0.7.5 is the only release that
+    doesn't contain the merged sources for Quake and Quakeworld.
+
+    - Bug Fixes
+
+        - recall was reporting the wrong set value for riders
+
+    - Notable Internal Changes
+
+        -  I made use of parm14 for another field, rqflags.
+
+    - Other Changes
+
+        - By default, alternate weapons no longer cycle with impulse 10
+          or impulse 12.  Use cycle-alternates to permit them.
+
+        - Set FORWARD_MAX_PLAYERS to less than zero and it will forward all
+          players and append [forward server] to the teamplay value.
+
+Version 0.7.5  Sun Mar 16 01:07:11 EST 2003  [POQ ONLY RELEASE]
+
+    - Bug Fixes
+
+        - you will recloak if you continue to fire the nail or lightning gun [fixed]
+
+    - Admin Changes
+
+        - The admin menu is a bit more organized in that commands that are related
+          have been grouped together in a sub-menu.
+
+    - CVAR Changes
+
+        - temp1
+
+            - I added T1_HOOK_MODE_DEFAULT_ON, which turns on the default
+              hook mode (in settings.qc).
+
+            - Use T1_HOOK_NO_VOTE to disable vote-hook on the server.
+
+    - Notable Internal Changes
+
+        - The mod will detect a QSmack client determined by the ProQuake engine.
+
+        - I've swapped out all non-standard ascii characters (fun names) to their
+          ascii character number. [qccx related]
+
+        - Many global strings have been initializaed instead of being declared
+          and then set. [qccx related]
+
+        - The mod now compiles with no warnings on any warning level when
+          using frikqcc 2.5.  I've also changed the Makefile so that it
+          won't ignore warnings by default.
+
+        - I'm made considerable progress with the internal.qc project but
+          I haven't had the chance to document it yet or its implementation
+          into the mod.
+
+    - Other Changes
+
+        - Feature request for PK:  Disable hook when a weapon is fired.  See
+          settings.qc (HOOK_CAMP_PROT).
+
+        - You can now vote-hook to change mode of hook to free or lithium
+          (this is determined in settings.qc (VOTE_HOOK_MODE) or turn it
+          off (hook is a rune).  You can also set the default hook mode
+          using VOTE_HOOK_MODE_DEFAULT.
+
+        - I've added a new option in settings.qc that can set the default teamplay
+          mode of the server when the server is empty (VOTE_TEAM_MODE_DEFAULT).
 
 Version 0.6  Mon Oct 14 13:46:02 EST 2002
 

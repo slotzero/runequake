@@ -1,4 +1,4 @@
-/*  MERGE COMPLETE
+/*  $Id: hook.qc,v 1.7 2003/04/14 00:56:13 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 

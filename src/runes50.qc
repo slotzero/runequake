@@ -1,4 +1,4 @@
-/*  MERGE COMPLETE
+/*  $Id: runes50.qc,v 1.12 2003/04/14 00:56:18 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 

@@ -1,4 +1,4 @@
-/*  MERGE COMPLETE
+/*  $Id: hknight.qc,v 1.6 2003/04/14 00:56:13 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 

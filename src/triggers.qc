@@ -1,4 +1,4 @@
-/*  MERGE COMPLETE
+/*  $Id: triggers.qc,v 1.10 2003/04/14 00:56:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 

@@ -1,4 +1,4 @@
-/*  MERGE COMPLETE
+/*  $Id: light.qc,v 1.9 2003/04/14 00:56:14 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 

@@ -1,4 +1,4 @@
-/*  MERGE COMPLETE [POSSIBLE COMPLICATIONS]
+/*  $Id: defs.qc,v 1.28 2003/04/14 00:56:11 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1225,7 +1225,6 @@ void (float level, string s, string s2, string s3, string s4, string s5, string 
 void (entity client, float level, string s, string s2, string s3, string s4, string s5, string s6) xself_sprint6	= #24;
 -])
 
-void (string s, ...) dprint			= #25;
 void	(string s, ...)				dprint		= #25;
 string	(float f)				ftos		= #26;
 string	(vector v)				vtos		= #27;

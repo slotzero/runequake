@@ -1,4 +1,4 @@
-/*  MERGE COMPLETE
+/*  $Id: bfg.qc,v 1.6 2003/04/14 00:56:09 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 

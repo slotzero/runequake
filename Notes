@@ -1,4 +1,4 @@
-$Id: Notes,v 1.2 2002/06/29 20:45:02 slotzero Exp $
+$Id: Notes,v 1.3 2003/04/14 00:56:04 slotzero Exp $
 
 Source editing and compilation
 
@@ -11,8 +11,8 @@ Source editing and compilation
     changes and recompile for your server, you should edit the files in
     the poq or qw directories and compile from there.
 
-    As of version 0.5, the poq and qw source can only be compiled with qccx
-    and compatible compilers.
+    As of version 0.5, the poq and qw source can only be compiled with
+    qccx 1.0 or compatible compiler.
 
 DM_WEAPONS_STAY
 

@@ -1,4 +1,4 @@
-/*  MERGE COMPLETE
+/*  $Id: runeserv.qc,v 1.16 2003/04/14 00:56:18 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 

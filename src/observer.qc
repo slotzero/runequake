@@ -1,4 +1,4 @@
-/*  MERGE COMPLETE
+/*  $Id: observer.qc,v 1.16 2003/04/14 00:56:16 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 

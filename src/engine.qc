@@ -1,4 +1,4 @@
-/*  MERGE COMPLETE [COMPLICATIONS EXPECTED]
+/*  $Id: engine.qc,v 1.9 2003/04/14 00:56:12 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -24,6 +24,9 @@ IN_POQ([-
 void (vector where, float set)
 multicast =
 {
+	// Prevent frikqcc warnings.
+	if (0) { where = VEC_ORIGIN; set = FALSE; }
+
 	SUB_Null ();
 };
 

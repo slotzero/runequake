@@ -1,4 +1,4 @@
-/*  MERGE COMPLETE
+/*  $Id: print.qc,v 1.10 2003/04/14 00:56:17 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -27,7 +27,7 @@ bprint =
 	xbprint (s);
 
 	if (scratch1 & S1_BPRINT_TO_CONSOLE)
-		force_dprint (s);
+		dprint_force (s);
 };
 -])
 

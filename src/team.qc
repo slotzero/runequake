@@ -1,4 +1,4 @@
-/*  MERGE COMPLETE
+/*  $Id: team.qc,v 1.6 2003/04/14 00:56:20 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
