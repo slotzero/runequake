@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.71 2004/07/12 01:14:54 slotzero Exp $
+/*  $Id: develop.qc,v 1.72 2004/07/12 02:36:32 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -128,6 +128,30 @@ setquad =
 	fput (HUNK_NO_QUADS, NO_QUADS);
 };
 
+void ()
+setpent =
+{
+	NO_PENTS = !NO_PENTS;
+	toggle_powerup ("item_artifact_invulnerability", !NO_PENTS);
+	fput (HUNK_NO_PENTS, NO_PENTS);
+};
+
+void ()
+setring =
+{
+	NO_RINGS = !NO_RINGS;
+	toggle_powerup ("item_artifact_invisibility", !NO_RINGS);
+	fput (HUNK_NO_RINGS, NO_RINGS);
+};
+
+void ()
+setsuit =
+{
+	NO_SUITS = !NO_SUITS;
+	toggle_powerup ("item_artifact_envirosuit", !NO_SUITS);
+	fput (HUNK_NO_SUITS, NO_SUITS);
+};
+
 void (float offset, float value)
 fput =
 {
@@ -159,18 +183,39 @@ Populate_Settings =
 
 	// After settings have been populated, there are some take action on
 	// those globals that require it.
-
+	//
 	// powerups are always on at the start of the level, so check to see if
 	// they've been shut off.
+	//
+	// XXX The powerups aren't removed until almost 3 seconds after the level
+	// loads.  If someone touches a powerup before then, they'll be able to
+	// pick it up.  I could prevent players from touching the item until
+	// 3 seconds after the level loads, but I'm wondering if there isn't
+	// a better way to do this.
 	if (NO_QUADS)
 	{
 		dprint_force ("Quad Damage disabled\n");
 		toggle_powerup ("item_artifact_super_damage", 0);
+	}
+	if (NO_PENTS)
+	{
+		dprint_force ("Pentagram of Protection disabled\n");
+		toggle_powerup ("item_artifact_invulnerability", 0);
+	}
+	if (NO_RINGS)
+	{
+		dprint_force ("Ring of Shadows disabled\n");
+		toggle_powerup ("item_artifact_invisibility", 0);
+	}
+	if (NO_SUITS)
+	{
+		dprint_force ("Environmental Protection Suit disabled\n");
+		toggle_powerup ("item_artifact_envirosuit", 0);
 	}
 };
 
 void ()
 Test_Button =
 {
-	setquad ();
+	SUB_Null ();
 };

@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.20 2004/07/12 01:14:54 slotzero Exp $
+/*  $Id: vote.qc,v 1.21 2004/07/12 02:36:32 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -387,7 +387,7 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_PRACTICE)
 	{
-		// cancel	= -1;	// XXX This isn't ready yet.
+		// cancel	= 1;	//
 		e.frag_rate	= 0.51;	// XXX move to settings.
 		e.think1	= mode_practice;
 		e.noise1	= "change mode to practice";
@@ -401,7 +401,7 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_NORMAL)
 	{
-		// cancel	= -1;	// XXX This isn't ready yet.
+		// cancel	= 1;
 		e.frag_rate	= 0.51; // XXX move to settings (share with practice?)
 		e.think1	= mode_normal;
 		e.noise1	= "change mode to normal";
@@ -412,6 +412,18 @@ vote =
 				self_sprint (self, "Already in Normal mode\n");
 			cancel = 1;
 		}
+	}
+	else if (self.impulse == IMP_VOTE_QUAD)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= setquad;
+		e.noise2	= " Quad Damage";
+
+		if (NO_QUAD)
+			e.noise1	= "enable";
+		else
+			e.noise1	= "disable";
 	}
 	else
 		cancel = -1;
