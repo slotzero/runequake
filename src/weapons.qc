@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.27 2004/02/24 01:09:12 slotzero Exp $
+/*  $Id: weapons.qc,v 1.28 2004/02/24 23:39:41 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -525,27 +525,13 @@ LIGHTNING
 void (entity from, float damage, string dtype)
 LightningHit =
 {
+	local entity os;
+
 	IN_POQ([-
 		particle (trace_endpos, '0 0 100', PARTICLE_ENT_DAMAGE, damage * 4);
 	-], [-
 		create_te_lightningblood (trace_endpos);
 	-])
-
-	// reduce damage and give ammo for zap holders
-	if (trace_ent.runetype == RN_ZAP)
-	{
-		local entity os;
-
-		damage = damage * 0.50;
-		if (trace_ent.ammo_cells < MAX_CELLS)
-		{
-			trace_ent.ammo_cells = trace_ent.ammo_cells + 1;
-			os = self;
-			self = trace_ent;
-			set_current_ammo ();
-			self = os;
-		}
-	}
 
 	T_Damage (trace_ent, from, from, damage, dtype);
 };
