@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.34 2004/12/25 01:16:50 slotzero Exp $
+/*  $Id: hunk.qc,v 1.35 2004/12/25 02:05:18 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -130,12 +130,16 @@ Read_Hunk_Float =
 	return hunk[%0];
 };
 
+// This is the fastest way to read string data from the hunk, but it is also the most
+// dangerous.  If you try to read strings that are too large, the engine will crash.
 string (entity hunk)
 Read_Hunk_String_e =
 {
 	return @AddInt(&hunk, PQUAKEC_TO_PSTRING);
 };
 
+// This is the fastest way to read string data from the hunk, but it is also the most
+// dangerous.  If you try to read strings that are too large, the engine will crash.
 string (float type, float offset)
 Read_Hunk_String =
 {
@@ -151,7 +155,8 @@ Read_Hunk_String =
 	return Read_Hunk_String_e (hunk);
 };
 
-// The value of bytes is rounded up to the closest dword.
+// This is a safe and fast way to read string data from the hunk, but it is not entirely
+// accurate; the value of bytes is rounded up to the nearest dword.
 string (entity hunk, float bytes)
 Read_Hunk_String_Max_e =
 {
@@ -182,7 +187,8 @@ Read_Hunk_String_Max_e =
  	return (@AddInt (pdata, PQUAKEC_TO_PSTRING));
 };
 
-// The value of bytes is rounded up to the closest dword.
+// This is a safe and fast way to read string data from the hunk, but it is not entirely
+// accurate; the value of bytes is rounded up to the nearest dword.
 string (float type, float offset, float bytes)
 Read_Hunk_String_Max =
 {
@@ -193,6 +199,8 @@ Read_Hunk_String_Max =
 	return Read_Hunk_String_Max_e (hunk, bytes);
 };
 
+// This is the most accurate way to read string data from the hunk, but it is also the
+// slowest.  Avoid calling this multiple times too quickly or you will generate a loop error.
 string (entity hunk, float bytes)
 Read_Hunk_String_Exact_e =
 {
@@ -201,14 +209,14 @@ Read_Hunk_String_Exact_e =
 
 	if (!hunk)
 	{
-		dprint ("Read_Hunk_Max_e: hunk is null\n");
+		dprint ("Read_Hunk_String_Exact_e: hunk is null\n");
 		return string_null;
 	}
 
 	data = allocate_string_size (bytes);
 	if (!data)
 	{
-		dprint ("Read_Hunk_Max_e: bytes is too large\n");
+		dprint ("Read_Hunk_String_Exact_e: bytes is too large\n");
 		return string_null;
 	}
 
@@ -235,6 +243,8 @@ Read_Hunk_String_Exact_e =
 	return (@AddInt (pdata, PQUAKEC_TO_PSTRING));
 };
 
+// This is the most accurate way to read string data from the hunk, but it is also the
+// slowest.  Avoid calling this multiple times too quickly or you will generate a loop error.
 string (float type, float offset, float bytes)
 Read_Hunk_String_Exact =
 {
