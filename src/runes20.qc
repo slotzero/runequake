@@ -1,4 +1,4 @@
-// $Id: runes20.qc,v 1.6 2002/06/08 05:42:36 slotzero Exp $
+// $Id: runes20.qc,v 1.7 2002/06/26 18:27:16 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -118,16 +118,17 @@ DSpot_Touch =
 			self.owner.runevar = self.owner.runevar - 1;
 	}
 
-	T_Damage (other, self, self.owner, SURE_KILL_DAMAGE, "dspot");
+	T_Damage (other, self, self.owner, KILL_DAMAGE, "dspot");
 
 	sound (self, CHAN_AUTO, "boss2/idle.wav", 1, ATTN_NORM);
 
-	self.solid = SOLID_NOT;
-	self.movetype = MOVETYPE_NONE;
+	self.solid	= SOLID_NOT;
+	self.movetype	= MOVETYPE_NONE;
 
 	setmodel (self, string_null);
-	self.think = SUB_Remove;
-	self.nextthink = time + 1;
+
+	self.think	= SUB_Remove;
+	self.nextthink	= time + 1;
 };
 
 void ()

@@ -1,4 +1,4 @@
-$Id: Todo,v 1.6 2002/06/23 17:47:24 slotzero Exp $
+$Id: Todo,v 1.7 2002/06/26 18:27:06 slotzero Exp $
 
     - Unsorted
 
@@ -9,3 +9,5 @@ $Id: Todo,v 1.6 2002/06/23 17:47:24 slotzero Exp $
 	- sort through the Artifact-RJS Todo file.
 	- do riders carry across levels when not in high/fast track?
 	- investigate function to check for healthy enemy, not just player.
+	- lg does damange to ep holder doing a discharge.. and a dischage period? (baker)
+	- problem with switch rune and fix-angles, how?

@@ -1,12 +1,15 @@
-$Id: Changes,v 1.21 2002/06/24 23:06:26 slotzero Exp $
+$Id: Changes,v 1.22 2002/06/26 18:27:05 slotzero Exp $
 
-Version 0.4.0  Sun Jun 09 16:09:20 EST 2002
+Version 0.5.0  Sun Jun 09 16:09:20 EST 2002
 
     - Bug Fixes
 
         - You can no longer cripple (healthy) doors by freezing them.
 
 	- Your radiation no longer heals you without the rune.
+
+	- You are protected from your own death spots when you have the
+	  self preservation rune.
 
     - Rune Changes
 

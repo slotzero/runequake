@@ -1,4 +1,4 @@
-// $Id: combat.qc,v 1.6 2002/06/23 23:18:08 slotzero Exp $
+// $Id: combat.qc,v 1.7 2002/06/26 18:27:15 slotzero Exp $
 
 /*
 ============
@@ -406,16 +406,16 @@ T_Damage =
 
 	// Vengeance Rune does equal damage back to the attacker, but
 	// cap damage so it doesn't exceed targ's armor/health unless
-	// it is excessive.  (SURE_KILL_DAMAGE)
+	// it is excessive.  (KILL_DAMAGE)
 	if (targ.runetype == RN_VENG
 			&& attacker != targ
 			&& attacker != world
 			&& attacker.runetype != RN_VENG
 			&& attacker.runetype != RN_SELFPRES)
-		if (damage >= SURE_KILL_DAMAGE)
-			T_Damage (attacker, targ, targ, SURE_KILL_DAMAGE, "vengeance");
-		else
+		if (damage < KILL_DAMAGE)
 			T_Damage (attacker, targ, targ, real_take + save, "vengeance");
+		else
+			T_Damage (attacker, targ, targ, SURE_KILL_DAMAGE, "vengeance");
 
 	// add to the damage total for clients, which will be sent as a
 	// single message at the end of the frame

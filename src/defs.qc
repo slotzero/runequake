@@ -1,4 +1,4 @@
-// $Id: defs.qc,v 1.12 2002/06/17 01:22:15 slotzero Exp $
+// $Id: defs.qc,v 1.13 2002/06/26 18:27:15 slotzero Exp $
 
 /*
 ==============================================================================
@@ -692,6 +692,7 @@ float RADIUS_MORTAR		= 2;
 float MIN_TEAM			= 1;
 float MAX_TEAM			= 14;
 float SURE_KILL_DAMAGE		= 50000;
+float KILL_DAMAGE		= 25000;
 float DEFAULT_GRAVITY		= 800;
 
 // message protocol defines
