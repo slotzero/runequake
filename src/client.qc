@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.74 2005/01/02 08:38:48 slotzero Exp $
+/*  $Id: client.qc,v 1.75 2005/01/02 10:08:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -35,10 +35,6 @@ void ()
 info_intermission =
 {
 };
-
-// SetNewParms() is called both by me and by the game.  It's called by
-// the game for fully new players.  When I call it I always call this
-// directly after.  I also call this from SetChangeParms().
 
 void ()
 persistent_parms =
@@ -112,6 +108,10 @@ SetChangeParms =
 	parm11 = parm11 | (self.aqflags & AQ_HOOK);
 };
 
+// SetNewParms() is called both by me and by the game.  It's called by
+// the game for fully new players.  When I call it I always call this
+// directly after.  I also call this from SetChangeParms().
+
 void ()
 SetNewParms =
 {
@@ -139,36 +139,9 @@ SetNewParms =
 };
 
 void ()
-DecodeArenaParms =
+SetPracticeParms =
 {
-	self.items		= parm1 = IT_AXE | IT_SHOTGUN | IT_SUPER_SHOTGUN | IT_NAILGUN | IT_SUPER_NAILGUN
-						| IT_GRENADE_LAUNCHER | IT_ROCKET_LAUNCHER | IT_LIGHTNING
-						| IT_ARMOR3;
-	self.health		= MAX_HEALTH_NORMAL;
-	self.armorvalue		= MAX_ARMOR_3;
-	self.ammo_shells	= 30;
-	self.ammo_nails		= 80;
-	self.ammo_rockets	= 30;
-	self.ammo_cells		= 30;
-
-	// Setting self.weapon is necessary because you retain your
-	// weapon setting across deaths.  If you die with the single
-	// shotgun set_weapon() won't do anything when this tries to set
-	// your weapon because it thinks you're already wielding that.
-	self.weapon = 0;
-	set_weapon (IT_ROCKET_LAUNCHER);
-
-	// XXX For some strange reason, multiplying parm9 by 0.01 returns
-	// the wrong value for red armor (0.79 instead of 0.80).  The result
-	// is picking up red armor when you don't need it.  I work around it
-	// by dividing by 100 instead.
-	self.armortype = ARMOR_TYPE_3;
-};
-
-void ()
-DecodePracticeParms =
-{
-	self.items		= parm1 = IT_AXE | IT_SHOTGUN | IT_SUPER_SHOTGUN | IT_NAILGUN | IT_SUPER_NAILGUN
+	self.items		= IT_AXE | IT_SHOTGUN | IT_SUPER_SHOTGUN | IT_NAILGUN | IT_SUPER_NAILGUN
 						| IT_GRENADE_LAUNCHER | IT_ROCKET_LAUNCHER | IT_LIGHTNING
 						| IT_ARMOR3;
 	self.health		= MAX_HEALTH_NORMAL;
@@ -182,60 +155,71 @@ DecodePracticeParms =
 	// weapon setting across deaths.  If you die with the single
 	// shotgun set_weapon() won't do anything when this tries to set
 	// your weapon because it thinks you're already wielding that.
-	self.weapon = 0;
+	self.weapon		= 0;
+
 	set_weapon (IT_ROCKET_LAUNCHER);
 
-	// XXX For some strange reason, multiplying parm9 by 0.01 returns
-	// the wrong value for red armor (0.79 instead of 0.80).  The result
-	// is picking up red armor when you don't need it.  I work around it
-	// by dividing by 100 instead.
-	self.armortype = ARMOR_TYPE_3;
+	self.armortype		= ARMOR_TYPE_3;
+};
 
-	Rune_Activate (parm10, 0);
-	self.aqflags		= parm11;
-	self.rqflags		= parm14;
+void ()
+SetArenaParms =
+{
+	self.items		= IT_AXE | IT_SHOTGUN | IT_SUPER_SHOTGUN | IT_NAILGUN | IT_SUPER_NAILGUN
+						| IT_GRENADE_LAUNCHER | IT_ROCKET_LAUNCHER | IT_LIGHTNING
+						| IT_ARMOR3;
+	self.health		= MAX_HEALTH_NORMAL;
+	self.armorvalue		= MAX_ARMOR_3;
+	self.ammo_shells	= 30;
+	self.ammo_nails		= 80;
+	self.ammo_rockets	= 30;
+	self.ammo_cells		= 30;
+
+	// Setting self.weapon is necessary because you retain your
+	// weapon setting across deaths.  If you die with the single
+	// shotgun set_weapon() won't do anything when this tries to set
+	// your weapon because it thinks you're already wielding that.
+	self.weapon		= 0;
+
+	set_weapon (IT_ROCKET_LAUNCHER);
+
+	self.armortype		= ARMOR_TYPE_3;
 };
 
 void ()
 DecodeLevelParms =
 {
 	if (deathmatch & DM_MODE_PRACTICE)
-	{
-		DecodePracticeParms ();
-		return;
-	}
-
-	if (mode_arena ())
-		DecodeArenaParms ();
+		SetPracticeParms ();
+	else if (mode_arena ())
+		SetArenaParms ();
 	else
 	{
+		self.items		= parm1;
+		self.health		= parm2;
+		self.armorvalue		= parm3;
+		self.ammo_shells	= parm4;
+		self.ammo_nails		= parm5;
+		self.ammo_rockets	= parm6;
+		self.ammo_cells		= parm7;
 
-	self.items		= parm1;
-	self.health		= parm2;
-	self.armorvalue		= parm3;
-	self.ammo_shells	= parm4;
-	self.ammo_nails		= parm5;
-	self.ammo_rockets	= parm6;
-	self.ammo_cells		= parm7;
+		// Setting self.weapon is necessary because you retain your
+		// weapon setting across deaths.  If you die with the single
+		// shotgun set_weapon() won't do anything when this tries to set
+		// your weapon because it thinks you're already wielding that.
+		self.weapon		= 0;
+		set_weapon (parm8);
 
-	// Setting self.weapon is necessary because you retain your
-	// weapon setting across deaths.  If you die with the single
-	// shotgun set_weapon() won't do anything when this tries to set
-	// your weapon because it thinks you're already wielding that.
-	self.weapon = 0;
-	set_weapon (parm8);
-
-	// XXX For some strange reason, multiplying parm9 by 0.01 returns
-	// the wrong value for red armor (0.79 instead of 0.80).  The result
-	// is picking up red armor when you don't need it.  I work around it
-	// by dividing by 100 instead.
-	self.armortype = parm9 / 100;
-
+		// XXX For some strange reason, multiplying parm9 by 0.01 returns
+		// the wrong value for red armor (0.79 instead of 0.80).  The result
+		// is picking up red armor when you don't need it.  I work around it
+		// by dividing by 100 instead.
+		self.armortype = parm9 / 100;
 	}
 
 	Rune_Activate (parm10, 0);
-	self.aqflags		= parm11;
-	self.rqflags		= parm14;
+	self.aqflags			= parm11;
+	self.rqflags			= parm14;
 };
 
 /*
@@ -586,7 +570,9 @@ ClientKill =
 	see_damage (self, self, self.health + self.armorvalue);
 	self.health = 0;
 	Killed (self, self, "suicide");
-	kick_suicider ();
+
+	if (!mode_arena ())
+		kick_suicider ();
 };
 
 float (vector v)
