@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.14 2002/10/14 18:57:08 slotzero Exp $
+/*  MERGE COMPLETE
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -27,6 +27,18 @@ float ()
 is_admin =
 {
 	return is_admin_e (self);
+};
+
+float (entity e)
+is_qsmack_e =
+{
+	return e.aqflags & AQ_QSMACK;
+};
+
+float ()
+is_qsmack =
+{
+	return is_qsmack_e (self);
 };
 
 float (entity e)
@@ -105,7 +117,8 @@ dead_impulses =
 		centerprint (self, "Rune Removed");
 	}
 	else if (self.impulse == IMP_VOTE_EXIT
-			|| self.impulse == IMP_VOTE_TEAM)
+			|| self.impulse == IMP_VOTE_TEAM
+			|| self.impulse == IMP_VOTE_HOOK)
 		vote ();
 	else
 		common_impulses ();
@@ -143,40 +156,51 @@ obs_impulses =
 			self.impulse = 0;
 		}
 		else if (self.impulse == 2)
-			self.impulse = IMP_ADMIN_TEAM_CHANGE_TOGGLE;
+			aq_menu_set (AQS_MENU_ADMIN_ACTION);
 		else if (self.impulse == 3)
-			self.impulse = IMP_ADMIN_RUNE_DELETE;
+			aq_menu_set (AQS_MENU_ADMIN_TEAMPLAY);
 		else if (self.impulse == 4)
-			self.impulse = IMP_ADMIN_KILL;
-		else if (self.impulse == 5)
-			self.impulse = IMP_ADMIN_KICK;
-		else if (self.impulse == 6)
 			self.impulse = IMP_ADMIN_CHANGE_MAP;
-		else if (self.impulse == 7)
-			self.impulse = IMP_ADMIN_TEAM_CHANGE;
-		else if (self.impulse == 8)
-			self.impulse = IMP_ADMIN_JOIN;
-		else if (self.impulse == 9)
-			aq_menu_set (AQS_MENU_ADMIN_2);
+		else if (self.impulse == 5)
+			self.impulse = IMP_ADMIN_EYES;
+
 		if (self.impulse)
 			common_impulses ();
 	}
 
-	else if (m == AQS_MENU_ADMIN_2)
+	else if (m == AQS_MENU_ADMIN_ACTION)
 	{
 		if (self.impulse == 1)
-		{
-			aq_menu_set (AQS_MENU_MAIN);
-			self.impulse = 0;
-		}
+			aq_menu_set (AQS_MENU_ADMIN);
+		else if (self.impulse == 2)
+			self.impulse = IMP_ADMIN_KILL;
+		else if (self.impulse == 3)
+			self.impulse = IMP_ADMIN_KICK;
+		else if (self.impulse == 4)
+			self.impulse = IMP_ADMIN_RUNE_DELETE;
+		else if (self.impulse == 5)
+			self.impulse = IMP_ADMIN_UNBIND;
+		else if (self.impulse == 6)
+			self.impulse = IMP_ADMIN_RENAME;
+		else if (self.impulse == 7)
+			self.impulse = IMP_ADMIN_JOIN;
+
+		if (self.impulse)
+			common_impulses ();
+	}
+
+	else if (m == AQS_MENU_ADMIN_TEAMPLAY)
+	{
+		if (self.impulse == 1)
+			aq_menu_set (AQS_MENU_ADMIN);
 		else if (self.impulse == 2)
 			self.impulse = IMP_ADMIN_VOTE_TEAM_TOGGLE;
 		else if (self.impulse == 3)
-			self.impulse = IMP_ADMIN_UNBIND;
+			self.impulse = IMP_ADMIN_TEAM_CHANGE_TOGGLE;
 		else if (self.impulse == 4)
-			self.impulse = IMP_ADMIN_RENAME;
+			self.impulse = IMP_ADMIN_TEAMPLAY_ZERO;
 		else if (self.impulse == 5)
-			self.impulse = IMP_ADMIN_EYES;
+			self.impulse = IMP_ADMIN_TEAM_CHANGE;
 
 		if (self.impulse)
 			common_impulses ();
@@ -234,7 +258,8 @@ obs_impulses =
 		else if (self.impulse == IMP_RUNE_TELL && self.owner != world)
 			rune_tell_toggle (0, self.owner);
 		else if (self.impulse == IMP_VOTE_EXIT
-				|| self.impulse == IMP_VOTE_TEAM)
+				|| self.impulse == IMP_VOTE_TEAM
+				|| self.impulse == IMP_VOTE_HOOK)
 			count_votes (self.impulse, 0);
 		else
 			common_impulses ();
@@ -608,7 +633,7 @@ obs_player_detect =
 					{
 						s = string_null;
 						s1 = wanted.netname;
-						s2 = Rune_Description (wanted.runetype, 1);
+						s2 = Rune_Tell_real (0, wanted.runetype, 0, 2);
 						if (s2 == "No Rune")
 							s2 = string_null;
 					}

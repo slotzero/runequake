@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: map,v 1.7 2002/10/14 18:57:07 slotzero Exp $
+# $Id: map,v 1.8 2003/04/13 09:40:37 slotzero Exp $
 
 use strict;
 use warnings;

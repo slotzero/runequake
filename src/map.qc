@@ -1,4 +1,4 @@
-/*  $Id: map.qc,v 1.5 2002/10/14 18:57:07 slotzero Exp $
+/*  MERGE COMPLETE
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
