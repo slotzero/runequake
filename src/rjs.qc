@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.120 2004/07/08 01:32:55 slotzero Exp $
+/*  $Id: rjs.qc,v 1.121 2004/07/08 07:53:47 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2625,20 +2625,6 @@ vote_team_mode_default =
 		return;
 
 	toggle_teamplay (VOTE_TEAM_MODE_DEFAULT);
-};
-
-float (float tell)
-vote_hook_disabled =
-{
-	if (temp1 & T1_HOOK_NO_VOTE
-			|| VOTE_HOOK_PERCENTAGE	<= 0
-			|| VOTE_HOOK_PERCENTAGE > 1)
-	{
-		if (tell)
-			sprint (self, "Hook voting is disabled\n");
-		return 1;
-	}
-	return 0;
 };
 
 void ()
