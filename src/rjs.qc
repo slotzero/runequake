@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.5 2002/02/24 10:10:58 slotzero Exp $
+// $Id: rjs.qc,v 1.6 2002/03/02 16:31:17 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -757,7 +757,7 @@ place_my_items =
 		// Place new RL.
 		spawn_item ("weapon_rocketlauncher", 0, '-96.0 605.0 320.0', 0);
 		// Place new RL.
-		spawn_item ("weapon_rocketlauncher", 0, '1104.0 640.0 312.0');
+		spawn_item ("weapon_rocketlauncher", 0, '1104.0 640.0 312.0', 0);
 	}
 	else if (mapname == "e1m6")
 	{
