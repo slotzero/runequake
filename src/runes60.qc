@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.38 2004/02/29 05:01:35 slotzero Exp $
+/*  $Id: runes60.qc,v 1.39 2004/05/03 10:38:29 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -838,8 +838,6 @@ Rune_Betty_sprint =
 void ()
 Rune_Betty =
 {
-	local string s;
-
 	if (self.runevector_x > time)
 		return;
 
@@ -848,8 +846,7 @@ Rune_Betty =
 
 	W_FireGrenade ("betty");
 
-	s = ftos (self.runevar);
-	if (s == "1")
+	if (self.runevar == 1)
 		sprint (self, "\{141} \b[warning]\b 1 betty left\n");
 
 	if (!self.runevar)
