@@ -1,4 +1,12 @@
-$Id: Changes,v 1.14 2002/05/13 21:05:28 slotzero Exp $
+$Id: Changes,v 1.15 2002/05/29 03:34:27 slotzero Exp $
+
+Version ?  Tue May 28 23:29:44 EST 2002
+
+    - CVAR Changes
+
+        - You can use gamecfg to enter a new passcode and it will override
+          the passcode in settings.qc.  If you enter a negative value, it
+          will disable the passcode completely.
 
 Version 0.2.8  Mon May 13 17:02:51 EST 2002
 

@@ -1,4 +1,4 @@
-// $Id: admin.qc,v 1.5 2002/04/27 03:15:44 slotzero Exp $
+// $Id: admin.qc,v 1.6 2002/05/29 03:34:32 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -60,6 +60,8 @@ admin_Wrong_Passcode =
 void (float tell, float mention_console)
 admin_Toggle =
 {
+	local float admin_passcode_cvar;
+
 	if (is_admin ())
 	{
 		sprint (self, "Admin mode disabled\n");
@@ -73,14 +75,24 @@ admin_Toggle =
 		return;
 	}
 
-	if (ADMIN_PASSCODE == 123456)
+	ADMIN_PASSCODE_REAL = 0;
+	admin_passcode_cvar = cvar ("gamecfg");
+
+	if (admin_passcode_cvar < 0)
+		ADMIN_PASSCODE_REAL = 123456;
+	else if (admin_passcode_cvar > 0)
+		ADMIN_PASSCODE_REAL = admin_passcode_cvar;
+	else
+		ADMIN_PASSCODE_REAL = ADMIN_PASSCODE;
+
+	if (ADMIN_PASSCODE_REAL == 123456)
 	{
 		if (tell)
 			sprint (self, "Admin passcode not configured\n");
 		return;
 	}
 
-	if (ADMIN_PASSCODE < 100000 || ADMIN_PASSCODE > 888888)
+	if (ADMIN_PASSCODE_REAL < 100000 || ADMIN_PASSCODE_REAL > 888888)
 	{
 		if (tell)
 			sprint (self, "Invalid admin passcode in settings.qc\n");
@@ -123,7 +135,7 @@ admin_Impulse_Password =
 		passcode = self.state;
 		self.state = 0;
 		impulse_override_cancel ();
-		if (passcode == ADMIN_PASSCODE)
+		if (passcode == ADMIN_PASSCODE_REAL)
 		{
 			self.aqstate = self.aqstate
 				- self.aqstate & AQS_ADMIN_ATTEMPTS_MASK;

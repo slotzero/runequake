@@ -1,4 +1,4 @@
-// $Id: defs.qc,v 1.4 2002/03/04 05:46:07 slotzero Exp $
+// $Id: defs.qc,v 1.5 2002/05/29 03:34:33 slotzero Exp $
 
 /*
 ==============================================================================
@@ -676,7 +676,7 @@ float ITEM_SUIT = 8;
 
 // These belong in settings.qc, but you can't initialize a string global.
 // I'm declaring them here to keep it less confusing there.
-float FORWARD_MAX_PLAYERS;
+float FORWARD_MAX_PLAYERS, ADMIN_PASSCODE_REAL;
 string FORWARD_DEST, FORWARD_NAME;
 string ADMIN_DEST, ADMIN_FORWARD;
 string START_LEVEL_EXEC;
