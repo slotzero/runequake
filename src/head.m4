@@ -1,7 +1,20 @@
-m4_dnl $Id: head.m4,v 1.1 2002/02/21 21:47:52 slotzero Exp $
+m4_dnl     $Id: head.m4,v 1.2 2002/10/11 22:05:47 slotzero Exp $
 m4_dnl
-m4_dnl Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
-m4_dnl See the file `Copying' in the distribution for terms.
+m4_dnl     Copyright (C) 1998-2001  Roderick Schertler.
+m4_dnl
+m4_dnl     This program is free software; you can redistribute it and/or modify
+m4_dnl     it under the terms of the GNU General Public License as published by
+m4_dnl     the Free Software Foundation; either version 2 of the License, or
+m4_dnl     (at your option) any later version.
+m4_dnl
+m4_dnl     This program is distributed in the hope that it will be useful,
+m4_dnl     but WITHOUT ANY WARRANTY; without even the implied warranty of
+m4_dnl     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+m4_dnl     GNU General Public License for more details.
+m4_dnl
+m4_dnl     You should have received a copy of the GNU General Public License
+m4_dnl     along with this program; if not, write to the Free Software
+m4_dnl     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 m4_dnl
 m4_divert(-1)
 
