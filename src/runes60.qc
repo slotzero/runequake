@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.20 2003/11/16 05:17:11 slotzero Exp $
+/*  $Id: runes60.qc,v 1.21 2003/11/16 05:34:08 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -652,7 +652,7 @@ void ()
 AntiPack_Arm =
 {
    self.nextthink	= time;
-   self.runetime	= time + 120;
+   self.runetime	= time + DROP_BACKPACK_DURATION;
    self.think		= AntiPack_Think;
    self.touch		= AntiPack_Touch;
 };
