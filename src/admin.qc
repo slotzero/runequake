@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.22 2003/10/10 22:30:29 slotzero Exp $
+/*  $Id: admin.qc,v 1.23 2003/10/30 11:25:52 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -562,7 +562,10 @@ admin_impulse_map =
 
 			if (forced_nextmap)
 			{
-				sprint (self, "\{13} A vote is already in progress\n");
+				if (forced_nextmap == m)
+					vote ();
+				else
+					sprint (self, "\{13} A vote is already in progress\n");
 				return;
 			}
 
