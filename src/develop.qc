@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.65 2004/07/06 09:57:44 slotzero Exp $
+/*  $Id: develop.qc,v 1.66 2004/07/07 01:17:06 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -73,6 +73,10 @@ maxplayers =
 	return 16;
 };
 
+
+float RQ_VOTE_YES	= 4;
+float IMP_VOTE_YES	= 255;
+
 float VOTE_IN_PROGRESS;
 
 float (float vote_type)
@@ -95,15 +99,26 @@ xvote_think =
 {
 	if (self.runevar)
 	{
+		local entity e;
 		local string s;
 
-		// XXX I'm going to do this another way or I'll kill Quakeworld.
+		// XXX Figure out how to do this in Quakeworld.
 		s = allocate_string_size (64);
 		s = strcat ("\{1}Request to ", self.netname);
 		s = strcat (s, self.map);
 
-		bprint (s);
-		bprint ("\ntype 'yes' or 'no' in console to vote\n");
+		e = find (world, classname, "player");
+		while (e)
+		{
+			if (!e.rqflags & RQ_VOTE_YES)
+			{
+				self_sprint (e, s);
+				self_sprint (e, "\ntype 'yes' or 'no' in console to vote\n");
+			}
+			e = find (e, classname, "player");
+		}
+
+
 
 		self.runevar = self.runevar - 1;
 	}

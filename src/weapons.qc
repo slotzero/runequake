@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.37 2004/07/05 07:55:47 slotzero Exp $
+/*  $Id: weapons.qc,v 1.38 2004/07/07 01:17:07 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1390,6 +1390,9 @@ ImpulseCommands =
 		self.impulse = self.impulse - IMP_WEAPON_BASE + IMP_WEAPON_START;
 		W_ChangeWeapon (0, 1);
 	}
+
+	else if (self.impulse == IMP_VOTE_YES)
+		vote_yes ();
 
 	else if (self.impulse == IMP_VOTE_EXIT
 			|| self.impulse == IMP_VOTE_TEAM
