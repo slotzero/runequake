@@ -1,4 +1,4 @@
-// $Id: combat.qc,v 1.9 2002/07/11 14:17:19 slotzero Exp $
+// $Id: combat.qc,v 1.10 2002/07/17 03:47:21 slotzero Exp $
 
 /*
 ============
@@ -165,24 +165,26 @@ T_Damage =
 	}
 
 	// Environmental Protections
-	if ((targ.runetype == RN_ENVIRO || targ.items & IT_SUIT) &&
-			((attacker.solid == SOLID_BSP && attacker != world) ||
-			attacker.classname == "trap_shooter" ||
-			attacker.classname == "fireball" ||
-			inflictor.classname == "deathorb" ||
-			inflictor.classname == "gfire" ||
-			inflictor.classname == "radioactive" ||
-			attacker.classname == "trap_spikeshooter" ||
-			attacker.classname == "trigger_hurt" ||
-			dtype == "barrel" ||
-			dtype == "squish" ||
-			dtype == "lavagun" ||
-			dtype == "flamethrower" ||
-			dtype == "kamikaze" ||
-			// dtype == "teledeath" ||
-			dtype == "dspotexplode" ||
-			dtype == "ftrapexplode"))
-		damage = 0;
+	if (environmental (targ))
+	{
+		if (((attacker.solid == SOLID_BSP && attacker != world) ||
+				attacker.classname == "trap_shooter" ||
+				attacker.classname == "fireball" ||
+				inflictor.classname == "deathorb" ||
+				inflictor.classname == "gfire" ||
+				inflictor.classname == "radioactive" ||
+				attacker.classname == "trap_spikeshooter" ||
+				attacker.classname == "trigger_hurt" ||
+				dtype == "barrel" ||
+				dtype == "squish" ||
+				dtype == "lavagun" ||
+				dtype == "flamethrower" ||
+				dtype == "kamikaze" ||
+				// dtype == "teledeath" ||
+				dtype == "dspotexplode" ||
+				dtype == "ftrapexplode"))
+			damage = 0;
+	}
 
 	if (targ.runetype)
 	{
