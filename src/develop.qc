@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.38 2003/07/17 00:41:20 slotzero Exp $
+/*  $Id: develop.qc,v 1.39 2003/07/26 02:00:07 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -22,6 +22,19 @@
 //-------------------------------------------------------------------
 
 float DEVELOPER_MODE = 0;
+
+void (.float field, float bit, float admin_only)
+remove_player_bit =
+{
+	local entity e;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		e.field = e.field - e.field & bit;
+		e = find (e, classname, "player");
+	}
+};
 
 void ()
 Test_Button =

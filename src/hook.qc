@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.8 2003/06/24 22:17:38 slotzero Exp $
+/*  $Id: hook.qc,v 1.9 2003/07/26 02:00:08 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -430,12 +430,13 @@ change_hook_mode =
 		cvar_set ("temp1", s);
 
 		// Remove the vote bit from all players.
-		e = find (world, classname, "player");
+		/* e = find (world, classname, "player");
 		while (e)
 		{
 			e.aqflags = e.aqflags - e.aqflags & AQ_VOTE_HOOK;
 			e = find (e, classname, "player");
-		}
+		} */
+		remove_player_bit (aqflags, AQ_VOTE_HOOK, 0);
 	}
 };
 

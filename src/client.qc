@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.24 2003/07/24 03:38:21 slotzero Exp $
+/*  $Id: client.qc,v 1.25 2003/07/26 02:00:07 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -636,7 +636,8 @@ PutClientInServer =
 
 	// Do not allow firing immediately after you respawn to prevent
 	// your from losing your spawn shield.
-	self.attack_finished = time + 1.5;
+	if (!deathmatch & DM_MODE_PRACTICE)
+		self.attack_finished = time + 1.5;
 
 	self.th_pain = player_pain;
 	self.th_die = PlayerDie;
@@ -722,6 +723,7 @@ PutClientInServer =
 		{
 			self.invincible_finished
 				= time + SPAWN_PROTECT_DURATION;
+			self.takedamage = DAMAGE_NO;
 			self.aqstate = self.aqstate | AQS_SPAWN_PROTECT;
 			self.effects = self.effects | EF_BRIGHTFIELD;
 		}

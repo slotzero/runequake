@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.53 2003/07/24 03:38:22 slotzero Exp $
+/*  $Id: rjs.qc,v 1.54 2003/07/26 02:00:08 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -3125,6 +3125,7 @@ spawn_protect_off =
 		self.aqstate = self.aqstate - AQS_SPAWN_PROTECT;
 		self.invincible_time = 0;
 		self.invincible_finished = 0;
+		self.takedamage = DAMAGE_AIM;
 		self.effects = self.effects - (self.effects & EF_BRIGHTFIELD);
 	}
 };
