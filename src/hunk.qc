@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.15 2004/04/10 02:26:42 slotzero Exp $
+/*  $Id: hunk.qc,v 1.16 2004/04/10 02:57:54 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -17,18 +17,12 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-/*	HUNK CONTEXT ALLOCATION
+/*	HUNK CONTEXT ALLOCATION [quake: 4096 / proquake: 16384]
 
 	%0 - %9		= [DO NOT USE]
 
 	// server_time(), update_server_time()
 	%10		= float time
-
-	// sized_customs_count(), update_customs_count()
-	%21		= float small levels left in map rotation
-	%22		= float medium levels left in map rotation
-	%23		= float large levels left in map rotation
-	%30		= XXX temp value / is this needed???
 
 	// Log_Client_Disconnect(), Client_Disconnect_Log()
 	%100 - %103	= string netname	%104	= float elapsed
