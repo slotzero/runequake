@@ -1,4 +1,4 @@
-// $Id: items.qc,v 1.10 2002/04/29 23:38:52 slotzero Exp $
+// $Id: items.qc,v 1.11 2002/04/30 20:53:20 slotzero Exp $
 
 void (entity e, float chan, string samp, float vol, float atten)
 item_sound =
@@ -327,7 +327,8 @@ armor_touch =
 void (float it_skin)
 armor_set =
 {
-	precache_model ("progs/armor.mdl");
+	if (!spawn_no_precache)
+		precache_model ("progs/armor.mdl");
 
 	self.touch	= armor_touch;
 	self.skin	= it_skin;
