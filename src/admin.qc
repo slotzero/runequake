@@ -1,4 +1,4 @@
-// $Id: admin.qc,v 1.6 2002/05/29 03:34:32 slotzero Exp $
+// $Id: admin.qc,v 1.7 2002/06/01 06:44:41 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -95,7 +95,13 @@ admin_Toggle =
 	if (ADMIN_PASSCODE_REAL < 100000 || ADMIN_PASSCODE_REAL > 888888)
 	{
 		if (tell)
-			sprint (self, "Invalid admin passcode in settings.qc\n");
+		{
+			sprint (self, "Invalid admin passcode in");
+			if (admin_passcode_cvar > 0)
+				sprint (self, " gamecfg\n");
+			else
+				sprint (self, " settings.qc\n");
+		}
 		return;
 	}
 

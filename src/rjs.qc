@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.16 2002/06/01 03:24:33 slotzero Exp $
+// $Id: rjs.qc,v 1.17 2002/06/01 06:44:42 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -763,6 +763,15 @@ disp_info =
 		self_sprint (self, " secs left\n");
 	}
 
+	// forward dest
+	if (all || 0)
+	{
+		self_sprint (self, "forward_dest:");
+		self_sprint2 (self, "\n 1 ", FORWARD_DEST_1);
+		self_sprint2 (self, "\n 2 ", FORWARD_DEST_2);
+		self_sprint2 (self, "\n 2 ", FORWARD_DEST_3);
+		self_sprint3 (self, "\n 3 ", FORWARD_DEST_4, "\n");
+	}
 };
 
 void (float n)
