@@ -1,8 +1,8 @@
-$Id: Changes,v 1.49 2004/02/22 03:59:13 slotzero Exp $
+$Id: Changes,v 1.50 2004/02/24 01:09:28 slotzero Exp $
 
+electric rune takes 1/2 damage from lightning gun attacks while building ammo.
 removed barrier from all exits (even custom)
 changed sonar distance to be more like feet using tiles in e1m2 (1 tile = 1 foot).
-increased hook speed
 added health (25) to athlete
 added practice mode to admin menu
 exit-level will go to forced map (voted)
