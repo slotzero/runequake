@@ -1,4 +1,4 @@
-// $Id: settings.qc,v 1.2 2002/06/01 03:24:33 slotzero Exp $
+// $Id: settings.qc,v 1.3 2002/06/01 05:53:57 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -80,16 +80,16 @@ string_init =
 
 	FORWARD_MAX_PLAYERS	= 0;	// 0 = disabled
 
-	FORWARD_DEST_1		= "D1";
-	FORWARD_NAME_1		= string_null;
+	FORWARD_DEST_1		= IN_POQ("quake.runequake.com", "qw.runequake.com");
+	FORWARD_NAME_1		= "Rune Quake Development Server";
 
-	FORWARD_DEST_2		= "D2";
+	FORWARD_DEST_2		= string_null;
 	FORWARD_NAME_2		= string_null;
 
-	FORWARD_DEST_3		= "D3";
+	FORWARD_DEST_3		= string_null;
 	FORWARD_NAME_3		= string_null;
 
-	FORWARD_DEST_4		= "D4";
+	FORWARD_DEST_4		= string_null;
 	FORWARD_NAME_4		= string_null;
 
 	// If you want admins to be able to forward players manually, as
