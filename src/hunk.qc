@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.16 2004/04/10 02:57:54 slotzero Exp $
+/*  $Id: hunk.qc,v 1.17 2004/06/26 05:34:27 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -73,8 +73,6 @@ Get_Hunk =
 		return world;
 
 	hunk = *AddInt(AddInt(&progs, %-16), type);
-	if (*hunk[%0] != *HUNK_SENTINAL)
-		dprint ("Write_Hunk(): hunk != HUNK_SENTINAL\n");
 
 	return *AddInt(&hunk, 4 * offset);
 };
