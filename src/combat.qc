@@ -1,4 +1,4 @@
-// $Id: combat.qc,v 1.4 2002/05/10 03:09:21 slotzero Exp $
+// $Id: combat.qc,v 1.5 2002/06/23 22:29:38 slotzero Exp $
 
 /*
 ============
@@ -171,7 +171,10 @@ T_Damage =
 			dtype == "squish" ||
 			dtype == "lavagun" ||
 			dtype == "flamethrower" ||
-			dtype == "kamikaze"))
+			dtype == "kamikaze" ||
+			dtype == "teledeath" ||
+			dtype == "dspotexplode" ||
+			dtype == "ftrapexplode"))
 		damage = 0;
 
 	if (targ.runetype)
