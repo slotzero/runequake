@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.22 2004/07/12 02:48:33 slotzero Exp $
+/*  $Id: vote.qc,v 1.23 2004/07/12 04:12:43 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -418,12 +418,44 @@ vote =
 		// cancel	= 1;
 		e.frag_rate	= 0.51; // XXX
 		e.think1	= setquad;
-		e.noise2	= " Quad Damage";
 
 		if (NO_QUADS)
-			e.noise1	= "enable";
+			e.noise1	= "enable quad";
 		else
-			e.noise1	= "disable";
+			e.noise1	= "disable quad";
+	}
+	else if (self.impulse == IMP_VOTE_PENT)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= setpent;
+
+		if (NO_PENTS)
+			e.noise1	= "enable pentagram";
+		else
+			e.noise1	= "disable pentagram";
+	}
+	else if (self.impulse == IMP_VOTE_RING)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= setring;
+
+		if (NO_RINGS)
+			e.noise1	= "enable ring of shadows";
+		else
+			e.noise1	= "disable ring of shadows";
+	}
+	else if (self.impulse == IMP_VOTE_SUIT)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= setsuit;
+
+		if (NO_SUITS)
+			e.noise1	= "enable environmental suit";
+		else
+			e.noise1	= "disable environmental suit";
 	}
 	else
 		cancel = -1;
@@ -558,5 +590,5 @@ show_votes =
 		self_sprint_float (self, no);  self_sprint (self, " no\n");
 	}
 	else
-		self_sprint (self, "No votes\n");
+		self_sprint (self, "No vote\n");
 };
