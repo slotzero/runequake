@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.9 2005/01/16 22:49:50 slotzero Exp $
+/*  $Id: arena.qc,v 1.10 2005/01/17 06:51:26 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -31,6 +31,7 @@
 // arena.enemy		= last person to kill
 // arena.oldenemy	= first person to kill, if both dead
 // arena.aiment		= last person to die
+// arena.goalentity	= first person to die, if both death
 // arena.movetarget	= winner
 
 float ()
@@ -269,7 +270,10 @@ arena_death =
 		attacker = targ;
 
 	if (arena.enemy)
-		arena.oldenemy = arena.enemy;
+	{
+		arena.oldenemy   = arena.enemy;
+		arena.goalentity = arena.aiment;
+	}
 
 	arena.enemy	= attacker;
 	arena.aiment	= targ;
@@ -281,14 +285,15 @@ arena_death =
 void ()
 arena_init =
 {
-	arena.state	= -1;
-	arena.deadflag	= 0;
-	arena.enemy	= world;
-	arena.oldenemy	= world;
-	arena.aiment	= world;
+	arena.state		= -1;
+	arena.deadflag		= 0;
+	arena.enemy		= world;
+	arena.oldenemy		= world;
+	arena.aiment		= world;
+	arena.goalentity	= world;
 
-	arena.think	= arena_countdown;
-	arena.nextthink	= time + 1;
+	arena.think		= arena_countdown;
+	arena.nextthink		= time + 1;
 };
 
 float ()
