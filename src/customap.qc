@@ -1,4 +1,4 @@
-/*  $Id: customap.qc,v 1.2 2003/10/26 21:06:42 slotzero Exp $
+/*  $Id: customap.qc,v 1.3 2003/10/28 02:41:20 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -22,36 +22,42 @@ sized_customs_count =
 {
 	local float i;
 
-	if (levsize == 1)	return floor (Read_Hunk_Float (HUNK_CONTEXT, %21));
-	else if (levsize == 2)	return floor (Read_Hunk_Float (HUNK_CONTEXT, %22));
+	if	(levsize == 1)	return floor (Read_Hunk_Float (HUNK_CONTEXT, %21));
+	else if	(levsize == 2)	return floor (Read_Hunk_Float (HUNK_CONTEXT, %22));
 	else if (levsize == 3)	return floor (Read_Hunk_Float (HUNK_CONTEXT, %23));
-	else			return floor (Read_Hunk_Float (HUNK_CONTEXT, %20));
+	else			return 0;
 };
 
 void (float levsize, float total)
 update_customs_count =
 {
-	if (levsize == 1)	Write_Hunk_Float (HUNK_CONTEXT, %21, total);
-	else if (levsize == 2)	Write_Hunk_Float (HUNK_CONTEXT, %22, total);
+	if	(levsize == 1)	Write_Hunk_Float (HUNK_CONTEXT, %21, total);
+	else if	(levsize == 2)	Write_Hunk_Float (HUNK_CONTEXT, %22, total);
 	else if (levsize == 3)	Write_Hunk_Float (HUNK_CONTEXT, %23, total);
-	else			Write_Hunk_Float (HUNK_CONTEXT, %20, total);
 };
 
 float (float levsize)
 customs_hunk_pos =
 {
-	if (levsize == 1)	return %200;
-	else if (levsize == 2)	return %400;
-	else			return %600;
+	if	(levsize == 1)	return %200;
+	else if	(levsize == 2)	return %400;
+	else if	(levsize == 3)	return %600;
+	else			return %0;
 };
 
-float (float levsize, float pos)
+float (float levsize)
 customs_to_hunk =
 {
-	local float i, n, max, total;
+	local float i, n, max, pos, total;
 	local string level;
 
 	max = sized_custom_count (levsize) * %1;
+	if (!max)
+		return 0;
+
+	pos = customs_hunk_pos (levsize);
+	if (!pos)
+		return 0;
 
 	total = 0;
 	for (i = %0; i < max; i = i + %1)
@@ -63,55 +69,35 @@ customs_to_hunk =
 		else
 		{
 			total = total + 1;
-			if (pos)
-				Write_Hunk (HUNK_CONTEXT, pos + (i * 3), level);
+			Write_Hunk (HUNK_CONTEXT, pos + (i * 3), level);
 		}
 	}
+	update_customs_count (levsize, total);
+
 	return total;
 };
 
 void (float levsize)
 sized_customs_to_hunk =
 {
-	local float i, pos, total;
-
-	// This can be triggered if maps are sized, so no need to
-	// load them if you can't play them.
-	if (noexit & NOEXIT_NO_CUSTOM_LEVELS)
-		return;
+	local float total;
 
 	total = 0;
 
 	// small
 	if (!levsize || levsize == 1)
-	{
-		pos = customs_hunk_pos (1);
-		i = customs_to_hunk (1, pos);
-		update_customs_count (1, i);
-		total = i;
-	}
+		total = total + customs_to_hunk (1);
 
 	// medium
 	if (!levsize || levsize == 2)
-	{
-		pos = customs_hunk_pos (2);
-		i = customs_to_hunk (2, pos);
-		update_customs_count (2, i);
-		total = total + i;
-	}
+		total = total + customs_to_hunk (2);
 
 	// large
-	if (levsize == 3 || !levsize)
-	{
-		pos = customs_hunk_pos (3);
-		i = customs_to_hunk (3, pos);
-		update_customs_count (3, i);
-		total = total + i;
-	}
+	if (!levsize || levsize == 3)
+		total = total + customs_to_hunk (3);
 
-	// all
-	if (!levsize)
-		update_customs_count (0, total);
+	if (!total)
+		return;
 
 	dprint_float (total);
 	if (levsize)
@@ -128,8 +114,9 @@ remove_custom_from_hunk =
 	local float hunk_pos, max, total;
 	local string new;
 
-	if (levsize < 1 || levsize > 3)
-		levsize = 1;
+	// Check map script for levels first.
+	if (!sized_custom_count (levsize))
+		return string_null;
 
 	total = sized_customs_count (levsize);
 	if (!total)
@@ -171,19 +158,18 @@ custom_maps =
 	sized_customs_to_hunk (0);
 };
 
-string ()
+string (float levsize)
 select_custom =
 {
 	local float i, nmaps, sized, levsize, randomly;
 	local string s;
 
-	sized = noexit & NOEXIT_CHOOSE_BY_NPLAYERS;
 	randomly = noexit & NOEXIT_RANDOMIZE;
 
 	dprint ("select_custom()\n");
-	if (sized)
+
+	if (levsize)
 	{
-		levsize = pick_map_size ();
 		nmaps = sized_customs_count (levsize);
 		if (!nmaps && !noexit & NOEXIT_CUSTOM_LEVELS_ONLY)
 			return string_null;
@@ -199,6 +185,7 @@ select_custom =
 	else
 	{
 		// XXX Do this with bitwise ops instead?
+		// XXX Check to make sure levels are defined in QC first.
 		i = ceil (random () * 3);
 		if (i == 1)
 		{
@@ -220,8 +207,6 @@ select_custom =
 				nmaps = sized_customs_count (1);
 				i = 1;
 			}
-			randomly = ceil (random () * nmaps);
-			return remove_custom_from_hunk (i, randomly);
 		}
 		else if (i == 2)
 		{
@@ -243,8 +228,6 @@ select_custom =
 				nmaps = sized_customs_count (2);
 				i = 2;
 			}
-			randomly = ceil (random () * nmaps);
-			return remove_custom_from_hunk (i, randomly);
 		}
 		else
 		{
@@ -267,8 +250,8 @@ select_custom =
 				nmaps = sized_customs_count (3);
 				i = 3;
 			}
-			randomly = ceil (random () * nmaps);
-			return remove_custom_from_hunk (i, randomly);
 		}
+		randomly = ceil (random () * nmaps);
+		return remove_custom_from_hunk (i, randomly);
 	}
 };

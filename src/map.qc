@@ -1,4 +1,4 @@
-/*  $Id: map.qc,v 1.11 2003/10/26 21:06:43 slotzero Exp $
+/*  $Id: map.qc,v 1.12 2003/10/28 02:41:21 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -285,10 +285,6 @@ select_map =
 	}
 
 	dprint ("select_map()\n");
-	if (i)
-		s = select_custom();
-	else
-		s = string_null;
 
 	if (sized)
 	{
@@ -302,6 +298,11 @@ select_map =
 		if (!randomly)
 			curmap = "dm6";
 	}
+
+	if (i)
+		s = select_custom (levsize);
+	else
+		s = string_null;
 
 	reps = 0;
 	while (reps < 100 && s == string_null)
@@ -396,6 +397,7 @@ select_map =
 				curmap = "dm6";
 		}
 	}
+
 	if (s != string_null)
 		return s;
 	else

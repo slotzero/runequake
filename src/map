@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#    $Id: map,v 1.13 2003/10/26 23:42:08 slotzero Exp $
+#    $Id: map,v 1.14 2003/10/28 02:41:20 slotzero Exp $
 
 use strict;
 use warnings;
@@ -177,10 +177,6 @@ for my $size (1..$#custom_lev)
 	my $max = scalar @{ $custom_lev[$size] };
 	print "\tif (levsize == $size) return $max;\n";
 }
-if (!$#custom_lev)
-{
-	print "\terror (\"invalid arg\");\n";
-}
 print "\treturn FALSE;\n";
 print "};\n";
 
@@ -219,10 +215,6 @@ for my $size (1..$#custom_lev)
 		print "\t\tif (n == $ix) return \"$map\";\n";
 	}
 	print "\t}\n";
-}
-if (!$#custom_lev)
-{
-	print "\terror (\"invalid arg\");\n";
 }
 print "\treturn string_null;\n";
 print "};\n";
