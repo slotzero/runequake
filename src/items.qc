@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.39 2004/04/05 10:34:52 slotzero Exp $
+/*  $Id: items.qc,v 1.40 2004/04/24 04:09:02 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -440,6 +440,9 @@ armor_touch =
 void ()
 armor_cycle =
 {
+	if (!deathmatch & DM_ROTATING_ARMORS)
+		return;
+
 	if (self.runetype < time)
 	{
 		self.skin = self.skin + 1;
@@ -447,7 +450,6 @@ armor_cycle =
 			self.skin = 0;
 	}
 
-	// self.nextthink	= (time + 5) - (self.skin * 1);
 	self.nextthink	= time + 1;
 	self.think	= armor_cycle;
 };

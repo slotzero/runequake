@@ -1,4 +1,4 @@
-/*  $Id: runes40.qc,v 1.16 2004/02/29 23:15:08 slotzero Exp $
+/*  $Id: runes40.qc,v 1.17 2004/04/24 04:09:02 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -263,6 +263,7 @@ shambler_slave_retribution =
 	shambler_slave_respawn (sham, 0);
 	sham.trigger_field.runevar = 1;
 	sham.super_damage_finished = time + 15;
+	Hat_Spawn (sham, "progs/quaddama.mdl", '0 0 60', VEC_ORIGIN, 4);
 	sham.effects = sham.effects | EF_DIMLIGHT;
 	sprint (sham.owner, "Shambler seeks retribution!\n");
 
