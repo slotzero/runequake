@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.38 2002/10/05 04:33:10 slotzero Exp $
+// $Id: rjs.qc,v 1.39 2002/10/05 20:57:56 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -220,8 +220,6 @@ rjs_worldspawn =
 
 	set_version ();
 	sys_ticrate = cvar ("sys_ticrate");
-	string_init ();
-	string_init_2 ();
 	vote_counter_spawn ();
 	frag_init ();
 	orig_serverflags = serverflags;

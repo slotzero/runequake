@@ -1,4 +1,4 @@
-// $Id: defs.qc,v 1.21 2002/10/05 04:33:09 slotzero Exp $
+// $Id: defs.qc,v 1.22 2002/10/05 20:57:55 slotzero Exp $
 
 /*
 ==============================================================================
@@ -342,6 +342,9 @@ float in_runedesc_hack;
 // This is used to return a second value from team_stats_1().
 float team_stats_1_lead;
 float NO_FRAGS = -23000;
+
+// This holds either the passcode in settings.qc or gamecfg.
+float ADMIN_PASSCODE_REAL;
 
 // Various cvars initialized only at the start of the level.
 float sys_ticrate;
@@ -702,15 +705,6 @@ float ITEM_PENT = 1;
 float ITEM_QUAD = 2;
 float ITEM_EYES = 4;
 float ITEM_SUIT = 8;
-
-// These belong in settings.qc, but you can't initialize a string global.
-// I'm declaring them here to keep it less confusing there.
-float FORWARD_MAX_PLAYERS, ADMIN_PASSCODE_REAL;
-string FORWARD_DEST, FORWARD_NAME;
-string START_LEVEL_EXEC;
-string SPLASH_1, SPLASH_2, SPLASH_3, SPLASH_4;
-string CSHIFT_BLIND, CSHIFT_CLOAK, CSHIFT_FREEZE, CSHIFT_NONE, CSHIFT_SHIELD;
-string SOUND_RUNE_PICKUP;
 
 // miscellaneous constants which should have been defined
 float SERVERFLAGS_RUNE_MASK	= 15;
