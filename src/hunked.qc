@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.17 2004/06/26 04:07:49 slotzero Exp $
+/*  $Id: hunked.qc,v 1.18 2004/07/03 08:45:09 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -154,7 +154,7 @@ Log_Client_Disconnect =
 
 	for (i = max; i >= %0; i = i - %1)
 	{
-		e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 5), 16);
+		e_name = Read_Hunk_String_Max (HUNK_CONTEXT, offset + (i * 5), 16);
 		if (e_name == self.netname)
 			n = i;
 	}
@@ -166,7 +166,7 @@ Log_Client_Disconnect =
 	{
 		if (i != max)
 		{
-			e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 5), 16);
+			e_name = Read_Hunk_String_Max (HUNK_CONTEXT, offset + (i * 5), 16);
 			Write_Hunk_Max (HUNK_CONTEXT, offset + ((i + %1) * 5), e_name, 16);
 			e_time = Read_Hunk_Float (HUNK_CONTEXT, offset + %4 + (i * 5));
 			Write_Hunk_Float (HUNK_CONTEXT, offset + %4 + ((i + %1) * 5), e_time);
@@ -211,7 +211,7 @@ Client_Disconnect_Log =
 
 		if (e_time)
 		{
-			e_name = Read_Hunk_Max (HUNK_CONTEXT, offset + (i * 5), 16);
+			e_name = Read_Hunk_String_Max (HUNK_CONTEXT, offset + (i * 5), 16);
 			self_sprintf_len (self, e_name, -16);
 			e_name = parse_time (e_away);
 			self_sprintf_len (self, e_name, 10);
