@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.10 2004/07/18 14:17:28 slotzero Exp $
+/*  $Id: toggle.qc,v 1.11 2004/07/18 14:49:53 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -155,4 +155,17 @@ void ()
 setalts =
 {
 	NO_ALT_WEAPONS = fput (HUNK_NO_ALT_WEAPONS, !NO_ALT_WEAPONS);
+	if (NO_ALT_WEAPONS)
+	{
+		e = find (world, classname, "player");
+		while (e)
+		{
+			os = self;
+			self = e;
+			if (self.weapon & WEAPON_ALT)
+				set_weapon (W_BestWeapon ());
+			self = os;
+			e = find (e, classname, "player");
+		}
+	}
 };
