@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.18 2004/02/21 09:03:05 slotzero Exp $
+/*  $Id: combat.qc,v 1.19 2004/02/24 23:57:08 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -161,8 +161,7 @@ T_Damage =
 	if (attacker.runetype)
 	{
 		// impact and lumberjack rune do more
-		if (attacker.runetype == RN_IMPACT
-				|| attacker.runetype == RN_LUMBER)
+		if (attacker.runetype == RN_IMPACT || attacker.runetype == RN_LUMBER)
 			damage = damage * 1.1;
 
 		// Rune of Strength deals twice damage.
@@ -205,11 +204,9 @@ T_Damage =
 
 	if (targ.runetype)
 	{
-		// Athlete's Rune reduces damage slightly
 		if (targ.runetype == RN_ATHLETE)
 			damage = damage * 0.9;
 
-		// The Rune of Resistance cuts damage taken.
 		else if (targ.runetype == RN_RESIST)
 		{
 			damage = damage * 0.5;
@@ -219,22 +216,31 @@ T_Damage =
 		else if (targ.runetype == RN_BERSERK)
 			damage = damage * 3;
 
-		// Uncloak when hurt
+		else if (targ.runetype == RN_ZAP)
+		{
+			if (dtype == "zapped" || dtype == "lightning")
+				damage = damage * 0.5;
+		}
+
 		else if (targ.runetype == RN_CLOAK)
 			targ.runetime = time + RECLOAK_DELAY;
 
-		else if (targ.runetype == RN_MONK
-				&& targ.runevar
-				&& attacker.runetype != RN_BERSERK
-				&& dtype != "kamikaze"
-				&& dtype != "bfgtouch"
-				&& dtype != "bfgblast"
-				&& dtype != "teledeath"
-				&& dtype != "teledeath2"
-				&& dtype != "lumber")
+		else if (targ.runetype == RN_MONK)
 		{
-			damage = 0;
-			monk_protect (targ);
+			if (targ.runevar)
+			{
+				if (attacker.runetype != RN_BERSERK
+						&& dtype != "kamikaze"
+						&& dtype != "bfgtouch"
+						&& dtype != "bfgblast"
+						&& dtype != "teledeath"
+						&& dtype != "teledeath2"
+						&& dtype != "lumber")
+				{
+					damage = 0;
+					monk_protect (targ);
+				}
+			}
 		}
 
 		else if (targ.runetype == RN_TORCH && attacker.classname == "fireball")
@@ -246,8 +252,7 @@ T_Damage =
 			if (targ.runevar == 1 && targ.runetime < time)
 			{
 				targ.runetime = time + 1;
-				sound (targ, CHAN_BODY, "items/protect3.wav",
-					1, ATTN_NORM);
+				sound (targ, CHAN_BODY, "items/protect3.wav", 1, ATTN_NORM);
 				targ.runevar = targ.runevar + 1;
 			}
 		}
@@ -338,12 +343,6 @@ T_Damage =
 	// save damage based on the target's armor level
 	save = 0;
 
-	/* if (teamplay & TEAM_ARMOR_PROT
-			&& teamplay & TEAM_SELF_ARMOR_PROT
-			&& targ.team > 0
-			&& targ.team == attacker.team
-			&& dtype != "kamiself")
-		SUB_Null (); */
 	if (teamplay & TEAM_ARMOR_PROT
 			&& targ.team > 0
 			&& targ.team == attacker.team
@@ -410,13 +409,6 @@ T_Damage =
 		take = 0;
 	}
 
-	// team play damage avoidance
-	/* else if (teamplay & TEAM_HEALTH_PROT
-			&& teamplay & TEAM_SELF_HEALTH_PROT
-			&& targ.team > 0
-			&& targ.team == attacker.team
-			&& dtype != "kamiself")
-		take = 0; */
 	else if (teamplay & TEAM_HEALTH_PROT
 			&& targ.team > 0
 			&& targ.team == attacker.team
