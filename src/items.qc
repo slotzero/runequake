@@ -1,4 +1,4 @@
-// $Id: items.qc,v 1.12 2002/05/04 05:53:05 slotzero Exp $
+// $Id: items.qc,v 1.13 2002/05/04 17:30:24 slotzero Exp $
 
 void (entity e, float chan, string samp, float vol, float atten)
 item_sound =
@@ -29,14 +29,11 @@ blink_item =
 		local float i;
 
 		i = self.cnt - time;
-
 		if ((i - floor (i)) >= 0.5)
 			setmodel (self, self.mdl);
 		else
 			setmodel (self, string_null);
-
 		self.nextthink = time + 0.5;
-
 		return;
 	}
 	remove (self);
@@ -142,8 +139,6 @@ T_Heal =
 
 	return 1;
 };
-
-
 
 /* QUAKED item_health (.3 .3 1) (0 0 0) (32 32 32) rotten megahealth
 Health box. Normally gives 25 points.
@@ -388,38 +383,42 @@ item_armorInv =
 void ()
 drop_armor =
 {
-	local entity e;
+	local entity item;
 
-	e		= spawn ();
-	e.runevar	= 1;
-	e.classname	= "dropped_armor";
-	e.armortype	= self.armortype;
-	e.armorvalue	= self.armorvalue;
-	e.origin	= self.origin;
-	e.velocity_z	= 300;
-	e.velocity_x	= -100 + (random () * 200);
-	e.velocity_y	= -100 + (random () * 200);
-	e.flags		= FL_ITEM;
-	e.solid		= SOLID_TRIGGER;
-	e.movetype	= MOVETYPE_TOSS;
-	e.mdl		= "progs/armor.mdl";
-	setmodel (e, e.mdl);
+	item		= spawn ();
+	item.runevar	= 1;
+	item.classname	= "dropped_armor";
+	item.armortype	= self.armortype;
+	item.armorvalue	= self.armorvalue;
+	item.origin	= self.origin;
+	item.velocity_z	= 300;
+	item.velocity_x	= -100 + (random () * 200);
+	item.velocity_y	= -100 + (random () * 200);
+	item.flags	= FL_ITEM;
+	item.solid	= SOLID_TRIGGER;
+	item.movetype	= MOVETYPE_TOSS;
+	item.mdl	= "progs/armor.mdl";
 
-	e.aqstate = armor_type_to_it (e.armortype);
-	if (e.aqstate == IT_ARMOR1)		{ e.skin = 0; }
-	else if (e.aqstate == IT_ARMOR2)	{ e.skin = 1; }
-	else if (e.aqstate == IT_ARMOR3)	{ e.skin = 2; }
+	item.aqstate = armor_type_to_it (item.armortype);
+	if (item.aqstate == IT_ARMOR1)
+		item.skin = 0;
+	else if (item.aqstate == IT_ARMOR2)
+		item.skin = 1;
+	else if (item.aqstate == IT_ARMOR3)
+		item.skin = 2;
 	else
 	{
-		remove (e);
+		remove (item);
 		return;
 	}
 
-	setsize (e, '-16 -16 0', '16 16 56');
-	e.touch = armor_touch;
-	e.cnt	= time + DROP_ARMOR_DURATION;
-	e.nextthink = e.cnt - 3; // blink before removing
-	e.think = blink_item;
+	setmodel (item, item.mdl);
+	setsize (item, '-16 -16 0', '16 16 56');
+
+	item.touch	= armor_touch;
+	item.cnt	= time + DROP_ARMOR_DURATION;
+	item.nextthink	= item.cnt - 3; // blink before removing
+	item.think	= blink_item;
 };
 
 /*
