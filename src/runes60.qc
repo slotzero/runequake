@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.45 2004/06/06 08:43:17 slotzero Exp $
+/*  $Id: runes60.qc,v 1.46 2004/06/25 06:19:43 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -567,7 +567,9 @@ AntiPack_Think =
 
 	if (self.runetime < time)
 	{
-		maybe_update_trap_count (self.owner, RN_ANTIPACK);
+		if (maybe_update_trap_count (self.owner, RN_ANTIPACK))
+			self_sprint (self.owner, "An anti-pack expired\n");
+
 		remove (self);
 	}
 };
