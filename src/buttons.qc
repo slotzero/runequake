@@ -1,4 +1,4 @@
-/*  $Id: buttons.qc,v 1.13 2005/01/22 19:08:23 slotzero Exp $
+/*  $Id: buttons.qc,v 1.14 2005/01/22 20:11:15 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -139,14 +139,17 @@ func_button =
 		precache_noise ("buttons/switch04.wav");
 
 	// Activate bridge button on E1M7.
-	if (!scratch1 & S1_ORIGINAL_LEVELS && world.model == "maps/e1m7.bsp"
-			&& self.target == "t9")
+	if (!scratch1 & S1_ORIGINAL_LEVELS && mapname == "e1m7"	&& self.target == "t9")
 	{
 		self.state = STATE_BOTTOM;
 		self.speed = 40;
 
 		button_use ();
 	}
+
+	// This button causes packet overflows.
+	if (mapname == "xarena3")
+		remove (self);
 
 	SetMovedir ();
 
