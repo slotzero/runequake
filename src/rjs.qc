@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.35 2002/09/29 01:34:44 slotzero Exp $
+// $Id: rjs.qc,v 1.36 2002/09/30 00:04:57 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -78,9 +78,6 @@ cloaked_sound =
 void (entity e, string samp)
 self_sound =
 {
-	if (is_qsmack_e (e))
-		return;
-
 	self_stuffcmd (e, "play ");
 	self_stuffcmd (e, samp);
 	self_stuffcmd (e, "\n");
@@ -166,26 +163,6 @@ float ()
 is_valid_player =
 {
 	return is_valid_player_e (self);
-};
-
-float (entity e)
-is_qsmack_e =
-{
-	local entity cl;
-
-	cl = *SubInt(AddInt(PSTRING_TO_PQUAKEC, &e.netname), 4 * CL_NAME);
-	cl = *AddInt(cl[CL_NETCONNECTION], PC_TO_PQUAKEC);
-
-	if (*cl[QS_MOD] == *MOD_QSMACK)
-		return TRUE;
-	else
-		return FALSE;
-};
-
-float ()
-is_qsmack =
-{
-	return is_qsmack_e (self);
 };
 
 void (float n)
@@ -1505,11 +1482,9 @@ player_init_switchfire_alias =
 void ()
 player_init =
 {
-	local float i, qsmack;
+	local float i;
 	local string s;
 	local entity e;
-
-	qsmack = is_qsmack ();
 
 	player_init_impulse_alias ("admin-toggle",	IMP_ADMIN_TOGGLE);
 	player_init_impulse_alias ("best-weapon",	IMP_BEST_WEAPON);
@@ -1542,7 +1517,7 @@ player_init =
 							IMP_WEAPON_TOGGLES);
 
 	// Disable client-side ambient sounds.
-	if (scratch1 & S1_AMBIENT_SOUND_OFF && !qsmack)
+	if (scratch1 & S1_AMBIENT_SOUND_OFF)
 		self_stuffcmd (self, "ambient_level 0\n");
 
 	i = 1;
@@ -1577,7 +1552,7 @@ player_init =
 		if (i <= FORWARD_MAX_PLAYERS)
 			i = 0;
 	}
-	if (i && !qsmack)
+	if (i)
 	{
 		self_sprint (self, "The game is full, forwarding to ");
 		self_sprint (self, FORWARD_NAME);
