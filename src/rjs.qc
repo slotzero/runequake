@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.130 2004/07/12 02:48:33 slotzero Exp $
+/*  $Id: rjs.qc,v 1.131 2004/07/12 10:46:39 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2083,16 +2083,16 @@ weapon_num_to_it =
 float (float it)
 weapon_it_to_alt_bit =
 {
+	if (it == IT_AXE)			return AQ_ALT_1;
 	if (deathmatch & DM_NO_ALT_WEAPONS)	return 0;
-	else if (it == IT_AXE)			return AQ_ALT_1;
-	else if (it == IT_SHOTGUN)		return AQ_ALT_2;
-	else if (it == IT_SUPER_SHOTGUN)	return AQ_ALT_3;
-	else if (it == IT_NAILGUN)		return AQ_ALT_4;
-	else if (it == IT_SUPER_NAILGUN)	return AQ_ALT_5;
-	else if (it == IT_GRENADE_LAUNCHER)	return AQ_ALT_6;
-	else if (it == IT_ROCKET_LAUNCHER)	return AQ_ALT_7;
-	else if (it == IT_LIGHTNING)		return AQ_ALT_8;
-	else					return 0;
+	if (it == IT_SHOTGUN)			return AQ_ALT_2;
+	if (it == IT_SUPER_SHOTGUN)		return AQ_ALT_3;
+	if (it == IT_NAILGUN)			return AQ_ALT_4;
+	if (it == IT_SUPER_NAILGUN)		return AQ_ALT_5;
+	if (it == IT_GRENADE_LAUNCHER)		return AQ_ALT_6;
+	if (it == IT_ROCKET_LAUNCHER)		return AQ_ALT_7;
+	if (it == IT_LIGHTNING)			return AQ_ALT_8;
+	return 0;
 };
 
 void ()
@@ -2342,7 +2342,7 @@ weapon_it_is_alt =
 float (float use_alt, float anymode)
 W_ChangeWeapon =
 {
-	local float	it;
+	local float it;
 
 	it = weapon_num_to_it (self.impulse);
 
@@ -2352,7 +2352,7 @@ W_ChangeWeapon =
 		return FALSE;
 	}
 
-	if (use_alt && !deathmatch & DM_NO_ALT_WEAPONS)
+	if (use_alt && (!deathmatch & DM_NO_ALT_WEAPONS || it & IT_AXE))
 	{
 		if (!self.aqflags & AQ_NO_WEAPON_TOGGLE
 				&& self.weapon | WEAPON_ALT == it | WEAPON_ALT
@@ -2367,7 +2367,7 @@ W_ChangeWeapon =
 			it = it + WEAPON_ALT;
 	}
 
-	if (it & WEAPON_ALT && deathmatch & DM_NO_ALT_WEAPONS)
+	if (it & WEAPON_ALT && deathmatch & DM_NO_ALT_WEAPONS && it != WEAPON_HOOK)
 	{
 		sprint (self, "Alternate weapons are disabled\n");
 		return FALSE;
