@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.23 2003/04/14 00:56:13 slotzero Exp $
+/*  $Id: items.qc,v 1.24 2003/06/24 22:17:39 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 

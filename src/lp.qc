@@ -1,4 +1,4 @@
-/*  $Id: lp.qc,v 1.5 2003/04/14 00:56:14 slotzero Exp $
+/*  $Id: lp.qc,v 1.6 2003/06/24 22:17:39 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 

@@ -1,4 +1,4 @@
-/*  $Id: doors.qc,v 1.8 2003/04/14 00:56:12 slotzero Exp $
+/*  $Id: doors.qc,v 1.9 2003/06/24 22:17:37 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 

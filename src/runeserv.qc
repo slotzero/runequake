@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.17 2003/04/25 05:28:16 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.18 2003/06/24 22:17:44 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 

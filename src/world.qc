@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.16 2003/06/07 00:29:24 slotzero Exp $
+/*  $Id: world.qc,v 1.17 2003/06/24 22:17:46 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 

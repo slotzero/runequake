@@ -1,4 +1,4 @@
-/*  $Id: monsters.qc,v 1.6 2003/04/14 00:56:15 slotzero Exp $
+/*  $Id: monsters.qc,v 1.7 2003/06/24 22:17:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 

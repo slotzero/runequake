@@ -1,4 +1,4 @@
-m4_dnl     $Id: head.m4,v 1.4 2003/04/14 00:56:13 slotzero Exp $
+m4_dnl     $Id: head.m4,v 1.5 2003/06/24 22:17:38 slotzero Exp $
 m4_dnl
 m4_dnl     Copyright (C) 1998-2001  Roderick Schertler.
 m4_dnl

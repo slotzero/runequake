@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.47 2003/06/01 11:15:58 slotzero Exp $
+/*  $Id: rjs.qc,v 1.48 2003/06/24 22:17:42 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 

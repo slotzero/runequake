@@ -1,4 +1,4 @@
-/*  $Id: zombie.qc,v 1.11 2003/04/14 00:56:22 slotzero Exp $
+/*  $Id: zombie.qc,v 1.12 2003/06/24 22:17:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 

@@ -1,4 +1,4 @@
-#    $Id: Makefile,v 1.11 2003/06/23 07:52:30 slotzero Exp $
+#    $Id: Makefile,v 1.12 2003/06/24 22:17:33 slotzero Exp $
 
 #    Copyright (C) 1998-2001  Roderick Schertler.
 #

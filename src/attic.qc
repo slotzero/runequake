@@ -1,4 +1,4 @@
-/*  $Id: attic.qc,v 1.3 2003/06/08 07:10:21 slotzero Exp $
+/*  $Id: attic.qc,v 1.4 2003/06/24 22:17:34 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 

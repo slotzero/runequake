@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.4 2003/06/16 20:49:26 slotzero Exp $
+/*  $Id: hunk.qc,v 1.5 2003/06/24 22:17:38 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 

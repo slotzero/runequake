@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.17 2003/05/25 00:11:29 slotzero Exp $
+/*  $Id: observer.qc,v 1.18 2003/06/24 22:17:41 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 

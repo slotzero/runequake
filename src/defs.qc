@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.32 2003/06/08 07:30:42 slotzero Exp $
+/*  $Id: defs.qc,v 1.33 2003/06/24 22:17:36 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 

@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.19 2003/06/12 21:06:49 slotzero Exp $
+/*  $Id: develop.qc,v 1.20 2003/06/24 22:17:36 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 

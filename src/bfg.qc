@@ -1,4 +1,4 @@
-/*  $Id: bfg.qc,v 1.6 2003/04/14 00:56:09 slotzero Exp $
+/*  $Id: bfg.qc,v 1.7 2003/06/24 22:17:34 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 

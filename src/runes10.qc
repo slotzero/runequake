@@ -1,4 +1,4 @@
-/*  $Id: runes10.qc,v 1.10 2003/04/25 05:28:16 slotzero Exp $
+/*  $Id: runes10.qc,v 1.11 2003/06/24 22:17:42 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 

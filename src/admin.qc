@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.18 2003/04/14 00:56:09 slotzero Exp $
+/*  $Id: admin.qc,v 1.19 2003/06/24 22:17:34 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 

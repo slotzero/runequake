@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.15 2003/06/23 19:52:22 slotzero Exp $
+/*  $Id: combat.qc,v 1.16 2003/06/24 22:17:36 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 

@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.13 2003/06/11 23:00:13 slotzero Exp $
+/*  $Id: internal.qc,v 1.14 2003/06/24 22:17:38 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 

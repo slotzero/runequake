@@ -1,4 +1,4 @@
-/*  $Id: shalrath.qc,v 1.7 2003/04/14 00:56:19 slotzero Exp $
+/*  $Id: shalrath.qc,v 1.8 2003/06/24 22:17:44 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 

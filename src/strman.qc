@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.13 2003/06/12 20:47:44 slotzero Exp $
+/*  $Id: strman.qc,v 1.14 2003/06/24 22:17:45 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
