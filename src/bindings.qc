@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.47 2004/07/20 12:27:59 slotzero Exp $
+/*  $Id: bindings.qc,v 1.48 2004/11/13 00:35:57 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -107,12 +107,13 @@ player_bindings_think =
 	{
 		custom_aliases ();
 
-		// XXX I want to put this in settings.qc, but I'm thinking this can be done
-		// more effeciently with internal.qc or just modified the engine.
+		// XXX Move this to settings.qc.
 		if (MAP_IS_CUSTOM)
 		{
 			self_sprint (self, "\nDon't have the map?\n");
-			self_sprint (self, "\nDownload from \bwww.runequake.com\b\n");
+			self_sprint (self, "\nDownload from\n\n\b    ftp.runequake.com/quake/maps/\b\n\nFilename: ");
+			self_sprint (self, mapname);
+			self_sprint (self, ".zip\n");
 		}
 	}
 	else
