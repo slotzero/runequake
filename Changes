@@ -1,6 +1,6 @@
-$Id: Changes,v 1.31 2002/07/20 19:04:29 slotzero Exp $
+$Id: Changes,v 1.32 2002/08/15 09:20:37 slotzero Exp $
 
-Version 0.5.1  Fri Jul 05 07:38:14 EST 2002
+Version 0.5.3  Thu Aug 15 02:20:04 EST 2002
 
     - Bug Fixes
 
@@ -9,7 +9,7 @@ Version 0.5.1  Fri Jul 05 07:38:14 EST 2002
           on or jump instead of just sliding with no ability to move.
 
         - There are times when a zombie can't get up.  If this occurs for
-          longer than 30 seconds, I force zombie_die();
+          longer than 30 seconds, I force zombie_die().
 
         - "Fire traps can sometimes live under water, spray them into the
           water from near the top of the lift by pentagram in e2m5 and
@@ -38,7 +38,16 @@ Version 0.5.1  Fri Jul 05 07:38:14 EST 2002
           more details.
 
         - You can control the intensity of either the gravity well or
-	  the repulsion rune from settings.qc.
+          the repulsion rune from settings.qc.
+
+    - Other Changes
+
+        - The spawn shields no longer deactivate when picking up all items
+          except power-ups.  You're also prohibited from firing for 1-2 seconds
+          immediately after you respawn to prevent you from inadvertently
+          losing your shields.
+
+        - Flash grenades report "blindy by" messages to its victim.
 
 Version 0.5  Sat Jun 29 16:42:54 EST 2002
 

@@ -1,4 +1,4 @@
-// $Id: client.qc,v 1.9 2002/07/20 19:04:33 slotzero Exp $
+// $Id: client.qc,v 1.10 2002/08/15 09:20:41 slotzero Exp $
 
 float modelindex_eyes, modelindex_player;
 
@@ -710,7 +710,10 @@ PutClientInServer =
 
 	DecodeLevelParms ();
 
-	self.attack_finished = time;
+	// Do not allow firing immediately after you respawn to prevent
+	// your from losing your spawn shield.
+	self.attack_finished = time + 1.5;
+
 	self.th_pain = player_pain;
 	self.th_die = PlayerDie;
 

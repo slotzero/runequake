@@ -1,4 +1,4 @@
-// $Id: items.qc,v 1.18 2002/07/19 19:49:02 slotzero Exp $
+// $Id: items.qc,v 1.19 2002/08/15 09:20:41 slotzero Exp $
 
 /* ALL LIGHTS SHOULD BE 0 1 0 IN COLOR ALL OTHER ITEMS SHOULD
 BE .8 .3 .4 IN COLOR */
@@ -32,7 +32,7 @@ item_sound =
 {
 	sound (e, chan, samp, vol, atten);
 	stuffcmd (e, "bf\n");
-	spawn_protect_off_e (e);
+	// spawn_protect_off_e (e);
 };
 
 void (entity e, string s)
@@ -1184,6 +1184,8 @@ powerup_touch =
 		self.think = SUB_regen;
 	}
 
+	spawn_protect_off_e (other);
+
 	item_sound (other, CHAN_AUTO, self.noise, 1, ATTN_NORM);
 	observer_sound (self.noise);
 	self.solid = SOLID_NOT;
@@ -1621,6 +1623,8 @@ drop_powerup_touch =
 	}
 	else
 		return;
+
+	spawn_protect_off_e (other);
 
  	item_sound (other, CHAN_AUTO, self.noise, 1, ATTN_NORM);
 	self.solid	= SOLID_NOT;

@@ -1,4 +1,4 @@
-// $Id: runeserv.qc,v 1.7 2002/08/04 06:32:24 slotzero Exp $
+// $Id: runeserv.qc,v 1.8 2002/08/15 09:20:41 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -652,7 +652,7 @@ Rune_Activate =
 {
 	local float best, old_rune;
 
-	spawn_protect_off ();
+	// spawn_protect_off ();
 
 	if (type == RN_LITHIUM_HOOK)
 	{
