@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.31 2004/09/27 22:42:06 slotzero Exp $
+/*  $Id: runes30.qc,v 1.32 2004/09/27 22:57:37 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -231,9 +231,9 @@ Rune_Switch =
 	// rather than before).
 	tempv_y		= switch.angles_y;
 	switch.angles_y	= self.angles_y;
-	switch.angles_z	= 0; // batman fix
+	switch.angles_z	= 0; // fix-angles
 	self.angles_y	= tempv_y;
-	self.angles_z	= 0; // batman fix
+	self.angles_z	= 0; // fix-angles
 
 	self.fixangle	= 1;
 	switch.fixangle	= 1;
@@ -901,11 +901,6 @@ Rune_Twalk =
 	{
 		spawn_tfog (self.origin);
 		spawn_tfog (switch.origin);
-
-		if (random ()<0.3)
-			spawn_tdeath (self.origin, self);
-		else if (switch.classname == "player")
-			centerprint (switch, "Someone tried to telefrag you!");
 
 		place = switch.origin;
 		setorigin (switch, self.origin);
