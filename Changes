@@ -1,8 +1,11 @@
-$Id: Changes,v 1.29 2002/07/17 19:34:58 slotzero Exp $
+$Id: Changes,v 1.30 2002/07/18 06:13:45 slotzero Exp $
 
 Version 0.5.1  Fri Jul 05 07:38:14 EST 2002
 
     - Bug Fixes
+
+        - There are times when a zombie can't get up.  If this occurs for
+          longer than 30 seconds, I force zombie_die();
 
         - "Fire traps can sometimes live under water, spray them into the
           water from near the top of the lift by pentagram in e2m5 and
@@ -22,9 +25,7 @@ Version 0.5.1  Fri Jul 05 07:38:14 EST 2002
               > Host_Error: Program error
 
 	  bug has been squashed!  Killed() was calling self.th_die() which
-	  when is NULL, crashes the server.  Thanks to JP Grossman for
-	  helping me understand the server crash and locating the NULL
-	  function.
+	  when is NULL, crashes the server.
 
     - Notable Internal Changes
 

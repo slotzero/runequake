@@ -1,4 +1,4 @@
-// $Id: zombie.qc,v 1.4 2002/07/18 04:07:59 slotzero Exp $
+// $Id: zombie.qc,v 1.5 2002/07/18 06:14:18 slotzero Exp $
 
 /*
 ==============================================================================
@@ -513,13 +513,18 @@ zombie_die =
 			&& self.owner.runetype == RN_ZOMBIE
 			&& self.owner.runevar > 0)
 	{
-		if (self.last_thought)
-			sprint (self.owner, "God");
-		else if (self.enemy == self.owner)
-			sprint (self.owner, "You just");
-		else
-			sprint (self.owner, self.enemy.netname);
-		sprint (self.owner, " killed your zombie camper\n");
+		if (!self.owner.runetime > self.runetime)
+		{
+			if (self.last_thought)
+				sprint (self.owner, "The Gods");
+			else if (self.enemy == self.owner)
+				sprint (self.owner, "You just");
+			else
+				sprint (self.owner, self.enemy.netname);
+			sprint (self.owner, " killed your zombie camper\n");
+
+			self.owner.runevar = self.owner.runevar - 1;
+		}
 	}
 	sound (self, CHAN_VOICE, "zombie/z_gib.wav", 1, ATTN_NORM);
 	// ThrowHead ("progs/h_zombie.mdl", self.health);
