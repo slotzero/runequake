@@ -1,18 +1,22 @@
-$Id: Todo,v 1.12 2004/02/15 04:53:20 slotzero Exp $
+$Id: Todo,v 1.13 2004/02/16 02:43:13 slotzero Exp $
 
     - 2.0 release goals
 
         - server bots
         - vote head hunters option
 
-    - known bugs
+    - scratch pad
 
-        - [all]
+    - suggestions
 
-            - riders become observers when ridee leaves during intermission
-            - fix switch and like runes so that fix-angles isn't needed
+        - coming soon
 
-        - [qw]
+    - known bugs [all]
 
-            - bomb locks player down
-            - hook jitters
+        - riders become observers when ridee leaves during intermission
+        - fix switch and like runes so that fix-angles isn't needed
+
+    - known bugs [quakeworld]
+
+        - bomb locks player down
+        - hook jitters
