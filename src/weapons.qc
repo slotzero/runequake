@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.25 2003/12/01 22:01:23 slotzero Exp $
+/*  $Id: weapons.qc,v 1.26 2004/02/21 09:12:30 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -362,7 +362,7 @@ W_MagicShotgun =
 	setorigin (bomb, trace_endpos);
 
 	monk_radius_hack = 1;
-	T_RadiusDamage (RADIUS_NORMAL, bomb, self, 50, other, "magic-shotgun");
+	T_RadiusDamage (RADIUS_NORMAL, bomb, self, 35, other, "magic-shotgun");
 	monk_radius_hack = 0;
 
 	self.attack_finished	= time + 0.5;
