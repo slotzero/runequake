@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.137 2004/07/16 11:24:32 slotzero Exp $
+/*  $Id: rjs.qc,v 1.138 2004/07/16 12:02:11 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -347,9 +347,14 @@ process_cvars =
 		FORWARD_MAX_PLAYERS_REAL = FORWARD_MAX_PLAYERS;
 
 	temp1 = cvar_infokey ("temp1");
-	runemax = temp1 & T1_NRUNES_MASK;
-	if (runemax == 0)
-		runemax = DEFAULT_RUNEMAX;
+	if (voteflags & C3_NO_RUNES)
+		runemax = 0;
+	else
+	{
+		runemax = temp1 & T1_NRUNES_MASK;
+		if (runemax == 0)
+			runemax = DEFAULT_RUNEMAX;
+	}
 
 	i = temp1 & T1_RUNE_DROP_DELAY_MASK;
 	if (i == T1_RUNE_DROP_DELAY_0)		rune_drop_delay = 0;

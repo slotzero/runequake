@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.5 2004/07/16 11:24:32 slotzero Exp $
+/*  $Id: toggle.qc,v 1.6 2004/07/16 12:02:11 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -17,25 +17,13 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-float HUNK_NO_QUADS	= %1050;
-float HUNK_NO_PENTS	= %1051;
-float HUNK_NO_RINGS	= %1052;
-float HUNK_NO_SUITS	= %1053;
-//float HUNK_NO_RUNES	= %1060;
-float HUNK_NO_ARMORS	= %1065;
-float HUNK_ROTATE	= %1066;
-
-//
-// hunk functions
-//
-
-void (float offset, float value)
+/* void (float offset, float value)
 fput =
 {
 	Write_Hunk_Float (HUNK_CONTEXT, offset, value);
-};
+}; */
 
-float (float offset, float default)
+/* float (float offset, float default)
 fget =
 {
 	local float i;
@@ -48,11 +36,7 @@ fget =
 	}
 
 	return i;
-};
-
-//
-// toggle functions
-//
+}; */
 
 // types
 //
@@ -152,4 +136,39 @@ setrotate =
 
 	toggle_armor (1);
 	voteflags = toggle_cvar_bit (CVAR_C3, C3_ROTATE);
+};
+
+void ()
+setrunes =
+{
+	local entity e, os;
+
+	voteflags = toggle_cvar_bit (CVAR_C3, C3_NO_RUNES);
+	if (voteflags & C3_NO_RUNES)
+	{
+		runemax		= 0;
+		remove_classname ("rune");
+
+		e = find (world, classname, "player");
+		while (e)
+		{
+			if (e.runetype)
+			{
+				os	= self;
+				self	= e;
+
+				Rune_Delete (0);
+
+				self	= os;
+			}
+			e = find (e, classname, "player");
+		}
+	}
+	else
+	{
+		runemax = temp1 & T1_NRUNES_MASK;
+		if (runemax == 0)
+			runemax = DEFAULT_RUNEMAX;
+		runespawntime	= time;
+	}
 };

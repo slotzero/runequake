@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.21 2004/06/28 09:04:02 slotzero Exp $
+/*  $Id: runes20.qc,v 1.22 2004/07/16 12:02:11 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -886,6 +886,16 @@ Rune_Shield =
 		{
 			centerprint (self, "Shield recharging");
 			self.runevar = 2;
+			return;
+		}
+
+		// If the shielding rune is activate while the server is
+		// disabling runes, it's removal can be prevented.  To
+		// prevent its use, I remove it when an activation is
+		// attempted.
+		if (voteflags & C3_NO_RUNES)
+		{
+			Rune_Delete (0);
 			return;
 		}
 		stuffcmd (self, CSHIFT_SHIELD);

@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.104 2004/07/16 11:24:31 slotzero Exp $
+/*  $Id: defs.qc,v 1.105 2004/07/16 12:02:11 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -516,6 +516,7 @@ float IMP_VOTE_RING		= 210;
 float IMP_VOTE_SUIT		= 209;
 float IMP_VOTE_ARMOR		= 208;
 float IMP_VOTE_ROTATE		= 207;
+float IMP_VOTE_RUNES		= 206;
 
 float IMP_HELP_LEVELS		= 205;
 float IMP_COMMANDS		= 204;
@@ -1094,6 +1095,7 @@ float	C3_NO_RING		= 4;
 float	C3_NO_SUIT		= 8;
 float	C3_NO_ARMOR		= 16;
 float	C3_ROTATE		= 32;
+float	C3_NO_RUNES		= 64;
 
 IN_QW([-
 //

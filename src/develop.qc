@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.78 2004/07/13 10:36:15 slotzero Exp $
+/*  $Id: develop.qc,v 1.79 2004/07/16 12:02:11 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -71,40 +71,6 @@ maxplayers =
 		e = nextent (e);
 	}
 	return 16;
-};
-
-float HUNK_NO_RUNES	= %1060;
-float NO_RUNES;
-
-void ()
-setrunes =
-{
-	NO_RUNES = !NO_RUNES;
-	fput (HUNK_NO_RUNES, NO_RUNES);
-
-	if (NO_RUNES)
-	{
-		runemax = 0;
-		remove_classname ("rune");
-		local entity e, os;
-		e = find (world, classname, "player");
-		while (e)
-		{
-			if (e.runetype)
-			{
-				os = self;
-				self = e;
-				Rune_Delete (0);
-				self = os;
-			}
-			e = find (e, classname, "player");
-		}
-	}
-	else
-	{
-		runemax = DEFAULT_RUNEMAX;
-		runespawntime = time;
-	}
 };
 
 void ()
