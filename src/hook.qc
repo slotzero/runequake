@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.17 2004/07/08 01:32:55 slotzero Exp $
+/*  $Id: hook.qc,v 1.18 2004/07/08 08:03:11 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -398,7 +398,7 @@ hook_bit_to_type =
 		return -1;
 };
 
-void (float new_bit)
+void (float new_bit) // XXX REMOVE THIS (or redo this)
 change_hook_mode =
 {
 	// local entity e;
@@ -443,12 +443,10 @@ change_hook_mode =
 	}
 };
 
-void (float force_type)
+void (float force_type) // XXX REMOVE THIS (or redo)
 toggle_hook_mode =
 {
 	local float curr_type, wanted_type, wanted_bit;
-
-	force_type = rint (force_type); // XXX floats return as 0.0 (TRUE) when called from a think().
 
 	curr_type		= hook_bit_to_type (temp1);
 	if (force_type)
@@ -466,4 +464,72 @@ toggle_hook_mode =
 		change_hook_mode (T1_HOOK_MASK);
 	else
 		change_hook_mode (wanted_bit);
+};
+
+// 0 off
+// 1 free
+// 2 lithium
+
+float ()
+hook_state =
+{
+	if (!temp1 & T1_HOOK_MASK || temp1 & T1_HOOK_MASK == T1_HOOK_MASK)
+		return 0;
+	if (temp1 & T1_FREE_HOOK)
+		return 1;
+	if (temp1 & T1_LITHIUM_HOOK)
+		return 2;
+};
+
+void ()
+toggle_free_hook =
+{
+	local string new;
+
+	if (!temp1 & T1_HOOK_MASK || temp1 & T1_HOOK_MASK == T1_HOOK_MASK)
+	{
+		if (temp1 & T1_HOOK_MASK == T1_HOOK_MASK)
+			temp1 = temp1 - temp1 & T1_LITHIUM_HOOK;
+		else
+			temp1 = temp1 | T1_FREE_HOOK;
+	}
+	else
+	{
+		if (temp1 & T1_FREE_HOOK)
+			temp1 = temp1 - temp1 & T1_FREE_HOOK;
+		if (temp1 & T1_LITHIUM_HOOK)
+			temp1 = temp1 - temp1 & T1_LITHIUM_HOOK;
+	}
+
+	// remove lithium hooks from level
+	remove_classname ("hook");
+
+	// remove lithium hook from players
+	remove_bit_from_players (aqflags, AQ_HOOK);
+
+	dprint ("new_temp1(");
+	dprint_float (temp1);
+	dprint (")\n");
+
+	new = ftos (temp1);
+	cvar_set_infokey ("temp1", new);
+};
+
+void ()
+lithium_hook =
+{
+	local string new;
+
+	if (temp1 & T1_FREE_HOOK)
+		temp1 = temp1 - temp1 & T1_FREE_HOOK;
+
+	if (!temp1 & T1_LITHIUM_HOOK)
+		temp1 = temp1 | T1_LITHIUM_HOOK;
+
+	dprint ("new_temp1(");
+	dprint_float (temp1);
+	dprint (")\n");
+
+	new = ftos (temp1);
+	cvar_set_infokey ("temp1", new);
 };

@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.121 2004/07/08 07:53:47 slotzero Exp $
+/*  $Id: rjs.qc,v 1.122 2004/07/08 08:03:11 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2596,23 +2596,6 @@ T_RadiusLight =
 	if (e.owner == head)
 		sprint (old_self.owner, "Your flash grenade exploded\n");
 	self = old_self;
-};
-
-float (float tell)
-vote_team_disabled =
-{
-	if (teamplay & TEAM_NO_VOTE
-			|| (teamplay != 0 && teamplay != VOTE_TEAM_MODE)
-			|| VOTE_TEAM_PERCENTAGE	<= 0
-			|| VOTE_TEAM_PERCENTAGE > 1
-			IN_QW(|| 1) // XXX QW team support still broken
-			)
-	{
-		if (tell)
-			sprint (self, "Team voting is disabled\n");
-		return 1;
-	}
-	return 0;
 };
 
 void ()

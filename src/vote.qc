@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.8 2004/07/08 04:33:29 slotzero Exp $
+/*  $Id: vote.qc,v 1.9 2004/07/08 08:03:11 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -41,6 +41,39 @@
 	// warnings
 	* make sure that you don't try to assign value to a world entity (!vip for example)!!!
 */
+
+//
+// functions that check to see if a voted item is disabled
+//
+
+float (float tell)
+vote_team_disabled =
+{
+	if (teamplay & TEAM_NO_VOTE
+			|| (teamplay != 0 && teamplay != VOTE_TEAM_MODE)
+			|| VOTE_TEAM_PERCENTAGE	<= 0
+			|| VOTE_TEAM_PERCENTAGE > 1)
+	{
+		if (tell)
+			sprint (self, "Team voting is disabled\n");
+		return TRUE;
+	}
+	return FALSE;
+};
+
+float (float tell)
+vote_hook_disabled =
+{
+	if (temp1 & T1_HOOK_NO_VOTE
+			|| VOTE_HOOK_PERCENTAGE	<= 0
+			|| VOTE_HOOK_PERCENTAGE > 1)
+	{
+		if (tell)
+			sprint (self, "Hook voting is disabled\n");
+		return TRUE;
+	}
+	return FALSE;
+};
 
 void (entity vip)
 vote_action =
@@ -270,7 +303,7 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_TEAM)
 	{
-		cancel	= vote_team_disabled (1);
+		cancel		= vote_team_disabled (1);
 		e.frag_rate	= VOTE_TEAM_PERCENTAGE;
 		e.think1	= toggle_teamplay;	// XXX Fix me, cause I predict this will create
 							// compile errors in Frikqcc.
@@ -281,9 +314,9 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_HOOK)
 	{
-		cancel	= vote_hook_disabled (1);
+		cancel		= vote_hook_disabled (1);
 		e.frag_rate	= VOTE_HOOK_PERCENTAGE;
-		e.think1	= toggle_hook_mode;
+		e.think1	= toggle_free_hook;
 
 		if (temp1 & T1_HOOK_MASK)
 			e.netname	= "disable hook";
