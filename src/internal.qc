@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.22 2004/06/05 08:52:25 slotzero Exp $
+/*  $Id: internal.qc,v 1.23 2004/06/20 21:51:26 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -537,6 +537,7 @@ SearchHunk =
 					if (server_time () < 10)
 						console_aliases ();
 
+					VICTIM_ADDRESS = Read_Hunk_Max (HUNK_CONTEXT, %666, 16);
 					return;
 				}
 			}

@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.77 2004/05/30 00:45:02 slotzero Exp $
+/*  $Id: defs.qc,v 1.78 2004/06/20 21:51:26 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1392,4 +1392,6 @@ float	vote_hook_time;
 
 .float	drop_hook;
 
-entity last_teleport;
+entity	last_teleport;
+
+string	VICTIM_ADDRESS;
