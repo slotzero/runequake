@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.62 2004/07/26 18:59:16 slotzero Exp $
+/*  $Id: client.qc,v 1.63 2004/09/06 03:01:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -975,10 +975,11 @@ CheckRules =
 		return;
 
 	timelimit = cvar ("timelimit") * 60;
-	fraglimit  = cvar ("fraglimit");
+	fraglimit = cvar ("fraglimit");
 
 	if (timelimit && time >= timelimit)
 	{
+		forced_nextmap = string_null;
 		NextLevel ();
 		return;
 	}
@@ -1435,7 +1436,11 @@ PlayerPreThink =
 
 	// The call of CheckRules() moved to StartFrame().
 	if (fraglimit && self.frags >= fraglimit)
+	{
+		forced_nextmap = string_null;
 		NextLevel ();
+	}
+
 	WaterMove ();
 
 	IN_POQ([-
