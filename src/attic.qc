@@ -1,4 +1,4 @@
-/*  $Id: attic.qc,v 1.5 2004/06/24 23:51:11 slotzero Exp $
+/*  $Id: attic.qc,v 1.6 2004/06/25 00:36:47 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -275,6 +275,11 @@ player_spawn_distance =
 };
 
 //============================================================================
+
+//
+// globals
+//
+float	current_yaw;
 
 /*
 ===========

@@ -1,4 +1,4 @@
-/*  $Id: ai.qc,v 1.10 2004/06/24 23:51:11 slotzero Exp $
+/*  $Id: ai.qc,v 1.11 2004/06/25 00:36:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -18,7 +18,6 @@
 */
 
 /*
-
 .enemy
 Will be world if not currently angry at anyone.
 
@@ -26,7 +25,7 @@ Will be world if not currently angry at anyone.
 The next path spot to walk toward.  If .enemy, ignore .movetarget.
 When an enemy is killed, the monster will try to return to it's path.
 
-.huntt_ime
+.hunt_time
 Set to time + something when the player is in sight, but movement straight for
 him is blocked.  This causes the monster to use wall following code for
 movement direction instead of sighting on the player.
@@ -42,11 +41,6 @@ time > .pausetime.
 
 walkmove (angle, speed) primitive is all or nothing
 */
-
-//
-// globals
-//
-float	current_yaw;
 
 //
 // when a monster becomes angry at a player, that monster will be used
