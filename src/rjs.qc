@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.151 2004/11/05 23:27:37 slotzero Exp $
+/*  $Id: rjs.qc,v 1.152 2004/11/13 02:43:50 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1464,6 +1464,16 @@ custom =
 {
 	if (!total_customs ())
 		return self_sprint (self, "No custom maps on this server\n");
+
+	IN_POQ([-
+		// XXX When the mod is searching for the start of hunk, it's already in
+		// in a loop.  If the console tries to list the custom maps during this
+		// loop it adds to the runaway loop counter and crashes.  A client doesn't
+		// seem to create this crash, perhaps there's a separate counter for each
+		// entity?
+		if (!HUNK_CONTEXT_MAX && self == world)
+			return self_sprint (self, "Command not supported on this server.\n");
+	-])
 
 	self_sprint (self, "\bSmall\n\n");
 	if (!custom_sprint (1))
