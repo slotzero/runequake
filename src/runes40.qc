@@ -1,4 +1,4 @@
-// $Id: runes40.qc,v 1.2 2002/03/02 20:12:18 slotzero Exp $
+// $Id: runes40.qc,v 1.3 2002/04/21 03:47:37 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -226,6 +226,8 @@ shambler_slave_respawn =
 	// Reset the runevar so he'll be unstuck.
 	sham.runevar = 0;
 
+	HookOff_by_targ_e (sham);
+
 	sham.health = sham.max_health;
 	spawn_tfog (sham.origin);
 	setorigin (sham, sham.owner.origin);
@@ -420,6 +422,9 @@ Rune_Dual =
 	if (self.runetime > time)
 		return;
 	self.runetime = time + TICK;
+
+	HookOff ();
+	HookOff_by_targ ();
 
 	spawn_tfog (self.origin);
 	i_origin = self.origin;
@@ -922,6 +927,9 @@ Wall_Check =
 
 	if (pointcontents (neworg) != CONTENT_EMPTY)
 		return;
+
+	HookOff ();
+	HookOff_by_targ ();
 
 	setorigin (self, neworg);
 };

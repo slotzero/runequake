@@ -1,4 +1,4 @@
-// $Id: runes10.qc,v 1.2 2002/03/02 20:12:17 slotzero Exp $
+// $Id: runes10.qc,v 1.3 2002/04/21 03:47:36 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -300,6 +300,9 @@ Rune_Recall =
 		recall_point_erase ();
 		return;
 	}
+
+	HookOff ();
+	HookOff_by_targ ();
 
 	spawn_tfog (self.origin);
 	spawn_tdeath (self.runevector, self);

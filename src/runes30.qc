@@ -1,4 +1,4 @@
-// $Id: runes30.qc,v 1.2 2002/03/02 20:12:18 slotzero Exp $
+// $Id: runes30.qc,v 1.3 2002/04/21 03:47:36 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -802,6 +802,9 @@ Rune_Twalk =
 	-])
 
 	makevectors (self.angles);
+
+	HookOff ();
+	HookOff_by_targ ();
 
 	if (switch == world)
 	{

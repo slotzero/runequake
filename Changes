@@ -1,4 +1,16 @@
-$Id: Changes,v 1.5 2002/03/13 02:34:43 slotzero Exp $
+$Id: Changes,v 1.6 2002/04/21 03:47:26 slotzero Exp $
+
+Version 0.3  Sat Apr 20 21:44:23 EST 2002
+
+    - Bug Fixes
+
+        - The hook releases from either the target or attacker when the Recall,
+          Teleport, Phased, or Dual Recall rune is used or when attached to a
+	  cowardly Shambler.
+
+    - Rune Changes
+
+	- The EP suit/rune is protected against hooks.
 
 Version 0.2.1  Tue Mar 12 21:33:50 EST 2002
 

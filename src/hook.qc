@@ -1,4 +1,4 @@
-// $Id: hook.qc,v 1.1 2002/02/21 21:47:52 slotzero Exp $
+// $Id: hook.qc,v 1.2 2002/04/21 03:47:36 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -71,6 +71,10 @@ MaybeDropHook =
 
 	// player lost hook (via switch or change in server settings)
 	else if (!have_hook_e (self.owner))
+		dropit = 1;
+
+	// player picked up ep suit/rune
+	else if (environmental (self.enemy))
 		dropit = 1;
 
 	if (dropit)
@@ -187,7 +191,9 @@ HookTouch =
 	-])
 
 	if (isfriend2 (self.owner, other)
-			|| (!d && other.takedamage == DAMAGE_AIM))
+			|| (!d && other.takedamage == DAMAGE_AIM)
+			|| other.items & IT_SUIT
+			|| other.runetype == RN_ENVIRO)
 	{
 		sound (self, CHAN_AUTO, "weapons/bounce.wav", 1, ATTN_NORM);
 		DropHook ();
