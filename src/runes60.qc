@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.6 2003/10/02 04:14:41 slotzero Exp $
+/*  $Id: runes60.qc,v 1.7 2003/10/05 01:31:35 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -27,7 +27,7 @@ Rune_Glue_sprint =
 void()
 Glue_Think =
 {
-	if (time >= self.runetime)
+	if (self.runevar)
 	{
 		if (self.owner.runetype == RN_GLUE && self.owner.runevar > 0)
 		{
@@ -60,7 +60,7 @@ Glue_Think =
 void ()
 Glue_Stuck =
 {
-	if (time > self.runetime)
+	if (self.runetime < time)
 	{
 		centerprint (self.runent, "Released from glue trap");
 		sound (self, CHAN_WEAPON, "blob/death1.wav", 1, ATTN_NORM);
@@ -93,7 +93,7 @@ Glue_Touch =
 	if (other.health <= 0)
 		return;
 
-	if (environmental (other) || other.runetype == RN_FREEZE)
+	if (environmental (other))
 		return;
 
 	if (isfriend2 (self.owner, other) && self.owner != other)
@@ -166,7 +166,6 @@ Rune_Glue =
 
 	glue.velocity		= v_forward * 600 + v_up * 200;
 	glue.avelocity		= '0 600 0';
-	glue.runetime		= time + 10;
 
 	setmodel (glue, "progs/tarbaby.mdl");
 	setsize (glue, '-16 -16 -24', '16 16 24');

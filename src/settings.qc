@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.20 2003/10/02 04:14:42 slotzero Exp $
+/*  $Id: settings.qc,v 1.21 2003/10/05 01:31:35 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -549,7 +549,7 @@ float RADIO_INTERVAL		= 0.8;
 
 // The number of ice traps to place.
 
-float MAX_FREEZE		= 6;
+float MAX_FREEZE		= 3;
 
 // The intensity of the gravity well.
 
