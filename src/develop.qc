@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.68 2004/07/09 06:47:07 slotzero Exp $
+/*  $Id: develop.qc,v 1.69 2004/07/09 06:54:55 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -21,7 +21,7 @@
 // DEVELOPMENT FUNCTIONS
 //-------------------------------------------------------------------
 
-float DEVELOPER_MODE = 1;
+float DEVELOPER_MODE = 0;
 
 void (.float field, float bit)
 remove_bit_from_players =
@@ -76,5 +76,5 @@ maxplayers =
 void ()
 Test_Button =
 {
-	show_votes ();
+	SUB_Null ();
 };
