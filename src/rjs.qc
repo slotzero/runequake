@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.80 2003/11/27 06:15:17 slotzero Exp $
+/*  $Id: rjs.qc,v 1.81 2003/11/30 02:08:41 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2735,9 +2735,15 @@ count_votes =
 		if (vote_type == IMP_VOTE_EXIT)
 			NextLevel ();
 		else if (vote_type == IMP_VOTE_TEAM)
+		{
+			vote_team_time = -1;
 			toggle_teamplay (0);
+		}
 		else if (vote_type == IMP_VOTE_HOOK)
+		{
+			vote_hook_time = -1;
 			toggle_hook_mode (0);
+		}
 	}
 	else if (count_type == 0)
 	{
@@ -2912,7 +2918,8 @@ vote =
 		bit		= AQS_VOTE_EXIT;
 		pct		= VOTE_EXIT_PERCENTAGE;
 
-		vote_exit_time	= time + 30;
+		if (vote_exit_time < 0)
+			vote_exit_time	= time + 30;
 	}
 	else if (self.impulse == IMP_VOTE_TEAM)
 	{
@@ -2923,7 +2930,8 @@ vote =
 		bit		= AQ_VOTE_TEAM;
 		pct		= VOTE_TEAM_PERCENTAGE;
 
-		vote_team_time	= time + 30;
+		if (vote_team_time < 0)
+			vote_team_time	= time + 30;
 	}
 	else if (self.impulse == IMP_VOTE_HOOK)
 	{
@@ -2934,7 +2942,8 @@ vote =
 		bit		= AQ_VOTE_HOOK;
 		pct		= VOTE_HOOK_PERCENTAGE;
 
-		vote_hook_time	= time + 30;
+		if (vote_hook_time < 0)
+			vote_hook_time	= time + 30;
 	}
 	else
 	{
