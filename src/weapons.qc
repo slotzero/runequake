@@ -1,4 +1,4 @@
-// $Id: weapons.qc,v 1.3 2002/06/09 20:20:43 slotzero Exp $
+// $Id: weapons.qc,v 1.4 2002/08/21 17:28:47 slotzero Exp $
 
 // called by worldspawn
 
@@ -506,7 +506,7 @@ LightningDamage =
 		LightningHit (from, damage, dtype);
 		if (self.classname == "player")
 		{
-			if (other.classname == "player")
+			if (other.classname == "player" && trace_ent != world)
 				trace_ent.velocity_z = trace_ent.velocity_z + 400;
 		}
 	}
