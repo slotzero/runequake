@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.34 2004/04/04 10:24:39 slotzero Exp $
+/*  $Id: items.qc,v 1.35 2004/04/04 11:12:29 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -27,6 +27,12 @@ SUB_regen =
 	self.solid = SOLID_TRIGGER; // allow it to be touched again
 
 	sound (self, CHAN_VOICE, "items/itembk2.wav", 1, ATTN_NORM); // play respawn sound
+
+	if (self.touch == armor_touch)
+	{
+		self.think = armor_morph;
+		self.nextthink = time + 5;
+	}
 
 	setorigin (self, self.origin);
 };
@@ -127,6 +133,11 @@ PlaceItem =
 			self.think	= weapon_up;
 			self.nextthink	= time;
 		}
+	}
+	else if (self.touch == armor_touch)
+	{
+		self.think	= armor_morph;
+		self.nextthink	= (time + 5) - self.skin * 4;
 	}
 };
 
@@ -323,19 +334,19 @@ armor_touch =
 		value	= self.armorvalue;
 		bit	= self.aqstate;
 	}
-	else if (self.classname == "item_armor1")
+	else if (self.skin == 0)
 	{
 		type	= ARMOR_TYPE_1;
 		value	= MAX_ARMOR_1;
 		bit	= IT_ARMOR1;
 	}
-	else if (self.classname == "item_armor2")
+	else if (self.skin == 1)
 	{
 		type	= ARMOR_TYPE_2;
 		value	= MAX_ARMOR_2;
 		bit	= IT_ARMOR2;
 	}
-	else if (self.classname == "item_armorInv")
+	else if (self.skin == 2)
 	{
 		type	= ARMOR_TYPE_3;
 		value	= MAX_ARMOR_3;
@@ -426,6 +437,15 @@ armor_touch =
 
 	activator = other;
 	SUB_UseTargets (); // fire all targets / killtargets
+};
+
+void ()
+armor_morph =
+{
+	self.skin = self.skin + 1;
+	if (self.skin > 2)
+		self.skin = 0;
+	self.nextthink = (time + 10) - self.skin * 4;
 };
 
 void (float it_skin)
