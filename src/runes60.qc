@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.55 2004/12/14 21:37:20 slotzero Exp $
+/*  $Id: runes60.qc,v 1.56 2004/12/15 22:04:40 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -73,6 +73,12 @@ Glue_Stuck =
 		return;
 	}
 
+	// Lock the player down by forcing his origin inside a solid object.  This assures
+	// his origin will always be the same as the entities.  XXX Without this, a frozen
+	// player who is attempting to move will lock down any player who is touching him
+	// in the area where he (the frozen player) is attemping to move away from.
+	self.solid		= SOLID_BBOX;
+	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	setorigin (self.runent, self.origin);
 
 	self.runent.velocity	= VEC_ORIGIN;

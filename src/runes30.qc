@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.36 2004/12/10 23:20:24 slotzero Exp $
+/*  $Id: runes30.qc,v 1.37 2004/12/15 22:04:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -447,6 +447,12 @@ Unfreeze =
 void ()
 Freeze_Frozen =
 {
+	// Lock the player down by forcing his origin inside a solid object.  This assures
+	// his origin will always be the same as the entities.  XXX Without this, a frozen
+	// player who is attempting to move will lock down any player who is touching him
+	// in the area where he (the frozen player) is attemping to move away from.
+	self.solid			= SOLID_BBOX;
+	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	setorigin (self.runent, self.origin);
 
 	self.runent.angles		= self.angles;
@@ -510,6 +516,8 @@ Freeze_Frozen =
 			self.runent.runevar = 0;
 
 		sound (self, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
+		// Unlock the player.
+		self.solid = SOLID_TRIGGER;
 		self.think = SUB_Remove;
 		self.nextthink = time + 3;
 	}
