@@ -1,4 +1,4 @@
-// $Id: ai.qc,v 1.3 2002/06/08 05:42:32 slotzero Exp $
+// $Id: ai.qc,v 1.4 2002/07/17 03:17:44 slotzero Exp $
 
 /*
 
@@ -308,7 +308,7 @@ SightSound =
 			snd = "enforcer/sight1.wav";
 		else if (rsnd == 2)
 			snd = "enforcer/sight2.wav";
-		else if (rsnd == 0)
+		else if (rsnd == 3)
 			snd = "enforcer/sight3.wav";
 		else
 			snd = "enforcer/sight4.wav";
