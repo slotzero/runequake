@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.20 2004/07/03 03:53:24 slotzero Exp $
+/*  $Id: hunk.qc,v 1.21 2004/07/03 07:21:23 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -63,6 +63,8 @@
 	%549		= float ()
 	%600 - %648	= float ()
 	%649		= float (reserved)
+
+	%799		= float number of denied maps
 
 	// strman.qc
 	%3000 - %4000	= memory for string manipulation functions
@@ -246,6 +248,50 @@ Read_Hunk_Max =
 	hunk = Get_Hunk (type, offset);
 
 	return Read_Hunk_Max_e (hunk, bytes);
+};
+
+// The value of bytes is rounded up to the closest dword.  While this
+// isn't as accurate Read_Hunk_Max_e(), it's much faster.
+string (entity hunk, float bytes)
+Read_Hunk_String_Max_e =
+{
+	local float i, pdata, dword;
+	local string data;
+
+	if (!hunk)
+	{
+		dprint ("Read_Hunk_Max_e: hunk is null\n");
+		return string_null;
+	}
+
+	dword	= ceil (bytes / 4) * %1;
+	bytes	= (dword * 4) / %1;
+
+	data	= allocate_string_size (bytes);
+	if (!data)
+	{
+		dprint ("Read_Hunk_Max_e: bytes is too large\n");
+		return string_null;
+	}
+
+	pdata	= AddInt (&data, PSTRING_TO_PQUAKEC);
+
+	for (i = %0; i < dword; i = i + %1)
+		(*pdata)[i] = hunk[i];
+
+ 	return (@AddInt (pdata, PQUAKEC_TO_PSTRING));
+};
+
+// The value of bytes is rounded up to the closest dword.  While this
+// isn't as accurate Read_Hunk_Max(), it's much faster.
+string (float type, float offset, float bytes)
+Read_Hunk_String_Max =
+{
+	local entity hunk;
+
+	hunk = Get_Hunk (type, offset);
+
+	return Read_Hunk_String_Max_e (hunk, bytes);
 };
 
 // This will always force a null termination.  The actual
