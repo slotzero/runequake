@@ -1,4 +1,4 @@
-// $Id: defs.qc,v 1.16 2002/09/19 22:59:53 slotzero Exp $
+// $Id: defs.qc,v 1.17 2002/09/21 16:25:50 slotzero Exp $
 
 /*
 ==============================================================================
@@ -696,7 +696,6 @@ float S1_AMBIENT_SOUND_OFF	= 2;
 float S1_LIGHT_MAKESTATIC_OFF	= 4;
 float S1_BPRINT_TO_CONSOLE	= 8;
 float S1_ORIGINAL_LEVELS	= 16;
-float S1_MAX_TRAPS_FOR_LEVEL	= 32;
 
 // Bit settings for POWERUP_PICKUP_WARN in settings.qc.
 float ITEM_PENT = 1;
