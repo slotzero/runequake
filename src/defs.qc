@@ -1,4 +1,4 @@
-// $Id: defs.qc,v 1.3 2002/03/03 00:24:56 slotzero Exp $
+// $Id: defs.qc,v 1.4 2002/03/04 05:46:07 slotzero Exp $
 
 /*
 ==============================================================================
@@ -660,6 +660,13 @@ float T1_RUNE_DROP_DELAY_60	= 512;		// 1
 float T1_RUNE_DROP_DELAY_120	= 131584;	// 5
 float T1_RUNE_DROP_DELAY_240	= 196608;	// 6
 float T1_RUNE_DROP_DELAY_INF	= 197120;	// 7
+
+// scratch1 bit settings
+float scratch1;
+float S1_LIGHT_SETUP_ALL_BRIGHT	= 1;
+float S1_LIGHT_SETUP_ALL_DARK	= 2;
+float S1_AMBIENT_SOUND_OFF	= 4;
+float S1_LIGHT_MAKESTATIC_OFF	= 8;
 
 // Bit settings for POWERUP_PICKUP_WARN in settings.qc.
 float ITEM_PENT = 1;

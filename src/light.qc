@@ -1,16 +1,36 @@
-// $Id: light.qc,v 1.2 2002/02/23 05:47:54 slotzero Exp $
+// $Id: light.qc,v 1.3 2002/03/04 05:46:08 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
 
 float START_OFF = 1;
 
+//
+// Setup light animation tables. 'a' is total darkness, 'z' is maxbright.
+//
 void ()
 Light_Setup =
 {
-	//
-	// Setup light animation tables. 'a' is total darkness, 'z' is maxbright.
-	//
+	local float n;
+	local string s;
+
+	if (scratch1 & S1_LIGHT_SETUP_ALL_BRIGHT && scratch1 & S1_LIGHT_SETUP_ALL_DARK)
+		s = "r";
+	else if (scratch1 & S1_LIGHT_SETUP_ALL_BRIGHT)
+		s = "z";
+	else if (scratch1 & S1_LIGHT_SETUP_ALL_DARK)
+		s = "a";
+
+ 	if (s)
+	{
+		n = 0;
+		while (n <= 63)
+		{
+			lightstyle (n, s);
+			n = n + 1;
+		}
+		return;
+	}
 
 	// 0 normal
 	lightstyle (0, "r");
@@ -134,6 +154,9 @@ light_fluorospark =
 void (string s)
 light_makestatic =
 {
+	if (scratch1 & S1_LIGHT_MAKESTATIC_OFF)
+		return;
+
 	precache_model (s);
 	setmodel (self, s);
 	makestatic (self);

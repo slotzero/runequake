@@ -1,4 +1,4 @@
-// $Id: misc.qc,v 1.4 2002/03/02 20:12:17 slotzero Exp $
+// $Id: misc.qc,v 1.5 2002/03/04 05:46:08 slotzero Exp $
 
 /*QUAKED info_null (0 0.5 0) (-4 -4 -4) (4 4 4)
 Used as a positional target for spotlights, etc.
@@ -519,6 +519,9 @@ func_bossgate =
 void (string samp, float vol)
 ambient_sound =
 {
+	if (scratch1 & S1_AMBIENT_SOUND_OFF)
+		return;
+
 	precache_sound (samp);
 	ambientsound (self.origin, samp, vol, ATTN_STATIC);
 };

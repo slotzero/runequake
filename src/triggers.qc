@@ -1,4 +1,4 @@
-// $Id: triggers.qc,v 1.1 2002/02/21 21:48:01 slotzero Exp $
+// $Id: triggers.qc,v 1.2 2002/03/04 05:46:08 slotzero Exp $
 
 entity s_tfog;
 
@@ -505,9 +505,13 @@ trigger_teleport =
 
 	if (!(self.spawnflags & SILENT))
 	{
-		precache_sound ("ambience/hum1.wav");
-		o = (self.mins + self.maxs)*0.5;
-		ambientsound (o, "ambience/hum1.wav", 0.5, ATTN_STATIC);
+		if (!scratch1 & S1_AMBIENT_SOUND_OFF)
+		{
+			precache_sound ("ambience/hum1.wav");
+			o = (self.mins + self.maxs)*0.5;
+			ambientsound (o, "ambience/hum1.wav", 0.5, ATTN_STATIC);
+		}
+	
 	}
 };
 
