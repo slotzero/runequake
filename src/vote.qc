@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.39 2004/10/11 04:18:31 slotzero Exp $
+/*  $Id: vote.qc,v 1.40 2004/11/28 08:22:00 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -388,7 +388,7 @@ vote =
 	{
 		cancel		= vote_team_disabled (1);
 		e.frag_rate	= VOTE_TEAM_PERCENTAGE;
-		e.think1	= toggle_teamplay;
+		e.think1	= toggle_teamplay_real;
 		e.noise2	= " team mode ";
 
 		if (teamplay & TEAM_TEAM_MASK)
