@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.25 2003/11/09 04:44:00 slotzero Exp $
+/*  $Id: settings.qc,v 1.26 2003/11/23 06:25:34 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -610,6 +610,11 @@ float MAX_ANTIPACK		= 3;
 // Delfect Telefrag Rune
 
 float MAX_DEFLECT		= 3;
+
+// Bouncing Betty
+
+float MAX_BETTY			= 10;
+float MAX_LAUNCH_BETTY		= 5;
 
 // red, green, blue, scale
 

@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.32 2003/11/10 22:52:17 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.33 2003/11/23 06:25:34 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -84,6 +84,7 @@ Rune_Button =
 	else if (self.runetype == RN_SNIPER)	W_Sniper ();
 	else if (self.runetype == RN_SONAR)	Rune_Sonar ();
 	else if (self.runetype == RN_ANTIPACK)	Rune_AntiPack ();
+	else if (self.runetype == RN_BETTY)	Rune_Betty ();
 };
 
 // This doesn't always tell the riders because it can be triggered both
@@ -583,6 +584,15 @@ Rune_Tell_real =
 		d2 = ftos (MAX_DEFLECT);
 		d3 = " maximum";
 	}
+	else if (type == RN_BETTY)
+	{
+		desc_l = "Bouncing Betty";
+		desc_s = " Betty ";
+
+		d1 = "Launch a cluster of grenades\n";
+		d2 = ftos (MAX_BETTY);
+		d3 = " maximum";
+	}
 	/* else if (type == RN_TORNADO)
 	{
 		desc_l = "Tornado Rune";
@@ -673,6 +683,7 @@ Rune_Tell_sprint =
 	else if (of_e.runetype == RN_BLIZZARD)	Rune_Blizzard_sprint (r, of_e);
 	else if (of_e.runetype == RN_ANTIPACK)	Rune_AntiPack_sprint (r, of_e);
 	else if (of_e.runetype == RN_DEFLECT)	Rune_Deflect_Telefrag_sprint (r, of_e);
+	else if (of_e.runetype == RN_BETTY)	Rune_Betty_sprint (r, of_e);
 };
 
 void (float type, float tell)
@@ -954,6 +965,9 @@ Rune_Activate =
 
 	else if (self.runetype == RN_DEFLECT)
 		self.runevar = MAX_DEFLECT;
+
+	else if (self.runetype == RN_BETTY)
+		self.runevar = MAX_BETTY;
 
 	/* else if (self.runetype == RN_TORNADO)
 		Hat_Spawn ("progs/w_spike.mdl", '0 0 35', VEC_ORIGIN); */

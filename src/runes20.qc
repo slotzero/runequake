@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.14 2003/11/10 22:52:16 slotzero Exp $
+/*  $Id: runes20.qc,v 1.15 2003/11/23 06:25:33 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -526,7 +526,7 @@ maybe_reblink =
 	if (0)
 	{
 		if (reblink)
-			bprint ("\{13}");
+			bprint ("\{141}");
 		else
 			bprint (" ");
 		sprint_int_f (world, time * 10, 4);

@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.25 2003/11/10 22:52:16 slotzero Exp $
+/*  $Id: runes30.qc,v 1.26 2003/11/23 06:25:33 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -82,7 +82,7 @@ Radio_Think =
 							"radioactive")
 							&& head.classname
 								== "player")
-						sprint (head, "\{13} This area is radioactive!\n");
+						sprint (head, "\{141} This area is radioactive!\n");
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.38 2003/10/18 17:24:18 slotzero Exp $
+/*  $Id: client.qc,v 1.39 2003/11/23 06:25:32 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1948,13 +1948,12 @@ ClientObituary =
 				bprint (" didn't know his own strength\n");
 			else if (attacker.runetype == RN_BERSERK)
 				bprint (" berserked himself into an early grave\n");
-			else if (attacker.runetype == RN_PIERCING
-					&& targ.armorvalue > 0)
+			else if (attacker.runetype == RN_PIERCING && targ.armorvalue > 0)
 				bprint (" pierced himself to the core\n");
-
-
 			else if (dt == "sniped")
 				bprint (" sniped a little too much\n");
+			else if (dt == "betty")
+				bprint (" was chased down by his own betty\n");
 			else if (dt == "bombhit")
 				bprint (" struck himself with his own bomb\n");
 			else if (dt == "bombed")
@@ -2075,6 +2074,11 @@ ClientObituary =
 		{
 			s1 = " couldn't escape ";
 			s2 = "'s scope\n";
+		}
+		else if (dt == "betty")
+		{
+			s1 = " was chased down by ";
+			s2 = "'s betty\n";
 		}
 		else if (dt == "hook")
 		{

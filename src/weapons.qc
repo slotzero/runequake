@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.16 2003/10/10 23:20:13 slotzero Exp $
+/*  $Id: weapons.qc,v 1.17 2003/11/23 06:25:34 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -601,18 +601,22 @@ W_FireLightning =
 void (entity targ)
 GrenadeExplode_targ =
 {
-	if (self.classname == "grenade")
+	local float d;
+
+	if (self.classname == "grenade" || self.classname == "betty")
 	{
 		if (targ)
 		{
-			local float d;
+			if (self.classname == "betty")
+				d = 20;
+			else
+				d = 100 + (random () + 0.01) * 20;
 
-			d = 100 + random ()*20;
-			T_Damage (targ, self, self.owner, d, "grenade");
+			T_Damage (targ, self, self.owner, d, self.classname);
 		}
+
 		monk_radius_hack = 1;
-		T_RadiusDamage (RADIUS_NORMAL, self, self.owner,
-				120, targ, "grenade");
+		T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 120, targ, self.classname);
 		monk_radius_hack = 0;
 	}
 	else

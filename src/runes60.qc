@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.22 2003/11/16 09:23:04 slotzero Exp $
+/*  $Id: runes60.qc,v 1.23 2003/11/23 06:25:33 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -286,7 +286,7 @@ Blizzard_Think =
 	{
 		self.runevar = 0;
 		centerprint (self, string_null);
-		sprint (self, "\{13} Blizzard recharged\n");
+		sprint (self, "\{141} Blizzard recharged\n");
 	}
 
 	if (self.watertype == CONTENT_WATER && self.runevector_x < time && !environmental (self))
@@ -398,7 +398,7 @@ sonar_sprint =
 	else
 	{
 		s = ftos (self.runevar);
-		self_sprint (self, "\{13} ");
+		self_sprint (self, "\{141} ");
 		self_sprint (self, s);
 		self_sprint (self, " player");
 		if (self.runevar > 1)
@@ -566,7 +566,7 @@ AntiPack_Think =
 	IN_POQ([-
 		particle (self.origin, '0 0 10', 73, 20);
 	-], [-
-		create_te_blood (self.origin, 1);
+		create_te_blood (self.origin + '0 0 10', 2);
 	-])
 
 	if (self.runetime < time)
@@ -664,10 +664,10 @@ AntiPack_Touch =
 void ()
 AntiPack_Arm =
 {
-   self.nextthink	= time;
-   self.runetime	= time + DROP_BACKPACK_DURATION;
-   self.think		= AntiPack_Think;
-   self.touch		= AntiPack_Touch;
+	self.nextthink	= time;
+	self.runetime	= time + DROP_BACKPACK_DURATION;
+	self.think	= AntiPack_Think;
+	self.touch	= AntiPack_Touch;
 };
 
 void ()
@@ -711,7 +711,6 @@ Rune_Deflect_Telefrag_sprint =
 	rprint (self, riders, " left\n");
 };
 
-
 // Deflect telefrag can't be dropped directly after a deflect because tdeath_touch()
 // is still looping and will telefrag you as soon as it detects your rune is gone.
 // This function drops the rune at the same time tdeath_expires.
@@ -752,5 +751,167 @@ Rune_Deflect_Telefrag =
 		rune_delete.owner	= other;
 		rune_delete.nextthink	= time + sys_ticrate * 2;
 		rune_delete.think	= deflect_rune_removal;
+	}
+};
+
+void ()
+launch_betty =
+{
+	newmis			= spawn ();
+	newmis.owner		= self.owner;
+	newmis.movetype		= MOVETYPE_BOUNCE;
+	self.touch		= SUB_Null;
+	newmis.solid		= SOLID_BBOX;
+
+	newmis.touch		= GrenadeTouch;
+	newmis.classname	= "betty";
+	newmis.think		= GrenadeExplode;
+
+	newmis.nextthink	= time + 0.75 + random ();
+
+	// Assign a random direction for the shrapnel to fly in
+	newmis.velocity_x	= 5 * (110 * random () - 55);
+	newmis.velocity_y	= 5 * (110 * random () - 55);
+	newmis.velocity_z	= 10 * (50 * random () - 25);
+
+	newmis.avelocity_x	= 250 + (random () * 150);
+	newmis.avelocity_y	= 250 + (random () * 150);
+	newmis.avelocity_z	= 250 + (random () * 150);
+
+	setmodel (newmis, "progs/grenade.mdl");
+	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
+	setorigin (newmis, self.origin + '0 0 -1');
+};
+
+// This code segment detonates the 'second stage' of the grenade
+// (After it has popped up)
+void ()
+BouncerExplode =
+{
+	local float i;
+
+        monk_radius_hack = 1;
+        T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 200, world, "betty");
+	monk_radius_hack = 0;
+
+	for (i = MAX_LAUNCH_BETTY; i >= 0; i = i - 1)
+		launch_betty ();
+
+	create_te_explosion (self.origin, 1);
+};
+
+void ()
+BouncerTouch =
+{
+	// XXX Why?
+	if (self.velocity == VEC_ORIGIN)
+		self.avelocity = VEC_ORIGIN;
+
+	sound (self, CHAN_AUTO, "weapons/bounce.wav", 1, ATTN_NORM);
+};
+
+void ()
+BouncerPopUp =
+{
+	local entity missile;
+
+	sound (self, CHAN_WEAPON, "weapons/grenade.wav", 1, ATTN_NORM);
+
+	// Spawn and animate the 'second stage'
+	missile			= spawn ();
+	missile.owner		= self.owner;
+	missile.movetype	= MOVETYPE_BOUNCE;
+	missile.solid		= SOLID_BBOX;
+	missile.classname	= "betty-missile";
+
+	// Set speed
+	missile.velocity	= '0 0 650';
+	missile.angles		= vectoangles (missile.velocity);
+	missile.touch		= BouncerTouch;
+
+	// Set Duration
+	missile.nextthink	= time + 1;
+	missile.think		= BouncerExplode;
+
+	setmodel (missile, "progs/missile.mdl");
+	setsize (missile, VEC_ORIGIN, VEC_ORIGIN);
+	setorigin (missile, self.origin);
+
+	BecomeExplosion ();
+};
+
+void (float riders, entity of_e)
+Rune_Betty_sprint =
+{
+	rprint_numdesc (self, riders, of_e.runevar, "betty");
+	rprint (self, riders, " left\n");
+};
+
+// XXX Clean this up.
+void ()
+Rune_Betty =
+{
+	local entity missile;
+	local string s;
+
+	if (self.runevector_x > time)
+		return;
+
+	self.runevector = time + 3;
+
+	sound (self, CHAN_WEAPON, "weapons/grenade.wav", 1, ATTN_NORM);
+
+	IN_POQ([-
+		self.punchangle_x = -2;
+	-])
+
+	// This spawns the grenade - it is all id's standard grenade code
+	missile			= spawn ();
+	missile.owner		= self;
+	missile.movetype	= MOVETYPE_BOUNCE;
+	missile.solid		= SOLID_BBOX;
+	missile.classname	= "betty";
+
+	// set missile speed
+	makevectors (self.v_angle);
+
+	if (self.v_angle_x)
+		missile.velocity = v_forward * 600 + v_up * 200 + crandom () * v_right * 10 + crandom () * v_up * 10;
+	else
+	{
+		missile.velocity = aim (self, 10000);
+		missile.velocity = missile.velocity * 600;
+		missile.velocity_z = 200;
+	}
+
+	missile.avelocity	= '300 300 300';
+	missile.angles		= vectoangles(missile.velocity);
+
+	// if the grenade touches anything, BouncerTouch() is called
+	missile.touch		= BouncerTouch;
+
+	// Grenade has a maximum lifespan of 1.5 (seconds?)
+	// set missile duration
+	missile.nextthink	= time + 1;
+
+	// when the grenade's lifespan has expired, BouncerPopUp() is called
+	missile.think		= BouncerPopUp;
+
+	setmodel (missile, "progs/grenade.mdl");
+	setsize (missile, VEC_ORIGIN, VEC_ORIGIN);
+	setorigin (missile, self.origin);
+
+	self.runevar = self.runevar - 1;
+
+	s = ftos (self.runevar);
+	if (s == "1")
+		sprint (self, "\{141} \b[warning]\b 1 betty left\n");
+	/* else
+		centerprint2 (self, s, " bettys left\n"); */
+
+	if (!self.runevar)
+	{
+		sprint (self, "Max bouncing bettys launched, rune deleted\n");
+		Rune_Delete (0);
 	}
 };

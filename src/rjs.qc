@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.77 2003/11/10 22:52:15 slotzero Exp $
+/*  $Id: rjs.qc,v 1.78 2003/11/23 06:25:32 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -54,7 +54,7 @@ timelimit_countdown =
 		else
 			s1 = " minute";
 
-		bprint ("\{13} ");
+		bprint ("\{141} ");
 		bprint_float (countdown);
 		bprint (s1);
 		bprint (s2);

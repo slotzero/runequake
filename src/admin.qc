@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.24 2003/11/01 01:42:52 slotzero Exp $
+/*  $Id: admin.qc,v 1.25 2003/11/23 06:25:31 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -267,14 +267,14 @@ admin_eyes =
 	if (self.model == string_null)
 	{
 		s = "progs/eyes.mdl";
-		s1 = "\{13} Visible eyes.\n";
+		s1 = "\{141} Visible eyes.\n";
 		n = modelindex_eyes;
 		self.items = self.items | IT_KEY1;
 	}
 	else
 	{
 		s = string_null;
-		s1 = "\{13} Normal.\n";
+		s1 = "\{141} Normal.\n";
 		n = 0;
 		self.items = self.items - self.items & IT_KEY1;
 	}
@@ -318,13 +318,13 @@ admin_cycle =
 	if (!e)
 	{
 		if (cycle_show)
-			self_sprint (self, "\{13} Nobody selected\n");
+			self_sprint (self, "\{141} Nobody selected\n");
 		else
-			self_sprint (self, "\{13} Nobody to select\n");
+			self_sprint (self, "\{141} Nobody to select\n");
 	}
 	else
 	{
-		self_sprint (self, "\{13} \[#");
+		self_sprint (self, "\{141} \[#");
 		self_sprint (self, s);
 		self_sprint (self, "\] ");
 		self_sprint (self, e.netname);
@@ -583,7 +583,7 @@ admin_impulse_map =
 				if (forced_nextmap == m)
 					vote ();
 				else
-					sprint (self, "\{13} A vote is already in progress\n");
+					sprint (self, "\{141} A vote is already in progress\n");
 				return;
 			}
 
