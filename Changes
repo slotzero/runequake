@@ -1,4 +1,4 @@
-$Id: Changes,v 1.68 2004/06/24 18:49:51 slotzero Exp $
+$Id: Changes,v 1.69 2004/06/24 21:27:52 slotzero Exp $
 
 // developer stuff
 fix the tornado rune
@@ -11,6 +11,8 @@ added some basic reflect code, not implemented
 Version 1.1  Sat Jun 12 14:39:35 EST 2004
 
     - Bug Fixes
+
+        - Dropped clients no longer leave quad/pent hat behind.
 
         - Practice mode wasn't displaying your attacker's health when killed.
 
