@@ -1,4 +1,4 @@
-// $Id: items.qc,v 1.6 2002/04/27 00:51:03 slotzero Exp $
+// $Id: items.qc,v 1.7 2002/04/27 03:15:44 slotzero Exp $
 
 void (entity e, float chan, string samp, float vol, float atten)
 item_sound =
@@ -1271,8 +1271,8 @@ powerup_touch =
 	}
 	else
 	{
-		observer_sprint2 (other.netname, " just picked up the ");
-		observer_sprint2 (self.netname, "\n");
+		sprint_obs2 (other.netname, " just picked up the ");
+		sprint_obs2 (self.netname, "\n");
 	}
 
 	activator = other;

@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.11 2002/04/27 00:51:04 slotzero Exp $
+// $Id: rjs.qc,v 1.12 2002/04/27 03:15:45 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -1361,8 +1361,8 @@ common_impulses =
 
 	else if (self.aqflags & AQ_ADMIN && self.impulse == IMP_QSMACK_COMMAND)
 	{
-		admin_sprint2 ("#qsmack_command# ", self.netname);
-		admin_sprint2 ("\n", string_null);
+		sprint_admin2 ("#qsmack_command# ", self.netname);
+		sprint_admin2 ("\n", string_null);
 	}
 
 	 else if (self.impulse == IMP_TEAM_STATS)
@@ -1612,7 +1612,7 @@ player_forward_think =
 	if ((self.aqstate == 0 && self.owner.state == 0) || self.aqstate == 1)
 	{
 		if (check_forward)
-			admin_sprint2 (self.owner.netname, " was forwarded successfully\n");
+			sprint_admin2 (self.owner.netname, " was forwarded successfully\n");
 		else
 		{
 			bprint ("Forwarding ");

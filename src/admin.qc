@@ -1,4 +1,4 @@
-// $Id: admin.qc,v 1.4 2002/04/26 01:40:02 slotzero Exp $
+// $Id: admin.qc,v 1.5 2002/04/27 03:15:44 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -12,7 +12,7 @@ admin_Init =
 		return;
 	}
 
-	admin_sprint2 (self.netname, " activated admin mode\n");
+	sprint_admin2 (self.netname, " activated admin mode\n");
 	self.aqflags = self.aqflags | AQ_ADMIN;
 	player_init_impulse_alias ("admin-eyes",	IMP_ADMIN_EYES);
 	player_init_impulse_alias ("admin-cycle",	IMP_ADMIN_CYCLE);
@@ -48,7 +48,7 @@ admin_Wrong_Passcode =
 		kick ("for using an incorrect ", msg);
 	else
 	{
-		admin_sprint2 (self.netname, " used the wrong admin passcode\n");
+		sprint_admin2 (self.netname, " used the wrong admin passcode\n");
 		sprint (self, "Invalid passcode ");
 		if (passcode)
 			self_sprint_float (self, passcode);
@@ -378,13 +378,13 @@ admin_Try_Rename =
 	e = admin_Player_Pick (ADMIN_PLAYER_TYPE_ANY);
 	if (!e)
 		return;
-	admin_sprint2 (e.netname, " was renamed to ");
+	sprint_admin2 (e.netname, " was renamed to ");
 	self_stuffcmd (e, "name \"");
 	newname = random_name ();
 	self_stuffcmd (e, newname);
 	self_stuffcmd (e, "\"\n");
-	admin_sprint2 (newname, " by ");
-	admin_sprint2 (self.netname, "\n");
+	sprint_admin2 (newname, " by ");
+	sprint_admin2 (self.netname, "\n");
 };
 
 void ()
@@ -477,8 +477,8 @@ admin_Try_Unbind =
 		return;
 	self_stuffcmd (e, "unbindall\n");
 	self_stuffcmd (e, "sensitivity 0\n");
-	admin_sprint2 (e.netname, "'s keys unbound by ");
-	admin_sprint2 (self.netname, "\n");
+	sprint_admin2 (e.netname, "'s keys unbound by ");
+	sprint_admin2 (self.netname, "\n");
 };
 
 void (string m)

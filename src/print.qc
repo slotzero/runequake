@@ -1,36 +1,7 @@
-// $Id: print.qc,v 1.1 2002/04/27 00:51:04 slotzero Exp $
+// $Id: print.qc,v 1.2 2002/04/27 03:15:45 slotzero Exp $
 
 //=============================================================================
-
-void (string s1, string s2)
-admin_sprint2 =
-{
-	local entity e;
-
-	e = find (world, classname, "player");
-	while (e)
-	{
-		if (is_admin_e (e))
-			self_sprint2 (e, s1, s2);
-		e = find (e, classname, "player");
-	}
-};
-
-void (string s1, string s2)
-observer_sprint2 =
-{
-	local entity e;
-
-	e = find (world, classname, "player");
-	while (e)
-	{
-		if (is_observer_e (e))
-			self_sprint2 (e, s1, s2);
-		e = find (e, classname, "player");
-	}
-};
-
-//=============================================================================
+// bprint
 
 void (float n)
 bprint_float =
@@ -370,6 +341,34 @@ sprint_entity =
 		sprint (e, of_e.classname);
 };
 
+void (string s1, string s2)
+sprint_admin2 =
+{
+	local entity e;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (is_admin_e (e))
+			self_sprint2 (e, s1, s2);
+		e = find (e, classname, "player");
+	}
+};
+
+void (string s1, string s2)
+sprint_obs2 =
+{
+	local entity e;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (is_observer_e (e))
+			self_sprint2 (e, s1, s2);
+		e = find (e, classname, "player");
+	}
+};
+
 // Print an integer number right-justified in the given width.
 void (entity e, float n, float width)
 sprint_int_f =
@@ -542,5 +541,3 @@ self_sprint_bitfield =
 
 	self_sprint (e, "\n");
 };
-
-//=============================================================================
