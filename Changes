@@ -1,6 +1,6 @@
-$Id: Changes,v 1.32 2002/08/15 09:20:37 slotzero Exp $
+$Id: Changes,v 1.33 2002/08/23 21:58:52 slotzero Exp $
 
-Version 0.5.3  Thu Aug 15 02:20:04 EST 2002
+Version 0.5.3  Fri Aug 23 14:58:07 EST 2002
 
     - Bug Fixes
 
@@ -30,6 +30,11 @@ Version 0.5.3  Thu Aug 15 02:20:04 EST 2002
 
 	  bug has been squashed!  Killed() was calling self.th_die() which
 	  when is NULL, crashes the server.
+
+    - Level Changes
+
+        - I replaced the nail gun with a super nail gun on E3M2.  I also
+          added a red armor.
 
     - Notable Internal Changes
 

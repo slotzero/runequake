@@ -1,4 +1,4 @@
-// $Id: rjs.qc,v 1.27 2002/08/04 07:04:07 slotzero Exp $
+// $Id: rjs.qc,v 1.28 2002/08/23 21:58:59 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -435,6 +435,10 @@ place_my_items =
 	{
 		// On long pole above double shotgun.
 		spawn_item ("weapon_rocketlauncher", 0, '1072 -80 20', 0);
+		// Under the elevator lift.
+		spawn_item ("item_armorInv", 0, '481 -801 -232', 0);
+		// Replaces the only nailgun.
+		spawn_item ("weapon_supernailgun", 0, '-384 384 8', 0);
 	}
 	else if (mapname == "dm1")
 	{
@@ -1089,7 +1093,7 @@ fix_map =
 		e.mangle = '0 -90 0';
 		setorigin (e, '545.1 679.5 353.0');
 	}
-	if (world.model == "maps/e1m2.bsp")
+	else if (world.model == "maps/e1m2.bsp")
 	{
 		// Remove rocket launcher.
 		remove_classname_origin ("weapon_rocketlauncher", '680.0 728.0 184.0');
@@ -1101,6 +1105,11 @@ fix_map =
 		e.targetname = "t11";
 		e.mangle = VEC_ORIGIN;
 		setorigin (e, '-450 64 366');
+	}
+	else if (world.model == "maps/e3m2.bsp")
+	{
+		// Remove nail gun.
+		remove_classname_origin ("weapon_nailgun", '-384 384 8');
 	}
 	else if (world.model == "maps/dm1.bsp")
 	{
