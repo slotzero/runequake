@@ -1,4 +1,4 @@
-// $Id: admin.qc,v 1.13 2002/09/24 00:50:11 slotzero Exp $
+// $Id: admin.qc,v 1.14 2002/10/01 00:00:51 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -35,6 +35,7 @@ admin_init =
 	player_init_impulse_alias ("qsmack",		IMP_QSMACK_COMMAND);
 	self_stuffcmd (self, "bind 9 \"impulse 9\"\n");
 	self_sprint (self, "Admin mode activated\n");
+	admin_sound ("misc/medkey.wav");
 };
 
 void (string msg, float passcode)

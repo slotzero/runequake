@@ -1,4 +1,4 @@
-// $Id: defs.qc,v 1.19 2002/09/28 17:19:27 slotzero Exp $
+// $Id: defs.qc,v 1.20 2002/10/01 00:00:52 slotzero Exp $
 
 /*
 ==============================================================================
@@ -605,6 +605,7 @@ float AQ_NO_WEAPON_TOGGLE	= 262144;
 float AQ_NO_HUD			= 524288;
 float AQ_HOOK			= 1048576;
 float AQ_VOTE_TEAM		= 2097152;
+float AQ_QSMACK			= 4194304;
 
 // aqstate flags (not saved accross levels)
 float AQS_MENU_MASK		= 31;

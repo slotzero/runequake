@@ -1,4 +1,4 @@
-// $Id: observer.qc,v 1.9 2002/06/15 21:03:05 slotzero Exp $
+// $Id: observer.qc,v 1.10 2002/10/01 00:00:52 slotzero Exp $
 //
 // Copyright (c) 2001, 2002 Rune Quake Development Team.  All rights reserved.
 // See the file `Copying' in the distribution for terms.
@@ -13,6 +13,18 @@ float ()
 is_admin =
 {
 	return is_admin_e (self);
+};
+
+float (entity e)
+is_qsmack_e =
+{
+	return e.aqflags & AQ_QSMACK;
+};
+
+float ()
+is_qsmack =
+{
+	return is_qsmack_e (self);
 };
 
 float (entity e)
