@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.38 2005/04/02 07:37:21 slotzero Exp $
+/*  $Id: team.qc,v 1.39 2005/04/16 06:23:18 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -554,24 +554,36 @@ sprint_team =
 void ()
 team_fraglimit =
 {
-	if (fraglimit &&  (tf_0 >= fraglimit
-			|| tf_1 >= fraglimit
-			|| tf_2 >= fraglimit
-			|| tf_3 >= fraglimit
-			|| tf_4 >= fraglimit
-			|| tf_5 >= fraglimit
-			|| tf_6 >= fraglimit
-			|| tf_7 >= fraglimit
-			|| tf_8 >= fraglimit
-			|| tf_9 >= fraglimit
-			|| tf_10 >= fraglimit
-			|| tf_11 >= fraglimit
-			|| tf_12 >= fraglimit
-			|| tf_13 >= fraglimit
-			|| tf_14 >= fraglimit))
+	local float i;
+
+	if (!teamplay & TEAM_TEAM_MASK)
+		return;
+
+	if (fraglimit)
 	{
-		forced_nextmap = string_null;
-		NextLevel ();
+		// I put the most common team colors first, which will help speed
+		// things up.
+		if 	(tf_0 >= fraglimit)	i = 1;
+		else if (tf_5 >= fraglimit)	i = 1;
+		else if (tf_14 >= fraglimit)	i = 1;
+		else if (tf_1 >= fraglimit)	i = 1;
+		else if (tf_2 >= fraglimit)	i = 1;
+		else if (tf_3 >= fraglimit)	i = 1;
+		else if (tf_4 >= fraglimit)	i = 1;
+		else if (tf_6 >= fraglimit)	i = 1;
+		else if (tf_7 >= fraglimit)	i = 1;
+		else if (tf_8 >= fraglimit)	i = 1;
+		else if (tf_9 >= fraglimit)	i = 1;
+		else if (tf_10 >= fraglimit)	i = 1;
+		else if (tf_11 >= fraglimit)	i = 1;
+		else if (tf_12 >= fraglimit)	i = 1;
+		else if (tf_13 >= fraglimit)	i = 1;
+
+		if (i)
+		{
+			forced_nextmap = string_null;
+			NextLevel ();
+		}
 	}
 };
 
