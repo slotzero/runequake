@@ -1,4 +1,4 @@
-/*  $Id: map.qc,v 1.15 2004/01/03 11:15:25 slotzero Exp $
+/*  $Id: map.qc,v 1.16 2005/04/17 01:36:13 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -240,7 +240,7 @@ allowed_map =
 		if (m == "e1m6") return 0; // The Door To Chthon
 		if (m == "e1m8") return 0; // Ziggurat Vertigo
 		if (m == "e2m3") return 0; // Crypt Of Decay
-		if (m == "e2m7") return 0; // Underneath
+		// if (m == "e2m7") return 0; // Underneath
 		if (m == "e3m4") return 0; // Satan's Dark Delight
 		if (m == "e3m5") return 0; // Wind Tunnels
 		if (m == "e4m1") return 0; // The Sewage System
