@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.44 2005/04/02 05:37:15 slotzero Exp $
+/*  $Id: observer.qc,v 1.45 2005/04/17 21:27:31 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -528,18 +528,24 @@ obs_init_hidables =
 void (float tell_type)
 obs_become =
 {
-	if (tell_type == 2)
-	{
-		bprint (self.netname);
-		bprint (" became an observer for idling as a corpse\n");
-	}
-	// arena
-	else if (tell_type == 3)
-		SUB_Null ();
-	else if (tell_type)
+	if (tell_type == 1)
 	{
 		bprint (self.netname);
 		bprint (" became an observer\n");
+
+		if (mode_arena ())
+		{
+			if (arena.owner == self && arena.runent != world)
+			{
+				arena.owner = arena.runent;
+				arena.runent = world;
+			}
+		}
+	}
+	else if (tell_type == 2)
+	{
+		bprint (self.netname);
+		bprint (" became an observer for idling as a corpse\n");
 	}
 
 	// Reset cshift for when you drop off riding someone who is
