@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.24 2005/04/17 22:57:26 slotzero Exp $
+/*  $Id: arena.qc,v 1.25 2005/04/17 23:54:20 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -178,6 +178,10 @@ arena_countdown =
 
 				// set parms
 				set_arena_parms_e (self.owner);
+
+				// allow waiting player to rocket jump
+				self.owner.takedamage = DAMAGE_AIM;
+				self.state = -2;
 			}
 			else
 				bprint ("waiting for players\n");

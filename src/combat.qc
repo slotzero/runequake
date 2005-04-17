@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.33 2005/04/04 20:41:15 slotzero Exp $
+/*  $Id: combat.qc,v 1.34 2005/04/17 23:54:20 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -377,6 +377,13 @@ T_Damage =
 			&& attacker == targ
 			&& damage < SURE_KILL_DAMAGE)
 		damage = 0;
+
+	// Allow momentum change without damage when player is waiting for opponent.
+	if (mode_arena ())
+	{
+		if (arena.state == -2)
+			damage = 0;
+	}
 
 	// save damage based on the target's armor level
 	save = 0;

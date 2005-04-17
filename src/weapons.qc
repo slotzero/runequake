@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.53 2005/04/01 00:51:34 slotzero Exp $
+/*  $Id: weapons.qc,v 1.54 2005/04/17 23:54:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1074,8 +1074,12 @@ W_Attack =
 	local	float	do_ammo, base_weapon, is_alt, haste_mult, r, t;
 	local	string	s;
 
-	if (mode_arena () && arena.state)
-		return;
+	// Prevent firing except when match begins and player is waiting for opponent.
+	if (mode_arena ())
+	{
+		if (arena.state && arena.state != -2)
+			return;
+	}
 
 	spawn_protect_off ();
 

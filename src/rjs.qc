@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.171 2005/03/28 23:30:24 slotzero Exp $
+/*  $Id: rjs.qc,v 1.172 2005/04/17 23:54:21 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2196,6 +2196,13 @@ use_ammo =
 
 	if (deathmatch & DM_MODE_PRACTICE)
 		return;
+
+	// Let players waiting for opponent have unlimited ammo.
+	if (mode_arena ())
+	{
+		if (arena.state == -2)
+			return;
+	}
 
 	ammo_type	= weapon_it_ammo_type (self.weapon);
 	ammo		= weapon_it_min_ammo (self.weapon);
