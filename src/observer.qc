@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.45 2005/04/17 21:27:31 slotzero Exp $
+/*  $Id: observer.qc,v 1.46 2005/04/17 22:05:46 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -533,12 +533,21 @@ obs_become =
 		bprint (self.netname);
 		bprint (" became an observer\n");
 
+		// Reset arena entity when arena player goes observer.
 		if (mode_arena ())
 		{
-			if (arena.owner == self && arena.runent != world)
+			if (arena.owner == self || arena.runent == self)
 			{
-				arena.owner = arena.runent;
-				arena.runent = world;
+				if (arena.owner == self)
+					arena.owner = world;
+				else if (arena.runent == self)
+					arena.runent = world;
+
+				if (arena.runent)
+				{
+					arena.owner = arena.runent;
+					arena.runent = world;
+				}
 			}
 		}
 	}
