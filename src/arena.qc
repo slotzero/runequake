@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.23 2005/04/03 00:34:50 slotzero Exp $
+/*  $Id: arena.qc,v 1.24 2005/04/17 22:57:26 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -100,6 +100,18 @@ arena_game_queue_announce =
 		bprint2 (e_next.netname, " is next in line\n");
 };
 
+void (entity e)
+set_arena_parms_e =
+{
+	local entity os;
+
+	os = self;
+	self = e;
+	self.takedamage = DAMAGE_NO;
+	SetArenaParms ();
+	self = os;
+};
+
 void ()
 arena_fight =
 {
@@ -124,7 +136,7 @@ arena_countdown =
 {
 	local float a, b;
 	local string s;
-	local entity e;
+	local entity e, os;
 
 	if (intermission_running)
 		return;
@@ -146,21 +158,26 @@ arena_countdown =
 			bprint (self.runent.netname);
 			bprint (" is the new challenger\n");
 
+			// set parms
+			set_arena_parms_e (self.owner);
+
 			self.state = 6;
 		}
    		else
 		{
-			if (a)
+			if (b)
 			{
+				self.owner = self.runent;
 				self.runent = world;
+			}
+
+			if (a || b)
+			{
 				self_sprint (self.owner, "waiting for opponent\n");
 				centerprint (self.owner, string_null);
-			}
-			else if (b)
-			{
-				self.owner = world;
-				self_sprint (self.runent, "waiting for opponent\n");
-				centerprint (self.runent, string_null);
+
+				// set parms
+				set_arena_parms_e (self.owner);
 			}
 			else
 				bprint ("waiting for players\n");
@@ -241,6 +258,13 @@ arena_results =
 		self.owner.takedamage = DAMAGE_NO;
 	if (self.runent)
 		self.runent.takedamage = DAMAGE_NO;
+
+	if (!self.owner || !self.runent)
+	{
+		arena.think = arena_countdown;
+		arena.nextthink = time;
+		return;
+	}
 
 	winner = world;
 
@@ -323,15 +347,6 @@ arena_results =
 		}
 		else
 			bprint (" by default\n");
-
-		// if winner isn't dead, set her parms
-		if (!self.oldenemy)
-		{
-			os = self;
-			self = winner;
-			SetArenaParms ();
-			self = os;
-		}
 	}
 	else
 	{
@@ -443,13 +458,7 @@ arena_client_disconnect =
 		arena.runent = world;
 
 	if (is_player_e (arena.owner) && !arena.owner.deadflag)
-	{
-		os = self;
-		self = arena.owner;
-		self.takedamage = DAMAGE_NO;
-		SetArenaParms ();
-		self = os;
-	}
+		set_arena_parms_e (arena.owner);
 
 	arena.think = arena_countdown;
 	arena.nextthink = time;
