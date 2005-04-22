@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.39 2005/04/16 06:23:18 slotzero Exp $
+/*  $Id: team.qc,v 1.40 2005/04/22 22:32:14 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -242,7 +242,7 @@ is_allowable_team =
 	n1 = count_team (TEAM_1);
 	n2 = count_team (TEAM_2);
 	n3 = count_team (TEAM_3);
-	n4 = count_team (TEAM_3);
+	n4 = count_team (TEAM_4);
 
 	// Remove myself from the team counts, to see if this team was
 	// bigger than any other before I joined it.
