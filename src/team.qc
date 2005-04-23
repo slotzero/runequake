@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.41 2005/04/23 02:29:17 slotzero Exp $
+/*  $Id: team.qc,v 1.42 2005/04/23 07:43:10 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -158,6 +158,8 @@ set_team_e =
 {
 	local float tc, bc, bits;
 	local string s;
+
+	pqc_team_frags_refresh (e);
 
 	e.team = tm;
 

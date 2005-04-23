@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#    $Id: map,v 1.28 2005/04/23 06:52:40 slotzero Exp $
+#    $Id: map,v 1.29 2005/04/23 07:43:10 slotzero Exp $
 
 use strict;
 use warnings;
@@ -563,7 +563,7 @@ $else = '';
 for my $t ($team_min .. $team_max, $team_nil) {
     print "\t${else}";
     print "if (e.team == $t) " if $t != $team_nil;
-    print "{ if (tf_$t == $no_frags) tf_$t = f; else tf_$t = tf_$t + f; pqc_team_frags (e, tf_$t); }\n";
+    print "{ if (tf_$t == $no_frags) tf_$t = f; else tf_$t = tf_$t + f; pqc_team_frags (world, e.team, tf_$t); }\n";
     $else = 'else ';
 }
 print "\tteam_fraglimit ();\n";
@@ -613,4 +613,16 @@ EOF
 }
 print "\tteam_stats_1_lead = lead;\n";
 print "\treturn t;\n";
+print "};\n";
+
+print "\n";
+print "void (entity e)\n";
+print "pqc_team_frags_refresh =\n";
+print "{\n";
+print "\tlocal float t, f, lead, n_teams;\n";
+print "\tn_teams = 0;\n";
+for my $t ($team_nil, $team_min .. $team_max) {
+    print "\tif (tf_$t != $no_frags)\n";
+    print "\t\tpqc_team_frags (e, $t, tf_$t);\n";
+}
 print "};\n";
