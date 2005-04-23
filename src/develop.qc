@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.84 2005/04/23 07:43:09 slotzero Exp $
+/*  $Id: develop.qc,v 1.85 2005/04/23 07:49:45 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -161,6 +161,9 @@ void (entity e, float tm, float tf)
 pqc_team_frags =
 {
 	local float msg_type, i;
+
+	if (!teamplay & TEAM_TEAM_MASK)
+		return;
 
 	if (e == world)
 		msg_type = MSG_ALL;
