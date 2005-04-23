@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.141 2005/04/02 05:37:15 slotzero Exp $
+/*  $Id: defs.qc,v 1.142 2005/04/23 02:29:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -830,10 +830,6 @@ float SURE_KILL_DAMAGE		= 50000;
 float KILL_DAMAGE		= 25000;
 float DEFAULT_GRAVITY		= 800;
 
-// message protocol defines
-float SVC_SETVIEWPORT	= 5;
-float SVC_SETVIEWANGLES	= 10;
-
 // free player entity variable
 // '.float speed'  bit-flag defines:
 // float CHSCAM_ALT    = 4;
@@ -977,6 +973,9 @@ vector	VEC_HULL2_MAX			= '32 32 64';
 
 // protocol bytes
 
+float	SVC_SETVIEWPORT			= 5;
+float	SVC_STUFFTEXT			= 9;
+float	SVC_SETVIEWANGLES		= 10;
 float	SVC_TEMPENTITY			= 23;
 float	SVC_KILLEDMONSTER		= 27;
 float	SVC_FOUNDSECRET			= 28;

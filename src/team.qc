@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.40 2005/04/22 22:32:14 slotzero Exp $
+/*  $Id: team.qc,v 1.41 2005/04/23 02:29:17 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -294,16 +294,26 @@ assign_teams =
 	if (!n_teams)
 		return;
 	n1 = count_team (TEAM_1);
+	pqc_new_team (e, TEAM_1);
 	if (n_teams > 1)
+	{
 		n2 = count_team (TEAM_2);
+		pqc_new_team (e, TEAM_2);
+	}
 	else
 		n2 = -1;
 	if (n_teams > 2)
+	{
 		n3 = count_team (TEAM_3);
+		pqc_new_team (e, TEAM_1);
+	}
 	else
 		n3 = -1;
 	if (n_teams > 3)
+	{
 		n4 = count_team (TEAM_4);
+		pqc_new_team (e, TEAM_1);
+	}
 	else
 		n4 = -1;
 

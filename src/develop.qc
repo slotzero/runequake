@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.81 2005/02/14 23:41:18 slotzero Exp $
+/*  $Id: develop.qc,v 1.82 2005/04/23 02:29:16 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -134,6 +134,27 @@ client_ping_times =
 		dprint_force ("\n");
 		e = find (e, classname, "player");
 	}
+};
+
+void (entity e, float tm)
+pqc_new_team =
+{
+	local float msg_type;
+
+	if (e == world)
+		msg_type = MSG_ALL;
+	else
+	{
+		msg_entity = e;
+		msg_type = MSG_ONE;
+	}
+
+	WriteByte (msg_type, SVC_STUFFTEXT);
+	WriteByte (msg_type, 1); // MOD_PROQUAKE
+	WriteByte (msg_type, 2); // case pqc_new_team
+	WriteByte (msg_type, 15 + tm); //team
+	WriteByte (msg_type, 15 + tm); //team
+	WriteString (msg_type, string_null);
 };
 
 void ()
