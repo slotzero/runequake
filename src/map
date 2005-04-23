@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#    $Id: map,v 1.27 2005/04/16 06:23:18 slotzero Exp $
+#    $Id: map,v 1.28 2005/04/23 06:52:40 slotzero Exp $
 
 use strict;
 use warnings;
@@ -563,7 +563,7 @@ $else = '';
 for my $t ($team_min .. $team_max, $team_nil) {
     print "\t${else}";
     print "if (e.team == $t) " if $t != $team_nil;
-    print "{ if (tf_$t == $no_frags) tf_$t = f; else tf_$t = tf_$t + f; }\n";
+    print "{ if (tf_$t == $no_frags) tf_$t = f; else tf_$t = tf_$t + f; pqc_team_frags (e, tf_$t); }\n";
     $else = 'else ';
 }
 print "\tteam_fraglimit ();\n";

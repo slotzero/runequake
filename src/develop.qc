@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.82 2005/04/23 02:29:16 slotzero Exp $
+/*  $Id: develop.qc,v 1.83 2005/04/23 06:52:40 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -154,6 +154,39 @@ pqc_new_team =
 	WriteByte (msg_type, 2); // case pqc_new_team
 	WriteByte (msg_type, 15 + tm); //team
 	WriteByte (msg_type, 15 + tm); //team
+	WriteString (msg_type, string_null);
+};
+
+void (entity e, float tf)
+pqc_team_frags =
+{
+	local float msg_type, i;
+
+	msg_type = MSG_ALL;
+
+	WriteByte (msg_type, SVC_STUFFTEXT);
+	WriteByte (msg_type, 1); // MOD_PROQUAKE
+	WriteByte (msg_type, 4); // case pqc_team_frags
+	WriteByte (msg_type, 15 + e.team); //team
+
+	if (tf < 0)
+		tf = tf + 65536;
+
+	i = floor (tf / 4096);
+	tf = tf - (i * 4096);
+	WriteByte (msg_type, 16 + i);	// x 4096
+
+	i = floor (tf / 256);
+	tf = tf - (i * 256);
+	WriteByte (msg_type, 16 + i);	// x 256
+
+	i = floor (tf / 16);
+	tf = tf - (i * 16);
+	WriteByte (msg_type, 16 + i);	// x 16
+
+	WriteByte (msg_type, 16 + tf);	// x 1
+
+
 	WriteString (msg_type, string_null);
 };
 
