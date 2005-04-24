@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.89 2005/04/24 23:21:05 slotzero Exp $
+/*  $Id: develop.qc,v 1.90 2005/04/24 23:35:09 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -306,32 +306,28 @@ teamscores_on =
 
 	if (e_teams > 1)
 	{
+		// *** TEAM ONE
 		tm = TEAM_1 - 1;
-
-		// name
 		s = color_to_name (tm);
-		svc_updatename (msg_type, 0, s);
-
-		// frags
 		tf = color_to_teamfrags (tm);
-		if (tf == -23000) tf = 0;
-		svc_updatefrags (msg_type, 0, tf);
 
-		// color
+		if (tf == -23000)
+			tf = 0;
+
+		svc_updatename (msg_type, 0, s);
+		svc_updatefrags (msg_type, 0, tf);
 		svc_updatecolors (msg_type, 0, (16 * tm) + tm);
 
-		tm = TEAM_2 - 1;
+		// *** TEAM TWO
+		tm	= TEAM_2 - 1;
+		s	= color_to_name (tm);
+		tf	= color_to_teamfrags (tm);
 
-		// name
-		s = color_to_name (tm);
+		if (tf == -23000)
+			tf = 0;
+
 		svc_updatename (msg_type, 1, s);
-
-		// frags
-		tf = color_to_teamfrags (tm);
-		if (tf == -23000) tf = 0;
 		svc_updatefrags (msg_type, 1, tf);
-
-		// color
 		svc_updatecolors (msg_type, 1, (16 * tm) + tm);
 	}
 
@@ -348,23 +344,20 @@ teamscores_on =
 
 		if (e.cl[CL_ACTIVE] == %1)
 		{
-			bit = color_to_bit (e.team - 1);
+			tm	= e.team - 1;
+			bit	= color_to_bit (tm);
 
 			if (!bits & bit)
 			{
-				bits = bits | bit;
-				tm = e.team - 1;
+				bits	= bits | bit;
+				s	= color_to_name (tm);
+				tf	= color_to_teamfrags (tm);
 
-				// name
-				s = color_to_name (tm);
+				if (tf == -23000)
+					tf = 0;
+
 				svc_updatename (msg_type, i, s);
-
-				// frags
-				tf = color_to_teamfrags (tm);
-				if (tf == -23000) tf = 0;
 				svc_updatefrags (msg_type, i, tf);
-
-				// colors
 				svc_updatecolors (msg_type, i, e.cl[CL_COLORS] / %1);
 			}
 			else
