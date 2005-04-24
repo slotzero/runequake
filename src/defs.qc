@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.142 2005/04/23 02:29:16 slotzero Exp $
+/*  $Id: defs.qc,v 1.143 2005/04/24 18:18:45 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -976,6 +976,9 @@ vector	VEC_HULL2_MAX			= '32 32 64';
 float	SVC_SETVIEWPORT			= 5;
 float	SVC_STUFFTEXT			= 9;
 float	SVC_SETVIEWANGLES		= 10;
+float	SVC_UPDATENAME			= 13;
+float	SVC_UPDATEFRAGS			= 14;
+float	SVC_UPDATECOLORS		= 17;
 float	SVC_TEMPENTITY			= 23;
 float	SVC_KILLEDMONSTER		= 27;
 float	SVC_FOUNDSECRET			= 28;
