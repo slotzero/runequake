@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.173 2005/04/24 20:03:02 slotzero Exp $
+/*  $Id: rjs.qc,v 1.174 2005/04/24 21:08:57 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1496,6 +1496,12 @@ common_impulses =
 
 	else if (self.impulse == IMP_TEAM_STATS)
 	 	 team_stats (0);
+
+	else if (self.impulse == IMP_TEAMSCORES_ON)
+		teamscores_on (self);
+
+	else if (self.impulse == IMP_TEAMSCORES_OFF)
+		teamscores_off (self);
 
   	else if (is_admin () && self.impulse == 11)
 	{

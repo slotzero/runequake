@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.143 2005/04/24 18:18:45 slotzero Exp $
+/*  $Id: defs.qc,v 1.144 2005/04/24 21:08:57 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -542,7 +542,9 @@ float IMP_LAST			= 67;
 float IMP_VOTE_COMMAND		= 66;
 float IMP_LAG			= 65;
 float IMP_CUSTOM_SOUNDS		= 64;
-//				= 63 - 60	[free]
+float IMP_TEAMSCORES_ON		= 63;
+float IMP_TEAMSCORES_OFF	= 62;
+//				= 61 - 60	[free]
 float IMP_CYCLE_ALTERNATES	= 59;
 //				= 58;		[free]
 float IMP_SWITCHFIRE_BEST	= 57;
