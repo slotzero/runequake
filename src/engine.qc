@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.16 2004/06/06 08:50:44 slotzero Exp $
+/*  $Id: engine.qc,v 1.17 2005/04/24 23:21:05 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -267,4 +267,28 @@ samelevel_same_level =
 	-], [-
 		return cvar ("samelevel") == 1;
 	-])
+};
+
+void (float msg_type, float edict_num, string s)
+svc_updatename =
+{
+	WriteByte (msg_type, SVC_UPDATENAME);
+	WriteByte (msg_type, edict_num);
+	WriteString (msg_type, s);
+};
+
+void (float msg_type, float edict_num, float f)
+svc_updatefrags =
+{
+	WriteByte (msg_type, SVC_UPDATEFRAGS);
+	WriteByte (msg_type, edict_num);
+	WriteShort (msg_type, f);
+};
+
+void (float msg_type, float edict_num, float f)
+svc_updatecolors =
+{
+	WriteByte (msg_type, SVC_UPDATECOLORS);
+	WriteByte (msg_type, edict_num);
+	WriteByte (msg_type, f);
 };

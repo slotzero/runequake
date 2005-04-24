@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.88 2005/04/24 20:03:50 slotzero Exp $
+/*  $Id: develop.qc,v 1.89 2005/04/24 23:21:05 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -291,7 +291,7 @@ void (entity client)
 teamscores_on =
 {
 	local entity e;
-	local float i, bit, bits, e_teams, tf, msg_type;
+	local float i, bit, bits, e_teams, tm, tf, msg_type;
 	local string s;
 
 	if (client == world)
@@ -306,42 +306,33 @@ teamscores_on =
 
 	if (e_teams > 1)
 	{
-		// name
-		WriteByte (msg_type, SVC_UPDATENAME);
-		WriteByte (msg_type, 0);
-		s = color_to_name (TEAM_1 - 1);
-		WriteString (msg_type, s);
-
-		// frags
-		WriteByte (msg_type, SVC_UPDATEFRAGS);
-		WriteByte (msg_type, 0);
-		tf = color_to_teamfrags (TEAM_1 - 1);
-		if (tf == -23000) tf = 0;
-		WriteShort (msg_type, tf);
-
-		// color
-		WriteByte(msg_type, SVC_UPDATECOLORS);
-		WriteByte(msg_type, 0);
-		WriteByte(msg_type, 16 * (TEAM_1 - 1) + (TEAM_1 - 1));
-
+		tm = TEAM_1 - 1;
 
 		// name
-		WriteByte (msg_type, SVC_UPDATENAME);
-		WriteByte (msg_type, 1);
-		s = color_to_name (TEAM_2 - 1);
-		WriteString (msg_type, s);
+		s = color_to_name (tm);
+		svc_updatename (msg_type, 0, s);
 
 		// frags
-		WriteByte (msg_type, SVC_UPDATEFRAGS);
-		WriteByte (msg_type, 1);
-		tf = color_to_teamfrags (TEAM_2 - 1);
+		tf = color_to_teamfrags (tm);
 		if (tf == -23000) tf = 0;
-		WriteShort (msg_type, tf);
+		svc_updatefrags (msg_type, 0, tf);
 
 		// color
-		WriteByte(msg_type, SVC_UPDATECOLORS);
-		WriteByte(msg_type, 1);
-		WriteByte(msg_type, 16 * (TEAM_2 - 1) + (TEAM_2 - 1));
+		svc_updatecolors (msg_type, 0, (16 * tm) + tm);
+
+		tm = TEAM_2 - 1;
+
+		// name
+		s = color_to_name (tm);
+		svc_updatename (msg_type, 1, s);
+
+		// frags
+		tf = color_to_teamfrags (tm);
+		if (tf == -23000) tf = 0;
+		svc_updatefrags (msg_type, 1, tf);
+
+		// color
+		svc_updatecolors (msg_type, 1, (16 * tm) + tm);
 	}
 
 	// Add more team support here.
@@ -361,39 +352,26 @@ teamscores_on =
 
 			if (!bits & bit)
 			{
+				bits = bits | bit;
+				tm = e.team - 1;
+
 				// name
-				WriteByte (msg_type, SVC_UPDATENAME);
-				WriteByte (msg_type, i);
-				s = color_to_name (e.team - 1);
-				WriteString (msg_type, s);
+				s = color_to_name (tm);
+				svc_updatename (msg_type, i, s);
 
 				// frags
-				WriteByte (msg_type, SVC_UPDATEFRAGS);
-				WriteByte (msg_type, i);
-				tf = color_to_teamfrags (e.team - 1);
+				tf = color_to_teamfrags (tm);
 				if (tf == -23000) tf = 0;
-				WriteShort (msg_type, tf);
+				svc_updatefrags (msg_type, i, tf);
 
-				// color
-				WriteByte(msg_type, SVC_UPDATECOLORS);
-				WriteByte(msg_type, i);
-				WriteByte(msg_type, e.cl[CL_COLORS] / %1);
-
-				bits = bits | bit;
+				// colors
+				svc_updatecolors (msg_type, i, e.cl[CL_COLORS] / %1);
 			}
 			else
-			{
-				WriteByte (msg_type, SVC_UPDATENAME);
-				WriteByte (msg_type, i);
-				WriteString (msg_type, string_null);
-			}
+				svc_updatename (msg_type, i, string_null);
 		}
 		else
-		{
-			WriteByte (msg_type, SVC_UPDATENAME);
-			WriteByte (msg_type, i);
-			WriteString (msg_type, string_null);
-		}
+			svc_updatename (msg_type, i, string_null);
 
 		e = nextent (e);
 	}
@@ -421,27 +399,12 @@ teamscores_off =
 
 		if (e.cl[CL_ACTIVE] == %1)
 		{
-			// name
-			WriteByte (msg_type, SVC_UPDATENAME);
-			WriteByte (msg_type, i);
-			WriteString (msg_type, e.netname);
-
-			// frags
-			WriteByte (msg_type, SVC_UPDATEFRAGS);
-			WriteByte (msg_type, i);
-			WriteShort (msg_type, e.frags);
-
-			// color
-			WriteByte(msg_type, SVC_UPDATECOLORS);
-			WriteByte(msg_type, i);
-			WriteByte(msg_type, e.cl[CL_COLORS] / %1);
+			svc_updatename (msg_type, i, e.netname);
+			svc_updatefrags (msg_type, i, e.frags);
+			svc_updatecolors (msg_type, i, e.cl[CL_COLORS] / %1);
 		}
 		else
-		{
-			WriteByte (msg_type, SVC_UPDATENAME);
-			WriteByte (msg_type, i);
-			WriteString (msg_type, string_null);
-		}
+			svc_updatename (msg_type, i, string_null);
 
 		e = nextent (e);
 	}
