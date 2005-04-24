@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.44 2005/04/24 20:03:02 slotzero Exp $
+/*  $Id: team.qc,v 1.45 2005/04/24 22:14:08 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -46,20 +46,26 @@ is_valid_team =
 		|| (t >= 4 && tm == TEAM_4));
 };
 
-float ()
-correct_team =
+float (entity e)
+correct_team_e =
 {
 	local float aqfteam;
 
 	if (!enforced_teams ())
 		return -1;
-	aqfteam = self.aqflags & AQ_TEAM_MASK;
+	aqfteam = e.aqflags & AQ_TEAM_MASK;
 	if (aqfteam == AQ_TEAM_NIL) return TEAM_NIL;
 	if (aqfteam == AQ_TEAM_1) return TEAM_1;
 	if (aqfteam == AQ_TEAM_2) return TEAM_2;
 	if (aqfteam == AQ_TEAM_3) return TEAM_3;
 	if (aqfteam == AQ_TEAM_4) return TEAM_4;
 	return 0;
+};
+
+float ()
+correct_team =
+{
+	correct_team_e (self);
 };
 
 float ()
