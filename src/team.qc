@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.43 2005/04/23 16:32:07 slotzero Exp $
+/*  $Id: team.qc,v 1.44 2005/04/24 20:03:02 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -351,7 +351,7 @@ assign_teams =
 				c = team_to_color (new_team);
 				s = color_to_name (c);
 				sprint (e, s);
-				sprint (e, " team\n");
+				sprint (e, "\n");
 			}
 		}
 		if (just_one)
@@ -740,4 +740,28 @@ mode_practice =
 		return TRUE;
 
 	return FALSE;
+};
+
+float (float c)
+color_to_teamfrags =
+{
+	     if (c ==  0)	return tf_1;
+	else if (c ==  1)	return tf_2;
+	else if (c ==  2)	return tf_3;
+	else if (c ==  3)	return tf_4;
+	else if (c ==  4)	return tf_5;
+	else if (c ==  5)	return tf_6;
+	else if (c ==  6)	return tf_7;
+	else if (c ==  7)	return tf_8;
+	else if (c ==  8)	return tf_9;
+	else if (c ==  9)	return tf_10;
+	else if (c == 10)	return tf_11;
+	else if (c == 11)	return tf_12;
+	else if (c == 12)	return tf_13;
+	else if (c == 13)	return tf_14;
+	else
+	{
+		dprint ("color_to_teamfrags(): invalid color\n");
+		return 0;
+	}
 };
