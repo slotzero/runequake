@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.90 2005/04/24 23:35:09 slotzero Exp $
+/*  $Id: develop.qc,v 1.91 2005/04/25 07:51:05 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -237,105 +237,54 @@ pqc_team_frags =
 	WriteString (msg_type, string_null);
 };
 
-float (float c)
-color_to_bit =
+float (float n)
+num_to_bit =
 {
-	local string s;
-
-	     if (c ==  0)	return 1;
-	else if (c ==  1)	return 2;
-	else if (c ==  2)	return 4;
-	else if (c ==  3)	return 8;
-	else if (c ==  4)	return 16;
-	else if (c ==  5)	return 32;
-	else if (c ==  6)	return 64;
-	else if (c ==  7)	return 128;
-	else if (c ==  8)	return 256;
-	else if (c ==  9)	return 512;
-	else if (c == 10)	return 1024;
-	else if (c == 11)	return 2048;
-	else if (c == 12)	return 4096;
-	else if (c == 13)	return 8192;
-	else
-	{
-		dprint ("color_to_bit(): invalid color\n");
-		return 0;
-	}
+	     if (n ==  1)	return 1;
+	else if (n ==  2)	return 2;
+	else if (n ==  3)	return 4;
+	else if (n ==  4)	return 8;
+	else if (n ==  5)	return 16;
+	else if (n ==  6)	return 32;
+	else if (n ==  7)	return 64;
+	else if (n ==  8)	return 128;
+	else if (n ==  9)	return 256;
+	else if (n == 10)	return 512;
+	else if (n == 11)	return 1024;
+	else if (n == 12)	return 2048;
+	else if (n == 13)	return 4096;
+	else if (n == 14)	return 8192;
+	else if (n == 15)	return 16384;
+	else if (n == 16)	return 32768;
+	else if (n == 17)	return 65536;
+	else if (n == 18)	return 131072;
+	else if (n == 19)	return 262144;
+	else if (n == 20)	return 524288;
+	else if (n == 21)	return 1048576;
+	else if (n == 22)	return 2097152;
+	else if (n == 23)	return 4194304;
+	else if (n == 24)	return 8388608;
+	else			return 0;
 };
-
-/* float (float c)
-color_to_teamfrags =
-{
-	     if (c ==  0)	return tf_1;
-	else if (c ==  1)	return tf_2;
-	else if (c ==  2)	return tf_3;
-	else if (c ==  3)	return tf_4;
-	else if (c ==  4)	return tf_5;
-	else if (c ==  5)	return tf_6;
-	else if (c ==  6)	return tf_7;
-	else if (c ==  7)	return tf_8;
-	else if (c ==  8)	return tf_9;
-	else if (c ==  9)	return tf_10;
-	else if (c == 10)	return tf_11;
-	else if (c == 11)	return tf_12;
-	else if (c == 12)	return tf_13;
-	else if (c == 13)	return tf_14;
-	else
-	{
-		dprint ("color_to_teamfrags(): invalid color\n");
-		return 0;
-	}
-}; */
 
 void (entity client)
 teamscores_on =
 {
 	local entity e;
-	local float i, bit, bits, e_teams, tm, tf, msg_type;
+	local float i, tm, tf, bit, bits, n_teams, msg_type;
 	local string s;
 
 	if (client == world)
-		msg_type = MSG_ALL;
+		msg_type	= MSG_ALL;
 	else
 	{
-		msg_entity = client;
-		msg_type = MSG_ONE;
+		msg_entity	= client;
+		msg_type	= MSG_ONE;
  	}
 
-	e_teams = enforced_teams ();
+	n_teams = enforced_teams ();
 
-	if (e_teams > 1)
-	{
-		// *** TEAM ONE
-		tm = TEAM_1 - 1;
-		s = color_to_name (tm);
-		tf = color_to_teamfrags (tm);
-
-		if (tf == -23000)
-			tf = 0;
-
-		svc_updatename (msg_type, 0, s);
-		svc_updatefrags (msg_type, 0, tf);
-		svc_updatecolors (msg_type, 0, (16 * tm) + tm);
-
-		// *** TEAM TWO
-		tm	= TEAM_2 - 1;
-		s	= color_to_name (tm);
-		tf	= color_to_teamfrags (tm);
-
-		if (tf == -23000)
-			tf = 0;
-
-		svc_updatename (msg_type, 1, s);
-		svc_updatefrags (msg_type, 1, tf);
-		svc_updatecolors (msg_type, 1, (16 * tm) + tm);
-	}
-
-	// Add more team support here.
-
-	if (e_teams)
-		return;
-
+	bits = 0;
 	e = nextent (world);
 	for (i = 0; i < 16; i = i + 1)
 	{
@@ -344,21 +293,27 @@ teamscores_on =
 
 		if (e.cl[CL_ACTIVE] == %1)
 		{
-			tm	= e.team - 1;
-			bit	= color_to_bit (tm);
+			bit = num_to_bit (e.team);
 
 			if (!bits & bit)
 			{
+				tm	= e.team - 1;
 				bits	= bits | bit;
-				s	= color_to_name (tm);
-				tf	= color_to_teamfrags (tm);
 
-				if (tf == -23000)
-					tf = 0;
+				if (n_teams && e.team == TEAM_NIL)
+					svc_updatename (msg_type, i, string_null);
+				else
+				{
+					s	= color_to_name (tm);
+					tf	= color_to_teamfrags (tm);
 
-				svc_updatename (msg_type, i, s);
-				svc_updatefrags (msg_type, i, tf);
-				svc_updatecolors (msg_type, i, e.cl[CL_COLORS] / %1);
+					if (tf == -23000)
+						tf = 0;
+
+					svc_updatename (msg_type, i, s);
+					svc_updatefrags (msg_type, i, tf);
+					svc_updatecolors (msg_type, i, e.cl[CL_COLORS] / %1);
+				}
 			}
 			else
 				svc_updatename (msg_type, i, string_null);
