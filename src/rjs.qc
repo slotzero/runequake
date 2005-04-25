@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.174 2005/04/24 21:08:57 slotzero Exp $
+/*  $Id: rjs.qc,v 1.175 2005/04/25 08:25:12 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1547,22 +1547,22 @@ color_to_name =
 {
 	local string s;
 
-	     if (c ==  0)	return "White Team";
-	else if (c ==  1)	return "Brown Team";
-	else if (c ==  2)	return "Lavender Team";
-	else if (c ==  3)	return "Green Team";
-	else if (c ==  4)	return "Red Team";
-	else if (c ==  5)	return "Khaki Team";
-	else if (c ==  6)	return "Peach Team";
-	else if (c ==  7)	return "Burleywood Team";
-	else if (c ==  8)	return "Purple Team";
-	else if (c ==  9)	return "Pink Team";
-	else if (c == 10)	return "Ivory Team";
-	else if (c == 11)	return "Teal Team";
-	else if (c == 12)	return "Yellow Team";
-	else if (c == 13)	return "Blue Team";
-	else if (c == 14)	return "Blue Team";
-	else if (c == 15)	return "Blue Team";
+	     if (c ==  0)	return "\bWhite Team";
+	else if (c ==  1)	return "\bBrown Team";
+	else if (c ==  2)	return "\bLavender Team";
+	else if (c ==  3)	return "\bGreen Team";
+	else if (c ==  4)	return "\bRed Team";
+	else if (c ==  5)	return "\bKhaki Team";
+	else if (c ==  6)	return "\bPeach Team";
+	else if (c ==  7)	return "\bBurleywood Team";
+	else if (c ==  8)	return "\bPurple Team";
+	else if (c ==  9)	return "\bPink Team";
+	else if (c == 10)	return "\bIvory Team";
+	else if (c == 11)	return "\bTeal Team";
+	else if (c == 12)	return "\bYellow Team";
+	else if (c == 13)	return "\bBlue Team";
+	else if (c == 14)	return "\bBlue Team";
+	else if (c == 15)	return "\bBlue Team";
 	else
 	{
 		s = ftos (c);
