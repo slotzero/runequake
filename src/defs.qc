@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.146 2005/04/26 19:59:55 slotzero Exp $
+/*  $Id: defs.qc,v 1.147 2005/04/26 21:21:44 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1196,7 +1196,7 @@ float	timelimit;
 
 .entity	oldenemy;	// mad at this player before taking damage
 .float	speed;
-.float	lefty;
+.float	lefty;		// keeps track of last +teamscores update (for players)
 .float	search_time;
 .float	attack_state;
 
