@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.176 2005/04/26 08:00:02 slotzero Exp $
+/*  $Id: rjs.qc,v 1.177 2005/04/26 08:23:30 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1579,25 +1579,32 @@ team_to_name =
 float (float c)
 color_to_teamfrags =
 {
-	     if (c ==  0)	return tf_1;
-	else if (c ==  1)	return tf_2;
-	else if (c ==  2)	return tf_3;
-	else if (c ==  3)	return tf_4;
-	else if (c ==  4)	return tf_5;
-	else if (c ==  5)	return tf_6;
-	else if (c ==  6)	return tf_7;
-	else if (c ==  7)	return tf_8;
-	else if (c ==  8)	return tf_9;
-	else if (c ==  9)	return tf_10;
-	else if (c == 10)	return tf_11;
-	else if (c == 11)	return tf_12;
-	else if (c == 12)	return tf_13;
-	else if (c == 13)	return tf_14;
+	local float tf;
+
+	     if (c ==  0)	tf = tf_1;
+	else if (c ==  1)	tf = tf_2;
+	else if (c ==  2)	tf = tf_3;
+	else if (c ==  3)	tf = tf_4;
+	else if (c ==  4)	tf = tf_5;
+	else if (c ==  5)	tf = tf_6;
+	else if (c ==  6)	tf = tf_7;
+	else if (c ==  7)	tf = tf_8;
+	else if (c ==  8)	tf = tf_9;
+	else if (c ==  9)	tf = tf_10;
+	else if (c == 10)	tf = tf_11;
+	else if (c == 11)	tf = tf_12;
+	else if (c == 12)	tf = tf_13;
+	else if (c == 13)	tf = tf_14;
 	else
 	{
 		dprint ("color_to_teamfrags(): invalid color\n");
 		return 0;
 	}
+
+	if (tf == -23000)
+		return 0;
+	else
+		return tf;
 };
 
 float (float c)

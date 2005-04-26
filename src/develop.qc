@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.93 2005/04/26 06:04:30 slotzero Exp $
+/*  $Id: develop.qc,v 1.94 2005/04/26 08:23:30 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -170,7 +170,7 @@ void (entity client)
 teamscores_on =
 {
 	local entity e;
-	local float i, tm, tf, bit, bits, n_teams, msg_type;
+	local float i, tf, bit, bits, n_teams, msg_type;
 	local string s;
 
 	if (client == world)
@@ -196,18 +196,14 @@ teamscores_on =
 
 			if (!bits & bit)
 			{
-				tm	= e.team - 1;
 				bits	= bits | bit;
 
 				if (n_teams && e.team == TEAM_NIL)
 					svc_updatename (msg_type, i, string_null);
 				else
 				{
-					s	= color_to_name (tm);
-					tf	= color_to_teamfrags (tm);
-
-					if (tf == -23000)
-						tf = 0;
+					s	= team_to_name (e.team);
+					tf	= team_to_teamfrags (e.team);
 
 					svc_updatename (msg_type, i, s);
 					svc_updatefrags (msg_type, i, tf);
