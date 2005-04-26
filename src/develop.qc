@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.95 2005/04/26 19:59:55 slotzero Exp $
+/*  $Id: develop.qc,v 1.96 2005/04/26 22:07:38 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -168,7 +168,7 @@ num_to_bit =
 
 void (entity client)
 teamscores_on =
-{
+{	IN_QW(return;)
 	local entity e;
 	local float i, tf, bit, bits, n_teams, msg_type;
 	local string s;
@@ -223,7 +223,7 @@ teamscores_on =
 
 void (entity client)
 teamscores_off =
-{
+{	IN_QW(return;)
 	local entity e;
 	local float i, msg_type;
 
