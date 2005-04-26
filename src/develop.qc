@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.94 2005/04/26 08:23:30 slotzero Exp $
+/*  $Id: develop.qc,v 1.95 2005/04/26 19:59:55 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -177,6 +177,7 @@ teamscores_on =
 		msg_type	= MSG_ALL;
 	else
 	{
+		client.rqflags = client.rqflags | RQ_TEAMSCORES_ON;
 		msg_entity	= client;
 		msg_type	= MSG_ONE;
  	}
@@ -230,6 +231,7 @@ teamscores_off =
 		msg_type = MSG_ALL;
 	else
 	{
+		client.rqflags = client.rqflags - client.rqflags & RQ_TEAMSCORES_ON;
 		msg_entity = client;
 		msg_type = MSG_ONE;
  	}
