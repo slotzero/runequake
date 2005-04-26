@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.92 2005/04/25 08:32:35 slotzero Exp $
+/*  $Id: develop.qc,v 1.93 2005/04/26 06:04:30 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -134,107 +134,6 @@ client_ping_times =
 		dprint_force ("\n");
 		e = find (e, classname, "player");
 	}
-};
-
-void ()
-pqc_team_reset =
-{
-	WriteByte(MSG_ALL, SVC_STUFFTEXT);
-	WriteByte(MSG_ALL, 1); // init
-	WriteByte(MSG_ALL, 6); // command
-	WriteString(MSG_ALL, string_null);
-
-	WriteByte(MSG_ALL, 17);
-	WriteByte(MSG_ALL, 0);
-	WriteByte(MSG_ALL, 17);
-};
-
-void (entity e, float tm)
-pqc_erase_team =
-{
-	local float msg_type;
-
-	if (e == world)
-		msg_type = MSG_ALL;
-	else
-	{
-		msg_entity = e;
-		msg_type = MSG_ONE;
-	}
-
-	WriteByte(msg_type, SVC_STUFFTEXT);
-	WriteByte(msg_type, 1); // init
-	WriteByte(msg_type, 3); // case pqc_erase_team
-	WriteByte(msg_type, 15 + tm); //team
-	WriteString(msg_type, string_null);
-};
-
-void (entity e, float tm)
-pqc_new_team =
-{
-	local float msg_type;
-
-	if (e == world)
-		msg_type = MSG_ALL;
-	else
-	{
-		msg_entity = e;
-		msg_type = MSG_ONE;
-	}
-
-	WriteByte (msg_type, SVC_STUFFTEXT);
-	WriteByte (msg_type, 1); // MOD_PROQUAKE
-	WriteByte (msg_type, 2); // case pqc_new_team
-	WriteByte (msg_type, 15 + tm); //team
-	WriteByte (msg_type, 15 + tm); //team
-	WriteString (msg_type, string_null);
-};
-
-void (float to, float f)
-WriteShortPQ =
-{
-	local float i;
-
-	if (f < 0)
-		f = f + 65536;
-
-	i = floor (f / 4096);
-	f = f - (i * 4096);
-	WriteByte (to, 16 + i);	// x 4096
-
-	i = floor (f / 256);
-	f = f - (i * 256);
-	WriteByte (to, 16 + i);	// x 256
-
-	i = floor (f / 16);
-	f = f - (i * 16);
-	WriteByte (to, 16 + i);	// x 16
-
-	WriteByte (to, 16 + f);	// x 1
-};
-
-void (entity e, float tm, float tf)
-pqc_team_frags =
-{
-	local float msg_type;
-
-	if (!teamplay & TEAM_TEAM_MASK)
-		return;
-
-	if (e == world)
-		msg_type = MSG_ALL;
-	else
-	{
-		msg_entity = e;
-		msg_type = MSG_ONE;
-	}
-
-	WriteByte (msg_type, SVC_STUFFTEXT);
-	WriteByte (msg_type, 1); // MOD_PROQUAKE
-	WriteByte (msg_type, 4); // case pqc_team_frags
-	WriteByte (msg_type, 15 + tm); //team
-	WriteShortPQ (msg_type, tf);
-	WriteString (msg_type, string_null);
 };
 
 float (float n)

@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.144 2005/04/24 21:08:57 slotzero Exp $
+/*  $Id: defs.qc,v 1.145 2005/04/26 06:04:30 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1054,21 +1054,30 @@ float	MSG_INIT			= 3;		// write to the init string
 
 IN_QW([-
 // message levels
-float   PRINT_LOW               = 0;            // pickup messages
-float   PRINT_MEDIUM		= 1;            // death messages
-float   PRINT_HIGH              = 2;            // critical messages
-float   PRINT_CHAT              = 3;            // also goes to chat console
+float   PRINT_LOW			= 0;            // pickup messages
+float   PRINT_MEDIUM			= 1;            // death messages
+float   PRINT_HIGH			= 2;            // critical messages
+float   PRINT_CHAT			= 3;            // also goes to chat console
 -])
 
 // multicast sets.  These are defined in POQ because multicast() is
 // defined as a no-op there.
-float   MSG_MULTICAST	= 4;            // for multicast() call
-float   MULTICAST_ALL   = 0;            // every client
-float   MULTICAST_PHS   = 1;            // within hearing
-float   MULTICAST_PVS   = 2;            // within sight
-float   MULTICAST_ALL_R = 3;            // every client, reliable
-float   MULTICAST_PHS_R = 4;            // within hearing, reliable
-float   MULTICAST_PVS_R = 5;            // within sight, reliable
+float   MSG_MULTICAST			= 4;            // for multicast() call
+float   MULTICAST_ALL			= 0;            // every client
+float   MULTICAST_PHS			= 1;            // within hearing
+float   MULTICAST_PVS			= 2;            // within sight
+float   MULTICAST_ALL_R			= 3;            // every client, reliable
+float   MULTICAST_PHS_R			= 4;            // within hearing, reliable
+float   MULTICAST_PVS_R			= 5;            // within sight, reliable
+
+// proquak engine features
+float	PQC_NOP				= 1;
+float	PQC_NEW_TEAM			= 2;
+float	PQC_ERASE_TEAM			= 3;
+float	PQC_TEAM_FRAGS			= 4;
+float	PQC_MATCH_TIME			= 5;
+float	PQC_MATCH_RESET			= 6;
+float	PQC_PING_TIMES			= 7;
 
 //================================================
 

@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.46 2005/04/25 08:25:12 slotzero Exp $
+/*  $Id: team.qc,v 1.47 2005/04/26 06:04:31 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -452,7 +452,7 @@ toggle_teamplay_real =
 	if (teamplay & TEAM_TEAM_MASK)
 	{
 		change_teamplay (0, 1);
-		pqc_team_reset ();
+		pqc_match_reset ();
 	}
 	else
 		change_teamplay (VOTE_TEAM_MODE, 1);

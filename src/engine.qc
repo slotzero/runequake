@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.17 2005/04/24 23:21:05 slotzero Exp $
+/*  $Id: engine.qc,v 1.18 2005/04/26 06:04:31 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -291,4 +291,102 @@ svc_updatecolors =
 	WriteByte (msg_type, SVC_UPDATECOLORS);
 	WriteByte (msg_type, edict_num);
 	WriteByte (msg_type, f);
+};
+
+//-------------------------------------------------------------------
+// PROQUAKE BUILT-IN FEATURES
+//-------------------------------------------------------------------
+
+void (float to, float f)
+WriteShortPQ =
+{
+	local float i;
+
+	if (f < 0)
+		f = f + 65536;
+
+	i = floor (f / 4096);
+	f = f - (i * 4096);
+	WriteByte (to, 16 + i);	// x 4096
+
+	i = floor (f / 256);
+	f = f - (i * 256);
+	WriteByte (to, 16 + i);	// x 256
+
+	i = floor (f / 16);
+	f = f - (i * 16);
+	WriteByte (to, 16 + i);	// x 16
+
+	WriteByte (to, 16 + f);	// x 1
+};
+
+void (entity e, float tm)
+pqc_new_team =
+{
+	local float msg_type;
+
+	if (e == world)
+		msg_type = MSG_ALL;
+	else
+	{
+		msg_entity = e;
+		msg_type = MSG_ONE;
+	}
+
+	WriteByte (msg_type, SVC_STUFFTEXT);
+	WriteByte (msg_type, 1);
+	WriteByte (msg_type, PQC_NEW_TEAM);
+	WriteByte (msg_type, 15 + tm);	// team
+	WriteByte (msg_type, 15 + tm);	// shirt
+	WriteString (msg_type, string_null);
+};
+
+void (entity e, float tm)
+pqc_erase_team =
+{
+	local float msg_type;
+
+	if (e == world)
+		msg_type = MSG_ALL;
+	else
+	{
+		msg_entity = e;
+		msg_type = MSG_ONE;
+	}
+
+	WriteByte(msg_type, SVC_STUFFTEXT);
+	WriteByte(msg_type, 1);
+	WriteByte(msg_type, PQC_ERASE_TEAM);
+	WriteByte(msg_type, 15 + tm);	//team
+	WriteString(msg_type, string_null);
+};
+
+void (entity e, float tm, float tf)
+pqc_team_frags =
+{
+	local float msg_type;
+
+	if (e == world)
+		msg_type = MSG_ALL;
+	else
+	{
+		msg_entity = e;
+		msg_type = MSG_ONE;
+	}
+
+	WriteByte (msg_type, SVC_STUFFTEXT);
+	WriteByte (msg_type, 1);
+	WriteByte (msg_type, PQC_TEAM_FRAGS);
+	WriteByte (msg_type, 15 + tm);	//team
+	WriteShortPQ (msg_type, tf);	//frags
+	WriteString (msg_type, string_null);
+};
+
+void ()
+pqc_match_reset =
+{
+	WriteByte(MSG_ALL, SVC_STUFFTEXT);
+	WriteByte(MSG_ALL, 1);
+	WriteByte(MSG_ALL, PQC_MATCH_RESET);
+	WriteString(MSG_ALL, string_null);
 };
