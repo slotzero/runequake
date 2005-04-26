@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.86 2005/03/13 21:12:36 slotzero Exp $
+/*  $Id: client.qc,v 1.87 2005/04/26 21:20:28 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1410,6 +1410,15 @@ PlayerPreThink =
 
 	if (self.view_ofs == VEC_ORIGIN)
 		return;		// intermission or finale
+
+	// +teamscores update
+	if (self.lefty < time)
+	{
+		self.lefty = time + 1;
+
+		if (self.rqflags & RQ_TEAMSCORES_ON)
+			teamscores_on (self);
+	}
 
 	if (self.aqstate & AQS_MENU_MASK && time > self.count)
 		aq_menu_print ();
