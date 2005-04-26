@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.20 2005/04/26 08:23:30 slotzero Exp $
+/*  $Id: engine.qc,v 1.21 2005/04/26 21:40:34 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -299,7 +299,7 @@ svc_updatecolors =
 
 void (float to, float f)
 WriteShortPQ =
-{
+{	IN_QW(return;)
 	local float i;
 
 	if (f < 0)
@@ -322,7 +322,7 @@ WriteShortPQ =
 
 void (entity e, float tm)
 pqc_new_team =
-{
+{	IN_QW(return;)
 	local float msg_type;
 
 	if (e == world)
@@ -343,7 +343,7 @@ pqc_new_team =
 
 void (entity e, float tm)
 pqc_erase_team =
-{
+{	IN_QW(return;)
 	local float msg_type;
 
 	if (e == world)
@@ -363,7 +363,7 @@ pqc_erase_team =
 
 void (entity e, float tm, float tf)
 pqc_team_frags =
-{
+{	IN_QW(return;)
 	local float msg_type;
 
 	if (e == world)
@@ -384,7 +384,7 @@ pqc_team_frags =
 
 void ()
 pqc_match_reset =
-{
+{	IN_QW(return;)
 	WriteByte(MSG_ALL, SVC_STUFFTEXT);
 	WriteByte(MSG_ALL, 1);
 	WriteByte(MSG_ALL, PQC_MATCH_RESET);
