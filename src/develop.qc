@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.96 2005/04/26 22:07:38 slotzero Exp $
+/*  $Id: develop.qc,v 1.97 2005/04/26 22:23:26 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -101,11 +101,10 @@ spawn_altar =
 	altar.nextthink		= time;
 };
 
-void (entity e)
+float (entity e)
 client_ping =
 {
 	local float i, ping;
-	local string s;
 
 	for (i = 0 ; i < %16 ; i = i + %1)
 		ping = ping + (e.cl[CL_PING_TIMES + i] * 1000);
@@ -114,21 +113,24 @@ client_ping =
 	if (ping > 9999)
 		ping = 9999;
 
-	s = ftos (ping);
-	self_sprintf_len (world, s, 4);
+	return ping;
 };
 
 void ()
 client_ping_times =
 {
 	local entity e;
+	local float ping;
+	local string s;
 
 	dprint_force ("Client ping times:\n");
 
 	e = find (world, classname, "player");
 	while (e)
 	{
-		client_ping (e);
+		ping = client_ping (e);
+		s = ftos (ping);
+		self_sprintf_len (world, s, 4);
 		dprint_force (" ");
 		dprint_force (e.netname);
 		dprint_force ("\n");
