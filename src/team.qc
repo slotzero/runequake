@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.48 2005/04/26 06:16:11 slotzero Exp $
+/*  $Id: team.qc,v 1.49 2005/04/26 08:00:02 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -295,12 +295,14 @@ assign_teams =
 		return;
 	n1 = count_team (TEAM_1);
 	pqc_new_team (e, TEAM_1);
-	pqc_team_frags (e, TEAM_1, tf_1);
+	c = team_to_teamfrags (TEAM_1);
+	pqc_team_frags (e, TEAM_1, c);
 	if (n_teams > 1)
 	{
 		n2 = count_team (TEAM_2);
 		pqc_new_team (e, TEAM_2);
-		pqc_team_frags (e, TEAM_2, tf_2);
+		c = team_to_teamfrags (TEAM_2);
+		pqc_team_frags (e, TEAM_2, c);
 	}
 	else
 		n2 = -1;
@@ -308,7 +310,8 @@ assign_teams =
 	{
 		n3 = count_team (TEAM_3);
 		pqc_new_team (e, TEAM_3);
-		pqc_team_frags (e, TEAM_3, tf_3);
+		c = team_to_teamfrags (TEAM_3);
+		pqc_team_frags (e, TEAM_3, c);
 	}
 	else
 		n3 = -1;
@@ -316,7 +319,8 @@ assign_teams =
 	{
 		n4 = count_team (TEAM_4);
 		pqc_new_team (e, TEAM_4);
-		pqc_team_frags (e, TEAM_4, tf_4);
+		c = team_to_teamfrags (TEAM_4);
+		pqc_team_frags (e, TEAM_4, c);
 	}
 	else
 		n4 = -1;
@@ -742,28 +746,4 @@ mode_practice =
 		return TRUE;
 
 	return FALSE;
-};
-
-float (float c)
-color_to_teamfrags =
-{
-	     if (c ==  0)	return tf_1;
-	else if (c ==  1)	return tf_2;
-	else if (c ==  2)	return tf_3;
-	else if (c ==  3)	return tf_4;
-	else if (c ==  4)	return tf_5;
-	else if (c ==  5)	return tf_6;
-	else if (c ==  6)	return tf_7;
-	else if (c ==  7)	return tf_8;
-	else if (c ==  8)	return tf_9;
-	else if (c ==  9)	return tf_10;
-	else if (c == 10)	return tf_11;
-	else if (c == 11)	return tf_12;
-	else if (c == 12)	return tf_13;
-	else if (c == 13)	return tf_14;
-	else
-	{
-		dprint ("color_to_teamfrags(): invalid color\n");
-		return 0;
-	}
 };
