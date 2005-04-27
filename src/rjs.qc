@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.177 2005/04/26 08:23:30 slotzero Exp $
+/*  $Id: rjs.qc,v 1.178 2005/04/27 00:46:12 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -377,6 +377,8 @@ process_misc =
 		setrotate ();
 	if (NO_HOOK_DAMAGE)
 		sethookdamage ();
+	if (NO_MEGA)
+		setmega ();
 
  	if (scratch1 & S1_ARENA_DEFAULT)
 	{
