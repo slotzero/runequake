@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.148 2005/04/27 00:13:45 slotzero Exp $
+/*  $Id: defs.qc,v 1.149 2005/04/27 02:54:22 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1143,6 +1143,8 @@ float	C2_HOOKDAMAGEON		= 31;
 float	C2_HOOKDAMAGEOFF	= 32;
 float	C2_MODE_ARENA		= 33;
 float	C2_CLIENT_PING_TIMES	= 34;
+float	C2_MEGAON		= 35;
+float	C2_MEGAOFF		= 36;
 
 IN_QW([-
 //

@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.59 2005/02/14 23:41:18 slotzero Exp $
+/*  $Id: world.qc,v 1.60 2005/04/27 02:54:22 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -581,6 +581,24 @@ StartFrame =
 
 		else if (i == C2_CLIENT_PING_TIMES)
 			client_ping_times ();
+
+		else if (i == C2_MEGAON)
+		{
+			if (NO_MEGA)
+			{
+				dprint_force ("Mega-health boxes on\n");
+				setmega ();
+			}
+		}
+
+		else if (i == C2_MEGAOFF)
+		{
+			if (!NO_MEGA)
+			{
+				dprint_force ("Mega-health boxes off\n");
+				setmega ();
+			}
+		}
 
 		else
 			dprint ("Unknown command\n");
