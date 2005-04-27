@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.53 2005/02/02 01:55:09 slotzero Exp $
+/*  $Id: vote.qc,v 1.54 2005/04/27 00:13:45 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -47,7 +47,7 @@ vote_impulse_commands =
 		else
 			count_votes (2);
 	}
-	else if (self.impulse >= 1 && self.impulse <= 18)
+	else if (self.impulse >= 1 && self.impulse <= 19)
 		vote ();
 
 	impulse_override_cancel ();
@@ -683,6 +683,18 @@ vote =
 				self_sprint (self, "already in arena mode\n");
 			cancel = 1;
 		}
+	}
+	else if (self.impulse == IMP_VOTE_MEGA)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= setmega;
+		e.noise2	= " mega-health boxes ";
+
+		if (NO_MEGA)
+			e.noise1	= "enable";
+		else
+			e.noise1	= "disable";
 	}
 	else
 		cancel = -1;

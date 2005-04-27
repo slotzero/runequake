@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.14 2004/12/27 03:36:34 slotzero Exp $
+/*  $Id: toggle.qc,v 1.15 2005/04/27 00:13:45 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -182,4 +182,46 @@ void ()
 sethookdamage =
 {
 	NO_HOOK_DAMAGE = fput (HUNK_NO_HOOK_DAMAGE, !NO_HOOK_DAMAGE);
+};
+
+// -1 all
+// 0 large health box
+// 1 small health box
+// 2 mega health box
+
+void (string type, float bit, float mode)
+toggle_health =
+{
+	local entity e;
+	local float force;
+
+	if (bit < 0)
+		force = 1;
+
+	e = find (world, classname, type);
+	while (e)
+	{
+		if (e.spawnflags & bit || (!bit && !e.spawnflags) || force)
+		{
+			if (mode)
+			{
+				e.nextthink	= time;
+				e.think		= SUB_regen;
+			}
+			else
+			{
+				e.model		= string_null;
+				e.solid		= SOLID_NOT;
+				e.nextthink	= -1;
+			}
+		}
+		e = find (e, classname, type);
+	}
+};
+
+void ()
+setmega =
+{
+	toggle_health ("item_health", 2, NO_MEGA);
+	NO_MEGA = fput (HUNK_NO_MEGA, !NO_MEGA);
 };

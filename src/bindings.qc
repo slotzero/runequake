@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.63 2005/04/24 21:08:57 slotzero Exp $
+/*  $Id: bindings.qc,v 1.64 2005/04/27 00:13:45 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -314,6 +314,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-suit",			IMP_VOTE_SUIT);
 	player_vote_impulse_alias ("vote-team",			IMP_VOTE_TEAM);
 	player_vote_impulse_alias ("vote-hook",			IMP_VOTE_HOOK);
+	player_vote_impulse_alias ("vote-mega",			IMP_VOTE_MEGA);
 };
 
 void (string level, float imp)
@@ -524,6 +525,6 @@ help_vote =
 	self_sprint (self, "\bvote-ring       vote-suit\n");
 	self_sprint (self, "\bvote-armor      vote-rotate\n");
 	self_sprint (self, "\bvote-runes      vote-alt-weapons\n");
-	self_sprint (self, "\bvote-shields\n");
+	self_sprint (self, "\bvote-shields    vote-mega\n");
 	self_sprint (self, "\n");
 };
