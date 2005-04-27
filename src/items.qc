@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.56 2005/01/21 01:06:22 slotzero Exp $
+/*  $Id: items.qc,v 1.57 2005/04/27 02:02:42 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -105,6 +105,11 @@ maybe_disable_item =
 		if (NO_ARMOR)
 		 	return;
 	}
+	else if (self.touch == health_touch)
+	{
+		if (self.classname == "item_health" && self.spawnflags & 2 && NO_MEGA)
+			return;
+	}
 
 	self.think	= SUB_regen;
 	self.nextthink	= time;
@@ -161,7 +166,9 @@ PlaceItem =
 			self.nextthink	= time;
 		}
 	}
-	else if (self.touch == powerup_touch || self.touch == armor_touch)
+	else if (self.touch == powerup_touch
+			|| self.touch == armor_touch
+			|| (self.touch == health_touch && self.spawnflags & 2))
 	{
 		self.model	= string_null;
 		self.solid	= SOLID_NOT;
