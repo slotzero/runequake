@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.178 2005/04/27 00:46:12 slotzero Exp $
+/*  $Id: rjs.qc,v 1.179 2005/04/28 02:20:39 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -274,6 +274,7 @@ void ()
 rjs_worldspawn =
 {
 	local entity e;
+	local float i;
 
 	sys_ticrate = cvar ("sys_ticrate");
 	if (!sys_ticrate) sys_ticrate = 0.1;
@@ -300,6 +301,10 @@ rjs_worldspawn =
 
 	if (deathmatch & DM_MODE_ROCKET_ARENA)
 		arena = spawn ();
+
+	i = cvar ("teamplay");
+	if (i & TEAM_MATCH_MODE)
+		match = spawn ();
 
 	if (START_LEVEL_EXEC != string_null)
 	{

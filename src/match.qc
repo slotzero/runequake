@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.2 2005/04/28 02:02:58 slotzero Exp $
+/*  $Id: match.qc,v 1.3 2005/04/28 02:20:39 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -23,7 +23,7 @@ mode_match =
 	if (!match)
 		return FALSE;
 
-	if (teamplay & TEAM_MODE_MATCH)
+	if (!teamplay & TEAM_MODE_MATCH)
 		return FALSE;
 
 	return TRUE;

@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.48 2005/04/28 02:02:58 slotzero Exp $
+/*  $Id: observer.qc,v 1.49 2005/04/28 02:20:39 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -89,13 +89,12 @@ ridee =
 float (float tell_type)
 corpse_to_observer =
 {
-	if (teamplay & TEAM_MATCH_MODE &&
-			count_team_observers (self.team) >= MAX_TEAM_OBSERVERS)
+	/*if (teamplay & TEAM_MATCH_MODE && count_team_observers (self.team) >= MAX_TEAM_OBSERVERS)
 	{
 		if (tell_type != 2)
 			sprint (self, "No more observers from your team are allowed\n");
 		return 0;
-	}
+	}*/
 	CopyToBodyQue (self);
 	obs_become (tell_type);
 	obs_process_game_queue ();
