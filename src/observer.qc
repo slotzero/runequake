@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.47 2005/04/28 01:52:24 slotzero Exp $
+/*  $Id: observer.qc,v 1.48 2005/04/28 02:02:58 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -515,7 +515,7 @@ obs_init_hidables =
 	else
 		self.items	= 0;
 
-	if (teamplay & TEAM_MATCH_MODE)
+	if (mode_match ())
 		self.frags = -99;
 
 	self.health		= 999;
