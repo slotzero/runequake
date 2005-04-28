@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.3 2005/04/28 02:20:39 slotzero Exp $
+/*  $Id: match.qc,v 1.4 2005/04/28 04:44:06 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -27,4 +27,15 @@ mode_match =
 		return FALSE;
 
 	return TRUE;
+};
+
+
+// match is over
+// match in progress
+// waiting for players
+
+void ()
+match_pre_think =
+{
+	SUB_Null ();
 };

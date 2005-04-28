@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.87 2005/04/26 21:20:28 slotzero Exp $
+/*  $Id: client.qc,v 1.88 2005/04/28 04:44:06 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1496,24 +1496,23 @@ PlayerPreThink =
 	}
 
 	// Enforce teams if appropriate
-	if (teamplay & TEAM_TEAM_MASK) if (!is_correct_team ())	// no short circuiting!
+	if (teamplay & TEAM_TEAM_MASK)
 	{
-		if (is_allowable_team ())
+		if (!is_correct_team ())	// no short circuiting!
 		{
-			set_team_e (self, self.team);
-		}
-		else if (self.aqflags & AQ_TEAM_MASK && !obs)
-		{
-			IN_POQ([-
-				sure_kill ("teamchange");
-				kick_suicider ();
-			-])
-			i = correct_team ();
-			set_team_e (self, i);
-		}
-		else
-		{
-			assign_teams (self);
+			if (mode_match ())
+				match_pre_think ();
+			else if (is_allowable_team ())
+				set_team_e (self, self.team);
+			else if (self.aqflags & AQ_TEAM_MASK && !obs)
+			{
+				// sure_kill ("teamchange");
+				// kick_suicider ();
+				i = correct_team ();
+				set_team_e (self, i);
+			}
+			else
+				assign_teams (self);
 		}
 	}
 
