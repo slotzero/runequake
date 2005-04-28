@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.60 2005/04/27 02:54:22 slotzero Exp $
+/*  $Id: world.qc,v 1.61 2005/04/28 21:39:15 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -712,7 +712,12 @@ CopyToBodyQue =
 	bodyque_head.modelindex	= ent.modelindex;
 	bodyque_head.frame	= ent.frame;
 	bodyque_head.colormap	= ent.colormap;
-	bodyque_head.movetype	= ent.movetype;
+
+	if (ent.movetype == MOVETYPE_WALK)
+		bodyque_head.movetype	= MOVETYPE_TOSS;
+	else
+		bodyque_head.movetype	= ent.movetype;
+
 	bodyque_head.velocity	= ent.velocity;
 	bodyque_head.flags	= 0;
 
