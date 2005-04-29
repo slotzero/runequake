@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.65 2005/04/27 02:54:22 slotzero Exp $
+/*  $Id: bindings.qc,v 1.66 2005/04/29 05:37:23 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -203,8 +203,6 @@ player_aliases =
 	player_init_impulse_alias ("custom",			IMP_CUSTOM);
 	player_init_impulse_alias ("custom-sounds",		IMP_CUSTOM_SOUNDS);
 	player_init_impulse_alias ("cycle-alternates",		IMP_CYCLE_ALTERNATES);
-	player_init_impulse_alias ("disp-info",			IMP_DISP_INFO);
-	player_init_impulse_alias ("disp-info-all",		IMP_DISP_INFO_ALL);
 	player_init_impulse_alias ("fix-angles",		IMP_FIX_BATMAN);
 	player_init_impulse_alias ("help-levels",		IMP_HELP_LEVELS);
 	player_init_impulse_alias ("help-vote",			IMP_HELP_VOTE);
@@ -273,6 +271,8 @@ admin_aliases =
 	player_admin_impulse_alias ("admin-teamplay-zero",	IMP_ADMIN_TEAMPLAY_ZERO);
 	player_admin_impulse_alias ("admin-unbind",		IMP_ADMIN_UNBIND);
 	player_admin_impulse_alias ("change-level",		IMP_ADMIN_CHANGE_MAP);
+	player_admin_impulse_alias ("disp-info",		IMP_ADMIN_DISP_INFO);
+	player_admin_impulse_alias ("disp-info-all",		IMP_ADMIN_DISP_INFO_ALL);
 	player_admin_impulse_alias ("exit-level",		IMP_EXIT_LEVEL);
 	player_admin_impulse_alias ("qsmack",			IMP_QSMACK_COMMAND);
 };

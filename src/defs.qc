@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.150 2005/04/28 02:02:58 slotzero Exp $
+/*  $Id: defs.qc,v 1.151 2005/04/29 05:37:23 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -512,7 +512,7 @@ float IMP_SHOW_PLAYERS		= 97;
 float IMP_SHOW_RIDERS		= 96;
 float IMP_FIX_BATMAN		= 95;
 float IMP_SHOW_SETTINGS		= 94;
-float IMP_DISP_INFO		= 93;
+//				= 93;		[free]
 float IMP_BEST_WEAPON		= 92;
 float IMP_ADMIN_TOGGLE		= 91;
 float IMP_RIDER_HIDE		= 90;
@@ -522,7 +522,7 @@ float IMP_HOOK_OFF		= 87;
 float IMP_WEAPON_MODE		= 86;
 float IMP_ADMIN_COMMAND		= 85;
 float IMP_SHOW_VOTES		= 84;
-float IMP_DISP_INFO_ALL		= 83;
+//				= 83;		[free]
 float IMP_REMOVE_FRAGS		= 82;
 float IMP_HUD_TOGGLE		= 81;
 float IMP_TEAM_ROTATE		= 80;
@@ -577,6 +577,8 @@ float IMP_ADMIN_TEAMPLAY_ZERO	= 11;
 float IMP_ADMIN_CYCLE		= 12;
 float IMP_ADMIN_CYCLE_SHOW	= 13;
 float IMP_ADMIN_CHANGE_MAP	= 14;
+float IMP_ADMIN_DISP_INFO	= 15;
+float IMP_ADMIN_DISP_INFO_ALL	= 16;
 
 // vote impulse commands
 float IMP_VOTE_EXIT		= 1;
