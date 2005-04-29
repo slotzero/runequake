@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.6 2005/04/29 20:00:48 slotzero Exp $
+/*  $Id: match.qc,v 1.7 2005/04/29 22:29:00 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -38,4 +38,23 @@ void ()
 match_pre_think =
 {
 	SUB_Null ();
+};
+
+void ()
+reset_colors =
+{
+	self_stuffcmd (self.owner, "color 1\n");
+	self_stuffcmd (self.owner, "color 0\n");
+	remove (self);
+};
+
+void ()
+match_observer =
+{
+	local entity e;
+
+	e		= spawn ();
+	e.owner		= self;
+	e.think		= reset_colors;
+	e.nextthink	= time + 0.5;
 };

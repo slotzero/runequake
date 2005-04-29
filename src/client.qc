@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.90 2005/04/29 06:58:00 slotzero Exp $
+/*  $Id: client.qc,v 1.91 2005/04/29 22:29:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -793,6 +793,14 @@ PutClientInServer =
 				arena_init ();
 			else
 				spawn_as_observer = 1;
+		}
+		else if (mode_match ())
+		{
+			if (!self.search_time)
+			{
+				spawn_as_observer = 1;
+				self.search_time = 1; // maybe expand this to bits
+			}
 		}
 		else
 			spawn_as_observer = 0;
