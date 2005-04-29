@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.24 2005/04/29 21:31:51 slotzero Exp $
+/*  $Id: engine.qc,v 1.25 2005/04/29 21:32:24 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -321,7 +321,7 @@ WriteShortPQ =
 };
 
 void (entity e, float cl_colors)
-pqc_new_team_e =
+pqc_new_team =
 {	IN_QW(return;)
 	local float i, shirt, pants, msg_type;
 
