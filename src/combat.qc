@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.35 2005/04/29 03:55:16 slotzero Exp $
+/*  $Id: combat.qc,v 1.36 2005/04/29 23:30:37 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -165,10 +165,12 @@ T_Damage =
 {
 	local vector dir;
 	local entity old_self;
-	local float save, take, real_take;
+	local float ra, save, take, real_take;
 
 	if (!targ.takedamage)
 		return 0;
+
+   	ra = mode_arena ();
 
 	// used by buttons and triggers to set activator for target firing
 	damage_attacker = attacker;
@@ -334,7 +336,7 @@ T_Damage =
 
 	local float player_height, safe_height;
 	safe_height = 0;
-	if (0)	// midair
+	if (ra && MODE_MIDAIR)
 	{
 		traceline (targ.origin, targ.origin - '0 0 2048', TRUE, targ);
 		player_height = targ.absmin_z - trace_endpos_z;
@@ -379,8 +381,11 @@ T_Damage =
 		else
 			targ.velocity = targ.velocity + dir * damage * 8;
 
-		if (0 && safe_height)	// midair
-			targ.velocity_z = targ.velocity_z + dir_z * damage * 6;
+		if (ra)
+		{
+			if (MODE_MIDAIR && safe_height)
+				targ.velocity_z = targ.velocity_z + dir_z * damage * 6;
+		}
 
 		IN_QW([-
 			// Rocket Jump modifiers
@@ -397,9 +402,9 @@ T_Damage =
 		damage = 0;
 
 	// Allow momentum change without damage when player is waiting for opponent.
-	if (mode_arena ())
+	if (ra)
 	{
-		if (0 && safe_height)	// midair
+		if (MODE_MIDAIR && safe_height)
 			damage = 0;
 
 		if (arena.state == -2)
