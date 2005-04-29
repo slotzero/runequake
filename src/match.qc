@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.5 2005/04/29 06:58:00 slotzero Exp $
+/*  $Id: match.qc,v 1.6 2005/04/29 20:00:48 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -37,22 +37,5 @@ mode_match =
 void ()
 match_pre_think =
 {
-	local string s;
-
-	if (self.pants)
-	{
-		if (self.team != self.pants)
-		{
-			self_sprint (self, "You are already committed\n");
-			self_stuffcmd (self, "color ");
-
-			// make this a function
-			s = ftos (self.shirt - 1);
-			self_stuffcmd (self, s);
-			self_stuffcmd (self, " ");
-			s = ftos (self.pants - 1);
-			self_stuffcmd (self, s);
-			self_stuffcmd (self, "\n");
-		}
-	}
+	SUB_Null ();
 };
