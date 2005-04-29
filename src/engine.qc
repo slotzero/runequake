@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.23 2005/04/29 06:58:00 slotzero Exp $
+/*  $Id: engine.qc,v 1.24 2005/04/29 21:31:51 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -320,10 +320,10 @@ WriteShortPQ =
 	WriteByte (to, 16 + f);	// x 1
 };
 
-void (entity e, float bc, float tc)
-pqc_new_team =
+void (entity e, float cl_colors)
+pqc_new_team_e =
 {	IN_QW(return;)
-	local float msg_type;
+	local float i, shirt, pants, msg_type;
 
 	if (e == world)
 		msg_type = MSG_ALL;
@@ -333,11 +333,15 @@ pqc_new_team =
 		msg_type = MSG_ONE;
 	}
 
+	shirt = i = floor (cl_colors / 16);
+	i = i * 16;
+	pants = cl_colors - i;
+
 	WriteByte (msg_type, SVC_STUFFTEXT);
 	WriteByte (msg_type, 1);
 	WriteByte (msg_type, PQC_NEW_TEAM);
-	WriteByte (msg_type, 15 + bc);	// pants
-	WriteByte (msg_type, 15 + tc);	// shirt
+	WriteByte (msg_type, 16 + shirt);
+	WriteByte (msg_type, 16 + pants);
 	WriteString (msg_type, string_null);
 };
 

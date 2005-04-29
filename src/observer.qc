@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.52 2005/04/29 20:00:48 slotzero Exp $
+/*  $Id: observer.qc,v 1.53 2005/04/29 21:31:51 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -829,6 +829,13 @@ obs_join_game =
 			self_sprint (self, "invalid pants color\n");
 			return;
 		}
+
+		if (self.frags == -99)
+			self.frags = 0;
+
+		pqc_new_team (world, self.cl[CL_COLORS] / %1);
+
+		force = 1;
 	}
 
 	if (!force && self.runevar)

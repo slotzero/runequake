@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.97 2005/04/26 22:23:26 slotzero Exp $
+/*  $Id: develop.qc,v 1.98 2005/04/29 21:31:51 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -255,6 +255,19 @@ teamscores_off =
 
 		e = nextent (e);
 	}
+};
+
+float (entity e, float high)
+client_colors =
+{
+	local float shirt;
+
+	shirt = floor (e.cl[CL_COLORS] / %1 / 16);
+	if (high)
+		return shirt;
+
+	shirt = shirt * 16;
+	return e.cl[CL_COLORS] / %1 - shirt;
 };
 
 void ()

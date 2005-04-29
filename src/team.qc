@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.50 2005/04/29 06:26:18 slotzero Exp $
+/*  $Id: team.qc,v 1.51 2005/04/29 21:31:51 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -294,13 +294,13 @@ assign_teams =
 	if (!n_teams)
 		return;
 	n1 = count_team (TEAM_1);
-	pqc_new_team (e, TEAM_1, TEAM_1);
+	pqc_new_team (e, ((TEAM_1 - 1) * 16) + (TEAM_1 - 1));
 	c = team_to_teamfrags (TEAM_1);
 	pqc_team_frags (e, TEAM_1, c);
 	if (n_teams > 1)
 	{
 		n2 = count_team (TEAM_2);
-		pqc_new_team (e, TEAM_2, TEAM_2);
+		pqc_new_team (e, ((TEAM_2 - 1) * 16) + (TEAM_2 - 1));
 		c = team_to_teamfrags (TEAM_2);
 		pqc_team_frags (e, TEAM_2, c);
 	}
@@ -309,7 +309,7 @@ assign_teams =
 	if (n_teams > 2)
 	{
 		n3 = count_team (TEAM_3);
-		pqc_new_team (e, TEAM_3, TEAM_3);
+		pqc_new_team (e, ((TEAM_3 - 1) * 16) + (TEAM_3 - 1));
 		c = team_to_teamfrags (TEAM_3);
 		pqc_team_frags (e, TEAM_3, c);
 	}
@@ -318,7 +318,7 @@ assign_teams =
 	if (n_teams > 3)
 	{
 		n4 = count_team (TEAM_4);
-		pqc_new_team (e, TEAM_4, TEAM_4);
+		pqc_new_team (e, ((TEAM_4 - 1) * 16) + (TEAM_4 - 1));
 		c = team_to_teamfrags (TEAM_4);
 		pqc_team_frags (e, TEAM_4, c);
 	}
