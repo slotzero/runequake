@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.88 2005/04/28 04:44:06 slotzero Exp $
+/*  $Id: client.qc,v 1.89 2005/04/29 05:54:53 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1498,11 +1498,11 @@ PlayerPreThink =
 	// Enforce teams if appropriate
 	if (teamplay & TEAM_TEAM_MASK)
 	{
-		if (!is_correct_team ())	// no short circuiting!
+		if (mode_match ())
+			match_pre_think ();
+		else if (!is_correct_team ())	// no short circuiting!
 		{
-			if (mode_match ())
-				match_pre_think ();
-			else if (is_allowable_team ())
+			if (is_allowable_team ())
 				set_team_e (self, self.team);
 			else if (self.aqflags & AQ_TEAM_MASK && !obs)
 			{
