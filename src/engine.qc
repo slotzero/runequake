@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.22 2005/04/29 06:26:18 slotzero Exp $
+/*  $Id: engine.qc,v 1.23 2005/04/29 06:58:00 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -320,7 +320,7 @@ WriteShortPQ =
 	WriteByte (to, 16 + f);	// x 1
 };
 
-void (entity e, float pants, float shirt)
+void (entity e, float bc, float tc)
 pqc_new_team =
 {	IN_QW(return;)
 	local float msg_type;
@@ -336,8 +336,8 @@ pqc_new_team =
 	WriteByte (msg_type, SVC_STUFFTEXT);
 	WriteByte (msg_type, 1);
 	WriteByte (msg_type, PQC_NEW_TEAM);
-	WriteByte (msg_type, 15 + pants);
-	WriteByte (msg_type, 15 + shirt);
+	WriteByte (msg_type, 15 + bc);	// pants
+	WriteByte (msg_type, 15 + tc);	// shirt
 	WriteString (msg_type, string_null);
 };
 
