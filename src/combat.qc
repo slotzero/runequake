@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.34 2005/04/17 23:54:20 slotzero Exp $
+/*  $Id: combat.qc,v 1.35 2005/04/29 03:55:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -332,6 +332,22 @@ T_Damage =
 		}
 	}
 
+	local float player_height, safe_height;
+	safe_height = 0;
+	if (0)	// midair
+	{
+		traceline (targ.origin, targ.origin - '0 0 2048', TRUE, targ);
+		player_height = targ.absmin_z - trace_endpos_z;
+
+		if (player_height < 64 || targ.flags & FL_ONGROUND)
+			safe_height = TRUE;
+		else
+		{
+			damage = damage * floor (1 + (player_height - 64) / 128);
+			safe_height = FALSE;
+		}
+	}
+
 	// debug
 	/* if (0)
 	{
@@ -358,11 +374,13 @@ T_Damage =
 		dir = targ.origin - (inflictor.absmin + inflictor.absmax) * 0.5;
 		dir = normalize (dir);
 
-		//RUNE SERV: Impact rune pushes more.
 		if (attacker.runetype == RN_IMPACT)
-			targ.velocity = targ.velocity + dir*damage*70;
+			targ.velocity = targ.velocity + dir * damage * 70;
 		else
-			targ.velocity = targ.velocity + dir*damage*8;
+			targ.velocity = targ.velocity + dir * damage * 8;
+
+		if (0 && safe_height)	// midair
+			targ.velocity_z = targ.velocity_z + dir_z * damage * 6;
 
 		IN_QW([-
 			// Rocket Jump modifiers
@@ -381,6 +399,9 @@ T_Damage =
 	// Allow momentum change without damage when player is waiting for opponent.
 	if (mode_arena ())
 	{
+		if (0 && safe_height)	// midair
+			damage = 0;
+
 		if (arena.state == -2)
 			damage = 0;
 	}
