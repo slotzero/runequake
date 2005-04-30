@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.37 2005/04/30 01:53:02 slotzero Exp $
+/*  $Id: combat.qc,v 1.38 2005/04/30 05:20:36 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -341,11 +341,11 @@ T_Damage =
 		traceline (targ.origin, targ.origin - '0 0 2048', TRUE, targ);
 		player_height = targ.absmin_z - trace_endpos_z;
 
-		if (player_height < 64 || targ.flags & FL_ONGROUND)
+		if (player_height < 42.5 || targ.flags & FL_ONGROUND)
 			safe_height = TRUE;
 		else
 		{
-			damage = damage * floor (1 + (player_height - 64) / 128);
+			damage = damage * floor (1 + (player_height - 42.5) / 128);
 			safe_height = FALSE;
 		}
 	}
