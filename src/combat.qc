@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.39 2005/04/30 05:37:41 slotzero Exp $
+/*  $Id: combat.qc,v 1.40 2005/04/30 19:18:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -163,14 +163,17 @@ health was taken.
 float (entity targ, entity inflictor, entity attacker, float damage, string dtype)
 T_Damage =
 {
-	local vector dir;
 	local entity old_self;
-	local float ra, save, take, real_take;
+	local vector dir;
+	local float save, take, real_take;
+
+	// midair
+	local float midair, player_height, safe_height;
 
 	if (!targ.takedamage)
 		return 0;
 
-   	ra = mode_arena ();
+	midair = mode_midair ();
 
 	// used by buttons and triggers to set activator for target firing
 	damage_attacker = attacker;
@@ -334,9 +337,7 @@ T_Damage =
 		}
 	}
 
-	local float player_height, safe_height;
-	safe_height = 0;
-	if (ra && MODE_MIDAIR)
+	if (mode_midair ())
 	{
 		traceline (targ.origin, targ.origin - '0 0 2048', TRUE, targ);
 		player_height = targ.absmin_z - trace_endpos_z;
@@ -381,9 +382,9 @@ T_Damage =
 		else
 			targ.velocity = targ.velocity + dir * damage * 8;
 
-		if (ra)
+		if (midair)
 		{
-			if (MODE_MIDAIR && safe_height)
+			if (safe_height)
 				targ.velocity_z = targ.velocity_z + dir_z * damage * 12;
 		}
 
@@ -402,12 +403,15 @@ T_Damage =
 		damage = 0;
 
 	// Allow momentum change without damage when player is waiting for opponent.
-	if (ra)
+	if (mode_arena ())
 	{
-		if (MODE_MIDAIR && safe_height)
-			damage = 0;
-
 		if (arena.state == -2)
+			damage = 0;
+	}
+
+	if (midair)
+	{
+		if (safe_height && dtype != "axe")
 			damage = 0;
 	}
 

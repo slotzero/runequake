@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.27 2005/04/29 23:30:37 slotzero Exp $
+/*  $Id: hunked.qc,v 1.28 2005/04/30 19:18:48 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -35,7 +35,6 @@ float HUNK_NO_ALT_WEAPONS	= %1015;
 float HUNK_NO_SPAWN_SHIELDS	= %1016;
 float HUNK_NO_HOOK_DAMAGE	= %1017;
 float HUNK_NO_MEGA		= %1019;
-float HUNK_MODE_MIDAIR		= %1020;
 
 float ()
 server_time =
@@ -254,7 +253,6 @@ fput =
 	else if (*offset == *HUNK_NO_SPAWN_SHIELDS)	cvar_set_infokey ("NO_SPAWN_SHIELDS",	s);
 	else if (*offset == *HUNK_NO_HOOK_DAMAGE)	cvar_set_infokey ("HO_HOOK_DAMAGE",	s);
 	else if (*offset == *HUNK_NO_MEGA)		cvar_set_infokey ("NO_MEGA",		s);
-	else if (*offset == *HUNK_MODE_MIDAIR)		cvar_set_infokey ("MODE_MIDAIR",	s);
 
 	return value;
 };
@@ -276,7 +274,6 @@ fget =
 	else if (*offset == *HUNK_NO_SPAWN_SHIELDS)	i = NO_SPAWN_SHIELDS	= cvar_infokey ("NO_SPAWN_SHIELDS");
 	else if (*offset == *HUNK_NO_HOOK_DAMAGE)	i = NO_HOOK_DAMAGE	= cvar_infokey ("NO_HOOK_DAMAGE");
 	else if (*offset == *HUNK_NO_MEGA)		i = NO_MEGA		= cvar_infokey ("NO_MEGA");
-	else if (*offset == *HUNK_MODE_MIDAIR)		i = MODE_MIDAIR		= cvar_infokey ("MODE_MIDAIR");
 
 	return i;
 };
@@ -320,7 +317,6 @@ Hunk_Settings =
 	NO_SPAWN_SHIELDS	= fget (HUNK_NO_SPAWN_SHIELDS,	0);
 	NO_HOOK_DAMAGE		= fget (HUNK_NO_HOOK_DAMAGE,	0);
 	NO_MEGA			= fget (HUNK_NO_MEGA,		0);
-	MODE_MIDAIR		= fget (HUNK_MODE_MIDAIR,	0);
 
 	set_runemax ();
 };

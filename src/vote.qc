@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.55 2005/04/30 00:29:33 slotzero Exp $
+/*  $Id: vote.qc,v 1.56 2005/04/30 19:18:48 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -703,7 +703,7 @@ vote =
 		e.think1	= toggle_mode_midair;
 		e.noise2	= " midair mode ";
 
-		if (!MODE_MIDAIR)
+		if (!mode_midair ())
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";

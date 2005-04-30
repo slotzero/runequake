@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.154 2005/04/30 00:29:33 slotzero Exp $
+/*  $Id: defs.qc,v 1.155 2005/04/30 19:18:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -608,7 +608,7 @@ float DM_WEAPONS_STAY		= 2;
 float DM_LONG_QUAD_RESPAWN	= 4;
 float DM_QUAD_REPLACEMENT	= 8;
 float DM_PENT_REPLACEMENT	= 16;
-float DM_LAN_MODE		= 32;
+// float DM_LAN_MODE		= 32;
 float DM_EXIT_NON_FATAL		= 64;
 float DM_NO_DISCHARGE		= 128;
 float DM_NO_DROP_POWERUP	= 256;
@@ -618,6 +618,7 @@ float DM_DAMAGE_MATCH		= 2048;
 float DM_RANDOM_POWERUP_RESPAWN	= 4096;
 float DM_MODE_PRACTICE		= 8192;
 float DM_MODE_ROCKET_ARENA	= 16384;
+float DM_MODE_MIDAIR		= 32768;
 
 // This mask includes the DM_* bits which indicates that the game is in
 // an actual deathmatch mode.  Bits other than these make sense in

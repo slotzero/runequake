@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.181 2005/04/30 01:53:02 slotzero Exp $
+/*  $Id: rjs.qc,v 1.182 2005/04/30 19:18:48 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2244,10 +2244,12 @@ use_ammo =
 {
 	local float ammo_type, ammo;
 
-	if (deathmatch & DM_MODE_PRACTICE || MODE_MIDAIR)
+	if (mode_practice ())
 		return;
 
-	// Let players waiting for opponent have unlimited ammo.
+	if (mode_midair ())
+		return;
+
 	if (mode_arena ())
 	{
 		if (arena.state == -2)

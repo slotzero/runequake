@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.17 2005/04/30 07:52:55 slotzero Exp $
+/*  $Id: toggle.qc,v 1.18 2005/04/30 19:18:48 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -229,7 +229,19 @@ setmega =
 void ()
 toggle_mode_midair =
 {
-	MODE_MIDAIR = fput (HUNK_MODE_MIDAIR, !MODE_MIDAIR);
+	local float new_deathmatch;
+	local string s;
+
+	new_deathmatch = cvar ("deathmatch");
+
+	if (new_deathmatch & DM_MODE_MIDAIR)
+		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_MIDAIR;
+	else
+		new_deathmatch = new_deathmatch | DM_MODE_MIDAIR;
+
+	s = ftos (new_deathmatch);
+	deathmatch = new_deathmatch;
+	cvar_set ("deathmatch", s);
 };
 
 void ()

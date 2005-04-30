@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.93 2005/04/30 01:53:02 slotzero Exp $
+/*  $Id: client.qc,v 1.94 2005/04/30 19:18:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -168,7 +168,7 @@ SetArenaParms =
 	self.items		= IT_AXE | IT_SHOTGUN | IT_SUPER_SHOTGUN | IT_NAILGUN | IT_SUPER_NAILGUN
 						| IT_GRENADE_LAUNCHER | IT_ROCKET_LAUNCHER | IT_LIGHTNING
 						| IT_ARMOR3;
-	if (MODE_MIDAIR)
+	if (mode_midair ())
 		self.items	= self.items - self.items & (IT_SHOTGUN | IT_SUPER_SHOTGUN | IT_NAILGUN
 						| IT_SUPER_NAILGUN | IT_GRENADE_LAUNCHER | IT_LIGHTNING);
 
