@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.94 2005/04/30 19:18:48 slotzero Exp $
+/*  $Id: client.qc,v 1.95 2005/04/30 19:51:18 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -163,14 +163,39 @@ SetPracticeParms =
 };
 
 void ()
+SetMidairParms =
+{
+	self.items		= IT_AXE | IT_ROCKET_LAUNCHER | IT_ARMOR3;
+	self.health		= MAX_HEALTH_MIDAIR;
+	self.armorvalue		= MAX_ARMOR_3;
+	self.ammo_shells	= 0;
+	self.ammo_nails		= 0;
+	self.ammo_rockets	= 100;
+	self.ammo_cells		= 0;
+
+	// Setting self.weapon is necessary because you retain your
+	// weapon setting across deaths.  If you die with the single
+	// shotgun set_weapon() won't do anything when this tries to set
+	// your weapon because it thinks you're already wielding that.
+	self.weapon		= 0;
+
+	set_weapon (IT_ROCKET_LAUNCHER);
+
+	self.armortype		= ARMOR_TYPE_3;
+};
+
+void ()
 SetArenaParms =
 {
+	if (mode_midair ())
+	{
+		SetMidairParms ();
+		return;
+	}
+
 	self.items		= IT_AXE | IT_SHOTGUN | IT_SUPER_SHOTGUN | IT_NAILGUN | IT_SUPER_NAILGUN
 						| IT_GRENADE_LAUNCHER | IT_ROCKET_LAUNCHER | IT_LIGHTNING
 						| IT_ARMOR3;
-	if (mode_midair ())
-		self.items	= self.items - self.items & (IT_SHOTGUN | IT_SUPER_SHOTGUN | IT_NAILGUN
-						| IT_SUPER_NAILGUN | IT_GRENADE_LAUNCHER | IT_LIGHTNING);
 
 	self.health		= MAX_HEALTH_NORMAL;
 	self.armorvalue		= MAX_ARMOR_3;
@@ -193,9 +218,11 @@ SetArenaParms =
 void ()
 DecodeLevelParms =
 {
-	if (mode_arena ())
+	if (mode_midair ())
+		SetMidairParms ();
+	else if (mode_arena ())
 		SetArenaParms ();
-	else if (deathmatch & DM_MODE_PRACTICE)
+	else if (mode_practice ())
 		SetPracticeParms ();
 	else
 	{
