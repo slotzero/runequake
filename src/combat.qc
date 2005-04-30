@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.40 2005/04/30 19:18:48 slotzero Exp $
+/*  $Id: combat.qc,v 1.41 2005/04/30 20:03:38 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -323,20 +323,6 @@ T_Damage =
 		}
 	}
 
-	if (deathmatch & DM_MODE_PRACTICE)
-	{
-		if (attacker != targ)
-		{
-			if (attacker.classname == "player" && targ.classname == "player")
-			{
-				local string x;
-
-				x = ftos (damage);
-				centerprint4 (attacker, targ.netname, ": ", x, "\n\n\n\n");
-			}
-		}
-	}
-
 	if (mode_midair ())
 	{
 		traceline (targ.origin, targ.origin - '0 0 2048', TRUE, targ);
@@ -413,6 +399,20 @@ T_Damage =
 	{
 		if (safe_height && dtype != "axe")
 			damage = 0;
+	}
+
+	if (deathmatch & DM_MODE_PRACTICE)
+	{
+		if (damage && attacker != targ)
+		{
+			if (attacker.classname == "player" && targ.classname == "player")
+			{
+				local string x;
+
+				x = ftos (damage);
+				centerprint4 (attacker, targ.netname, ": ", x, "\n\n\n\n");
+			}
+		}
 	}
 
 	// save damage based on the target's armor level
