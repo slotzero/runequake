@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.38 2005/04/30 05:20:36 slotzero Exp $
+/*  $Id: combat.qc,v 1.39 2005/04/30 05:37:41 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -383,8 +383,8 @@ T_Damage =
 
 		if (ra)
 		{
-			if (MODE_MIDAIR && safe_height && attacker != targ)
-				targ.velocity_z = targ.velocity_z + dir_z * damage * 6;
+			if (MODE_MIDAIR && safe_height)
+				targ.velocity_z = targ.velocity_z + dir_z * damage * 12;
 		}
 
 		IN_QW([-
