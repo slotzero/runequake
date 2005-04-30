@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.52 2005/04/30 00:29:33 slotzero Exp $
+/*  $Id: team.qc,v 1.53 2005/04/30 18:35:25 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -649,9 +649,9 @@ change_mode_to_practice =
 	new_deathmatch = cvar ("deathmatch");
 
 	if (!NO_SPAWN_SHIELDS)
-		NO_SPAWN_SHIELDS = fput (HUNK_NO_SPAWN_SHIELDS, !NO_SPAWN_SHIELDS);
+		setshields ();
 	if (!NO_ALT_WEAPONS)
-		NO_ALT_WEAPONS = fput (HUNK_NO_ALT_WEAPONS, !NO_ALT_WEAPONS);
+		setalts ();
 	if (!new_deathmatch & DM_MODE_PRACTICE)
 		new_deathmatch = new_deathmatch | DM_MODE_PRACTICE;
 
@@ -676,11 +676,11 @@ change_mode_to_arena =
 	new_deathmatch = cvar ("deathmatch");
 
 	if (!NO_SPAWN_SHIELDS)
-		NO_SPAWN_SHIELDS = fput (HUNK_NO_SPAWN_SHIELDS, !NO_SPAWN_SHIELDS);
+		setshields ();
 	if (!NO_ALT_WEAPONS)
-		NO_ALT_WEAPONS = fput (HUNK_NO_ALT_WEAPONS, !NO_ALT_WEAPONS);
+		setalts ();
 	if (!NO_RUNES)
-		NO_RUNES = fput (HUNK_NO_RUNES, !NO_RUNES);
+		setrunes ();
 	if (!new_deathmatch & DM_MODE_ROCKET_ARENA)
 		new_deathmatch = new_deathmatch | DM_MODE_ROCKET_ARENA;
 
@@ -706,13 +706,13 @@ change_mode_to_normal =
 
 	// XXX I would like these to be configured via a config file.
 	if (NO_ALT_WEAPONS)
-		NO_ALT_WEAPONS = fput (HUNK_NO_ALT_WEAPONS, !NO_ALT_WEAPONS);
+		setalts ();
 	if (NO_SPAWN_SHIELDS)
-		NO_SPAWN_SHIELDS = fput (HUNK_NO_SPAWN_SHIELDS, !NO_SPAWN_SHIELDS);
+		setshields ();
 	if (NO_RUNES)
-		NO_RUNES = fput (HUNK_NO_RUNES, !NO_RUNES);
+		setrunes ();
 	if (MODE_MIDAIR)
-		MODE_MIDAIR = fput (HUNK_MODE_MIDAIR, !MODE_MIDAIR);
+		toggle_mode_midair ();
 	if (new_deathmatch & DM_MODE_PRACTICE)
 		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_PRACTICE;
 	if (new_deathmatch & DM_MODE_ROCKET_ARENA)
