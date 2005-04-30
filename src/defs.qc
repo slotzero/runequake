@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.153 2005/04/29 20:00:48 slotzero Exp $
+/*  $Id: defs.qc,v 1.154 2005/04/30 00:29:33 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -600,6 +600,7 @@ float IMP_VOTE_SHIELDS		= 16;
 float IMP_VOTE_HOOK_DAMAGE	= 17;
 float IMP_VOTE_ARENA		= 18;
 float IMP_VOTE_MEGA		= 19;
+float IMP_VOTE_MIDAIR		= 20;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;

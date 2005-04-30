@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.54 2005/04/27 00:13:45 slotzero Exp $
+/*  $Id: vote.qc,v 1.55 2005/04/30 00:29:33 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -47,7 +47,7 @@ vote_impulse_commands =
 		else
 			count_votes (2);
 	}
-	else if (self.impulse >= 1 && self.impulse <= 19)
+	else if (self.impulse >= 1 && self.impulse <= 20)
 		vote ();
 
 	impulse_override_cancel ();
@@ -695,6 +695,25 @@ vote =
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
+	}
+	else if (self.impulse == IMP_VOTE_MIDAIR)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= toggle_mode_midair;
+		e.noise2	= " midair mode ";
+
+		if (!MODE_MIDAIR)
+			e.noise1	= "enable";
+		else
+			e.noise1	= "disable";
+
+		if (!mode_arena () && e.noise1 == "enable")
+		{
+			if (!cancel)
+				self_sprint (self, "enable arena mode first\n");
+			cancel = 1;
+		}
 	}
 	else
 		cancel = -1;

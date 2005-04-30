@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.15 2005/04/27 00:13:45 slotzero Exp $
+/*  $Id: toggle.qc,v 1.16 2005/04/30 00:29:33 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -224,4 +224,10 @@ setmega =
 {
 	toggle_health ("item_health", 2, NO_MEGA);
 	NO_MEGA = fput (HUNK_NO_MEGA, !NO_MEGA);
+};
+
+void ()
+toggle_mode_midair =
+{
+	MODE_MIDAIR = fput (HUNK_MODE_MIDAIR, !MODE_MIDAIR);
 };
