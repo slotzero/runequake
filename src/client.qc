@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.91 2005/04/29 22:29:00 slotzero Exp $
+/*  $Id: client.qc,v 1.92 2005/04/30 01:17:52 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -189,10 +189,10 @@ SetArenaParms =
 void ()
 DecodeLevelParms =
 {
-	if (deathmatch & DM_MODE_PRACTICE)
-		SetPracticeParms ();
-	else if (mode_arena ())
+	if (mode_arena ())
 		SetArenaParms ();
+	else if (deathmatch & DM_MODE_PRACTICE)
+		SetPracticeParms ();
 	else
 	{
 		self.items		= parm1;
