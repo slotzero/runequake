@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.7 2005/04/29 22:29:00 slotzero Exp $
+/*  $Id: match.qc,v 1.8 2005/05/01 03:01:15 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -29,6 +29,25 @@ mode_match =
 	return TRUE;
 };
 
+void (entity e, float cl_colors)
+restore_colors =
+{
+	local float i, shirt, pants;
+	local string s;
+
+	shirt = i = floor (cl_colors / 16);
+	i = i * 16;
+	pants = cl_colors - i;
+
+	self_stuffcmd (e, "color ");
+	s = ftos (shirt);
+	self_stuffcmd (e, s);
+	self_stuffcmd (e, " ");
+	s = ftos (pants);
+	self_stuffcmd (e, s);
+	self_stuffcmd (e, "\n");
+};
+
 
 // match is over
 // match in progress
@@ -37,7 +56,14 @@ mode_match =
 void ()
 match_pre_think =
 {
-	SUB_Null ();
+	if (is_observer ())
+		return;
+
+	if (*self.cl[CL_COLORS] != *self.search_time)
+	{
+		self_sprint (self, "You have already committed\n");
+		restore_colors (self, self.search_time / %1);
+	}
 };
 
 void ()
@@ -45,11 +71,12 @@ reset_colors =
 {
 	self_stuffcmd (self.owner, "color 1\n");
 	self_stuffcmd (self.owner, "color 0\n");
+	self.frags = -99;
 	remove (self);
 };
 
 void ()
-match_observer =
+match_obs_become =
 {
 	local entity e;
 
@@ -57,4 +84,57 @@ match_observer =
 	e.owner		= self;
 	e.think		= reset_colors;
 	e.nextthink	= time + 0.5;
+
+	bprint (self.netname);
+	bprint (" is not ready\n");
+
+	if (!maybe_remove_team (self))
+		pqc_erase_team (self.team - 1);
+};
+
+float (entity e)
+maybe_remove_team =
+{
+	local entity w;
+	local float e_pants, w_pants;
+
+	e_pants = client_colors (e, 0);
+
+	w = find (world, classname, "player");
+	while (w)
+	{
+		w_pants = client_colors (w, 0);
+		if (e != w && e_pants == w_pants)
+			return TRUE;
+		w = find (w, classname, "player");
+	}
+
+	return FALSE;
+};
+
+// return 1 (player can commit), return 0 (player can't join, reset is color)
+float ()
+match_obs_join_game =
+{
+	local string s;
+
+	if (self.team == 1)
+	{
+		self_sprint (self, "invalid pants color\n");
+		return FALSE;
+	}
+
+	bprint (self.netname);
+	bprint (" joined the ");
+	s = team_to_name (self.team);
+	bprint (s);
+	bprint ("\n");
+
+	self.frags = 0;
+
+	self.search_time = self.cl[CL_COLORS];
+
+	pqc_new_team (self.cl[CL_COLORS] / %1);
+
+	return TRUE;
 };

@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.25 2005/04/29 21:32:24 slotzero Exp $
+/*  $Id: engine.qc,v 1.26 2005/05/01 03:01:15 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -320,49 +320,31 @@ WriteShortPQ =
 	WriteByte (to, 16 + f);	// x 1
 };
 
-void (entity e, float cl_colors)
+void (float cl_colors)
 pqc_new_team =
 {	IN_QW(return;)
-	local float i, shirt, pants, msg_type;
-
-	if (e == world)
-		msg_type = MSG_ALL;
-	else
-	{
-		msg_entity = e;
-		msg_type = MSG_ONE;
-	}
+	local float i, shirt, pants;
 
 	shirt = i = floor (cl_colors / 16);
 	i = i * 16;
 	pants = cl_colors - i;
 
-	WriteByte (msg_type, SVC_STUFFTEXT);
-	WriteByte (msg_type, 1);
-	WriteByte (msg_type, PQC_NEW_TEAM);
-	WriteByte (msg_type, 16 + shirt);
-	WriteByte (msg_type, 16 + pants);
-	WriteString (msg_type, string_null);
+	WriteByte (MSG_ALL, SVC_STUFFTEXT);
+	WriteByte (MSG_ALL, 1);
+	WriteByte (MSG_ALL, PQC_NEW_TEAM);
+	WriteByte (MSG_ALL, 16 + shirt);
+	WriteByte (MSG_ALL, 16 + pants);
+	WriteString (MSG_ALL, string_null);
 };
 
-void (entity e, float tm)
+void (float tm)
 pqc_erase_team =
 {	IN_QW(return;)
-	local float msg_type;
-
-	if (e == world)
-		msg_type = MSG_ALL;
-	else
-	{
-		msg_entity = e;
-		msg_type = MSG_ONE;
-	}
-
-	WriteByte(msg_type, SVC_STUFFTEXT);
-	WriteByte(msg_type, 1);
-	WriteByte(msg_type, PQC_ERASE_TEAM);
-	WriteByte(msg_type, 15 + tm);	//team
-	WriteString(msg_type, string_null);
+	WriteByte(MSG_ALL, SVC_STUFFTEXT);
+	WriteByte(MSG_ALL, 1);
+	WriteByte(MSG_ALL, PQC_ERASE_TEAM);
+	WriteByte(MSG_ALL, 16 + tm);
+	WriteString(MSG_ALL, string_null);
 };
 
 void (entity e, float tm, float tf)

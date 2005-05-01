@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.54 2005/04/29 22:29:00 slotzero Exp $
+/*  $Id: observer.qc,v 1.55 2005/05/01 03:01:15 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -89,17 +89,13 @@ ridee =
 float (float tell_type)
 corpse_to_observer =
 {
-	/*if (teamplay & TEAM_MATCH_MODE && count_team_observers (self.team) >= MAX_TEAM_OBSERVERS)
-	{
-		if (tell_type != 2)
-			sprint (self, "No more observers from your team are allowed\n");
-		return 0;
-	}*/
 	CopyToBodyQue (self);
 	obs_become (tell_type);
 	obs_process_game_queue ();
+
 	if (self.items | IT_KEY2)
 		self.items = self.items - self.items & IT_KEY2;
+
 	return 1;
 };
 
@@ -514,9 +510,6 @@ obs_init_hidables =
 	else
 		self.items	= 0;
 
-	if (mode_match ())
-		self.frags = -99;
-
 	self.health		= 999;
 	self.currentammo	= 0;
 	self.ammo_shells	= 0;
@@ -619,7 +612,7 @@ obs_become =
 	set_viewport (self);
 
 	if (mode_match ())
-		match_observer ();
+		match_obs_become ();
 	if (enforced_teams ())
 		assign_teams (self);
 
@@ -819,25 +812,18 @@ game_queue_len =
 void (float force)
 obs_join_game =
 {
-	local float maxp, i, ra;
+	local float maxp, i, ra, mm;
 	local string s1, s2, sx;
 
 	ra = mode_arena ();
+	mm = mode_match ();
 
-	if (mode_match ())
+	if (mm)
 	{
-		if (self.team == 1)
-		{
-			self_sprint (self, "invalid pants color\n");
+		if (match_obs_join_game ())
+			force = 1;
+		else
 			return;
-		}
-
-		if (self.frags == -99)
-			self.frags = 0;
-
-		pqc_new_team (world, self.cl[CL_COLORS] / %1);
-
-		force = 1;
 	}
 
 	if (!force && self.runevar)
@@ -930,7 +916,7 @@ obs_join_game =
 	persistent_parms ();
 	PutClientInServer ();
 
-	if (!ra)
+	if (!ra && !mm)
 	{
 		bprint (self.netname);
 		bprint (" joined the game\n");
