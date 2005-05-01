@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.18 2005/04/30 19:18:48 slotzero Exp $
+/*  $Id: toggle.qc,v 1.19 2005/05/01 23:23:17 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -247,10 +247,32 @@ toggle_mode_midair =
 void ()
 toggle_weapons_stay =
 {
+	local entity e;
 	local float new_deathmatch;
 	local string s;
 
 	new_deathmatch = cvar ("deathmatch");
+
+	// XXX slow?  maybe assign second classname and use find?
+	e = nextent (world);
+	while (e)
+	{
+		if (e.touch == weapon_touch)
+		{
+			e.runetime	= time;
+			e.think		= SUB_regen;
+			e.nextthink	= time;
+
+			if (new_deathmatch & DM_WEAPONS_STAY)
+				setorigin (e, e.runevector);
+			else
+			{
+
+				setorigin (e, e.runevector + '0 0 25');
+			}
+		}
+		e = nextent (e);
+	}
 
 	if (new_deathmatch & DM_WEAPONS_STAY)
 		new_deathmatch = new_deathmatch - new_deathmatch & DM_WEAPONS_STAY;
