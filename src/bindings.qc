@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.67 2005/04/30 00:29:33 slotzero Exp $
+/*  $Id: bindings.qc,v 1.68 2005/05/02 01:05:19 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -303,6 +303,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-free",			IMP_VOTE_FREE);
 	player_vote_impulse_alias ("vote-hook-damage",		IMP_VOTE_HOOK_DAMAGE);
 	player_vote_impulse_alias ("vote-lithium",		IMP_VOTE_LITHIUM);
+	player_vote_impulse_alias ("vote-mega",			IMP_VOTE_MEGA);
 	player_vote_impulse_alias ("vote-midair",		IMP_VOTE_MIDAIR);
 	player_vote_impulse_alias ("vote-normal",		IMP_VOTE_NORMAL);
 	player_vote_impulse_alias ("vote-pent",			IMP_VOTE_PENT);
@@ -315,7 +316,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-suit",			IMP_VOTE_SUIT);
 	player_vote_impulse_alias ("vote-team",			IMP_VOTE_TEAM);
 	player_vote_impulse_alias ("vote-hook",			IMP_VOTE_HOOK);
-	player_vote_impulse_alias ("vote-mega",			IMP_VOTE_MEGA);
+	player_vote_impulse_alias ("vote-weapons-stay",		IMP_VOTE_WEAPONS_STAY);
 };
 
 void (string level, float imp)
@@ -528,6 +529,7 @@ help_vote =
 	self_sprint (self, "\bvote-ring       vote-suit\n");
 	self_sprint (self, "\bvote-armor      vote-rotate\n");
 	self_sprint (self, "\bvote-runes      vote-alt-weapons\n");
-	self_sprint (self, "\bvote-shields    vote-mega\n");
+	self_sprint (self, "\bvote-shields    vote-weapons-stay\n");
+	self_sprint (self, "\bvote-mega\n");
 	self_sprint (self, "\n");
 };
