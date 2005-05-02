@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.95 2005/04/30 19:51:18 slotzero Exp $
+/*  $Id: client.qc,v 1.96 2005/05/02 23:27:22 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1954,6 +1954,17 @@ ClientConnect =
 	self.cl = *SubInt(AddInt(PSTRING_TO_PQUAKEC, &self.netname), 4 * CL_NAME);
 	self.netconnection = *AddInt(self.cl[CL_NETCONNECTION], PC_TO_PQUAKEC);
 	client_ip ();
+
+	if (HUNK_CONTEXT)
+	{
+		if (ban_check (self.address) >= 0)
+		{
+			localcmd ("ban ");
+			localcmd (self.address);
+			localcmd (" 255.255.255.255\n");
+			kick (string_null, string_null);
+		}
+	}
 
 	// I wanted to change the "Foo entered the game" message
 	// depending on whether this is a new connection or a new
