@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.28 2005/04/30 19:18:48 slotzero Exp $
+/*  $Id: hunked.qc,v 1.29 2005/05/02 20:17:34 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -231,6 +231,87 @@ Client_Disconnect_Log =
 	}
 	if (!e_time)
 		self_sprint (self, "No entries found.\n");
+};
+
+float (string ip)
+check_ban =
+{
+	local float i, offset;
+	local string hunk_ip;
+
+	offset = %800;
+
+	for (i = 0; i < %10; i = i + %1)
+	{
+		hunk_ip = Read_Hunk_String (HUNK_CONTEXT, offset + (i * 4));
+		if (hunk_ip == ip)
+			return i;
+	}
+
+	return -1;
+};
+
+void ()
+read_ban =
+{
+	local float i, offset;
+	local string hunk_ip;
+
+	offset = %800;
+
+	self_sprint (self, "\bBan List\n\n");
+
+	for (i = 0; i < %10; i = i + %1)
+	{
+		hunk_ip = Read_Hunk_String_Max (HUNK_CONTEXT, offset + (i * 4), 16);
+		if (!hunk_ip == "                " && !hunk_ip == string_null)
+		{
+			self_sprint (self, hunk_ip);
+			self_sprint (self, "\n");
+		}
+	}
+};
+
+void (string ip)
+remove_ban =
+{
+	local float i, pos, offset;
+
+	offset = %800;
+
+	pos = check_ban (ip);
+	if (pos < 0)
+		return self_sprint (self, "ip doesn't exist\n");
+
+	Write_Hunk_String (HUNK_CONTEXT, offset + (pos * 4), string_null);
+	return self_sprint (self, "ip succesfully removed\n");
+};
+
+void (string s)
+add_ban =
+{
+	local float i, offset;
+	local string hunk_ip;
+
+	offset = %800;
+
+	// check to make sure ban doesn't exist
+	if (check_ban (s) >= 0)
+		return self_sprint (self, "ip already banned\n");
+
+	// check hunk for available slot
+	for (i = 0; i < %10; i = i + %1)
+	{
+		hunk_ip = Read_Hunk_String_Max (HUNK_CONTEXT, offset + (i * 4), 16);
+		if (hunk_ip == "                " || hunk_ip == string_null)
+		{
+			Write_Hunk_String (HUNK_CONTEXT, offset + (i * 4), s);
+			return dprint ("ip added to the ban list\n");
+		}
+	}
+
+	// list is full
+	return dprint ("ban list is full\n");
 };
 
 IN_QW([-
