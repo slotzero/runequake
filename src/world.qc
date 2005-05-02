@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.62 2005/04/28 21:44:32 slotzero Exp $
+/*  $Id: world.qc,v 1.63 2005/05/02 22:48:06 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -599,6 +599,21 @@ StartFrame =
 				setmega ();
 			}
 		}
+
+		else if (i == C2_BAN_ADD)
+		{
+			s = cvar_string ("skill", 1);
+			ban_add (s);
+		}
+
+		else if (i == C2_BAN_REMOVE)
+		{
+			s = cvar_string ("skill", 1);
+			ban_remove (s);
+		}
+
+		else if (i == C2_BAN_LIST)
+			ban_list ();
 
 		else
 			dprint ("Unknown command\n");

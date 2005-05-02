@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.29 2005/05/02 20:17:34 slotzero Exp $
+/*  $Id: hunked.qc,v 1.30 2005/05/02 22:48:05 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -233,17 +233,18 @@ Client_Disconnect_Log =
 		self_sprint (self, "No entries found.\n");
 };
 
+float HUNK_BAN_OFFSET = %800;
+float BAN_FILE_SIZE = %2;
+
 float (string ip)
-check_ban =
+ban_check =
 {
-	local float i, offset;
+	local float i;
 	local string hunk_ip;
 
-	offset = %800;
-
-	for (i = 0; i < %10; i = i + %1)
+	for (i = 0; i < BAN_FILE_SIZE; i = i + %1)
 	{
-		hunk_ip = Read_Hunk_String (HUNK_CONTEXT, offset + (i * 4));
+		hunk_ip = Read_Hunk_String (HUNK_CONTEXT, HUNK_BAN_OFFSET + (i * 4));
 		if (hunk_ip == ip)
 			return i;
 	}
@@ -252,18 +253,16 @@ check_ban =
 };
 
 void ()
-read_ban =
+ban_list =
 {
-	local float i, offset;
+	local float i;
 	local string hunk_ip;
-
-	offset = %800;
 
 	self_sprint (self, "\bBan List\n\n");
 
-	for (i = 0; i < %10; i = i + %1)
+	for (i = 0; i < BAN_FILE_SIZE; i = i + %1)
 	{
-		hunk_ip = Read_Hunk_String_Max (HUNK_CONTEXT, offset + (i * 4), 16);
+		hunk_ip = Read_Hunk_String_Max (HUNK_CONTEXT, HUNK_BAN_OFFSET + (i * 4), 16);
 		if (!hunk_ip == "                " && !hunk_ip == string_null)
 		{
 			self_sprint (self, hunk_ip);
@@ -273,45 +272,41 @@ read_ban =
 };
 
 void (string ip)
-remove_ban =
+ban_remove =
 {
-	local float i, pos, offset;
+	local float i, pos;
 
-	offset = %800;
-
-	pos = check_ban (ip);
+	pos = ban_check (ip);
 	if (pos < 0)
 		return self_sprint (self, "ip doesn't exist\n");
 
-	Write_Hunk_String (HUNK_CONTEXT, offset + (pos * 4), string_null);
+	Write_Hunk_String (HUNK_CONTEXT, HUNK_BAN_OFFSET + (pos * 4), string_null);
 	return self_sprint (self, "ip succesfully removed\n");
 };
 
-void (string s)
-add_ban =
+void (string ip)
+ban_add =
 {
-	local float i, offset;
+	local float i;
 	local string hunk_ip;
 
-	offset = %800;
-
 	// check to make sure ban doesn't exist
-	if (check_ban (s) >= 0)
+	if (ban_check (ip) >= 0)
 		return self_sprint (self, "ip already banned\n");
 
 	// check hunk for available slot
-	for (i = 0; i < %10; i = i + %1)
+	for (i = 0; i < BAN_FILE_SIZE; i = i + %1)
 	{
-		hunk_ip = Read_Hunk_String_Max (HUNK_CONTEXT, offset + (i * 4), 16);
+		hunk_ip = Read_Hunk_String_Max (HUNK_CONTEXT, HUNK_BAN_OFFSET + (i * 4), 16);
 		if (hunk_ip == "                " || hunk_ip == string_null)
 		{
-			Write_Hunk_String (HUNK_CONTEXT, offset + (i * 4), s);
-			return dprint ("ip added to the ban list\n");
+			Write_Hunk_String (HUNK_CONTEXT, HUNK_BAN_OFFSET + (i * 4), ip);
+			return self_sprint (self, "ip added to the ban list\n");
 		}
 	}
 
 	// list is full
-	return dprint ("ban list is full\n");
+	return self_sprint (self, "ban list is full\n");
 };
 
 IN_QW([-
