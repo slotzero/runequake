@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.71 2005/05/03 00:00:19 slotzero Exp $
+/*  $Id: bindings.qc,v 1.72 2005/05/03 09:45:08 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -411,6 +411,8 @@ console_aliases =
 	level_aliases ();
 	custom_aliases ();
 	custom_maps ();
+
+	localcmd ("exec ban.txt\n");
 };
 
 // XXX I would like to expand this.  help-server, help-weapons, help-vote, and so on.

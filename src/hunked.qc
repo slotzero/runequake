@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.33 2005/05/03 00:10:05 slotzero Exp $
+/*  $Id: hunked.qc,v 1.34 2005/05/03 09:45:08 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -396,6 +396,4 @@ Hunk_Settings =
 	NO_MEGA			= fget (HUNK_NO_MEGA,		0);
 
 	set_runemax ();
-
- 	localcmd ("exec ban.txt\n");
 };
