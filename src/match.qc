@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.9 2005/05/03 21:53:34 slotzero Exp $
+/*  $Id: match.qc,v 1.10 2005/05/03 22:41:10 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -79,7 +79,7 @@ reset_colors =
 	remove (self);
 };
 
-void ()
+void (float tell_type)
 match_obs_become =
 {
 	local entity e;
@@ -89,11 +89,14 @@ match_obs_become =
 	e.think		= reset_colors;
 	e.nextthink	= time + 1;
 
-	bprint (self.netname);
-	bprint (" is not ready\n");
+	if (tell_type)
+	{
+		bprint (self.netname);
+		bprint (" is not ready\n");
 
-	if (!maybe_remove_team (self))
-		pqc_erase_team (self.team - 1);
+		if (!maybe_remove_team (self))
+			pqc_erase_team (self.team - 1);
+	}
 };
 
 float (entity e)

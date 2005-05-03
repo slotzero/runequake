@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.55 2005/05/01 03:01:15 slotzero Exp $
+/*  $Id: observer.qc,v 1.56 2005/05/03 22:41:10 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -612,7 +612,7 @@ obs_become =
 	set_viewport (self);
 
 	if (mode_match ())
-		match_obs_become ();
+		match_obs_become (tell_type);
 	if (enforced_teams ())
 		assign_teams (self);
 
