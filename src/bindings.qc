@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.70 2005/05/02 23:27:22 slotzero Exp $
+/*  $Id: bindings.qc,v 1.71 2005/05/03 00:00:19 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -404,9 +404,9 @@ console_aliases =
 	console_init_cvar_alias ("sping",		CVAR_C2,	C2_CLIENT_PING_TIMES);
 	console_init_cvar_alias ("megaon",		CVAR_C2,	C2_MEGAON);
 	console_init_cvar_alias ("megaoff",		CVAR_C2,	C2_MEGAOFF);
-	console_init_cvar_alias ("addip",		CVAR_C2,	C2_BAN_ADD);
-	console_init_cvar_alias ("removeip",		CVAR_C2,	C2_BAN_REMOVE);
-	console_init_cvar_alias ("listips",		CVAR_C2,	C2_BAN_LIST);
+	console_init_cvar_alias ("banip",		CVAR_C2,	C2_BAN_ADD);
+	console_init_cvar_alias ("unbanip",		CVAR_C2,	C2_BAN_REMOVE);
+	console_init_cvar_alias ("banlist",		CVAR_C2,	C2_BAN_LIST);
 
 	level_aliases ();
 	custom_aliases ();
