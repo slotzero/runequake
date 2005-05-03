@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.32 2005/05/03 00:05:14 slotzero Exp $
+/*  $Id: hunked.qc,v 1.33 2005/05/03 00:10:05 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -274,7 +274,7 @@ ban_list =
 void (string ip)
 ban_remove =
 {
-	local float i, pos;
+	local float pos;
 
 	pos = ban_check (ip);
 	if (pos < 0)
