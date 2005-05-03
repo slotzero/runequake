@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.97 2005/05/03 21:53:34 slotzero Exp $
+/*  $Id: client.qc,v 1.98 2005/05/03 23:41:52 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1885,7 +1885,7 @@ client_ip =
 	(*pch)[0] = (*px)[0];
 };
 
-// XXX Fix this.
+// Fixed!
 
 /* void ()
 client_ip =
@@ -1909,9 +1909,12 @@ client_ip =
 
 		if (world[%5] != '.' && world[%5] != ':')
 		{
-			ch = atoc (world[%5] / %1);
-			if (ch)
-				strcpy (octet[oc], ch);
+			if (oc < %3)
+			{
+				ch = atoc (world[%5] / %1);
+				if (ch)
+					strcpy (octet[oc], ch);
+			}
 			oc = oc + %1;
 		}
 		else
