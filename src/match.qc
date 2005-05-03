@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.8 2005/05/01 03:01:15 slotzero Exp $
+/*  $Id: match.qc,v 1.9 2005/05/03 21:53:34 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -59,10 +59,14 @@ match_pre_think =
 	if (is_observer ())
 		return;
 
-	if (*self.cl[CL_COLORS] != *self.search_time)
+	if (self.search_time > time)
+		return;
+
+	if (*self.cl[CL_COLORS] != *self.team_colors)
 	{
+		self.search_time = time + 0.1;
 		self_sprint (self, "You have already committed\n");
-		restore_colors (self, self.search_time / %1);
+		restore_colors (self, self.team_colors / %1);
 	}
 };
 
@@ -71,7 +75,7 @@ reset_colors =
 {
 	self_stuffcmd (self.owner, "color 1\n");
 	self_stuffcmd (self.owner, "color 0\n");
-	self.frags = -99;
+	self.owner.frags = -99;
 	remove (self);
 };
 
@@ -83,7 +87,7 @@ match_obs_become =
 	e		= spawn ();
 	e.owner		= self;
 	e.think		= reset_colors;
-	e.nextthink	= time + 0.5;
+	e.nextthink	= time + 1;
 
 	bprint (self.netname);
 	bprint (" is not ready\n");
@@ -132,7 +136,7 @@ match_obs_join_game =
 
 	self.frags = 0;
 
-	self.search_time = self.cl[CL_COLORS];
+	self.team_colors = self.cl[CL_COLORS];
 
 	pqc_new_team (self.cl[CL_COLORS] / %1);
 

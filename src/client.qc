@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.96 2005/05/02 23:27:22 slotzero Exp $
+/*  $Id: client.qc,v 1.97 2005/05/03 21:53:34 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -106,6 +106,8 @@ SetChangeParms =
 
 	persistent_parms ();
 	parm11 = parm11 | (self.aqflags & AQ_HOOK);
+	if (mode_match ())
+		parm11 = parm11 | AQ_OBSERVER;
 };
 
 // SetNewParms() is called both by me and by the game.  It's called by
@@ -824,14 +826,6 @@ PutClientInServer =
 				arena_init ();
 			else
 				spawn_as_observer = 1;
-		}
-		else if (mode_match ())
-		{
-			if (!self.search_time)
-			{
-				spawn_as_observer = 1;
-				self.search_time = 1; // maybe expand this to bits
-			}
 		}
 		else
 			spawn_as_observer = 0;
