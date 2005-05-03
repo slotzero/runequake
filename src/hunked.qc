@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.31 2005/05/02 23:27:22 slotzero Exp $
+/*  $Id: hunked.qc,v 1.32 2005/05/03 00:05:14 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -281,6 +281,7 @@ ban_remove =
 		return self_sprint (self, "ip doesn't exist\n");
 
 	Write_Hunk_String (HUNK_CONTEXT, HUNK_BAN_OFFSET + (pos * 4), string_null);
+	localcmd ("ban off\n");
 	return self_sprint (self, "ip succesfully removed\n");
 };
 
