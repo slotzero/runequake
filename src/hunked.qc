@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.36 2005/05/04 01:38:38 slotzero Exp $
+/*  $Id: hunked.qc,v 1.37 2005/05/04 01:44:51 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -234,7 +234,7 @@ Client_Disconnect_Log =
 };
 
 float HUNK_BAN_OFFSET = %800;
-float BAN_FILE_SIZE = %25;
+float BAN_LIST_SIZE = %25;
 
 float (vector ip)
 ban_check =
@@ -242,7 +242,7 @@ ban_check =
 	local float i;
 	local vector hunk_ip;
 
-	for (i = 0; i < BAN_FILE_SIZE; i = i + %1)
+	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
 	{
 		hunk_ip = Read_Hunk_Vector (HUNK_CONTEXT, HUNK_BAN_OFFSET + (i * 3));
 		if (hunk_ip == ip)
@@ -260,7 +260,7 @@ ban_list =
 
 	self_sprint (self, "\bBan List\n\n");
 
-	for (i = 0; i < BAN_FILE_SIZE; i = i + %1)
+	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
 	{
 		hunk_ip = Read_Hunk_Vector (HUNK_CONTEXT, HUNK_BAN_OFFSET + (i * 3));
 		if (hunk_ip != VEC_ORIGIN)
@@ -361,7 +361,7 @@ ban_add =
 		return self_sprint (self, "ip already banned\n");
 
 	// check hunk for available slot
-	for (i = 0; i < BAN_FILE_SIZE; i = i + %1)
+	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
 	{
 		hunk_ip = Read_Hunk_Vector (HUNK_CONTEXT, HUNK_BAN_OFFSET + (i * 3));
 		if (hunk_ip == VEC_ORIGIN)
