@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.99 2005/05/04 01:33:38 slotzero Exp $
+/*  $Id: client.qc,v 1.100 2005/05/04 01:38:38 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1907,17 +1907,9 @@ client_ip =
 		pch = AddInt (pch, %1);
 		&%113 = (*pch)[0];
 
-		if (world[%5] != '.' && world[%5] != ':')
-		{
-			if (oc < %3)
-			{
-				ch = atoc (world[%5] / %1);
-				if (ch)
-					strcpy (octet[oc], ch);
-			}
-			oc = oc + %1;
-		}
-		else
+		if (world[%5] == ':')
+			i = 16;
+		else if (world[%5] == '.')
 		{
 			dot = dot + 1;
 			oc = 0;
@@ -1929,9 +1921,16 @@ client_ip =
 			else if (dot == 3)
 				self.subnet_z = stof (octet);
 		}
-
-		if (world[%5] == ':')
-			i = 16;
+		else
+		{
+			if (oc < %3)
+			{
+				ch = atoc (world[%5] / %1);
+				if (ch)
+					strcpy (octet[oc], ch);
+			}
+			oc = oc + %1;
+		}
 	}
 
 	pch = AddInt(pch, %3);

@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.35 2005/05/04 01:33:38 slotzero Exp $
+/*  $Id: hunked.qc,v 1.36 2005/05/04 01:38:38 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -293,7 +293,9 @@ ip_to_vec =
 		pch = AddInt (pch, %1);
 		&%113 = (*pch)[0];
 
-		if (world[%5] == '.')
+		if (world[%5] == ':')
+			i = 16;
+		else if (world[%5] == '.')
 		{
 			dot	= dot + 1;
 			oc	= 0;
@@ -305,8 +307,6 @@ ip_to_vec =
 			else if (dot == 3)
 				v_z = stof (octet);
 		}
-		else if (world[%5] == ':')
-			i = 16;
 		else
 		{
 			if (oc < %3)
@@ -328,7 +328,7 @@ ip_to_vec =
 	}
 
 	pch = AddInt(pch, %3);
-	//(*pch)[0] = (*px)[0];
+	// (*pch)[0] = (*px)[0];
 
 	if (v_x < 0 || v_y < 0 || v_z < 0 || v_x > 255 || v_y > 255 || v_z > 255)
 		return VEC_ORIGIN;
