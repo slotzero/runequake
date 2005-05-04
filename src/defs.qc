@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.158 2005/05/03 21:53:34 slotzero Exp $
+/*  $Id: defs.qc,v 1.159 2005/05/04 01:33:38 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1494,3 +1494,5 @@ entity	arena;
 entity	match;
 
 .float	team_colors;	// int
+
+.vector	subnet;

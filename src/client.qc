@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.98 2005/05/03 23:41:52 slotzero Exp $
+/*  $Id: client.qc,v 1.99 2005/05/04 01:33:38 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1858,7 +1858,7 @@ PlayerPostThink =
 		draw_hud (0);
 };
 
-void ()
+/* void ()
 client_ip =
 {
 	local float px, pch, i;
@@ -1883,11 +1883,11 @@ client_ip =
 
 	pch = AddInt(pch, %3);
 	(*pch)[0] = (*px)[0];
-};
+}; */
 
 // Fixed!
 
-/* void ()
+void ()
 client_ip =
 {
 	local float px, pch, i, oc, dot;
@@ -1936,7 +1936,7 @@ client_ip =
 
 	pch = AddInt(pch, %3);
 	(*pch)[0] = (*px)[0];
-}; */
+};
 
 /*
 ===========
@@ -1954,7 +1954,7 @@ ClientConnect =
 
 	if (HUNK_CONTEXT)
 	{
-		if (ban_check (self.address) >= 0)
+		if (ban_check (self.subnet) >= 0)
 		{
 			localcmd ("ban ");
 			localcmd (self.address);

@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.63 2005/05/02 22:48:06 slotzero Exp $
+/*  $Id: world.qc,v 1.64 2005/05/04 01:33:38 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -280,6 +280,7 @@ float initial_obs_process_game_queue;
 void ()
 StartFrame =
 {
+	local vector v;
 	local float i;
 	local string s;
 
@@ -603,13 +604,21 @@ StartFrame =
 		else if (i == C2_BAN_ADD)
 		{
 			s = cvar_string ("skill", 1);
-			ban_add (s);
+			v = ip_to_vec (s);
+			if (v == VEC_ORIGIN)
+				self_sprint (self, "invalid ip address\n");
+			else
+				ban_add (v);
 		}
 
 		else if (i == C2_BAN_REMOVE)
 		{
 			s = cvar_string ("skill", 1);
-			ban_remove (s);
+			v = ip_to_vec (s);
+			if (v == VEC_ORIGIN)
+				self_sprint (self, "invalid ip address\n");
+			else
+				ban_remove (v);
 		}
 
 		else if (i == C2_BAN_LIST)
