@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.182 2005/04/30 19:18:48 slotzero Exp $
+/*  $Id: rjs.qc,v 1.183 2005/05/05 21:22:56 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1503,33 +1503,6 @@ common_impulses =
 
 	else if (self.impulse == IMP_TEAMSCORES_OFF)
 		teamscores_off (self);
-
-  	else if (is_admin () && self.impulse == 11)
-	{
-		local entity e;
-
-		e = ridee ();
-		if (!e)
-		{
-			self_sprint (self, VICTIM_ADDRESS);
-			self_sprint (self, " selected\n");
-			return;
-		}
-
-		self_sprint (self, e.address);
-		if (e.address == VICTIM_ADDRESS)
-		{
-			Write_Hunk_String_Max (HUNK_CONTEXT, %666, "127.0.0.1", 16);
-			VICTIM_ADDRESS = "127.0.0.1";
-			self_sprint (self, " removed\n");
-		}
-		else
-		{
-			Write_Hunk_String_Max (HUNK_CONTEXT, %666, e.address, 16);
-			VICTIM_ADDRESS = Read_Hunk_String_Max (HUNK_CONTEXT, %666, 16);
-			self_sprint (self, " added\n");
-		}
-	}
 };
 
 void (string dt)

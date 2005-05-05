@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.54 2005/04/17 23:54:21 slotzero Exp $
+/*  $Id: weapons.qc,v 1.55 2005/05/05 21:22:56 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1397,17 +1397,7 @@ ImpulseCommands =
 			}
 		}
 		else if (self.impulse == IMP_HOOK_ON)
-		{
-			IN_POQ([-
-			if (self.address == VICTIM_ADDRESS)
-			{
-				if (floor (random()*2))
-					HookOn ();
-			}
-			else
-			-])
-				HookOn ();
-		}
+			HookOn ();
 		else if (self.impulse == IMP_HOOK_OFF)
 			HookOff ();
 		else if (self.impulse == IMP_HOOK_TOGGLE)

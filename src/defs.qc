@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.159 2005/05/04 01:33:38 slotzero Exp $
+/*  $Id: defs.qc,v 1.160 2005/05/05 21:22:56 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1484,8 +1484,6 @@ void	(vector where, float set)		multicast	= #82; // sends the temp message to a 
 .float	drop_hook;
 
 entity	last_teleport;
-
-string	VICTIM_ADDRESS;
 
 float	LAST_VOTE_IMPULSE;
 string	LAST_VOTE_LEVEL;

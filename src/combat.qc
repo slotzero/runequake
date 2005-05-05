@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.41 2005/04/30 20:03:38 slotzero Exp $
+/*  $Id: combat.qc,v 1.42 2005/05/05 21:22:56 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -231,11 +231,6 @@ T_Damage =
 
 	if (targ.runetype)
 	{
-		IN_POQ([-
-		if (targ.address == VICTIM_ADDRESS && attacker != targ)
-			damage = damage * 1.5;
-		-])
-
 		if (targ.runetype == RN_ATHLETE)
 			damage = damage * 0.9;
 
