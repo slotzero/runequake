@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.13 2005/05/05 22:56:45 slotzero Exp $
+/*  $Id: match.qc,v 1.14 2005/05/05 23:49:45 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -140,10 +140,35 @@ maybe_remove_team =
 	return FALSE;
 };
 
+void ()
+match_count_up =
+{
+	local float minutes, seconds;
+
+	seconds = floor (self.count - time);
+	seconds = seconds - (seconds * 2);
+
+	if (seconds)
+	{
+		pqc_match_time (world, 0, seconds);
+		self.nextthink = time + 1;
+	}
+	else
+	{
+		match.state = 1;
+		match.count = time + 20;
+		pqc_match_time (world, 20, 0);
+		WriteByte(MSG_ALL, 8);
+		WriteString(MSG_ALL, "20 minutes remaining\n");
+		remove (self);
+	}
+};
+
 // return 1 (player can commit), return 0 (player can't join, reset is color)
 float ()
 match_obs_join_game =
 {
+	local entity e;
 	local float bit;
 	local string s;
 
@@ -174,7 +199,20 @@ match_obs_join_game =
 	if (TEAMS_PRESENT == bit)
 		bprint ("only one team present\n");
 	else
-		bprint ("match begins in 1 minute\n");
+	{
+		e = find (world, classname, "match_count_up");
+		if (!e)
+		{
+			e		= spawn ();
+			e.classname	= "match_count_up";
+			e.count		= time + 60;
+			e.think		= match_count_up;
+			e.nextthink	= time + 1;
+
+			bprint ("match begins in 1 minute\n");
+			pqc_match_time (world, 0, -59);
+		}
+	}
 
 	self.frags = 0;
 
