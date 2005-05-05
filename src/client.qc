@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.101 2005/05/05 02:01:56 slotzero Exp $
+/*  $Id: client.qc,v 1.102 2005/05/05 04:04:20 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1996,8 +1996,9 @@ ClientDisconnect =
 	qsmack_status_valid = 0;
 
 	if (mode_arena ())
-		//i =
 		arena_client_disconnect ();
+
+	i = !self.cl[CL_ACTIVE] / %1;
 
 	// Don't print the disconnect message for players forwarding or
 	// think()ing about forwarding.

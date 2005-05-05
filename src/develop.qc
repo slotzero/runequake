@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.98 2005/04/29 21:31:51 slotzero Exp $
+/*  $Id: develop.qc,v 1.99 2005/05/05 04:04:20 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -46,9 +46,9 @@ ghost_check =
 	{
 		if (!e.cl[CL_ACTIVE])
 		{
+			dprint ("Ghost player removed\n");
 			os = self;
 			self = e;
-			bprint ("Ghost Player");
 			ClientDisconnect ();
 			self = os;
 		}
