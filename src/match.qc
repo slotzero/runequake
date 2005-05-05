@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.10 2005/05/03 22:41:10 slotzero Exp $
+/*  $Id: match.qc,v 1.11 2005/05/05 02:01:56 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -73,9 +73,15 @@ match_pre_think =
 void ()
 reset_colors =
 {
-	self_stuffcmd (self.owner, "color 1\n");
-	self_stuffcmd (self.owner, "color 0\n");
-	self.owner.frags = -99;
+	if (is_observer_e (self.owner) || self.runevar)
+	{
+		if (self.runevar)
+			self_stuffcmd (self.owner, "color 1\n");
+
+		self_stuffcmd (self.owner, "color 0\n");
+		self.owner.frags = -99;
+	}
+
 	remove (self);
 };
 
@@ -85,6 +91,7 @@ match_obs_become =
 	local entity e;
 
 	e		= spawn ();
+	e.runevar	= !tell_type;
 	e.owner		= self;
 	e.think		= reset_colors;
 	e.nextthink	= time + 1;

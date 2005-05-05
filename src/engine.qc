@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.26 2005/05/01 03:01:15 slotzero Exp $
+/*  $Id: engine.qc,v 1.27 2005/05/05 02:01:56 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -332,8 +332,8 @@ pqc_new_team =
 	WriteByte (MSG_ALL, SVC_STUFFTEXT);
 	WriteByte (MSG_ALL, 1);
 	WriteByte (MSG_ALL, PQC_NEW_TEAM);
-	WriteByte (MSG_ALL, 16 + shirt);
 	WriteByte (MSG_ALL, 16 + pants);
+	WriteByte (MSG_ALL, 16 + shirt);
 	WriteString (MSG_ALL, string_null);
 };
 

@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.100 2005/05/04 01:38:38 slotzero Exp $
+/*  $Id: client.qc,v 1.101 2005/05/05 02:01:56 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -106,8 +106,6 @@ SetChangeParms =
 
 	persistent_parms ();
 	parm11 = parm11 | (self.aqflags & AQ_HOOK);
-	if (mode_match ())
-		parm11 = parm11 | AQ_OBSERVER;
 };
 
 // SetNewParms() is called both by me and by the game.  It's called by
@@ -819,7 +817,15 @@ PutClientInServer =
 		spawn_as_observer = 1;
 	else
 	{
-		if (mode_arena ())
+		if (mode_match ())
+		{
+			if (!self.lefty)
+			{
+				self.lefty = time;
+				spawn_as_observer = 1;
+			}
+		}
+		else if (mode_arena ())
 		{
 			self.takedamage = DAMAGE_NO;
 			if (put_client_in_arena ())
