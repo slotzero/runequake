@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.12 2005/05/05 02:58:40 slotzero Exp $
+/*  $Id: match.qc,v 1.13 2005/05/05 22:56:45 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -78,7 +78,10 @@ reset_colors =
 	if (is_observer_e (self.owner) || self.runevar)
 	{
 		if (self.runevar)
+		{
+			pqc_match_time (self.owner, 255, 0);
 			self_stuffcmd (self.owner, "color 1\n");
+		}
 
 		self_stuffcmd (self.owner, "color 0\n");
 		self.owner.frags = -99;
@@ -101,7 +104,7 @@ match_obs_become =
 	if (tell_type)
 		e.nextthink	= time;
 	else
-		e.nextthink	= time + 1;
+		e.nextthink	= time + 0.1;
 
 	if (tell_type)
 	{
