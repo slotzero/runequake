@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#    $Id: map,v 1.29 2005/04/23 07:43:10 slotzero Exp $
+#    $Id: map,v 1.30 2005/05/05 02:58:40 slotzero Exp $
 
 use strict;
 use warnings;
@@ -556,6 +556,7 @@ print "void (entity e, float f)\n";
 print "add_frag =\n";
 print "{\n";
 print "\tif (deathmatch & DM_DAMAGE_MATCH && !damage_match_hack) return;\n";
+print "\tif (mode_match ()) if (!match.state) return;\n";
 print "\tif (e.runetype == RN_PACK_RAT && f > 0 && !deathmatch & DM_DAMAGE_MATCH) f = f + f * pack_rat_frag_bonus_e (e);\n";
 print "\te.frags = e.frags + f;\n";
 print "\te.recent_frags = e.recent_frags + f;\n";

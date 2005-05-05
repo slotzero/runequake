@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.11 2005/05/05 02:01:56 slotzero Exp $
+/*  $Id: match.qc,v 1.12 2005/05/05 02:58:40 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -16,6 +16,8 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
+
+float TEAMS_PRESENT;
 
 float ()
 mode_match =
@@ -89,20 +91,29 @@ void (float tell_type)
 match_obs_become =
 {
 	local entity e;
+	local float bit;
 
 	e		= spawn ();
 	e.runevar	= !tell_type;
 	e.owner		= self;
 	e.think		= reset_colors;
-	e.nextthink	= time + 1;
+
+	if (tell_type)
+		e.nextthink	= time;
+	else
+		e.nextthink	= time + 1;
 
 	if (tell_type)
 	{
 		bprint (self.netname);
 		bprint (" is not ready\n");
+	}
 
-		if (!maybe_remove_team (self))
-			pqc_erase_team (self.team - 1);
+	if (!maybe_remove_team (self))
+	{
+		bit = num_to_bit (self.team);
+		TEAMS_PRESENT = TEAMS_PRESENT - TEAMS_PRESENT & bit;
+		pqc_erase_team (self.team - 1);
 	}
 };
 
@@ -130,6 +141,7 @@ maybe_remove_team =
 float ()
 match_obs_join_game =
 {
+	local float bit;
 	local string s;
 
 	if (self.team == 1)
@@ -138,17 +150,30 @@ match_obs_join_game =
 		return FALSE;
 	}
 
+	// copy colors
+	self.team_colors = self.cl[CL_COLORS];
+
+	bit = num_to_bit (self.team);
+	s = team_to_name (self.team);
+	if (!TEAMS_PRESENT & bit)
+	{
+		bprint (s);
+		bprint (" team created\n");
+		TEAMS_PRESENT = TEAMS_PRESENT | bit;
+		pqc_new_team (self.cl[CL_COLORS] / %1);
+	}
+
 	bprint (self.netname);
 	bprint (" joined the ");
-	s = team_to_name (self.team);
 	bprint (s);
 	bprint ("\n");
 
+	if (TEAMS_PRESENT == bit)
+		bprint ("only one team present\n");
+	else
+		bprint ("match begins in 1 minute\n");
+
 	self.frags = 0;
-
-	self.team_colors = self.cl[CL_COLORS];
-
-	pqc_new_team (self.cl[CL_COLORS] / %1);
 
 	return TRUE;
 };
