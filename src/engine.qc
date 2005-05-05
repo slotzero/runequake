@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.27 2005/05/05 02:01:56 slotzero Exp $
+/*  $Id: engine.qc,v 1.28 2005/05/05 22:39:02 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -320,6 +320,21 @@ WriteShortPQ =
 	WriteByte (to, 16 + f);	// x 1
 };
 
+void (float to, float f)
+WriteBytePQ =
+{	IN_QW(return;)
+	local float i;
+
+	if (f < 0)
+		f = fabs (f) + 128;
+
+	i = floor (f / 16);
+	f = f - (i * 16);
+	WriteByte (to, 16 + i);	// x 16
+
+	WriteByte (to, 16 + f);	// x 1
+};
+
 void (float cl_colors)
 pqc_new_team =
 {	IN_QW(return;)
@@ -365,6 +380,27 @@ pqc_team_frags =
 	WriteByte (msg_type, PQC_TEAM_FRAGS);
 	WriteByte (msg_type, 15 + tm);	//team
 	WriteShortPQ (msg_type, tf);	//frags
+	WriteString (msg_type, string_null);
+};
+
+void (entity e, float m, float s)
+pqc_match_time =
+{	IN_QW(return;)
+	local float msg_type;
+
+	if (e == world)
+		msg_type = MSG_ALL;
+	else
+	{
+		msg_entity = e;
+		msg_type = MSG_ONE;
+	}
+
+	WriteByte (msg_type, SVC_STUFFTEXT);
+	WriteByte (msg_type, 1);
+	WriteByte (msg_type, PQC_MATCH_TIME);
+	WriteBytePQ (msg_type, m);
+	WriteBytePQ (msg_type, s);
 	WriteString (msg_type, string_null);
 };
 
