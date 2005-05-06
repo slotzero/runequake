@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.28 2005/05/05 22:39:02 slotzero Exp $
+/*  $Id: engine.qc,v 1.29 2005/05/06 23:27:53 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -335,21 +335,29 @@ WriteBytePQ =
 	WriteByte (to, 16 + f);	// x 1
 };
 
-void (float cl_colors)
+void (entity e, float cl_colors)
 pqc_new_team =
 {	IN_QW(return;)
-	local float i, shirt, pants;
+	local float i, shirt, pants, msg_type;
+
+	if (e == world)
+		msg_type = MSG_ALL;
+	else
+	{
+		msg_entity = e;
+		msg_type = MSG_ONE;
+	}
 
 	shirt = i = floor (cl_colors / 16);
 	i = i * 16;
 	pants = cl_colors - i;
 
-	WriteByte (MSG_ALL, SVC_STUFFTEXT);
-	WriteByte (MSG_ALL, 1);
-	WriteByte (MSG_ALL, PQC_NEW_TEAM);
-	WriteByte (MSG_ALL, 16 + pants);
-	WriteByte (MSG_ALL, 16 + shirt);
-	WriteString (MSG_ALL, string_null);
+	WriteByte (msg_type, SVC_STUFFTEXT);
+	WriteByte (msg_type, 1);
+	WriteByte (msg_type, PQC_NEW_TEAM);
+	WriteByte (msg_type, 16 + pants);
+	WriteByte (msg_type, 16 + shirt);
+	WriteString (msg_type, string_null);
 };
 
 void (float tm)

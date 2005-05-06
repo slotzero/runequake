@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.100 2005/05/05 04:24:16 slotzero Exp $
+/*  $Id: develop.qc,v 1.101 2005/05/06 23:27:53 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -168,6 +168,63 @@ num_to_bit =
 	else			return 0;
 };
 
+float (float bits)
+bits_in_bits =
+{
+	local float n;
+
+	if (bits & 1)
+		n = n + 1;
+	if (bits & 2)
+		n = n + 1;
+	if (bits & 4)
+		n = n + 1;
+	if (bits & 8)
+		n = n + 1;
+	if (bits & 16)
+		n = n + 1;
+	if (bits & 32)
+		n = n + 1;
+	if (bits & 64)
+		n = n + 1;
+	if (bits & 128)
+		n = n + 1;
+	if (bits & 256)
+		n = n + 1;
+	if (bits & 512)
+		n = n + 1;
+	if (bits & 1024)
+		n = n + 1;
+	if (bits & 2048)
+		n = n + 1;
+	if (bits & 4096)
+		n = n + 1;
+	if (bits & 8192)
+		n = n + 1;
+	if (bits & 16384)
+		n = n + 1;
+	if (bits & 32768)
+		n = n + 1;
+	if (bits & 65536)
+		n = n + 1;
+	if (bits & 131072)
+		n = n + 1;
+	if (bits & 262144)
+		n = n + 1;
+	if (bits & 524288)
+		n = n + 1;
+	if (bits & 1048576)
+		n = n + 1;
+	if (bits & 2097152)
+		n = n + 1;
+	if (bits & 4194304)
+		n = n + 1;
+	if (bits & 8388608)
+		n = n + 1;
+
+	return n;
+};
+
 void (entity client)
 teamscores_on =
 {	IN_QW(return;)
@@ -257,17 +314,20 @@ teamscores_off =
 	}
 };
 
-float (entity e, float high)
-client_colors =
+float (float cl_colors)
+cl_colors_to_shirt =
+{
+	return floor (cl_colors / %1 / 16);
+};
+
+float (float cl_colors)
+cl_colors_to_pants =
 {
 	local float shirt;
 
-	shirt = floor (e.cl[CL_COLORS] / %1 / 16);
-	if (high)
-		return shirt;
-
+	shirt = floor (cl_colors / %1 / 16);
 	shirt = shirt * 16;
-	return e.cl[CL_COLORS] / %1 - shirt;
+	return cl_colors / %1 - shirt;
 };
 
 void ()
