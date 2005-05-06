@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.102 2005/05/05 04:04:20 slotzero Exp $
+/*  $Id: client.qc,v 1.103 2005/05/06 23:58:46 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -385,7 +385,7 @@ IntermissionThink =
 	if (time < intermission_exittime)
 		return;
 
-	if (self.button0 || self.button1 || self.button2)
+	if (self.button0 || self.button2)
 		ExitIntermission ();
 };
 
@@ -1176,10 +1176,22 @@ PlayerDeathThink =
 	// wait for all buttons released
 	if (self.deadflag == DEAD_DEAD)
 	{
-		if (self.button2 || self.button1 || self.button0)
+		if (self.button2 || self.button0)
 			return;
 		self.deadflag = DEAD_RESPAWNABLE;
 		return;
+	}
+
+	if (mode_match ())
+	{
+		if (!match.state)
+			self.button1 = 0;
+
+		if (self.button1 < time)
+		{
+			respawn ();
+			return;
+		}
 	}
 
 	// Prevent phoenix holders from firing.
@@ -1187,19 +1199,18 @@ PlayerDeathThink =
 		IN_QW(&& !OLD_STYLE_PHOENIX)
 			)
 	{
-		if ((!self.button2 && !self.button1) || self.aqflags & AQ_KICKED)
+		if (!self.button2 || self.aqflags & AQ_KICKED)
 			return;
 	}
 	else
 	{
 		// wait for any button down
-		if ((!self.button2 && !self.button1 && !self.button0)
+		if ((!self.button2 && !self.button0)
 			|| self.aqflags & AQ_KICKED)
 		return;
 	}
 
 	self.button0 = 0;
-	self.button1 = 0;
 	self.button2 = 0;
 
 	respawn ();
@@ -1997,6 +2008,12 @@ ClientDisconnect =
 
 	if (mode_arena ())
 		arena_client_disconnect ();
+
+	if (mode_match ())
+	{
+		if (maybe_remove_team (self))
+			remove_team (self.team);
+	}
 
 	i = !self.cl[CL_ACTIVE] / %1;
 
