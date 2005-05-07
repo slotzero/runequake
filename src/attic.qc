@@ -1,4 +1,4 @@
-/*  $Id: attic.qc,v 1.7 2004/07/05 07:55:47 slotzero Exp $
+/*  $Id: attic.qc,v 1.8 2005/05/07 06:15:38 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -392,4 +392,77 @@ QuadCheat =
 	self.super_damage_finished = time + 30;
 	self.items = self.items | IT_QUAD;
 	dprint ("quad cheat\n");
+};
+
+float (float bits)
+bits_in_bits =
+{
+	local float n;
+
+	if (bits & 1)
+		n = n + 1;
+	if (bits & 2)
+		n = n + 1;
+	if (bits & 4)
+		n = n + 1;
+	if (bits & 8)
+		n = n + 1;
+	if (bits & 16)
+		n = n + 1;
+	if (bits & 32)
+		n = n + 1;
+	if (bits & 64)
+		n = n + 1;
+	if (bits & 128)
+		n = n + 1;
+	if (bits & 256)
+		n = n + 1;
+	if (bits & 512)
+		n = n + 1;
+	if (bits & 1024)
+		n = n + 1;
+	if (bits & 2048)
+		n = n + 1;
+	if (bits & 4096)
+		n = n + 1;
+	if (bits & 8192)
+		n = n + 1;
+	if (bits & 16384)
+		n = n + 1;
+	if (bits & 32768)
+		n = n + 1;
+	if (bits & 65536)
+		n = n + 1;
+	if (bits & 131072)
+		n = n + 1;
+	if (bits & 262144)
+		n = n + 1;
+	if (bits & 524288)
+		n = n + 1;
+	if (bits & 1048576)
+		n = n + 1;
+	if (bits & 2097152)
+		n = n + 1;
+	if (bits & 4194304)
+		n = n + 1;
+	if (bits & 8388608)
+		n = n + 1;
+
+	return n;
+};
+
+float (float cl_colors)
+cl_colors_to_shirt =
+{
+	return floor (cl_colors / %1 / 16);
+};
+
+float (float cl_colors)
+cl_colors_to_pants =
+{
+	local float shirt;
+
+	shirt = floor (cl_colors / %1 / 16);
+	shirt = shirt * 16;
+	return cl_colors / %1 - shirt;
 };
