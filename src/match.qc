@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.15 2005/05/06 23:27:53 slotzero Exp $
+/*  $Id: match.qc,v 1.16 2005/05/07 01:32:23 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -213,7 +213,7 @@ match_obs_become =
 void ()
 match_count_up =
 {
-	local float minutes, seconds;
+	local float i, minutes, seconds;
 
 	if (self.count < 0)
 	{
@@ -228,9 +228,36 @@ match_count_up =
 	{
 		pqc_match_time (world, 0, seconds);
 		self.nextthink = time + 1;
+
+		i = fabs (seconds);
+		if (i == 11)
+			bprint ("match begins in T minus\n");
+		else if (i < 11)
+		{
+			bprint ("  ");
+			bprint_float (i);
+			if (i == 1)
+				bprint (" second\n");
+			else
+				bprint (" seconds\n");
+
+		}
 	}
 	else
 	{
+		local entity e, os;
+		e = find (world, classname, "player");
+		while (e)
+		{
+			if (!is_observer_e (e))
+			{
+				os = self;
+				self = e;
+				Killed (self, self, string_null);
+				self = os;
+			}
+			e = find (e, classname, "player");
+		}
 		match.state = 1;
 		match.count = time + 20;
 		pqc_match_time (world, 20, 0);
@@ -288,12 +315,12 @@ match_obs_join_game =
 		{
 			e		= spawn ();
 			e.classname	= "match_count_up";
-			e.count		= time + 60;
+			e.count		= time + 20;
 			e.think		= match_count_up;
 			e.nextthink	= time + 1;
 
 			bprint ("match begins in 1 minute\n");
-			pqc_match_time (world, 0, -59);
+			pqc_match_time (world, 0, -20);
 		}
 	}
 
