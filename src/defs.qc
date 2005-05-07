@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.160 2005/05/05 21:22:56 slotzero Exp $
+/*  $Id: defs.qc,v 1.161 2005/05/07 06:10:30 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -600,8 +600,7 @@ float IMP_VOTE_SHIELDS		= 16;
 float IMP_VOTE_HOOK_DAMAGE	= 17;
 float IMP_VOTE_ARENA		= 18;
 float IMP_VOTE_MEGA		= 19;
-float IMP_VOTE_MIDAIR		= 20;
-float IMP_VOTE_WEAPONS_STAY	= 21;
+float IMP_VOTE_WEAPONS_STAY	= 20;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;
@@ -619,7 +618,6 @@ float DM_DAMAGE_MATCH		= 2048;
 float DM_RANDOM_POWERUP_RESPAWN	= 4096;
 float DM_MODE_PRACTICE		= 8192;
 float DM_MODE_ROCKET_ARENA	= 16384;
-float DM_MODE_MIDAIR		= 32768;
 
 // This mask includes the DM_* bits which indicates that the game is in
 // an actual deathmatch mode.  Bits other than these make sense in
@@ -1489,8 +1487,5 @@ float	LAST_VOTE_IMPULSE;
 string	LAST_VOTE_LEVEL;
 
 entity	arena;
-entity	match;
-
-.float	team_colors;	// int
 
 .vector	subnet;

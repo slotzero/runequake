@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.57 2005/05/07 05:54:48 slotzero Exp $
+/*  $Id: team.qc,v 1.58 2005/05/07 06:10:31 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -715,8 +715,6 @@ change_mode_to_normal =
 		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_PRACTICE;
 	if (new_deathmatch & DM_MODE_ROCKET_ARENA)
 		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_ROCKET_ARENA;
-	if (new_deathmatch & DM_MODE_MIDAIR)
-		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_MIDAIR;
 
 	if (new_deathmatch == deathmatch)
 	{
@@ -745,15 +743,6 @@ float ()
 mode_practice =
 {
 	if (deathmatch & DM_MODE_PRACTICE)
-		return TRUE;
-
-	return FALSE;
-};
-
-float ()
-mode_midair =
-{
-	if (deathmatch & DM_MODE_MIDAIR)
 		return TRUE;
 
 	return FALSE;

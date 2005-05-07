@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.42 2005/05/05 21:22:56 slotzero Exp $
+/*  $Id: combat.qc,v 1.43 2005/05/07 06:10:30 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -167,13 +167,8 @@ T_Damage =
 	local vector dir;
 	local float save, take, real_take;
 
-	// midair
-	local float midair, player_height, safe_height;
-
 	if (!targ.takedamage)
 		return 0;
-
-	midair = mode_midair ();
 
 	// used by buttons and triggers to set activator for target firing
 	damage_attacker = attacker;
@@ -318,20 +313,6 @@ T_Damage =
 		}
 	}
 
-	if (mode_midair ())
-	{
-		traceline (targ.origin, targ.origin - '0 0 2048', TRUE, targ);
-		player_height = targ.absmin_z - trace_endpos_z;
-
-		if (player_height < 42.5 || targ.flags & FL_ONGROUND)
-			safe_height = TRUE;
-		else
-		{
-			damage = damage * floor (1 + (player_height - 42.5) / 128);
-			safe_height = FALSE;
-		}
-	}
-
 	// debug
 	/* if (0)
 	{
@@ -363,12 +344,6 @@ T_Damage =
 		else
 			targ.velocity = targ.velocity + dir * damage * 8;
 
-		if (midair)
-		{
-			if (safe_height)
-				targ.velocity_z = targ.velocity_z + dir_z * damage * 12;
-		}
-
 		IN_QW([-
 			// Rocket Jump modifiers
 			if (rj > 1 && targ == attacker)
@@ -387,12 +362,6 @@ T_Damage =
 	if (mode_arena ())
 	{
 		if (arena.state == -2)
-			damage = 0;
-	}
-
-	if (midair)
-	{
-		if (safe_height && dtype != "axe")
 			damage = 0;
 	}
 

@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.103 2005/05/06 23:58:46 slotzero Exp $
+/*  $Id: client.qc,v 1.104 2005/05/07 06:10:30 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -163,36 +163,8 @@ SetPracticeParms =
 };
 
 void ()
-SetMidairParms =
-{
-	self.items		= IT_AXE | IT_ROCKET_LAUNCHER | IT_ARMOR3;
-	self.health		= MAX_HEALTH_MIDAIR;
-	self.armorvalue		= MAX_ARMOR_3;
-	self.ammo_shells	= 0;
-	self.ammo_nails		= 0;
-	self.ammo_rockets	= 100;
-	self.ammo_cells		= 0;
-
-	// Setting self.weapon is necessary because you retain your
-	// weapon setting across deaths.  If you die with the single
-	// shotgun set_weapon() won't do anything when this tries to set
-	// your weapon because it thinks you're already wielding that.
-	self.weapon		= 0;
-
-	set_weapon (IT_ROCKET_LAUNCHER);
-
-	self.armortype		= ARMOR_TYPE_3;
-};
-
-void ()
 SetArenaParms =
 {
-	if (mode_midair ())
-	{
-		SetMidairParms ();
-		return;
-	}
-
 	self.items		= IT_AXE | IT_SHOTGUN | IT_SUPER_SHOTGUN | IT_NAILGUN | IT_SUPER_NAILGUN
 						| IT_GRENADE_LAUNCHER | IT_ROCKET_LAUNCHER | IT_LIGHTNING
 						| IT_ARMOR3;
@@ -218,9 +190,7 @@ SetArenaParms =
 void ()
 DecodeLevelParms =
 {
-	if (mode_midair ())
-		SetMidairParms ();
-	else if (mode_arena ())
+	if (mode_arena ())
 		SetArenaParms ();
 	else if (mode_practice ())
 		SetPracticeParms ();
@@ -817,15 +787,7 @@ PutClientInServer =
 		spawn_as_observer = 1;
 	else
 	{
-		if (mode_match ())
-		{
-			if (!self.lefty)
-			{
-				self.lefty = time;
-				spawn_as_observer = 1;
-			}
-		}
-		else if (mode_arena ())
+		if (mode_arena ())
 		{
 			self.takedamage = DAMAGE_NO;
 			if (put_client_in_arena ())
@@ -1182,18 +1144,6 @@ PlayerDeathThink =
 		return;
 	}
 
-	if (mode_match ())
-	{
-		if (!match.state)
-			self.button1 = 0;
-
-		if (self.button1 < time)
-		{
-			respawn ();
-			return;
-		}
-	}
-
 	// Prevent phoenix holders from firing.
 	if (self.runetype == RN_PHOENIX
 		IN_QW(&& !OLD_STYLE_PHOENIX)
@@ -1546,9 +1496,7 @@ PlayerPreThink =
 	}
 
 	// Enforce teams if appropriate
-	if (mode_match ())
-		match_pre_think ();
-	else if (teamplay & TEAM_TEAM_MASK)
+	if (teamplay & TEAM_TEAM_MASK)
 	{
 		if (!is_correct_team ())	// no short circuiting!
 		{
@@ -2008,12 +1956,6 @@ ClientDisconnect =
 
 	if (mode_arena ())
 		arena_client_disconnect ();
-
-	if (mode_match ())
-	{
-		if (maybe_remove_team (self))
-			remove_team (self.team);
-	}
 
 	i = !self.cl[CL_ACTIVE] / %1;
 

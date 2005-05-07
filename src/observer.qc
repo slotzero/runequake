@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.56 2005/05/03 22:41:10 slotzero Exp $
+/*  $Id: observer.qc,v 1.57 2005/05/07 06:10:31 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -611,8 +611,6 @@ obs_become =
 	// observer mode.
 	set_viewport (self);
 
-	if (mode_match ())
-		match_obs_become (tell_type);
 	if (enforced_teams ())
 		assign_teams (self);
 
@@ -812,19 +810,10 @@ game_queue_len =
 void (float force)
 obs_join_game =
 {
-	local float maxp, i, ra, mm;
+	local float maxp, i, ra;
 	local string s1, s2, sx;
 
 	ra = mode_arena ();
-	mm = mode_match ();
-
-	if (mm)
-	{
-		if (match_obs_join_game ())
-			force = 1;
-		else
-			return;
-	}
 
 	if (!force && self.runevar)
 	{
@@ -916,7 +905,7 @@ obs_join_game =
 	persistent_parms ();
 	PutClientInServer ();
 
-	if (!ra && !mm)
+	if (!ra)
 	{
 		bprint (self.netname);
 		bprint (" joined the game\n");

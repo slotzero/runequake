@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.19 2005/05/01 23:23:17 slotzero Exp $
+/*  $Id: toggle.qc,v 1.20 2005/05/07 06:10:31 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -224,24 +224,6 @@ setmega =
 {
 	toggle_health ("item_health", 2, NO_MEGA);
 	NO_MEGA = fput (HUNK_NO_MEGA, !NO_MEGA);
-};
-
-void ()
-toggle_mode_midair =
-{
-	local float new_deathmatch;
-	local string s;
-
-	new_deathmatch = cvar ("deathmatch");
-
-	if (new_deathmatch & DM_MODE_MIDAIR)
-		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_MIDAIR;
-	else
-		new_deathmatch = new_deathmatch | DM_MODE_MIDAIR;
-
-	s = ftos (new_deathmatch);
-	deathmatch = new_deathmatch;
-	cvar_set ("deathmatch", s);
 };
 
 void ()
