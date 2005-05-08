@@ -1,4 +1,4 @@
-/*  $Id: ai.qc,v 1.13 2004/12/11 23:11:59 slotzero Exp $
+/*  $Id: ai.qc,v 1.14 2005/05/08 08:24:59 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -254,8 +254,6 @@ SightSound =
 		snd = "hknight/sight1.wav";
 	else if (self.classname == "monster_tarbaby")
 		snd = "blob/sight1.wav";
-	else if (self.classname == "monster_vomit")
-		snd = "vomitus/v_sight1.wav";
 	else if (self.classname == "monster_enforcer")
 	{
 		rsnd = rint (random () * 4);
@@ -453,11 +451,6 @@ ai_walk =
 {
 	movedist = dist;
 
-	if (self.classname == "monster_dragon")
-	{
-		movetogoal (dist);
-		return;
-	}
 	// check for noticing a player
 	if (FindTarget ())
 		return;

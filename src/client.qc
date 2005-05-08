@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.105 2005/05/08 08:17:47 slotzero Exp $
+/*  $Id: client.qc,v 1.106 2005/05/08 08:24:59 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -2502,8 +2502,6 @@ ClientObituary =
 			bprint (" was eviscerated by a Fiend\n");
 		else if (attacker.classname == "monster_dog")
 			bprint (" was mauled by a Rottweiler\n");
-		else if (attacker.classname == "monster_dragon")
-			bprint (" was fried by a Dragon\n");
 		else if (attacker.classname == "monster_enforcer")
 			bprint (" was blasted by an Enforcer\n");
 		else if (attacker.classname == "monster_fish")
@@ -2522,8 +2520,6 @@ ClientObituary =
 			bprint (" was smashed by a Shambler\n");
 		else if (attacker.classname == "monster_tarbaby")
 			bprint (" was slimed by a Spawn\n");
-		else if (attacker.classname == "monster_vomit")
-			bprint (" was vomited on by a Vomitus\n");
 		else if (attacker.classname == "monster_wizard")
 			bprint (" was scragged by a Scrag\n");
 		else if (attacker.classname == "monster_zombie")
