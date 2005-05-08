@@ -1,4 +1,4 @@
-/*  $Id: shambler.qc,v 1.12 2003/10/05 02:55:23 slotzero Exp $
+/*  $Id: shambler.qc,v 1.13 2005/05/08 03:12:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -316,17 +316,15 @@ void ()	sham_pain4	= [$pain4,	sham_pain5]	{};
 void ()	sham_pain5	= [$pain5,	sham_pain6]	{};
 void ()	sham_pain6	= [$pain6,	sham_run1]	{};
 
-void (entity attacker, float damage)
+void (float damage)
 sham_pain =
 {
-	if (0) attacker = attacker;	// prevent frikqcc compiler warning
-
 	sound (self, CHAN_VOICE, "shambler/shurt2.wav", 1, ATTN_NORM);
 
 	if (self.health <= 0)
 		return;		// already dying, don't go into pain frame
 
-	if (random ()*400 > damage)
+	if (random () * 400 > damage)
 		return;		// didn't flinch
 
 	if (self.pain_finished > time)
