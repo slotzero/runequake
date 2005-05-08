@@ -1,4 +1,4 @@
-/*  $Id: misc.qc,v 1.22 2004/12/30 01:21:27 slotzero Exp $
+/*  $Id: misc.qc,v 1.23 2005/05/08 22:08:32 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -106,13 +106,11 @@ respawn_barrel =
 };
 
 void ()
-barrel_explode =
+barrel_explode_real =
 {
 	self.takedamage = DAMAGE_NO;
 
-	// I've modified Killed() so it sets other to the attacker which
-	// exploded me.
-	T_RadiusDamage (RADIUS_NORMAL, self, other, 160, world, "barrel");
+	T_RadiusDamage (RADIUS_NORMAL, self, self.oldenemy, 160, world, "barrel");
 
 	if (deathmatch & DM_DM_MASK && BARREL_RESPAWN_TIME > 0)
 	{
@@ -132,6 +130,16 @@ barrel_explode =
 	-])
 	self.origin_z = self.origin_z + 32;
 	create_te_explosion (self.origin, 1);
+};
+
+void ()
+barrel_explode =
+{
+	// I've modified Killed() so it sets other to the attacker which
+	// exploded me.
+	self.oldenemy = other;
+	self.think = barrel_explode_real;
+	self.nextthink = time;
 };
 
 /*QUAKED misc_explobox (0 .5 .8) (0 0 0) (32 32 64)
