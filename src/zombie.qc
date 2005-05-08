@@ -1,4 +1,4 @@
-/*  $Id: zombie.qc,v 1.13 2003/10/18 17:24:20 slotzero Exp $
+/*  $Id: zombie.qc,v 1.14 2005/05/08 08:17:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -72,8 +72,6 @@ float SPAWN_CRUCIFIED	= 1;
 float ZOMBIE_DEBUG	= 0;
 
 //=============================================================================
-
-.float inpain;
 
 // stand
 void ()	zombie_stand1	= [$stand1,	zombie_stand2]

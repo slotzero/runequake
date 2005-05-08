@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.104 2005/05/07 06:10:30 slotzero Exp $
+/*  $Id: client.qc,v 1.105 2005/05/08 08:17:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1228,8 +1228,6 @@ WaterMove
 
 ============
 */
-
-.float	dmgtime;
 
 void ()
 WaterMove =

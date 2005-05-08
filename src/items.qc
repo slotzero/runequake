@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.57 2005/04/27 02:02:42 slotzero Exp $
+/*  $Id: items.qc,v 1.58 2005/05/08 08:17:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -243,7 +243,7 @@ one point per second.
 
 float	H_ROTTEN	= 1;
 float	H_MEGA		= 2;
-.float	healamount, healtype;
+
 
 void (string it_model, string it_noise, float it_healamount, float it_healtype)
 health_set =
@@ -662,45 +662,6 @@ bound_other_ammo =
 	if (other.ammo_cells > MAX_CELLS)
 		other.ammo_cells = MAX_CELLS;
 };
-
-/* float (float w) RankForWeapon =
-{
-	if (w == IT_LIGHTNING)
-		return 1;
-	if (w == IT_ROCKET_LAUNCHER)
-		return 2;
-	if (w == IT_SUPER_NAILGUN)
-		return 3;
-	if (w == IT_GRENADE_LAUNCHER)
-		return 4;
-	if (w == IT_SUPER_SHOTGUN)
-		return 5;
-	if (w == IT_NAILGUN)
-		return 6;
-	return 7;
-};
-*/
-
-/*
-=============
-Deathmatch_Weapon
-
-Deathmatch weapon change rules for picking up a weapon
-
-.float		ammo_shells, ammo_nails, ammo_rockets, ammo_cells;
-=============
-*/
-/* void (float old, float new) Deathmatch_Weapon =
-{
-	local float or, nr;
-
-	// change self.weapon if desired
-	or = RankForWeapon (self.weapon);
-	nr = RankForWeapon (new);
-	if (nr < or)
-		set_weapon (new);
-};
-*/
 
 /*
 =============

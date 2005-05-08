@@ -1,4 +1,4 @@
-/*  $Id: attic.qc,v 1.8 2005/05/07 06:15:38 slotzero Exp $
+/*  $Id: attic.qc,v 1.9 2005/05/08 08:17:47 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -466,3 +466,42 @@ cl_colors_to_pants =
 	shirt = shirt * 16;
 	return cl_colors / %1 - shirt;
 };
+
+/* float (float w) RankForWeapon =
+{
+	if (w == IT_LIGHTNING)
+		return 1;
+	if (w == IT_ROCKET_LAUNCHER)
+		return 2;
+	if (w == IT_SUPER_NAILGUN)
+		return 3;
+	if (w == IT_GRENADE_LAUNCHER)
+		return 4;
+	if (w == IT_SUPER_SHOTGUN)
+		return 5;
+	if (w == IT_NAILGUN)
+		return 6;
+	return 7;
+};
+*/
+
+/*
+=============
+Deathmatch_Weapon
+
+Deathmatch weapon change rules for picking up a weapon
+
+.float		ammo_shells, ammo_nails, ammo_rockets, ammo_cells;
+=============
+*/
+/* void (float old, float new) Deathmatch_Weapon =
+{
+	local float or, nr;
+
+	// change self.weapon if desired
+	or = RankForWeapon (self.weapon);
+	nr = RankForWeapon (new);
+	if (nr < or)
+		set_weapon (new);
+};
+*/

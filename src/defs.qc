@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.161 2005/05/07 06:10:30 slotzero Exp $
+/*  $Id: defs.qc,v 1.162 2005/05/08 08:17:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1468,6 +1468,18 @@ string	(entity e, string key)			infokey		= #80; // get a key value (world = serv
 float	(string s)				stof		= #81; // convert string to float
 void	(vector where, float set)		multicast	= #82; // sends the temp message to a set
 -])
+
+//============================================================================
+
+// client.qc
+.float	dmgtime;
+
+// items.qc
+.float	healamount;
+.float	healtype;
+
+// zombie.qc
+.float	inpain;
 
 //============================================================================
 

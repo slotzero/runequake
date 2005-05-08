@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.55 2005/05/05 21:22:56 slotzero Exp $
+/*  $Id: weapons.qc,v 1.56 2005/05/08 08:17:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -857,7 +857,6 @@ W_FireSpikes =
 	smallkick ();
 };
 
-.float hit_z;
 void ()
 spike_touch =
 {
