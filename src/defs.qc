@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.162 2005/05/08 08:17:47 slotzero Exp $
+/*  $Id: defs.qc,v 1.163 2005/05/09 20:24:04 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1477,9 +1477,6 @@ void	(vector where, float set)		multicast	= #82; // sends the temp message to a 
 // items.qc
 .float	healamount;
 .float	healtype;
-
-// zombie.qc
-.float	inpain;
 
 //============================================================================
 

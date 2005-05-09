@@ -1,4 +1,4 @@
-/*  $Id: zombie.qc,v 1.14 2005/05/08 08:17:47 slotzero Exp $
+/*  $Id: zombie.qc,v 1.15 2005/05/09 20:24:05 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -156,7 +156,7 @@ void ()	zombie_run1	= [$run1,	zombie_run2]
 	else
 		ai_run (1);
 
-	self.inpain = 0;
+	self.dmgtime = 0;
 };
 void ()	zombie_run2	= [$run2,	zombie_run3]	{ ai_run (1); };
 void ()	zombie_run3	= [$run3,	zombie_run4]	{ ai_run (0); };
@@ -582,7 +582,7 @@ zombie_pain =
 	if (take < 9)
 		return;				// totally ignore
 
-	if (self.inpain == 2)
+	if (self.dmgtime == 2)
 		return;			// down on ground, so don't reset any counters
 
 	if (self.classname == "zombie_camper")
@@ -594,7 +594,7 @@ zombie_pain =
 		{
 			self.lip = 0;
 			self.height = 0;
-			self.inpain = 2;
+			self.dmgtime = 2;
 			zombie_paine1 ();
 		}
 		// This only triggers on small arms fire because rockets
@@ -603,7 +603,7 @@ zombie_pain =
 		else if (random () < 0.01)
 		{
 			self.height = 1;
-			self.inpain = 1;
+			self.dmgtime = 1;
 			r = random ();
 			if (r < 0.25)		zombie_paina1 ();
 			else if (r <  0.5)	zombie_painb1 ();
@@ -616,12 +616,12 @@ zombie_pain =
 	// go down immediately if a big enough hit
 	if (take >= 25)
 	{
-		self.inpain = 2;
+		self.dmgtime = 2;
 		zombie_paine1 ();
 		return;
 	}
 
-	if (self.inpain)
+	if (self.dmgtime)
 	{
 		// if hit again in next gre seconds while not in pain frames, definately drop
 		self.pain_finished = time + 3;
@@ -631,13 +631,13 @@ zombie_pain =
 	if (self.pain_finished > time)
 	{
 		// hit again, so drop down
-		self.inpain = 2;
+		self.dmgtime = 2;
 		zombie_paine1 ();
 		return;
 	}
 
 	// gp into one of the fast pain animations
-	self.inpain = 1;
+	self.dmgtime = 1;
 
 	r = random ();
 	if (r < 0.25)
