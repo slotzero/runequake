@@ -1,4 +1,5 @@
-/*  $Id: rjs.qc,v 1.184 2005/05/07 06:10:31 slotzero Exp $
+
+/*  $Id: rjs.qc,v 1.185 2005/05/10 19:28:57 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1717,8 +1718,6 @@ player_init =
 
 		sound (self, CHAN_BODY, "shalrath/sight.wav", 1, ATTN_NONE);
 	}
-
-	self_stuffcmd (self, "init\n");
 
 	if (intermission_running)
 	{

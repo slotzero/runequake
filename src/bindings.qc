@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.74 2005/05/07 06:10:30 slotzero Exp $
+/*  $Id: bindings.qc,v 1.75 2005/05/10 19:28:57 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -156,8 +156,9 @@ player_bindings_think =
 
 	if (self.runevar > 2)
 	{
-		remove (self);
+		self_stuffcmd (self.owner, "init\n");
 		self.owner.rqflags = self.owner.rqflags | RQ_BINDINGS_RECEIVED;
+		remove (self);
 	}
 	else
 	{
