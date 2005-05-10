@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.37 2005/05/04 01:44:51 slotzero Exp $
+/*  $Id: hunked.qc,v 1.38 2005/05/10 22:36:01 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -241,6 +241,9 @@ ban_check =
 {
 	local float i;
 	local vector hunk_ip;
+
+   	if (ip == VEC_ORIGIN)
+		return -1;
 
 	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
 	{
