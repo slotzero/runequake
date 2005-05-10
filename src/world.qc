@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.64 2005/05/04 01:33:38 slotzero Exp $
+/*  $Id: world.qc,v 1.65 2005/05/10 23:04:23 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -602,7 +602,7 @@ StartFrame =
 		}
 
 		else if (i == C2_BAN_ADD)
-		{
+		{	IN_QW(return;)
 			s = cvar_string ("skill", 1);
 			v = ip_to_vec (s);
 			if (v == VEC_ORIGIN)
@@ -612,7 +612,7 @@ StartFrame =
 		}
 
 		else if (i == C2_BAN_REMOVE)
-		{
+		{	IN_QW(return;)
 			s = cvar_string ("skill", 1);
 			v = ip_to_vec (s);
 			if (v == VEC_ORIGIN)
@@ -622,7 +622,9 @@ StartFrame =
 		}
 
 		else if (i == C2_BAN_LIST)
+		{	IN_QW(return;)
 			ban_list ();
+		}
 
 		else
 			dprint ("Unknown command\n");

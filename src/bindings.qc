@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.75 2005/05/10 19:28:57 slotzero Exp $
+/*  $Id: bindings.qc,v 1.76 2005/05/10 23:04:23 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -413,6 +413,8 @@ console_aliases =
 	level_aliases ();
 	custom_aliases ();
 	custom_maps ();
+
+	IN_QW(return;)
 
 	// prepare the hunk
 	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
