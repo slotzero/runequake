@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.18 2005/05/11 21:28:00 slotzero Exp $
+/*  $Id: match.qc,v 1.19 2005/05/11 21:35:36 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -16,3 +16,12 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
+
+float ()
+mode_match =
+{
+	if (deathmatch & TEAM_MODE_MATCH)
+		return TRUE;
+
+	return FALSE;
+};
