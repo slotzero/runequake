@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.106 2005/05/08 08:24:59 slotzero Exp $
+/*  $Id: client.qc,v 1.107 2005/05/11 21:58:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -787,7 +787,15 @@ PutClientInServer =
 		spawn_as_observer = 1;
 	else
 	{
-		if (mode_arena ())
+		if (mode_match ())
+		{
+			if (!self.lefty)
+			{
+				self.lefty = time;
+				spawn_as_observer = 1;
+			}
+		}
+		else if (mode_arena ())
 		{
 			self.takedamage = DAMAGE_NO;
 			if (put_client_in_arena ())

@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.19 2005/05/11 21:35:36 slotzero Exp $
+/*  $Id: match.qc,v 1.20 2005/05/11 21:58:48 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -20,8 +20,8 @@
 float ()
 mode_match =
 {
-	if (deathmatch & TEAM_MODE_MATCH)
-		return TRUE;
+	if (!teamplay & TEAM_MODE_MATCH)
+		return FALSE;
 
-	return FALSE;
+	return TRUE;
 };
