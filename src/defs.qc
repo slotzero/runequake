@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.163 2005/05/09 20:24:04 slotzero Exp $
+/*  $Id: defs.qc,v 1.164 2005/05/11 23:37:10 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1496,5 +1496,6 @@ float	LAST_VOTE_IMPULSE;
 string	LAST_VOTE_LEVEL;
 
 entity	arena;
+entity	match;
 
 .vector	subnet;

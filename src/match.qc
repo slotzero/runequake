@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.20 2005/05/11 21:58:48 slotzero Exp $
+/*  $Id: match.qc,v 1.21 2005/05/11 23:37:10 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -20,8 +20,36 @@
 float ()
 mode_match =
 {
+	if (!match)
+		return FALSE;
 	if (!teamplay & TEAM_MODE_MATCH)
 		return FALSE;
 
 	return TRUE;
+};
+
+void ()
+match_obs_init =
+{
+	// level change or new player
+	if (!self.runevar)
+	{
+		self_stuffcmd (self.owner, "color 1\n");
+	}
+
+	self_stuffcmd (self.owner, "color 0\n");
+	self.owner.frags = -99;
+};
+
+void (float type)
+match_obs_become =
+{
+	local entity e;
+
+	e		= spawn ();
+	e.owner		= self;
+	e.runevar	= type;
+
+	e.think		= match_obs_init;
+	e.nextthink	= time;
 };

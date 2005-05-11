@@ -1,5 +1,5 @@
 
-/*  $Id: rjs.qc,v 1.185 2005/05/10 19:28:57 slotzero Exp $
+/*  $Id: rjs.qc,v 1.186 2005/05/11 23:37:10 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -302,6 +302,10 @@ rjs_worldspawn =
 
 	if (deathmatch & DM_MODE_ROCKET_ARENA)
 		arena = spawn ();
+
+	i = cvar ("teamplay");
+	if (i & TEAM_MODE_MATCH)
+		match = spawn ();
 
 	if (START_LEVEL_EXEC != string_null)
 	{
