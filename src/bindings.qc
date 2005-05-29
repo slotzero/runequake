@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.76 2005/05/10 23:04:23 slotzero Exp $
+/*  $Id: bindings.qc,v 1.77 2005/05/29 18:44:52 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -409,6 +409,7 @@ console_aliases =
 	console_init_cvar_alias ("banip",		CVAR_C2,	C2_BAN_ADD);
 	console_init_cvar_alias ("unbanip",		CVAR_C2,	C2_BAN_REMOVE);
 	console_init_cvar_alias ("banlist",		CVAR_C2,	C2_BAN_LIST);
+	console_init_cvar_alias ("conprint",		CVAR_C2,	C2_CONPRINT);
 
 	level_aliases ();
 	custom_aliases ();

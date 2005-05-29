@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.65 2005/05/10 23:04:23 slotzero Exp $
+/*  $Id: world.qc,v 1.66 2005/05/29 18:44:52 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -619,6 +619,24 @@ StartFrame =
 				self_sprint (self, "invalid ip address\n");
 			else
 				ban_remove (v);
+		}
+
+		else if (i == C2_CONPRINT)
+		{
+			scratch1 = cvar_infokey ("scratch1");
+			if (scratch1 & S1_BPRINT_TO_CONSOLE)
+			{
+				dprint ("conprint off\n");
+				scratch1 = scratch1 - scratch1 & S1_BPRINT_TO_CONSOLE;
+			}
+			else
+			{
+				dprint ("conprint on\n");
+				scratch1 = scratch1 | S1_BPRINT_TO_CONSOLE;
+			}
+
+			s = ftos (scratch1);
+			cvar_set_infokey ("scratch1", s);
 		}
 
 		else if (i == C2_BAN_LIST)
