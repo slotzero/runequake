@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.26 2005/04/18 00:03:14 slotzero Exp $
+/*  $Id: arena.qc,v 1.27 2005/06/21 22:17:36 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -310,10 +310,6 @@ arena_results =
 			self.dmg_inflictor = winner;
 			self.dmg_take = 1;
 		}
-
-		// maybe update players highest streak
-		//if (winner.button1 < self.dmg_take)
-		//	winner.button1 = self.dmg_take;
 
 		add_frag (winner, 1);
 		bprint (winner.netname);
