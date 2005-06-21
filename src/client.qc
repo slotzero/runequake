@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.107 2005/05/11 21:58:48 slotzero Exp $
+/*  $Id: client.qc,v 1.108 2005/06/21 23:19:33 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -732,7 +732,10 @@ PutClientInServer =
 	// Do not allow firing immediately after you respawn to prevent
 	// your from losing your spawn shield.
 	if (SPAWN_PROTECT_DURATION && !NO_SPAWN_SHIELDS)
+	{
+		self.button1 = FALSE;
 		self.attack_finished = time + 1.5;
+	}
 
 	self.th_pain = player_pain;
 	self.th_die = PlayerDie;
@@ -1168,8 +1171,11 @@ PlayerDeathThink =
 		return;
 	}
 
-	self.button0 = 0;
+	// self.button0 = 0;
 	self.button2 = 0;
+
+	// prevent accidental discharge when respawning
+	self.button1 = TRUE;
 
 	respawn ();
 };

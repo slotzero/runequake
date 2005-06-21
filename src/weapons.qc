@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.56 2005/05/08 08:17:47 slotzero Exp $
+/*  $Id: weapons.qc,v 1.57 2005/06/21 23:19:33 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1429,6 +1429,15 @@ Called every frame so impulse events can be handled as well as possible
 void ()
 W_WeaponFrame =
 {
+	// prevent accidental discharge when respawning
+	if (self.button1)
+	{
+		if (self.button0)
+			return;
+
+		self.button1 = FALSE;
+	}
+
 	// Stop switchfiring if she starts using a regular attack.
 	if (self.button0 && self.aqstate & AQS_SWITCHFIRING)
 		switchfire_off ();
