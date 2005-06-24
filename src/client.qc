@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.108 2005/06/21 23:19:33 slotzero Exp $
+/*  $Id: client.qc,v 1.109 2005/06/24 05:37:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1430,6 +1430,28 @@ PlayerPreThink =
 
 		if (self.rqflags & RQ_TEAMSCORES_ON)
 			teamscores_on (self);
+	}
+
+	// lagged player notification
+	if (self.search_time < time)
+	{
+		self.search_time = time + 5;
+
+		i = client_ping (self);
+		if (i == 9999)
+		{
+			if (!self.rqflags & RQ_LAGGED_OUT)
+			{
+				self.rqflags = self.rqflags | RQ_LAGGED_OUT;
+				bprint (self.netname);
+				bprint (" lagged out\n");
+			}
+		}
+		else
+		{
+			if (self.rqflags & RQ_LAGGED_OUT)
+				self.rqflags = self.rqflags - self.rqflags & RQ_LAGGED_OUT;
+		}
 	}
 
 	if (self.aqstate & AQS_MENU_MASK && time > self.count)

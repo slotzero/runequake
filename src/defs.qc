@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.165 2005/05/29 18:44:52 slotzero Exp $
+/*  $Id: defs.qc,v 1.166 2005/06/24 05:37:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -703,6 +703,7 @@ float RQ_LOW_BANDWIDTH_CLIENT	= 2;
 float RQ_CUSTOM_SOUNDS		= 4;
 float RQ_BINDINGS_RECEIVED	= 8;
 float RQ_TEAMSCORES_ON		= 16;
+float RQ_LAGGED_OUT		= 32;
 
 // aqstate flags (not saved across levels)
 float AQS_MENU_MASK		= 31;
