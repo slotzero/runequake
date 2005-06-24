@@ -1,4 +1,4 @@
-$Id: Playing,v 1.7 2004/04/07 02:22:28 slotzero Exp $
+$Id: Playing,v 1.8 2005/06/24 21:36:54 slotzero Exp $
 
 This is the user documentation for Rune Quake.  You can learn
 more about Rune Quake at http://www.runequake.com.
@@ -254,6 +254,12 @@ Player Commands
 	These toggle the state of weapon toggles.  See the "weapon toggles"
 	entry in the observer mode section for more information.
 
+    command <mapname>
+
+	You can vote for a specific level by typing its name in the
+	console.  For example, typing "e4m3" will vote for The Elder
+	God Shrine.
+
     command vote-exit
 
 	If enough players vote to exit the level, the level will end.
@@ -279,6 +285,127 @@ Player Commands
 	change modes, and the show-players command lists people who have
 	voted to change the team mode.
 
+    command vote-hook
+
+	The server is setup by default with hook as a rune.  If you want
+	all players to have the hook (aka free hook), use this command.
+
+	Server admins have the ability to change the default mode of free
+	hook to lithium hook.  For information on Lithium hook see the
+	Grappling Hook Modes section of this document.
+
+    command vote-free
+
+	Vote for free hook mode, if it's disabled.
+
+    command vote-lithium
+
+	Vote for lithium hook mode, if it's disabled.
+
+    command vote-hook-damage
+
+	Hook damage occurs when players grapple other players.  Using this
+	command will vote to toggle that abililty.
+
+    command vote-arena
+    command arena
+
+	You can vote the server into Rocket Arena mode by using this
+	command.  Rocket Arena is a popular Quake modification that allows
+	only two players to battle it out to the death using the same
+	complement of weapons.  When a player dies, he loses the round
+	and the next person in line battles the winner.  The loser is then
+	placed at the end of the line.
+
+	For more information about the original Rocket Arena, check out the
+	official website
+
+	http://www.planetquake.com/servers/arena/
+
+    command vote-practice
+    command practice
+
+	You can vote the server into Practice mode by using this
+	command.  Practice Mode is a mode from a popular Quake
+	modification called Clan Ring Mod (CRMod for short).  The goal
+	behind this mode is allow all players to battle it out without
+	having to search the levels for weapons and ammo.  You don't
+	need this items because you spawn with everything and get
+	an unlimited supply.  The only thing you do need to do is make
+	sure your replenish your health and ammo.
+
+	For more information about the Clan Ring Modification, check out
+	the official website
+
+	http://www.clanring.com/ or http://www.crmod.com/
+
+    command vote-normal
+    command normal
+    command ffa
+
+	To turn off Practice Mode or Arena Mode, you must vote it off
+	with this command.
+
+    command vote-quad
+    command setquad
+
+	Vote to enable or disable Quad Damage on the level.
+
+    command vote-pent
+    command setpent
+
+	Vote to enable or disable Pentagram of Protection on the level.
+
+    command vote-ring
+    command setring
+
+	Vote to enable or disable Ring of Shadows on the level.
+
+    command vote-suit
+    command setsuit
+
+	Vote to enable or disable Environmental Protection Suit on the level.
+
+    command vote-armor
+
+	Vote to enable or disable armor on the level.
+
+    command vote-rotate
+
+	Vote to enable or disable rotating armors.  Rotating armors, by default,
+	cycles through all the classes of armor, no matter what armor it was
+	originally.
+
+	Server ops can change the rotation from a linear rotation to a random
+	rotation.
+
+    command vote-mega
+
+	Vote to enable or disable mega healths on the level.
+
+    command vote-runes
+
+	Vote to enable or disable runes on the level.
+
+    command vote-alt-weapons
+
+	Vote to enable or disable alternate weapons on the level.  For more
+	information on alternate weapons, see the Alternate Weapons section
+	in this document.
+
+    command vote-shields
+
+	Vote to enable or disable spawn shields.  Spawn shields help protect
+	newly spawned players again blind shots at spawn spots and the occasional
+	spawn camper.
+
+    command vote-weapons-stay
+
+	Vote to enable or disable weapons stay on the level.  If weapons stay
+	is enabled, weapons will remain on the level even when picked up.  For
+	more information on Weapons Stay, see the Weapons Stay section in this
+	document.
+
     command levels
 
 	You can vote for a specific level by typing its map name into the
@@ -289,7 +416,6 @@ Player Commands
 
 	This provides a list of all custom maps on the server.  To vote for a
 	custom map, simply its name in the Quake console.
-
 
 Alternate Weapons
 -----------------
