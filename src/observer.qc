@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.58 2005/05/11 23:37:10 slotzero Exp $
+/*  $Id: observer.qc,v 1.59 2005/06/24 04:34:11 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -443,12 +443,11 @@ obs_post_think =
 		if (self.weaponframe != self.owner.weaponframe)
 			self.weaponframe = self.owner.weaponframe;
 
-		if (!self.owner.aqflags & AQ_RIDER_HIDE)
+		if (!self.owner.aqflags & AQ_RIDER_HIDE || !ALLOW_RIDER_HIDE)
 		{
 			if (deathmatch & DM_DM_MASK)
 			{
-				if (self.items | IT_KEY2
-					!= self.owner.items | IT_KEY2)
+				if (self.items | IT_KEY2 != self.owner.items | IT_KEY2)
 				{
 					self.items = self.owner.items
 						- (self.owner.items & IT_KEY2)
@@ -1031,6 +1030,11 @@ obs_rider_set =
 		else
 			self.runetime = time + 5;
 	}
+
+	// prevent ridee notification
+	if (self.aqflags & AQ_RIDER_HIDE)
+		self.runetime = 0;
+
 	// This prevents you from moving around and seeing
 	// yourself, and from bobbing your display as you try
 	// to move.

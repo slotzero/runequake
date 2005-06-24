@@ -1,5 +1,5 @@
 
-/*  $Id: rjs.qc,v 1.186 2005/05/11 23:37:10 slotzero Exp $
+/*  $Id: rjs.qc,v 1.187 2005/06/24 04:34:11 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1340,7 +1340,7 @@ common_impulses =
 
 	else if (self.impulse == IMP_RIDER_HIDE)
 	{
-		if (!ALLOW_RIDER_HIDE)
+		if (is_player () && !ALLOW_RIDER_HIDE)
 			sprint (self, "Rider hide mode is not available\n");
 		else
 		{
