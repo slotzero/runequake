@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.58 2005/05/07 06:10:31 slotzero Exp $
+/*  $Id: vote.qc,v 1.59 2005/06/24 04:37:49 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -222,7 +222,8 @@ count_votes =
 	// who vote note, 1 vote is taken away.  This can be kind of pointless though
 	// because it's essentially a race between votes.. a race which can be repeated
 	// vote after vote...  Again, I have to see how this works out.
-	lack = lack + floor (no * 0.50);
+	// lack = lack + floor (no * 0.50);
+	lack = lack + no;
 
 	if (is_queue)
 		maybe_print_votes (vip, type, is_queue, voted);
