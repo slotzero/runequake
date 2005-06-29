@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.166 2005/06/24 05:37:35 slotzero Exp $
+/*  $Id: defs.qc,v 1.167 2005/06/29 22:49:04 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1501,3 +1501,12 @@ entity	arena;
 entity	match;
 
 .vector	subnet;
+
+.float	shell_dmg_max;
+.float	shell_dmg;
+.float	nail_dmg_max;
+.float	nail_dmg;
+.float	rocket_dmg_max;
+.float	rocket_dmg;
+.float	cell_dmg_max;
+.float	cell_dmg;

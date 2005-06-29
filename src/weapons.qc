@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.57 2005/06/21 23:19:33 slotzero Exp $
+/*  $Id: weapons.qc,v 1.58 2005/06/29 22:49:05 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -207,6 +207,9 @@ ApplyMultiDamage =
 	if (!multi_ent)
 		return;
 	T_Damage (multi_ent, self, self, multi_damage, multi_dtype);
+
+	// efficiency
+	self.shell_dmg = self.shell_dmg + multi_damage;
 };
 
 void (entity hit, float damage, string dtype)
@@ -332,6 +335,9 @@ W_FireShotgun =
 
 	dir = aim (self, 100000);
 	FireBullets (6, dir, '0.04 0.04 0', "shotgun");
+
+	// efficiency
+	self.shell_dmg_max = self.shell_dmg_max + 24;
 };
 
 void ()
@@ -383,6 +389,10 @@ W_FireSuperShotgun =
 
 	dir = aim (self, 100000);
 	FireBullets (14, dir, '0.14 0.08 0', "supershotgun");
+
+	// efficiency
+	self.shell_dmg_max = self.shell_dmg_max + 56;
+
 };
 
 /*
@@ -443,9 +453,8 @@ reflect_projectile =
 void ()
 T_MissileTouch =
 {
-	local float is_mortar, damg, radius_type;
-
-	is_mortar = self.classname == "mortar";
+	local float damg;
+	local entity head;
 
 	if (other == self.owner)
 		return;		// don't explode on owner
@@ -458,46 +467,45 @@ T_MissileTouch =
 
 	if (other.health)
 	{
-		/* if (is_mortar)
-			damg = MORTAR_DAMAGE;
-		else */
-			damg = 100 + random ()*20;
+		damg = 100 + random () * 20;
 		if (other.classname == "monster_shambler")
 			damg = damg * 0.5;	// mostly immune
 		T_Damage (other, self, self.owner, damg, self.classname);
+
+		// efficiency
+		self.rocket_dmg = TRUE;
+		self.owner.rocket_dmg = self.owner.rocket_dmg + damg;
 	}
 
-	if (is_mortar)
-		damg		= MORTAR_DAMAGE;
-	else
-		damg		= 120;
-
-	radius_type	= RADIUS_NORMAL;
+	// efficiency
+	if (!self.rocket_dmg)
+	{
+		head = findradius (self.origin, 250);
+		while (head)
+		{
+			if (head != self.owner && head.classname == "player")
+			{
+				self.rocket_dmg = TRUE;
+				head = world;
+			}
+			else
+				head = head.chain;
+		}
+	}
 
 	// don't do radius damage to the other, because all the damage
 	// was done in the impact
 	monk_radius_hack = 1;
-	T_RadiusDamage (radius_type, self, self.owner, damg, other, self.classname);
+	T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 120, other, self.classname);
 	monk_radius_hack = 0;
 
 	self.origin = self.origin - 8 * normalize (self.velocity);
 
-	if (is_mortar)
-	{
-		if (self.runevar == 2)
-			create_te_explosion (self.origin, 1);
-		else
-		{
-			self.runevar	= self.runevar + 1;
-			self.movetype	= MOVETYPE_BOUNCE;
-			self.nextthink	= time;
-			self.think	= reflect_projectile;
-			self.velocity	= self.velocity * 1.4;
-			return;
-		}
-	}
-	else
-		create_te_explosion (self.origin, 1);
+	create_te_explosion (self.origin, 1);
+
+	// efficiency
+	if (self.rocket_dmg)
+		self.owner.rocket_dmg_max = self.owner.rocket_dmg_max + 120;
 };
 
 /*
@@ -508,49 +516,50 @@ W_FireRocket
 void (string class)
 W_FireRocket =
 {
-	local	float is_mortar, mv;
-
-	if (class == "missile")
-	{
-		is_mortar	= 0;
-		mv		= MOVETYPE_FLYMISSILE;
-	}
-	else
-	{
-		is_mortar	= 1;
-		mv		= MOVETYPE_FLYMISSILE; // MOVETYPE_BOUNCE;
-	}
+	local entity head;
 
 	sound (self, CHAN_WEAPON, "weapons/sgun1.wav", 1, ATTN_NORM);
 	smallkick ();
-	newmis = spawn ();
-	newmis.owner = self;
-	newmis.movetype = mv;
-	newmis.solid = SOLID_BBOX;
-	newmis.classname = class;
+
+	newmis			= spawn ();
+	newmis.owner		= self;
+	newmis.movetype		= MOVETYPE_FLYMISSILE;
+	newmis.solid		= SOLID_BBOX;
+	newmis.classname	= class;
+
+	// I don't want to calculate efficiency every time you fire a rocket,
+	// so I check for nearby enemies when the rocket is launched and
+	// again when it explodes.
+	newmis.rocket_dmg	= FALSE;
 
 	// set missile speed
-
 	makevectors (self.v_angle);
-	newmis.velocity = aim (self, 1000);
-	/* if (is_mortar)
-	{
-		makevectors (self.v_angle);
-		newmis.velocity = v_forward*750 + v_up*440;
-	}
-	else */
-		newmis.velocity = newmis.velocity * 1000;
-	newmis.angles = vectoangles (newmis.velocity);
+	newmis.velocity		= aim (self, 1000);
+	newmis.velocity		= newmis.velocity * 1000;
+	newmis.angles		= vectoangles (newmis.velocity);
 
-	newmis.touch = T_MissileTouch;
+	newmis.touch		= T_MissileTouch;
 
 	// set missile duration
-	newmis.nextthink = time + 5;
-	newmis.think = SUB_Remove;
+	newmis.nextthink	= time + 5;
+	newmis.think		= SUB_Remove;
 
 	setmodel (newmis, "progs/missile.mdl");
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
-	setorigin (newmis, self.origin + v_forward*8 + PLAYER_WEAPON_OFFSET);
+	setorigin (newmis, self.origin + v_forward * 8 + PLAYER_WEAPON_OFFSET);
+
+	// efficiency
+	head = findradius (self.origin, 250);
+	while (head)
+	{
+		if (head != self && head.classname == "player")
+		{
+			newmis.rocket_dmg = TRUE;
+			head = world;
+		}
+		else
+			head = head.chain;
+	}
 };
 
 /*
@@ -571,6 +580,9 @@ LightningHit =
 	-])
 
 	T_Damage (trace_ent, from, from, damage, dtype);
+
+	// efficiency
+	from.cell_dmg = from.cell_dmg + damage;
 };
 
 /*
@@ -639,6 +651,9 @@ W_FireLightning =
 		traceline (org, org + v_forward*600, TRUE, self);
 	create_te_lightning (TE_LIGHTNING2, self, org, trace_endpos);
 	LightningDamage (self.origin, trace_endpos + v_forward*4, self, 30, "lightning");
+
+	// efficiency
+	self.cell_dmg_max = self.cell_dmg_max + 30;
 };
 
 //=============================================================================
@@ -821,6 +836,9 @@ W_FireSuperSpikes =
 	setmodel (newmis, "progs/s_spike.mdl");
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
 	smallkick ();
+
+	// efficiency
+	self.nail_dmg_max = self.nail_dmg_max + 18;
 };
 
 void (float ox)
@@ -855,6 +873,9 @@ W_FireSpikes =
 	dir = aim (self, 1000);
 	launch_spike (self.origin + PLAYER_WEAPON_OFFSET + v_right*ox, dir);
 	smallkick ();
+
+	// efficiency
+	self.nail_dmg_max = self.nail_dmg_max + 9;
 };
 
 void ()
@@ -879,6 +900,9 @@ spike_touch =
 	{
 		spawn_touchblood (9);
 		T_Damage (other, self, self.owner, 9, "nail");
+
+		// efficiency
+		self.owner.nail_dmg = self.owner.nail_dmg + 9;
 	}
 	else
 	{
@@ -933,6 +957,9 @@ superspike_touch =
 	{
 		spawn_touchblood (18);
 		T_Damage (other, self, self.owner, 18, "supernail");
+
+		// efficiency
+		self.owner.nail_dmg = self.owner.nail_dmg + 18;
 	}
 	else
 		create_te_spike (TE_SUPERSPIKE, self.origin);

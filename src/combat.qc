@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.43 2005/05/07 06:10:30 slotzero Exp $
+/*  $Id: combat.qc,v 1.44 2005/06/29 22:49:04 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -735,7 +735,13 @@ T_RadiusDamage =
 						if (head.classname == "monster_shambler")
 							T_Damage (head, inflictor, attacker, points*0.5, dtype);
 						else
+						{
 							T_Damage (head, inflictor, attacker, points, dtype);
+
+							// rocket efficiency
+							if (inflictor.rocket_dmg && inflictor.owner != head)
+								inflictor.owner.rocket_dmg = inflictor.owner.rocket_dmg + points;
+						}
 					}
 				}
 			}
