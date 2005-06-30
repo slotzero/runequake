@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.103 2005/06/30 00:10:20 slotzero Exp $
+/*  $Id: develop.qc,v 1.104 2005/06/30 00:11:47 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -244,8 +244,6 @@ void ()
 sprint_efficiency =
 {
 	local entity e;
-	local float i, total;
-	local string s;
 
 	self_sprint (self, "\n     name      \{252}bul\{252}nls\{252}rox\{252}lg \{252}total\n");
 	self_sprint (self, "\b---------------+---+---+---+---+-----\n");
