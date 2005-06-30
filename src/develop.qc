@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.104 2005/06/30 00:11:47 slotzero Exp $
+/*  $Id: develop.qc,v 1.105 2005/06/30 02:48:28 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -199,7 +199,7 @@ sprint_eff_player =
 
 	self_sprint (self, "\{252}");
 
-	if (!e.rocket_dmg_max)
+	if (!e.cell_dmg_max)
 		self_sprint (self, "N/A");
 	else if (i < 100)
 	{
