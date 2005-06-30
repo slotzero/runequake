@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.102 2005/05/07 06:15:38 slotzero Exp $
+/*  $Id: develop.qc,v 1.103 2005/06/30 00:10:20 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -134,6 +134,126 @@ client_ping_times =
 		dprint_force (" ");
 		dprint_force (e.netname);
 		dprint_force ("\n");
+		e = find (e, classname, "player");
+	}
+};
+
+void (entity e)
+sprint_eff_player =
+{
+	local float i;
+	local string s;
+
+	self_sprintf_len (self, e.netname, -15);
+
+	// shells
+	i = rint ((e.shell_dmg / e.shell_dmg_max) * 100);
+
+	self_sprint (self, "\{252}");
+
+	if (!e.shell_dmg_max)
+		self_sprint (self, "N/A");
+	else if (i < 100)
+	{
+		s = ftos (i);
+		self_sprintf_len (self, s, 2);
+		self_sprint (self, "%");
+	}
+	else
+		self_sprint (self, "100");
+
+	// nails
+	i = rint ((e.nail_dmg / e.nail_dmg_max) * 100);
+
+	self_sprint (self, "\{252}");
+
+	if (!e.nail_dmg_max)
+		self_sprint (self, "N/A");
+	else if (i < 100)
+	{
+		s = ftos (i);
+		self_sprintf_len (self, s, 2);
+		self_sprint (self, "%");
+	}
+	else
+		self_sprint (self, "100");
+
+	// rockets
+	i = rint ((e.rocket_dmg / e.rocket_dmg_max) * 100);
+
+	self_sprint (self, "\{252}");
+
+	if (!e.rocket_dmg_max)
+		self_sprint (self, "N/A");
+	else if (i < 100)
+	{
+		s = ftos (i);
+		self_sprintf_len (self, s, 2);
+		self_sprint (self, "%");
+	}
+	else
+		self_sprint (self, "100");
+
+	// cells
+	i = rint ((e.cell_dmg / e.cell_dmg_max) * 100);
+
+	self_sprint (self, "\{252}");
+
+	if (!e.rocket_dmg_max)
+		self_sprint (self, "N/A");
+	else if (i < 100)
+	{
+		s = ftos (i);
+		self_sprintf_len (self, s, 2);
+		self_sprint (self, "%");
+	}
+	else
+		self_sprint (self, "100");
+
+	// total
+	i = rint (((e.shell_dmg + e.nail_dmg + e.rocket_dmg + e.cell_dmg)
+			/ (e.shell_dmg_max + e.nail_dmg_max + e.rocket_dmg_max + e.cell_dmg_max)) * 100);
+
+	self_sprint (self, "\{252}");
+
+	if (e == self)
+		self_sprint (self, "\[");
+	else
+		self_sprint (self, " ");
+
+	if (!(e.shell_dmg_max + e.nail_dmg_max + e.rocket_dmg_max + e.cell_dmg_max))
+		self_sprint (self, "N/A");
+	else if (i < 100)
+	{
+		s = ftos (i);
+		self_sprintf_len (self, s, 2);
+		self_sprint (self, "%");
+	}
+	else
+		self_sprint (self, "100");
+
+	if (e == self)
+		self_sprint (self, "\]");
+	else
+		self_sprint (self, " ");
+
+	self_sprint (self, "\n");
+};
+
+void ()
+sprint_efficiency =
+{
+	local entity e;
+	local float i, total;
+	local string s;
+
+	self_sprint (self, "\n     name      \{252}bul\{252}nls\{252}rox\{252}lg \{252}total\n");
+	self_sprint (self, "\b---------------+---+---+---+---+-----\n");
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		sprint_eff_player (e);
 		e = find (e, classname, "player");
 	}
 };
