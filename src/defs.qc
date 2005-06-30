@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.168 2005/06/30 00:10:20 slotzero Exp $
+/*  $Id: defs.qc,v 1.169 2005/06/30 06:07:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1154,6 +1154,7 @@ float	C2_BAN_ADD		= 37;
 float	C2_BAN_REMOVE		= 38;
 float	C2_BAN_LIST		= 39;
 float	C2_CONPRINT		= 40;
+float	C2_EFFICIENCY		= 41;
 
 IN_QW([-
 //

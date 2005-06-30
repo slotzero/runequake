@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.59 2005/06/30 02:08:43 slotzero Exp $
+/*  $Id: weapons.qc,v 1.60 2005/06/30 06:07:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -473,8 +473,11 @@ T_MissileTouch =
 		T_Damage (other, self, self.owner, damg, self.classname);
 
 		// efficiency
-		self.rocket_dmg = TRUE;
-		self.owner.rocket_dmg = self.owner.rocket_dmg + damg;
+		if (other.classname == "player")
+		{
+			self.rocket_dmg = TRUE;
+			self.owner.rocket_dmg = self.owner.rocket_dmg + damg;
+		}
 	}
 
 	// efficiency

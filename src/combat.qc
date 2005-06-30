@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.45 2005/06/30 02:08:43 slotzero Exp $
+/*  $Id: combat.qc,v 1.46 2005/06/30 06:07:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -741,7 +741,7 @@ T_RadiusDamage =
 							// rocket efficiency
 							if (dtype == "missile")
 							{
-								if (inflictor.owner.classname == "player" && inflictor.owner != head)
+								if (inflictor.owner.classname == "player" && head.classname == "player" && inflictor.owner != head)
 									inflictor.owner.rocket_dmg = inflictor.owner.rocket_dmg + points;
 							}
 						}
