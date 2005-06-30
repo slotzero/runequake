@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.58 2005/06/29 22:49:05 slotzero Exp $
+/*  $Id: weapons.qc,v 1.59 2005/06/30 02:08:43 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -501,11 +501,11 @@ T_MissileTouch =
 
 	self.origin = self.origin - 8 * normalize (self.velocity);
 
-	create_te_explosion (self.origin, 1);
-
 	// efficiency
-	if (self.rocket_dmg)
+	if (self.rocket_dmg && self.owner.classname == "player")
 		self.owner.rocket_dmg_max = self.owner.rocket_dmg_max + 120;
+
+	create_te_explosion (self.origin, 1);
 };
 
 /*
@@ -582,7 +582,8 @@ LightningHit =
 	T_Damage (trace_ent, from, from, damage, dtype);
 
 	// efficiency
-	from.cell_dmg = from.cell_dmg + damage;
+	if (dtype == "lightning")
+		from.cell_dmg = from.cell_dmg + damage;
 };
 
 /*
