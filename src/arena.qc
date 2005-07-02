@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.27 2005/06/21 22:17:36 slotzero Exp $
+/*  $Id: arena.qc,v 1.28 2005/07/02 04:35:17 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -383,6 +383,9 @@ arena_death_think =
 void (entity targ, entity attacker, string dtype)
 arena_death =
 {
+	if (targ.classname != "player")
+		return;
+
 	arena.state = -1;
 
 	if (attacker.classname != "player")

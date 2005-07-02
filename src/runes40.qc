@@ -1,4 +1,4 @@
-/*  $Id: runes40.qc,v 1.24 2004/12/29 04:31:52 slotzero Exp $
+/*  $Id: runes40.qc,v 1.25 2005/07/02 04:35:17 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -811,6 +811,14 @@ void (float is_phoenix)
 Resurrect =
 {
 	local float w;
+
+	if (mode_arena ())
+	{
+		SetNewParms ();
+		persistent_parms ();
+		PutClientInServer ();
+		return;
+	}
 
 	self.classname = "player";
 	self.takedamage = DAMAGE_AIM;
