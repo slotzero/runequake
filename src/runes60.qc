@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.59 2004/12/18 23:50:15 slotzero Exp $
+/*  $Id: runes60.qc,v 1.60 2005/07/05 03:23:16 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -390,7 +390,8 @@ Rune_Sniper =
 
 	newmis.touch = Sniper_Touch;
 
-	setmodel (newmis, "progs/s_spike.mdl");
+	//setmodel (newmis, "progs/s_spike.mdl");
+	setmodel (newmis, "progs/laser.mdl");
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
 
 	smallkick ();

@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.109 2005/06/24 05:37:35 slotzero Exp $
+/*  $Id: client.qc,v 1.110 2005/07/05 03:23:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1278,6 +1278,7 @@ WaterMove =
 			T_RadiusDamage (RADIUS_NORMAL, self, self, 20 * self.ammo_cells, world, "waterzap");
 			discharge_hack = 0;
 			self.ammo_cells = 0;
+			set_current_ammo ();
 			return;
 		}
 		// environmental protection rune: heal in liquids

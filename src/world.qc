@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.67 2005/06/30 06:07:00 slotzero Exp $
+/*  $Id: world.qc,v 1.68 2005/07/05 03:23:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -185,6 +185,7 @@ worldspawn =
 	precache_model ("progs/teleport.mdl");		// Big spiky ball
 	precache_model ("progs/armor.mdl");		// armor dropping on e1m7 &c
 	precache_model ("progs/quaddama.mdl");		// quad hat
+	precache_model ("progs/laser.mdl");
 
 	precache_model ("progs/s_light.spr");		// Death orb and gravity well
 
