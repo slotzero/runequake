@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.60 2005/06/30 06:07:00 slotzero Exp $
+/*  $Id: weapons.qc,v 1.61 2005/07/05 07:21:31 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -453,8 +453,10 @@ reflect_projectile =
 void ()
 T_MissileTouch =
 {
-	local float damg;
+	local float reflect, damg;
 	local entity head;
+
+	reflect = self.classname == "mortar";
 
 	if (other == self.owner)
 		return;		// don't explode on owner
@@ -496,10 +498,15 @@ T_MissileTouch =
 		}
 	}
 
+	if (reflect)
+		damg = MORTAR_DAMAGE; // XXX fixme
+	else
+		damg = 120;
+
 	// don't do radius damage to the other, because all the damage
 	// was done in the impact
 	monk_radius_hack = 1;
-	T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 120, other, self.classname);
+	T_RadiusDamage (RADIUS_NORMAL, self, self.owner, damg, other, self.classname);
 	monk_radius_hack = 0;
 
 	self.origin = self.origin - 8 * normalize (self.velocity);
@@ -508,7 +515,22 @@ T_MissileTouch =
 	if (self.rocket_dmg && self.owner.classname == "player")
 		self.owner.rocket_dmg_max = self.owner.rocket_dmg_max + 120;
 
-	create_te_explosion (self.origin, 1);
+	if (reflect)
+	{
+		if (self.runevar == 2)
+			create_te_explosion (self.origin, 1);
+		else
+		{
+			self.runevar	= self.runevar + 1;
+			self.movetype	= MOVETYPE_BOUNCE;
+			self.nextthink	= time;
+			self.think	= reflect_projectile;
+			self.velocity	= self.velocity * 1.4;
+			return;
+		}
+	}
+	else
+		create_te_explosion (self.origin, 1);
 };
 
 /*
