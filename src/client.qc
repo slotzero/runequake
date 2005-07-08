@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.110 2005/07/05 03:23:16 slotzero Exp $
+/*  $Id: client.qc,v 1.111 2005/07/08 03:01:51 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1548,8 +1548,6 @@ PlayerPreThink =
 				assign_teams (self);
 		}
 	}
-
-	makevectors (self.v_angle);
 
 	if (obs)
 	{
