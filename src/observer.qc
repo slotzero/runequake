@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.59 2005/06/24 04:34:11 slotzero Exp $
+/*  $Id: observer.qc,v 1.60 2005/07/08 04:01:12 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -292,6 +292,9 @@ obs_fly =
 	local float invcos, nvp, nvpmax, sp, svz;
 	local vector f, vp, vs;
 
+	if (self.velocity == VEC_ORIGIN)
+		return;
+
 	if (pointcontents (self.origin) != CONTENT_EMPTY)
 	{
 		if (pointcontents (self.origin) != CONTENT_SOLID)
@@ -319,6 +322,7 @@ obs_fly =
 	self.velocity_z = 0;
 
 	// v_forward is already normalized
+	makevectors (self.v_angle);
 	f_x = v_forward_x;
 	f_y = v_forward_y;
 	f_z = 0;
@@ -680,7 +684,10 @@ obs_player_detect =
 			traceline (self.origin, wanted.origin, TRUE, self);
 			if (trace_fraction >= 1)
 			{
-				makevectors (self.v_angle);
+				// Since obs_fly() calls makevectors() every frame when you're
+				// moving, I only call it when you're not moving.
+				if (self.velocity == VEC_ORIGIN)
+					makevectors (self.v_angle);
 				vec = normalize (wanted.origin - self.origin);
 				area = vec * v_forward;
 
