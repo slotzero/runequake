@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.61 2005/07/05 07:21:31 slotzero Exp $
+/*  $Id: weapons.qc,v 1.62 2005/07/08 08:16:20 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -18,7 +18,6 @@
 */
 
 // called by worldspawn
-
 void ()
 W_Precache =
 {
@@ -47,7 +46,7 @@ W_Precache =
 float ()
 crandom =
 {
-	return 2*(random () - 0.5);
+	return 2 * (random () - 0.5);
 };
 
 /*
@@ -58,42 +57,39 @@ W_FireAxe
 void ()
 W_FireAxe =
 {
-	local	vector	source;
-	local	vector	org;
-	local	float	reach, dam;
-	local	string	dt;
+	local vector org, source;
+	local float damage, reach;
+	local string dtype;
 
 	if (self.runetype == RN_LUMBER)
 	{
-		reach = AXE_REACH_LUMBER;
-		dam = AXE_DAMAGE_LUMBER;
-		dt = "lumber";
+		reach	= AXE_REACH_LUMBER;
+		damage	= AXE_DAMAGE_LUMBER;
+		dtype	= "lumber";
 	}
 	else
 	{
-		reach = AXE_REACH_NORMAL;
-		dam = AXE_DAMAGE_NORMAL;
-		dt = "axe";
+		reach	= AXE_REACH_NORMAL;
+		damage	= AXE_DAMAGE_NORMAL;
+		dtype	= "axe";
 	}
 
 	spawn_protect_off ();
 	makevectors (self.v_angle);
 	source = self.origin + PLAYER_WEAPON_OFFSET;
-	traceline (source, source + v_forward*reach, FALSE, self);
+	traceline (source, source + v_forward * reach, FALSE, self);
 	if (trace_fraction == 1.0)
 		return;
 
-	org = trace_endpos - v_forward*4;
+	org = trace_endpos - v_forward * 4;
 
 	if (trace_ent.takedamage)
 	{
 		SpawnBlood (org, VEC_ORIGIN, IN_POQ(20, 1));
-		T_Damage (trace_ent, self, self, dam, dt);
+		T_Damage (trace_ent, self, self, damage, dtype);
 	}
 	else
-	{	// hit wall
-
-		//RUNE SERV: changed CHAN_WEAPON to CHAN_BODY so the haste rune axing can be heard
+	{
 		sound (self, CHAN_BODY, "player/axhit2.wav", 1, ATTN_NORM);
 		create_te_gunshot (org, 1);
 	}
@@ -104,11 +100,11 @@ W_FireAxe =
 vector ()
 wall_velocity =
 {
-	local vector	vel;
+	local vector vel;
 
 	vel = normalize (self.velocity);
-	vel = normalize (vel + v_up*(random ()- 0.5) + v_right*(random ()- 0.5));
-	vel = vel + 2*trace_plane_normal;
+	vel = normalize (vel + v_up * (random ()- 0.5) + v_right * (random ()- 0.5));
+	vel = vel + 2 * trace_plane_normal;
 	vel = vel * 200;
 
 	return vel;
@@ -132,7 +128,7 @@ SpawnMeatSpray =
 	makevectors (self.angles);
 
 	missile.velocity	= vel;
-	missile.velocity_z	= missile.velocity_z + 250 + 50*random ();
+	missile.velocity_z	= missile.velocity_z + 250 + 50 * random ();
 
 	missile.avelocity	= '3000 1000 2000';
 
