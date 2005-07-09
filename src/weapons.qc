@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.63 2005/07/09 02:14:16 slotzero Exp $
+/*  $Id: weapons.qc,v 1.64 2005/07/09 02:21:25 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -247,19 +247,19 @@ TraceAttack
 void (float damage, vector dir, string dtype)
 TraceAttack =
 {
-	local	vector	vel, org;
+	local vector vel, org;
 
-	vel = normalize (dir + v_up*crandom () + v_right*crandom ());
-	vel = vel + 2*trace_plane_normal;
+	vel = normalize (dir + v_up * crandom () + v_right * crandom ());
+	vel = vel + 2 * trace_plane_normal;
 	vel = vel * 200;
 
-	org = trace_endpos - dir*4;
+	org = trace_endpos - dir * 4;
 
 	if (trace_ent.takedamage)
 	{
-		blood_count = blood_count + IN_POQ(damage, 1);
-		blood_org = org;
-		blood_vel = vel * 0.2;
+		blood_count	= blood_count + IN_POQ(damage, 1);
+		blood_org	= org;
+		blood_vel	= vel * 0.2;
 		AddMultiDamage (trace_ent, damage, dtype);
 	}
 	else
@@ -272,7 +272,7 @@ TraceAttack =
 		WriteCoord (MSG_BROADCAST, org_z);
 	}
 	-], [-
-		puff_count = puff_count + 1;
+		puff_count	= puff_count + 1;
 	-])
 };
 
@@ -292,19 +292,19 @@ FireBullets =
 
 	makevectors (self.v_angle);
 
-	src = self.origin + v_forward*10;
-	src_z = self.absmin_z + self.size_z * 0.7;
+	src	= self.origin + v_forward * 10;
+	src_z	= self.absmin_z + self.size_z * 0.7;
 
 	ClearMultiDamage ();
 
-	traceline (src, src + dir*2048, FALSE, self);
-	puff_org = trace_endpos - dir*4;
+	traceline (src, src + dir * 2048, FALSE, self);
+	puff_org = trace_endpos - dir * 4;
 
 	while (shotcount > 0)
 	{
-		direction = dir + crandom ()*spread_x*v_right + crandom ()*spread_y*v_up;
+		direction = dir + crandom () * spread_x * v_right + crandom () * spread_y * v_up;
 
-		traceline (src, src + direction*2048, FALSE, self);
+		traceline (src, src + direction * 2048, FALSE, self);
 		if (trace_fraction != 1.0)
 			TraceAttack (4, direction, dtype);
 
@@ -322,14 +322,9 @@ W_FireShotgun
 void ()
 W_FireShotgun =
 {
-	local vector dir;
-
 	sound (self, CHAN_WEAPON, "weapons/guncock.wav", 1, ATTN_NORM);
-
 	smallkick ();
-
-	dir = aim (self, 100000);
-	FireBullets (6, dir, '0.04 0.04 0', "shotgun");
+	FireBullets (6, v_forward, '0.04 0.04 0', "shotgun");
 
 	// efficiency
 	self.shell_dmg_max = self.shell_dmg_max + 24;
@@ -375,19 +370,12 @@ W_FireSuperShotgun
 void ()
 W_FireSuperShotgun =
 {
-	local vector dir;
-
-
 	sound (self, CHAN_WEAPON, "weapons/shotgn2.wav", 1, ATTN_NORM);
-
 	bigkick ();
-
-	dir = aim (self, 100000);
-	FireBullets (14, dir, '0.14 0.08 0', "supershotgun");
+	FireBullets (14, v_forward, '0.14 0.08 0', "supershotgun");
 
 	// efficiency
 	self.shell_dmg_max = self.shell_dmg_max + 56;
-
 };
 
 /*
@@ -408,11 +396,11 @@ void ()	s_explode6	=	[5,		SUB_Remove] {};
 void ()
 BecomeExplosion =
 {
-	self.movetype = MOVETYPE_NONE;
-	self.velocity = VEC_ORIGIN;
-	self.touch = SUB_Null;
+	self.movetype	= MOVETYPE_NONE;
+	self.velocity	= VEC_ORIGIN;
+	self.touch	= SUB_Null;
 	setmodel (self, "progs/s_explod.spr");
-	self.solid = SOLID_NOT;
+	self.solid	= SOLID_NOT;
 	s_explode1 ();
 };
 
