@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.62 2005/07/08 08:16:20 slotzero Exp $
+/*  $Id: weapons.qc,v 1.63 2005/07/09 02:14:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -103,7 +103,7 @@ wall_velocity =
 	local vector vel;
 
 	vel = normalize (self.velocity);
-	vel = normalize (vel + v_up * (random ()- 0.5) + v_right * (random ()- 0.5));
+	vel = normalize (vel + v_up * (random () - 0.5) + v_right * (random () - 0.5));
 	vel = vel + 2 * trace_plane_normal;
 	vel = vel * 200;
 
@@ -150,7 +150,7 @@ void (vector org, vector vel, float damage)
 SpawnBlood =
 {
 	IN_POQ([-
-		particle (org, vel*0.1,	PARTICLE_BLOOD, damage*2);
+		particle (org, vel * 0.1, PARTICLE_BLOOD, damage * 2);
 	-], [-
 		create_te_blood (org, damage);
 	-])
@@ -169,7 +169,7 @@ spawn_touchblood =
 	if (0) damage = damage;	// prevent frikqcc compiler warning;
 
 	vel = wall_velocity () * 0.2;
-	SpawnBlood (self.origin + vel*0.01, vel, IN_POQ(damage, 1));
+	SpawnBlood (self.origin + vel * 0.01, vel, IN_POQ(damage, 1));
 };
 
 /*
@@ -191,10 +191,10 @@ float	blood_count, puff_count;
 void ()
 ClearMultiDamage =
 {
-	multi_ent = world;
-	multi_damage = 0;
-	blood_count = 0;
-	puff_count = 0;
+	multi_ent	= world;
+	multi_damage	= 0;
+	blood_count	= 0;
+	puff_count	= 0;
 };
 
 void ()
@@ -213,7 +213,6 @@ AddMultiDamage =
 {
 	if (!hit)
 		return;
-
 	if (hit != multi_ent || dtype != multi_dtype)
 	{
 		ApplyMultiDamage ();
