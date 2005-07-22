@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.60 2005/07/05 03:23:16 slotzero Exp $
+/*  $Id: runes60.qc,v 1.61 2005/07/22 22:50:24 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -385,8 +385,8 @@ Rune_Sniper =
 	T_Damage (self, self, self, (25 + (random () * self.runevar)), "sniped");
 	sound (self, CHAN_WEAPON, "weapons/ric3.wav", 1, ATTN_NORM);
 
-	dir = aim (self, 1000) * 2;
-	launch_spike (self.origin + PLAYER_WEAPON_OFFSET, dir);
+	makevectors (self.v_angle);
+	launch_spike (self.origin + PLAYER_WEAPON_OFFSET, v_forward);
 
 	newmis.touch = Sniper_Touch;
 
