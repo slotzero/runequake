@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.61 2005/07/22 22:50:24 slotzero Exp $
+/*  $Id: runes60.qc,v 1.62 2005/07/22 22:52:33 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -373,9 +373,6 @@ Sniper_Touch =
 void ()
 Rune_Sniper =
 {
-	local vector dir;
-	local float n;
-
 	if (self.runetime > time)
 		return;
 
