@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.111 2005/07/08 03:01:51 slotzero Exp $
+/*  $Id: client.qc,v 1.112 2005/07/22 23:19:49 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -563,6 +563,9 @@ Player entered the suicide command
 void ()
 ClientKill =
 {
+	if (intermission_running)
+		return;
+
 	if (!is_player ())
 	{
 		sprint (self, "Observers can't suicide!\n");
