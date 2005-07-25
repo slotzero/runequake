@@ -1,16 +1,6 @@
-$Id: Changes,v 1.80 2005/01/29 02:08:54 slotzero Exp $
+$Id: Changes,v 1.81 2005/07/25 12:51:53 slotzero Exp $
 
-Move to Todo:
-
-use skill isntead of gamecfg to set password (via command)
-make sure you inform of new cvars saved1 and saved2 internals.
-customizable cvars for console related aliases
-fix Player and Configuring guides so that all vote commands etc are in
-
-// developer stuff
-victim_address command
-
-Version 1.1  Fri Jan 28 20:42:53 EST 2005
+Version 1.1  Mon Jul 25 08:51:26 EST 2005
 
     - Bug Fixes
 
@@ -30,7 +20,7 @@ Version 1.1  Fri Jan 28 20:42:53 EST 2005
           a typo which prevented zapping under normal circumstances.  This is fixed.
 
         - In Quakeworld, when the level changes and team mode is on, you are no longer
-          killed.
+          killed for switching teams.
 
         - When a player disconnects during intermission, the player entity now gets
           reset properly.
@@ -63,14 +53,30 @@ Version 1.1  Fri Jan 28 20:42:53 EST 2005
 
     - Changes
 
+        - If a player is lagged out, you'll see a broadcast message indication
+          such.
+
+        - The server console can now check player pings using 'sping'.
+
         - There's a new rocket arena mode (vote-arena).  The mode is compatible with arena
           maps but they are not required to play.
 
         - Damage and hook now activate buttons.
 
+        - The team scores are now visible in the engine HUD when the server is in team
+          mode.  This is a proquake feature, so you'll need to use proquake or compatible
+          engine to see this.
+
+        - There is a new team releated command called +teamscores.  You use this command
+          as you would +showscores and it will display the team colors and the total
+          fraglimit.
+
         - The following runes were made team friendly; glue, blizzard, anti-pack, and
           tornado.  The anti-pack and tornado particle color will be replaced with the
           owner's team color.
+
+        - Team mode now ends when the total frags of the team reaches the fraglimit and
+          not when the first person to hit the fraglimit does.
 
         - Pets no longer trip your teammates traps.
 

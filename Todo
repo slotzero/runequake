@@ -1,14 +1,15 @@
-$Id: Todo,v 1.15 2005/01/29 02:08:54 slotzero Exp $
+$Id: Todo,v 1.16 2005/07/25 12:51:53 slotzero Exp $
 
     - 2.0 release goals
 
         - better in-game help commands
         - server bots
         - vote head hunters option
+	- vote ctf option
 
     - suggestions
 
-        - allow phased players to pass through players [suggestion from zop]
+        - allow phased players to pass through other players [suggestion from zop]
         - prevent exit teleport destinations from being too close together
         - start teleport in haunted halls (e3m7) should have teleport destination
         - user allow map via the server console [suggestion from painkiller]
@@ -29,5 +30,4 @@ $Id: Todo,v 1.15 2005/01/29 02:08:54 slotzero Exp $
         - riders become observers when ridee leaves during intermission
         - make it so that fix-angles isn't needed
         - prevent phase from failing so often
-        - bomb locks player down [QW]
         - hook jitters [QW]
