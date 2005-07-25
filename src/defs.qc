@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.169 2005/06/30 06:07:00 slotzero Exp $
+/*  $Id: defs.qc,v 1.170 2005/07/25 12:48:34 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1077,7 +1077,7 @@ float   MULTICAST_ALL_R			= 3;            // every client, reliable
 float   MULTICAST_PHS_R			= 4;            // within hearing, reliable
 float   MULTICAST_PVS_R			= 5;            // within sight, reliable
 
-// proquak engine features
+// proquake engine features
 float	PQC_NOP				= 1;
 float	PQC_NEW_TEAM			= 2;
 float	PQC_ERASE_TEAM			= 3;

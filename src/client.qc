@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.112 2005/07/22 23:19:49 slotzero Exp $
+/*  $Id: client.qc,v 1.113 2005/07/25 12:48:34 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1858,35 +1858,6 @@ PlayerPostThink =
 	if (!self.aqflags & AQ_NO_HUD)
 		draw_hud (0);
 };
-
-/* void ()
-client_ip =
-{
-	local float px, pch, i;
-	local string new;
-
-	new = net_address ();
-	self.address = @AddInt (&new, %32);
-	strcpy (self.address, new);
-
-	px = AddInt(&"\{0}  ", PSTRING_TO_PQUAKEC);
-	pch = AddInt(AddInt(&self.address, PSTRING_TO_PQUAKEC), %-3);
-
-	&%116 = 0;
-	for (i = 0; i < 16; i = i + 1)
-	{
-		pch = AddInt (pch, %1);
-		&%113 = (*pch)[0];
-
-		if (world[%5] == ':')
-			i = 16;
-	}
-
-	pch = AddInt(pch, %3);
-	(*pch)[0] = (*px)[0];
-}; */
-
-// Fixed!
 
 void ()
 client_ip =

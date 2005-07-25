@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.39 2005/05/16 22:37:37 slotzero Exp $
+/*  $Id: hunked.qc,v 1.40 2005/07/25 12:48:34 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -24,6 +24,7 @@
 float LAST_TIME_UPDATE;
 float HUNK_SERVER_TIME		= %10;
 float HUNK_CLIENT_DISCONNECT	= %100;
+float HUNK_BAN_OFFSET		= %800;
 float HUNK_NO_QUAD		= %1008;
 float HUNK_NO_PENT		= %1009;
 float HUNK_NO_RING		= %1010;
@@ -233,7 +234,6 @@ Client_Disconnect_Log =
 		self_sprint (self, "No entries found.\n");
 };
 
-float HUNK_BAN_OFFSET = %800;
 float BAN_LIST_SIZE = %25;
 
 float (vector ip)
