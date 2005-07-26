@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.35 2005/02/18 02:48:05 slotzero Exp $
+/*  $Id: strman.qc,v 1.36 2005/07/26 21:30:05 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -74,10 +74,13 @@ strlen =
 		return strlen_qc (s);
 	-])
 
-	if (&s > 0 && &s < 16777216)
-		return strlen_qc (s);
-	else
+	if (&s < 0)
 		return strlen_any (s);
+
+	if (&s > 16777216)
+		return strlen_any (s);
+
+	return strlen_qc (s);
 };
 
 // base is the dword offset
