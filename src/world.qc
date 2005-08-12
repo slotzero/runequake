@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.68 2005/07/05 03:23:16 slotzero Exp $
+/*  $Id: world.qc,v 1.69 2005/08/12 02:51:38 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -452,7 +452,7 @@ StartFrame =
 
 		else if (i == C2_SUITON)
 		{
-			if (NO_RING)
+			if (NO_SUIT)
 			{
 				dprint_force ("Environmental protection suit enabled\n");
 				setsuit ();
@@ -461,7 +461,7 @@ StartFrame =
 
 		else if (i == C2_SUITOFF)
 		{
-			if (!NO_RING)
+			if (!NO_SUIT)
 			{
 				dprint_force ("Environmental protection suit disabled\n");
 				setsuit ();
