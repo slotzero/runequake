@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.58 2005/05/08 08:17:47 slotzero Exp $
+/*  $Id: items.qc,v 1.59 2005/08/22 07:51:12 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -514,6 +514,9 @@ armor_touch =
 	// armor touch sound
 	item_sound (other, CHAN_ITEM, "items/armor1.wav", 1, ATTN_NORM);
 
+	// Stop burning, for levels with no water.
+	other.aqstate = other.aqstate - other.aqstate & AQS_BURNING;
+
 	if (other.runetype == RN_REQUIEM)
 		other.runevector_z = time + RN_REQUIEM_RECHARGE;
 	else
@@ -529,9 +532,6 @@ armor_touch =
 		if (deathmatch & DM_RESPAWN)
 			self.nextthink = time + ARMOR_RESPAWN_TIME;
 		self.think = SUB_regen;
-
-		// Stop burning, for levels with no water.
-		other.aqstate = other.aqstate - other.aqstate & AQS_BURNING;
 
 		activator = other;
 		SUB_UseTargets (); // fire all targets / killtargets
