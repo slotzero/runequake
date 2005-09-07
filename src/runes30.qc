@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.41 2004/12/18 23:50:15 slotzero Exp $
+/*  $Id: runes30.qc,v 1.42 2005/09/07 23:11:15 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -676,22 +676,20 @@ Suck =
 	suckee = findradius (sucker.origin, dist); // find the victims
 	while (suckee)
 	{
-		if (suckee.health || !(suckee.flags & FL_ONGROUND))
+		if (suckee.health || !suckee.flags & FL_ONGROUND)
 		{
-			if (suckee.solid != SOLID_BSP
-					&& !isfriend2 (sucker.owner, suckee)
-					&& sucker != suckee)
+			if (suckee.solid != SOLID_BSP && !isfriend2 (sucker.owner, suckee) && sucker != suckee)
 			{
 				if (suckee.classname != "player")
-					suckee.flags = suckee.flags-(suckee.flags & FL_ONGROUND);
-				if (suckee.runetype != RN_ENVIRO
-						&& !suckee.items & IT_SUIT)
+					suckee.flags = suckee.flags - suckee.flags & FL_ONGROUND;
+				if (!environmental (suckee))
 				{
-					suckdir = sucker.origin - suckee.origin;
-					suckdist = vlen (suckdir);
-					suckdir = normalize (suckdir);
-					suckforce = suckdir * SUCK_FORCE * (dist - suckdist);
-					suckee.velocity = suckee.velocity + suckforce;
+					dprint (suckee.classname, "\n");
+					suckdir		= sucker.origin - suckee.origin;
+					suckdist	= vlen (suckdir);
+					suckdir		= normalize (suckdir);
+					suckforce	= suckdir * SUCK_FORCE * (dist - suckdist);
+					suckee.velocity	= suckee.velocity + suckforce;
 				}
 			}
 		}
