@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.29 2005/05/06 23:27:53 slotzero Exp $
+/*  $Id: engine.qc,v 1.30 2005/09/10 23:09:58 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -340,13 +340,13 @@ pqc_new_team =
 {	IN_QW(return;)
 	local float i, shirt, pants, msg_type;
 
-	if (e == world)
-		msg_type = MSG_ALL;
-	else
+	if (e.cl[CL_ACTIVE] == %1)
 	{
 		msg_entity = e;
 		msg_type = MSG_ONE;
 	}
+	else
+		msg_type = MSG_ALL;
 
 	shirt = i = floor (cl_colors / 16);
 	i = i * 16;
@@ -375,13 +375,13 @@ pqc_team_frags =
 {	IN_QW(return;)
 	local float msg_type;
 
-	if (e == world)
-		msg_type = MSG_ALL;
-	else
+	if (e.cl[CL_ACTIVE] == %1)
 	{
 		msg_entity = e;
 		msg_type = MSG_ONE;
 	}
+	else
+		msg_type = MSG_ALL;
 
 	WriteByte (msg_type, SVC_STUFFTEXT);
 	WriteByte (msg_type, 1);
@@ -396,13 +396,13 @@ pqc_match_time =
 {	IN_QW(return;)
 	local float msg_type;
 
-	if (e == world)
-		msg_type = MSG_ALL;
-	else
+	if (e.cl[CL_ACTIVE] == %1)
 	{
 		msg_entity = e;
 		msg_type = MSG_ONE;
 	}
+	else
+		msg_type = MSG_ALL;
 
 	WriteByte (msg_type, SVC_STUFFTEXT);
 	WriteByte (msg_type, 1);
