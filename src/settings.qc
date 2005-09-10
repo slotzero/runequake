@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.54 2005/04/30 19:51:19 slotzero Exp $
+/*  $Id: settings.qc,v 1.55 2005/09/10 06:46:57 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -34,7 +34,7 @@
 // After you unzip the compiler, run it in either the poq or qw folder.
 //
 // ### IMPORTANT: As of Rune Quake version 0.5, you are limited to using
-//                the qccx or frikqcc compiler.                      ###
+//                the qccx 1.0 or frikqcc 2.5 compiler.              ###
 
 
 // This is the password used to activate admin mode.  It must be 6
@@ -335,12 +335,6 @@ vector WEAPON_CHARGED_OFFSET	= '0 0 25';
 // Offset at which to place player from an item she is being spawned at.
 
 vector SPAWN_ITEM_OFFSET	= '0 0 30';
-
-// While there is at least one player who has voted to exit the level
-// or change team mode, the number of votes required to exit will be
-// displayed every this many seconds.
-
-float VOTE_COUNT_PERIOD		= 120;
 
 // If this value is greater than or equal to 0 the intermission will
 // automatically exit this many seconds after players would have been

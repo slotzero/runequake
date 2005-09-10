@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.29 2004/12/29 04:31:52 slotzero Exp $
+/*  $Id: hook.qc,v 1.30 2005/09/10 06:46:57 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -101,7 +101,7 @@ MaybeDropHook =
 
 	if (HOOK_CAMP_PROT)
 	{
-		if (self.drop_hook && self.drop_hook < time)
+		if (self.dropdelay && self.dropdelay < time)
 			dropit = 1;
 	}
 
@@ -245,7 +245,7 @@ HookTouch =
 	{
 		sound (self, CHAN_AUTO, "player/axhit2.wav", 1, ATTN_NORM);
 		self.avelocity = VEC_ORIGIN;
-		self.drop_hook = time + HOOK_DROP_DELAY;
+		self.dropdelay = time + HOOK_DROP_DELAY;
 	}
 
 	if (other.takedamage)
