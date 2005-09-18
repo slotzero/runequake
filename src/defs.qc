@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.171 2005/09/10 06:46:57 slotzero Exp $
+/*  $Id: defs.qc,v 1.172 2005/09/18 01:51:41 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -546,7 +546,7 @@ float IMP_TEAMSCORES_ON		= 63;
 float IMP_TEAMSCORES_OFF	= 62;
 //				= 61 - 60	[free]
 float IMP_CYCLE_ALTERNATES	= 59;
-//				= 58;		[free]
+float IMP_AUTOSTATS		= 58;
 float IMP_SWITCHFIRE_BEST	= 57;
 //				= 57 - 41	[sattack aliases]
 float IMP_SWITCHFIRE_BASE	= 41;
@@ -704,6 +704,7 @@ float RQ_CUSTOM_SOUNDS		= 4;
 float RQ_BINDINGS_RECEIVED	= 8;
 float RQ_TEAMSCORES_ON		= 16;
 float RQ_LAGGED_OUT		= 32;
+float RQ_AUTOSTATS		= 64;
 
 // aqstate flags (not saved across levels)
 float AQS_MENU_MASK		= 31;

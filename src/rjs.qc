@@ -1,5 +1,5 @@
 
-/*  $Id: rjs.qc,v 1.188 2005/06/30 00:10:20 slotzero Exp $
+/*  $Id: rjs.qc,v 1.189 2005/09/18 01:51:41 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1340,6 +1340,20 @@ common_impulses =
 
 	else if (self.impulse == IMP_EFFICIENCY)
 		sprint_efficiency ();
+
+	else if (self.impulse == IMP_AUTOSTATS)
+	{
+		if (self.rqflags & RQ_AUTOSTATS)
+		{
+			self.rqflags = self.rqflags - self.rqflags & RQ_AUTOSTATS;
+			self_sprint (self, "autostats off\n");
+		}
+		else
+		{
+			self.rqflags = self.rqflags + self.rqflags | RQ_AUTOSTATS;
+			self_sprint (self, "autostats \bon\n");
+		}
+	}
 
 	else if (self.impulse == IMP_RIDER_HIDE)
 	{

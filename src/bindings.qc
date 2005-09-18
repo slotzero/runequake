@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.79 2005/06/30 06:07:00 slotzero Exp $
+/*  $Id: bindings.qc,v 1.80 2005/09/18 01:51:41 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -199,6 +199,7 @@ player_aliases =
 
 	player_init_impulse_alias ("admin-toggle",		IMP_ADMIN_TOGGLE);
 	player_init_impulse_alias ("best-weapon",		IMP_BEST_WEAPON);
+	player_init_impulse_alias ("autostats",			IMP_AUTOSTATS);
 	player_init_impulse_alias ("change-level",		IMP_LEVELS);
 	player_init_impulse_alias ("commands",			IMP_COMMANDS);
 	player_init_impulse_alias ("custom",			IMP_CUSTOM);

@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.105 2005/06/30 02:48:28 slotzero Exp $
+/*  $Id: develop.qc,v 1.106 2005/09/18 01:51:41 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -138,122 +138,128 @@ client_ping_times =
 	}
 };
 
-void (entity e)
+void (entity to, entity e)
 sprint_eff_player =
 {
 	local float i;
 	local string s;
 
-	self_sprintf_len (self, e.netname, -15);
+	self_sprintf_len (to, e.netname, -15);
 
 	// shells
 	i = rint ((e.shell_dmg / e.shell_dmg_max) * 100);
 
-	self_sprint (self, "\{252}");
+	self_sprint (to, "\{252}");
 
 	if (!e.shell_dmg_max)
-		self_sprint (self, "N/A");
+		self_sprint (to, "N/A");
 	else if (i < 100)
 	{
 		s = ftos (i);
-		self_sprintf_len (self, s, 2);
-		self_sprint (self, "%");
+		self_sprintf_len (to, s, 2);
+		self_sprint (to, "%");
 	}
 	else
-		self_sprint (self, "100");
+		self_sprint (to, "100");
 
 	// nails
 	i = rint ((e.nail_dmg / e.nail_dmg_max) * 100);
 
-	self_sprint (self, "\{252}");
+	self_sprint (to, "\{252}");
 
 	if (!e.nail_dmg_max)
-		self_sprint (self, "N/A");
+		self_sprint (to, "N/A");
 	else if (i < 100)
 	{
 		s = ftos (i);
-		self_sprintf_len (self, s, 2);
-		self_sprint (self, "%");
+		self_sprintf_len (to, s, 2);
+		self_sprint (to, "%");
 	}
 	else
-		self_sprint (self, "100");
+		self_sprint (to, "100");
 
 	// rockets
 	i = rint ((e.rocket_dmg / e.rocket_dmg_max) * 100);
 
-	self_sprint (self, "\{252}");
+	self_sprint (to, "\{252}");
 
 	if (!e.rocket_dmg_max)
-		self_sprint (self, "N/A");
+		self_sprint (to, "N/A");
 	else if (i < 100)
 	{
 		s = ftos (i);
-		self_sprintf_len (self, s, 2);
-		self_sprint (self, "%");
+		self_sprintf_len (to, s, 2);
+		self_sprint (to, "%");
 	}
 	else
-		self_sprint (self, "100");
+		self_sprint (to, "100");
 
 	// cells
 	i = rint ((e.cell_dmg / e.cell_dmg_max) * 100);
 
-	self_sprint (self, "\{252}");
+	self_sprint (to, "\{252}");
 
 	if (!e.cell_dmg_max)
-		self_sprint (self, "N/A");
+		self_sprint (to, "N/A");
 	else if (i < 100)
 	{
 		s = ftos (i);
-		self_sprintf_len (self, s, 2);
-		self_sprint (self, "%");
+		self_sprintf_len (to, s, 2);
+		self_sprint (to, "%");
 	}
 	else
-		self_sprint (self, "100");
+		self_sprint (to, "100");
 
 	// total
 	i = rint (((e.shell_dmg + e.nail_dmg + e.rocket_dmg + e.cell_dmg)
 			/ (e.shell_dmg_max + e.nail_dmg_max + e.rocket_dmg_max + e.cell_dmg_max)) * 100);
 
-	self_sprint (self, "\{252}");
+	self_sprint (to, "\{252}");
 
-	if (e == self)
-		self_sprint (self, "\[");
+	if (e == to)
+		self_sprint (to, "\[");
 	else
-		self_sprint (self, " ");
+		self_sprint (to, " ");
 
 	if (!(e.shell_dmg_max + e.nail_dmg_max + e.rocket_dmg_max + e.cell_dmg_max))
-		self_sprint (self, "N/A");
+		self_sprint (to, "N/A");
 	else if (i < 100)
 	{
 		s = ftos (i);
-		self_sprintf_len (self, s, 2);
-		self_sprint (self, "%");
+		self_sprintf_len (to, s, 2);
+		self_sprint (to, "%");
 	}
 	else
-		self_sprint (self, "100");
+		self_sprint (to, "100");
 
-	if (e == self)
-		self_sprint (self, "\]");
+	if (e == to)
+		self_sprint (to, "\]");
 	else
-		self_sprint (self, " ");
+		self_sprint (to, " ");
 
-	self_sprint (self, "\n");
+	self_sprint (to, "\n");
+};
+
+void (entity to)
+sprint_efficiency_e =
+{
+	local entity e;
+
+	self_sprint (to, "\n     name      \{252}bul\{252}nls\{252}rox\{252}lg \{252}total\n");
+	self_sprint (to, "\b---------------+---+---+---+---+-----\n");
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		sprint_eff_player (to, e);
+		e = find (e, classname, "player");
+	}
 };
 
 void ()
 sprint_efficiency =
 {
-	local entity e;
-
-	self_sprint (self, "\n     name      \{252}bul\{252}nls\{252}rox\{252}lg \{252}total\n");
-	self_sprint (self, "\b---------------+---+---+---+---+-----\n");
-
-	e = find (world, classname, "player");
-	while (e)
-	{
-		sprint_eff_player (e);
-		e = find (e, classname, "player");
-	}
+	sprint_efficiency_e (self);
 };
 
 void ()
