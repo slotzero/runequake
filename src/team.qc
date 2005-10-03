@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.60 2005/09/10 23:38:50 slotzero Exp $
+/*  $Id: team.qc,v 1.61 2005/10/03 00:36:06 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -840,6 +840,19 @@ change_mode_to_normal =
 		self_sprint (self, "Already in normal mode\n");
 		return;
 	}
+
+	// XXX Hack until I can get match mode set up.
+	local entity e, os;
+
+	os = self;
+	e = find (world, classname, "player");
+	while (e)
+	{
+		self = e;
+		SetNormalParms ();
+ 		e = find (e, classname, "player");
+	}
+	self = os;
 
 	&%IN_POQ(368,376) = -1;
 	s = ftos (new_deathmatch);

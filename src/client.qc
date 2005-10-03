@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.114 2005/09/18 01:51:41 slotzero Exp $
+/*  $Id: client.qc,v 1.115 2005/10/03 00:36:06 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -185,6 +185,28 @@ SetArenaParms =
 	set_weapon (IT_ROCKET_LAUNCHER);
 
 	self.armortype		= ARMOR_TYPE_3;
+};
+
+void ()
+SetNormalParms =
+{
+	self.items		= IT_SHOTGUN | IT_AXE;
+	self.health		= MAX_HEALTH_NORMAL;
+	self.armorvalue		= 0;
+	self.ammo_shells	= 25;
+	self.ammo_nails		= 0;
+	self.ammo_rockets	= 0;
+	self.ammo_cells		= 0;
+
+	// Setting self.weapon is necessary because you retain your
+	// weapon setting across deaths.  If you die with the single
+	// shotgun set_weapon() won't do anything when this tries to set
+	// your weapon because it thinks you're already wielding that.
+	self.weapon		= 0;
+
+	set_weapon (IT_SHOTGUN);
+
+	self.armortype		= 0;
 };
 
 void ()
