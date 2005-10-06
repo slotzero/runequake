@@ -1,5 +1,5 @@
 
-/*  $Id: rjs.qc,v 1.189 2005/09/18 01:51:41 slotzero Exp $
+/*  $Id: rjs.qc,v 1.190 2005/10/06 21:06:33 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1320,6 +1320,33 @@ common_impulses =
 	else if (self.impulse == IMP_VOTE_NO)
 		vote_no ();
 
+	else if (self.impulse == IMP_READY)
+		match_ready ();
+
+	else if (self.impulse == IMP_NOTREADY)
+		match_notready ();
+
+	else if (self.impulse == IMP_OBSERVER)
+	{
+		if (is_observer ())
+			self_sprint (self, "you are already an observer\n");
+		else
+		{
+			if (mode_match ())
+			{
+				spawn_protect_off ();
+				obs_become (1);
+			}
+			else
+			{
+				if (self.deadflag && self.deadflag >= DEAD_DEAD)
+					corpse_to_observer (0);
+				else
+					self_sprint (self, "you must be dead first\n");
+			}
+		}
+	}
+
 	else if (self.impulse == IMP_LEVELS)
 		levels ();
 
@@ -1696,7 +1723,6 @@ player_init =
 	if (scratch1 & S1_AMBIENT_SOUND_OFF && !is_qsmack ())
 		self_stuffcmd (self, "ambient_level 0\n");
 
-	obs_become (0);
 	aq_menu_set (AQS_MENU_SPLASH);
 
 	i = 0;

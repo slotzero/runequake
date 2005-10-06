@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.60 2005/07/08 04:01:12 slotzero Exp $
+/*  $Id: observer.qc,v 1.61 2005/10/06 21:06:33 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -818,10 +818,19 @@ game_queue_len =
 void (float force)
 obs_join_game =
 {
-	local float maxp, i, ra;
+	local float maxp, i, ra, mm;
 	local string s1, s2, sx;
 
 	ra = mode_arena ();
+
+	mm = mode_match ();
+	if (mm)
+	{
+		if (match_obs_join_game ())
+			force = 1;
+		else
+			return;
+	}
 
 	if (!force && self.runevar)
 	{
@@ -913,7 +922,7 @@ obs_join_game =
 	persistent_parms ();
 	PutClientInServer ();
 
-	if (!ra)
+	if (!ra && !mm)
 	{
 		bprint (self.netname);
 		bprint (" joined the game\n");

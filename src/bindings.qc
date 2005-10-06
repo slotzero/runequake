@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.80 2005/09/18 01:51:41 slotzero Exp $
+/*  $Id: bindings.qc,v 1.81 2005/10/06 21:06:33 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -220,7 +220,10 @@ player_aliases =
 	player_init_impulse_alias ("levels",			IMP_LEVELS);
 	player_init_impulse_alias ("lag",			IMP_LAG);
 	player_init_impulse_alias ("no",			IMP_VOTE_NO);
+	player_init_impulse_alias ("notready",			IMP_NOTREADY);
+	player_init_impulse_alias ("observer",			IMP_OBSERVER);
 	player_init_impulse_alias ("quiet-toggle",		IMP_QUIET_TOGGLE);
+	player_init_impulse_alias ("ready",			IMP_READY);
 	player_init_impulse_alias ("remove-frags",		IMP_REMOVE_FRAGS);
 	player_init_impulse_alias ("rider-hide",		IMP_RIDER_HIDE);
 	player_init_impulse_alias ("rune-delete",		IMP_RUNE_DELETE);

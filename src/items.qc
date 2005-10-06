@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.59 2005/08/22 07:51:12 slotzero Exp $
+/*  $Id: items.qc,v 1.60 2005/10/06 21:06:33 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -281,6 +281,12 @@ health_touch =
 	if (other.classname != "player")
 		return;
 
+	if (mode_match ())
+	{
+		if (match.state <= 0)
+			return;
+	}
+
 	if (other.runetype == RN_REQUIEM)
 	{
 		if (other.runevector_y > time)
@@ -393,6 +399,12 @@ armor_touch =
 
 	if (other.classname != "player")
 		return;
+
+	if (mode_match ())
+	{
+		if (match.state <= 0)
+			return;
+	}
 
 	// Someone touched me, so don't cycle if configured.
 	self.runetype	= time + 5;
@@ -677,6 +689,12 @@ weapon_touch =
 	if (!other.flags & FL_CLIENT)
 		return;
 
+	if (mode_match ())
+	{
+		if (match.state <= 0)
+			return;
+	}
+
 	requiem = other.runetype == RN_REQUIEM;
 	if (requiem)
 	{
@@ -935,6 +953,13 @@ ammo_touch =
 
 	if (other.classname != "player")
 		return;
+
+	if (mode_match ())
+	{
+		if (match.state <= 0)
+			return;
+	}
+
 	if (other.health <= 0)
 		return;
 	if (other.runetype == RN_REQUIEM)
@@ -1353,6 +1378,13 @@ powerup_touch =
 
 	if (other.classname != "player")
 		return;
+
+	if (mode_match ())
+	{
+		if (match.state <= 0)
+			return;
+	}
+
 	if (other.health <= 0)
 		return;
 
@@ -1550,6 +1582,13 @@ BackpackTouch =
 
 	if (other.classname != "player")
 		return;
+
+	if (mode_match ())
+	{
+		if (match.state <= 0)
+			return;
+	}
+
 	if (other.health <= 0)
 		return;
 
@@ -1644,6 +1683,12 @@ void ()
 DropBackpack =
 {
 	local entity item;
+
+	if (mode_match ())
+	{
+		if (!match.state)
+			return;
+	}
 
 	if (mode_arena ())
 		return;

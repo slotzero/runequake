@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.115 2005/10/03 00:36:06 slotzero Exp $
+/*  $Id: client.qc,v 1.116 2005/10/06 21:06:33 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1112,7 +1112,21 @@ PlayerDeathThink =
 {
 	local float forward;
 
-	if (mode_arena ())
+	if (mode_match ())
+	{
+		if (match.style > time)
+			return;
+
+		if (!match.state)
+			self.style = 0;
+
+		if (self.style < time)
+		{
+			respawn ();
+			return;
+		}
+	}
+	else if (mode_arena ())
 	{
 		arena_death_think ();
 		return;
@@ -1462,7 +1476,7 @@ PlayerPreThink =
 	}
 
 	// lagged player notification
-	if (self.search_time < time)
+	/* if (self.search_time < time)
 	{
 		self.search_time = time + 5;
 
@@ -1481,7 +1495,7 @@ PlayerPreThink =
 			if (self.rqflags & RQ_LAGGED_OUT)
 				self.rqflags = self.rqflags - self.rqflags & RQ_LAGGED_OUT;
 		}
-	}
+	} */
 
 	if (self.aqstate & AQS_MENU_MASK && time > self.count)
 		aq_menu_print ();
@@ -1559,7 +1573,9 @@ PlayerPreThink =
 	}
 
 	// Enforce teams if appropriate
-	if (teamplay & TEAM_TEAM_MASK)
+	if (mode_match ())
+		match_pre_think ();
+	else if (teamplay & TEAM_TEAM_MASK)
 	{
 		if (!is_correct_team ())	// no short circuiting!
 		{
@@ -1986,7 +2002,9 @@ ClientDisconnect =
 
 	qsmack_status_valid = 0;
 
-	if (mode_arena ())
+	if (mode_match ())
+		maybe_remove_team (self);
+	else if (mode_arena ())
 		arena_client_disconnect ();
 
 	i = !self.cl[CL_ACTIVE] / %1;
@@ -2046,11 +2064,18 @@ called when a player dies
 void (entity targ, entity attacker, string dt)
 ClientObituary =
 {
-	local float attacker_player, rnum, f;
+	local float attacker_player, rnum, f, mm;
 	local string attacker_name, s1, s2;
 
 	if (targ.classname != "player")
 		return;
+
+	mm = mode_match ();
+	if (mm)
+	{
+		if (match.state <= 0)
+			return;
+	}
 
 	attacker_player = (attacker.classname == "player"
 				|| attacker.classname == "deader");
@@ -2110,7 +2135,7 @@ ClientObituary =
 
 	if (targ.classname == "player" && dt == "squish")
 	{
-		if (teamplay & TEAM_FRAG_PENALTY
+		if ((teamplay & TEAM_FRAG_PENALTY || mm)
 				&& targ.team > 0
 				&& targ.team == attacker.team
 				&& targ != attacker)
@@ -2243,7 +2268,7 @@ ClientObituary =
 			return;
 		}
 
-		if (teamplay & TEAM_FRAG_PENALTY
+		if ((teamplay & TEAM_FRAG_PENALTY || mm)
 				&& targ.team > 0
 				&& targ.team == attacker.team)
 		{

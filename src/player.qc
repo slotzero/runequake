@@ -1,4 +1,4 @@
-/*  $Id: player.qc,v 1.18 2005/06/21 22:17:36 slotzero Exp $
+/*  $Id: player.qc,v 1.19 2005/10/06 21:06:33 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -602,6 +602,7 @@ PlayerDie =
 	self.flags			= self.flags - self.flags & FL_ONGROUND;
 	self.movetype			= MOVETYPE_TOSS;
 	self.aflag			= 0;
+	self.style			= time + 3; // mode_match
 
 	if (self.velocity_z < 10)
 		self.velocity_z = self.velocity_z + random () * 300;
@@ -643,6 +644,15 @@ PlayerDie =
 		// case.
 		if (current_hooks > 0)
 			current_hooks = current_hooks - 1;
+	}
+
+	if (mode_match ())
+	{
+		if (match.state <= 0)
+		{
+			GibPlayer ();
+  			return;
+		}
 	}
 
 	if (self.health < -40)

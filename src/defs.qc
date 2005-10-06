@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.172 2005/09/18 01:51:41 slotzero Exp $
+/*  $Id: defs.qc,v 1.173 2005/10/06 21:06:33 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -502,7 +502,8 @@ float IMP_VOTE_YES		= 255;
 float IMP_VOTE_NO		= 254;
 //				= 238 - 253	[weapon aliases]
 //				= 220 - 237	[qsmack]
-//				= 219 - 201	[free]
+//				= 219 - 202	[free]
+float IMP_OBSERVER		= 201;
 //				= 200 - 101	[cheat impulses]
 float IMP_RUNE_CHEAT_BASE	= 101;
 float IMP_RUNE_USE		= 100;
@@ -544,7 +545,8 @@ float IMP_LAG			= 65;
 float IMP_CUSTOM_SOUNDS		= 64;
 float IMP_TEAMSCORES_ON		= 63;
 float IMP_TEAMSCORES_OFF	= 62;
-//				= 61 - 60	[free]
+float IMP_READY			= 61;
+float IMP_NOTREADY		= 60;
 float IMP_CYCLE_ALTERNATES	= 59;
 float IMP_AUTOSTATS		= 58;
 float IMP_SWITCHFIRE_BEST	= 57;
@@ -705,6 +707,7 @@ float RQ_BINDINGS_RECEIVED	= 8;
 float RQ_TEAMSCORES_ON		= 16;
 float RQ_LAGGED_OUT		= 32;
 float RQ_AUTOSTATS		= 64;
+float RQ_READY			= 128;
 
 // aqstate flags (not saved across levels)
 float AQS_MENU_MASK		= 31;
@@ -1510,3 +1513,5 @@ entity	match;
 .float	rocket_dmg;
 .float	cell_dmg_max;
 .float	cell_dmg;
+
+.float	team_colors;

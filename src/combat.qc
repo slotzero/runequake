@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.46 2005/06/30 06:07:00 slotzero Exp $
+/*  $Id: combat.qc,v 1.47 2005/10/06 21:06:33 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -359,6 +359,12 @@ T_Damage =
 		damage = 0;
 
 	// Allow momentum change without damage when player is waiting for opponent.
+	if (mode_match ())
+	{
+		if (match.state <= 0)
+			damage = 0;
+	}
+
 	if (mode_arena ())
 	{
 		if (arena.state == -2)
