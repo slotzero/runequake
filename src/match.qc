@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.22 2005/10/06 21:06:33 slotzero Exp $
+/*  $Id: match.qc,v 1.23 2005/10/06 21:17:17 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -413,17 +413,16 @@ match_countdown =
 				bprint (" second\n");
 			else
 				bprint (" seconds\n");
-
 		}
 	}
 	else
 	{
 		kill_all_players ();
 		match.state = 1;
-		match.count = time + 60;	// minutes remaining
-		pqc_match_time (world, 1, 0);
+		match.count = time + 300;	// minutes remaining
+		pqc_match_time (world, 5, 0);
 		WriteByte(MSG_ALL, 8);
-		WriteString(MSG_ALL, "1 minutes remaining\n");
+		WriteString(MSG_ALL, "5 minutes remaining\n");
 		self.think = match_count;
 		self.nextthink = time;
 	}
