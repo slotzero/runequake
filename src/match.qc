@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.23 2005/10/06 21:17:17 slotzero Exp $
+/*  $Id: match.qc,v 1.24 2005/10/06 23:38:33 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -331,43 +331,60 @@ kill_all_players =
 void ()
 match_count =
 {
-	local float i, seconds;
+	local float i, seconds, minutes;
 
-	if (match.state <= 0)
+	if (match.state <= 0 || intermission_running)
 	{
 		remove (self);
 		return;
 	}
 
 	seconds = rint (match.count - time);
-	seconds = seconds - (seconds * 2);
-
-	if (seconds < 12)
+	if (seconds <= 0)
 	{
-		i = fabs (seconds);
-		if (i <= 0)
-		{
-			match.state = 0;
-			TEAMS_PRESENT = 0;
-			kill_all_players ();
-			bprint ("The match is over\n");
-			team_stats (1);
-			pqc_match_time (world, 255, 0);
-			remove_bit_from_players (rqflags, RQ_READY);
-			remove (self);
-			return;
-		}
-		else if (i == 11)
-			bprint ("match ends in T minus\n");
-		else if (i < 11)
-		{
-			bprint ("  ");
-			bprint_float (i);
-			if (i == 1)
-				bprint (" second\n");
-			else
-				bprint (" seconds\n");
+		match.state	= 0;
+		TEAMS_PRESENT	= 0;
 
+		bprint ("The match is over\n");
+		team_stats (1);
+		kill_all_players ();
+		pqc_match_time (world, 255, 0);
+		remove_bit_from_players (rqflags, RQ_READY);
+		remove (self);
+		return;
+	}
+	else if (seconds < 11)
+	{
+		bprint ("  ");
+		bprint_float (seconds);
+		if (seconds == 1)
+			bprint (" second\n");
+		else
+			bprint (" seconds\n");
+	}
+	else if (seconds == 11)
+		bprint ("match ends in T minus\n");
+	else if (seconds == 30)
+		bprint ("match ends in 30 seconds\n");
+	else if (seconds > 59)
+	{
+		minutes = seconds / 60;
+		if (minutes == ceil (minutes))
+		{
+			if (minutes == match.frags)
+			{
+				WriteByte(MSG_ALL, 8);
+				WriteString(MSG_ALL, "20 minutes remaining\n");
+			}
+			else
+			{
+				bprint ("match ends in ");
+				bprint_float (minutes);
+				if (minutes == 1)
+					bprint (" minute\n");
+				else
+					bprint (" minutes\n");
+			}
 		}
 	}
 
@@ -381,7 +398,7 @@ match_countdown =
 {
 	local float i, minutes, seconds;
 
-	if (self.count < 0)
+	if (self.count < 0 || intermission_running)
 	{
 		remove (self);
 		return;
@@ -418,13 +435,15 @@ match_countdown =
 	else
 	{
 		kill_all_players ();
-		match.state = 1;
-		match.count = time + 300;	// minutes remaining
-		pqc_match_time (world, 5, 0);
-		WriteByte(MSG_ALL, 8);
-		WriteString(MSG_ALL, "5 minutes remaining\n");
-		self.think = match_count;
-		self.nextthink = time;
+
+		match.state	= 1;
+		match.frags	= 20;	// match time (XXX will be a vote option)
+		match.count	= time + (match.frags * 60);
+
+		pqc_match_time (world, match.frags, 0);
+
+		self.think	= match_count;
+		self.nextthink	= time;
 	}
 };
 
