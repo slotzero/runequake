@@ -1,5 +1,5 @@
 
-/*  $Id: rjs.qc,v 1.190 2005/10/06 21:06:33 slotzero Exp $
+/*  $Id: rjs.qc,v 1.191 2005/10/07 21:51:09 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -386,7 +386,37 @@ process_misc =
 	if (NO_MEGA)
 		setmega ();
 
- 	if (scratch1 & S1_ARENA_DEFAULT)
+	if (scratch1 & S1_MATCH_DEFAULT)
+	{
+		wanted = hook_type (0);
+		if (wanted != hook_type (temp1))
+		{
+			if (wanted == 0)
+				toggle_free_hook ();
+			else if (wanted == 1)
+				free_hook ();
+			else if (wanted == 2)
+				lithium_hook ();
+		}
+
+		if (!NO_RUNES)
+			setrunes ();
+		if (!NO_ALT_WEAPONS)
+			setalts ();
+		if (!NO_SPAWN_SHIELDS)
+			setshields ();
+		if (ROTATE && !NO_ARMOR)
+			setrotate ();
+
+		// instead of setting setting deathmatch here,
+		// i just reset to normal and in the next process
+		// it will get set to practice. (I'm lazy)
+		if (mode_practice ())
+			change_mode_to_normal ();
+		else if (mode_arena ())
+			change_mode_to_normal ();
+	}
+ 	else if (scratch1 & S1_ARENA_DEFAULT)
 	{
 		wanted = hook_type (0);
 		if (wanted != hook_type (temp1))
