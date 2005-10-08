@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.24 2005/10/06 23:38:33 slotzero Exp $
+/*  $Id: match.qc,v 1.25 2005/10/08 03:30:10 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -170,11 +170,6 @@ restore_colors =
 	self_stuffcmd (e, "\n");
 };
 
-
-// match is over
-// match in progress
-// waiting for players
-
 void ()
 match_pre_think =
 {
@@ -195,145 +190,41 @@ match_pre_think =
 	}
 };
 
-// XXX Rename this, use a global function.
-float ()
-all_players_ready =
+void ()
+match_abort =
 {
-	local entity e;
+	match.state = 0;
 
-	e = find (world, classname, "player");
-	while (e)
-	{
-		if (!is_observer_e (e) && !e.rqflags & RQ_READY)
-			return FALSE;
-		e = find (e, classname, "player");
-	}
-	return TRUE;
+	bprint ("Match aborted!\n");
+	pqc_match_time (world, 255, 0);
+	pqc_match_reset ();
 };
 
 void ()
-announce_teams_present =
+match_stop_countdown =
 {
 	local entity e;
-	local float i;
 
-	i = bits_set (TEAMS_PRESENT);
-	if (i == 1)
-		bprint ("only one team present\n");
-	else if (!i)
-		bprint ("no teams present\n");
-
-	if (!all_players_ready () || i == 1)
+	e = find (world, classname, "match_countdown");
+	if (e)
 	{
-		e = find (world, classname, "match_countdown");
-		if (e)
-		{
-			e.count = -1;
-			e.cnt = 0;
-			e.nextthink = time;
-			pqc_match_time (world, 255, 0);
-			bprint ("timer stopped\n");
-		}
+		match.cnt	= 0;
+		e.count		= -1;
+		e.cnt		= 0;
+
+		bprint ("Timer stopped\n");
+		pqc_match_time (world, 255, 0);
+
+		e.nextthink	= time;
 	}
 };
 
-float (entity e)
-maybe_remove_team =
-{
-	local entity w;
-	local float e_pants, w_pants;
-
-	e.rqflags = e.rqflags - e.rqflags & RQ_READY;
-	e_pants = cl_colors_to_pants (e.cl[CL_COLORS]);
-
-	w = find (world, classname, "player");
-	while (w)
-	{
-		w_pants = cl_colors_to_pants (w.cl[CL_COLORS]);
-		if (e != w && e_pants == w_pants && w.rqflags & RQ_READY)
-		{
-			announce_teams_present ();
-			return FALSE;
-		}
-		w = find (w, classname, "player");
-	}
-	remove_team (e.team);
-
-	return TRUE;
-};
-
-void (float tm)
-remove_team =
-{
-	local entity e;
-	local float bit;
-
-	if (!HUNK_CONTEXT)
-		return;
-
-	if (!TEAMS_PRESENT)
-		return;
-
-	pqc_erase_team (tm - 1);
-	Write_Hunk_Float (HUNK_CONTEXT, HUNK_TEAMS + (tm * %1), 0);
-
-	bit = num_to_bit (tm);
-	TEAMS_PRESENT = TEAMS_PRESENT - TEAMS_PRESENT & bit;
-
-	bit = bits_set (TEAMS_PRESENT);
-	if (match.state)
-	{
-		if (!bit)
-		{
-			match.state = 0;
-			pqc_match_time (world, 255, 0);
-			pqc_match_reset ();
-			bprint ("match aborted!\n");
-		}
-	}
-	else
-		announce_teams_present ();
-};
-
-void (entity e)
-match_time_set =
+void ()
+match_timer =
 {
 	local float seconds, minutes;
 
-	seconds = rint (match.count - time);
-	minutes = floor (seconds / 60);
-	seconds = seconds - rint (minutes * 60);
-
-	pqc_match_time (e, minutes, seconds);
-};
-
-// XXX Rename this, use a global function.
-void ()
-kill_all_players =
-{
-	local entity e, os;
-	e = find (world, classname, "player");
-	while (e)
-	{
-		if (!is_observer_e (e))
-		{
-			os = self;
-			self = e;
-			Killed (self, self, string_null);
-			self.style = time + 1;
-			match.style = time + 1;
-			self = os;
-		}
-		e = find (e, classname, "player");
-	}
-};
-
-void ()
-match_count =
-{
-	local float i, seconds, minutes;
-
-	if (match.state <= 0 || intermission_running)
+	if (!match.state || intermission_running)
 	{
 		remove (self);
 		return;
@@ -363,9 +254,9 @@ match_count =
 			bprint (" seconds\n");
 	}
 	else if (seconds == 11)
-		bprint ("match ends in T minus\n");
+		bprint ("Match ends in T minus\n");
 	else if (seconds == 30)
-		bprint ("match ends in 30 seconds\n");
+		bprint ("Match ends in 30 seconds\n");
 	else if (seconds > 59)
 	{
 		minutes = seconds / 60;
@@ -373,12 +264,12 @@ match_count =
 		{
 			if (minutes == match.frags)
 			{
-				WriteByte(MSG_ALL, 8);
-				WriteString(MSG_ALL, "20 minutes remaining\n");
+				bprint_float (minutes);
+				bprint (" minutes remaining\n");
 			}
 			else
 			{
-				bprint ("match ends in ");
+				bprint ("Match ends in ");
 				bprint_float (minutes);
 				if (minutes == 1)
 					bprint (" minute\n");
@@ -396,7 +287,7 @@ match_count =
 void ()
 match_countdown =
 {
-	local float i, minutes, seconds;
+	local float minutes, seconds;
 
 	if (self.count < 0 || intermission_running)
 	{
@@ -404,85 +295,112 @@ match_countdown =
 		return;
 	}
 
-	seconds = floor (self.count - time);
-	seconds = seconds - (seconds * 2);
-	match.cnt = fabs (seconds);
+	seconds		= floor (self.count - time);
+	match.cnt	= seconds;
+	self.nextthink	= time + 1;
 
-	if (seconds)
-	{
-		pqc_match_time (world, 0, seconds);
-		self.nextthink = time + 1;
+	pqc_match_time (world, 0, seconds - (seconds * 2));
 
-		i = fabs (seconds);
-		if (i == 15)
-		{
-			remove_classname ("backpack");
-			remove_classname ("dropped_armor");
-			bprint ("all items have respawned\n");
-		}
-		else if (i == 11)
-			bprint ("match begins in T minus\n");
-		else if (i < 11)
-		{
-			bprint ("  ");
-			bprint_float (i);
-			if (i == 1)
-				bprint (" second\n");
-			else
-				bprint (" seconds\n");
-		}
-	}
-	else
+	if (seconds <= 0)
 	{
 		kill_all_players ();
 
 		match.state	= 1;
-		match.frags	= 20;	// match time (XXX will be a vote option)
+		match.frags	= 2; // XXX make a setting
 		match.count	= time + (match.frags * 60);
 
 		pqc_match_time (world, match.frags, 0);
 
-		self.think	= match_count;
+		self.think	= match_timer;
 		self.nextthink	= time;
 	}
-};
-
-void ()
-match_ready =
-{
-	if (is_observer ())
-		obs_join_game (0);
-	else
-		match_obs_join_game ();
-};
-
-void ()
-match_notready =
-{
-	if (!mode_match ())
+	else if (seconds < 11)
 	{
-		self_sprint (self, "command valid in match mode only\n");
-		return;
+		bprint ("  ");
+		bprint_float (seconds);
+		if (seconds == 1)
+			bprint (" second\n");
+		else
+			bprint (" seconds\n");
 	}
+	else if (seconds == 11)
+		bprint ("Match begins in T minus\n");
+	else if (seconds == 15)
+	{
+		remove_classname ("backpack");
+		remove_classname ("dropped_armor");
+		bprint ("All items have respawned\n");
+	}
+};
 
-	if (!self.rqflags & RQ_READY)
-		return;
+void ()
+match_spawn_countdown =
+{
+	local entity e;
+
+	e = find (world, classname, "match_countdown");
+	if (!e)
+	{
+			e		= spawn ();
+			e.classname	= "match_countdown";
+			e.frags		= 20;
+			e.count		= time + e.frags;
+
+			if (e.frags == 20)
+				bprint ("Match begins in 20 seconds\n");
+			else
+				bprint ("Match begins in 1 minute\n");
+
+			pqc_match_time (world, 0, e.frags - (e.frags * 2));
+
+			e.think		= match_countdown;
+			e.nextthink	= time + 1;
+	}
+};
+
+float ()
+match_players_ready =
+{
+	local entity e;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (!is_observer_e (e) && !e.rqflags & RQ_READY)
+			return FALSE;
+		e = find (e, classname, "player");
+	}
+	return TRUE;
+};
+
+void ()
+audit_match =
+{
+	local float teams;
+
+	teams = bits_set (TEAMS_PRESENT);
 
 	if (match.state)
 	{
-		self_sprint (self, "cannot uncommit during match\ntype 'observer' to leave match\n");
+		if (!teams)
+		{
+			bprint ("No teams present\n");
+			match_abort ();
+		}
 		return;
 	}
-	else
-	{
-		bprint (self.netname);
-		bprint (" is not ready\n");
-	}
 
-	maybe_remove_team (self);
+	if (!teams)
+		bprint ("No teams present\n");
+	else if (teams == 1)
+		bprint ("Only one team present\n");
+
+	if (teams > 1 && match_players_ready ())
+		match_spawn_countdown ();
+	else
+		match_stop_countdown ();
 };
 
-// return 1 (player can commit), return 0 (player can't join, reset his color)
 float ()
 match_obs_join_game =
 {
@@ -520,7 +438,7 @@ match_obs_join_game =
 		return FALSE;
 	}
 
-	if (match.state > 0)
+	if (match.state)
 	{
 		self_sprint (self, "Team full.  A player must enter 'unlock' in console to let you join\n");
 		restore_colors (self, self.team_colors / %1);
@@ -528,7 +446,7 @@ match_obs_join_game =
 	}
 
 	// Clean up last match.
-	if (TEAMS_PRESENT <= 0)
+	if (!TEAMS_PRESENT)
 	{
 		TEAMS_PRESENT = 0;
 		match_hunk_init ();
@@ -537,11 +455,12 @@ match_obs_join_game =
 		pqc_match_reset ();
 	}
 
-	self.team_colors = self.cl[CL_COLORS];
-	self.rqflags = self.rqflags | RQ_READY;
+	self.team_colors	= self.cl[CL_COLORS];
+	self.rqflags		= self.rqflags | RQ_READY;
+	self.frags		= 0;
 
-	bit = num_to_bit (self.team);
-	s = team_to_name (self.team);
+	bit			= num_to_bit (self.team);
+	s			= team_to_name (self.team);
 	if (!TEAMS_PRESENT & bit)
 	{
 		bprint (s);
@@ -556,28 +475,121 @@ match_obs_join_game =
 	bprint (s);
 	bprint ("\n");
 
-	if (TEAMS_PRESENT == bit)
-		bprint ("only one team present\n");
-	else
-	{
-		if (all_players_ready ())
-		{
-			e = find (world, classname, "match_countdown");
-			if (!e)
-			{
-				e		= spawn ();
-				e.classname	= "match_countdown";
-				e.count		= time + 20;
-				e.think		= match_countdown;
-				e.nextthink	= time + 1;
-
-				bprint ("match begins in 20 seconds\n");
-				pqc_match_time (world, 0, -20);
-			}
-		}
-	}
-
-	self.frags = 0;
+	audit_match ();
 
 	return TRUE;
+};
+
+float (entity e)
+maybe_remove_team =
+{
+	local entity w;
+	local float e_pants, w_pants;
+
+	e.rqflags = e.rqflags - e.rqflags & RQ_READY;
+	e_pants = cl_colors_to_pants (e.cl[CL_COLORS]);
+
+	w = find (world, classname, "player");
+	while (w)
+	{
+		w_pants = cl_colors_to_pants (w.cl[CL_COLORS]);
+		if (e != w && e_pants == w_pants && w.rqflags & RQ_READY)
+		{
+			audit_match ();
+			return FALSE;
+		}
+		w = find (w, classname, "player");
+	}
+	remove_team (e.team);
+
+	return TRUE;
+};
+
+void (float tm)
+remove_team =
+{
+	local entity e;
+	local float bit;
+
+	if (!HUNK_CONTEXT)
+		return;
+
+	if (!TEAMS_PRESENT)
+		return;
+
+	pqc_erase_team (tm - 1);
+	Write_Hunk_Float (HUNK_CONTEXT, HUNK_TEAMS + (tm * %1), 0);
+
+	bit = num_to_bit (tm);
+	TEAMS_PRESENT = TEAMS_PRESENT - TEAMS_PRESENT & bit;
+
+	audit_match ();
+};
+
+void (entity e)
+match_time_set =
+{
+	local float seconds, minutes;
+
+	seconds = rint (match.count - time);
+	minutes = floor (seconds / 60);
+	seconds = seconds - rint (minutes * 60);
+
+	pqc_match_time (e, minutes, seconds);
+};
+
+// XXX Rename this, use a global function.
+void ()
+kill_all_players =
+{
+	local entity e, os;
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (!is_observer_e (e))
+		{
+			os = self;
+			self = e;
+			Killed (self, self, string_null);
+			self.style = time + 1;
+			match.style = time + 1;
+			self = os;
+		}
+		e = find (e, classname, "player");
+	}
+};
+
+void ()
+match_ready =
+{
+	if (is_observer ())
+		obs_join_game (0);
+	else
+		match_obs_join_game ();
+};
+
+void ()
+match_notready =
+{
+	if (!mode_match ())
+	{
+		self_sprint (self, "command valid in match mode only\n");
+		return;
+	}
+
+	if (!self.rqflags & RQ_READY)
+		return;
+
+	if (match.state)
+	{
+		self_sprint (self, "Cannot uncommit during match\ntype 'observer' to leave match\n");
+		return;
+	}
+	else
+	{
+		bprint (self.netname);
+		bprint (" is not ready\n");
+	}
+
+	maybe_remove_team (self);
 };
