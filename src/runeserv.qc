@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.60 2005/02/18 05:41:57 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.61 2005/10/08 06:06:30 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -1169,6 +1169,12 @@ Rune_Touch =
 {
 	local entity temp;
 	local string s;
+
+	if (mode_match ())
+	{
+		if (!match.state)
+			return;
+	}
 
 	if (Rune_Must_Move ())
 	{
