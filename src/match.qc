@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.27 2005/10/09 21:38:27 slotzero Exp $
+/*  $Id: match.qc,v 1.28 2005/10/09 23:34:05 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -44,18 +44,18 @@ match_hunk_init =
 void (entity e)
 match_client_init =
 {
-	local float i, c, pants, cl_colors, seconds, minutes;
+	local float i, c, pants, colors;
 
 	if (!HUNK_CONTEXT)
 		return;
 
 	for (i = %1; i <= %16; i = i + %1)
 	{
-		cl_colors = Read_Hunk_Float (HUNK_CONTEXT, HUNK_TEAMS + i);
-  		if (cl_colors && cl_colors != 0x20202020)
+		colors = Read_Hunk_Float (HUNK_CONTEXT, HUNK_TEAMS + i) / %1;
+  		if (colors && colors != 0x20202020)
 		{
-			pqc_new_team (e, cl_colors / %1);
-			pants = colors_to_pants (cl_colors);
+			pqc_new_team (e, colors);
+			pants = colors_to_pants (colors);
 			c = color_to_teamfrags (pants);
 			pqc_team_frags (e, pants, c);
 		}
@@ -138,24 +138,23 @@ bits_set =
 float (float c)
 colors_to_shirt =
 {
-	return floor ((c / %1) / 16);
+	return floor (c / 16);
 };
 
 float (float c)
 colors_to_pants =
 {
-	return (c / %1) & 15;
+	return c & 15;
 };
 
-void (entity e, float cl_colors)
+void (entity e, float c)
 restore_colors =
 {
-	local float i, shirt, pants;
+	local float shirt, pants;
 	local string s;
 
-	shirt = i = floor (cl_colors / 16);
-	i = i * 16;
-	pants = cl_colors - i;
+	shirt = colors_to_shirt (c);
+	pants = colors_to_pants (c);
 
 	self_stuffcmd (e, "color ");
 	s = ftos (shirt);
@@ -511,12 +510,12 @@ maybe_remove_team =
 	local float e_pants, w_pants;
 
 	e.rqstate = e.rqstate - e.rqstate & RQS_READY;
-	e_pants = colors_to_pants (e.cl[CL_COLORS]);
+	e_pants = colors_to_pants (e.cl[CL_COLORS] / %1);
 
 	w = find (world, classname, "player");
 	while (w)
 	{
-		w_pants = colors_to_pants (w.cl[CL_COLORS]);
+		w_pants = colors_to_pants (w.cl[CL_COLORS] / %1);
 		if (e != w && e_pants == w_pants && w.rqstate & RQS_READY)
 		{
 			audit_match ();

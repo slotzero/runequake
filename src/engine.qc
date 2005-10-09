@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.34 2005/10/09 21:00:12 slotzero Exp $
+/*  $Id: engine.qc,v 1.35 2005/10/09 23:34:05 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -324,10 +324,10 @@ void (float to, float f)
 WriteShortPQ =
 {	IN_QW(return;)
 
-	WriteByte (to, 16 + f / 4096);	// x 4096
-	WriteByte (to, 16 + f / 256);	// x 256
-	WriteByte (to, 16 + f / 16);	// x 16
-	WriteByte (to, 16 + f & 4095);	// x 1
+	WriteByte (to, 16 + (f / 4096)); // x 4096
+	WriteByte (to, 16 + (f / 256));	 // x 256
+	WriteByte (to, 16 + (f / 16));	 // x 16
+	WriteByte (to, 16 + (f & 4095)); // x 1
 };
 
 void (float to, float f)
@@ -337,11 +337,11 @@ WriteBytePQ =
 	if (f < 0)
 		f = fabs (f) + 128;
 
-	WriteByte (to, 16 + f / 16);	// x 16
-	WriteByte (to, 16 + f & 15);	// x 1
+	WriteByte (to, 16 + (f / 16));	// x 16
+	WriteByte (to, 16 + (f & 15));	// x 1
 };
 
-void (entity e, float cl_colors)
+void (entity e, float c)
 pqc_new_team =
 {	IN_QW(return;)
 	local float msg_type;
@@ -357,8 +357,8 @@ pqc_new_team =
 	WriteByte (msg_type, SVC_STUFFTEXT);
 	WriteByte (msg_type, 1);
 	WriteByte (msg_type, PQC_NEW_TEAM);
-	WriteByte (msg_type, 16 + cl_colors & 15); // pants
-	WriteByte (msg_type, 16 + cl_colors / 16); // shirt
+	WriteByte (msg_type, 16 + (c & 15)); // pants
+	WriteByte (msg_type, 16 + (c / 16)); // shirt
 	WriteString (msg_type, string_null);
 };
 
