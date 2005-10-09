@@ -1,5 +1,5 @@
 
-/*  $Id: rjs.qc,v 1.192 2005/10/09 00:38:39 slotzero Exp $
+/*  $Id: rjs.qc,v 1.193 2005/10/09 00:40:27 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2656,7 +2656,7 @@ W_ChangeWeapon =
 	local float it;
 
 	if (match_impulse_override ())
-		return;
+		return FALSE;
 
 	it = weapon_num_to_it (self.impulse);
 
