@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.33 2005/10/09 09:16:03 slotzero Exp $
+/*  $Id: engine.qc,v 1.34 2005/10/09 21:00:12 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -297,7 +297,7 @@ svc_updatecolors =
 // PROQUAKE BUILT-IN FEATURES
 //-------------------------------------------------------------------
 
-void (float to, float f)
+/* void (float to, float f)
 WriteShortPQ =
 {	IN_QW(return;)
 	local float i;
@@ -318,6 +318,16 @@ WriteShortPQ =
 	WriteByte (to, 16 + i);	// x 16
 
 	WriteByte (to, 16 + f);	// x 1
+}; */
+
+void (float to, float f)
+WriteShortPQ =
+{	IN_QW(return;)
+
+	WriteByte (to, 16 + f / 4096);	// x 4096
+	WriteByte (to, 16 + f / 256);	// x 256
+	WriteByte (to, 16 + f / 16);	// x 16
+	WriteByte (to, 16 + f & 4095);	// x 1
 };
 
 void (float to, float f)
@@ -411,4 +421,28 @@ pqc_match_reset =
 	WriteByte(MSG_ALL, 1);
 	WriteByte(MSG_ALL, PQC_MATCH_RESET);
 	WriteString(MSG_ALL, string_null);
+};
+
+void (entity e)
+pqc_ping_times =
+{	IN_QW(return;)
+
+	local float i, ping, msg_type;
+
+	if (e.cl[CL_ACTIVE] == %1)
+	{
+		msg_entity = e;
+		msg_type = MSG_ONE;
+	}
+	else
+		msg_type = MSG_ALL;
+
+	WriteByte(msg_type, SVC_STUFFTEXT);
+	WriteByte(msg_type, 1);
+	WriteByte(msg_type, PQC_PING_TIMES);
+
+	for (i = 0 ; i < %16 ; i = i + %1)
+		WriteShortPQ (msg_type, e.cl[CL_PING_TIMES + i] * 1000);
+
+	WriteString(msg_type, string_null);
 };
