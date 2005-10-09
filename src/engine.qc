@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.32 2005/10/09 08:53:01 slotzero Exp $
+/*  $Id: engine.qc,v 1.33 2005/10/09 09:16:03 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -323,16 +323,12 @@ WriteShortPQ =
 void (float to, float f)
 WriteBytePQ =
 {	IN_QW(return;)
-	local float i;
 
 	if (f < 0)
 		f = fabs (f) + 128;
 
-	i = floor (f / 16);
-	f = f - (i * 16);
-	WriteByte (to, 16 + i);	// x 16
-
-	WriteByte (to, 16 + f);	// x 1
+	WriteByte (to, 16 + f / 16);	// x 16
+	WriteByte (to, 16 + f & 15);	// x 1
 };
 
 void (entity e, float cl_colors)
