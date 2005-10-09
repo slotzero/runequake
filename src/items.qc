@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.60 2005/10/06 21:06:33 slotzero Exp $
+/*  $Id: items.qc,v 1.61 2005/10/09 06:21:45 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -245,15 +245,13 @@ float	H_ROTTEN	= 1;
 float	H_MEGA		= 2;
 
 
-void (string it_model, string it_noise, float it_healamount, float it_healtype)
+void (string it_model, string it_noise)
 health_set =
 {
 	precache_model (it_model);
 	precache_noise (it_noise);
 
 	self.touch		= health_touch;
-	self.healamount		= it_healamount;
-	self.healtype		= it_healtype;
 
 	setmodel (self, it_model);
 	setsize (self, VEC_ORIGIN, '32 32 56');
@@ -265,11 +263,11 @@ void ()
 item_health =
 {
 	if (self.spawnflags & H_ROTTEN)
-		health_set ("maps/b_bh10.bsp", "items/r_item1.wav", 15, 0);
+		health_set ("maps/b_bh10.bsp", "items/r_item1.wav");
 	else if (self.spawnflags & H_MEGA)
-		health_set ("maps/b_bh100.bsp", "items/r_item2.wav", 100, 2);
+		health_set ("maps/b_bh100.bsp", "items/r_item2.wav");
 	else
-		health_set ("maps/b_bh25.bsp", "items/health1.wav", 25, 1);
+		health_set ("maps/b_bh25.bsp", "items/health1.wav");
 };
 
 void ()
@@ -293,8 +291,15 @@ health_touch =
 			return;
 	}
 
-	is_mega = self.healtype == 2;
-	amount = self.healamount;
+	is_mega = self.spawnflags & H_MEGA;
+
+	if (self.spawnflags & H_ROTTEN)
+		amount = 15;
+	else if (self.spawnflags & H_MEGA)
+		amount = 100;
+	else
+		amount = 25;
+
 	s = self.noise;
 	// Vampires only get 5 health from non-mega health boxes.
 
