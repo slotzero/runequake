@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.25 2005/10/08 03:30:10 slotzero Exp $
+/*  $Id: match.qc,v 1.26 2005/10/09 00:38:39 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -18,6 +18,7 @@
 */
 
 float HUNK_TEAMS = %500;
+float HUNK_MATCH_TIMELIMIT = %517;
 float TEAMS_PRESENT;
 
 float ()
@@ -73,7 +74,6 @@ match_obs_init =
 			match_client_init (self.owner);
 		}
 
-		self.owner.rqflags = self.owner.rqflags - self.owner.rqflags & RQ_READY;
 		self_stuffcmd (self.owner, "color 0\n");
 		self.owner.frags = -99;
 	}
@@ -176,7 +176,7 @@ match_pre_think =
 	if (is_observer ())
 		return;
 
-	if (!self.rqflags & RQ_READY)
+	if (!self.rqstate & RQS_READY)
 		return;
 
 	if (self.search_time > time)
@@ -240,7 +240,7 @@ match_timer =
 		team_stats (1);
 		kill_all_players ();
 		pqc_match_time (world, 255, 0);
-		remove_bit_from_players (rqflags, RQ_READY);
+		remove_bit_from_players (rqstate, RQS_READY);
 		remove (self);
 		return;
 	}
@@ -287,7 +287,7 @@ match_timer =
 void ()
 match_countdown =
 {
-	local float minutes, seconds;
+	local float seconds;
 
 	if (self.count < 0 || intermission_running)
 	{
@@ -306,7 +306,15 @@ match_countdown =
 		kill_all_players ();
 
 		match.state	= 1;
-		match.frags	= 2; // XXX make a setting
+
+		local entity vip;
+		vip = find_vip ();
+		if (vip.impulse == IMP_VOTE_TIMESET)
+		{
+			vip.runevar = 0;
+			vip.nextthink = time;
+		}
+
 		match.count	= time + (match.frags * 60);
 
 		pqc_match_time (world, match.frags, 0);
@@ -316,6 +324,8 @@ match_countdown =
 	}
 	else if (seconds < 11)
 	{
+		if (seconds == 10)
+			bprint ("Match begins in T minus\n");
 		bprint ("  ");
 		bprint_float (seconds);
 		if (seconds == 1)
@@ -323,13 +333,23 @@ match_countdown =
 		else
 			bprint (" seconds\n");
 	}
-	else if (seconds == 11)
-		bprint ("Match begins in T minus\n");
+	else if (seconds == 12)
+		bprint ("Match is currently 1v1\n"); // XXX Fix me!!
 	else if (seconds == 15)
 	{
 		remove_classname ("backpack");
 		remove_classname ("dropped_armor");
 		bprint ("All items have respawned\n");
+	}
+
+	if (seconds == 18 || seconds == 15 || seconds == 12)
+	{
+		bprint ("\btimelimit is \<");
+		bprint (timeset_gold[(((match.frags / 5) - 1) * 3) * %1]);
+		bprint ("\>\n");
+
+		if (seconds == 18) // XXX Adjust with FASTSTART
+			bprint ("use '\btimeset\b' to change timelimit\n");
 	}
 };
 
@@ -345,6 +365,14 @@ match_spawn_countdown =
 			e.classname	= "match_countdown";
 			e.frags		= 20;
 			e.count		= time + e.frags;
+
+			// populate match frags with hunk or use default
+			match.frags = Read_Hunk_Float (HUNK_CONTEXT, HUNK_MATCH_TIMELIMIT);
+			if (match.frags < 5 || match.frags > 60)
+			{
+				Write_Hunk_Float (HUNK_CONTEXT, HUNK_MATCH_TIMELIMIT, 20);
+				match.frags = 20;
+			}
 
 			if (e.frags == 20)
 				bprint ("Match begins in 20 seconds\n");
@@ -366,7 +394,7 @@ match_players_ready =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		if (!is_observer_e (e) && !e.rqflags & RQ_READY)
+		if (!is_observer_e (e) && !e.rqstate & RQS_READY)
 			return FALSE;
 		e = find (e, classname, "player");
 	}
@@ -420,7 +448,7 @@ match_obs_join_game =
 		return FALSE;
 	}
 
-	if (self.rqflags & RQ_READY)
+	if (self.rqstate & RQS_READY)
 	{
 		self_sprint (self, "You have already committed\n");
 		return FALSE;
@@ -456,7 +484,7 @@ match_obs_join_game =
 	}
 
 	self.team_colors	= self.cl[CL_COLORS];
-	self.rqflags		= self.rqflags | RQ_READY;
+	self.rqstate		= self.rqstate | RQS_READY;
 	self.frags		= 0;
 
 	bit			= num_to_bit (self.team);
@@ -486,14 +514,14 @@ maybe_remove_team =
 	local entity w;
 	local float e_pants, w_pants;
 
-	e.rqflags = e.rqflags - e.rqflags & RQ_READY;
+	e.rqstate = e.rqstate - e.rqstate & RQS_READY;
 	e_pants = cl_colors_to_pants (e.cl[CL_COLORS]);
 
 	w = find (world, classname, "player");
 	while (w)
 	{
 		w_pants = cl_colors_to_pants (w.cl[CL_COLORS]);
-		if (e != w && e_pants == w_pants && w.rqflags & RQ_READY)
+		if (e != w && e_pants == w_pants && w.rqstate & RQS_READY)
 		{
 			audit_match ();
 			return FALSE;
@@ -577,7 +605,7 @@ match_notready =
 		return;
 	}
 
-	if (!self.rqflags & RQ_READY)
+	if (!self.rqstate & RQS_READY)
 		return;
 
 	if (match.state)
@@ -592,4 +620,70 @@ match_notready =
 	}
 
 	maybe_remove_team (self);
+};
+
+void ()
+print_timeset_menu =
+{
+	if (mode_match ())
+	{
+		if (match.state)
+			self_sprint (self, "Cannot change timelimit while match is in progress\n");
+		else if (is_observer ())
+			count_votes (2);
+		else
+		{
+			self.rqstate = self.rqstate | RQS_TIMESET_OVERRIDE;
+			self_sprint (self, "Select timelimit:\n");
+			self_sprint (self, "\b\<\1\> 5 minutes     \<\4\> 20 minutes\n");
+			self_sprint (self, "\b\<\2\> 10 minutes    \<\5\> 25 minutes\n");
+			self_sprint (self, "\b\<\3\> 15 minutes    \<\6\> 30 minutes\n");
+		}
+	}
+	else
+		self_sprint (self, "Command only valid in match mode\n");
+};
+
+void ()
+vote_timeset =
+{
+	local float i;
+
+	if (match.state)
+		return;
+
+	match.frags = VOTE_TIMESET * 5;
+	Write_Hunk_Float (HUNK_CONTEXT, HUNK_MATCH_TIMELIMIT, match.frags);
+	VOTE_TIMESET = 0;
+};
+
+float ()
+match_impulse_override =
+{
+	local float force;
+
+	if (!mode_match ())
+		return FALSE;
+
+	force = self.rqstate & RQS_TIMESET_OVERRIDE;
+	self.rqstate = self.rqstate - self.rqstate & RQS_TIMESET_OVERRIDE;
+
+	if (match.state)
+		return FALSE;
+
+	if (force)
+	{
+		if (self.impulse > 6)
+			self_sprint (self, "invalid impulse\n");
+		else
+		{
+			if (!VOTE_TIMESET)
+				VOTE_TIMESET = self.impulse;
+			self.impulse = IMP_VOTE_TIMESET;
+			vote_impulse_commands ();
+		}
+		return TRUE;
+	}
+
+	return FALSE;
 };

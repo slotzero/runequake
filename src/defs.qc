@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.174 2005/10/07 21:51:09 slotzero Exp $
+/*  $Id: defs.qc,v 1.175 2005/10/09 00:38:39 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -322,6 +322,9 @@ entity runespawn;
 // state information, not retained across levels
 .float aqstate;
 
+// state information, not retained across levels
+.float rqstate;
+
 // vote information
 .float vote_flags;
 
@@ -603,6 +606,7 @@ float IMP_VOTE_HOOK_DAMAGE	= 17;
 float IMP_VOTE_ARENA		= 18;
 float IMP_VOTE_MEGA		= 19;
 float IMP_VOTE_WEAPONS_STAY	= 20;
+float IMP_VOTE_TIMESET		= 21;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;
@@ -705,9 +709,13 @@ float RQ_LOW_BANDWIDTH_CLIENT	= 2;
 float RQ_CUSTOM_SOUNDS		= 4;
 float RQ_BINDINGS_RECEIVED	= 8;
 float RQ_TEAMSCORES_ON		= 16;
-float RQ_LAGGED_OUT		= 32;
-float RQ_AUTOSTATS		= 64;
-float RQ_READY			= 128;
+float RQ_AUTOSTATS		= 32;
+
+// rqstate flags (not saved across levels)
+
+float RQS_LAGGED_OUT		= 1;
+float RQS_READY			= 2;
+float RQS_TIMESET_OVERRIDE	= 4;
 
 // aqstate flags (not saved across levels)
 float AQS_MENU_MASK		= 31;
@@ -1516,3 +1524,7 @@ entity	match;
 .float	cell_dmg;
 
 .float	team_colors;
+
+float VOTE_TIMESET;
+string timeset = "5\{0}":"10":"15":"20":"25":"30";
+string timeset_gold = "\5\{0}":"\1\0":"\1\5":"\2\0":"\2\5":"\3\0";

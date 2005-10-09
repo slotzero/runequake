@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.81 2005/10/06 21:06:33 slotzero Exp $
+/*  $Id: bindings.qc,v 1.82 2005/10/09 00:38:39 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -287,12 +287,20 @@ admin_aliases =
 void ()
 vote_aliases =
 {
+	local float i;
 	local string s;
 
 	self_stuffcmd (self, "alias vc \"impulse ");
 	s = ftos (IMP_VOTE_COMMAND);
 	self_stuffcmd (self, s);
 	self_stuffcmd (self, "\"\n");
+
+	self_stuffcmd (self, "alias 1 \"impulse 1\"\n");
+	self_stuffcmd (self, "alias 2 \"impulse 2\"\n");
+	self_stuffcmd (self, "alias 3 \"impulse 3\"\n");
+	self_stuffcmd (self, "alias 4 \"impulse 4\"\n");
+	self_stuffcmd (self, "alias 5 \"impulse 5\"\n");
+	self_stuffcmd (self, "alias 6 \"impulse 6\"\n");
 
 	player_vote_impulse_alias ("arena",			IMP_VOTE_ARENA);	// CRMod (Style)
 	player_vote_impulse_alias ("ffa",			IMP_VOTE_NORMAL);	// CRMod
@@ -302,6 +310,7 @@ vote_aliases =
 	player_vote_impulse_alias ("setquad",			IMP_VOTE_QUAD);		// CRMod
 	player_vote_impulse_alias ("setring",			IMP_VOTE_RING);		// CRMod
 	player_vote_impulse_alias ("setsuit",			IMP_VOTE_SUIT);		// CRMod
+	player_vote_impulse_alias ("timeset",			IMP_VOTE_TIMESET);	// CRMod
 	player_vote_impulse_alias ("vote-alts",			IMP_VOTE_ALTS);
 	player_vote_impulse_alias ("vote-alt-weapons",		IMP_VOTE_ALTS);
 	player_vote_impulse_alias ("vote-arena",		IMP_VOTE_ARENA);

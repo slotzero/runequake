@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.59 2005/06/24 04:37:49 slotzero Exp $
+/*  $Id: vote.qc,v 1.60 2005/10/09 00:38:39 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -47,7 +47,7 @@ vote_impulse_commands =
 		else
 			count_votes (2);
 	}
-	else if (self.impulse >= 1 && self.impulse <= 20)
+	else if (self.impulse >= 1 && self.impulse <= 21)
 		vote ();
 
 	impulse_override_cancel ();
@@ -108,6 +108,15 @@ vote_action =
 		bprint (vip.noise2[%1]);
 		bprint (vip.noise1);
 		bprint ("d\n");
+	}
+	else if (vip.noise2 == " match length to ")
+	{
+		if (!match.state)
+		{
+			bprint ("match length changed to ");
+			bprint (vip.noise3);
+			bprint (" minutes\n");
+		}
 	}
 	else if (vip.noise1 == "change")
 	{
@@ -337,9 +346,11 @@ vote_think =
 	else
 	{
 		bprint ("\{1}Vote cancelled\n");
-		// XXX Don't like this... do it elsehwere?
+
 		if (self.impulse == IMP_VOTE_EXIT)
 			forced_nextmap = string_null;
+		else if (self.impulse == IMP_VOTE_TIMESET)
+			VOTE_TIMESET = 0;
 		remove_bit_from_players (vote_flags, VOTE_YES | VOTE_NO);
 		remove (self);
 		return;
@@ -365,6 +376,13 @@ vote =
 			return vote_yes ();
 
 		return self_sprint (self, "\{141} a vote is already in progress\n");
+	}
+
+	// match mode timeset
+	if (!VOTE_TIMESET && self.impulse == IMP_VOTE_TIMESET)
+	{
+		print_timeset_menu ();
+		return;
 	}
 
 	// prevent auto-vote on exit votes of different levels
@@ -708,6 +726,15 @@ vote =
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
+	}
+	else if (self.impulse == IMP_VOTE_TIMESET)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= vote_timeset;
+		e.noise1	= "change";
+		e.noise2	= " match length to ";
+		e.noise3	= timeset[((VOTE_TIMESET - 1) * 3) * %1];
 	}
 	else
 		cancel = -1;

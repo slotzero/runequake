@@ -1,5 +1,5 @@
 
-/*  $Id: rjs.qc,v 1.191 2005/10/07 21:51:09 slotzero Exp $
+/*  $Id: rjs.qc,v 1.192 2005/10/09 00:38:39 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1598,7 +1598,7 @@ color_to_name =
 
 	     if (c ==  0)	return "\bWhite Team";
 	else if (c ==  1)	return "\bBrown Team";
-	else if (c ==  2)	return "\bLavender Team";
+	else if (c ==  2)	return "\bLight Blue Team";
 	else if (c ==  3)	return "\bGreen Team";
 	else if (c ==  4)	return "\bRed Team";
 	else if (c ==  5)	return "\bKhaki Team";
@@ -2654,6 +2654,9 @@ float (float use_alt, float anymode)
 W_ChangeWeapon =
 {
 	local float it;
+
+	if (match_impulse_override ())
+		return;
 
 	it = weapon_num_to_it (self.impulse);
 
