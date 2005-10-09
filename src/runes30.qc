@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.42 2005/09/07 23:11:15 slotzero Exp $
+/*  $Id: runes30.qc,v 1.43 2005/10/09 00:17:09 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -684,7 +684,6 @@ Suck =
 					suckee.flags = suckee.flags - suckee.flags & FL_ONGROUND;
 				if (!environmental (suckee))
 				{
-					dprint (suckee.classname, "\n");
 					suckdir		= sucker.origin - suckee.origin;
 					suckdist	= vlen (suckdir);
 					suckdir		= normalize (suckdir);
