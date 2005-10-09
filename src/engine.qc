@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.31 2005/09/10 23:38:50 slotzero Exp $
+/*  $Id: engine.qc,v 1.32 2005/10/09 08:53:01 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -338,7 +338,7 @@ WriteBytePQ =
 void (entity e, float cl_colors)
 pqc_new_team =
 {	IN_QW(return;)
-	local float i, shirt, pants, msg_type;
+	local float msg_type;
 
 	if (e.cl[CL_ACTIVE] == %1)
 	{
@@ -348,15 +348,11 @@ pqc_new_team =
 	else
 		msg_type = MSG_ALL;
 
-	shirt = i = floor (cl_colors / 16);
-	i = i * 16;
-	pants = cl_colors - i;
-
 	WriteByte (msg_type, SVC_STUFFTEXT);
 	WriteByte (msg_type, 1);
 	WriteByte (msg_type, PQC_NEW_TEAM);
-	WriteByte (msg_type, 16 + pants);
-	WriteByte (msg_type, 16 + shirt);
+	WriteByte (msg_type, 16 + cl_colors & 15); // pants
+	WriteByte (msg_type, 16 + cl_colors / 16); // shirt
 	WriteString (msg_type, string_null);
 };
 
@@ -386,8 +382,8 @@ pqc_team_frags =
 	WriteByte (msg_type, SVC_STUFFTEXT);
 	WriteByte (msg_type, 1);
 	WriteByte (msg_type, PQC_TEAM_FRAGS);
-	WriteByte (msg_type, 16 + tm);	//team
-	WriteShortPQ (msg_type, tf);	//frags
+	WriteByte (msg_type, 16 + tm);	// team
+	WriteShortPQ (msg_type, tf);	// frags
 	WriteString (msg_type, string_null);
 };
 
@@ -407,8 +403,8 @@ pqc_match_time =
 	WriteByte (msg_type, SVC_STUFFTEXT);
 	WriteByte (msg_type, 1);
 	WriteByte (msg_type, PQC_MATCH_TIME);
-	WriteBytePQ (msg_type, m);
-	WriteBytePQ (msg_type, s);
+	WriteBytePQ (msg_type, m); // minutes
+	WriteBytePQ (msg_type, s); // seconds
 	WriteString (msg_type, string_null);
 };
 
