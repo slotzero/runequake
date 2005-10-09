@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.26 2005/10/09 00:38:39 slotzero Exp $
+/*  $Id: match.qc,v 1.27 2005/10/09 21:38:27 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -55,7 +55,7 @@ match_client_init =
   		if (cl_colors && cl_colors != 0x20202020)
 		{
 			pqc_new_team (e, cl_colors / %1);
-			pants = cl_colors_to_pants (cl_colors);
+			pants = colors_to_pants (cl_colors);
 			c = color_to_teamfrags (pants);
 			pqc_team_frags (e, pants, c);
 		}
@@ -135,20 +135,16 @@ bits_set =
 	return n;
 };
 
-float (float cl_colors)
-cl_colors_to_shirt =
+float (float c)
+colors_to_shirt =
 {
-	return floor (cl_colors / %1 / 16);
+	return floor ((c / %1) / 16);
 };
 
-float (float cl_colors)
-cl_colors_to_pants =
+float (float c)
+colors_to_pants =
 {
-	local float shirt;
-
-	shirt = floor (cl_colors / %1 / 16);
-	shirt = shirt * 16;
-	return cl_colors / %1 - shirt;
+	return (c / %1) & 15;
 };
 
 void (entity e, float cl_colors)
@@ -515,12 +511,12 @@ maybe_remove_team =
 	local float e_pants, w_pants;
 
 	e.rqstate = e.rqstate - e.rqstate & RQS_READY;
-	e_pants = cl_colors_to_pants (e.cl[CL_COLORS]);
+	e_pants = colors_to_pants (e.cl[CL_COLORS]);
 
 	w = find (world, classname, "player");
 	while (w)
 	{
-		w_pants = cl_colors_to_pants (w.cl[CL_COLORS]);
+		w_pants = colors_to_pants (w.cl[CL_COLORS]);
 		if (e != w && e_pants == w_pants && w.rqstate & RQS_READY)
 		{
 			audit_match ();
