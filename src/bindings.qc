@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.82 2005/10/09 00:38:39 slotzero Exp $
+/*  $Id: bindings.qc,v 1.83 2005/10/10 17:48:40 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -304,6 +304,7 @@ vote_aliases =
 
 	player_vote_impulse_alias ("arena",			IMP_VOTE_ARENA);	// CRMod (Style)
 	player_vote_impulse_alias ("ffa",			IMP_VOTE_NORMAL);	// CRMod
+	player_vote_impulse_alias ("match",			IMP_VOTE_MATCH);	// CRMod
 	player_vote_impulse_alias ("normal",			IMP_VOTE_NORMAL);	// CRMod
 	player_vote_impulse_alias ("practice",			IMP_VOTE_PRACTICE);	// CRMod
 	player_vote_impulse_alias ("setpent",			IMP_VOTE_PENT);		// CRMod
@@ -319,6 +320,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-free",			IMP_VOTE_FREE);
 	player_vote_impulse_alias ("vote-hook-damage",		IMP_VOTE_HOOK_DAMAGE);
 	player_vote_impulse_alias ("vote-lithium",		IMP_VOTE_LITHIUM);
+	player_vote_impulse_alias ("vote-match",		IMP_VOTE_MATCH);
 	player_vote_impulse_alias ("vote-mega",			IMP_VOTE_MEGA);
 	player_vote_impulse_alias ("vote-normal",		IMP_VOTE_NORMAL);
 	player_vote_impulse_alias ("vote-pent",			IMP_VOTE_PENT);
@@ -426,6 +428,7 @@ console_aliases =
 	console_init_cvar_alias ("banlist",		CVAR_C2,	C2_BAN_LIST);
 	console_init_cvar_alias ("conprint",		CVAR_C2,	C2_CONPRINT);
 	console_init_cvar_alias ("eff",			CVAR_C2,	C2_EFFICIENCY);
+	console_init_cvar_alias ("match",		CVAR_C2,	C2_MODE_MATCH);
 
 	level_aliases ();
 	custom_aliases ();

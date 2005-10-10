@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.61 2005/10/03 00:36:06 slotzero Exp $
+/*  $Id: team.qc,v 1.62 2005/10/10 17:48:40 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -431,12 +431,14 @@ change_teamplay =
 		}
 	}
 
+	/* if (time < 3)
+		return;
 	if (teamplay & TEAM_MATCH_MODE && !old_teamplay & TEAM_MATCH_MODE)
 		bprint ("Match mode enabled\n");
 	else if (teamplay
 				&& !teamplay & TEAM_MATCH_MODE
 				&& old_teamplay & TEAM_MATCH_MODE)
-		bprint ("Match mode disabled\n");
+		bprint ("Match mode disabled\n"); */
 };
 
 void (float check_state)
@@ -762,10 +764,11 @@ teamscores_off =
 void ()
 change_mode_to_practice =
 {
-	local float new_deathmatch;
+	local float new_deathmatch, new_teamplay;
 	local string s;
 
 	new_deathmatch = cvar ("deathmatch");
+	new_teamplay = cvar ("teamplay");
 
 	if (!NO_SPAWN_SHIELDS)
 		setshields ();
@@ -773,8 +776,10 @@ change_mode_to_practice =
 		setalts ();
 	if (!new_deathmatch & DM_MODE_PRACTICE)
 		new_deathmatch = new_deathmatch | DM_MODE_PRACTICE;
+	if (new_teamplay & TEAM_MODE_MATCH)
+		new_teamplay = new_teamplay - new_teamplay & TEAM_MODE_MATCH;
 
-	if (new_deathmatch == deathmatch)
+	if (new_deathmatch == deathmatch && new_teamplay == teamplay)
 	{
 		self_sprint (self, "Already in practice mode\n");
 		return;
@@ -783,16 +788,19 @@ change_mode_to_practice =
 	&%IN_POQ(368,376) = -1;
 	s = ftos (new_deathmatch);
 	cvar_set ("deathmatch", s);
+	s = ftos (new_teamplay);
+	cvar_set ("teamplay", s);
 	admin_changelevel (mapname);
 };
 
 void ()
 change_mode_to_arena =
 {
-	local float new_deathmatch;
+	local float new_deathmatch, new_teamplay;
 	local string s;
 
 	new_deathmatch = cvar ("deathmatch");
+	new_teamplay = cvar ("teamplay");
 
 	if (!NO_SPAWN_SHIELDS)
 		setshields ();
@@ -802,8 +810,10 @@ change_mode_to_arena =
 		setrunes ();
 	if (!new_deathmatch & DM_MODE_ROCKET_ARENA)
 		new_deathmatch = new_deathmatch | DM_MODE_ROCKET_ARENA;
+	if (new_teamplay & TEAM_MODE_MATCH)
+		new_teamplay = new_teamplay - new_teamplay & TEAM_MODE_MATCH;
 
-	if (new_deathmatch == deathmatch)
+	if (new_deathmatch == deathmatch && new_teamplay == teamplay)
 	{
 		self_sprint (self, "Already in arena mode\n");
 		return;
@@ -812,16 +822,19 @@ change_mode_to_arena =
 	&%IN_POQ(368,376) = -1;
 	s = ftos (new_deathmatch);
 	cvar_set ("deathmatch", s);
+	s = ftos (new_teamplay);
+	cvar_set ("teamplay", s);
 	admin_changelevel (mapname);
 };
 
 void ()
 change_mode_to_normal =
 {
-	local float new_deathmatch;
+	local float new_deathmatch, new_teamplay;
 	local string s;
 
 	new_deathmatch = cvar ("deathmatch");
+	new_teamplay = cvar ("teamplay");
 
 	// XXX I would like these to be configured via a config file.
 	if (NO_ALT_WEAPONS)
@@ -834,29 +847,57 @@ change_mode_to_normal =
 		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_PRACTICE;
 	if (new_deathmatch & DM_MODE_ROCKET_ARENA)
 		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_ROCKET_ARENA;
+	if (teamplay & TEAM_MODE_MATCH)
+		new_teamplay = new_teamplay - new_teamplay & TEAM_MODE_MATCH;
 
-	if (new_deathmatch == deathmatch)
+	if (new_deathmatch == deathmatch && new_teamplay == teamplay)
 	{
 		self_sprint (self, "Already in normal mode\n");
 		return;
 	}
 
-	// XXX Hack until I can get match mode set up.
-	local entity e, os;
+	&%IN_POQ(368,376) = -1;
+	s = ftos (new_deathmatch);
+	cvar_set ("deathmatch", s);
+	s = ftos (new_teamplay);
+	cvar_set ("teamplay", s);
+	admin_changelevel (mapname);
+};
 
-	os = self;
-	e = find (world, classname, "player");
-	while (e)
+void ()
+change_mode_to_match =
+{
+	local float new_deathmatch, new_teamplay;
+	local string s;
+
+	new_deathmatch = cvar ("deathmatch");
+
+	// XXX I would like these to be configured via a config file.
+	if (!NO_ALT_WEAPONS)
+		setalts ();
+	if (!NO_SPAWN_SHIELDS)
+		setshields ();
+	if (!NO_RUNES)
+		setrunes ();
+	if (new_deathmatch & DM_MODE_PRACTICE)
+		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_PRACTICE;
+	if (new_deathmatch & DM_MODE_ROCKET_ARENA)
+		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_ROCKET_ARENA;
+	if (!new_teamplay & TEAM_MODE_MATCH)
+		new_teamplay = TEAM_MODE_MATCH;
+
+	if (new_deathmatch == deathmatch && new_teamplay == teamplay)
 	{
-		self = e;
-		SetNormalParms ();
- 		e = find (e, classname, "player");
+		self_sprint (self, "Already in match mode\n");
+		return;
 	}
-	self = os;
 
 	&%IN_POQ(368,376) = -1;
 	s = ftos (new_deathmatch);
 	cvar_set ("deathmatch", s);
+	// this leaves us no way to return teamplay to its "normal" state
+	s = ftos (new_teamplay);
+	cvar_set ("teamplay", s);
 	admin_changelevel (mapname);
 };
 
@@ -867,6 +908,8 @@ mode_normal =
 		return FALSE;
 	if (deathmatch & DM_MODE_ROCKET_ARENA)
 		return FALSE;
+	if (teamplay & TEAM_MODE_MATCH)
+		return FALSE;
 
 	return TRUE;
 };
@@ -874,6 +917,8 @@ mode_normal =
 float ()
 mode_practice =
 {
+	if (teamplay & TEAM_MODE_MATCH)
+		return FALSE;
 	if (deathmatch & DM_MODE_PRACTICE)
 		return TRUE;
 
