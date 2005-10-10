@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.35 2005/10/09 23:34:05 slotzero Exp $
+/*  $Id: engine.qc,v 1.36 2005/10/10 02:38:32 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -297,7 +297,7 @@ svc_updatecolors =
 // PROQUAKE BUILT-IN FEATURES
 //-------------------------------------------------------------------
 
-/* void (float to, float f)
+void (float to, float f)
 WriteShortPQ =
 {	IN_QW(return;)
 	local float i;
@@ -318,16 +318,6 @@ WriteShortPQ =
 	WriteByte (to, 16 + i);	// x 16
 
 	WriteByte (to, 16 + f);	// x 1
-}; */
-
-void (float to, float f)
-WriteShortPQ =
-{	IN_QW(return;)
-
-	WriteByte (to, 16 + (f / 4096)); // x 4096
-	WriteByte (to, 16 + (f / 256));	 // x 256
-	WriteByte (to, 16 + (f / 16));	 // x 16
-	WriteByte (to, 16 + (f & 4095)); // x 1
 };
 
 void (float to, float f)
