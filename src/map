@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#    $Id: map,v 1.33 2005/10/06 21:06:33 slotzero Exp $
+#    $Id: map,v 1.34 2005/10/10 00:18:40 slotzero Exp $
 
 use strict;
 use warnings;
@@ -555,7 +555,13 @@ print "\n";
 print "void (entity e, float f)\n";
 print "add_frag =\n";
 print "{\n";
-print "\tif (mode_match ()) if (!match.state) return;\n";
+print "\tlocal float e_team;\n\n";
+print "\te_team = e.team;\n";
+print "\tif (mode_match ())\n";
+print "\t{\n";
+print "\t\tif (!match.state)\n\t\t\treturn;\n";
+print "\t\te_team = colors_to_pants (e.team_colors / %1) + 1;\n";
+print "\t}\n";
 print "\tif (deathmatch & DM_DAMAGE_MATCH && !damage_match_hack) return;\n";
 print "\tif (e.runetype == RN_PACK_RAT && f > 0 && !deathmatch & DM_DAMAGE_MATCH) f = f + f * pack_rat_frag_bonus_e (e);\n";
 print "\te.frags = e.frags + f;\n";
@@ -563,8 +569,8 @@ print "\te.recent_frags = e.recent_frags + f;\n";
 $else = '';
 for my $t ($team_min .. $team_max, $team_nil) {
     print "\t${else}";
-    print "if (e.team == $t) " if $t != $team_nil;
-    print "{ if (tf_$t == $no_frags) tf_$t = f; else tf_$t = tf_$t + f; pqc_team_frags (world, e.team - 1, tf_$t); }\n";
+    print "if (e_team == $t) " if $t != $team_nil;
+    print "{ if (tf_$t == $no_frags) tf_$t = f; else tf_$t = tf_$t + f; pqc_team_frags (world, e_team - 1, tf_$t); }\n";
     $else = 'else ';
 }
 print "\tteam_fraglimit ();\n";
