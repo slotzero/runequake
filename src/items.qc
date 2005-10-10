@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.62 2005/10/10 01:28:14 slotzero Exp $
+/*  $Id: items.qc,v 1.63 2005/10/10 05:13:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1761,6 +1761,12 @@ drop_powerup =
 	local entity item;
 	local float time_left;
 	local string it_noise, it_model;
+
+	if (mode_match ())
+	{
+		if (!match.state)
+			return;
+	}
 
 	if (type == "quad")
 	{

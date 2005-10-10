@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.29 2005/10/10 01:28:14 slotzero Exp $
+/*  $Id: match.qc,v 1.30 2005/10/10 05:13:21 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -282,6 +282,8 @@ match_timer =
 	}
 	else if (seconds < 11)
 	{
+		if (seconds == 10)
+			bprint ("Match ends in T minus\n");
 		bprint ("  ");
 		bprint_float (seconds);
 		if (seconds == 1)
@@ -289,8 +291,6 @@ match_timer =
 		else
 			bprint (" seconds\n");
 	}
-	else if (seconds == 11)
-		bprint ("Match ends in T minus\n");
 	else if (seconds == 30)
 		bprint ("Match ends in 30 seconds\n");
 	else if (seconds > 59)
