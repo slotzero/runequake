@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.28 2005/10/09 23:34:05 slotzero Exp $
+/*  $Id: match.qc,v 1.29 2005/10/10 01:28:14 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -163,6 +163,47 @@ restore_colors =
 	s = ftos (pants);
 	self_stuffcmd (e, s);
 	self_stuffcmd (e, "\n");
+};
+
+void ()
+match_respawn_all_items =
+{
+	local entity os;
+
+	os = self;
+	self = nextent (world);
+	while (self)
+	{
+		if (self.classname == "bodyque")
+			self.model = string_null;
+
+		else if ((self.classname == "shambler_slave" && self.trigger_field.runevar)
+				|| self.classname == "backpack"
+				|| self.classname == "dropped_armor"
+				|| self.netname == "quad"
+				|| self.netname == "pent"
+				|| self.netname == "ring"
+				|| self.netname == "suit")
+			remove (self);
+
+		else if (self.classname == "dspot"
+				|| self.classname == "hologram"
+				|| self.classname == "deathorb"
+				|| self.classname == "radioactive"
+				|| self.classname == "freeze"
+				|| self.classname == "sucker"
+				|| self.classname == "spikeball"
+				|| self.classname == "torchtrap"
+				|| self.classname == "glue"
+				|| self.classname == "antipack")
+			self.nextthink = self.runetime = time;
+
+		else if (self.flags & FL_ITEM)
+			SUB_regen ();
+
+		self = nextent (self);
+	}
+	self = os;
 };
 
 void ()
@@ -332,8 +373,7 @@ match_countdown =
 		bprint ("Match is currently 1v1\n"); // XXX Fix me!!
 	else if (seconds == 15)
 	{
-		remove_classname ("backpack");
-		remove_classname ("dropped_armor");
+		match_respawn_all_items ();
 		bprint ("All items have respawned\n");
 	}
 

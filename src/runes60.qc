@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.63 2005/10/08 05:18:40 slotzero Exp $
+/*  $Id: runes60.qc,v 1.64 2005/10/10 01:28:14 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -682,6 +682,7 @@ Rune_AntiPack =
 	self.runevar		= self.runevar + 1;
 
 	antipack		= spawn ();
+	antipack.flags		= FL_ITEM;
 	antipack.solid		= SOLID_TRIGGER;
 	antipack.movetype	= MOVETYPE_TOSS;
 	antipack.owner		= self;

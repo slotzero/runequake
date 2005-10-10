@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.61 2005/10/09 06:21:45 slotzero Exp $
+/*  $Id: items.qc,v 1.62 2005/10/10 01:28:14 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1828,6 +1828,12 @@ drop_powerup_touch =
 
 	if (other.classname != "player")
 		return;
+
+	if (mode_match ())
+	{
+		if (!match.state)
+			return;
+	}
 
 	if (other.health <= 0)
 		return;
