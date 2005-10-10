@@ -1,5 +1,5 @@
 
-/*  $Id: rjs.qc,v 1.193 2005/10/09 00:40:27 slotzero Exp $
+/*  $Id: rjs.qc,v 1.194 2005/10/10 18:21:18 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -408,13 +408,12 @@ process_misc =
 		if (ROTATE && !NO_ARMOR)
 			setrotate ();
 
-		// instead of setting setting deathmatch here,
-		// i just reset to normal and in the next process
-		// it will get set to practice. (I'm lazy)
 		if (mode_practice ())
-			change_mode_to_normal ();
+			change_mode_to_match ();
 		else if (mode_arena ())
-			change_mode_to_normal ();
+			change_mode_to_match ();
+		else if (mode_normal ())
+			change_mode_to_match ();
 	}
  	else if (scratch1 & S1_ARENA_DEFAULT)
 	{
@@ -439,7 +438,9 @@ process_misc =
 		// instead of setting setting deathmatch here,
 		// i just reset to normal and in the next process
 		// it will get set to practice. (I'm lazy)
-		if (mode_practice ())
+		if (mode_match ())
+			change_mode_to_normal ();
+		else if (mode_practice ())
 			change_mode_to_normal ();
 		else if (mode_normal ())
 			change_mode_to_arena ();
@@ -469,7 +470,9 @@ process_misc =
 		// instead of setting setting deathmatch here,
 		// i just reset to normal and in the next process
 		// it will get set to practice. (I'm lazy)
-		if (mode_arena ())
+		if (mode_match ())
+			change_mode_to_normal ();
+		else if (mode_arena ())
 			change_mode_to_normal ();
 		else if (mode_normal ())
 			change_mode_to_practice ();
