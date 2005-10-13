@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.36 2005/10/10 02:38:32 slotzero Exp $
+/*  $Id: engine.qc,v 1.37 2005/10/13 00:27:46 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -298,37 +298,20 @@ svc_updatecolors =
 //-------------------------------------------------------------------
 
 void (float to, float f)
+WriteBytePQ =
+{	IN_QW(return;)
+	WriteByte (to, 16 + f / 16);
+	WriteByte (to, 16 + f & 15);
+};
+
+void (float to, float f)
 WriteShortPQ =
 {	IN_QW(return;)
 	local float i;
 
-	if (f < 0)
-		f = f + 65536;
-
 	i = floor (f / 4096);
-	f = f - (i * 4096);
-	WriteByte (to, 16 + i);	// x 4096
-
-	i = floor (f / 256);
-	f = f - (i * 256);
-	WriteByte (to, 16 + i);	// x 256
-
-	i = floor (f / 16);
-	f = f - (i * 16);
-	WriteByte (to, 16 + i);	// x 16
-
-	WriteByte (to, 16 + f);	// x 1
-};
-
-void (float to, float f)
-WriteBytePQ =
-{	IN_QW(return;)
-
-	if (f < 0)
-		f = fabs (f) + 128;
-
-	WriteByte (to, 16 + (f / 16));	// x 16
-	WriteByte (to, 16 + (f & 15));	// x 1
+	WriteBytePQ (to, i * 16 + (f & 3840 / 256));
+	WriteBytePQ (to, f & 255);
 };
 
 void (entity e, float c)
@@ -347,8 +330,8 @@ pqc_new_team =
 	WriteByte (msg_type, SVC_STUFFTEXT);
 	WriteByte (msg_type, 1);
 	WriteByte (msg_type, PQC_NEW_TEAM);
-	WriteByte (msg_type, 16 + (c & 15)); // pants
-	WriteByte (msg_type, 16 + (c / 16)); // shirt
+	WriteByte (msg_type, 16 + c & 15); // pants
+	WriteByte (msg_type, 16 + c / 16); // shirt
 	WriteString (msg_type, string_null);
 };
 
@@ -375,6 +358,9 @@ pqc_team_frags =
 	else
 		msg_type = MSG_ALL;
 
+	if (tf < 0)
+		tf = tf + 65536;
+
 	WriteByte (msg_type, SVC_STUFFTEXT);
 	WriteByte (msg_type, 1);
 	WriteByte (msg_type, PQC_TEAM_FRAGS);
@@ -395,6 +381,9 @@ pqc_match_time =
 	}
 	else
 		msg_type = MSG_ALL;
+
+	if (s < 0)
+		s = fabs (s) + 128;
 
 	WriteByte (msg_type, SVC_STUFFTEXT);
 	WriteByte (msg_type, 1);
@@ -417,7 +406,7 @@ void (entity e)
 pqc_ping_times =
 {	IN_QW(return;)
 
-	local float i, ping, msg_type;
+	local float i, msg_type;
 
 	if (e.cl[CL_ACTIVE] == %1)
 	{
@@ -431,8 +420,16 @@ pqc_ping_times =
 	WriteByte(msg_type, 1);
 	WriteByte(msg_type, PQC_PING_TIMES);
 
-	for (i = 0 ; i < %16 ; i = i + %1)
-		WriteShortPQ (msg_type, e.cl[CL_PING_TIMES + i] * 1000);
+	e = nextent (world);
+	for (i = 0; i < 16; i = i + 1)
+	{
+		if (e.classname == "bodyque")
+			i = -1;
+		// else if (e.ping)
+ 		//	WriteShortPQ (msg_type, e.ping + (i * 4096));
+		e = nextent (e);
+	}
 
+	WriteShortPQ (msg_type, 0);
 	WriteString(msg_type, string_null);
 };
