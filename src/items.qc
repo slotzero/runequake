@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.63 2005/10/10 05:13:21 slotzero Exp $
+/*  $Id: items.qc,v 1.64 2005/10/13 03:35:26 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -89,6 +89,9 @@ blink_item =
 void ()
 maybe_disable_item =
 {
+	// keep track of items that have been disabled
+	self.nextthink = -2;
+
 	if (self.touch == powerup_touch)
 	{
 		if (self.classname == "item_artifact_super_damage" && NO_QUAD)

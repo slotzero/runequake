@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.20 2005/05/07 06:10:31 slotzero Exp $
+/*  $Id: toggle.qc,v 1.21 2005/10/13 03:35:26 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -41,7 +41,7 @@ toggle_powerup =
 		{
 			e.model		= string_null;
 			e.solid		= SOLID_NOT;
-			e.nextthink	= -1;
+			e.nextthink	= -2;
 		}
 		e = find (e, classname, type);
 	}
@@ -94,7 +94,7 @@ toggle_armor =
 		{
 			e.solid		= SOLID_NOT;
 			e.model		= string_null;
-			e.nextthink	= -1;
+			e.nextthink	= -2;
 		}
 		e = find (e, netname, "item_armor_all");
 	}
@@ -212,7 +212,7 @@ toggle_health =
 			{
 				e.model		= string_null;
 				e.solid		= SOLID_NOT;
-				e.nextthink	= -1;
+				e.nextthink	= -2;
 			}
 		}
 		e = find (e, classname, type);

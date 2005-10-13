@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.30 2005/10/10 05:13:21 slotzero Exp $
+/*  $Id: match.qc,v 1.31 2005/10/13 03:35:26 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -198,7 +198,7 @@ match_respawn_all_items =
 				|| self.classname == "antipack")
 			self.nextthink = self.runetime = time;
 
-		else if (self.flags & FL_ITEM)
+		else if (self.flags & FL_ITEM && self.nextthink != -2)
 			SUB_regen ();
 
 		self = nextent (self);
