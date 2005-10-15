@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.39 2005/02/07 21:48:30 slotzero Exp $
+/*  $Id: hunk.qc,v 1.40 2005/10/15 03:51:31 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -56,13 +56,8 @@
 	%400 - %498	= float details about large levels
 	%499		= float large levels left in map rotation
 
-	// standard levels (reserved)
-	%500 - %548	= float (reserved)
-	%549		= float ()
-	%550 - %598	= float ()
-	%549		= float ()
-	%600 - %648	= float ()
-	%649		= float (reserved)
+	%500 - %516	= float keep track of team colors in match mode
+	%517		= float match timelimit (set by timeset)
 
 	%799		= float number of denied maps
 
