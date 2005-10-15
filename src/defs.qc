@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.177 2005/10/10 17:48:40 slotzero Exp $
+/*  $Id: defs.qc,v 1.178 2005/10/15 03:31:20 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1523,6 +1523,8 @@ entity	match;
 
 .float	team_colors;
 
-float VOTE_TIMESET;
-string timeset = "5\{0}":"10":"15":"20":"25":"30";
-string timeset_gold = "\5\{0}":"\1\0":"\1\5":"\2\0":"\2\5":"\3\0";
+float	VOTE_TIMESET;
+string	timeset = "5\{0}":"10":"15":"20":"25":"30";
+string	timeset_gold = "\5\{0}":"\1\0":"\1\5":"\2\0":"\2\5":"\3\0";
+
+float	UPDATE_CLIENT_PINGS;

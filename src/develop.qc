@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.106 2005/09/18 01:51:41 slotzero Exp $
+/*  $Id: develop.qc,v 1.107 2005/10/15 03:31:20 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -109,7 +109,7 @@ client_ping =
 	for (i = 0 ; i < %16 ; i = i + %1)
 		ping = ping + (e.cl[CL_PING_TIMES + i] * 1000);
 
-	ping = rint (ping / 16);
+	ping = floor (ping / 16);
 	if (ping > 9999 || ping < 0)
 		ping = 9999;
 

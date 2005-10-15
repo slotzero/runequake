@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.116 2005/10/06 21:06:33 slotzero Exp $
+/*  $Id: client.qc,v 1.117 2005/10/15 03:31:20 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1466,11 +1466,17 @@ PlayerPreThink =
 	if (self.view_ofs == VEC_ORIGIN)
 		return;		// intermission or finale
 
-	// +teamscores update
+	// +teamscores/ping update
 	if (self.lefty < time)
 	{
 		self.lefty = time + 1;
 
+		// ping
+		self.delay = client_ping (self);
+		if (self.delay > 4095 || self.delay < 0)
+			self.delay = 0;
+
+		// +teamscores
 		if (self.rqflags & RQ_TEAMSCORES_ON)
 			teamscores_on (self);
 	}

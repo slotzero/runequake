@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.37 2005/10/13 00:27:46 slotzero Exp $
+/*  $Id: engine.qc,v 1.38 2005/10/15 03:31:20 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -402,34 +402,28 @@ pqc_match_reset =
 	WriteString(MSG_ALL, string_null);
 };
 
-void (entity e)
+void ()
 pqc_ping_times =
 {	IN_QW(return;)
 
-	local float i, msg_type;
+	local entity e;
+	local float i;
 
-	if (e.cl[CL_ACTIVE] == %1)
-	{
-		msg_entity = e;
-		msg_type = MSG_ONE;
-	}
-	else
-		msg_type = MSG_ALL;
-
-	WriteByte(msg_type, SVC_STUFFTEXT);
-	WriteByte(msg_type, 1);
-	WriteByte(msg_type, PQC_PING_TIMES);
+	WriteByte(MSG_ALL, SVC_STUFFTEXT);
+	WriteByte(MSG_ALL, 1);
+	WriteByte(MSG_ALL, PQC_PING_TIMES);
 
 	e = nextent (world);
 	for (i = 0; i < 16; i = i + 1)
 	{
 		if (e.classname == "bodyque")
 			i = -1;
-		// else if (e.ping)
- 		//	WriteShortPQ (msg_type, e.ping + (i * 4096));
+		else if (e.cl[CL_ACTIVE] == %1 && e.delay)
+			WriteShortPQ (MSG_ALL, e.delay + (i * 4096));
+
 		e = nextent (e);
 	}
 
-	WriteShortPQ (msg_type, 0);
-	WriteString(msg_type, string_null);
+	WriteShortPQ (MSG_ALL, 0);
+	WriteString (MSG_ALL, string_null);
 };

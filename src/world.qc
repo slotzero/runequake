@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.70 2005/10/10 17:48:41 slotzero Exp $
+/*  $Id: world.qc,v 1.71 2005/10/15 03:31:20 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -720,6 +720,12 @@ StartFrame =
 			dprint ("\n");
 			runecurrent = i;
 		}
+	}
+
+	if (UPDATE_CLIENT_PINGS < time)
+	{
+		UPDATE_CLIENT_PINGS = time + 1;
+		pqc_ping_times ();
 	}
 };
 
