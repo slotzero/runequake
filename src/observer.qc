@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.61 2005/10/06 21:06:33 slotzero Exp $
+/*  $Id: observer.qc,v 1.62 2005/10/16 01:06:03 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -918,8 +918,7 @@ obs_join_game =
 	self.aqflags = self.aqflags - AQ_OBSERVER;
 	self.flags = self.flags - self.flags & FL_OBSERVER;
 	set_viewport (self);
-	SetNewParms ();
-	persistent_parms ();
+	SetParms ();
 	PutClientInServer ();
 
 	if (!ra && !mm)

@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.117 2005/10/15 03:31:20 slotzero Exp $
+/*  $Id: client.qc,v 1.118 2005/10/16 01:06:03 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -37,15 +37,6 @@ info_intermission =
 };
 
 void ()
-persistent_parms =
-{
-	//if (self.aqflags & AQ_ADMIN)
-	//	parm1 = parm1 | IT_KEYx;
-	parm11 = self.aqflags - self.aqflags & AQ_HOOK;
-	parm14 = self.rqflags;
-};
-
-void ()
 SetChangeParms =
 {
 	// Prevent SetNewParms() for dead phoenix rune holders.
@@ -54,8 +45,7 @@ SetChangeParms =
 
 	if (self.health <= 0 || SET_PARMS_WITH_NEW_LEVEL)
 	{
-		SetNewParms ();
-		persistent_parms ();
+		SetParms ();
 		return;
 	}
 
@@ -86,6 +76,7 @@ SetChangeParms =
 	parm8 = self.weapon;
 	parm9 = self.armortype * 100;
 	parm10 = self.runetype;
+	parm11 = self.aqflags;
 	parm12 = 0;	// observers, negative duration in game queue
 	parm13 = 0;	// observers, ridee
 	parm14 = self.rqflags;
@@ -104,38 +95,42 @@ SetChangeParms =
 		}
 	}
 
-	persistent_parms ();
-	parm11 = parm11 | (self.aqflags & AQ_HOOK);
+
 };
 
-// SetNewParms() is called both by me and by the game.  It's called by
-// the game for fully new players.  When I call it I always call this
-// directly after.  I also call this from SetChangeParms().
-
+// This is the very first QC function to be called when a client
+// connects.  It's only called once by the engine, but I call it
+// every time someone dies and is about to respawn.
 void ()
 SetNewParms =
 {
-	parm1 = IT_SHOTGUN | IT_AXE;
-	if (deathmatch & DM_DM_MASK)
-		parm1 = parm1 | (self.items & IT_KEY2);
-	parm2 = MAX_HEALTH_NORMAL;
-	parm3 = 0;
-	parm4 = 25;
-	parm5 = 0;
-	parm6 = 0;
-	parm7 = 0;
-	parm8 = 1;
-	parm9 = 0;
+	parm1	= IT_SHOTGUN | IT_AXE;
+	parm2	= MAX_HEALTH_NORMAL;
+	parm3	= 0;
+	parm4	= 25;
+	parm5	= 0;
+	parm6	= 0;
+	parm7	= 0;
+	parm8	= 1;
+	parm9	= 0;
+	parm10	= 0;
+	parm11	= 0;
+	parm12	= 0;
+	parm13	= 0;
+	parm14	= 0;
+	parm15	= 0;
+	parm16	= 0;
+};
 
-	parm10 = 0;	// runetype
-	parm11 = 0;	// aqflags
-	parm14 = 0;	// rqflags
+// Called directly before the client respawns.
+void ()
+SetParms =
+{
+	SetNewParms ();
 
-	// Parms 12 and 13 are only valid for observers, and they never
-	// get run here.  This sets them for new players coming in and
-	// starting as observers.
-	parm12 = 0;
-	parm13 = 0;
+	parm1	= parm1 | (self.items & IT_KEY2);
+	parm11	= self.aqflags - self.aqflags & AQ_HOOK;
+	parm14	= self.rqflags;
 };
 
 void ()
@@ -567,8 +562,7 @@ respawn =
 		// make a copy of the dead body for appearances sake
 		CopyToBodyQue (self);
 		// set default spawn parms
-		SetNewParms ();
-		persistent_parms ();
+		SetParms ();
 		// respawn
 		PutClientInServer ();
 	}
@@ -603,15 +597,6 @@ ClientKill =
 
 	if (!mode_arena ())
 		kick_suicider ();
-};
-
-float (vector v)
-CheckSpawnPoint =
-{
-	dprint_vec (v);
-	dprint ("\n");
-
-	return FALSE;
 };
 
 /*
