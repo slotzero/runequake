@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.83 2005/10/10 17:48:40 slotzero Exp $
+/*  $Id: bindings.qc,v 1.84 2005/10/16 04:52:26 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -209,6 +209,7 @@ player_aliases =
 	player_init_impulse_alias ("efficiency",		IMP_EFFICIENCY);
 	player_init_impulse_alias ("fix-angles",		IMP_FIX_BATMAN);
 	player_init_impulse_alias ("help-levels",		IMP_HELP_LEVELS);
+	player_init_impulse_alias ("help-match",		IMP_HELP_MATCH);
 	player_init_impulse_alias ("help-vote",			IMP_HELP_VOTE);
 	player_init_impulse_alias ("+hook",			IMP_HOOK_ON);
 	player_init_impulse_alias ("-hook",			IMP_HOOK_OFF);
@@ -448,7 +449,7 @@ void ()
 commands =
 {
 	//                      1234567890123456789012345678901234567\n
-	self_sprint (self, "\n        \b\<important commands\>\b\n\n");
+	self_sprint (self, "\n        \b\.important commands\.\b\n\n");
 	self_sprint (self, "\brune-delete\b   delete your rune\n");
 	self_sprint (self, "\brune-tell\b     rune description\n");
 	self_sprint (self, "\brune-use\b      activate rune\n");
@@ -460,6 +461,7 @@ commands =
 	self_sprint (self, "\blevels\b        list standard levels\n");
 	self_sprint (self, "\bhelp-levels\b   levels with full name\n");
 	self_sprint (self, "\bhelp-vote\b     vote descriptions\n");
+	self_sprint (self, "\bhelp-match\b    match mode help\n");
 	self_sprint (self, "\bcustom\b        custom levels on server\n");
 	self_sprint (self, "\bvote-exit\b     vote to exit the level\n");
 	self_sprint (self, "\bvote-team\b     vote to toggle teams\n");
@@ -467,7 +469,7 @@ commands =
 	self_sprint (self, "\bremove-frags\b  reset frags to zero\n");
 	self_sprint (self, "\b+hook\b         use hook\n");
 	self_sprint (self, "\bquiet-toggle\b  mute many game messages\n");
-	self_sprint (self, "\n");
+	// self_sprint (self, "\n");
 
 /*
        self_sprint ("disp-info",
@@ -552,7 +554,7 @@ void ()
 help_vote =
 {
 	//                      1234567890123456789012345678901234567\n
-	self_sprint (self, "\n          \b\<vote commands\>\b\n\n");
+	self_sprint (self, "\n          \b\.vote commands\.\b\n\n");
 	self_sprint (self, "\bvote-exit       <mapname>\b (ex: start)\n");
 	self_sprint (self, "\bvote-hook       vote-hook-damage\n");
 	self_sprint (self, "\bvote-free       vote-lithium\n");
@@ -563,6 +565,21 @@ help_vote =
 	self_sprint (self, "\bvote-armor      vote-rotate\n");
 	self_sprint (self, "\bvote-runes      vote-alt-weapons\n");
 	self_sprint (self, "\bvote-shields    vote-weapons-stay\n");
-	self_sprint (self, "\bvote-mega\n");
-	self_sprint (self, "\n");
+	self_sprint (self, "\bvote-mega       vote-match\n");
+	// self_sprint (self, "\n");
+};
+
+void ()
+help_match =
+{
+	//                      1234567890123456789012345678901234567\n
+	self_sprint (self, "\n\b             \.help-match\.\n");
+	self_sprint (self, "\b        (match mode commands)\n\n");
+	self_sprint (self, "\bvote-match\b    enable match mode\n");
+	self_sprint (self, "\bready\b         commit to a team\n");
+	self_sprint (self, "\bnotready\b      uncommit yourself\n");
+	self_sprint (self, "\btimeset\b       change timelimit\n");
+	// self_sprint (self, "\block\b          prevent new players\n");
+	// self_sprint (self, "\bunlock\b        allow new teams\n");
+	self_sprint (self, "\bobserver\b      leave match/go observer\n");
 };
