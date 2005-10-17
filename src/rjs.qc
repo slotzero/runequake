@@ -1,5 +1,5 @@
 
-/*  $Id: rjs.qc,v 1.195 2005/10/16 04:52:26 slotzero Exp $
+/*  $Id: rjs.qc,v 1.196 2005/10/17 09:47:41 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1413,7 +1413,7 @@ common_impulses =
 		}
 		else
 		{
-			self.rqflags = self.rqflags + self.rqflags | RQ_AUTOSTATS;
+			self.rqflags = self.rqflags | RQ_AUTOSTATS;
 			self_sprint (self, "autostats \bon\n");
 		}
 	}
