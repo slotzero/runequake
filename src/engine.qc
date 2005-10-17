@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.39 2005/10/17 21:43:17 slotzero Exp $
+/*  $Id: engine.qc,v 1.40 2005/10/17 22:16:59 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -419,12 +419,10 @@ pqc_ping_times =
 		e = nextent (e);
 		if (e.classname == "bodyque")
 			i = 16;
-		else if (e.cl[CL_ACTIVE] == %1)
+		else if (e.cl[CL_ACTIVE] == %1 && e.delay)
 		{
 			ping = e.delay;
-			if (ping < 1)
-				ping = 1 + rint (random () * 5);
-			else if (ping > 4095)
+			if (ping > 4095)
 				ping = 666;
 			WriteShortPQ (MSG_ALL, ping + (i * 4096));
 		}
