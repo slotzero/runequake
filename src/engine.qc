@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.38 2005/10/15 03:31:20 slotzero Exp $
+/*  $Id: engine.qc,v 1.39 2005/10/17 21:43:17 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -407,21 +407,27 @@ pqc_ping_times =
 {	IN_QW(return;)
 
 	local entity e;
-	local float i;
+	local float i, ping;
 
 	WriteByte(MSG_ALL, SVC_STUFFTEXT);
 	WriteByte(MSG_ALL, 1);
 	WriteByte(MSG_ALL, PQC_PING_TIMES);
 
-	e = nextent (world);
+	e = world;
 	for (i = 0; i < 16; i = i + 1)
 	{
-		if (e.classname == "bodyque")
-			i = -1;
-		else if (e.cl[CL_ACTIVE] == %1 && e.delay)
-			WriteShortPQ (MSG_ALL, e.delay + (i * 4096));
-
 		e = nextent (e);
+		if (e.classname == "bodyque")
+			i = 16;
+		else if (e.cl[CL_ACTIVE] == %1)
+		{
+			ping = e.delay;
+			if (ping < 1)
+				ping = 1 + rint (random () * 5);
+			else if (ping > 4095)
+				ping = 666;
+			WriteShortPQ (MSG_ALL, ping + (i * 4096));
+		}
 	}
 
 	WriteShortPQ (MSG_ALL, 0);

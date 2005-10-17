@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.118 2005/10/16 01:06:03 slotzero Exp $
+/*  $Id: client.qc,v 1.119 2005/10/17 21:43:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -180,28 +180,6 @@ SetArenaParms =
 	set_weapon (IT_ROCKET_LAUNCHER);
 
 	self.armortype		= ARMOR_TYPE_3;
-};
-
-void ()
-SetNormalParms =
-{
-	self.items		= IT_SHOTGUN | IT_AXE;
-	self.health		= MAX_HEALTH_NORMAL;
-	self.armorvalue		= 0;
-	self.ammo_shells	= 25;
-	self.ammo_nails		= 0;
-	self.ammo_rockets	= 0;
-	self.ammo_cells		= 0;
-
-	// Setting self.weapon is necessary because you retain your
-	// weapon setting across deaths.  If you die with the single
-	// shotgun set_weapon() won't do anything when this tries to set
-	// your weapon because it thinks you're already wielding that.
-	self.weapon		= 0;
-
-	set_weapon (IT_SHOTGUN);
-
-	self.armortype		= 0;
 };
 
 void ()
@@ -1437,56 +1415,45 @@ PlayerPreThink =
 {
 	local float i, obs;
 
-	self.last_thought = time;
-	if (!is_valid_player ())
-		return;
-	obs = is_observer ();
-
 	if (intermission_running)
 	{
 		IntermissionThink ();	// otherwise a button could be missed between
 		return;					// the think tics
 	}
 
-	if (self.view_ofs == VEC_ORIGIN)
-		return;		// intermission or finale
+	self.last_thought = time;
+	if (!is_valid_player ())
+		return;
+	obs = is_observer ();
 
-	// +teamscores/ping update
+	// updates
 	if (self.lefty < time)
 	{
 		self.lefty = time + 1;
 
 		// ping
 		self.delay = client_ping (self);
-		if (self.delay > 4095 || self.delay < 0)
-			self.delay = 0;
 
-		// +teamscores
-		if (self.rqflags & RQ_TEAMSCORES_ON)
-			teamscores_on (self);
-	}
-
-	// lagged player notification
-	/* if (self.search_time < time)
-	{
-		self.search_time = time + 5;
-
-		i = client_ping (self);
-		if (i == 9999)
+		// lagged notify
+		if (self.delay == 9999)
 		{
-			if (!self.rqflags & RQ_LAGGED_OUT)
+			if (!self.rqstate & RQS_LAGGED_OUT)
 			{
-				self.rqflags = self.rqflags | RQ_LAGGED_OUT;
+				self.rqstate = self.rqstate | RQS_LAGGED_OUT;
 				bprint (self.netname);
 				bprint (" lagged out\n");
 			}
 		}
 		else
 		{
-			if (self.rqflags & RQ_LAGGED_OUT)
-				self.rqflags = self.rqflags - self.rqflags & RQ_LAGGED_OUT;
+			if (self.rqstate & RQS_LAGGED_OUT)
+				self.rqstate = self.rqstate - self.rqstate & RQS_LAGGED_OUT;
 		}
-	} */
+
+		// +teamscores
+		if (self.rqflags & RQ_TEAMSCORES_ON)
+			teamscores_on (self);
+	}
 
 	if (self.aqstate & AQS_MENU_MASK && time > self.count)
 		aq_menu_print ();
@@ -1827,10 +1794,12 @@ Called every frame after physics are run
 void ()
 PlayerPostThink =
 {
+	if (intermission_running)
+		return;
+
 	if (!is_valid_player ())
 		return;
-	if (self.view_ofs == VEC_ORIGIN)
-		return;		// intermission or finale
+
 	if (self.deadflag)
 	{
 		if (self.deadflag >= DEAD_DEAD && self.impulse)
