@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.120 2005/10/18 21:19:27 slotzero Exp $
+/*  $Id: client.qc,v 1.121 2005/10/18 21:47:44 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1562,18 +1562,17 @@ PlayerPreThink =
 
 	WaterMove ();
 
+	if (self.deadflag)
+	{
+		if (self.deadflag >= DEAD_DEAD)
+			PlayerDeathThink ();
+  		return;
+	}
+
 	IN_POQ([-
 		if (self.waterlevel == 2)
 			CheckWaterJump ();
 	-])
-
-	if (self.deadflag >= DEAD_DEAD)
-	{
-		PlayerDeathThink ();
-		return;
-	}
-	else if (self.deadflag == DEAD_DYING)
-		return;	// dying, so do nothing
 
 	if (self.button2)
 		PlayerJump ();
