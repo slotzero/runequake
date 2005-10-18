@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.119 2005/10/17 21:43:16 slotzero Exp $
+/*  $Id: client.qc,v 1.120 2005/10/18 21:19:27 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -733,9 +733,6 @@ PutClientInServer =
 
 	self.deadflag = DEAD_NO;
 	self.aflag = 0;
-	// paustime is set by teleporters to keep the player from moving
-	// a while
-	self.pausetime = 0;
 
 	if (!is_player_start_class (spot.classname))
 		self.origin = spot.origin + SPAWN_ITEM_OFFSET;
@@ -1464,8 +1461,7 @@ PlayerPreThink =
 			rune_tell_stop (0);
 		else if (self.waitmax > 0 && time > self.waitmax)
 			rune_tell_refresh ();	// refresh
-		else if (self.waitmax < 0
-				&& 0 - self.waitmax + CENTERPRINT_TIME < time)
+		else if (self.waitmax < 0 && 0 - self.waitmax + CENTERPRINT_TIME < time)
 			self.waitmax = 0;	// it just went away
 	}
 
@@ -1576,28 +1572,22 @@ PlayerPreThink =
 		PlayerDeathThink ();
 		return;
 	}
-
-	if (self.deadflag == DEAD_DYING)
+	else if (self.deadflag == DEAD_DYING)
 		return;	// dying, so do nothing
 
 	if (self.button2)
-	{
 		PlayerJump ();
-	}
 	else
 		self.flags = self.flags | FL_JUMPRELEASED;
 
-	//RUNE SERV: Runes that need thinking
 	if (self.runetype > 0)
 		Rune_Think ();
 
-	// teleporters can force a non-moving pause time
-	if (time < self.pausetime)
-		self.velocity = VEC_ORIGIN;
-
-	if (time > self.attack_finished && self.currentammo == 0
-			&& self.weapon != IT_AXE && self.weapon != WEAPON_HOOK)
-		set_weapon (W_BestWeapon ());
+	if (time > self.attack_finished && self.currentammo == 0)
+	{
+		if (self.weapon != IT_AXE && self.weapon != WEAPON_HOOK)
+			set_weapon (W_BestWeapon ());
+	}
 };
 
 /*
@@ -1812,18 +1802,8 @@ PlayerPostThink =
 		return;
 	}
 
-	// XXX This is my first attempt at correcting batman villain syndrome.
-	/* if (ceil (self.v_angle_z))
-	{
-		self.angles_z = 0;
-		self.fixangle = 1;
-	} */
-
-	// do weapon stuff
-
 	W_WeaponFrame ();
 
-	//RUNE SERV: delete rune if requested
 	if (self.dropdelay < 0 && time >= (0 - self.dropdelay))
 		Rune_Delete (1);
 
