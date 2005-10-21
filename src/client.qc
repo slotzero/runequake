@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.121 2005/10/18 21:47:44 slotzero Exp $
+/*  $Id: client.qc,v 1.122 2005/10/21 23:38:24 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1412,13 +1412,12 @@ PlayerPreThink =
 {
 	local float i, obs;
 
+	self.last_thought = time;
 	if (intermission_running)
 	{
 		IntermissionThink ();	// otherwise a button could be missed between
 		return;					// the think tics
 	}
-
-	self.last_thought = time;
 	if (!is_valid_player ())
 		return;
 	obs = is_observer ();
