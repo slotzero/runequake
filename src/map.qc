@@ -1,4 +1,4 @@
-/*  $Id: map.qc,v 1.16 2005/04/17 01:36:13 slotzero Exp $
+/*  $Id: map.qc,v 1.17 2005/10/26 00:07:32 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -212,14 +212,14 @@ pick_map_size =
 		bprint (", running ");
 		s = levsize_to_name (levsize);
 		bprint (s);
-		bprint (" level");
-		if (!LEVSIZE_NON_RANDOM)
+		bprint (" level\n");
+		/* if (!LEVSIZE_NON_RANDOM)
 		{
 			bprint (" (");
 			bprint_float (i);
 			bprint ("%)");
 		}
-		bprint ("\n");
+		bprint ("\n"); */
 	}
 
 	return levsize;
@@ -328,7 +328,7 @@ select_map =
 			{
 				dprint ("next_map(");
 				dprint (curmap);
-				dprint (", 0) = ");
+				dprint (", 1) = ");
 				curmap = next_map (curmap, 1);
 				dprint (curmap);
 				dprint ("\n");
@@ -357,7 +357,7 @@ select_map =
 				// from there.
 				dprint ("next_map(");
 				dprint (curmap);
-				dprint (", 1) = ");
+				dprint (", 0) = ");
 				curmap = next_map (curmap, 0);
 				dprint (curmap);
 				dprint ("\n");
