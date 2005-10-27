@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.61 2005/10/08 06:06:30 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.62 2005/10/27 00:14:45 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -36,6 +36,7 @@ Rune_Think =
 	else if (self.runetype == RN_IMPACT)		Rune_Impact ();
 	-])
 	else if (self.runetype == RN_BERSERK)		Berserk_Bleed ();
+	else if (self.runetype == RN_ATHLETE)		Athlete_Run ();
 	else if (self.runetype == RN_QUAD)		quad_think ();
 	else if (self.runetype == RN_JACK)		jack_think ();
 	else if (self.runetype == RN_BLIZZARD)		Blizzard_Think ();
@@ -442,6 +443,7 @@ Rune_Tell_real =
 
 		d1 = "Jump Higher\n"
 			"Swim Farther\n"
+			"Run Faster\n"
 			"Live Longer";
 	}
 	else if (type == RN_LUMBER)

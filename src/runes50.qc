@@ -1,4 +1,4 @@
-/*  $Id: runes50.qc,v 1.18 2005/02/09 11:07:36 slotzero Exp $
+/*  $Id: runes50.qc,v 1.19 2005/10/27 00:14:45 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -34,6 +34,15 @@ Athlete_Jump =
 	sound (self, CHAN_JUMP, "player/plyrjmp8.wav", 1, ATTN_NORM);
 
 	self.velocity_z = self.velocity_z + 540;
+};
+
+void ()
+Athlete_Run =
+{
+	// 2 = 10%
+
+	if ((self.cl[CL_CMD_FORWARD] || self.cl[CL_CMD_SIDE]) && self.flags & FL_ONGROUND)
+		self.velocity = self.velocity + 2 * frametime * self.velocity;
 };
 
 float ()
