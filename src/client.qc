@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.122 2005/10/21 23:38:24 slotzero Exp $
+/*  $Id: client.qc,v 1.123 2005/10/30 20:28:36 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -778,15 +778,7 @@ PutClientInServer =
 		spawn_as_observer = 1;
 	else
 	{
-		if (mode_match ())
-		{
-			if (!self.lefty)
-			{
-				self.lefty = time;
-				spawn_as_observer = 1;
-			}
-		}
-		else if (mode_arena ())
+		if (mode_arena ())
 		{
 			self.takedamage = DAMAGE_NO;
 			if (put_client_in_arena ())
@@ -794,8 +786,18 @@ PutClientInServer =
 			else
 				spawn_as_observer = 1;
 		}
-		else
-			spawn_as_observer = 0;
+	}
+
+	// force all players observer at start of level
+	if (mode_match ())
+	{
+		if (!self.lefty)
+		{
+			self.lefty = time;
+			spawn_as_observer = 1;
+			parm12 = 0;
+			parm13 = 0;
+		}
 	}
 
 	// You can't do the player init here because stuffcmd doesn't
@@ -831,8 +833,7 @@ PutClientInServer =
 		// If she was a rider, get her back on the right horse.
 		if (parm13)
 		{
-			self.aqstate = self.aqstate | ((parm13 & 3)
-							* AQS_RIDE_DIV);
+			self.aqstate = self.aqstate | ((parm13 & 3) * AQS_RIDE_DIV);
 			parm13 = (parm13 - parm13 & 3) / 4;
 			spot = spawn ();
 			spot.owner = self;
@@ -855,8 +856,7 @@ PutClientInServer =
 		spawn_tdeath (self.origin, self);
 		if (SPAWN_PROTECT_DURATION > 0 && !NO_SPAWN_SHIELDS)
 		{
-			self.invincible_finished
-				= time + SPAWN_PROTECT_DURATION;
+			self.invincible_finished = time + SPAWN_PROTECT_DURATION;
 			self.takedamage = DAMAGE_NO;
 			self.aqstate = self.aqstate | AQS_SPAWN_PROTECT;
 			self.effects = self.effects | EF_BRIGHTFIELD;
