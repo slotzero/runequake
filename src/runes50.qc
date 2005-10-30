@@ -1,4 +1,4 @@
-/*  $Id: runes50.qc,v 1.19 2005/10/27 00:14:45 slotzero Exp $
+/*  $Id: runes50.qc,v 1.20 2005/10/30 01:11:09 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -39,10 +39,8 @@ Athlete_Jump =
 void ()
 Athlete_Run =
 {
-	// 2 = 10%
-
 	if ((self.cl[CL_CMD_FORWARD] || self.cl[CL_CMD_SIDE]) && self.flags & FL_ONGROUND)
-		self.velocity = self.velocity + 2 * frametime * self.velocity;
+		self.velocity = self.velocity + self.velocity * 0.10;
 };
 
 float ()
