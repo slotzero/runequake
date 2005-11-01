@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.40 2005/10/17 22:16:59 slotzero Exp $
+/*  $Id: engine.qc,v 1.41 2005/11/01 11:03:05 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -338,11 +338,11 @@ pqc_new_team =
 void (float tm)
 pqc_erase_team =
 {	IN_QW(return;)
-	WriteByte(MSG_ALL, SVC_STUFFTEXT);
-	WriteByte(MSG_ALL, 1);
-	WriteByte(MSG_ALL, PQC_ERASE_TEAM);
-	WriteByte(MSG_ALL, 16 + tm);
-	WriteString(MSG_ALL, string_null);
+	WriteByte (MSG_ALL, SVC_STUFFTEXT);
+	WriteByte (MSG_ALL, 1);
+	WriteByte (MSG_ALL, PQC_ERASE_TEAM);
+	WriteByte (MSG_ALL, 16 + tm);
+	WriteString (MSG_ALL, string_null);
 };
 
 void (entity e, float tm, float tf)
@@ -396,10 +396,10 @@ pqc_match_time =
 void ()
 pqc_match_reset =
 {	IN_QW(return;)
-	WriteByte(MSG_ALL, SVC_STUFFTEXT);
-	WriteByte(MSG_ALL, 1);
-	WriteByte(MSG_ALL, PQC_MATCH_RESET);
-	WriteString(MSG_ALL, string_null);
+	WriteByte (MSG_ALL, SVC_STUFFTEXT);
+	WriteByte (MSG_ALL, 1);
+	WriteByte (MSG_ALL, PQC_MATCH_RESET);
+	WriteString (MSG_ALL, string_null);
 };
 
 void ()
@@ -409,9 +409,9 @@ pqc_ping_times =
 	local entity e;
 	local float i, ping;
 
-	WriteByte(MSG_ALL, SVC_STUFFTEXT);
-	WriteByte(MSG_ALL, 1);
-	WriteByte(MSG_ALL, PQC_PING_TIMES);
+	WriteByte (MSG_ALL, SVC_STUFFTEXT);
+	WriteByte (MSG_ALL, 1);
+	WriteByte (MSG_ALL, PQC_PING_TIMES);
 
 	e = world;
 	for (i = 0; i < 16; i = i + 1)
