@@ -1,4 +1,4 @@
-/*  $Id: attic.qc,v 1.9 2005/05/08 08:17:47 slotzero Exp $
+/*  $Id: attic.qc,v 1.10 2005/11/02 23:36:12 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -505,3 +505,42 @@ Deathmatch weapon change rules for picking up a weapon
 		set_weapon (new);
 };
 */
+
+// XXX This is an alternate way to write accurate string data
+// to the hunk.  I'm not finished exploring this idea though.
+/* void (float type, float offset, string data, float bytes)
+Write_Hunk_String_Dev =
+{
+	local entity hunk;
+	local float length, pdata;
+	local string s;
+
+	hunk = Get_Hunk (type, offset);
+	if (!hunk)
+		return dprint ("Write_Hunk_String_Max: hunk is null\n");
+
+	// s is a pointer to temp string
+	s = allocate_string (data);
+
+	// copy data to temp string
+	strcpy (s, data);
+
+	length = strlen (data);
+	if (length >= bytes)
+	{
+		// pdata is a pointer to temp string
+		pdata = AddInt (&s, PSTRING_TO_PQUAKEC);
+
+		// shift offset of pdata to size of bytes
+		pdata = AddInt (pdata, bytes * %1);
+
+		// insert termination to temp string so that its the size of bytes
+		strcpy (@AddInt (pdata, PQUAKEC_TO_PSTRING), string_null);
+
+		// shift offset of pdata down to its original offset
+		pdata = SubInt (pdata, bytes * %1);
+	}
+
+	// copy string to hunk
+	Write_Hunk_String_e (hunk, s);
+}; */
