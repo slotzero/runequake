@@ -1,4 +1,4 @@
-/*  $Id: misc.qc,v 1.23 2005/05/08 22:08:32 slotzero Exp $
+/*  $Id: misc.qc,v 1.24 2005/11/05 23:52:05 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -160,7 +160,6 @@ misc_explobox =
 	IN_QW([-
 		setsize (self, VEC_ORIGIN, '32 32 64');
 	-])
-	precache_sound ("weapons/r_exp3.wav");
 
 	self.health	= self.max_health = 20;
 	self.th_die	= barrel_explode;
@@ -196,7 +195,6 @@ misc_explobox2 =
 	IN_QW([-
 		setsize (self, VEC_ORIGIN, '32 32 32');
 	-])
-	precache_sound ("weapons/r_exp3.wav");
 
 	self.health	= self.max_health = 20;
 	self.th_die	= barrel_explode;
