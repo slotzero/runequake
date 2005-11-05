@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.71 2005/10/15 03:31:20 slotzero Exp $
+/*  $Id: world.qc,v 1.72 2005/11/05 05:27:19 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -61,16 +61,10 @@ worldspawn =
 	s = ftos (sv_gravity);
 	cvar_set ("sv_gravity", s);
 
-	// the area based ambient sounds MUST be the first precache_sounds
+	Precaches ();
 
-	// player precaches
-	W_Precache ();			// get weapon precaches
-
-	// sounds used from C physics code
-	precache_sound ("demon/dland2.wav");		// landing thud
-	precache_sound ("misc/h2ohit1.wav");		// landing splash
-
-	// setup precaches allways needed
+	// setup precaches always needed
+	precache_sound ("weapons/tink1.wav");		// runes bounce
 	precache_sound ("items/itembk2.wav");		// item respawn sound
 	precache_sound ("player/plyrjmp8.wav");		// player jump
 	precache_sound ("player/land.wav");		// player landing
@@ -91,8 +85,6 @@ worldspawn =
 	precache_sound ("weapons/lock4.wav");		// ammo pick up
 	precache_sound ("weapons/pkup.wav");		// weapon up
 	precache_sound ("items/armor1.wav");		// armor up
-	precache_sound ("weapons/lhit.wav");		// lightning
-	precache_sound ("weapons/lstart.wav");		// lightning start
 	precache_sound ("items/damage2.wav");		// phoenix
 	precache_sound ("items/damage3.wav");		// berserk, strength, phoenix
 	precache_sound ("misc/power.wav");		// lightning for boss
@@ -118,11 +110,6 @@ worldspawn =
 	precache_sound ("player/death3.wav");
 	precache_sound ("player/death4.wav");
 	precache_sound ("player/death5.wav");
-
-	// ax sounds
-	precache_sound ("weapons/ax1.wav");		// ax swoosh
-	precache_sound ("player/axhit1.wav");		// ax hit meat
-	precache_sound ("player/axhit2.wav");		// ax hit world
 
 	precache_sound ("player/h2ojump.wav");		// player jumping into water
 	precache_sound ("player/slimbrn2.wav");		// player enter slime
@@ -213,8 +200,7 @@ worldspawn =
 	precache_sound ("knight/sword1.wav");		// lumberjack axe
 	precache_sound ("knight/sword2.wav");		// lumberjack axe
 	precache_sound ("shalrath/sight.wav");		// player connect
-
-	// developer runes
+	precache_sound ("weapons/ric1.wav");		// piercing/jack
 
 	// RN_GLUE
 	precache_model ("progs/tarbaby.mdl");
@@ -233,6 +219,7 @@ worldspawn =
 
 	// RN_ANTIPACK
 	precache_sound ("demon/ddeath.wav");
+	precache_sound ("demon/dhit2.wav");
 
 	// For the Shambler Helper
 	precache_model ("progs/shambler.mdl");

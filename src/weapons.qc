@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.64 2005/07/09 02:21:25 slotzero Exp $
+/*  $Id: weapons.qc,v 1.65 2005/11/05 05:27:19 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -16,32 +16,6 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
-
-// called by worldspawn
-void ()
-W_Precache =
-{
-	precache_sound ("weapons/r_exp3.wav");	// new rocket explosion, bomb
-	precache_sound ("weapons/rocket1i.wav");// spike gun
-	precache_sound ("weapons/sgun1.wav");
-	precache_sound ("weapons/guncock.wav");	// player shotgun
-	precache_sound ("weapons/ric1.wav");	// ricochet (used in c code)
-	precache_sound ("weapons/ric2.wav");	// ricochet (used in c code)
-	precache_sound ("weapons/ric3.wav");	// ricochet (used in c code)
-	precache_sound ("weapons/spike2.wav");	// super spikes
-	precache_sound ("weapons/tink1.wav");	// spikes tink (used in c code)
-	precache_sound ("weapons/grenade.wav");	// grenade launcher
-	precache_sound ("weapons/bounce.wav");	// grenade bounce
-	precache_sound ("weapons/shotgn2.wav");	// super shotgun
-	precache_sound ("shambler/smack.wav");	// hook
-	precache_sound ("blob/land1.wav");	// hook
-	precache_sound ("knight/sword2.wav");	// flame thrower
-	precache_sound ("zombie/z_shot1.wav");	// burning
-	precache_sound ("doors/runetry.wav");	// bomb tick
-	precache_sound ("weapons/rocket1i.wav");// bomb fire
-	precache_sound ("demon/dhit2.wav");	// flash grenade
-	precache_sound ("hknight/attack1.wav");	// shotgun bomb
-};
 
 float ()
 crandom =
