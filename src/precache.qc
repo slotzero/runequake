@@ -1,4 +1,4 @@
-/*  $Id: precache.qc,v 1.1 2005/11/05 05:27:19 slotzero Exp $
+/*  $Id: precache.qc,v 1.2 2005/11/05 05:35:24 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -26,20 +26,20 @@ Precaches =
 	// sounds from c code client side temporary entities - cl_tent.c //
 	///////////////////////////////////////////////////////////////////
 
-	// precache_sound ("wizard/hit.wav");		// TE_WIZSPIKE
-	// precache_sound ("hknight/hit.wav");		// TE_KNIGHTSPIKE
-	// precache_sound ("weapons/tink1.wav");	// TE_SPIKE/TE_SUPERSPIKE
-	// precache_sound ("weapons/ric1.wav");		// TE_SPIKE/TE_SUPERSPIKE
-	// precache_sound ("weapons/ric2.wav");		// TE_SPIKE/TE_SUPERSPIKE
-	// precache_sound ("weapons/ric3.wav");		// TE_SPIKE/TE_SUPERSPIKE
-	// precache_sound ("weapons/r_exp3.wav");	// TE_EXPLOSION/TE_TAREXPLOSION
+	precache_sound ("wizard/hit.wav");		// TE_WIZSPIKE
+	precache_sound ("hknight/hit.wav");		// TE_KNIGHTSPIKE
+	precache_sound ("weapons/tink1.wav");		// TE_SPIKE/TE_SUPERSPIKE
+	precache_sound ("weapons/ric1.wav");		// TE_SPIKE/TE_SUPERSPIKE
+	precache_sound ("weapons/ric2.wav");		// TE_SPIKE/TE_SUPERSPIKE
+	precache_sound ("weapons/ric3.wav");		// TE_SPIKE/TE_SUPERSPIKE
+	precache_sound ("weapons/r_exp3.wav");		// TE_EXPLOSION/TE_TAREXPLOSION
 
 	////////////////////////////////////////////
 	// sounds from c physics code - sv_phys.c //
 	////////////////////////////////////////////
 
-	// precache_sound ("demon/dland2.wav");		// SV_Physics_Step()
-	// precache_sound ("misc/h2ohit1.wav");		// SV_CheckWaterTransition()
+	precache_sound ("demon/dland2.wav");		// SV_Physics_Step()
+	precache_sound ("misc/h2ohit1.wav");		// SV_CheckWaterTransition()
 
 	//////////////////////////////////////
 	// player standard weapon precaches //
