@@ -1,4 +1,4 @@
-/*  $Id: precache.qc,v 1.5 2005/11/07 11:06:32 slotzero Exp $
+/*  $Id: precache.qc,v 1.6 2005/11/07 23:11:42 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -23,8 +23,6 @@
 void ()
 precaches =
 {
-
-
 	// blob/
 	precache_sound ("blob/death1.wav");		// unfrozen/unglued
 	precache_sound ("blob/hit1.wav");		// glue caught
@@ -59,7 +57,6 @@ precaches =
 
 	// fish/
 	precache_sound ("fish/bite.wav");		// ice trap (activated/deactivated)
-	precache_sound ("fish/idle.wav");		// cloak sonar found water enemy
 
 	// hknight/
 	precache_sound ("hknight/attack1.wav");		// fire magic shotgun
@@ -95,9 +92,9 @@ precaches =
 	precache_sound ("misc/water1.wav");		// swimming/underwater (lava/flamethrower) discharge
 	precache_sound ("misc/water2.wav");		// swimming/underwater (lava/flamethrower) discharge
 
-	// player/ (XXX LEFT OFF HERE)
+	// player/
 	precache_sound ("player/axhit1.wav");		// axe hits meat
-	precache_sound ("player/axhit2.wav");		// axe hits world
+	precache_sound ("player/axhit2.wav");		// axe hits world/hook bounce
 	precache_sound ("player/death1.wav");		// normal death
 	precache_sound ("player/death2.wav");		// normal death
 	precache_sound ("player/death3.wav");		// normal death
@@ -111,7 +108,7 @@ precaches =
 	precache_sound ("player/h2odeath.wav");		// drowned
 	precache_sound ("player/h2ojump.wav");		// player jumping into water
 	precache_sound ("player/inh2o.wav");		// player enter water
-	precache_sound ("player/inlava.wav");		// player enter lava
+	precache_sound ("player/inlava.wav");		// player enter lava/enviro lava heal
 	precache_sound ("player/land.wav");		// player landing
 	precache_sound ("player/land2.wav");		// hurt landing
 	precache_sound ("player/lburn1.wav");		// slime/lava burn
@@ -122,41 +119,41 @@ precaches =
 	precache_sound ("player/pain4.wav");		// normal pain
 	precache_sound ("player/pain5.wav");		// normal pain
 	precache_sound ("player/pain6.wav");		// normal pain
-	precache_sound ("player/plyrjmp8.wav");		// player jump
-	precache_sound ("player/slimbrn2.wav");		// player enter slime
+	precache_sound ("player/plyrjmp8.wav");		// player jump/jumping rune/jump weirdness
+	precache_sound ("player/slimbrn2.wav");		// player enter slime/enviro slime heal
 	precache_sound ("player/teledth1.wav");		// telefragged
 	precache_sound ("player/tornoff2.wav");		// player disconnect
 	precache_sound ("player/udeath.wav");		// gibbed
 
 	// progs/
-	precache_model ("progs/armor.mdl");		// armor dropping on e1m7 &c
-	precache_model ("progs/backpack.mdl");		// backpack
-	precache_model ("progs/bolt.mdl");		// TE_LIGHTNING1
-	precache_model ("progs/bolt2.mdl");		// TE_LIGHTNING2
-	precache_model ("progs/bolt3.mdl");		// TE_LIGHTNING3
+	precache_model ("progs/armor.mdl");		// armor drop
+	precache_model ("progs/backpack.mdl");		// backpack/antipack
+	precache_model ("progs/bolt.mdl");		// *** TE_LIGHTNING1
+	precache_model ("progs/bolt2.mdl");		// *** TE_LIGHTNING2
+	precache_model ("progs/bolt3.mdl");		// *** TE_LIGHTNING3
 	precache_model ("progs/end1.mdl");		// earth magic
 	precache_model ("progs/end2.mdl");		// black magic
 	precache_model ("progs/end3.mdl");		// hell magic
 	precache_model ("progs/end4.mdl");		// elder magic
-	precache_model ("progs/eyes.mdl");		// eyes
-	precache_model ("progs/flame2.mdl");		// firewalk, burning
+	precache_model ("progs/eyes.mdl");		// ring/admin eyes/cloak rune
+	precache_model ("progs/flame2.mdl");		// burning/firewalk/torch hat
 	precache_model ("progs/gib1.mdl");		// gibs
 	precache_model ("progs/gib2.mdl");		// gibs
 	precache_model ("progs/gib3.mdl");		// gibs
-	precache_model ("progs/grenade.mdl");		// grenade
-	precache_model ("progs/h_player.mdl");		// head
+	precache_model ("progs/grenade.mdl");		// grenade/divine hat/betty
+	precache_model ("progs/h_player.mdl");		// (death/vengeance) head
 	precache_model ("progs/h_shams.mdl");		// shambler head
 	precache_model ("progs/h_zombie.mdl");		// zombie head
-	precache_model ("progs/laser.mdl");		// wall traps/enforcer
-	precache_model ("progs/lavaball.mdl");		// lavaballs
-	precache_model ("progs/missile.mdl");		// rocket
+	precache_model ("progs/laser.mdl");		// wall traps/sniper rune
+	precache_model ("progs/lavaball.mdl");		// lavaballs/bfg projectile
+	precache_model ("progs/missile.mdl");		// rocket/alt weapon bomb/betty
 	precache_model ("progs/oldone.mdl");		// shub hat
-	precache_model ("progs/player.mdl");		// player model
-	precache_model ("progs/quaddama.mdl");		// quad model
-	precache_model ("progs/s_bubble.spr");		// drowning bubbles
+	precache_model ("progs/player.mdl");		// player model/hologram
+	precache_model ("progs/quaddama.mdl");		// quad (model/hat)
+	precache_model ("progs/s_bubble.spr");		// drowning bubbles/extinguished fire/weirdness
 	precache_model ("progs/s_explod.spr");		// sprite explosion
 	precache_model ("progs/s_light.mdl");		// shambler lightning
-	precache_model ("progs/s_light.spr");		// death orb and gravity well
+	precache_model ("progs/s_light.spr");		// death orb/gravity well
 	precache_model ("progs/s_spike.mdl");		// super spike
 	precache_model ("progs/shambler.mdl");		// shambler
 	precache_model ("progs/spike.mdl");		// spike
@@ -190,42 +187,40 @@ precaches =
 	precache_sound ("shambler/ssight.wav");		// shambler sight
 
 	// weapons/
-	precache_sound ("weapons/ax1.wav");		// axe swoosh, launch hook, firewalk walk
-	precache_sound ("weapons/bounce.wav");		// grenade bounce, hook bounce
+	precache_sound ("weapons/ax1.wav");		// axe swoosh/launch hook/firewalk walk
+	precache_sound ("weapons/bounce.wav");		// grenade bounce/hook bounce
 	precache_sound ("weapons/grenade.wav");		// lob grenade
 	precache_sound ("weapons/guncock.wav");		// fire shotgun
-	precache_sound ("weapons/lhit.wav");		// lightning gun working, electric attack
-	precache_sound ("weapons/lock4.wav");		// ammo pickup, backpack pickup, antipack pickup
-	precache_sound ("weapons/lstart.wav");		// fire lightning, bfg countdown, electric discharge
-	precache_sound ("weapons/pkup.wav");		// weapon pick up
-	precache_sound ("weapons/r_exp3.wav");		// TE_EXPLOSION, TE_TAREXPLOSION
-	precache_sound ("weapons/ric1.wav");		// TE_SPIKE, TE_SUPERSPIKE, pierce rune, jack rune
-	precache_sound ("weapons/ric2.wav");		// TE_SPIKE, TE_SUPERSPIKE, reflect rockets
-	precache_sound ("weapons/ric3.wav");		// TE_SPIKE, TE_SUPERSPIKE, reflect rockets, sniper rune
-	precache_sound ("weapons/rocket1i.wav");	// launch spike, bomb countdown
-	precache_sound ("weapons/sgun1.wav");		// launch rocket, launch bfg
+	precache_sound ("weapons/lhit.wav");		// lightning gun working/electric attack
+	precache_sound ("weapons/lock4.wav");		// (ammo/backpack/antipack) pickup
+	precache_sound ("weapons/lstart.wav");		// fire lightning/bfg countdown/electric discharge
+	precache_sound ("weapons/pkup.wav");		// weapon pickup
+	precache_sound ("weapons/r_exp3.wav");		// *** TE_EXPLOSION/TE_TAREXPLOSION
+	precache_sound ("weapons/ric1.wav");		// *** TE_SPIKE/TE_SUPERSPIKE/pierce rune/jack rune
+	precache_sound ("weapons/ric2.wav");		// *** TE_SPIKE/TE_SUPERSPIKE/reflect rockets
+	precache_sound ("weapons/ric3.wav");		// *** TE_SPIKE/TE_SUPERSPIKE/reflect rockets/sniper rune
+	precache_sound ("weapons/rocket1i.wav");	// launch spike/bomb countdown
+	precache_sound ("weapons/sgun1.wav");		// launch rocket/launch bfg
 	precache_sound ("weapons/shotgn2.wav");		// fire super shotgun
-	precache_sound ("weapons/spike2.wav");		// launch super spike, wall spikes
-	precache_sound ("weapons/tink1.wav");		// TE_SPIKE, TE_SUPERSPIKE, runes bounce
+	precache_sound ("weapons/spike2.wav");		// launch super spike/wall spikes
+	precache_sound ("weapons/tink1.wav");		// *** TE_SPIKE/TE_SUPERSPIKE/runes bounce
 
 	// wizard/
-	precache_sound ("wizard/hit.wav");		// TE_WIZSPIKE
-	precache_sound ("wizard/widle1.wav");		// ground enemy detected
+	precache_sound ("wizard/hit.wav");		// *** TE_WIZSPIKE
 	precache_sound ("wizard/wpain.wav");		// vampire steals health
 
 	// zombie/
-	precache_sound ("zombie/idle_w2.wav");
-	precache_sound ("zombie/z_miss.wav");		// chaff hits someone
+	precache_sound ("zombie/idle_w2.wav");		// zombie idle
+	precache_sound ("zombie/z_fall.wav");		// zombie fall
+	precache_sound ("zombie/z_gib.wav");		// zombie gib
+	precache_sound ("zombie/z_hit.wav");		// zombie hit
 	precache_sound ("zombie/z_idle.wav");		// zombie idle 1
 	precache_sound ("zombie/z_idle1.wav");		// zombie idle 2
-	precache_sound ("zombie/z_shot1.wav");		// zombie shot
-	precache_sound ("zombie/z_gib.wav");		// zombie gib
-	precache_sound ("zombie/z_pain.wav");		// zombie pain 1
-	precache_sound ("zombie/z_pain1.wav");		// zombie pain 2
-	precache_sound ("zombie/z_fall.wav");		// zombie fall
-	precache_sound ("zombie/z_miss.wav");		// zombie miss
-	precache_sound ("zombie/z_hit.wav");		// zombie hit
+	precache_sound ("zombie/z_miss.wav");		// impact/spiky ball touch
+	precache_sound ("zombie/z_pain.wav");		// zombie pain 1/monk protect
+	precache_sound ("zombie/z_pain1.wav");		// zombie pain 2/monk protect
+	precache_sound ("zombie/z_shot1.wav");		// zombie shot/burning
 
 	// settings.qc
-	precache_sound (SOUND_RUNE_PICKUP);		// You got a rune
+	precache_sound (SOUND_RUNE_PICKUP);		// you got a rune
 };
