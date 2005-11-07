@@ -1,4 +1,4 @@
-/*  $Id: precache.qc,v 1.4 2005/11/06 02:01:42 slotzero Exp $
+/*  $Id: precache.qc,v 1.5 2005/11/07 11:06:32 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -37,7 +37,7 @@ precaches =
 	precache_sound ("boss1/throw.wav");		// trigger fire trap
 
 	// boss2/
-	precache_sound ("boss2/idle.wav");		// dspot touch/weirdness touch
+	precache_sound ("boss2/idle.wav");		// (dspot/weirdness) touch
 
 	// buttons/
 	precache_sound ("buttons/switch04.wav");	// (dspot/ice/well) placed/divine tick
@@ -59,43 +59,43 @@ precaches =
 
 	// fish/
 	precache_sound ("fish/bite.wav");		// ice trap (activated/deactivated)
-	precache_sound ("fish/idle.wav");		// cloak activate sonar
+	precache_sound ("fish/idle.wav");		// cloak sonar found water enemy
 
 	// hknight/
 	precache_sound ("hknight/attack1.wav");		// fire magic shotgun
-	precache_sound ("hknight/hit.wav");		// *** TE_KNIGHTSPIKE, firewalk, flame missiles, fire trap
+	precache_sound ("hknight/hit.wav");		// *** TE_KNIGHTSPIKE/flame missiles/firewalk/fire trap
 
-	// items/ (XXX PICK UP HERE!)
-	precache_sound ("items/armor1.wav");		// armor pickup/regen activate
-	precache_sound ("items/damage.wav");		// quad pickup/radiation
-	precache_sound ("items/damage2.wav");		// phoenix
-	precache_sound ("items/damage3.wav");		// berserk, strength, phoenix
-	precache_sound ("items/inv1.wav");		// death spot actived
+	// items/
+	precache_sound ("items/armor1.wav");		// (armor/good armor) pickup/regen activate
+	precache_sound ("items/damage.wav");		// quad pickup/radiation set
+	precache_sound ("items/damage2.wav");		// (quad/phoenix) wears off
+	precache_sound ("items/damage3.wav");		// (quad/berserk/strength/phoenix) does damage
+	precache_sound ("items/inv1.wav");		// ring/death spot actived/cloaked
 	precache_sound ("items/itembk2.wav");		// item respawn sound
-	precache_sound ("items/protect2.wav");		// shielding or resistance?
-	precache_sound ("items/protect3.wav");		// shielding or resistance?
-	precache_sound ("items/r_item1.wav");		// (enviro/regen/radio) heal/requiem
-	precache_sound ("items/r_item2.wav");		// regen activate
+	precache_sound ("items/protect2.wav");		// (pent/shield) off
+	precache_sound ("items/protect3.wav");		// (pent/shield/resistance) takes damage
+	precache_sound ("items/r_item1.wav");		// health box/(enviro/regen/radio) heal/requiem
+	precache_sound ("items/r_item2.wav");		// mega health/regen activate
 
 	// knight/
 	precache_sound ("knight/sword1.wav");		// lumberjack axe
-	precache_sound ("knight/sword2.wav");		// lumberjack axe/flamethrower
+	precache_sound ("knight/sword2.wav");		// flame thrower fire
 
 	// misc/
-	precache_sound ("misc/basekey.wav");		// holorune activate
-	precache_sound ("misc/h2ohit1.wav");		// SV_CheckWaterTransition()
+	precache_sound ("misc/basekey.wav");		// place hologram
+	precache_sound ("misc/h2ohit1.wav");		// *** SV_CheckWaterTransition()
 	precache_sound ("misc/outwater.wav");		// leaving water sound
-	precache_sound ("misc/power.wav");		// lightning for boss/poenix
+	precache_sound ("misc/power.wav");		// phoenix respawn
 	precache_sound ("misc/r_tele1.wav");		// teleport
 	precache_sound ("misc/r_tele2.wav");		// teleport
 	precache_sound ("misc/r_tele3.wav");		// teleport
-	precache_sound ("misc/r_tele4.wav");		// teleport
+	precache_sound ("misc/r_tele4.wav");		// teleport/uncloak
 	precache_sound ("misc/r_tele5.wav");		// teleport
-	precache_sound ("misc/talk.wav");		// talk
-	precache_sound ("misc/water1.wav");		// swimming
-	precache_sound ("misc/water2.wav");		// swimming
+	precache_sound ("misc/talk.wav");		// player talk/world message/countdown timer
+	precache_sound ("misc/water1.wav");		// swimming/underwater (lava/flamethrower) discharge
+	precache_sound ("misc/water2.wav");		// swimming/underwater (lava/flamethrower) discharge
 
-	// player/
+	// player/ (XXX LEFT OFF HERE)
 	precache_sound ("player/axhit1.wav");		// axe hits meat
 	precache_sound ("player/axhit2.wav");		// axe hits world
 	precache_sound ("player/death1.wav");		// normal death
