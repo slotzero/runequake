@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.73 2005/11/05 23:03:19 slotzero Exp $
+/*  $Id: world.qc,v 1.74 2005/11/11 00:25:02 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -39,33 +39,10 @@ World Types:
 void ()
 worldspawn =
 {
-	local string s;
-
-	lastspawn = world;
 	InternalInit ();
 	InitBodyQue ();
 	rjs_worldspawn ();
-
-	// I can't read the gravity from sv_gravity in rjs_worldspawn()
-	// (for the same reason I have to wait before reading teamplay,
-	// I'd wager).
-	if (self.model == "maps/e1m8.bsp")
-		sv_gravity = 100;
-	else if (self.model == "maps/bunmoo3.bsp")
-		sv_gravity = 150;
-	else if (self.model == "maps/lowgrav.bsp")
-		sv_gravity = 150;
-	else
-		sv_gravity = DEFAULT_GRAVITY;
-
-	s = ftos (sv_gravity);
-	cvar_set ("sv_gravity", s);
-
 	precaches ();
-
-	//RUNE SERV: Set current rune number at 0.
-	runecurrent = 0;
-
 	Light_Setup ();
 	InitSearchHunk();
 };

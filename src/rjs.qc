@@ -1,5 +1,5 @@
 
-/*  $Id: rjs.qc,v 1.196 2005/10/17 09:47:41 slotzero Exp $
+/*  $Id: rjs.qc,v 1.197 2005/11/11 00:25:02 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -271,41 +271,44 @@ kick_suicider =
 	return 0;
 };
 
+// I used to do an initial change_teamplay() here to get the mod
+// and version into the teamplay string.  See the comments in
+// StartFrame().
 void ()
 rjs_worldspawn =
 {
 	local entity e;
 	local float i;
+	local string s;
 
-	sys_ticrate = cvar ("sys_ticrate");
+	sys_ticrate 	= cvar ("sys_ticrate");
 	if (!sys_ticrate) sys_ticrate = 0.1;
 
 	scratch1	= cvar_infokey ("scratch1");
 
 	frag_init ();
 	orig_serverflags = serverflags;
-	if (deathmatch & DM_DM_MASK && mapname == "start"
-			&& serverflags & SERVERFLAGS_RUNE_MASK == SERVERFLAGS_RUNE_MASK)
+	if (deathmatch & DM_DM_MASK && mapname == "start" && serverflags & SERVERFLAGS_RUNE_MASK == SERVERFLAGS_RUNE_MASK)
 		serverflags = serverflags - SERVERFLAGS_RUNE_MASK;
 	lp_set_map (mapname);
 	fix_map_spawn ();
 
 	// Spawn an entity to update the infrequently-updated cvar-backed
 	// variables, and do what initial processing of them is necessary.
-	e = spawn ();
-	e.think = process_cvars;
-	e.nextthink = time;
+	e		= spawn ();
+	e.think		= process_cvars;
+	e.nextthink	= time;
 
-	e = spawn ();
-	e.think = update_frag_rates;
-	e.nextthink = update_frag_rates_time = time + 60;
+	e		= spawn ();
+	e.think		= update_frag_rates;
+	e.nextthink	= update_frag_rates_time = time + 60;
 
 	if (deathmatch & DM_MODE_ROCKET_ARENA)
-		arena = spawn ();
+		arena	= spawn ();
 
 	i = cvar ("teamplay");
 	if (i & TEAM_MODE_MATCH)
-		match = spawn ();
+		match	= spawn ();
 
 	if (START_LEVEL_EXEC != string_null)
 	{
@@ -317,12 +320,25 @@ rjs_worldspawn =
 	if (!map_size (mapname))
 		MAP_IS_CUSTOM = 1;
 
-	// I used to do an initial change_teamplay() here to get the mod
-	// and version into the teamplay string.  See the comments in
-	// StartFrame().
 	IN_QW([-
 		Hunk_Settings ();
 	-])
+
+	if (mapname == "e1m8")
+		sv_gravity = 100;
+	else if (mapname == "bunmoo3")
+		sv_gravity = 150;
+	else if (mapname == "lowgrav")
+		sv_gravity = 150;
+	else
+		sv_gravity = DEFAULT_GRAVITY;
+
+	s = ftos (sv_gravity);
+	cvar_set ("sv_gravity", s);
+
+	// Set Globals
+	lastspawn	= world;
+	runecurrent	= 0;
 };
 
 void ()
