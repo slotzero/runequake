@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.74 2005/11/11 00:25:02 slotzero Exp $
+/*  $Id: world.qc,v 1.75 2005/11/12 21:06:51 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -482,7 +482,7 @@ StartFrame =
 		}
 
 		// See the comment in Rune_Move() for why this is done.
-		i = count_ent_class ("rune");
+		i = count_classname ("rune");
 		if (i != runecurrent)
 		{
 			dprint ("runecurrent bug, ");

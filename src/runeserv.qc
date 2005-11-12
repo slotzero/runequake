@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.62 2005/10/27 00:14:45 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.63 2005/11/12 21:06:51 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -827,17 +827,17 @@ Rune_Activate =
 	else if (self.runetype == RN_DSPOTS)
 	{
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
-			self.runevar = count_class_own (self, "dspot");
+			self.runevar = count_classname_owner (self, "dspot");
 		else
-			self.class_cnt = count_class_own (self, "dspot");
+			self.class_cnt = count_classname_owner (self, "dspot");
 	}
 
 	else if (self.runetype == RN_HOLO)
 	{
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
-			self.runevar = count_class_own (self, "hologram");
+			self.runevar = count_classname_owner (self, "hologram");
 		else
-			self.class_cnt = count_class_own (self, "hologram");
+			self.class_cnt = count_classname_owner (self, "hologram");
 	}
 
 	else if (self.runetype == RN_ORB)
@@ -849,17 +849,17 @@ Rune_Activate =
 	else if (self.runetype == RN_RADIO)
 	{
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
-			self.runevar = count_class_own (self, "radioactive");
+			self.runevar = count_classname_owner (self, "radioactive");
 		else
-			self.class_cnt = count_class_own (self, "radioactive");
+			self.class_cnt = count_classname_owner (self, "radioactive");
 	}
 
 	else if (self.runetype == RN_FREEZE)
 	{
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
-			self.runevar = count_class_own (self, "freeze");
+			self.runevar = count_classname_owner (self, "freeze");
 		else
-			self.class_cnt = count_class_own (self, "freeze");
+			self.class_cnt = count_classname_owner (self, "freeze");
 	}
 
 	else if (self.runetype == RN_VENG)
@@ -926,9 +926,9 @@ Rune_Activate =
 	{
 		self.touch = Torch_Touch;
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
-			self.runevar = count_class_own (self, "torchtrap");
+			self.runevar = count_classname_owner (self, "torchtrap");
 		else
-			self.class_cnt = count_class_own (self, "torchtrap");
+			self.class_cnt = count_classname_owner (self, "torchtrap");
 		Hat_Spawn (self, "progs/flame2.mdl", '-4 1 35', VEC_ORIGIN, 0);
 	}
 
@@ -981,9 +981,9 @@ Rune_Activate =
 	else if (self.runetype == RN_GLUE)
 	{
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
-			self.runevar = count_class_own (self, "glue");
+			self.runevar = count_classname_owner (self, "glue");
 		else
-			self.class_cnt = count_class_own (self, "glue");
+			self.class_cnt = count_classname_owner (self, "glue");
 	}
 
 	else if (self.runetype == RN_BLIZZARD)
@@ -992,9 +992,9 @@ Rune_Activate =
 	else if (self.runetype == RN_ANTIPACK)
 	{
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
-			self.runevar = count_class_own (self, "antipack");
+			self.runevar = count_classname_owner (self, "antipack");
 		else
-			self.class_cnt = count_class_own (self, "antipack");
+			self.class_cnt = count_classname_owner (self, "antipack");
 	}
 
 	else if (self.runetype == RN_DEFLECT)

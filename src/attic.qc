@@ -1,4 +1,4 @@
-/*  $Id: attic.qc,v 1.10 2005/11/02 23:36:12 slotzero Exp $
+/*  $Id: attic.qc,v 1.11 2005/11/12 21:06:51 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -290,8 +290,6 @@ Sets the global variable current_yaw
 Called every sys_ticrate sec by monsters
 ============
 */
-/*
-
 void ()
 ChangeYaw =
 {
@@ -332,8 +330,6 @@ ChangeYaw =
 
 	self.angles_y = current_yaw;
 };
-
-*/
 
 /*
 ============
@@ -394,80 +390,7 @@ QuadCheat =
 	dprint ("quad cheat\n");
 };
 
-float (float bits)
-bits_in_bits =
-{
-	local float n;
-
-	if (bits & 1)
-		n = n + 1;
-	if (bits & 2)
-		n = n + 1;
-	if (bits & 4)
-		n = n + 1;
-	if (bits & 8)
-		n = n + 1;
-	if (bits & 16)
-		n = n + 1;
-	if (bits & 32)
-		n = n + 1;
-	if (bits & 64)
-		n = n + 1;
-	if (bits & 128)
-		n = n + 1;
-	if (bits & 256)
-		n = n + 1;
-	if (bits & 512)
-		n = n + 1;
-	if (bits & 1024)
-		n = n + 1;
-	if (bits & 2048)
-		n = n + 1;
-	if (bits & 4096)
-		n = n + 1;
-	if (bits & 8192)
-		n = n + 1;
-	if (bits & 16384)
-		n = n + 1;
-	if (bits & 32768)
-		n = n + 1;
-	if (bits & 65536)
-		n = n + 1;
-	if (bits & 131072)
-		n = n + 1;
-	if (bits & 262144)
-		n = n + 1;
-	if (bits & 524288)
-		n = n + 1;
-	if (bits & 1048576)
-		n = n + 1;
-	if (bits & 2097152)
-		n = n + 1;
-	if (bits & 4194304)
-		n = n + 1;
-	if (bits & 8388608)
-		n = n + 1;
-
-	return n;
-};
-
-float (float cl_colors)
-cl_colors_to_shirt =
-{
-	return floor (cl_colors / %1 / 16);
-};
-
-float (float cl_colors)
-cl_colors_to_pants =
-{
-	local float shirt;
-
-	shirt = floor (cl_colors / %1 / 16);
-	shirt = shirt * 16;
-	return cl_colors / %1 - shirt;
-};
-
-/* float (float w) RankForWeapon =
+float (float w) RankForWeapon =
 {
 	if (w == IT_LIGHTNING)
 		return 1;
@@ -483,7 +406,6 @@ cl_colors_to_pants =
 		return 6;
 	return 7;
 };
-*/
 
 /*
 =============
@@ -494,7 +416,7 @@ Deathmatch weapon change rules for picking up a weapon
 .float		ammo_shells, ammo_nails, ammo_rockets, ammo_cells;
 =============
 */
-/* void (float old, float new) Deathmatch_Weapon =
+void (float old, float new) Deathmatch_Weapon =
 {
 	local float or, nr;
 
@@ -504,11 +426,10 @@ Deathmatch weapon change rules for picking up a weapon
 	if (nr < or)
 		set_weapon (new);
 };
-*/
 
 // XXX This is an alternate way to write accurate string data
 // to the hunk.  I'm not finished exploring this idea though.
-/* void (float type, float offset, string data, float bytes)
+void (float type, float offset, string data, float bytes)
 Write_Hunk_String_Dev =
 {
 	local entity hunk;
@@ -543,4 +464,80 @@ Write_Hunk_String_Dev =
 
 	// copy string to hunk
 	Write_Hunk_String_e (hunk, s);
-}; */
+};
+
+void ()
+blind_think =
+{
+	local float lev;
+	local string s;
+
+	if (self.cnt <= 0 || self.owner.health <= 0)
+	{
+		stuffcmd (self.owner, CSHIFT_NONE);
+		remove (self);
+		return;
+	}
+
+	// With cnt starting at 20, this drops from 250 to 206 by 4s,
+	// then from 175 to 50 by 25s.
+	self.cnt = self.cnt - 1;
+	if (self.cnt < 6)
+		lev = 25 * (self.cnt + 2);
+	else
+		lev = 254 - 4 * (18 - self.cnt);
+	s = ftos (lev);
+	stuffcmd (self.owner, "v_cshift 256 256 256 ");
+	stuffcmd (self.owner, s);
+	stuffcmd (self.owner, "\n");
+
+	self.nextthink = time + 0.2;
+};
+
+void (entity inflictor, float radius)
+T_RadiusLight =
+{
+	local entity old_self, head, e;
+
+	old_self = self;
+	head = findradius (inflictor.origin, radius);
+	while (head)
+	{
+		self = head;
+		if (head.classname == "player"
+			&& head.runetype != RN_ENVIRO
+			&& !head.items & IT_SUIT
+			&& infront (inflictor))
+		{
+			// Have flash grenades report.
+			if (old_self.owner == self)
+				sprint (old_self.owner, "You've blinded yourself!\n");
+			else
+			{
+				sprint (self, "You were blinded by ");
+				sprint (self, old_self.owner.netname);
+				sprint (self, "'s flash grenade!\n");
+
+				sprint (old_self.owner, self.netname);
+				sprint (old_self.owner, " was blinded by your flash grenade\n");
+			}
+			e = world;
+			do
+				e = find (e, classname, "light_think");
+			while (e != world && e.owner != head);
+			if (!e)
+			{
+				e = spawn ();
+				e.classname = "light_think";
+				e.owner = head;
+				e.think = blind_think;
+			}
+			e.cnt = 18;
+			e.nextthink = time;
+		}
+		head = head.chain;
+	}
+	if (e.owner == head)
+		sprint (old_self.owner, "Your flash grenade exploded\n");
+	self = old_self;
+};

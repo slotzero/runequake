@@ -1,5 +1,5 @@
 
-/*  $Id: rjs.qc,v 1.197 2005/11/11 00:25:02 slotzero Exp $
+/*  $Id: rjs.qc,v 1.198 2005/11/12 21:06:51 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -743,7 +743,7 @@ disp_info =
 	// global rune info
 	if (all || 1)
 	{
-		i = count_ent_class ("rune");
+		i = count_classname ("rune");
 		self_sprint_float (self, i);
 		self_sprint (self, " runes counted ");
 		self_sprint_float (self, runecurrent);
@@ -757,7 +757,7 @@ disp_info =
 	{
 		self_sprint_float (self, current_hooks);
 		self_sprint (self, " current_hooks ");
-		i = count_ent_class ("hook");
+		i = count_classname ("hook");
 		self_sprint_float (self, i);
 		self_sprint (self, " in lev, on players: ");
 		i = 0;
@@ -962,37 +962,11 @@ disp_info =
 	}
 };
 
-void (float n)
-show_float =
-{
-	if (n != 0)
-	{
-		sprint_float (self, n);
-		sprint (self, "\n");
-	}
-};
-
-float ()
-count_ent =
-{
-	local entity e;
-	local float n;
-
-	n = 0;
-	e = nextent (world);
-	while (e)
-	{
-		n = n + 1;
-		e = nextent (e);
-	}
-	return n;
-};
-
 float (string s)
-count_ent_class =
+count_classname =
 {
-	local float i;
 	local entity e;
+	local float i;
 
 	i = 0;
 	e = find (world, classname, s);
@@ -1004,17 +978,17 @@ count_ent_class =
 	return i;
 };
 
-float (entity e_owner, string s)
-count_class_own =
+float (entity w, string s)
+count_classname_owner =
 {
-	local float i;
 	local entity e;
+	local float i;
 
 	i = 0;
 	e = find (world, classname, s);
 	while (e)
 	{
-		if (e.owner == e_owner)
+		if (e.owner == w)
 			i = i + 1;
 		e = find (e, classname, s);
 	}
@@ -1051,9 +1025,7 @@ set_armor_items_e =
 		bit = 0;
 	else
 		bit = armor_type_to_it (e.armortype);
-	e.items = e.items
-			- (e.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3))
-			+ bit;
+	e.items = e.items - (e.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + bit;
 };
 
 float (entity e)
@@ -1085,6 +1057,7 @@ max_players =
 	return (temp1 & T1_MAX_PLAYERS_MASK) / T1_MAX_PLAYERS_MULT;
 };
 
+// XXX FIXME
 float (float include_queued)
 count_players =
 {
@@ -1118,6 +1091,7 @@ count_players =
 	return players;
 };
 
+// XXX FIXME
 float (float count_qsmack)
 count_players_by_ent =
 {
@@ -1139,24 +1113,24 @@ count_players_by_ent =
 };
 
 // This turns a player entity into an entity number.  I use this for
-// doing localcmd "kick #" and for keeping your ridee accross levels.
-
-float (entity e_wanted)
+// doing localcmd "kick #" and for keeping your ridee across levels.
+float (entity w)
 player_ent_to_num =
 {
 	local entity e;
 	local float i;
 
 	e = world;
-	for (i = 0;i <= 16; i = i + 1)
+	for (i = 0; i < 16; i = i + 1)
 	{
-		if (e == e_wanted)
-			return i;
 		e = nextent (e);
+		if (e == w)
+			return i;
 	}
 	return 0;
 };
 
+// XXX FIXME
 entity (float n)
 player_num_to_ent =
 {
@@ -1175,6 +1149,7 @@ player_num_to_ent =
 	return e;
 };
 
+// XXX FIXME
 entity (float n)
 admin_cycle_num_to_ent =
 {
@@ -1195,33 +1170,14 @@ admin_cycle_num_to_ent =
 	return world;
 };
 
-float (entity targ_e)
-ent_to_num =
-{
-	local float n;
-	local entity e;
-
-	if (!targ_e)
-		return 0;
-	e = nextent (world);
-	n = 1;
-	while (e)
-	{
-		if (e == targ_e)
-			return n;
-		e = nextent (e);
-		n = n + 1;
-	}
-	return -1;
-};
-
+// XXX FIXME
 float ()
 count_hooks =
 {
 	local float n_ent, n_player;
 	local entity e;
 
-	n_ent = count_ent_class ("hook");
+	n_ent = count_classname ("hook");
 	n_player = 0;
 	e = find (world, classname, "player");
 	while (e)
@@ -1236,6 +1192,7 @@ count_hooks =
 	return n_ent + n_player;
 };
 
+// XXX FIXME
 void (string class, vector orig, float all)
 xremove_classname_origin =
 {
@@ -1279,7 +1236,6 @@ remove_classname =
 // are certainly bugs which cause you to be left with one turned on
 // inappropriately.  To prevent abuse (of twirly head (punchangle)
 // particularly), you can only run it once a minute.
-
 void ()
 fix_batman_villain_syndrome =
 {
@@ -2483,17 +2439,6 @@ switchfire_off =
 };
 
 void ()
-bound_ammo =
-{
-	local entity oldother;
-
-	oldother = other;
-	other = self;
-	bound_other_ammo ();
-	other = oldother;
-};
-
-void ()
 set_current_ammo =
 {
 	W_SetCurrentAmmo (0);
@@ -2917,82 +2862,6 @@ draw_hud_e =
 	self = old_self;
 };
 
-void ()
-blind_think =
-{
-	local float lev;
-	local string s;
-
-	if (self.cnt <= 0 || self.owner.health <= 0)
-	{
-		stuffcmd (self.owner, CSHIFT_NONE);
-		remove (self);
-		return;
-	}
-
-	// With cnt starting at 20, this drops from 250 to 206 by 4s,
-	// then from 175 to 50 by 25s.
-	self.cnt = self.cnt - 1;
-	if (self.cnt < 6)
-		lev = 25 * (self.cnt + 2);
-	else
-		lev = 254 - 4 * (18 - self.cnt);
-	s = ftos (lev);
-	stuffcmd (self.owner, "v_cshift 256 256 256 ");
-	stuffcmd (self.owner, s);
-	stuffcmd (self.owner, "\n");
-
-	self.nextthink = time + 0.2;
-};
-
-void (entity inflictor, float radius)
-T_RadiusLight =
-{
-	local entity old_self, head, e;
-
-	old_self = self;
-	head = findradius (inflictor.origin, radius);
-	while (head)
-	{
-		self = head;
-		if (head.classname == "player"
-			&& head.runetype != RN_ENVIRO
-			&& !head.items & IT_SUIT
-			&& infront (inflictor))
-		{
-			// Have flash grenades report.
-			if (old_self.owner == self)
-				sprint (old_self.owner, "You've blinded yourself!\n");
-			else
-			{
-				sprint (self, "You were blinded by ");
-				sprint (self, old_self.owner.netname);
-				sprint (self, "'s flash grenade!\n");
-
-				sprint (old_self.owner, self.netname);
-				sprint (old_self.owner, " was blinded by your flash grenade\n");
-			}
-			e = world;
-			do
-				e = find (e, classname, "light_think");
-			while (e != world && e.owner != head);
-			if (!e)
-			{
-				e = spawn ();
-				e.classname = "light_think";
-				e.owner = head;
-				e.think = blind_think;
-			}
-			e.cnt = 18;
-			e.nextthink = time;
-		}
-		head = head.chain;
-	}
-	if (e.owner == head)
-		sprint (old_self.owner, "Your flash grenade exploded\n");
-	self = old_self;
-};
-
 // The rune_tell_*() code takes over these entity fields:
 //
 //	waitmin:
@@ -3109,26 +2978,6 @@ spawn_protect_off_e  =
 	self = old_self;
 };
 
-// After DLY seconds unset self's owner field.
-
-void (float dly)
-unset_owner_spawn =
-{
-	local entity e;
-
-	e = spawn ();
-	e.owner = self;
-	e.think = unset_owner_think;
-	e.nextthink = time + dly;
-};
-
-void ()
-unset_owner_think =
-{
-	self.owner.owner = world;
-	remove (self);
-};
-
 // Even though changelevel() is a builtin, it can fail if somebody types
 // something at the console just as it's running.  (Who can know why?
 // More poor programming no doubt.)
@@ -3141,7 +2990,6 @@ unset_owner_think =
 //
 // Symptoms of the bug are that players can't respawn or jump, and they
 // aren't harmed by liquids.
-
 void (string m)
 changelevel =
 {
@@ -3156,7 +3004,6 @@ changelevel =
 };
 
 // Return true if I'm the top dog.
-
 float ()
 is_topdog =
 {
@@ -3276,23 +3123,4 @@ maybe_update_trap_count =
 		}
 	}
 	return FALSE;
-};
-
-float (string c_var, float bit)
-toggle_cvar_bit =
-{
-	local float bits;
-	local string new;
-
-	bits = cvar_infokey (c_var);
-
-	if (bits & bit)
-		bits = bits - bits & bit;
-	else
-		bits = bits | bit;
-
-	new = ftos (bits);
-	cvar_set_infokey (c_var, new);
-
-	return bits;
 };
