@@ -1,5 +1,4 @@
-
-/*  $Id: rjs.qc,v 1.198 2005/11/12 21:06:51 slotzero Exp $
+/*  $Id: rjs.qc,v 1.199 2005/11/12 21:20:38 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -18,6 +17,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
+// XXX FIXME
 void ()
 timelimit_countdown =
 {
