@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.199 2005/11/12 21:20:38 slotzero Exp $
+/*  $Id: rjs.qc,v 1.200 2005/11/12 21:51:04 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -377,7 +377,7 @@ process_misc =
 		return;
 
 	// Only process the remaining functions if the server is empty.
-	if (count_players_by_ent (0))
+	if (count_valid_players (0))
 		return;
 
 	// vote-team
@@ -1091,23 +1091,24 @@ count_players =
 	return players;
 };
 
-// XXX FIXME
-float (float count_qsmack)
-count_players_by_ent =
+float (float include_qsmack)
+count_valid_players =
 {
 	local entity e;
-	local float players;
+	local float i, players;
 
-	e = nextent (world);
 	players = 0;
-	while (e != world && e.classname != "bodyque" && players < 100)
+	e = world;
+	for (i = 0; i < 16; i = i + 1)
 	{
-		if (is_valid_player_e (e))
-		{
-			if (!is_qsmack_e (e) || count_qsmack)
-			players = players + 1;
-		}
 		e = nextent (e);
+		if (e.classname == "bodyque")
+			 i = 16;
+		else if (is_valid_player_e (e))
+		{
+			if (!is_qsmack_e (e) || include_qsmack)
+				players = players + 1;
+		}
 	}
 	return players;
 };
@@ -1740,7 +1741,7 @@ player_init =
 			i = 1;
 		else
 		{
-			i = count_players_by_ent (1);
+			i = count_valid_players (1);
 			if (i <= FORWARD_MAX_PLAYERS_REAL)
 				i = 0;
 		}
