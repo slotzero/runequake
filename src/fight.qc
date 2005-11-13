@@ -1,4 +1,4 @@
-/*  $Id: fight.qc,v 1.11 2004/06/25 01:35:17 slotzero Exp $
+/*  $Id: fight.qc,v 1.12 2005/11/13 18:50:13 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -67,8 +67,8 @@ CheckAttack =
 //nomonster			if (self.classname == "monster_knight")
 //nomonster				knight_attack ();
 //nomonster			else
-				self.th_melee ();
-//nomonster			return TRUE;
+			self.th_melee ();
+			return TRUE;
 		}
 	}
 
