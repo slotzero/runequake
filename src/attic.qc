@@ -1,4 +1,4 @@
-/*  $Id: attic.qc,v 1.14 2005/11/13 20:55:16 slotzero Exp $
+/*  $Id: attic.qc,v 1.15 2005/11/13 21:50:59 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -81,6 +81,28 @@ noclass =
 	dprint (vtos (self.origin));
 	dprint ("\n");
 	remove (self);
+};
+
+void () item_megahealth_rot =
+{
+	other = self.owner;
+
+	if (other.health > other.max_health)
+	{
+		other.health = other.health - 1;
+		self.nextthink = time + 1;
+		return;
+	}
+
+	// it is possible for a player to die and respawn between rots,
+	// so don't just blindly subtract the flag off
+	other.items = other.items - (other.items & IT_SUPERHEALTH);
+
+	if (deathmatch & DM_RESPAWN)
+	{
+		self.nextthink = time + HEALTH_RESPAWN_TIME;
+		self.think = SUB_regen;
+	}
 };
 
 /*~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>

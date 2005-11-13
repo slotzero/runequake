@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.64 2005/10/13 03:35:26 slotzero Exp $
+/*  $Id: items.qc,v 1.65 2005/11/13 21:50:59 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -365,29 +365,6 @@ health_touch =
 		SUB_UseTargets (); // fire all targets / killtargets
 	}
 };
-
-/* void () item_megahealth_rot =
-{
-	other = self.owner;
-
-	if (other.health > other.max_health)
-	{
-		other.health = other.health - 1;
-		self.nextthink = time + 1;
-		return;
-	}
-
-	// it is possible for a player to die and respawn between rots,
-	// so don't just blindly subtract the flag off
-	other.items = other.items - (other.items & IT_SUPERHEALTH);
-
-	if (deathmatch & DM_RESPAWN)
-	{
-		self.nextthink = time + HEALTH_RESPAWN_TIME;
-		self.think = SUB_regen;
-	}
-};
-*/
 
 /*
 ===============================================================================
