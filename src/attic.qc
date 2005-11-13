@@ -1,4 +1,4 @@
-/*  $Id: attic.qc,v 1.11 2005/11/12 21:06:51 slotzero Exp $
+/*  $Id: attic.qc,v 1.12 2005/11/13 20:18:56 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -540,4 +540,42 @@ T_RadiusLight =
 	if (e.owner == head)
 		sprint (old_self.owner, "Your flash grenade exploded\n");
 	self = old_self;
+};
+
+/*
+============
+T_BeamDamage
+============
+*/
+void (entity attacker, float damage, string dtype)
+T_BeamDamage =
+{
+	local	float 	points;
+	local	entity	head;
+
+	head = findradius (attacker.origin, damage+40);
+
+	while (head)
+	{
+		if (head.takedamage)
+		{
+			points = 0.5*vlen (attacker.origin - head.origin);
+			if (points < 0)
+				points = 0;
+			points = damage - points;
+			if (head == attacker)
+				points = points * 0.5;
+			if (points > 0)
+			{
+				if (CanDamage (head, attacker))
+				{
+					if (head.classname == "monster_shambler")
+						T_Damage (head, attacker, attacker, points*0.5, dtype);
+					else
+						T_Damage (head, attacker, attacker, points, dtype);
+				}
+			}
+		}
+		head = head.chain;
+	}
 };

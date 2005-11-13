@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.47 2005/10/06 21:06:33 slotzero Exp $
+/*  $Id: combat.qc,v 1.48 2005/11/13 20:18:56 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -752,44 +752,6 @@ T_RadiusDamage =
 							}
 						}
 					}
-				}
-			}
-		}
-		head = head.chain;
-	}
-};
-
-/*
-============
-T_BeamDamage
-============
-*/
-void (entity attacker, float damage, string dtype)
-T_BeamDamage =
-{
-	local	float 	points;
-	local	entity	head;
-
-	head = findradius (attacker.origin, damage+40);
-
-	while (head)
-	{
-		if (head.takedamage)
-		{
-			points = 0.5*vlen (attacker.origin - head.origin);
-			if (points < 0)
-				points = 0;
-			points = damage - points;
-			if (head == attacker)
-				points = points * 0.5;
-			if (points > 0)
-			{
-				if (CanDamage (head, attacker))
-				{
-					if (head.classname == "monster_shambler")
-						T_Damage (head, attacker, attacker, points*0.5, dtype);
-					else
-						T_Damage (head, attacker, attacker, points, dtype);
 				}
 			}
 		}
