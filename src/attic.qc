@@ -1,4 +1,4 @@
-/*  $Id: attic.qc,v 1.12 2005/11/13 20:18:56 slotzero Exp $
+/*  $Id: attic.qc,v 1.13 2005/11/13 20:34:57 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -578,4 +578,12 @@ T_BeamDamage =
 		}
 		head = head.chain;
 	}
+};
+
+/*QUAKED item_deathball (.3 .3 1) (0 0 0) (32 32 32)
+*/
+void ()
+item_deathball =
+{
+	self.touch = deathball_touch;
 };
