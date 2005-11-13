@@ -1,4 +1,4 @@
-/*  $Id: attic.qc,v 1.13 2005/11/13 20:34:57 slotzero Exp $
+/*  $Id: attic.qc,v 1.14 2005/11/13 20:55:16 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -586,4 +586,10 @@ void ()
 item_deathball =
 {
 	self.touch = deathball_touch;
+};
+
+void ()
+bodyque =
+{	// just here so spawn functions don't complain after the world
+	// creates bodyques
 };

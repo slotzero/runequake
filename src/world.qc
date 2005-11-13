@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.75 2005/11/12 21:06:51 slotzero Exp $
+/*  $Id: world.qc,v 1.76 2005/11/13 20:55:16 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -510,12 +510,6 @@ BODY QUE
 */
 
 entity	bodyque_head;
-
-void ()
-bodyque =
-{	// just here so spawn functions don't complain after the world
-	// creates bodyques
-};
 
 void ()
 InitBodyQue =
