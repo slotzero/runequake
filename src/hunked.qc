@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.40 2005/07/25 12:48:34 slotzero Exp $
+/*  $Id: hunked.qc,v 1.41 2005/12/17 04:04:45 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -234,7 +234,7 @@ Client_Disconnect_Log =
 		self_sprint (self, "No entries found.\n");
 };
 
-float BAN_LIST_SIZE = %25;
+float BAN_LIST_SIZE = %50;
 
 float (vector ip)
 ban_check =
