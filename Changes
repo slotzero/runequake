@@ -1,9 +1,24 @@
-$Id: Changes,v 1.82 2005/09/10 23:58:47 slotzero Exp $
+$Id: Changes,v 1.83 2005/12/23 19:51:49 slotzero Exp $
 
-requiem rune fix.. touching armor when on fire didn't put you out
-spawn shield protected from gravity well
-pqc_team_frags logic fix
-removed .drop_delay field
+Version 1.2  Fri Dec 23 14:27:33 EST 2005
+
+    - Bug Fixes
+
+        - Picking up armor with requiem rune didn't extinguish you if you were on fire.
+
+        - Spawn shields are now protected from gravity wells.
+
+    - Changes
+
+        - Added autostats command to dump the output of the efficiency command every time
+          the level is over.
+
+        - ProQuake users scoreboard pings are now updated every second instead of every
+          five seconds.
+
+        - Added CRMod style match mode.
+
+        - Athlete rune holder now runs 10% faster than everyone else.
 
 Version 1.1  Mon Jul 25 08:51:26 EST 2005
 
