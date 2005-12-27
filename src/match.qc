@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.31 2005/10/13 03:35:26 slotzero Exp $
+/*  $Id: match.qc,v 1.32 2005/12/27 20:35:28 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -44,6 +44,7 @@ match_hunk_init =
 void (entity e)
 match_client_init =
 {
+	local entity w;
 	local float i, c, pants, colors;
 
 	if (!HUNK_CONTEXT)
@@ -59,6 +60,17 @@ match_client_init =
 			c = color_to_teamfrags (pants);
 			pqc_team_frags (e, pants, c);
 		}
+	}
+
+	w = find (world, classname, "player");
+	while (w)
+	{
+		if (w.rqstate & RQS_READY && match.state < 1)
+		{
+			msg_entity = e;
+			match_ready_name (MSG_ONE, w);
+		}
+		w = find (w, classname, "player");
 	}
 };
 
@@ -321,6 +333,19 @@ match_timer =
 };
 
 void ()
+match_unready_names =
+{
+	local entity e;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		svc_updatename (MSG_ALL, e.colormap - 1, e.netname);
+		e = find (e, classname, "player");
+	}
+};
+
+void ()
 match_countdown =
 {
 	local float seconds;
@@ -340,6 +365,7 @@ match_countdown =
 	if (seconds <= 0)
 	{
 		kill_all_players ();
+		match_unready_names ();
 
 		match.state	= 1;
 
@@ -464,6 +490,16 @@ audit_match =
 		match_stop_countdown ();
 };
 
+float (float to, entity e)
+match_ready_name =
+{
+	local string match_name;
+
+	match_name = flen (e.netname, -16);
+	match_name = strcat (match_name, "\bREADY");
+	svc_updatename (to, e.colormap - 1, match_name);
+};
+
 float ()
 match_obs_join_game =
 {
@@ -538,6 +574,7 @@ match_obs_join_game =
 	bprint (s);
 	bprint ("\n");
 
+	match_ready_name (MSG_ALL, self);
 	audit_match ();
 
 	return TRUE;
@@ -652,6 +689,7 @@ match_notready =
 	{
 		bprint (self.netname);
 		bprint (" is not ready\n");
+		svc_updatename (MSG_ALL, self.colormap - 1, self.netname);
 	}
 
 	maybe_remove_team (self);
