@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.200 2005/11/12 21:51:04 slotzero Exp $
+/*  $Id: rjs.qc,v 1.201 2006/01/04 03:04:58 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1122,7 +1122,7 @@ player_ent_to_num =
 	local float i;
 
 	e = world;
-	for (i = 0; i < 16; i = i + 1)
+	for (i = 1; i <= 16; i = i + 1)
 	{
 		e = nextent (e);
 		if (e == w)
