@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.32 2005/12/27 20:35:28 slotzero Exp $
+/*  $Id: match.qc,v 1.33 2006/01/04 03:09:16 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -490,7 +490,7 @@ audit_match =
 		match_stop_countdown ();
 };
 
-float (float to, entity e)
+void (float to, entity e)
 match_ready_name =
 {
 	local string match_name;
