@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.179 2005/10/16 04:52:26 slotzero Exp $
+/*  $Id: defs.qc,v 1.180 2006/01/08 05:03:55 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -884,10 +884,8 @@ float	FL_ONGROUND			= 512;	// standing on something
 float	FL_PARTIALGROUND		= 1024;	// not all corners are valid
 float	FL_WATERJUMP			= 2048;	// player jumping out of water
 float	FL_JUMPRELEASED			= 4096;	// for jump debouncing
-float	FL_HEAVY			= 8192;	// player twice as heavy (requires runequake engine)
-float	FL_LIGHT			= 16384;// player twice as light (requires runequake engine)
-float	FL_LOW_BANDWIDTH_CLIENT		= 32768;// low bandwidth mode (requires runequake engine)
-float	FL_OBSERVER			= 65536;// engine recongizes observer (requires runequake engine)
+float	FL_LOW_BANDWIDTH_CLIENT		= 8192;	// low bandwidth mode (requires runequake engine)
+float	FL_OBSERVER			= 16384;// engine recongizes observer (requires runequake engine)
 
 // edict.movetype values
 float	MOVETYPE_NONE			= 0;	// never moves
