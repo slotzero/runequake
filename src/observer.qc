@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.62 2005/10/16 01:06:03 slotzero Exp $
+/*  $Id: observer.qc,v 1.63 2006/01/14 02:02:22 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -427,11 +427,31 @@ obs_post_think =
 			trackvel (self.owner);
 		}
 
-		if (self.angles != self.owner.v_angle)
+		if (!self.button0)
+		{
+			local vector angle;
+
+			angle_x = 360.0 / 256.0 * rint(self.owner.v_angle_x * 256.0 / 360.0);
+			angle_y = 360.0 / 256.0 * rint(self.owner.v_angle_y * 256.0 / 360.0);
+			angle_z = 0;
+
+			self.angles = angle - '0.1 0.1 0.1';
+			self.angles_z = 0;
+			self.fixangle = TRUE;
+
+			// For some reason, this doesn't work!  It works locally though.
+			/* msg_entity = self;
+			WriteByte (MSG_ONE, SVC_SETANGLE);
+			WriteAngle (MSG_ONE, self.owner.v_angle_x);
+			WriteAngle (MSG_ONE, self.owner.v_angle_y);
+			WriteAngle (MSG_ONE, 0); */
+		}
+
+		/* if (self.angles != self.owner.v_angle)
 		{
 			self.angles = self.owner.v_angle;
 			self.fixangle = 1;
-		}
+		} */
 
 		// What controls when these are sent to the client?  Is
 		// it useless to avoid setting them in this way?
