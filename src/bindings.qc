@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.84 2005/10/16 04:52:26 slotzero Exp $
+/*  $Id: bindings.qc,v 1.85 2006/02/05 14:56:47 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -288,7 +288,6 @@ admin_aliases =
 void ()
 vote_aliases =
 {
-	local float i;
 	local string s;
 
 	self_stuffcmd (self, "alias vc \"impulse ");

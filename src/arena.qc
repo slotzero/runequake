@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.28 2005/07/02 04:35:17 slotzero Exp $
+/*  $Id: arena.qc,v 1.29 2006/02/05 14:56:47 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -445,8 +445,6 @@ put_client_in_arena =
 float ()
 arena_client_disconnect =
 {
-	local entity os;
-
 	if (self != arena.owner && self != arena.runent)
 		return FALSE;
 

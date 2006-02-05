@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.33 2006/01/04 03:09:16 slotzero Exp $
+/*  $Id: match.qc,v 1.34 2006/02/05 14:56:47 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -97,7 +97,6 @@ void (float type)
 match_obs_become =
 {
 	local entity e;
-	local float bit;
 
 	e		= spawn ();
 	e.owner		= self;
@@ -503,7 +502,6 @@ match_ready_name =
 float ()
 match_obs_join_game =
 {
-	local entity e;
 	local float bit;
 	local string s;
 
@@ -608,7 +606,6 @@ maybe_remove_team =
 void (float tm)
 remove_team =
 {
-	local entity e;
 	local float bit;
 
 	if (!HUNK_CONTEXT)
@@ -720,8 +717,6 @@ print_timeset_menu =
 void ()
 vote_timeset =
 {
-	local float i;
-
 	if (match.state)
 		return;
 
