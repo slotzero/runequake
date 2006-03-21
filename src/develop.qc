@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.109 2006/03/20 23:16:15 slotzero Exp $
+/*  $Id: develop.qc,v 1.110 2006/03/21 21:13:43 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -245,8 +245,6 @@ sprint_eff_player =
 void (entity to)
 sprint_efficiency_e =
 {
-	self_sprint (to, "Command temporarily disabled\n");
-	return;
 	local entity e;
 
 	self_sprint (to, "\n     name      \{252}bul\{252}nls\{252}rox\{252}lg \{252}total\n");

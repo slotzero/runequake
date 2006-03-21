@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.36 2005/07/26 21:30:05 slotzero Exp $
+/*  $Id: strman.qc,v 1.37 2006/03/21 21:13:43 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -77,7 +77,7 @@ strlen =
 	if (&s < 0)
 		return strlen_any (s);
 
-	if (&s > 16777216)
+	if (&s > %16777216)
 		return strlen_any (s);
 
 	return strlen_qc (s);
