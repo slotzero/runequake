@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.180 2006/01/08 05:03:55 slotzero Exp $
+/*  $Id: defs.qc,v 1.181 2006/04/08 15:03:41 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1463,6 +1463,10 @@ void	(float to, entity s)			WriteEntity	= #59;
 // void	(float f)				bWriteAngle	= #64;
 // void	(string s)				bWriteString	= #65;
 // void	(entity e)				bWriteEntity	= #66;
+
+float	(float f)				sin		= #60;	// requires runequake engine
+float	(float f)				cos		= #61;	// requires runequake engine
+float	(float f)				sqrt		= #62;	// requires runequake engine
 
 void	(float step)				movetogoal	= #67;
 //string (string s)				precache_file	= #68;	[disabled]
