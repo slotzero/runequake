@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.202 2006/02/05 14:56:47 slotzero Exp $
+/*  $Id: rjs.qc,v 1.203 2006/04/10 22:25:45 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -379,6 +379,10 @@ process_misc =
 	// Only process the remaining functions if the server is empty.
 	if (count_valid_players (0))
 		return;
+
+	// Restart the level after 6 hours.
+	if (time > 21600)
+		admin_changelevel ("dm6");
 
 	// vote-team
 	if (VOTE_TEAM_MODE_DEFAULT)
