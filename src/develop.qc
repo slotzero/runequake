@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.110 2006/03/21 21:13:43 slotzero Exp $
+/*  $Id: develop.qc,v 1.111 2006/04/11 04:42:42 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -253,7 +253,9 @@ sprint_efficiency_e =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		sprint_eff_player (to, e);
+		if (!is_observer_e (e))
+			sprint_eff_player (to, e);
+
 		e = find (e, classname, "player");
 	}
 };
@@ -262,6 +264,26 @@ void ()
 sprint_efficiency =
 {
 	sprint_efficiency_e (self);
+};
+
+void (entity e)
+reset_efficiency_e =
+{
+	if (e.cl[CL_ACTIVE])
+		e.shell_dmg = e.shell_dmg_max = e.nail_dmg = e.nail_dmg_max = e.rocket_dmg = e.rocket_dmg_max = e.cell_dmg = e.cell_dmg_max = 0;
+};
+
+void ()
+reset_efficiency_all =
+{
+	local entity e;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		reset_efficiency_e (e);
+		e = find (e, classname, "player");
+	}
 };
 
 void ()
