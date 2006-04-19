@@ -1,6 +1,6 @@
-$Id: Changes,v 1.83 2005/12/23 19:51:49 slotzero Exp $
+$Id: Changes,v 1.84 2006/04/19 02:22:27 slotzero Exp $
 
-Version 1.2  Fri Dec 23 14:27:33 EST 2005
+Version 1.2  Tue Apr 18 22:22:14 EST 2006
 
     - Bug Fixes
 
@@ -9,6 +9,10 @@ Version 1.2  Fri Dec 23 14:27:33 EST 2005
         - Spawn shields are now protected from gravity wells.
 
     - Changes
+
+        - Added vote-armor-drop.
+
+        - Level restarts itself after 6 hours.
 
         - Added autostats command to dump the output of the efficiency command every time
           the level is over.
