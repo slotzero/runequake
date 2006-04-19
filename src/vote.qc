@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.61 2005/10/10 17:48:41 slotzero Exp $
+/*  $Id: vote.qc,v 1.62 2006/04/19 02:11:26 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -47,7 +47,7 @@ vote_impulse_commands =
 		else
 			count_votes (2);
 	}
-	else if (self.impulse >= 1 && self.impulse <= 22)
+	else if (self.impulse >= 1 && self.impulse <= 23)
 		vote ();
 
 	impulse_override_cancel ();
@@ -758,6 +758,18 @@ vote =
 		e.noise1	= "change";
 		e.noise2	= " match length to ";
 		e.noise3	= timeset[((VOTE_TIMESET - 1) * 3) * %1];
+	}
+	else if (self.impulse == IMP_VOTE_ARMOR_DROP)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= toggle_armor_drop;
+		e.noise2	= " armor drop ";
+
+		if (deathmatch & DM_NO_DROP_ARMOR)
+			e.noise1	= "enable";
+		else
+			e.noise1	= "disable";
 	}
 	else
 		cancel = -1;

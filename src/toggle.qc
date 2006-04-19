@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.21 2005/10/13 03:35:26 slotzero Exp $
+/*  $Id: toggle.qc,v 1.22 2006/04/19 02:11:26 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -260,6 +260,27 @@ toggle_weapons_stay =
 		new_deathmatch = new_deathmatch - new_deathmatch & DM_WEAPONS_STAY;
 	else
 		new_deathmatch = new_deathmatch | DM_WEAPONS_STAY;
+
+	s = ftos (new_deathmatch);
+	deathmatch = new_deathmatch;
+	cvar_set ("deathmatch", s);
+};
+
+void ()
+toggle_armor_drop =
+{
+	local float new_deathmatch;
+	local string s;
+
+	new_deathmatch = cvar ("deathmatch");
+
+	if (new_deathmatch & DM_NO_DROP_ARMOR)
+		new_deathmatch = new_deathmatch - new_deathmatch & DM_NO_DROP_ARMOR;
+	else
+	{
+		new_deathmatch = new_deathmatch | DM_NO_DROP_ARMOR;
+		remove_classname ("dropped_armor");
+	}
 
 	s = ftos (new_deathmatch);
 	deathmatch = new_deathmatch;

@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.85 2006/02/05 14:56:47 slotzero Exp $
+/*  $Id: bindings.qc,v 1.86 2006/04/19 02:11:26 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -316,8 +316,10 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-alt-weapons",		IMP_VOTE_ALTS);
 	player_vote_impulse_alias ("vote-arena",		IMP_VOTE_ARENA);
 	player_vote_impulse_alias ("vote-armor",		IMP_VOTE_ARMOR);
+	player_vote_impulse_alias ("vote-armor-drop",		IMP_VOTE_ARMOR_DROP);
 	player_vote_impulse_alias ("vote-exit",			IMP_VOTE_EXIT);
 	player_vote_impulse_alias ("vote-free",			IMP_VOTE_FREE);
+	player_vote_impulse_alias ("vote-hook",			IMP_VOTE_HOOK);
 	player_vote_impulse_alias ("vote-hook-damage",		IMP_VOTE_HOOK_DAMAGE);
 	player_vote_impulse_alias ("vote-lithium",		IMP_VOTE_LITHIUM);
 	player_vote_impulse_alias ("vote-match",		IMP_VOTE_MATCH);
@@ -332,7 +334,6 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-shields",		IMP_VOTE_SHIELDS);
 	player_vote_impulse_alias ("vote-suit",			IMP_VOTE_SUIT);
 	player_vote_impulse_alias ("vote-team",			IMP_VOTE_TEAM);
-	player_vote_impulse_alias ("vote-hook",			IMP_VOTE_HOOK);
 	player_vote_impulse_alias ("vote-weapons-stay",		IMP_VOTE_WEAPONS_STAY);
 };
 
@@ -429,6 +430,8 @@ console_aliases =
 	console_init_cvar_alias ("conprint",		CVAR_C2,	C2_CONPRINT);
 	console_init_cvar_alias ("eff",			CVAR_C2,	C2_EFFICIENCY);
 	console_init_cvar_alias ("match",		CVAR_C2,	C2_MODE_MATCH);
+	console_init_cvar_alias ("dropon",		CVAR_C2,	C2_DROPON);
+	console_init_cvar_alias ("dropoff",		CVAR_C2,	C2_DROPOFF);
 
 	level_aliases ();
 	custom_aliases ();
@@ -565,6 +568,7 @@ help_vote =
 	self_sprint (self, "\bvote-runes      vote-alt-weapons\n");
 	self_sprint (self, "\bvote-shields    vote-weapons-stay\n");
 	self_sprint (self, "\bvote-mega       vote-match\n");
+	self_sprint (self, "\b                vote-armor-drop\n");
 	// self_sprint (self, "\n");
 };
 

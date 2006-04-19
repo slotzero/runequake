@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.76 2005/11/13 20:55:16 slotzero Exp $
+/*  $Id: world.qc,v 1.77 2006/04/19 02:11:26 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -422,6 +422,23 @@ StartFrame =
 
 		else if (i == C2_MODE_MATCH)
 			change_mode_to_match ();
+
+		else if (i == C2_DROPON)
+		{
+			if (deathmatch & DM_NO_DROP_ARMOR)
+			{
+				dprint_force ("Armor dropping enabled\n");
+				toggle_armor_drop ();
+			}
+		}
+		else if (i == C2_DROPOFF)
+		{
+			if (!deathmatch & DM_NO_DROP_ARMOR)
+			{
+				dprint_force ("Armor dropping disabled\n");
+				toggle_armor_drop ();
+			}
+		}
 
 		else
 			dprint ("Unknown command\n");
