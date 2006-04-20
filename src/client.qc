@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.124 2006/04/20 01:37:44 slotzero Exp $
+/*  $Id: client.qc,v 1.125 2006/04/20 01:53:26 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1054,7 +1054,14 @@ CheckRules =
 	timelimit = cvar ("timelimit") * 60;
 	fraglimit = cvar ("fraglimit");
 
-	if (timelimit && time >= timelimit)
+	if (!timelimit)
+		return;
+
+	// mode_match()
+	if (match)
+		return;
+
+	if (time >= timelimit)
 	{
 		forced_nextmap = string_null;
 		NextLevel ();
