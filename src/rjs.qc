@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.203 2006/04/10 22:25:45 slotzero Exp $
+/*  $Id: rjs.qc,v 1.204 2006/04/20 01:37:44 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -17,53 +17,79 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-// XXX FIXME
 void ()
-timelimit_countdown =
+timelimit_countdown_think =
 {
-	local float seconds, minutes, n;
-	local string s1, s2;
+	local float seconds, minutes, skew;
 
-	timelimit = cvar ("timelimit") * 60;
 	if (!timelimit)
+	{
+		self.nextthink = time + 60;
 		return;
+	}
 
 	seconds = ceil (timelimit - time);
 	minutes = ceil (seconds / 60);
 
-	n = 1;
-	s2 = "s";
-
-	if ((minutes == 25 || minutes == 20 || minutes == 15 || minutes == 10
-			|| minutes == 5) && countdown != minutes)
-		countdown = minutes;
-	else if (minutes == 1 && countdown != minutes && seconds >= 60)
+	if (seconds < 1)
 	{
-		countdown = minutes;
-		s2 = "";
+		remove (self);
+		return;
 	}
-	else if ((seconds == 30 || seconds == 15 || seconds == 5)
-			&& countdown != seconds)
-		countdown = seconds;
+
+	skew = 0;
+	if (seconds > 60)
+	{
+		if (minutes * 60 != seconds)
+			skew = minutes * 60 - seconds;
+		self.nextthink = time + 60 - skew;
+	}
 	else
-		n = 0;
+		self.nextthink = time + 1;
 
-	if (n)
+	if (minutes && (minutes / 5) == rint (minutes / 5))
 	{
-		if (seconds < 60)
-			s1 = " second";
-		else
-			s1 = " minute";
-
 		bprint ("\{141} ");
-		bprint_float (countdown);
-		bprint (s1);
-		bprint (s2);
-		bprint (" remaining\n");
-
-		if (TIMELIMIT_COUNTDOWN == 2)
-			sound (self, CHAN_BODY, "misc/talk.wav", 1, ATTN_NONE);
+		bprint_float (minutes);
+		bprint (" minutes remaining\n");
 	}
+	else if (minutes == 1 && seconds == 60)
+	{
+		bprint ("\{141} ");
+		bprint_float (minutes);
+		bprint (" minute remaining\n");
+	}
+	else if (seconds == 30 || seconds == 15 || seconds == 5)
+	{
+		bprint ("\{141} ");
+		bprint_float (seconds);
+		bprint (" seconds remaining\n");
+	}
+	else
+		return;
+
+	if (TIMELIMIT_COUNTDOWN == 2)
+		sound (self, CHAN_BODY, "misc/talk.wav", 1, ATTN_NONE);
+};
+
+void ()
+timelimit_countdown_spawn =
+{
+	local entity e;
+
+	if (!TIMELIMIT_COUNTDOWN)
+		return;
+
+	if (match)
+		return;
+
+	if (arena)
+		return;
+
+ 	e		= spawn ();
+	e.classname	= "timelimit_countdown";
+	e.think		= timelimit_countdown_think;
+	e.nextthink	= time + 1;
 };
 
 void (entity e, float chan, string samp, float vol, float atten)
@@ -309,6 +335,8 @@ rjs_worldspawn =
 	i = cvar ("teamplay");
 	if (i & TEAM_MODE_MATCH)
 		match	= spawn ();
+
+	timelimit_countdown_spawn ();
 
 	if (START_LEVEL_EXEC != string_null)
 	{

@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.182 2006/04/19 02:11:26 slotzero Exp $
+/*  $Id: defs.qc,v 1.183 2006/04/20 01:37:44 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -338,9 +338,6 @@ entity runespawn;
 
 // For players, holds the number of the player to perform an admin action against.
 .float admin_victim_num;
-
-// Countdown timer.
-float countdown;
 
 // If true the T_RadiusDamage() won't harm people out of water.  This is
 // a hack to restrict lightning gun discharge to harming people in the

@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.123 2005/10/30 20:28:36 slotzero Exp $
+/*  $Id: client.qc,v 1.124 2006/04/20 01:37:44 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1060,9 +1060,6 @@ CheckRules =
 		NextLevel ();
 		return;
 	}
-
-	if (TIMELIMIT_COUNTDOWN)
-		timelimit_countdown ();
 };
 
 //============================================================================
