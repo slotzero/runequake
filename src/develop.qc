@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.111 2006/04/11 04:42:42 slotzero Exp $
+/*  $Id: develop.qc,v 1.112 2006/05/01 01:05:47 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -103,7 +103,7 @@ spawn_altar =
 
 float (entity e)
 client_ping =
-{
+{	IN_QW(return 1;)
 	local float i, ping;
 
 	for (i = 0 ; i < %16 ; i = i + %1)
