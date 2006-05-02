@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.64 2005/10/10 01:28:14 slotzero Exp $
+/*  $Id: runes60.qc,v 1.65 2006/05/02 01:34:23 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -446,7 +446,7 @@ Rune_Sonar =
 		{
 			if (head.health > 0 && head != self)
 			{
-				if (!environmental (head) || head.runetype != RN_CLOAK)
+				if (!environmental (head))
 				{
 					// XXX Only sonar holder should hear this.
 					cloaked_sound (head, CHAN_WEAPON, "enforcer/sight3.wav", 1, ATTN_NORM);
