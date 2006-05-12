@@ -1,4 +1,4 @@
-/*  $Id: player.qc,v 1.19 2005/10/06 21:06:33 slotzero Exp $
+/*  $Id: player.qc,v 1.20 2006/05/12 03:29:01 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -609,12 +609,11 @@ PlayerDie =
 
 	if (self.runetype)
 	{
-		if (self.runetype == RN_BOMB && self.runevar != 0)
+		if (self.runetype == RN_BOMB && self.runevar != -2)
 		{
 			create_te_explosion (self.origin, 0);
 			T_RadiusDamage (RADIUS_NORMAL, self, self, 300, self, "kamikilled");
-			if (self.health > -41)
-				self.health = self.health - random () * 50 + 1;
+			self.health = -41;
 		}
 		else if (self.runetype == RN_MONK)
 			monk_trance_off ();
@@ -649,10 +648,7 @@ PlayerDie =
 	if (mode_match ())
 	{
 		if (match.state <= 0)
-		{
-			GibPlayer ();
-  			return;
-		}
+			self.health = -41;
 	}
 
 	if (self.health < -40)

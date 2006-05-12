@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.27 2004/12/12 18:56:44 slotzero Exp $
+/*  $Id: runes20.qc,v 1.28 2006/05/12 03:29:02 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -49,6 +49,7 @@ Rune_Bomb =
 		return;
 	}
 
+	self.runevar = -2;
 	create_te_explosion (self.origin, 0);
 	sprint (self, "\n");
 
