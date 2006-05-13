@@ -1,4 +1,4 @@
-/*  $Id: runes50.qc,v 1.20 2005/10/30 01:11:09 slotzero Exp $
+/*  $Id: runes50.qc,v 1.21 2006/05/13 05:50:25 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -409,7 +409,7 @@ Rune_Torch =
 	e		= spawn ();
 	e.classname	= "torchtrap";
 	e.owner		= self;
-	e.solid		= SOLID_BBOX;
+	e.solid		= SOLID_TRIGGER;
 	e.movetype	= MOVETYPE_TOSS;
 	e.runetime	= time + TORCH_TRAP_DURATION;
 	e.runevar	= 0;	// 1 after stopping
