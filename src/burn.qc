@@ -1,4 +1,4 @@
-/*  $Id: burn.qc,v 1.11 2005/02/10 22:23:29 slotzero Exp $
+/*  $Id: burn.qc,v 1.12 2006/05/13 06:02:42 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -346,7 +346,10 @@ W_FireFlameMissile =
 	else if (class == "lavagun")
 	{
 		snd		= "shambler/sboom.wav";
-		newmis.movetype	= MOVETYPE_TOSS;
+		if (self.runetype == RN_HASTE)
+			newmis.movetype = MOVETYPE_FLYMISSILE;
+		else
+			newmis.movetype	= MOVETYPE_TOSS;
 		newmis.velocity	= dir * 1400;
 		newmis.angles	= '90 0 0' + vectoangles (dir);
 		newmis.pos1_x	= LAVAGUN_DAMAGE;
