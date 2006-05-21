@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.204 2006/04/20 01:37:44 slotzero Exp $
+/*  $Id: rjs.qc,v 1.205 2006/05/21 07:13:44 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -482,6 +482,8 @@ process_misc =
 			setalts ();
 		if (!NO_SPAWN_SHIELDS)
 			setshields ();
+		if (!deathmatch & DM_NO_DROP_ARMOR)
+			toggle_armor_drop ();
 
 		// instead of setting setting deathmatch here,
 		// i just reset to normal and in the next process
@@ -548,6 +550,8 @@ process_misc =
 			setalts ();
 		if (NO_SPAWN_SHIELDS)
 			setshields ();
+		if (deathmatch & DM_NO_DROP_ARMOR)
+			toggle_armor_drop ();
 
 		if (!mode_normal ())
 			change_mode_to_normal ();
