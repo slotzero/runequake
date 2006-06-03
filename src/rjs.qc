@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.205 2006/05/21 07:13:44 slotzero Exp $
+/*  $Id: rjs.qc,v 1.206 2006/06/03 01:37:39 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -95,6 +95,9 @@ timelimit_countdown_spawn =
 void (entity e, float chan, string samp, float vol, float atten)
 sound =
 {
+	if (samp == "misc/null.wav")
+		return;
+
 	// debug
 	/* if (self.classname == "player")
 	{
