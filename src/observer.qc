@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.63 2006/01/14 02:02:22 slotzero Exp $
+/*  $Id: observer.qc,v 1.64 2006/06/03 03:14:21 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -999,8 +999,16 @@ obs_process_game_queue =
 
 		e = self;
 		self = ehead;
-		obs_join_game (1);
-		self_sound (self, "boss2/pop2.wav");
+		if (intermission_running)
+		{
+			self.aqflags = self.aqflags - AQ_OBSERVER;
+			self.flags = self.flags - self.flags & FL_OBSERVER;
+		}
+		else
+		{
+			obs_join_game (1);
+			self_sound (self, "boss2/pop2.wav");
+		}
 		self = e;
 		curp = curp + 1;
 	}
