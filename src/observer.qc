@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.64 2006/06/03 03:14:21 slotzero Exp $
+/*  $Id: observer.qc,v 1.65 2006/07/02 20:44:23 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -439,7 +439,8 @@ obs_post_think =
 			self.angles_z = 0;
 			self.fixangle = TRUE;
 
-			// For some reason, this doesn't work!  It works locally though.
+			// This worked on all of my local linux and windows dedicated
+			// servers but didn't on Shmack.
 			/* msg_entity = self;
 			WriteByte (MSG_ONE, SVC_SETANGLE);
 			WriteAngle (MSG_ONE, self.owner.v_angle_x);
