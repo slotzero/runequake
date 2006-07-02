@@ -1,8 +1,20 @@
-$Id: Changes,v 1.84 2006/04/19 02:22:27 slotzero Exp $
+$Id: Changes,v 1.85 2006/07/02 21:49:50 slotzero Exp $
 
-Version 1.2  Tue Apr 18 22:22:14 EST 2006
+Version 1.2  Sun Jul 02 17:15:27 EST 2006
 
     - Bug Fixes
+
+        - The haste rune had no effect on lavagun.  The flames now shoot straight
+          instead of fall to ground when yielding the haste rune.
+
+        - If you killed a player who activated divine wind during the last 0.5 seconds
+          of the countdown, he wouldn't explode.
+
+        - The cloak rune's sonar feature was detecting environmental protection
+          suit/rune holders.
+
+        - If you tried to fire a rocket and toss a fire trap at the same time,
+          your rocket would explode when it made contact with the flame projectile.
 
         - Picking up armor with requiem rune didn't extinguish you if you were on fire.
 
@@ -10,17 +22,20 @@ Version 1.2  Tue Apr 18 22:22:14 EST 2006
 
     - Changes
 
-        - Added vote-armor-drop.
+        - Added new commands: vote-armor-drop, help-match,
 
         - Level restarts itself after 6 hours.
 
         - Added autostats command to dump the output of the efficiency command every time
           the level is over.
 
+        - Added pq_smoothcam support for proquake and compatible clients.
+
         - ProQuake users scoreboard pings are now updated every second instead of every
           five seconds.
 
-        - Added CRMod style match mode.
+        - Added CRMod style match mode.  Related commands: help-match, vote-match, ready,
+          notready, observer, and timeset.
 
         - Athlete rune holder now runs 10% faster than everyone else.
 
