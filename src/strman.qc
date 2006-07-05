@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.37 2006/03/21 21:13:43 slotzero Exp $
+/*  $Id: strman.qc,v 1.38 2006/07/05 21:16:33 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -39,34 +39,21 @@ strlen_qc =
 		i = i + %1;
 	}
 
-	dprint ("strlen_qc(): string too big\n");
+	dprint_force ("strlen_qc(): string too big\n");
 
 	return 0;
 };
 
+string STRING_256 =	"                                                                "
+			"                                                                "
+			"                                                                "
+			"                                                               ";
+
 //
-//  S T R L E N _ A N Y
+//  S T R L E N
 //
-//  Return the length of a string
+//  Return the length of a string (s must be less than 256 characters)
 //
-float (string s)
-strlen_any =
-{
-	local float i, ps;
-
-	ps = AddInt (&s, PSTRING_TO_PQUAKEC);
-	for (i = 0; i < 256; i = i + 1)
-	{
-		if (@AddInt (ps, PQUAKEC_TO_PSTRING) == string_null)
-			return i;
-		ps = AddInt (ps, %1);
-	}
-
-	dprint ("strlen_any(): string too big\n");
-
-	return 0;
-};
-
 float (string s)
 strlen =
 {
@@ -74,13 +61,8 @@ strlen =
 		return strlen_qc (s);
 	-])
 
-	if (&s < 0)
-		return strlen_any (s);
-
-	if (&s > %16777216)
-		return strlen_any (s);
-
-	return strlen_qc (s);
+	strcpy (STRING_256, s);
+	return strlen_qc (STRING_256);
 };
 
 // base is the dword offset

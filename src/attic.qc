@@ -1,4 +1,4 @@
-/*  $Id: attic.qc,v 1.15 2005/11/13 21:50:59 slotzero Exp $
+/*  $Id: attic.qc,v 1.16 2006/07/05 21:16:33 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -614,4 +614,46 @@ void ()
 bodyque =
 {	// just here so spawn functions don't complain after the world
 	// creates bodyques
+};
+
+// There seems to be a problem with referencing a string as a float on
+// some engine builds.  When the problem occurs, the wrong strlen function
+// gets called.
+// /* float (string s)
+strlen =
+{
+	IN_QW([-
+		return strlen_qc (s);
+	-])
+
+	if (&s < 0)
+		return strlen_any (s);
+
+	if (&s > %16777216)
+		return strlen_any (s);
+
+	return strlen_qc (s);
+}; */
+
+//
+//  S T R L E N _ A N Y
+//
+//  Return the length of a string
+//
+float (string s)
+strlen_any =
+{
+	local float i, ps;
+
+	ps = AddInt (&s, PSTRING_TO_PQUAKEC);
+	for (i = 0; i < 256; i = i + 1)
+	{
+		if (@AddInt (ps, PQUAKEC_TO_PSTRING) == string_null)
+			return i;
+		ps = AddInt (ps, %1);
+	}
+
+	dprint ("strlen_any(): string too big\n");
+
+	return 0;
 };
