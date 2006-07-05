@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.77 2006/04/19 02:11:26 slotzero Exp $
+/*  $Id: world.qc,v 1.78 2006/07/05 03:19:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -466,10 +466,8 @@ StartFrame =
 	CheckRules ();
 	if (intermission_running)
 	{
-		if (INTERMISSION_AUTO_EXIT >= 0
-				&& time >= intermission_exittime
-						+ INTERMISSION_AUTO_EXIT)
-			ExitIntermission ();
+		if (INTERMISSION_AUTO_EXIT >= 0 && time >= intermission_exittime + INTERMISSION_AUTO_EXIT)
+			GotoNextMap ();
 	}
 
 	//RUNE SERV: Adding some more runes till too much.

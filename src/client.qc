@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.125 2006/04/20 01:53:26 slotzero Exp $
+/*  $Id: client.qc,v 1.126 2006/07/05 03:19:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -323,12 +323,6 @@ GotoNextMap =
 	}
 };
 
-void ()
-ExitIntermission =
-{
-	GotoNextMap ();
-};
-
 /*
 ============
 IntermissionThink
@@ -351,7 +345,7 @@ IntermissionThink =
 		return;
 
 	if (self.button0 || self.button2)
-		ExitIntermission ();
+		GotoNextMap ();
 };
 
 // XXX People who connect during intermission don't get their angles set.
