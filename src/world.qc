@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.78 2006/07/05 03:19:35 slotzero Exp $
+/*  $Id: world.qc,v 1.79 2006/07/05 05:05:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -107,7 +107,7 @@ StartFrame =
 		&%IN_POQ(368,376) = i;
 		s = impulse_to_map ();
 		if (s)
-			admin_changelevel (s);
+			admin_changelevel_now (s);
 		else
 			dprint ("Invalid level impulse\n");
 	}

@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.42 2005/04/29 05:37:23 slotzero Exp $
+/*  $Id: admin.qc,v 1.43 2006/07/05 05:05:35 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -503,13 +503,21 @@ admin_unbind =
 void (string m)
 admin_changelevel =
 {
-	bprint (self.netname);
-
 	if (self.netname != string_null)
+	{
+		bprint (self.netname);
 		bprint (" exited the level\n");
+	}
 
 	forced_nextmap = m;
 	NextLevel ();
+};
+
+void (string m)
+admin_changelevel_now =
+{
+	&%IN_POQ(368,376) = -1;
+	admin_changelevel (m);
 };
 
 void ()

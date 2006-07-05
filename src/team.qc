@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.62 2005/10/10 17:48:40 slotzero Exp $
+/*  $Id: team.qc,v 1.63 2006/07/05 05:05:35 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -785,12 +785,11 @@ change_mode_to_practice =
 		return;
 	}
 
-	&%IN_POQ(368,376) = -1;
 	s = ftos (new_deathmatch);
 	cvar_set ("deathmatch", s);
 	s = ftos (new_teamplay);
 	cvar_set ("teamplay", s);
-	admin_changelevel (mapname);
+	admin_changelevel_now (mapname);
 };
 
 void ()
@@ -819,12 +818,11 @@ change_mode_to_arena =
 		return;
 	}
 
-	&%IN_POQ(368,376) = -1;
 	s = ftos (new_deathmatch);
 	cvar_set ("deathmatch", s);
 	s = ftos (new_teamplay);
 	cvar_set ("teamplay", s);
-	admin_changelevel (mapname);
+	admin_changelevel_now (mapname);
 };
 
 void ()
@@ -856,12 +854,11 @@ change_mode_to_normal =
 		return;
 	}
 
-	&%IN_POQ(368,376) = -1;
 	s = ftos (new_deathmatch);
 	cvar_set ("deathmatch", s);
 	s = ftos (new_teamplay);
 	cvar_set ("teamplay", s);
-	admin_changelevel (mapname);
+	admin_changelevel_now (mapname);
 };
 
 void ()
@@ -892,13 +889,12 @@ change_mode_to_match =
 		return;
 	}
 
-	&%IN_POQ(368,376) = -1;
 	s = ftos (new_deathmatch);
 	cvar_set ("deathmatch", s);
 	// this leaves us no way to return teamplay to its "normal" state
 	s = ftos (new_teamplay);
 	cvar_set ("teamplay", s);
-	admin_changelevel (mapname);
+	admin_changelevel_now (mapname);
 };
 
 float ()

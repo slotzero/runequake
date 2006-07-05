@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.126 2006/07/05 03:19:35 slotzero Exp $
+/*  $Id: client.qc,v 1.127 2006/07/05 05:05:35 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -434,7 +434,7 @@ execute_changelevel =
 	proto_intermission (MSG_ALL);
 
 	// hack
-	if (world.impulse < 0)
+	if (world.impulse)
 		GotoNextMap ();
 };
 
@@ -953,10 +953,6 @@ NextLevel =
 
 	update_server_time ();
 
-	// Console exited level.
-	if (world.impulse > 0)
-		GotoNextMap ();
-
 	if (serverflags & SERVERFLAGS_RUNE_MASK == 0
 			&& orig_serverflags & SERVERFLAGS_RUNE_MASK == SERVERFLAGS_RUNE_MASK)
 		serverflags = serverflags | SERVERFLAGS_RUNE_MASK;
@@ -997,9 +993,7 @@ NextLevel =
 		else
 		{
 			o.map = "e1m1";
-			serverflags = serverflags
-					- serverflags & SERVERFLAGS_RUNE_MASK
-					+ 1;
+			serverflags = serverflags - serverflags & SERVERFLAGS_RUNE_MASK + 1;
 		}
 	}
 	else

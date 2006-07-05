@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.207 2006/07/02 21:49:32 slotzero Exp $
+/*  $Id: rjs.qc,v 1.208 2006/07/05 05:05:35 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -413,7 +413,7 @@ process_misc =
 
 	// Restart the level after 6 hours.
 	if (time > 21600)
-		admin_changelevel (mapname);
+		admin_changelevel_now (mapname);
 
 	// vote-team
 	if (VOTE_TEAM_MODE_DEFAULT)
