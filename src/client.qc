@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.127 2006/07/05 05:05:35 slotzero Exp $
+/*  $Id: client.qc,v 1.128 2006/07/05 22:08:37 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1538,17 +1538,17 @@ PlayerPreThink =
 		}
 	}
 
-	if (obs)
-	{
-		obs_pre_think ();
-		return;
-	}
-
 	// The call of CheckRules() moved to StartFrame().
 	if (fraglimit && self.frags >= fraglimit)
 	{
 		forced_nextmap = string_null;
 		NextLevel ();
+	}
+
+	if (obs)
+	{
+		obs_pre_think ();
+		return;
 	}
 
 	WaterMove ();

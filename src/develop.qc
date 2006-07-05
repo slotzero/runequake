@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.112 2006/05/01 01:05:47 slotzero Exp $
+/*  $Id: develop.qc,v 1.113 2006/07/05 22:08:38 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -253,7 +253,7 @@ sprint_efficiency_e =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		if (!is_observer_e (e))
+		if (!is_observer_e (e) || e.runevar)
 			sprint_eff_player (to, e);
 
 		e = find (e, classname, "player");
