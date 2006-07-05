@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.208 2006/07/05 05:05:35 slotzero Exp $
+/*  $Id: rjs.qc,v 1.209 2006/07/05 05:39:22 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -529,6 +529,8 @@ process_misc =
 			change_mode_to_normal ();
 		else if (mode_normal ())
 			change_mode_to_practice ();
+		else if (mapname != "dm6")
+			admin_changelevel_now ("dm6");
 	}
 	else
 	{
