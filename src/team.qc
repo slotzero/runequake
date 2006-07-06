@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.63 2006/07/05 05:05:35 slotzero Exp $
+/*  $Id: team.qc,v 1.64 2006/07/06 06:39:30 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -393,7 +393,7 @@ change_teamplay =
 				poq = strcat (poq, version);
 			}
 
-			pq_cvar_set ("teamplay", poq, 2);
+			cvar_set ("teamplay", poq, 2);
 		}
 		else
 		{
