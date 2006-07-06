@@ -1,4 +1,4 @@
-/*  $Id: bomb.qc,v 1.12 2005/02/09 23:51:56 slotzero Exp $
+/*  $Id: bomb.qc,v 1.13 2006/07/06 06:03:41 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -34,7 +34,7 @@ W_Bomb =
 	e.owner = self;
 	e.solid = SOLID_BBOX;
 	e.movetype = MOVETYPE_FLYMISSILE;
-	e.velocity = 1000 * aim (e.owner, 1000);
+	e.velocity = v_forward * 1000;
 	e.angles = vectoangles (e.velocity);
 	e.touch = bomb_arm;
 	e.enemy = world;

@@ -1,4 +1,4 @@
-/*  $Id: bfg.qc,v 1.11 2004/07/29 09:23:01 slotzero Exp $
+/*  $Id: bfg.qc,v 1.12 2006/07/06 06:03:41 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -110,10 +110,7 @@ BFG_Warmup =
 	// Always reposition the lava ball.
 	self.nextthink = time + sys_ticrate;
 	makevectors (self.owner.v_angle);
-	setorigin (self, self.owner.origin
-				+ PLAYER_WEAPON_OFFSET
-				+ 32 * v_forward
-				- 12 * v_up);
+	setorigin (self, self.owner.origin + PLAYER_WEAPON_OFFSET + 32 * v_forward - 12 * v_up);
 	trackvel (self.owner);
 
 	// Return unless another tick passed.
@@ -134,17 +131,8 @@ BFG_Warmup =
 		return;
 	}
 
-	// I think this is voodoo.
-	//number = 1;
-	//while (number < 7)
-	//{
-	//	  self.owner.weaponframe = self.owner.weapon { xxx .weapon? } + number;
-	//	  number = number + 1;
-	//}
-
 	bigkick_e (self.owner);
-	self.owner.effects = self.owner.effects
-		- (self.owner.effects & EF_BRIGHTLIGHT);
+	self.owner.effects = self.owner.effects - (self.owner.effects & EF_BRIGHTLIGHT);
 
 	self.effects = self.effects | EF_BRIGHTLIGHT;
 
@@ -153,13 +141,12 @@ BFG_Warmup =
 		sound (self, CHAN_WEAPON, "weapons/sgun1.wav", 1, ATTN_NORM);
 
 	self.movetype = MOVETYPE_FLYMISSILE;
-	self.velocity = aim (self.owner, 500);
 	if (self.owner.runetype == RN_HASTE)
-		self.velocity = self.velocity * 800;
+		self.velocity = v_forward * 800;
 	else if (self.owner.runetype == RN_JACK)
-		self.velocity = self.velocity * 500;
+		self.velocity = v_forward * 500;
 	else
-		self.velocity = self.velocity * 400;
+		self.velocity = v_forward * 400;
 	self.touch = BFG_Touch;
 	self.lip = time + 15;
 	self.nextthink = time + sys_ticrate;

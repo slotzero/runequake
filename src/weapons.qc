@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.66 2005/11/12 21:06:51 slotzero Exp $
+/*  $Id: weapons.qc,v 1.67 2006/07/06 06:03:41 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -516,8 +516,7 @@ W_FireRocket =
 
 	// set missile speed
 	makevectors (self.v_angle);
-	newmis.velocity		= aim (self, 1000);
-	newmis.velocity		= newmis.velocity * 1000;
+	newmis.velocity		= v_forward * 1000;
 	newmis.angles		= vectoangles (newmis.velocity);
 
 	newmis.touch		= T_MissileTouch;
@@ -737,8 +736,7 @@ W_FireGrenade =
 		newmis.velocity = v_forward * 600 + v_up * 200 + crandom () * v_right * 10 + crandom () * v_up * 10;
 	else
 	{
-		newmis.velocity = aim (self, 10000);
-		newmis.velocity = newmis.velocity * 600;
+		newmis.velocity = v_forward * 600;
 		newmis.velocity_z = 200;
 	}
 
@@ -802,14 +800,10 @@ launch_spike =
 void ()
 W_FireSuperSpikes =
 {
-	local vector	dir;
-	local entity	old;
-
 	sound (self, CHAN_WEAPON, "weapons/spike2.wav", 1, ATTN_NORM);
 	self.attack_finished = time + 0.2;
 	makevectors (self.v_angle);
-	dir = aim (self, 1000);
-	launch_spike (self.origin + PLAYER_WEAPON_OFFSET, dir);
+	launch_spike (self.origin + PLAYER_WEAPON_OFFSET, v_forward);
 	newmis.touch = superspike_touch;
 	setmodel (newmis, "progs/s_spike.mdl");
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
@@ -822,9 +816,6 @@ W_FireSuperSpikes =
 void (float ox)
 W_FireSpikes =
 {
-	local vector	dir;
-	local entity	old;
-
 	if (!W_CheckNoAmmo ())
 		return;
 	use_ammo ();
@@ -848,8 +839,7 @@ W_FireSpikes =
 
 	sound (self, CHAN_WEAPON, "weapons/rocket1i.wav", 1, ATTN_NORM);
 	self.attack_finished = time + 0.2;
-	dir = aim (self, 1000);
-	launch_spike (self.origin + PLAYER_WEAPON_OFFSET + v_right*ox, dir);
+	launch_spike (self.origin + PLAYER_WEAPON_OFFSET + v_right*ox, v_forward);
 	smallkick ();
 
 	// efficiency

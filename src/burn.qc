@@ -1,4 +1,4 @@
-/*  $Id: burn.qc,v 1.12 2006/05/13 06:02:42 slotzero Exp $
+/*  $Id: burn.qc,v 1.13 2006/07/06 06:03:41 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -297,7 +297,7 @@ flamemissile_think =
 void (string class, float ox)
 W_FireFlameMissile =
 {
-	local vector dir, org;
+	local vector org;
 	local string snd;
 
 	if (!weapon_it_have_min_ammo (self.weapon, 0))
@@ -321,13 +321,12 @@ W_FireFlameMissile =
 	newmis.nextthink	= time;
 
 	makevectors (self.v_angle);
-	dir = aim (self, 1000);
 
 	if (class == "flamethrower")
 	{
 		snd		= "knight/sword2.wav";
 		newmis.movetype	= MOVETYPE_FLYMISSILE;
-		newmis.velocity	= dir * 650;
+		newmis.velocity	= v_forward * 650;
 		newmis.pos1_x	= FLAMETHROWER_DAMAGE;
 		newmis.pos1_y	= FLAMETHROWER_BURN_CHANCE;
 		newmis.pos1_z	= FLAMETHROWER_BURN_DURATION;
@@ -350,8 +349,8 @@ W_FireFlameMissile =
 			newmis.movetype = MOVETYPE_FLYMISSILE;
 		else
 			newmis.movetype	= MOVETYPE_TOSS;
-		newmis.velocity	= dir * 1400;
-		newmis.angles	= '90 0 0' + vectoangles (dir);
+		newmis.velocity	= v_forward * 1400;
+		newmis.angles	= '90 0 0' + vectoangles (v_forward);
 		newmis.pos1_x	= LAVAGUN_DAMAGE;
 		newmis.pos1_y	= LAVAGUN_BURN_CHANCE;
 		newmis.pos1_z	= LAVAGUN_BURN_DURATION;
