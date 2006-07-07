@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.38 2006/07/05 21:16:33 slotzero Exp $
+/*  $Id: strman.qc,v 1.39 2006/07/07 03:59:37 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -16,6 +16,22 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
+
+//-------------------------------------------------------------------
+// STRING STORAGE
+//-------------------------------------------------------------------
+
+// strlen()
+string STRING_256 =	"                                                                "
+			"                                                                "
+			"                                                                "
+			"                                                               ";
+
+// PlayerPreThink()
+string READY_NAME_16 =	"READY_NAME_1601":"READY_NAME_1602":"READY_NAME_1603":"READY_NAME_1604":
+			"READY_NAME_1605":"READY_NAME_1606":"READY_NAME_1607":"READY_NAME_1608":
+			"READY_NAME_1609":"READY_NAME_1610":"READY_NAME_1611":"READY_NAME_1612":
+			"READY_NAME_1613":"READY_NAME_1614":"READY_NAME_1615":"READY_NAME_1616";
 
 //-------------------------------------------------------------------
 // STRING MANIPULATION FUNCTIONS
@@ -43,11 +59,6 @@ strlen_qc =
 
 	return 0;
 };
-
-string STRING_256 =	"                                                                "
-			"                                                                "
-			"                                                                "
-			"                                                               ";
 
 //
 //  S T R L E N

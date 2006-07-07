@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.35 2006/04/11 04:42:42 slotzero Exp $
+/*  $Id: match.qc,v 1.36 2006/07/07 03:59:37 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -66,10 +66,7 @@ match_client_init =
 	while (w)
 	{
 		if (w.rqstate & RQS_READY && match.state < 1)
-		{
-			msg_entity = e;
-			match_ready_name (MSG_ONE, w);
-		}
+			match_ready_name (e, w);
 		w = find (w, classname, "player");
 	}
 };
@@ -490,14 +487,23 @@ audit_match =
 		match_stop_countdown ();
 };
 
-void (float to, entity e)
+void (entity e, entity w)
 match_ready_name =
 {
+	local float msg_type;
 	local string match_name;
 
-	match_name = flen (e.netname, -16);
+	if (e.cl[CL_ACTIVE] == %1)
+	{
+		msg_entity = e;
+		msg_type = MSG_ONE;
+	}
+	else
+		msg_type = MSG_ALL;
+
+	match_name = flen (w.netname, -16);
 	match_name = strcat (match_name, "\bREADY");
-	svc_updatename (to, e.colormap - 1, match_name);
+	svc_updatename (msg_type, w.colormap - 1, match_name);
 };
 
 float ()
@@ -573,7 +579,7 @@ match_obs_join_game =
 	bprint (s);
 	bprint ("\n");
 
-	match_ready_name (MSG_ALL, self);
+	match_ready_name (world, self);
 	audit_match ();
 
 	return TRUE;

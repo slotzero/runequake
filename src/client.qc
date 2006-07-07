@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.128 2006/07/05 22:08:37 slotzero Exp $
+/*  $Id: client.qc,v 1.129 2006/07/07 03:59:37 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1402,7 +1402,7 @@ Called every frame before physics are run
 void ()
 PlayerPreThink =
 {
-	local float i, obs;
+	local float i, obs, mm;
 
 	self.last_thought = time;
 	if (intermission_running)
@@ -1413,6 +1413,7 @@ PlayerPreThink =
 	if (!is_valid_player ())
 		return;
 	obs = is_observer ();
+	mm = mode_match ();
 
 	// updates
 	if (self.lefty < time)
@@ -1441,6 +1442,19 @@ PlayerPreThink =
 		// +teamscores
 		if (self.rqflags & RQ_TEAMSCORES_ON)
 			teamscores_on (self);
+
+		// check for name change of readied player
+		if (mm)
+		{
+			if (!match.state && self.rqstate & RQS_READY)
+			{
+				if (self.netname != READY_NAME_16[((self.colormap - 1) * %1) * 16])
+				{
+					strcpy (READY_NAME_16[((self.colormap - 1) * %1) * 16], self.netname);
+					match_ready_name (world, self);
+				}
+			}
+		}
 	}
 
 	if (self.aqstate & AQS_MENU_MASK && time > self.count)
@@ -1518,7 +1532,7 @@ PlayerPreThink =
 	}
 
 	// Enforce teams if appropriate
-	if (mode_match ())
+	if (mm)
 		match_pre_think ();
 	else if (teamplay & TEAM_TEAM_MASK)
 	{
@@ -2003,7 +2017,7 @@ ClientObituary =
 	mm = mode_match ();
 	if (mm)
 	{
-		if (match.state <= 0)
+		if (!match.state)
 			return;
 	}
 
