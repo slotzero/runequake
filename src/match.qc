@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.36 2006/07/07 03:59:37 slotzero Exp $
+/*  $Id: match.qc,v 1.37 2006/07/07 04:29:35 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -591,6 +591,7 @@ maybe_remove_team =
 	local entity w;
 	local float e_pants, w_pants;
 
+	svc_updatename (MSG_ALL, e.colormap - 1, e.netname);
 	e.rqstate = e.rqstate - e.rqstate & RQS_READY;
 	e_pants = colors_to_pants (e.cl[CL_COLORS] / %1);
 
@@ -693,7 +694,6 @@ match_notready =
 	{
 		bprint (self.netname);
 		bprint (" is not ready\n");
-		svc_updatename (MSG_ALL, self.colormap - 1, self.netname);
 	}
 
 	maybe_remove_team (self);
