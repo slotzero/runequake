@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.41 2005/11/01 11:03:05 slotzero Exp $
+/*  $Id: engine.qc,v 1.42 2006/07/08 20:34:42 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -269,6 +269,8 @@ samelevel_same_level =
 	-])
 };
 
+// Don't call any of the svc functions inside of ClientDisconnect() because
+// it will overwrite the engine's own svc updates.
 void (float msg_type, float edict_num, string s)
 svc_updatename =
 {
