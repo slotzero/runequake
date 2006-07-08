@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.65 2006/07/02 20:44:23 slotzero Exp $
+/*  $Id: observer.qc,v 1.66 2006/07/08 06:44:12 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -579,6 +579,10 @@ obs_become =
 	// Reset cshift for when you drop off riding someone who is
 	// cshifted.
 	stuffcmd (self, CSHIFT_NONE);
+
+	// observer resets negative frags automatically
+	if (self.frags < 0)
+		self.frags = 0;
 
 	if (!is_observer ())
 	{
