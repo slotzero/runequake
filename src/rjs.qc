@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.209 2006/07/05 05:39:22 slotzero Exp $
+/*  $Id: rjs.qc,v 1.210 2006/07/08 05:54:30 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -385,14 +385,9 @@ set_runemax =
 	}
 };
 
-// I don't need vote_count_think() anymore, so I just ride the 15 second
-// refresh of process_cvars.
-
 void ()
 process_misc =
 {
-	local float wanted;
-
 	if (time < LEVEL_RECONNECT_ALLOWANCE)
 		return;
 
@@ -419,144 +414,32 @@ process_misc =
 	if (VOTE_TEAM_MODE_DEFAULT)
 		toggle_teamplay (VOTE_TEAM_MODE_DEFAULT);
 
-	// XXX All of code below is hard coded and should be fixed.
-	if (NO_QUAD)
-		setquad ();
-	if (NO_PENT)
-		setpent ();
-	if (NO_RING)
-		setring ();
-	if (NO_SUIT)
-		setsuit ();
-	if (NO_ARMOR)
-		setarmor ();
-	else if (!ROTATE)
-		setrotate ();
-	if (NO_HOOK_DAMAGE)
-		sethookdamage ();
-	if (NO_MEGA)
-		setmega ();
-
 	if (scratch1 & S1_MATCH_DEFAULT)
 	{
-		wanted = hook_type (0);
-		if (wanted != hook_type (temp1))
-		{
-			if (wanted == 0)
-				toggle_free_hook ();
-			else if (wanted == 1)
-				free_hook ();
-			else if (wanted == 2)
-				lithium_hook ();
-		}
+		match_defaults ();
 
-		if (!NO_RUNES)
-			setrunes ();
-		if (!NO_ALT_WEAPONS)
-			setalts ();
-		if (!NO_SPAWN_SHIELDS)
-			setshields ();
-		if (ROTATE && !NO_ARMOR)
-			setrotate ();
-
-		if (mode_practice ())
-			change_mode_to_match ();
-		else if (mode_arena ())
-			change_mode_to_match ();
-		else if (mode_normal ())
+		if (!mode_match ())
 			change_mode_to_match ();
 	}
  	else if (scratch1 & S1_ARENA_DEFAULT)
 	{
-		wanted = hook_type (0);
-		if (wanted != hook_type (temp1))
-		{
-			if (wanted == 0)
-				toggle_free_hook ();
-			else if (wanted == 1)
-				free_hook ();
-			else if (wanted == 2)
-				lithium_hook ();
-		}
+		arena_defaults ();
 
-		if (!NO_RUNES)
-			setrunes ();
-		if (!NO_ALT_WEAPONS)
-			setalts ();
-		if (!NO_SPAWN_SHIELDS)
-			setshields ();
-		if (!deathmatch & DM_NO_DROP_ARMOR)
-			toggle_armor_drop ();
-
-		// instead of setting setting deathmatch here,
-		// i just reset to normal and in the next process
-		// it will get set to practice. (I'm lazy)
-		if (mode_match ())
-			change_mode_to_normal ();
-		else if (mode_practice ())
-			change_mode_to_normal ();
-		else if (mode_normal ())
+		if (!mode_arena ())
 			change_mode_to_arena ();
 	}
 	else if (scratch1 & S1_PRACTICE_DEFAULT)
 	{
-		wanted = hook_type (0);
-		if (wanted != hook_type (temp1))
-		{
-			if (wanted == 0)
-				toggle_free_hook ();
-			else if (wanted == 1)
-				free_hook ();
-			else if (wanted == 2)
-				lithium_hook ();
-		}
+		practice_defaults ();
 
-		if (!NO_RUNES)
-			setrunes ();
-		if (!NO_ALT_WEAPONS)
-			setalts ();
-		if (!NO_SPAWN_SHIELDS)
-			setshields ();
-		if (ROTATE && !NO_ARMOR)
-			setrotate ();
-
-		// instead of setting setting deathmatch here,
-		// i just reset to normal and in the next process
-		// it will get set to practice. (I'm lazy)
-		if (mode_match ())
-			change_mode_to_normal ();
-		else if (mode_arena ())
-			change_mode_to_normal ();
-		else if (mode_normal ())
+		if (!mode_practice ())
 			change_mode_to_practice ();
 		else if (mapname != "dm6")
 			admin_changelevel_now ("dm6");
 	}
 	else
 	{
-		// vote-hook
-		if (temp1 & T1_HOOK_DEFAULT_ON)
-		{
-			wanted = hook_type (HOOK_DEFAULT);
-			if (wanted != hook_type (temp1))
-			{
-				if (wanted == 0)
-					toggle_free_hook ();
-				else if (wanted == 1)
-					free_hook ();
-				else if (wanted == 2)
-					lithium_hook ();
-			}
-		}
-
-		if (NO_RUNES)
-			setrunes ();
-		if (NO_ALT_WEAPONS)
-			setalts ();
-		if (NO_SPAWN_SHIELDS)
-			setshields ();
-		if (deathmatch & DM_NO_DROP_ARMOR)
-			toggle_armor_drop ();
+		normal_defaults ();
 
 		if (!mode_normal ())
 			change_mode_to_normal ();

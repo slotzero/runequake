@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.64 2006/07/06 06:39:30 slotzero Exp $
+/*  $Id: team.qc,v 1.65 2006/07/08 05:54:30 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -762,31 +762,34 @@ teamscores_off =
 };
 
 void ()
-change_mode_to_practice =
+change_mode_to_match =
 {
 	local float new_deathmatch, new_teamplay;
 	local string s;
 
+	match_defaults ();
 	new_deathmatch = cvar ("deathmatch");
-	new_teamplay = cvar ("teamplay");
 
-	if (!NO_SPAWN_SHIELDS)
-		setshields ();
-	if (!NO_ALT_WEAPONS)
-		setalts ();
-	if (!new_deathmatch & DM_MODE_PRACTICE)
-		new_deathmatch = new_deathmatch | DM_MODE_PRACTICE;
-	if (new_teamplay & TEAM_MODE_MATCH)
-		new_teamplay = new_teamplay - new_teamplay & TEAM_MODE_MATCH;
+	// turn on match, but turn off vote-team related options
+	new_teamplay = TEAM_MODE_MATCH;
+
+	// turn off arena
+	if (new_deathmatch & DM_MODE_ROCKET_ARENA)
+		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_ROCKET_ARENA;
+
+	// turn off practice
+	if (new_deathmatch & DM_MODE_PRACTICE)
+		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_PRACTICE;
 
 	if (new_deathmatch == deathmatch && new_teamplay == teamplay)
 	{
-		self_sprint (self, "Already in practice mode\n");
+		self_sprint (self, "Already in match mode\n");
 		return;
 	}
 
 	s = ftos (new_deathmatch);
 	cvar_set ("deathmatch", s);
+	// this leaves us no way to return teamplay to its "normal" state
 	s = ftos (new_teamplay);
 	cvar_set ("teamplay", s);
 	admin_changelevel_now (mapname);
@@ -798,17 +801,19 @@ change_mode_to_arena =
 	local float new_deathmatch, new_teamplay;
 	local string s;
 
+	arena_defaults ();
 	new_deathmatch = cvar ("deathmatch");
 	new_teamplay = cvar ("teamplay");
 
-	if (!NO_SPAWN_SHIELDS)
-		setshields ();
-	if (!NO_ALT_WEAPONS)
-		setalts ();
-	if (!NO_RUNES)
-		setrunes ();
+	// turn on arena
 	if (!new_deathmatch & DM_MODE_ROCKET_ARENA)
 		new_deathmatch = new_deathmatch | DM_MODE_ROCKET_ARENA;
+
+	// turn off practice
+	if (new_deathmatch & DM_MODE_PRACTICE)
+		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_PRACTICE;
+
+	// turn off match
 	if (new_teamplay & TEAM_MODE_MATCH)
 		new_teamplay = new_teamplay - new_teamplay & TEAM_MODE_MATCH;
 
@@ -826,31 +831,30 @@ change_mode_to_arena =
 };
 
 void ()
-change_mode_to_normal =
+change_mode_to_practice =
 {
 	local float new_deathmatch, new_teamplay;
 	local string s;
 
+	practice_defaults ();
 	new_deathmatch = cvar ("deathmatch");
 	new_teamplay = cvar ("teamplay");
 
-	// XXX I would like these to be configured via a config file.
-	if (NO_ALT_WEAPONS)
-		setalts ();
-	if (NO_SPAWN_SHIELDS)
-		setshields ();
-	if (NO_RUNES)
-		setrunes ();
-	if (new_deathmatch & DM_MODE_PRACTICE)
-		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_PRACTICE;
+	// turn on practice
+	if (!new_deathmatch & DM_MODE_PRACTICE)
+		new_deathmatch = new_deathmatch | DM_MODE_PRACTICE;
+
+	// turn off arena
 	if (new_deathmatch & DM_MODE_ROCKET_ARENA)
 		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_ROCKET_ARENA;
-	if (teamplay & TEAM_MODE_MATCH)
+
+	// turn off match
+	if (new_teamplay & TEAM_MODE_MATCH)
 		new_teamplay = new_teamplay - new_teamplay & TEAM_MODE_MATCH;
 
 	if (new_deathmatch == deathmatch && new_teamplay == teamplay)
 	{
-		self_sprint (self, "Already in normal mode\n");
+		self_sprint (self, "Already in practice mode\n");
 		return;
 	}
 
@@ -862,36 +866,36 @@ change_mode_to_normal =
 };
 
 void ()
-change_mode_to_match =
+change_mode_to_normal =
 {
 	local float new_deathmatch, new_teamplay;
 	local string s;
 
-	new_deathmatch = cvar ("deathmatch");
+	normal_defaults ();
 
-	// XXX I would like these to be configured via a config file.
-	if (!NO_ALT_WEAPONS)
-		setalts ();
-	if (!NO_SPAWN_SHIELDS)
-		setshields ();
-	if (!NO_RUNES)
-		setrunes ();
-	if (new_deathmatch & DM_MODE_PRACTICE)
-		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_PRACTICE;
+	new_deathmatch = cvar ("deathmatch");
+	new_teamplay = cvar ("teamplay");
+
+	// turn off arena
 	if (new_deathmatch & DM_MODE_ROCKET_ARENA)
 		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_ROCKET_ARENA;
-	if (!new_teamplay & TEAM_MODE_MATCH)
-		new_teamplay = TEAM_MODE_MATCH;
+
+	// turn off practice
+	if (new_deathmatch & DM_MODE_PRACTICE)
+		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_PRACTICE;
+
+	// turn off match
+	if (new_teamplay & TEAM_MODE_MATCH)
+		new_teamplay = new_teamplay - new_teamplay & TEAM_MODE_MATCH;
 
 	if (new_deathmatch == deathmatch && new_teamplay == teamplay)
 	{
-		self_sprint (self, "Already in match mode\n");
+		self_sprint (self, "Already in normal mode\n");
 		return;
 	}
 
 	s = ftos (new_deathmatch);
 	cvar_set ("deathmatch", s);
-	// this leaves us no way to return teamplay to its "normal" state
 	s = ftos (new_teamplay);
 	cvar_set ("teamplay", s);
 	admin_changelevel_now (mapname);
@@ -913,10 +917,276 @@ mode_normal =
 float ()
 mode_practice =
 {
+	if (!deathmatch & DM_MODE_PRACTICE)
+		return FALSE;
+	if (deathmatch & DM_MODE_ROCKET_ARENA)
+		return FALSE;
 	if (teamplay & TEAM_MODE_MATCH)
 		return FALSE;
-	if (deathmatch & DM_MODE_PRACTICE)
-		return TRUE;
 
-	return FALSE;
+	return TRUE;
+};
+
+//-----------------------------------------------------------------------------
+// DEFAULT SETTINGS FOR MATCH, ARENA, PRACTICE, AND NORMAL
+//-----------------------------------------------------------------------------
+
+void ()
+match_defaults =
+{
+	local float wanted;
+
+	// hook off
+	wanted = hook_type (0);
+	if (wanted != hook_type (temp1))
+	{
+		if (wanted == 0)
+			toggle_free_hook ();
+		else if (wanted == 1)
+			free_hook ();
+		else if (wanted == 2)
+			lithium_hook ();
+	}
+
+	// hook damage on
+	if (NO_HOOK_DAMAGE)
+		sethookdamage ();
+
+	// powerups on
+	if (NO_QUAD)
+		setquad ();
+	if (NO_PENT)
+		setpent ();
+	if (NO_RING)
+		setring ();
+	if (NO_SUIT)
+		setsuit ();
+
+	// armor on
+	if (NO_ARMOR)
+		setarmor ();
+
+	// rotate off
+	if (ROTATE)
+		setrotate ();
+
+	// armor drop off
+	if (!deathmatch & DM_NO_DROP_ARMOR)
+		toggle_armor_drop ();
+
+	// megahealth on
+	if (NO_MEGA)
+		setmega ();
+
+	// runes off
+	if (!NO_RUNES)
+		setrunes ();
+
+	// alt weapons off
+	if (!NO_ALT_WEAPONS)
+		setalts ();
+
+	// weapons stay off
+	if (deathmatch & DM_WEAPONS_STAY)
+		toggle_weapons_stay ();
+
+	// spawn shields off
+	if (!NO_SPAWN_SHIELDS)
+		setshields ();
+};
+
+void ()
+arena_defaults =
+{
+	local float wanted;
+
+	// hook off
+	wanted = hook_type (0);
+	if (wanted != hook_type (temp1))
+	{
+		if (wanted == 0)
+			toggle_free_hook ();
+		else if (wanted == 1)
+			free_hook ();
+		else if (wanted == 2)
+			lithium_hook ();
+	}
+
+	// hook damage on
+	if (NO_HOOK_DAMAGE)
+		sethookdamage ();
+
+	// powerups, no default
+	//if (NO_QUAD)
+	//	setquad ();
+	//if (NO_PENT)
+	//	setpent ();
+	//if (NO_RING)
+	//	setring ();
+	//if (NO_SUIT)
+	//	setsuit ();
+
+	// armor, no default
+	//if (NO_ARMOR)
+	//	setarmor ();
+
+	// rotate, no default
+	//if (ROTATE)
+	//	setrotate ();
+
+	// armor drop off
+	if (!deathmatch & DM_NO_DROP_ARMOR)
+		toggle_armor_drop ();
+
+	// megahealth, no default
+	//if (NO_MEGA)
+	//	setmega ();
+
+	// runes off
+	if (!NO_RUNES)
+		setrunes ();
+
+	// alt weapons off
+	if (!NO_ALT_WEAPONS)
+		setalts ();
+
+	// weapons stay, no default
+	//if (deathmatch & DM_WEAPONS_STAY)
+	//	toggle_weapons_stay ();
+
+	// spawn shields off
+	if (!NO_SPAWN_SHIELDS)
+		setshields ();
+
+};
+
+void ()
+practice_defaults =
+{
+	local float wanted;
+
+	// hook off
+	wanted = hook_type (0);
+	if (wanted != hook_type (temp1))
+	{
+		if (wanted == 0)
+			toggle_free_hook ();
+		else if (wanted == 1)
+			free_hook ();
+		else if (wanted == 2)
+			lithium_hook ();
+	}
+
+	// hook damage on
+	if (NO_HOOK_DAMAGE)
+		sethookdamage ();
+
+	// powerups on
+	if (NO_QUAD)
+		setquad ();
+	if (NO_PENT)
+		setpent ();
+	if (NO_RING)
+		setring ();
+	if (NO_SUIT)
+		setsuit ();
+
+	// armor on
+	if (NO_ARMOR)
+		setarmor ();
+
+	// rotate off
+	if (ROTATE)
+		setrotate ();
+
+	// armor drop off
+	if (!deathmatch & DM_NO_DROP_ARMOR)
+		toggle_armor_drop ();
+
+	// megahealth on
+	if (NO_MEGA)
+		setmega ();
+
+	// runes off
+	if (!NO_RUNES)
+		setrunes ();
+
+	// alt weapons off
+	if (!NO_ALT_WEAPONS)
+		setalts ();
+
+	// weapons stay, no default
+	//if (deathmatch & DM_WEAPONS_STAY)
+	//	toggle_weapons_stay ();
+
+	// spawn shields off
+	if (!NO_SPAWN_SHIELDS)
+		setshields ();
+};
+
+void ()
+normal_defaults =
+{
+	local float wanted;
+
+	// hook [set in settings.qc, look for HOOK_DEFAULT]
+	if (temp1 & T1_HOOK_DEFAULT_ON)
+	{
+		wanted = hook_type (HOOK_DEFAULT);
+		if (wanted != hook_type (temp1))
+		{
+			if (wanted == 0)
+				toggle_free_hook ();
+			else if (wanted == 1)
+				free_hook ();
+			else if (wanted == 2)
+				lithium_hook ();
+		}
+	}
+
+	// hook damage on
+	if (NO_HOOK_DAMAGE)
+		sethookdamage ();
+
+	// powerups on
+	if (NO_QUAD)
+		setquad ();
+	if (NO_PENT)
+		setpent ();
+	if (NO_RING)
+		setring ();
+	if (NO_SUIT)
+		setsuit ();
+
+	// armor on
+	if (NO_ARMOR)
+		setarmor ();
+
+	// rotate on
+	if (!ROTATE)
+		setrotate ();
+
+	// armor drop on
+	if (deathmatch & DM_NO_DROP_ARMOR)
+		toggle_armor_drop ();
+
+	// megahealth on
+	if (NO_MEGA)
+		setmega ();
+
+	// runes off
+	if (!NO_RUNES)
+		setrunes ();
+
+	// alt weapons on
+	if (NO_ALT_WEAPONS)
+		setalts ();
+
+	// weapons stay on
+	if (!deathmatch & DM_WEAPONS_STAY)
+		toggle_weapons_stay ();
+
+	// spawn shields on
+	if (NO_SPAWN_SHIELDS)
+		setshields ();
 };
