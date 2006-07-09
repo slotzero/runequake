@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.184 2006/07/06 06:39:30 slotzero Exp $
+/*  $Id: defs.qc,v 1.185 2006/07/09 00:06:25 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -715,7 +715,8 @@ float RQ_AUTOSTATS		= 32;
 
 float RQS_LAGGED_OUT		= 1;
 float RQS_READY			= 2;
-float RQS_TIMESET_OVERRIDE	= 4;
+float RQS_AFK			= 4;
+float RQS_TIMESET_OVERRIDE	= 8;
 
 // aqstate flags (not saved across levels)
 float AQS_MENU_MASK		= 31;
@@ -1499,6 +1500,7 @@ void	(vector where, float set)		multicast	= #82; // sends the temp message to a 
 // development
 
 .float	grenade_spam_time;
+.float	afk;
 .string address;
 
 .entity cl;

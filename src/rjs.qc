@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.210 2006/07/08 05:54:30 slotzero Exp $
+/*  $Id: rjs.qc,v 1.211 2006/07/09 00:06:25 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1656,6 +1656,16 @@ player_init =
 	if (scratch1 & S1_AMBIENT_SOUND_OFF && !is_qsmack ())
 		self_stuffcmd (self, "ambient_level 0\n");
 
+	// update showscores for new players
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (e.rqstate & RQS_AFK || (!match.state && e.rqstate & RQS_READY))
+			update_showscores_name (self, e);
+		e = find (e, classname, "player");
+	}
+
+	// bring up the welcome menu
 	aq_menu_set (AQS_MENU_SPLASH);
 
 	i = 0;

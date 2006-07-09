@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.129 2006/07/07 03:59:37 slotzero Exp $
+/*  $Id: client.qc,v 1.130 2006/07/09 00:06:25 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -708,6 +708,7 @@ PutClientInServer =
 	self.runevar = 0;
 	self.runevector = VEC_ORIGIN;
 	self.grenade_spam_time = 0;
+	self.afk = time;
 
 	DecodeLevelParms ();
 
@@ -1415,6 +1416,13 @@ PlayerPreThink =
 	obs = is_observer ();
 	mm = mode_match ();
 
+	// player is afk, check every tick for his return
+	if (self.rqstate & RQS_AFK)
+	{
+		if (self.button0 || self.button2)
+			self.afk = time;
+	}
+
 	// updates
 	if (self.lefty < time)
 	{
@@ -1443,16 +1451,35 @@ PlayerPreThink =
 		if (self.rqflags & RQ_TEAMSCORES_ON)
 			teamscores_on (self);
 
-		// check for name change of readied player
-		if (mm)
+		// update players activity so he doesn't we know he's not afk
+		if (self.button0 || self.button1 || self.cl[CL_CMD_FORWARD] || self.cl[CL_CMD_SIDE])
+			self.afk = time;
+
+		// check if a player is afk or returning from afk
+		if (self.rqstate & RQS_AFK)
 		{
-			if (!match.state && self.rqstate & RQS_READY)
+			if (self.afk + 5 > time)
 			{
-				if (self.netname != READY_NAME_16[((self.colormap - 1) * %1) * 16])
-				{
-					strcpy (READY_NAME_16[((self.colormap - 1) * %1) * 16], self.netname);
-					match_ready_name (world, self);
-				}
+				self.rqstate = self.rqstate - self.rqstate & RQS_AFK;
+				update_showscores_name (world, self);
+			}
+		}
+		else
+		{
+			if (self.afk < time - 300 && !is_qsmack () IN_QW(&& 0)) // 5 minutes (XXX set this from console)
+			{
+				self.rqstate = self.rqstate | RQS_AFK;
+				update_showscores_name (world, self);
+			}
+		}
+
+		// check for name change of readied or afk player
+		if (self.rqstate & RQS_AFK || (!match.state && self.rqstate & RQS_READY))
+		{
+			if (self.netname != READY_NAME_16[((self.colormap - 1) * %1) * 16])
+			{
+				strcpy (READY_NAME_16[((self.colormap - 1) * %1) * 16], self.netname);
+				update_showscores_name (world, self);
 			}
 		}
 	}

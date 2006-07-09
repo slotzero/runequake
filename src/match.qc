@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.38 2006/07/08 20:34:42 slotzero Exp $
+/*  $Id: match.qc,v 1.39 2006/07/09 00:06:25 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -44,7 +44,6 @@ match_hunk_init =
 void (entity e)
 match_client_init =
 {
-	local entity w;
 	local float i, c, pants, colors;
 
 	if (!HUNK_CONTEXT)
@@ -60,14 +59,6 @@ match_client_init =
 			c = color_to_teamfrags (pants);
 			pqc_team_frags (e, pants, c);
 		}
-	}
-
-	w = find (world, classname, "player");
-	while (w)
-	{
-		if (w.rqstate & RQS_READY && match.state < 1)
-			match_ready_name (e, w);
-		w = find (w, classname, "player");
 	}
 };
 
@@ -108,8 +99,8 @@ match_obs_become =
 
 	if (type)
 	{
-		svc_updatename (MSG_ALL, self.colormap - 1, self.netname);
 		maybe_remove_team (self);
+		update_showscores_name (world, self);
 	}
 };
 
@@ -339,7 +330,7 @@ match_unready_names =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		svc_updatename (MSG_ALL, e.colormap - 1, e.netname);
+		update_showscores_name (world, e);
 		e = find (e, classname, "player");
 	}
 };
@@ -491,10 +482,11 @@ audit_match =
 };
 
 void (entity e, entity w)
-match_ready_name =
+update_showscores_name =
 {
 	local float msg_type;
 	local string match_name;
+	local string s;
 
 	if (e.cl[CL_ACTIVE] == %1)
 	{
@@ -504,8 +496,18 @@ match_ready_name =
 	else
 		msg_type = MSG_ALL;
 
+	if (w.rqstate & RQS_AFK)
+		s = "\bAFK";
+	else if (!match.state && w.rqstate & RQS_READY)
+		s = "\bREADY";
+	else
+	{
+		svc_updatename (MSG_ALL, w.colormap - 1, w.netname);
+		return;
+	}
+
 	match_name = flen (w.netname, -16);
-	match_name = strcat (match_name, "\bREADY");
+	match_name = strcat (match_name, s);
 	svc_updatename (msg_type, w.colormap - 1, match_name);
 };
 
@@ -582,8 +584,8 @@ match_obs_join_game =
 	bprint (s);
 	bprint ("\n");
 
-	match_ready_name (world, self);
 	audit_match ();
+	update_showscores_name (world, self);
 
 	return TRUE;
 };
@@ -698,8 +700,8 @@ match_notready =
 		bprint (" is not ready\n");
 	}
 
-	svc_updatename (MSG_ALL, self.colormap - 1, self.netname);
 	maybe_remove_team (self);
+	update_showscores_name (world, self);
 };
 
 void ()
