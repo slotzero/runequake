@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.39 2006/07/09 00:06:25 slotzero Exp $
+/*  $Id: match.qc,v 1.40 2006/07/10 01:14:40 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -355,10 +355,11 @@ match_countdown =
 	if (seconds <= 0)
 	{
 		kill_all_players ();
-		match_unready_names ();
 		reset_efficiency_all ();
 
 		match.state	= 1;
+
+		match_unready_names ();
 
 		local entity vip;
 		vip = find_vip ();
