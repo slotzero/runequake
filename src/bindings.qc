@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.86 2006/04/19 02:11:26 slotzero Exp $
+/*  $Id: bindings.qc,v 1.87 2006/07/11 23:44:12 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -303,6 +303,7 @@ vote_aliases =
 	self_stuffcmd (self, "alias 6 \"impulse 6\"\n");
 
 	player_vote_impulse_alias ("arena",			IMP_VOTE_ARENA);	// CRMod (Style)
+	player_vote_impulse_alias ("faststart",			IMP_VOTE_FASTSTART);	// CRMod
 	player_vote_impulse_alias ("ffa",			IMP_VOTE_NORMAL);	// CRMod
 	player_vote_impulse_alias ("match",			IMP_VOTE_MATCH);	// CRMod
 	player_vote_impulse_alias ("normal",			IMP_VOTE_NORMAL);	// CRMod
@@ -432,6 +433,8 @@ console_aliases =
 	console_init_cvar_alias ("match",		CVAR_C2,	C2_MODE_MATCH);
 	console_init_cvar_alias ("dropon",		CVAR_C2,	C2_DROPON);
 	console_init_cvar_alias ("dropoff",		CVAR_C2,	C2_DROPOFF);
+	console_init_cvar_alias ("faststarton",		CVAR_C2,	C2_FASTSTARTON);
+	console_init_cvar_alias ("faststartoff",	CVAR_C2,	C2_FASTSTARTOFF);
 
 	level_aliases ();
 	custom_aliases ();

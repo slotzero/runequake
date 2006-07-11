@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.79 2006/07/05 05:05:35 slotzero Exp $
+/*  $Id: world.qc,v 1.80 2006/07/11 23:44:12 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -318,7 +318,7 @@ StartFrame =
 		{
 			if (NO_SPAWN_SHIELDS)
 			{
-				dprint_force ("Shields on\n");
+				dprint_force ("Spawn shields enabled\n");
 				setshields ();
 			}
 		}
@@ -327,7 +327,7 @@ StartFrame =
 		{
 			if (!NO_SPAWN_SHIELDS)
 			{
-				dprint_force ("Shields off\n");
+				dprint_force ("Spawn shields disabled\n");
 				setshields ();
 			}
 		}
@@ -336,7 +336,7 @@ StartFrame =
 		{
 			if (NO_HOOK_DAMAGE)
 			{
-				dprint_force ("Hook damage on\n");
+				dprint_force ("Hook damage enabled\n");
 				sethookdamage ();
 			}
 		}
@@ -345,7 +345,7 @@ StartFrame =
 		{
 			if (!NO_HOOK_DAMAGE)
 			{
-				dprint_force ("Hook damage off\n");
+				dprint_force ("Hook damage disabled\n");
 				sethookdamage ();
 			}
 		}
@@ -360,7 +360,7 @@ StartFrame =
 		{
 			if (NO_MEGA)
 			{
-				dprint_force ("Mega-health boxes on\n");
+				dprint_force ("Mega-health boxes enabled\n");
 				setmega ();
 			}
 		}
@@ -369,7 +369,7 @@ StartFrame =
 		{
 			if (!NO_MEGA)
 			{
-				dprint_force ("Mega-health boxes off\n");
+				dprint_force ("Mega-health boxes disabled\n");
 				setmega ();
 			}
 		}
@@ -437,6 +437,24 @@ StartFrame =
 			{
 				dprint_force ("Armor dropping disabled\n");
 				toggle_armor_drop ();
+			}
+		}
+
+		else if (i == C2_FASTSTARTON)
+		{
+			if (!FASTSTART)
+			{
+				dprint_force ("Fast match starts enabled\n");
+				setfaststart ();
+			}
+		}
+
+		else if (i == C2_FASTSTARTOFF)
+		{
+			if (FASTSTART)
+			{
+				dprint_force ("Fast match starts disabled\n");
+				setfaststart ();
 			}
 		}
 

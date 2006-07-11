@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.41 2006/07/11 21:13:30 slotzero Exp $
+/*  $Id: match.qc,v 1.42 2006/07/11 23:44:12 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -389,22 +389,49 @@ match_countdown =
 		else
 			bprint (" seconds\n");
 	}
-	else if (seconds == 12)
-		bprint ("Match is currently 1v1\n"); // XXX Fix me!!
-	else if (seconds == 15)
+	else if (self.frags == 20)
 	{
-		match_respawn_all_items ();
-		bprint ("All items have respawned\n");
+		if (seconds == 12)
+			bprint ("Match is currently 1v1\n"); // XXX Fix me!!
+		else if (seconds == 15)
+		{
+			match_respawn_all_items ();
+			bprint ("All items have respawned\n");
+		}
+
+		if (seconds == 18 || seconds == 15 || seconds == 12)
+		{
+			bprint ("\btimelimit is \<");
+			bprint (timeset_gold[(((match.frags / 5) - 1) * 3) * %1]);
+			bprint ("\>\n");
+
+			if (seconds == 18)
+				bprint ("use '\btimeset\b' to change timelimit\n");
+		}
 	}
-
-	if (seconds == 18 || seconds == 15 || seconds == 12)
+	else
 	{
-		bprint ("\btimelimit is \<");
-		bprint (timeset_gold[(((match.frags / 5) - 1) * 3) * %1]);
-		bprint ("\>\n");
+		if (seconds == 20)
+		{
+			bprint ("Match is currently 1v1\n"); // XXX Fix me!!
+			bprint ("Match begins in 20 seconds\n");
+		}
+		else if (seconds == 30)
+		{
+			match_respawn_all_items ();
+			bprint ("All items have respawned\n");
+			bprint ("Match begins in 30 seconds\n");
+		}
 
-		if (seconds == 18) // XXX Adjust with FASTSTART
-			bprint ("use '\btimeset\b' to change timelimit\n");
+		if (seconds == 55 || seconds == 30 || seconds == 20)
+		{
+			bprint ("\btimelimit is \<");
+			bprint (timeset_gold[(((match.frags / 5) - 1) * 3) * %1]);
+			bprint ("\>\n");
+
+			if (seconds == 55)
+				bprint ("use '\btimeset\b' to change timelimit\n");
+		}
 	}
 };
 
@@ -418,7 +445,10 @@ match_spawn_countdown =
 	{
 			e		= spawn ();
 			e.classname	= "match_countdown";
-			e.frags		= 20;
+			if (FASTSTART)
+				e.frags = 20;
+			else
+				e.frags = 60;
 			e.count		= time + e.frags;
 
 			// populate match frags with hunk or use default
@@ -429,7 +459,7 @@ match_spawn_countdown =
 				match.frags = 20;
 			}
 
-			if (e.frags == 20)
+			if (FASTSTART)
 				bprint ("Match begins in 20 seconds\n");
 			else
 				bprint ("Match begins in 1 minute\n");

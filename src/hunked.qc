@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.41 2005/12/17 04:04:45 slotzero Exp $
+/*  $Id: hunked.qc,v 1.42 2006/07/11 23:44:12 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -25,6 +25,8 @@ float LAST_TIME_UPDATE;
 float HUNK_SERVER_TIME		= %10;
 float HUNK_CLIENT_DISCONNECT	= %100;
 float HUNK_BAN_OFFSET		= %800;
+
+// 1000 + VOTE_IMPULSE
 float HUNK_NO_QUAD		= %1008;
 float HUNK_NO_PENT		= %1009;
 float HUNK_NO_RING		= %1010;
@@ -36,6 +38,7 @@ float HUNK_NO_ALT_WEAPONS	= %1015;
 float HUNK_NO_SPAWN_SHIELDS	= %1016;
 float HUNK_NO_HOOK_DAMAGE	= %1017;
 float HUNK_NO_MEGA		= %1019;
+float HUNK_FASTSTART		= %1024;
 
 float ()
 server_time =
@@ -398,6 +401,7 @@ fput =
 	else if (*offset == *HUNK_NO_SPAWN_SHIELDS)	cvar_set_infokey ("NO_SPAWN_SHIELDS",	s);
 	else if (*offset == *HUNK_NO_HOOK_DAMAGE)	cvar_set_infokey ("HO_HOOK_DAMAGE",	s);
 	else if (*offset == *HUNK_NO_MEGA)		cvar_set_infokey ("NO_MEGA",		s);
+	else if (*offset == *HUNK_FASTSTART)		cvar_set_infokey ("FASTSTART",		s);
 
 	return value;
 };
@@ -419,6 +423,7 @@ fget =
 	else if (*offset == *HUNK_NO_SPAWN_SHIELDS)	i = NO_SPAWN_SHIELDS	= cvar_infokey ("NO_SPAWN_SHIELDS");
 	else if (*offset == *HUNK_NO_HOOK_DAMAGE)	i = NO_HOOK_DAMAGE	= cvar_infokey ("NO_HOOK_DAMAGE");
 	else if (*offset == *HUNK_NO_MEGA)		i = NO_MEGA		= cvar_infokey ("NO_MEGA");
+	else if (*offset == *HUNK_FASTSTART)		i = FASTSTART		= cvar_infokey ("FASTSTART");
 
 	return i;
 };
@@ -462,6 +467,7 @@ Hunk_Settings =
 	NO_SPAWN_SHIELDS	= fget (HUNK_NO_SPAWN_SHIELDS,	0);
 	NO_HOOK_DAMAGE		= fget (HUNK_NO_HOOK_DAMAGE,	0);
 	NO_MEGA			= fget (HUNK_NO_MEGA,		0);
+	FASTSTART		= fget (HUNK_FASTSTART,		0);
 
 	set_runemax ();
 };

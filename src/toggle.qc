@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.22 2006/04/19 02:11:26 slotzero Exp $
+/*  $Id: toggle.qc,v 1.23 2006/07/11 23:44:12 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -285,4 +285,10 @@ toggle_armor_drop =
 	s = ftos (new_deathmatch);
 	deathmatch = new_deathmatch;
 	cvar_set ("deathmatch", s);
+};
+
+void ()
+setfaststart =
+{
+	FASTSTART = fput (HUNK_FASTSTART, !FASTSTART);
 };

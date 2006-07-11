@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.186 2006/07/11 21:13:30 slotzero Exp $
+/*  $Id: defs.qc,v 1.187 2006/07/11 23:44:12 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -607,6 +607,7 @@ float IMP_VOTE_WEAPONS_STAY	= 20;
 float IMP_VOTE_MATCH		= 21;
 float IMP_VOTE_TIMESET		= 22;
 float IMP_VOTE_ARMOR_DROP	= 23;
+float IMP_VOTE_FASTSTART	= 24;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;
@@ -1171,6 +1172,8 @@ float	C2_EFFICIENCY		= 41;
 float	C2_MODE_MATCH		= 42;
 float	C2_DROPON		= 43;
 float	C2_DROPOFF		= 44;
+float	C2_FASTSTARTON		= 45;
+float	C2_FASTSTARTOFF		= 46;
 
 IN_QW([-
 //

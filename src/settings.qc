@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.55 2005/09/10 06:46:57 slotzero Exp $
+/*  $Id: settings.qc,v 1.56 2006/07/11 23:44:12 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -671,3 +671,4 @@ float NO_ALT_WEAPONS;
 float NO_SPAWN_SHIELDS;
 float NO_HOOK_DAMAGE;
 float NO_MEGA;
+float FASTSTART;
