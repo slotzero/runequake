@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.40 2006/07/10 01:14:40 slotzero Exp $
+/*  $Id: match.qc,v 1.41 2006/07/11 21:13:30 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -99,7 +99,7 @@ match_obs_become =
 
 	if (type)
 	{
-		maybe_remove_team (self);
+		maybe_remove_team ();
 		update_showscores_name (world, self);
 	}
 };
@@ -236,6 +236,7 @@ match_abort =
 	bprint ("Match aborted!\n");
 	pqc_match_time (world, 255, 0);
 	pqc_match_reset ();
+	match_remove_ghosts (world);
 };
 
 void ()
@@ -277,6 +278,7 @@ match_timer =
 		bprint ("The match is over\n");
 		team_stats (1);
 		kill_all_players ();
+		match_remove_ghosts (world);
 		pqc_match_time (world, 255, 0);
 		remove_bit_from_players (rqstate, RQS_READY);
 		remove (self);
@@ -463,7 +465,9 @@ audit_match =
 
 	if (match.state)
 	{
-		if (!teams)
+		if (!count_players (0))
+			match_abort ();
+		else if (!teams)
 		{
 			bprint ("No teams present\n");
 			match_abort ();
@@ -536,6 +540,16 @@ match_obs_join_game =
 		return FALSE;
 	}
 
+	if (match.state)
+	{
+		if (match_find_ghost ())
+		{
+			self.rqstate = self.rqstate | RQS_RESTORE_GHOST;
+			return TRUE;
+		}
+	}
+
+	// XXX CRMOD allows players to join teams with fewer players.
 	if (match.cnt && match.cnt < 6)
 	{
 		self_sprint (self, "Team locked at T-5 seconds\nCannot join unless someone unreadies\n");
@@ -591,29 +605,158 @@ match_obs_join_game =
 	return TRUE;
 };
 
-float (entity e)
+void (entity e)
+match_remove_ghosts =
+{
+	local entity ghost;
+
+	ghost = find (world, classname, "ghost");
+	while (ghost)
+	{
+		if (e)
+		{
+			if (e.subnet == ghost.subnet)
+			{
+				remove (ghost);
+				return;
+			}
+		}
+		else
+			remove (ghost);
+
+		ghost = find (ghost, classname, "ghost");
+	}
+};
+
+entity ()
+match_find_ghost =
+{
+	local entity ghost;
+
+	if (self.subnet == VEC_ORIGIN)
+		return world;
+
+	ghost = find (world, classname, "ghost");
+	while (ghost)
+	{
+		if (self.subnet == ghost.subnet)
+			return ghost;
+		ghost = find (ghost, classname, "ghost");
+	}
+	return world;
+};
+
+void ()
+match_spawn_ghost =
+{
+	local entity ghost;
+
+	// remove existing ghosts
+	match_remove_ghosts (self);
+
+	// spawn ghost
+	ghost			= spawn ();
+	ghost.classname		= "ghost";
+
+	// save settings
+	ghost.subnet		= self.subnet;
+	ghost.frags		= self.frags;
+	ghost.team_colors	= self.team_colors;
+
+	ghost.items		= self.items;
+	ghost.health		= self.health;
+	ghost.armorvalue	= self.armorvalue;
+	ghost.ammo_shells	= self.ammo_shells;
+	ghost.ammo_nails	= self.ammo_nails;
+	ghost.ammo_rockets	= self.ammo_rockets;
+	ghost.ammo_cells	= self.ammo_cells;
+	ghost.weapon		= self.weapon;
+	ghost.armortype		= self.armortype;
+	ghost.deadflag		= self.deadflag;
+};
+
+float ()
+match_restore_ghost =
+{
+	local entity ghost;
+
+	if (!self.rqstate & RQS_RESTORE_GHOST)
+		return FALSE;
+
+	self.rqstate		= self.rqstate - self.rqstate & RQS_RESTORE_GHOST;
+
+	ghost = match_find_ghost ();
+	if (!ghost)
+		return FALSE;
+
+	self.rqstate		= self.rqstate | RQS_READY;
+	self.frags		= ghost.frags;
+	self.team_colors	= ghost.team_colors;
+	restore_colors (self, self.team_colors / %1);
+	self.search_time	= time + 0.1;
+
+	// XXX Just force new parms until I add timer functions.
+	if (1)
+	{
+		match_remove_ghosts (ghost);
+		return FALSE;
+	}
+
+	self.items		= ghost.items;
+	self.items = self.items - self.items & (IT_KEY1 | IT_KEY2 | IT_INVISIBILITY
+			| IT_INVULNERABILITY | IT_SUIT | IT_QUAD | IT_SUPERHEALTH);
+
+	self.health		= ghost.health;
+	self.armorvalue		= ghost.armorvalue;
+	self.ammo_shells	= ghost.ammo_shells;
+	self.ammo_nails		= ghost.ammo_nails;
+	self.ammo_rockets	= ghost.ammo_rockets;
+	self.ammo_cells		= ghost.ammo_cells;
+
+	self.weapon		= 0;
+	set_weapon (ghost.weapon);
+
+	self.armortype		= ghost.armortype;
+
+	match_remove_ghosts (ghost);
+	return TRUE;
+};
+
+void ()
+match_client_disconnect =
+{
+	if (!self.rqstate & RQS_READY)
+		return;
+
+	if (match.state)
+		match_spawn_ghost ();
+
+	maybe_remove_team ();
+};
+
+void ()
 maybe_remove_team =
 {
 	local entity w;
 	local float e_pants, w_pants;
 
-	e.rqstate = e.rqstate - e.rqstate & RQS_READY;
-	e_pants = colors_to_pants (e.cl[CL_COLORS] / %1);
-
+	self.rqstate = self.rqstate - self.rqstate & RQS_READY;
+	self.team_colors = 0;
+	e_pants = colors_to_pants (self.cl[CL_COLORS] / %1);
 	w = find (world, classname, "player");
 	while (w)
 	{
 		w_pants = colors_to_pants (w.cl[CL_COLORS] / %1);
-		if (e != w && e_pants == w_pants && w.rqstate & RQS_READY)
+		if (self != w && e_pants == w_pants && w.rqstate & RQS_READY)
 		{
 			audit_match ();
-			return FALSE;
+			return;
 		}
 		w = find (w, classname, "player");
 	}
-	remove_team (e.team);
+	remove_team (self.team);
 
-	return TRUE;
+	return;
 };
 
 void (float tm)
@@ -626,6 +769,12 @@ remove_team =
 
 	if (!TEAMS_PRESENT)
 		return;
+
+	if (match.state)
+	{
+		audit_match ();
+		return;
+	}
 
 	pqc_erase_team (tm - 1);
 	Write_Hunk_Float (HUNK_CONTEXT, HUNK_TEAMS + (tm * %1), 0);
@@ -701,7 +850,7 @@ match_notready =
 		bprint (" is not ready\n");
 	}
 
-	maybe_remove_team (self);
+	maybe_remove_team ();
 	update_showscores_name (world, self);
 };
 

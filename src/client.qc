@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.130 2006/07/09 00:06:25 slotzero Exp $
+/*  $Id: client.qc,v 1.131 2006/07/11 21:13:30 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -191,6 +191,15 @@ DecodeLevelParms =
 		SetPracticeParms ();
 	else
 	{
+		if (mode_match ())
+		{
+			if (match.state)
+			{
+				if (match_restore_ghost ())
+					return;
+			}
+		}
+
 		self.items		= parm1;
 		self.health		= parm2;
 		self.armorvalue		= parm3;
@@ -1974,7 +1983,7 @@ ClientDisconnect =
 	qsmack_status_valid = 0;
 
 	if (mode_match ())
-		maybe_remove_team (self);
+		match_client_disconnect ();
 	else if (mode_arena ())
 		arena_client_disconnect ();
 

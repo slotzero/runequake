@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.185 2006/07/09 00:06:25 slotzero Exp $
+/*  $Id: defs.qc,v 1.186 2006/07/11 21:13:30 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -716,7 +716,8 @@ float RQ_AUTOSTATS		= 32;
 float RQS_LAGGED_OUT		= 1;
 float RQS_READY			= 2;
 float RQS_AFK			= 4;
-float RQS_TIMESET_OVERRIDE	= 8;
+float RQS_RESTORE_GHOST		= 8;
+float RQS_TIMESET_OVERRIDE	= 16;
 
 // aqstate flags (not saved across levels)
 float AQS_MENU_MASK		= 31;
