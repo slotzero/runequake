@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.23 2006/07/11 23:44:12 slotzero Exp $
+/*  $Id: toggle.qc,v 1.24 2006/07/12 03:46:49 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -291,4 +291,10 @@ void ()
 setfaststart =
 {
 	FASTSTART = fput (HUNK_FASTSTART, !FASTSTART);
+};
+
+void ()
+setmatchlock =
+{
+	MATCHLOCK = !MATCHLOCK;
 };

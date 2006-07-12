@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.42 2006/07/11 23:44:12 slotzero Exp $
+/*  $Id: match.qc,v 1.43 2006/07/12 03:46:49 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -20,6 +20,7 @@
 float HUNK_TEAMS = %500;
 float HUNK_MATCH_TIMELIMIT = %517;
 float TEAMS_PRESENT;
+float MATCH_LOCKED;
 
 float ()
 mode_match =
@@ -359,6 +360,7 @@ match_countdown =
 		kill_all_players ();
 		reset_efficiency_all ();
 
+		MATCHLOCK	= 1;
 		match.state	= 1;
 
 		match_unready_names ();
@@ -592,7 +594,7 @@ match_obs_join_game =
 		return FALSE;
 	}
 
-	if (match.state)
+	if (match.state && MATCHLOCK)
 	{
 		self_sprint (self, "Team full.  A player must enter 'unlock' in console to let you join\n");
 		restore_colors (self, self.team_colors / %1);

@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.63 2006/07/11 23:44:12 slotzero Exp $
+/*  $Id: vote.qc,v 1.64 2006/07/12 03:46:49 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -47,7 +47,7 @@ vote_impulse_commands =
 		else
 			count_votes (2);
 	}
-	else if (self.impulse >= 1 && self.impulse <= 24)
+	else if (self.impulse >= 1 && self.impulse <= 26)
 		vote ();
 
 	impulse_override_cancel ();
@@ -124,6 +124,10 @@ vote_action =
 		bprint (vip.noise2);
 		bprint (vip.noise3);
 		bprint ("...\n");
+	}
+	else
+	{
+		bprint (vip.noise4);
 	}
 
 	if (vip.think1)
@@ -782,6 +786,50 @@ vote =
 			e.noise1	= "disable";
 		else
 			e.noise1	= "enable";
+	}
+	else if (self.impulse == IMP_VOTE_UNLOCK)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= setmatchlock;
+		e.noise1	= "allow new players to join";
+
+		if (!match.state)
+		{
+			if (!cancel)
+				self_sprint (self, "No match in progress\n");
+			cancel = 1;
+		}
+		else if (MATCHLOCK)
+			e.noise4 = "Match has been unlocked\nNew players may join at will\n";
+		else
+		{
+			if (!cancel)
+				self_sprint (self, "Match is already unlocked\n");
+			cancel = 1;
+		}
+	}
+	else if (self.impulse == IMP_VOTE_LOCK)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= setmatchlock;
+		e.noise1	= "lock the match";
+
+		if (!match.state)
+		{
+			if (!cancel)
+				self_sprint (self, "No match in progress\n");
+			cancel = 1;
+		}
+		else if (!MATCHLOCK)
+			e.noise4 = "Match has been locked\n";
+		else
+		{
+			if (!cancel)
+				self_sprint (self, "Match is already locked\n");
+			cancel = 1;
+		}
 	}
 	else
 		cancel = -1;
