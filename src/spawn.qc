@@ -1,4 +1,4 @@
-/*  $Id: spawn.qc,v 1.11 2005/01/21 01:06:22 slotzero Exp $
+/*  $Id: spawn.qc,v 1.12 2006/07/14 08:01:13 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -250,9 +250,24 @@ place_my_items =
 		// Room where entrance requires trigger activation.
 		spawn_item ("weapon_rocketlauncher", 0, '423 1532 -120', 0);
 	}
+	else if (mapname == "arma4")
+	{
+		spawn_info_teleport_destination ('120 448 147', -90, "arena2");
+		spawn_info_teleport_destination ('268 448 147', -90, "arena3");
+	}
+	else if (mapname == "barena1")
+	{
+		spawn_info_teleport_destination ('0 200 -28', -90, "arena2");
+		spawn_info_teleport_destination ('0 -200 -28', 90, "arena3");
+	}
+	else if (mapname == "bbarena2")
+	{
+		spawn_info_teleport_destination ('512 -768 155', 90, "arena2");
+	}
 	else if (mapname == "uarena1")
 	{
-		spawn_info_teleport_destination ('-150 0 -160', 180, "arena2");
+		spawn_info_teleport_destination ('0 272 -133', -90, "arena2");
+		spawn_info_teleport_destination ('0 -272 -133', 90, "arena3");
 	}
 };
 
