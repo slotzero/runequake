@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.65 2005/11/13 21:50:59 slotzero Exp $
+/*  $Id: items.qc,v 1.66 2006/07/14 05:58:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -180,8 +180,6 @@ PlaceItem =
 	}
 };
 
-float did_my_items;
-
 /*
 ============
 StartItem
@@ -194,12 +192,6 @@ StartItem =
 {
 	self.nextthink	= time + 0.2; // items start after other solids
 	self.think	= PlaceItem;
-
-	if (!did_my_items)
-	{
-		did_my_items = 1;
-		place_my_items ();
-	}
 };
 
 /*
@@ -1918,14 +1910,9 @@ drop_powerup_touch =
 	remove (self);
 };
 
-// hack
+//
 void ()
 item_arena_rune =
 {
-	if (!did_my_items)
-	{
-		did_my_items = 1;
-		place_my_items ();
-	}
 	remove (self);
 };

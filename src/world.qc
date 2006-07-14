@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.80 2006/07/11 23:44:12 slotzero Exp $
+/*  $Id: world.qc,v 1.81 2006/07/14 05:58:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -44,6 +44,7 @@ worldspawn =
 	rjs_worldspawn ();
 	precaches ();
 	Light_Setup ();
+	place_my_items ();
 	InitSearchHunk();
 };
 
@@ -91,8 +92,7 @@ StartFrame =
 		change_teamplay (i, 0);
 	}
 
-	if (time > LEVEL_RECONNECT_ALLOWANCE
-			&& !initial_obs_process_game_queue)
+	if (time > LEVEL_RECONNECT_ALLOWANCE && !initial_obs_process_game_queue)
 	{
 		initial_obs_process_game_queue = 1;
 		obs_process_game_queue ();
