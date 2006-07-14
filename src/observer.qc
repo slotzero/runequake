@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.66 2006/07/08 06:44:12 slotzero Exp $
+/*  $Id: observer.qc,v 1.67 2006/07/14 04:26:26 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -413,8 +413,7 @@ obs_post_think =
 			// vis area than the ridee (eg, looking at the
 			// grenade launcher in e2m4), so I need to put
 			// the eyes a little higher.
-			if (self.owner.waterlevel > 0
-					&& self.owner.waterlevel < 3)
+			if (self.owner.waterlevel > 0 && self.owner.waterlevel < 3)
 				newpos = self.owner.origin - '0 0 20';
 			else
 				newpos = self.owner.origin - '0 0 30';
@@ -431,6 +430,7 @@ obs_post_think =
 		{
 			local vector angle;
 
+			// Support for pq_smoothcam.
 			angle_x = 360.0 / 256.0 * rint(self.owner.v_angle_x * 256.0 / 360.0);
 			angle_y = 360.0 / 256.0 * rint(self.owner.v_angle_y * 256.0 / 360.0);
 			angle_z = 0;
@@ -939,7 +939,7 @@ obs_join_game =
 	}
 
 	aq_menu_set (0);
-	obs_rider_off (0);
+	obs_rider_off (2);
 	self.aqflags = self.aqflags - AQ_OBSERVER;
 	self.flags = self.flags - self.flags & FL_OBSERVER;
 	set_viewport (self);
@@ -1048,12 +1048,16 @@ obs_rider_off =
 	if (self.owner)
 	{
 		setorigin (self, self.owner.origin);
-		self.aqstate = self.aqstate
-				- self.aqstate & AQS_RIDE_MASK;
+		self.aqstate = self.aqstate - self.aqstate & AQS_RIDE_MASK;
 		obs_rider_drop (tell);
-		if (tell)
+		if (tell == 1)
 			sprint (self, "Rider mode canceled\n");
-		obs_become (0);
+
+		// Check to make sure you're not joining the game before calling
+		// obs_become().  This would cause frags to be -99 when joining
+		// the game in match mode.
+		if (tell != 2)
+			obs_become (0);
 	}
 };
 

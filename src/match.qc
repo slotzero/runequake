@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.43 2006/07/12 03:46:49 slotzero Exp $
+/*  $Id: match.qc,v 1.44 2006/07/14 04:26:26 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -77,6 +77,12 @@ match_obs_init =
 
 		self_stuffcmd (self.owner, "color 0\n");
 		self.owner.frags = -99;
+
+		// When a player becomes an observer using the 'observer' command
+		// and without being dead, CheckPowerups() overwrites the modelindex
+		// that was set in obs_become().  I workaround it here.
+		if (self.owner.modelindex != modelindex_eyes)
+			self.owner.modelindex = modelindex_eyes;
 	}
 
 	remove (self);
