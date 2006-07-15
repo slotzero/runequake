@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.65 2006/07/08 05:54:30 slotzero Exp $
+/*  $Id: team.qc,v 1.66 2006/07/15 23:13:13 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1129,19 +1129,16 @@ normal_defaults =
 {
 	local float wanted;
 
-	// hook [set in settings.qc, look for HOOK_DEFAULT]
-	if (temp1 & T1_HOOK_DEFAULT_ON)
+	// hook on
+	wanted = hook_type (262144);
+	if (wanted != hook_type (temp1))
 	{
-		wanted = hook_type (HOOK_DEFAULT);
-		if (wanted != hook_type (temp1))
-		{
-			if (wanted == 0)
-				toggle_free_hook ();
-			else if (wanted == 1)
-				free_hook ();
-			else if (wanted == 2)
-				lithium_hook ();
-		}
+		if (wanted == 0)
+			toggle_free_hook ();
+		else if (wanted == 1)
+			free_hook ();
+		else if (wanted == 2)
+			lithium_hook ();
 	}
 
 	// hook damage on
@@ -1174,8 +1171,8 @@ normal_defaults =
 	if (NO_MEGA)
 		setmega ();
 
-	// runes off
-	if (!NO_RUNES)
+	// runes on
+	if (NO_RUNES)
 		setrunes ();
 
 	// alt weapons on
