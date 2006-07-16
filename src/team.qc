@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.66 2006/07/15 23:13:13 slotzero Exp $
+/*  $Id: team.qc,v 1.67 2006/07/16 00:29:00 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -439,6 +439,46 @@ change_teamplay =
 				&& !teamplay & TEAM_MATCH_MODE
 				&& old_teamplay & TEAM_MATCH_MODE)
 		bprint ("Match mode disabled\n"); */
+};
+
+// I used to do an initial change_teamplay() in rjs_worldspawn().
+// When I added START_LEVEL_EXEC, though, that broke.  A teamplay
+// set in startlevel.cfg isn't seen for a second or two after
+// that for some reason.  So, when the change_teamplay() there
+// ran, it would still see the teamplay in place from before
+// startlevel.cfg ran.  The change_teamplay() would do its own
+// localcmd() to set teamplay and that would overwrite the value
+// set in startlevel.cfg.
+//
+// I want to see both the value from before startlevel.cfg and
+// the value from after, so that I assign people to teams or
+// randomize their colors if enforced teams are turned on or
+// off.  I do an initial set of teamplay here as early as
+// possible, but I don't use localcmd() to set it at that point
+// so the value from startlevel.cfg doesn't get overwritten.  I
+// then do nothing for a couple of seconds, after which I check
+// it again and do the localcmd() even if it hasn't changed
+// (because a startlevel.cfg which sets it to the same value it
+// had last level would have lost the mod string in the teamplay
+// cvar).  After that I treat it naturally, doing the
+// change_teamplay() whenever it changes.
+
+void ()
+check_teamplay =
+{
+	local float i;
+
+	i = cvar ("teamplay");
+	if (time > 3 && (teamplay_set_state < 2 || teamplay != i))
+	{
+		teamplay_set_state = 2;
+		change_teamplay (i, 1);
+	}
+	else if (teamplay_set_state < 1)
+	{
+		teamplay_set_state = 1;
+		change_teamplay (i, 0);
+	}
 };
 
 void (float check_state)

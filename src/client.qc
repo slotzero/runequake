@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.131 2006/07/11 21:13:30 slotzero Exp $
+/*  $Id: client.qc,v 1.132 2006/07/16 00:29:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1046,6 +1046,12 @@ Exit deathmatch games upon conditions
 void ()
 CheckRules =
 {
+	if (intermission_running)
+	{
+		if (INTERMISSION_AUTO_EXIT >= 0 && time >= intermission_exittime + INTERMISSION_AUTO_EXIT)
+			GotoNextMap ();
+	}
+
 	if (gameover)	// someone else quit the game already
 		return;
 

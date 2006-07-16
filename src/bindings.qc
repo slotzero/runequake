@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.88 2006/07/12 03:46:49 slotzero Exp $
+/*  $Id: bindings.qc,v 1.89 2006/07/16 00:29:00 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -20,6 +20,10 @@
 // I have to pass the name_num separately because I have to re-ftos()
 // it, because ftos() has a single string which it always returns.
 // Quake C is so awful.
+
+//-------------------------------------------------------------------
+// PLAYER BINDINGS
+//-------------------------------------------------------------------
 
 void (string name, float name_num, float imp)
 player_init_switchfire_alias =
@@ -369,6 +373,10 @@ player_console_init_level_alias =
 	}
 };
 
+//-------------------------------------------------------------------
+// CONSOLE BINDINGS
+//-------------------------------------------------------------------
+
 void (string cmd, string cvr, float imp)
 console_init_cvar_alias =
 {
@@ -451,7 +459,385 @@ console_aliases =
 	localcmd ("exec ban.txt\n");
 };
 
-// XXX I would like to expand this.  help-server, help-weapons, help-vote, and so on.
+void ()
+check_console_command =
+{
+	local vector v;
+	local float i;
+	local string s;
+
+	i = cvar_infokey (CVAR_C1);
+	if (i)
+	{
+		cvar_set_infokey (CVAR_C1, "0");
+		IN_POQ(if (!HUNK_CONTEXT_MAX) i = 0;)
+
+		&%IN_POQ(368,376) = i;
+		s = impulse_to_map ();
+		if (s)
+			admin_changelevel_now (s);
+		else
+			dprint ("Invalid level impulse\n");
+	}
+
+	i = cvar_infokey (CVAR_C2);
+	if (i)
+	{
+		if (i == C2_UPDATE_BINDINGS)
+			console_aliases ();
+
+		else if (i == C2_SHOW_PLAYERS)
+			show_players ();
+
+		else if (i == C2_SHOW_SETTINGS)
+			show_settings ();
+
+		else if (i == C2_TOGGLE_RUNE_CHEAT)
+		{
+			// XXX Move this to its own function, for in-game use.
+			temp1 = cvar_infokey ("temp1");
+			if (temp1 & T1_RUNE_CHEAT)
+			{
+				temp1 = temp1 - temp1 & T1_RUNE_CHEAT;
+				dprint_force ("Rune cheat off\n");
+			}
+			else
+			{
+				temp1 = temp1 | T1_RUNE_CHEAT;
+				dprint_force ("Rune cheat on\n");
+			}
+			s = ftos (temp1);
+			cvar_set_infokey ("temp1", s);
+		}
+
+		else if (i == C2_LAST)
+			Client_Disconnect_Log ();
+
+		else if (i == C2_LEVELS)
+			levels ();
+
+		else if (i == C2_CUSTOM)
+			custom ();
+
+		else if (i == C2_COMMANDS)
+			commands ();
+
+		else if (i == C2_LEVEL_TIME)
+		{
+			dprint_force (parse_time (time));
+			dprint_force ("\n");
+		}
+
+		else if (i == C2_MODE_PRACTICE)
+			change_mode_to_practice ();
+
+		else if (i == C2_MODE_NORMAL)
+			change_mode_to_normal ();
+
+		// removed
+
+		else if (i == C2_QUADON)
+		{
+			if (NO_QUAD)
+			{
+				dprint_force ("Quad enabled\n");
+				setquad ();
+			}
+		}
+
+		else if (i == C2_QUADOFF)
+		{
+			if (!NO_QUAD)
+			{
+				dprint_force ("Quad disabled\n");
+				setquad ();
+			}
+		}
+
+		else if (i == C2_PENTON)
+		{
+			if (NO_PENT)
+			{
+				dprint_force ("Pentagram enabled\n");
+				setpent ();
+			}
+		}
+
+		else if (i == C2_PENTOFF)
+		{
+			if (!NO_PENT)
+			{
+				dprint_force ("Pentagram disabled\n");
+				setpent ();
+			}
+		}
+
+		else if (i == C2_RINGON)
+		{
+			if (NO_RING)
+			{
+				dprint_force ("Ring of shadows enabled\n");
+				setring ();
+			}
+		}
+
+		else if (i == C2_RINGOFF)
+		{
+			if (!NO_RING)
+			{
+				dprint_force ("Ring of shadows disabled\n");
+				setring ();
+			}
+		}
+
+		else if (i == C2_SUITON)
+		{
+			if (NO_SUIT)
+			{
+				dprint_force ("Environmental protection suit enabled\n");
+				setsuit ();
+			}
+		}
+
+		else if (i == C2_SUITOFF)
+		{
+			if (!NO_SUIT)
+			{
+				dprint_force ("Environmental protection suit disabled\n");
+				setsuit ();
+			}
+		}
+
+		else if (i == C2_ARMORON)
+		{
+			if (NO_ARMOR)
+			{
+				dprint_force ("Armor enabled\n");
+				setarmor ();
+			}
+		}
+
+		else if (i == C2_ARMOROFF)
+		{
+			if (!NO_ARMOR)
+			{
+				dprint_force ("Armor disabled\n");
+				setarmor ();
+			}
+		}
+
+		else if (i == C2_ROTATEON)
+		{
+			if (!ROTATE)
+			{
+				dprint_force ("Rotating armors enabled\n");
+				setrotate ();
+			}
+		}
+
+		else if (i == C2_ROTATEOFF)
+		{
+			if (ROTATE)
+			{
+				dprint_force ("Rotating armors disabled\n");
+				setrotate ();
+			}
+		}
+
+		else if (i == C2_RUNESON)
+		{
+			if (NO_RUNES)
+			{
+				dprint_force ("Runes enabled\n");
+				setrunes ();
+			}
+		}
+
+		else if (i == C2_RUNESOFF)
+		{
+			if (!NO_RUNES)
+			{
+				dprint_force ("Runes disabled\n");
+				setrunes ();
+			}
+		}
+
+		else if (i == C2_ALTSON)
+		{
+			if (deathmatch & DM_MODE_PRACTICE)
+				dprint_force ("Alternate weapons disabled in practice mode\n");
+			else if (NO_ALT_WEAPONS)
+			{
+				dprint_force ("Alternate weapons enabled\n");
+				setalts ();
+			}
+		}
+
+		else if (i == C2_ALTSOFF)
+		{
+			if (!NO_ALT_WEAPONS)
+			{
+				dprint_force ("Alternate weapons disabled\n");
+				setalts ();
+			}
+		}
+
+		else if (i == C2_SHIELDSON)
+		{
+			if (NO_SPAWN_SHIELDS)
+			{
+				dprint_force ("Spawn shields enabled\n");
+				setshields ();
+			}
+		}
+
+		else if (i == C2_SHIELDSOFF)
+		{
+			if (!NO_SPAWN_SHIELDS)
+			{
+				dprint_force ("Spawn shields disabled\n");
+				setshields ();
+			}
+		}
+
+		else if (i == C2_HOOKDAMAGEON)
+		{
+			if (NO_HOOK_DAMAGE)
+			{
+				dprint_force ("Hook damage enabled\n");
+				sethookdamage ();
+			}
+		}
+
+		else if (i == C2_HOOKDAMAGEOFF)
+		{
+			if (!NO_HOOK_DAMAGE)
+			{
+				dprint_force ("Hook damage disabled\n");
+				sethookdamage ();
+			}
+		}
+
+		else if (i == C2_MODE_ARENA)
+			change_mode_to_arena ();
+
+		else if (i == C2_CLIENT_PING_TIMES)
+			client_ping_times ();
+
+		else if (i == C2_MEGAON)
+		{
+			if (NO_MEGA)
+			{
+				dprint_force ("Mega-health boxes enabled\n");
+				setmega ();
+			}
+		}
+
+		else if (i == C2_MEGAOFF)
+		{
+			if (!NO_MEGA)
+			{
+				dprint_force ("Mega-health boxes disabled\n");
+				setmega ();
+			}
+		}
+
+		else if (i == C2_BAN_ADD)
+		{	IN_QW(return;)
+			s = cvar_string ("skill", 1);
+			v = ip_to_vec (s);
+			if (v == VEC_ORIGIN)
+				self_sprint (self, "invalid ip address\n");
+			else
+				ban_add (v);
+		}
+
+		else if (i == C2_BAN_REMOVE)
+		{	IN_QW(return;)
+			s = cvar_string ("skill", 1);
+			v = ip_to_vec (s);
+			if (v == VEC_ORIGIN)
+				self_sprint (self, "invalid ip address\n");
+			else
+				ban_remove (v);
+		}
+
+		else if (i == C2_BAN_LIST)
+		{	IN_QW(return;)
+			ban_list ();
+		}
+
+		else if (i == C2_CONPRINT)
+		{
+			scratch1 = cvar_infokey ("scratch1");
+			if (scratch1 & S1_BPRINT_TO_CONSOLE)
+			{
+				dprint ("conprint off\n");
+				scratch1 = scratch1 - scratch1 & S1_BPRINT_TO_CONSOLE;
+			}
+			else
+			{
+				dprint ("conprint on\n");
+				scratch1 = scratch1 | S1_BPRINT_TO_CONSOLE;
+			}
+
+			s = ftos (scratch1);
+			cvar_set_infokey ("scratch1", s);
+		}
+
+		else if (i == C2_EFFICIENCY)
+			sprint_efficiency ();
+
+		else if (i == C2_MODE_MATCH)
+			change_mode_to_match ();
+
+		else if (i == C2_DROPON)
+		{
+			if (deathmatch & DM_NO_DROP_ARMOR)
+			{
+				dprint_force ("Armor dropping enabled\n");
+				toggle_armor_drop ();
+			}
+		}
+
+		else if (i == C2_DROPOFF)
+		{
+			if (!deathmatch & DM_NO_DROP_ARMOR)
+			{
+				dprint_force ("Armor dropping disabled\n");
+				toggle_armor_drop ();
+			}
+		}
+
+		else if (i == C2_FASTSTARTON)
+		{
+			if (!FASTSTART)
+			{
+				dprint_force ("Fast match starts enabled\n");
+				setfaststart ();
+			}
+		}
+
+		else if (i == C2_FASTSTARTOFF)
+		{
+			if (FASTSTART)
+			{
+				dprint_force ("Fast match starts disabled\n");
+				setfaststart ();
+			}
+		}
+
+		else
+			dprint ("Unknown command\n");
+
+		cvar_set_infokey (CVAR_C2, "0");
+	}
+};
+
+//-------------------------------------------------------------------
+// HELP MENUS
+//-------------------------------------------------------------------
+
 void ()
 commands =
 {
@@ -587,7 +973,7 @@ help_match =
 	self_sprint (self, "\bready\b         commit to a team\n");
 	self_sprint (self, "\bnotready\b      uncommit yourself\n");
 	self_sprint (self, "\btimeset\b       change timelimit\n");
-	// self_sprint (self, "\block\b          prevent new players\n");
-	// self_sprint (self, "\bunlock\b        allow new teams\n");
+	self_sprint (self, "\block\b          prevent new players\n");
+	self_sprint (self, "\bunlock\b        allow new teams\n");
 	self_sprint (self, "\bobserver\b      leave match/go observer\n");
 };

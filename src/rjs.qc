@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.211 2006/07/09 00:06:25 slotzero Exp $
+/*  $Id: rjs.qc,v 1.212 2006/07/16 00:29:00 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -3058,4 +3058,14 @@ maybe_update_trap_count =
 		}
 	}
 	return FALSE;
+};
+
+void ()
+update_client_pings =
+{
+	if (UPDATE_CLIENT_PINGS < time)
+	{
+		UPDATE_CLIENT_PINGS = time + 1;
+		pqc_ping_times ();
+	}
 };

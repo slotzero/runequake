@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.63 2005/11/12 21:06:51 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.64 2006/07/16 00:29:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -1355,6 +1355,51 @@ Rune_SpawnAll =
 		} while (!Rune_Type_Allowed (type));
 		Rune_Spawn (temp.origin, 500, 500, 500, type, world, world);
 		counter = counter + 1;
+	}
+};
+
+void ()
+spawn_runes =
+{
+	local float i;
+
+	//RUNE SERV: Adding some more runes till too much.
+	if (runespawntime < time)
+	{
+		runespawntime = time + 1 + random ()*15;
+
+		if (runecurrent < runemax)
+		{
+			if (temp1 & T1_FAST_RUNE_SPAWN)
+				Rune_SpawnAll (runemax - runecurrent);
+			else
+				Rune_SpawnAll (1);
+		}
+
+		if (temp1 & T1_HOOK_MASK == T1_LITHIUM_HOOK)
+		{
+			i = count_players (0);
+			i = ceil (i / 3);
+			if (current_hooks < i)
+			{
+				if (!temp1 & T1_FAST_RUNE_SPAWN)
+					i = current_hooks + 1;
+				while (current_hooks < i)
+					spawn_lithium_hook ();
+			}
+		}
+
+		// See the comment in Rune_Move() for why this is done.
+		i = count_classname ("rune");
+		if (i != runecurrent)
+		{
+			dprint ("runecurrent bug, ");
+			dprint_float (runecurrent);
+			dprint (" -> ");
+			dprint_float (i);
+			dprint ("\n");
+			runecurrent = i;
+		}
 	}
 };
 
