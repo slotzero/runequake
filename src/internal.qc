@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.35 2005/10/06 21:06:33 slotzero Exp $
+/*  $Id: internal.qc,v 1.36 2006/07/16 01:46:08 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -434,16 +434,10 @@ entity lasth, currh;
 
 // Create some storage space for hunk names.
 // NOTE: the two string constants *must* be different or only one of them
-// will be allocated with the /Od option is used.
+// will be allocated when the /Od option is used.
 //
 string hunkname = "00000000";
 string prevname = "00000001";
-
-void ()
-InitSearchHunk =
-{
-	lasth = currh = *AddInt(&progs, %-16);
-};
 
 void (float h)
 GetHunkName =
@@ -522,30 +516,62 @@ SearchHunk =
 				lasth = *AddInt(&currh, 4 * i);
 
 				if (hname == "iplog")
-					HUNK_IPLOG = SubInt (4 * i, framecount * %131072);
+					HUNK_IPLOG = SubInt (4 * i, self.count * %131072);
 				else if (hname == "context")
 				{
-					HUNK_CONTEXT = SubInt (4 * i, framecount * %131072);
+					HUNK_CONTEXT = SubInt (4 * i, self.count * %131072);
 					Hunk_Settings ();
 				}
 				else if (hname == "zone")
 				{
-					HUNK_ZONE = SubInt (4 * i, framecount * %131072);
+					HUNK_ZONE = SubInt (4 * i, self.count * %131072);
 					PrintHunk(&lasth);
 					dprint("Found start of hunk in ");
-					dprint(ftos(framecount), " frames\n");
+					dprint(ftos(self.count), " frames\n");
 					lasth = *0;
-
-					// console bindings
-					if (server_time () < 10)
-						console_aliases ();
-
-					if (mode_match ())
-						match_hunk_init ();
-
 					return;
 				}
 			}
 		}
 	}
+};
+
+void ()
+SearchHunkThink =
+{
+	self.count = self.count + 1;
+
+	if (lasth)
+		SearchHunk();
+	else
+	{
+		lasth = self;
+		self = world;
+
+		// console bindings
+		if (server_time () < 10)
+			console_aliases ();
+
+		// initialize match mode
+		if (mode_match ())
+			match_hunk_init ();
+
+		remove (lasth);
+		return;
+	}
+
+	self.nextthink = time;
+};
+
+void ()
+InitSearchHunk =
+{
+	local entity e;
+
+	lasth = currh = *AddInt(&progs, %-16);
+
+	e		= spawn ();
+	e.count		= 0;
+	e.think		= SearchHunkThink;
+	e.nextthink	= time;
 };

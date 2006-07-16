@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.82 2006/07/16 00:29:00 slotzero Exp $
+/*  $Id: world.qc,v 1.83 2006/07/16 01:46:08 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -48,43 +48,15 @@ worldspawn =
 	InitSearchHunk();
 };
 
-float teamplay_set_state;
-float initial_obs_process_game_queue;
-
 void ()
 StartFrame =
 {
 	check_teamplay ();
-
-	if (time > LEVEL_RECONNECT_ALLOWANCE && !initial_obs_process_game_queue)
-	{
-		initial_obs_process_game_queue = 1;
-		obs_process_game_queue ();
-	}
-
 	check_console_command ();
-
-	IN_QW([-
-		deathmatch = cvar ("deathmatch");
-
-		if (!cvar_infokey ("console_bindings"))
-		{
-			if (time > 3)
-			{
-				console_aliases ();
-				cvar_set_infokey ("console_bindings", "1");
-			}
-		}
-	-])
-
-	framecount = framecount + 1;
-
-	if (lasth)
-		SearchHunk();
-
 	CheckRules ();
 	spawn_runes ();
 	update_client_pings ();
+	IN_QW(update_deathmatch ();)
 };
 
 /*

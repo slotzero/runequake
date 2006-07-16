@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.67 2006/07/16 00:29:00 slotzero Exp $
+/*  $Id: team.qc,v 1.68 2006/07/16 01:46:08 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -463,6 +463,9 @@ change_teamplay =
 // cvar).  After that I treat it naturally, doing the
 // change_teamplay() whenever it changes.
 
+float teamplay_set_state;
+float initial_obs_process_game_queue;
+
 void ()
 check_teamplay =
 {
@@ -478,6 +481,15 @@ check_teamplay =
 	{
 		teamplay_set_state = 1;
 		change_teamplay (i, 0);
+	}
+
+	if (!initial_obs_process_game_queue)
+	{
+		if (time > LEVEL_RECONNECT_ALLOWANCE)
+		{
+			initial_obs_process_game_queue = 1;
+			obs_process_game_queue ();
+		}
 	}
 };
 

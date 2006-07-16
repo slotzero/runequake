@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.42 2006/07/08 20:34:42 slotzero Exp $
+/*  $Id: engine.qc,v 1.43 2006/07/16 01:46:08 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -48,6 +48,21 @@ void (entity client, string s, string s2, string s3, string s4) self_sprint4 = {
 void (entity client, string s, string s2, string s3, string s4, string s5) self_sprint5 = { xself_sprint (client, PRINT_HIGH, s, s2, s3, s4, s5); };
 void (entity client, string s, string s2, string s3, string s4, string s5, string s6) self_sprint6 = { xself_sprint (client, PRINT_HIGH, s, s2, s3, s4, s5, s6); };
 void (entity client, string s, string s2, string s3, string s4, string s5, string s6, string s7) self_sprint7 = { xself_sprint (client, PRINT_HIGH, s, s2, s3, s4, s5, s6); };
+
+void ()
+update_deathmatch =
+{
+	deathmatch = cvar ("deathmatch");
+
+	if (!cvar_infokey ("console_bindings"))
+	{
+		if (time > 3)
+		{
+			console_aliases ();
+			cvar_set_infokey ("console_bindings", "1");
+		}
+	}
+};
 -])
 
 void (float type, entity e, vector o1, vector o2)
