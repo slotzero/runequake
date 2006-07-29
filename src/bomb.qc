@@ -1,4 +1,4 @@
-/*  $Id: bomb.qc,v 1.13 2006/07/06 06:03:41 slotzero Exp $
+/*  $Id: bomb.qc,v 1.14 2006/07/29 23:25:57 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -204,15 +204,17 @@ Gas_Cloud_Damage =
 	{
 		if (head.health > 0)
 		{
-			if (!(CanDamage (head, self)))
-				head_dmg = damage * 0.25;
-
 			if (head.classname == "player")
 			{
+				if (CanDamage (head, self))
+					head_dmg = damage;
+				else
+					head_dmg = damage * 0.25;
+
 				if (environmental (head))
 					head_dmg = 0;
 				else if (head == self.owner)
-						head_dmg = damage * 0.5;
+					head_dmg = head_dmg * 0.5;
 			}
 			else if (is_pet_e (head))
 				head_dmg = damage * 0.5;
