@@ -1,4 +1,4 @@
-/*  $Id: map.qc,v 1.18 2006/06/25 00:39:14 slotzero Exp $
+/*  $Id: map.qc,v 1.19 2006/08/06 20:40:08 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -176,7 +176,7 @@ pick_map_size =
 	// Breakdown by player ranges of chance for small/medium/large level:
 	//   1-3  85/15/0
 	//   4-7  10/80/10
-	//   8+    5/30/65
+	//   8+   10/40/50
 	i = ceil (random () * 100);
 	if (players <= 3)
 	{
@@ -195,8 +195,8 @@ pick_map_size =
 	else
 	{
 		if (LEVSIZE_NON_RANDOM)	{ levsize = 3; }
-		else if (i <= 5)	{ levsize = 1; }
-		else if (i <= 30)	{ levsize = 2; }
+		else if (i <= 10)	{ levsize = 1; }
+		else if (i <= 50)	{ levsize = 2; }
 		else			{ levsize = 3; }
 	}
 
