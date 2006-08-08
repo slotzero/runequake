@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.132 2006/07/16 00:29:00 slotzero Exp $
+/*  $Id: client.qc,v 1.133 2006/08/08 21:44:23 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1950,7 +1950,7 @@ ClientConnect =
 	self.netconnection = *AddInt(self.cl[CL_NETCONNECTION], PC_TO_PQUAKEC);
 	client_ip ();
 
-	if (HUNK_CONTEXT)
+	if (*HUNK_CONTEXT)
 	{
 		if (ban_check (self.subnet) >= 0)
 		{

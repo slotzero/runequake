@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.44 2006/07/14 04:26:26 slotzero Exp $
+/*  $Id: match.qc,v 1.45 2006/08/08 21:44:23 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -47,7 +47,7 @@ match_client_init =
 {
 	local float i, c, pants, colors;
 
-	if (!HUNK_CONTEXT)
+	if (!*HUNK_CONTEXT)
 		return;
 
 	for (i = %1; i <= %16; i = i + %1)
@@ -802,7 +802,7 @@ remove_team =
 {
 	local float bit;
 
-	if (!HUNK_CONTEXT)
+	if (!*HUNK_CONTEXT)
 		return;
 
 	if (!TEAMS_PRESENT)

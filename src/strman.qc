@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.39 2006/07/07 03:59:37 slotzero Exp $
+/*  $Id: strman.qc,v 1.40 2006/08/08 21:44:23 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -112,6 +112,11 @@ allocate_string_size =
 
 	allocate_hunk (bytes);
 	array = Get_Hunk (HUNK_CONTEXT, ALLOCATE_HUNK);
+	if (!array)
+	{
+		dprint ("allocate_string_size(): array is null\n");
+		return STRING_256; // prevent data corruption
+	}
 	p	= AddInt (&"    \{0}   ", PSTRING_TO_PQUAKEC);
 
 	dword	= floor (bytes / 4) * %1;
