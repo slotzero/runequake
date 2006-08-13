@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.43 2006/08/13 05:17:02 slotzero Exp $
+/*  $Id: strman.qc,v 1.44 2006/08/13 07:22:16 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -331,6 +331,7 @@ flen =
 	else if (slen < max)
 	{
 		i = max - slen;
+		space = allocate_string_size (max);
 		space = substr (space, 0, i);
 		if (side)
 			return strcat (s, space);
