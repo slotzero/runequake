@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.42 2006/07/11 23:44:12 slotzero Exp $
+/*  $Id: hunked.qc,v 1.43 2006/08/13 05:20:29 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -290,7 +290,7 @@ ip_to_vec =
 	local string octet = "abc";
 
 	v	= '-1 -1 -1';
-	px	= AddInt(&"\{0}  ", PSTRING_TO_PQUAKEC);
+	px	= AddInt(&"\{0}   ", PSTRING_TO_PQUAKEC);
 	pch	= AddInt(AddInt(&ip, PSTRING_TO_PQUAKEC), %-4);
 	&%116	= 0;
 
