@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.68 2006/07/16 01:46:08 slotzero Exp $
+/*  $Id: team.qc,v 1.69 2006/08/13 01:28:58 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -381,10 +381,7 @@ change_teamplay =
 	{
 		if (HUNK_CONTEXT_MAX)
 		{
-			poq = allocate_string_size (32);
-
-			s = ftos (new_teamplay);
-			strcpy (poq, s);
+			poq = ftos (new_teamplay);
 			if (FORWARD_MAX_PLAYERS_REAL < 0)
 				poq = strcat (poq, " [forward server]");
 			else
