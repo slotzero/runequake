@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.40 2006/08/08 21:44:23 slotzero Exp $
+/*  $Id: strman.qc,v 1.41 2006/08/13 03:54:29 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -106,7 +106,7 @@ allocate_string_size =
 
 	if (bytes < 1 || bytes > 255)
 	{
-		dprint ("allocate_string_size(): bytes < 1 or bytes > 255\n");
+		dprint_force ("allocate_string_size(): bytes < 1 or bytes > 255\n");
 		return string_null;
 	}
 
@@ -114,15 +114,14 @@ allocate_string_size =
 	array = Get_Hunk (HUNK_CONTEXT, ALLOCATE_HUNK);
 	if (!array)
 	{
-		dprint ("allocate_string_size(): array is null\n");
-		return STRING_256; // prevent data corruption
+		dprint_force ("allocate_string_size(): array is null\n");
+		return string_null;
 	}
-	p	= AddInt (&"    \{0}   ", PSTRING_TO_PQUAKEC);
 
-	dword	= floor (bytes / 4) * %1;
-
-	//while (bytes > 3)
-	//	bytes = bytes - 4;
+	p = AddInt (&"    ":"   ", PSTRING_TO_PQUAKEC);
+	dword = floor (bytes / 4) * %1;
+	for (i = %0; i < dword; i = i + %1)
+		array[i] = (*p)[%0];
 
 	if (bytes > 3)
 	{
@@ -138,9 +137,6 @@ allocate_string_size =
 		else
 			bytes = 0;
 	}
-
-	for (i = %0; i < dword; i = i + %1)
-		array[i] = (*p)[%0];
 
  	if (bytes)
 	{
