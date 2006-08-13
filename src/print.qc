@@ -1,4 +1,4 @@
-/*  $Id: print.qc,v 1.16 2004/05/23 01:12:14 slotzero Exp $
+/*  $Id: print.qc,v 1.17 2006/08/13 03:19:00 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -595,28 +595,28 @@ self_sprint_bitfield =
 void (entity e, string s, float len)
 self_sprintf_len =
 {
-	local float i, left_j;
-	local string space = "                              ";	// 30
+	local float i, left;
+	local string space = "                                "; // 32 bytes storage
 
 	if (len < 0)
 	{
-		left_j = 1;
+		left = 1;
 		len = fabs (len);
 	}
 
 	i = strlen (s);
 
-	// Shortening s isn't support yet, so prevent it from happening.
-	//if (i > len)
-	//	return i;	// XXX FIX ME!
+	// Size of 'len' can't be larger than 's' plus 'space'.
+	if (len > (i + 32))
+		return self_sprint (e, s);
 
-	len = (30 - (len - i)) * %1;
+	// Size of 's' can't be larger than 'len'.
+	if (i > len)
+		return self_sprint (e, s);
 
-	// Make sure len doesn't exceed the s array.
-	//if (fabs (len) > i)
-	//	return i;
+	len = (32 - (len - i)) * %1;
 
-	if (left_j)
+	if (left)
 	{
 		self_sprint (e, s);
 		self_sprint (e, space[len]);
