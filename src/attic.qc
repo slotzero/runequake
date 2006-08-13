@@ -1,4 +1,4 @@
-/*  $Id: attic.qc,v 1.16 2006/07/05 21:16:33 slotzero Exp $
+/*  $Id: attic.qc,v 1.17 2006/08/13 05:17:02 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -656,4 +656,126 @@ strlen_any =
 	dprint ("strlen_any(): string too big\n");
 
 	return 0;
+};
+
+float (string ch)
+dec_ctof =
+{
+	local float i;
+
+	for (i = %0; i < %10; i = i + %1)
+	{
+		if (ch == hex[i * 2])
+			return i / %1;
+	}
+
+	return -1;
+};
+
+float (float n)
+atof =
+{
+	local float i, asc;
+
+	i = 0;
+	for (asc = 48; asc < 58; asc = asc + 1)
+	{
+		if (n == asc)
+			return i;
+
+		i = i + 1;
+	}
+
+	return -1;
+};
+
+float (float n)
+eval_exponent =
+{
+	local float i;
+
+	for (i = 1; n > 1; n = n - 1)
+		i = i * 10;
+
+	return i;
+};
+
+float (string s)
+stof_any =
+{
+	local float n, ps, cmp, frac, tot, neg;
+	local string ch, clean;
+
+	&%116 = 0;
+	ps = AddInt(AddInt(&s, PSTRING_TO_PQUAKEC), %-3);
+
+	cmp = strlen (s);
+	for (n = 0; n < cmp; n = n + 1)
+	{
+		&%113 = (*ps)[0];
+
+		if (world[%5] == '-' && !tot)
+			neg = 1;
+		else if (world[%5] == '.')
+		{
+			if (!tot)
+				frac = -1;
+			else
+				frac = tot;
+		}
+
+		ch = atoc (world[%5] / %1);
+		if (ch)
+		{
+			clean = strcat (clean, ch);
+			tot = tot + 1;
+		}
+
+		ps = AddInt (ps, %1);
+	}
+	ps = AddInt (ps, %3);
+
+	if (frac)
+	{
+		if (frac < 0)
+			frac = 0;
+
+		frac = tot - frac;
+		frac = eval_exponent (frac + 1);
+	}
+
+	n = stof (clean);
+
+	if (frac)
+		n = n / frac;
+
+	if (neg)
+		n = n - n * 2;
+
+	return n;
+};
+
+float (string s)
+stof =
+{
+	local float f, i, ps, cmp, sum;
+
+	&%116 = 0;
+	ps = AddInt(AddInt(&s, PSTRING_TO_PQUAKEC), %-3);
+
+	cmp = strlen (s);
+	for (i = 0; i < cmp; i = i + 1)
+	{
+		&%113 = (*ps)[0];
+
+		f = atof (world[%5] / %1);
+		if (f < 0) return 0;
+		f = f * (eval_exponent (cmp - i));
+		sum = sum + f;
+
+		ps = AddInt (ps, %1);
+	}
+	ps = AddInt (ps, %3);
+
+	return sum;
 };
