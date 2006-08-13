@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.64 2006/07/12 03:46:49 slotzero Exp $
+/*  $Id: vote.qc,v 1.65 2006/08/13 01:46:26 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -295,7 +295,6 @@ vote_think =
 	{
 		IN_POQ([-
 			// poq
-			s = allocate_string_size (64);
 			s = "\{1}Request to ";
 			if (self.noise1)
 				s = strcat (s, self.noise1);
