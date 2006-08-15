@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.134 2006/08/13 05:20:29 slotzero Exp $
+/*  $Id: client.qc,v 1.135 2006/08/15 03:21:08 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1897,7 +1897,7 @@ client_ip =
 	self.address = @AddInt (&new, %32);
 	strcpy (self.address, new);
 
-	px = AddInt(&"\{0}   ", PSTRING_TO_PQUAKEC);
+	px = AddInt(&"\{0}  ", PSTRING_TO_PQUAKEC);
 	pch = AddInt(AddInt(&self.address, PSTRING_TO_PQUAKEC), %-4);
 
 	&%116 = 0;

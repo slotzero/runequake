@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.44 2006/08/13 07:22:16 slotzero Exp $
+/*  $Id: strman.qc,v 1.45 2006/08/15 03:21:08 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -118,7 +118,7 @@ allocate_string_size =
 		return string_null;
 	}
 
-	p = AddInt (&"    ":"   ", PSTRING_TO_PQUAKEC);
+	p = AddInt (&"    ":"  ", PSTRING_TO_PQUAKEC);
 	dword = floor (bytes / 4) * %1;
 	for (i = %0; i < dword; i = i + %1)
 		array[i] = (*p)[%0];
