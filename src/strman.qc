@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.47 2006/08/15 23:19:00 slotzero Exp $
+/*  $Id: strman.qc,v 1.48 2006/08/15 23:37:33 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -312,7 +312,7 @@ substr_replace =
 string (string s, float max)
 flen =
 {
-	local float i, slen, side;
+	local float slen, side;
 	local string space;
 
 	if (max < 0)
@@ -334,9 +334,8 @@ flen =
 	}
 	else if	(slen > max)
 	{
-		i = slen - max;
 		if (side)
-			return substr (s, i, 0);
+			return substr (s, (slen - max), max);
 		else
 			return substr (s, 0, max);
 	}
