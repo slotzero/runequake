@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.46 2006/08/15 22:54:11 slotzero Exp $
+/*  $Id: strman.qc,v 1.47 2006/08/15 23:19:00 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -195,10 +195,10 @@ strcat =
 //  S U B S T R
 //
 //  Extracts a substring out of 'expr'.  The substring is extracted starting
-//  at 'offset' characters from the front of the string.  If 'length' is zero
-//  or greater than the remaining length of 'expr', everything to the end of
-//  the string is returned.
-//
+//  at 'offset' characters from the front of the string.  If 'length' is greater
+//  than the remaining length of 'expr', everything to the end of the string is
+//  returned.
+
 string (string expr, float offset, float length)
 substr =
 {
@@ -206,20 +206,21 @@ substr =
 	local float i;
 	local string s;
 
-	if (!length)
+	if (offset < 0)
 		return string_null;
-	else if (offset < 0)
-		offset = fabs (offset);
+
+	if (length <= 0)
+		return string_null;
 
 	i = strlen (expr);
 	if (!i)
 	{
-		dprint ("substr(): expr < 1 or expr > 255\n");
+		dprint ("substr(): string too big\n");
 		return string_null;
 	}
 
 	if (offset > i)
-		return expr;
+		return string_null;
 
 	allocate_hunk (i);
 	hunk = Get_Hunk (HUNK_CONTEXT, ALLOCATE_HUNK);
@@ -227,15 +228,10 @@ substr =
 		return string_null;
 
 	Write_Hunk_String_e (hunk, expr);
-
 	hunk = *AddInt (&hunk, offset * %1);
 	s = Read_Hunk_String_e (hunk);
 
-	if (length < 0)
-		length = fabs (length);
-
-	i = i - offset;
-	if (length >= i)
+	if (length >= (i - offset))
 		return s;
 
  	hunk = *AddInt (&hunk, length * %1);
