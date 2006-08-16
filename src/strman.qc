@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.48 2006/08/15 23:37:33 slotzero Exp $
+/*  $Id: strman.qc,v 1.49 2006/08/16 03:08:46 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -215,7 +215,8 @@ substr =
 	i = strlen (expr);
 	if (!i)
 	{
-		dprint ("substr(): string too big\n");
+		if (expr)
+			dprint ("substr(): string too big\n");
 		return string_null;
 	}
 
@@ -254,14 +255,29 @@ substr_replace =
 	local float L1, L2, alloc_hunk;
 	local string s;
 
+	if (offset < 0)
+		return string_null;
+
+	if (length < 0)
+		return string_null;
+
 	L1 = strlen (expr);
 	if (!L1)
 	{
-		dprint ("substr_replace(): expr < 1 or expr > 255\n");
+		if (expr)
+			dprint ("substr_replace(expr): string too big\n");
 		return string_null;
 	}
 
-	L2 = strlen (replace);
+	if (replace)
+	{
+		L2 = strlen (replace);
+		if (!L2)
+		{
+			dprint ("substr_replace(replace): string too big\n");
+			return string_null;
+		}
+	}
 
 	allocate_hunk (L1 + L2);
 	alloc_hunk = ALLOCATE_HUNK;
@@ -273,8 +289,6 @@ substr_replace =
 
 	if (offset)
 	{
-		if (offset < 0)
-			offset = fabs (offset);
 		if (offset > L1)
 			offset = L1;
 		hunk = *AddInt (&hunk, offset * %1);
@@ -286,18 +300,10 @@ substr_replace =
 		hunk = *AddInt (L2 * %1, &hunk);
 	}
 
-	if (length)
-	{
-		if (length < 0)
-			length = fabs (length);
-		if (length > L1)
-			length = L1;
-	}
-
-	if (offset + length <= L1)
+	if (offset + length < L1)
 		L1 = offset + length;
 
- 	s = @AddInt (AddInt (AddInt (&expr, PSTRING_TO_PQUAKEC), L1 * %1), PQUAKEC_TO_PSTRING);
+	s = @AddInt (AddInt (AddInt (&expr, PSTRING_TO_PQUAKEC), L1 * %1), PQUAKEC_TO_PSTRING);
 	Write_Hunk_String_e (hunk, s);
 
 	return Read_Hunk_String (HUNK_CONTEXT, alloc_hunk);
