@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.135 2006/08/15 03:21:08 slotzero Exp $
+/*  $Id: client.qc,v 1.136 2006/08/17 23:18:36 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1258,20 +1258,21 @@ WaterMove =
 {
 	if (self.movetype == MOVETYPE_NOCLIP)
 		return;
+
 	if (self.health <= 0)
 		return;
 
-	if (self.waterlevel > 0)
+	if (self.waterlevel)
 	{
-		if (!(self.flags & FL_INWATER))
+		// Player enters liquid.
+		if (!self.flags & FL_INWATER)
 		{
-			// player enters water sound
-			if (self.watertype == CONTENT_LAVA)
-				sound (self, CHAN_BODY, "player/inlava.wav", 1, ATTN_NORM);
 			if (self.watertype == CONTENT_WATER)
 				sound (self, CHAN_BODY, "player/inh2o.wav", 1, ATTN_NORM);
-			if (self.watertype == CONTENT_SLIME)
+			else if (self.watertype == CONTENT_SLIME)
 				sound (self, CHAN_BODY, "player/slimbrn2.wav", 1, ATTN_NORM);
+			else if (self.watertype == CONTENT_LAVA)
+				sound (self, CHAN_BODY, "player/inlava.wav", 1, ATTN_NORM);
 
 			self.flags = self.flags + FL_INWATER;
 			self.dmgtime = 0;
@@ -1305,7 +1306,7 @@ WaterMove =
 				&& self.radsuit_finished < time)
 		{
 			self.dmgtime = time + 0.5;
-			T_Damage (self, world, world, 4*self.waterlevel, "waterdouse");
+			T_Damage (self, world, world, 4 * self.waterlevel, "waterdouse");
 		}
 
 		if (self.watertype == CONTENT_LAVA)
@@ -1331,9 +1332,9 @@ WaterMove =
 	}
 	else
 	{
+		// Player exits liquid.
 		if (self.flags & FL_INWATER)
 		{
-			// play leave water sound
 			sound (self, CHAN_BODY, "misc/outwater.wav", 1, ATTN_NORM);
 			self.flags = self.flags - FL_INWATER;
 		}
@@ -1372,9 +1373,10 @@ WaterMove =
 			}
 		}
 	}
+
 	IN_POQ([-
-		if (!(self.flags & FL_WATERJUMP))
-			self.velocity = self.velocity - 0.8*self.waterlevel*frametime*self.velocity;
+		if (!self.flags & FL_WATERJUMP)
+			self.velocity = self.velocity - 0.8 * self.waterlevel * frametime * self.velocity;
 	-])
 };
 
