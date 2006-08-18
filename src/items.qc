@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.66 2006/07/14 05:58:21 slotzero Exp $
+/*  $Id: items.qc,v 1.67 2006/08/18 07:50:05 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -594,6 +594,12 @@ void ()
 drop_armor =
 {
 	local entity item;
+
+	if (deathmatch & DM_NO_DROP_ARMOR)
+		return;
+
+	if (self.armorvalue <= 0)
+		return;
 
 	item		= spawn ();
 	item.runevar	= 1;
@@ -1566,6 +1572,12 @@ BackpackTouch =
 			return;
 	}
 
+	if (mode_arena ())
+	{
+		if (arena.state == -1)
+		return;
+	}
+
 	if (other.health <= 0)
 		return;
 
@@ -1661,23 +1673,20 @@ DropBackpack =
 {
 	local entity item;
 
+	if (NO_BACKPACKS)
+		return;
+
 	if (mode_match ())
 	{
 		if (!match.state)
 			return;
 	}
 
-	if (mode_arena ())
+	if (deathmatch & DM_MODE_PRACTICE)
 		return;
-
-	if (!deathmatch & DM_NO_DROP_ARMOR && self.armorvalue > 0)
-		drop_armor ();
 
 	if (!(self.ammo_shells + self.ammo_nails + self.ammo_rockets + self.ammo_cells))
 		return;	// nothing in it
-
-	if (deathmatch & DM_MODE_PRACTICE)
-		return;
 
 	item		= spawn ();
 	item.classname	= "backpack";

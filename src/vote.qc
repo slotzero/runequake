@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.65 2006/08/13 01:46:26 slotzero Exp $
+/*  $Id: vote.qc,v 1.66 2006/08/18 07:50:05 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -47,7 +47,7 @@ vote_impulse_commands =
 		else
 			count_votes (2);
 	}
-	else if (self.impulse >= 1 && self.impulse <= 26)
+	else if (self.impulse >= 1 && self.impulse <= 27)
 		vote ();
 
 	impulse_override_cancel ();
@@ -829,6 +829,18 @@ vote =
 				self_sprint (self, "Match is already locked\n");
 			cancel = 1;
 		}
+	}
+	else if (self.impulse == IMP_VOTE_BACKPACKS)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= setbackpacks;
+		e.noise2	= " backpacks ";
+
+		if (NO_BACKPACKS)
+			e.noise1	= "enable";
+		else
+			e.noise1	= "disable";
 	}
 	else
 		cancel = -1;

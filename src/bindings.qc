@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.89 2006/07/16 00:29:00 slotzero Exp $
+/*  $Id: bindings.qc,v 1.90 2006/08/18 07:50:05 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -324,6 +324,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-arena",		IMP_VOTE_ARENA);
 	player_vote_impulse_alias ("vote-armor",		IMP_VOTE_ARMOR);
 	player_vote_impulse_alias ("vote-armor-drop",		IMP_VOTE_ARMOR_DROP);
+	player_vote_impulse_alias ("vote-backpacks",		IMP_VOTE_BACKPACKS);
 	player_vote_impulse_alias ("vote-exit",			IMP_VOTE_EXIT);
 	player_vote_impulse_alias ("vote-free",			IMP_VOTE_FREE);
 	player_vote_impulse_alias ("vote-hook",			IMP_VOTE_HOOK);
@@ -445,6 +446,8 @@ console_aliases =
 	console_init_cvar_alias ("dropoff",		CVAR_C2,	C2_DROPOFF);
 	console_init_cvar_alias ("faststarton",		CVAR_C2,	C2_FASTSTARTON);
 	console_init_cvar_alias ("faststartoff",	CVAR_C2,	C2_FASTSTARTOFF);
+	console_init_cvar_alias ("backpackson",		CVAR_C2,	C2_BACKPACKSON);
+	console_init_cvar_alias ("backpacksoff",	CVAR_C2,	C2_BACKPACKSOFF);
 
 	level_aliases ();
 	custom_aliases ();
@@ -824,6 +827,23 @@ check_console_command =
 			{
 				dprint_force ("Fast match starts disabled\n");
 				setfaststart ();
+			}
+		}
+		else if (i == C2_BACKPACKSON)
+		{
+			if (NO_BACKPACKS)
+			{
+				dprint_force ("Backpack dropping enabled\n");
+				setbackpacks ();
+			}
+		}
+
+		else if (i == C2_BACKPACKSOFF)
+		{
+			if (!NO_BACKPACKS)
+			{
+				dprint_force ("Backpack dropping disabled\n");
+				setbackpacks ();
 			}
 		}
 

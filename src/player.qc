@@ -1,4 +1,4 @@
-/*  $Id: player.qc,v 1.20 2006/05/12 03:29:01 slotzero Exp $
+/*  $Id: player.qc,v 1.21 2006/08/18 07:50:05 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -593,7 +593,10 @@ PlayerDie =
 	self.modelindex			= modelindex_player;	// don't use eyes
 
 	if ((deathmatch & DM_DM_MASK || coop) && self.runetype != RN_PHOENIX)
+	{
 		DropBackpack ();
+		drop_armor ();
+	}
 
 	self.weaponmodel		= string_null;
 	self.view_ofs			= '0 0 -8';

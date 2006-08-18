@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.44 2006/08/15 03:21:08 slotzero Exp $
+/*  $Id: hunked.qc,v 1.45 2006/08/18 07:50:05 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -39,6 +39,7 @@ float HUNK_NO_SPAWN_SHIELDS	= %1016;
 float HUNK_NO_HOOK_DAMAGE	= %1017;
 float HUNK_NO_MEGA		= %1019;
 float HUNK_FASTSTART		= %1024;
+float HUNK_NO_BACKPACKS		= %1027;
 
 float ()
 server_time =
@@ -468,6 +469,7 @@ Hunk_Settings =
 	NO_HOOK_DAMAGE		= fget (HUNK_NO_HOOK_DAMAGE,	0);
 	NO_MEGA			= fget (HUNK_NO_MEGA,		0);
 	FASTSTART		= fget (HUNK_FASTSTART,		0);
+	NO_BACKPACKS		= fget (HUNK_NO_BACKPACKS,	0);
 
 	set_runemax ();
 };

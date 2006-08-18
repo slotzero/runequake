@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.24 2006/07/12 03:46:49 slotzero Exp $
+/*  $Id: toggle.qc,v 1.25 2006/08/18 07:50:05 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -297,4 +297,12 @@ void ()
 setmatchlock =
 {
 	MATCHLOCK = !MATCHLOCK;
+};
+
+void ()
+setbackpacks =
+{
+	NO_BACKPACKS = fput (HUNK_NO_BACKPACKS, !NO_BACKPACKS);
+	if (NO_BACKPACKS)
+		remove_classname ("backpack");
 };

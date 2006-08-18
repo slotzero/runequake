@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.69 2006/08/13 01:28:58 slotzero Exp $
+/*  $Id: team.qc,v 1.70 2006/08/18 07:50:05 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1042,6 +1042,10 @@ match_defaults =
 	// spawn shields off
 	if (!NO_SPAWN_SHIELDS)
 		setshields ();
+
+	// drop backpacks on
+	if (NO_BACKPACKS)
+		setbackpacks ();
 };
 
 void ()
@@ -1107,6 +1111,9 @@ arena_defaults =
 	if (!NO_SPAWN_SHIELDS)
 		setshields ();
 
+	// drop backpacks off
+	if (!NO_BACKPACKS)
+		setbackpacks ();
 };
 
 void ()
@@ -1171,6 +1178,10 @@ practice_defaults =
 	// spawn shields off
 	if (!NO_SPAWN_SHIELDS)
 		setshields ();
+
+	// drop backpacks off
+	if (!NO_BACKPACKS)
+		setbackpacks ();
 };
 
 void ()
@@ -1235,4 +1246,8 @@ normal_defaults =
 	// spawn shields on
 	if (NO_SPAWN_SHIELDS)
 		setshields ();
+
+	// drop backpacks on
+	if (NO_BACKPACKS)
+		setbackpacks ();
 };
