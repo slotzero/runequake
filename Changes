@@ -1,4 +1,27 @@
-$Id: Changes,v 1.85 2006/07/02 21:49:50 slotzero Exp $
+$Id: Changes,v 1.86 2006/08/20 06:58:15 slotzero Exp $
+
+Version 1.3  Sun Aug 20 02:14:32 EST 2006
+
+    - Bug Fixes
+
+        - The /O2 command line option is no longer required to compile.
+
+        - The gas grenade wouldn't hurt your opponent when the gas and the
+          player was in the same room.  [fixed]
+
+        - Added extra spawn spots for rocket arena maps with only one spawn.
+
+    - Changes
+
+        - Added new commands: faststart, lock, vote-backpacks.
+
+        - Server aim is disabled regardless of what sv_aim is set at.
+
+        - The letters AFK are appended to your name in +showscores and GLQuake HUD
+          when you are idle for more than 5 minutes.
+
+        - Let players who disconnect during a match rejoin the game by pressing 2
+          or typing 'ready'.
 
 Version 1.2  Sun Jul 02 17:15:27 EST 2006
 
