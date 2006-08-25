@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.67 2006/07/14 04:26:26 slotzero Exp $
+/*  $Id: observer.qc,v 1.68 2006/08/25 07:23:59 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -502,8 +502,7 @@ obs_post_think =
 				self.armorvalue = self.owner.armorvalue;
 		}
 
-		if ((self.runetime > 0 && time > self.runetime)
-				|| self.runetime == -2)
+		if ((self.runetime > 0 && time > self.runetime) || self.runetime == -2)
 		{
 			if (deathmatch & DM_DM_MASK)
 			{
@@ -762,7 +761,7 @@ obs_player_detect =
 			self.aiment = wanted;
 		}
 
-		if (!wanted.aqflags & AQ_RIDER_HIDE)
+		if (!wanted.aqflags & AQ_RIDER_HIDE || !ALLOW_RIDER_HIDE)
 		{
 			if (self.items != wanted.items)
 				self.items = wanted.items;
