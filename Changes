@@ -1,4 +1,16 @@
-$Id: Changes,v 1.86 2006/08/20 06:58:15 slotzero Exp $
+$Id: Changes,v 1.87 2006/08/25 23:03:31 slotzero Exp $
+
+// *** DEBUG 1.2+ ***
+
+	It seems the changes I made to the 1.2 source code is causing the
+	the server to crash.  Often there are no error messages, so I don't
+	have a clear indication of where to start.
+
+	#1) I restored strlen() and strlen_any() from attic.qc and commented
+	    out original strlen().
+
+	// Next step, try removing the AFK feature.
+	// Next step after that, restore world.qc.
 
 Version 1.3  Sun Aug 20 02:14:32 EST 2006
 

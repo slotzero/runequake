@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.49 2006/08/16 03:08:46 slotzero Exp $
+/*  $Id: strman.qc,v 1.50 2006/08/25 23:03:33 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -22,10 +22,10 @@
 //-------------------------------------------------------------------
 
 // strlen()
-string STRING_256 =	"                                                                "
+/* string STRING_256 =	"                                                                "
 			"                                                                "
 			"                                                                "
-			"                                                               ";
+			"                                                               "; */
 
 // PlayerPreThink()
 string READY_NAME_16 =	"READY_NAME_1601":"READY_NAME_1602":"READY_NAME_1603":"READY_NAME_1604":
@@ -60,12 +60,56 @@ strlen_qc =
 	return 0;
 };
 
+// *** DEBUG 1.2+ *** [#1] START
+
+//
+//  S T R L E N _ A N Y
+//
+//  Return the length of a string
+//
+float (string s)
+strlen_any =
+{
+	local float i, ps;
+
+	ps = AddInt (&s, PSTRING_TO_PQUAKEC);
+	for (i = 0; i < 256; i = i + 1)
+	{
+		if (@AddInt (ps, PQUAKEC_TO_PSTRING) == string_null)
+			return i;
+		ps = AddInt (ps, %1);
+	}
+
+	dprint ("strlen_any(): string too big\n");
+
+	return 0;
+};
+
+// XXX There seems to be a problem with referencing a string as a float on
+// some engine builds.  When the problem occurs, the wrong strlen function
+// gets called.
+float (string s)
+strlen =
+{
+	IN_QW([-
+		return strlen_qc (s);
+	-])
+
+	if (&s < 0)
+		return strlen_any (s);
+
+	if (&s > %16777216)
+		return strlen_any (s);
+
+	return strlen_qc (s);
+};
+
 //
 //  S T R L E N
 //
 //  Return the length of a string (s must be less than 256 characters)
 //
-float (string s)
+/* float (string s)
 strlen =
 {
 	IN_QW([-
@@ -74,7 +118,9 @@ strlen =
 
 	strcpy (STRING_256, s);
 	return strlen_qc (STRING_256);
-};
+}; */
+
+// *** DEBUG 1.2+ *** [#1] FINISH
 
 // base is the dword offset
 // max is the highest base can go
