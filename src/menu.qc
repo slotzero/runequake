@@ -1,4 +1,4 @@
-/*  $Id: menu.qc,v 1.12 2004/02/21 08:34:59 slotzero Exp $
+/*  $Id: menu.qc,v 1.13 2006/08/26 23:02:42 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -155,7 +155,6 @@ aq_menu_print_n =
 			"\3\b.\b Toggle team changing\n"
 			"\4\b.\b Reset teamplay      \n"
 			"\5\b.\b Change player's team\n"
-			"\6\b.\b Toggle practice mode\n"
 			);
 	}
 
