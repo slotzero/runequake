@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.91 2006/08/18 08:09:36 slotzero Exp $
+/*  $Id: bindings.qc,v 1.92 2006/08/27 00:15:40 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -141,7 +141,7 @@ player_bindings_think =
 		// XXX Move this to settings.qc.
 		if (MAP_IS_CUSTOM)
 		{
-			if (mode_arena ())
+			if (gamemode == MODE_ARENA)
 			{
 				self_sprint (self, "\nDon't have the arena maps?\n");
 				self_sprint (self, "\nDownload from\n\n\b    runequake.com/maps/ramaps.zip\b\n\n");
@@ -667,7 +667,7 @@ check_console_command =
 
 		else if (i == C2_ALTSON)
 		{
-			if (deathmatch & DM_MODE_PRACTICE)
+			if (gamemode == MODE_PRACTICE)
 				dprint_force ("Alternate weapons disabled in practice mode\n");
 			else if (NO_ALT_WEAPONS)
 			{

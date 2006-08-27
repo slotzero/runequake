@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.189 2006/08/18 07:50:05 slotzero Exp $
+/*  $Id: defs.qc,v 1.190 2006/08/27 00:15:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -626,8 +626,8 @@ float DM_NO_DROP_POWERUP	= 256;
 float DM_NO_DROP_ARMOR		= 1024;
 float DM_DAMAGE_MATCH		= 2048;
 float DM_RANDOM_POWERUP_RESPAWN	= 4096;
-float DM_MODE_PRACTICE		= 8192;
-float DM_MODE_ROCKET_ARENA	= 16384;
+//float DM_MODE_PRACTICE	= 8192;
+//float DM_MODE_ROCKET_ARENA	= 16384;
 
 // This mask includes the DM_* bits which indicates that the game is in
 // an actual deathmatch mode.  Bits other than these make sense in
@@ -644,8 +644,8 @@ float TEAM_ENFORCE_MASK		= 24;
 float TEAM_2_TEAMS		= 8;
 float TEAM_3_TEAMS		= 16;
 float TEAM_4_TEAMS		= 24;
-float TEAM_MATCH_MODE		= 32;	// deprecated
-float TEAM_MODE_MATCH		= 32;	// use me instead
+//float TEAM_MATCH_MODE		= 32;	// deprecated
+//float TEAM_MODE_MATCH		= 32;	// use me instead
 float TEAM_CHANGE_MASK		= 192;
 float TEAM_CHANGE_NONE		= 0;
 float TEAM_CHANGE_ANY		= 64;
@@ -1129,6 +1129,7 @@ float	skill;
 // custom cvars
 string	CVAR_C1	= "saved1";	// levels
 string	CVAR_C2	= "saved2";	// console commands
+string	CVAR_C3	= "saved3";	// game mode
 
 // console commands
 float	C2_UPDATE_BINDINGS	= 1;
@@ -1179,6 +1180,13 @@ float	C2_FASTSTARTON		= 45;
 float	C2_FASTSTARTOFF		= 46;
 float	C2_BACKPACKSON		= 47;
 float	C2_BACKPACKSOFF		= 48;
+
+// game mode
+float	gamemode;
+float	MODE_NORMAL		= 0;
+float	MODE_PRACTICE		= 1;
+float	MODE_ARENA		= 2;
+float	MODE_MATCH		= 3;
 
 IN_QW([-
 //

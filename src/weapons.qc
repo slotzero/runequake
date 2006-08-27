@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.67 2006/07/06 06:03:41 slotzero Exp $
+/*  $Id: weapons.qc,v 1.68 2006/08/27 00:15:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -699,7 +699,7 @@ W_FireGrenade =
 		eff	= 0;
 	}
 
-	if (deathmatch & DM_MODE_PRACTICE)
+	if (gamemode == MODE_PRACTICE)
 	{
 		if (self.grenade_spam_time > time)
 		{
@@ -1069,7 +1069,7 @@ W_Attack =
 	local	string	s;
 
 	// Prevent firing except when match begins and player is waiting for opponent.
-	if (mode_arena ())
+	if (gamemode == MODE_ARENA)
 	{
 		if (arena.state && arena.state != -2)
 			return;

@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.212 2006/07/16 00:29:00 slotzero Exp $
+/*  $Id: rjs.qc,v 1.213 2006/08/27 00:15:40 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -314,6 +314,7 @@ rjs_worldspawn =
 	if (!sys_ticrate) sys_ticrate = 0.1;
 
 	scratch1	= cvar_infokey ("scratch1");
+	gamemode	= cvar_infokey (CVAR_C3);
 
 	frag_init ();
 	orig_serverflags = serverflags;
@@ -332,11 +333,9 @@ rjs_worldspawn =
 	e.think		= update_frag_rates;
 	e.nextthink	= update_frag_rates_time = time + 60;
 
-	if (deathmatch & DM_MODE_ROCKET_ARENA)
+	if (gamemode == MODE_ARENA)
 		arena	= spawn ();
-
-	i = cvar ("teamplay");
-	if (i & TEAM_MODE_MATCH)
+	else if (gamemode == MODE_MATCH)
 		match	= spawn ();
 
 	timelimit_countdown_spawn ();
@@ -418,21 +417,21 @@ process_misc =
 	{
 		match_defaults ();
 
-		if (!mode_match ())
+		if (gamemode != MODE_MATCH)
 			change_mode_to_match ();
 	}
  	else if (scratch1 & S1_ARENA_DEFAULT)
 	{
 		arena_defaults ();
 
-		if (!mode_arena ())
+		if (gamemode != MODE_ARENA)
 			change_mode_to_arena ();
 	}
 	else if (scratch1 & S1_PRACTICE_DEFAULT)
 	{
 		practice_defaults ();
 
-		if (!mode_practice ())
+		if (gamemode != MODE_PRACTICE)
 			change_mode_to_practice ();
 		else if (mapname != "dm6")
 			admin_changelevel_now ("dm6");
@@ -441,7 +440,7 @@ process_misc =
 	{
 		normal_defaults ();
 
-		if (!mode_normal ())
+		if (gamemode != MODE_NORMAL)
 			change_mode_to_normal ();
 	}
 };
@@ -975,7 +974,7 @@ get_max_armor =
 float ()
 max_players =
 {
-	if (mode_arena ())
+	if (gamemode == MODE_ARENA)
 		return 2;
 
 	return (temp1 & T1_MAX_PLAYERS_MASK) / T1_MAX_PLAYERS_MULT;
@@ -1262,7 +1261,7 @@ common_impulses =
 			self_sprint (self, "you are already an observer\n");
 		else
 		{
-			if (mode_match ())
+			if (gamemode == MODE_MATCH)
 			{
 				spawn_protect_off ();
 				obs_become (1);
@@ -1971,7 +1970,7 @@ show_settings =
 	self_sprint (self, "Teamplay:");
 	self_sprint (self, "\n  health prot    ");	self_sprint_boolean (self, teamplay & TEAM_HEALTH_PROT);
 	self_sprint (self, "  armor prot  ");		self_sprint_boolean (self, teamplay & TEAM_ARMOR_PROT);
-	self_sprint (self, "\n  match mode     ");	self_sprint_boolean (self, teamplay & TEAM_MATCH_MODE);
+	self_sprint (self, "\n  match mode     ");	self_sprint_boolean (self, gamemode == MODE_MATCH);
 	self_sprint (self, "  change mode ");
 	if (teamplay & TEAM_CHANGE_MASK == TEAM_CHANGE_NONE)
 		self_sprint (self, "off");
@@ -2202,10 +2201,10 @@ use_ammo =
 {
 	local float ammo_type, ammo;
 
-	if (mode_practice ())
+	if (gamemode == MODE_PRACTICE)
 		return;
 
-	if (mode_arena ())
+	if (gamemode == MODE_ARENA)
 	{
 		if (arena.state == -2)
 			return;

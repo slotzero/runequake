@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.65 2006/05/02 01:34:23 slotzero Exp $
+/*  $Id: runes60.qc,v 1.66 2006/08/27 00:15:40 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -668,7 +668,7 @@ Rune_AntiPack =
 	local entity antipack;
 	local string s, s1;
 
-	if (deathmatch & DM_MODE_PRACTICE)
+	if (gamemode == MODE_PRACTICE)
 		return centerprint (self, "Rune disabled in practice mode\n");
 
 	if (self.runevar >= MAX_ANTIPACK)
@@ -806,7 +806,7 @@ Rune_Betty =
 		return;
 
 	nospam = 0;
-	if (deathmatch & DM_MODE_PRACTICE)
+	if (gamemode == MODE_PRACTICE)
 		nospam = 3;
 
 	else if (self.ammo_rockets >= AMMO_BETTY)
@@ -955,7 +955,7 @@ Rune_Tornado =
 	if (self.runevector_x > time)
 		return;
 
-	if (deathmatch & DM_MODE_PRACTICE)
+	if (gamemode == MODE_PRACTICE)
 		nospam = 13.5;
 	else if (self.ammo_cells >= AMMO_TORNADO)
 	{

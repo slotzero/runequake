@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.64 2006/07/16 00:29:00 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.65 2006/08/27 00:15:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -1172,7 +1172,7 @@ Rune_Touch =
 	local entity temp;
 	local string s;
 
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 	{
 		if (!match.state)
 			return;
@@ -1326,7 +1326,7 @@ Rune_Type_Allowed =
 	-])
 
 	// don't spawn these in practice mode
-	if (deathmatch & DM_MODE_PRACTICE)
+	if (gamemode == MODE_PRACTICE)
 	{
 		if (type == RN_ANTIPACK)			return 0;
 		if (type == RN_AMMO)				return 0;

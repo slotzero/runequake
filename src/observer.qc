@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.69 2006/08/26 23:02:42 slotzero Exp $
+/*  $Id: observer.qc,v 1.70 2006/08/27 00:15:40 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -544,7 +544,7 @@ obs_become =
 		bprint (" became an observer\n");
 
 		// Reset arena entity when arena player goes observer.
-		if (mode_arena ())
+		if (gamemode == MODE_ARENA)
 		{
 			if (arena.owner == self || arena.runent == self)
 			{
@@ -577,7 +577,7 @@ obs_become =
 
 	if (!is_observer ())
 	{
-		if (mode_arena () && tell_type == 3)
+		if (gamemode == MODE_ARENA && tell_type == 3)
 			self.runevar = time;
 		else
 			self.runevar = 0;
@@ -630,7 +630,7 @@ obs_become =
 	// observer mode.
 	set_viewport (self);
 
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 		match_obs_become (tell_type);
 	else if (enforced_teams ())
 		assign_teams (self);
@@ -837,9 +837,9 @@ obs_join_game =
 	local float maxp, i, ra, mm;
 	local string s1, s2, sx;
 
-	ra = mode_arena ();
+	ra = gamemode == MODE_ARENA;
 
-	mm = mode_match ();
+	mm = gamemode == MODE_MATCH;
 	if (mm)
 	{
 		if (match_obs_join_game ())
@@ -952,7 +952,7 @@ obs_join_game =
 	}
 	if (enforced_teams ())
 		assign_teams (self);
-	if (deathmatch & DM_MODE_PRACTICE)
+	if (gamemode == MODE_PRACTICE)
 		s2 = "\bpractice";
 
 	if (s1 != string_null || s2 != string_null)

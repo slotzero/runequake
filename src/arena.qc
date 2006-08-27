@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.29 2006/02/05 14:56:47 slotzero Exp $
+/*  $Id: arena.qc,v 1.30 2006/08/27 00:15:40 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -35,18 +35,6 @@
 // arena.movetarget	= winner
 // arena.dmg_inflictor	= current streaker
 // arena.dmg_take	= streak amount
-
-float ()
-mode_arena =
-{
-	if (!arena)
-		return FALSE;
-
-	if (!deathmatch & DM_MODE_ROCKET_ARENA)
-		return FALSE;
-
-	return TRUE;
-};
 
 void (entity e)
 arena_game_pos_announce =

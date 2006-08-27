@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.48 2005/11/13 20:18:56 slotzero Exp $
+/*  $Id: combat.qc,v 1.49 2006/08/27 00:15:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -115,12 +115,12 @@ Killed =
 		WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
 	}
 
-	if (mode_arena ())
+	if (gamemode == MODE_ARENA)
 		arena_death (targ, attacker, dtype);
 	else
 		ClientObituary (self, attacker, dtype);
 
-	if (!mode_arena () && deathmatch & DM_MODE_PRACTICE)
+	if (gamemode == MODE_PRACTICE)
 	{
 		if (attacker != targ)
 		{
@@ -359,19 +359,17 @@ T_Damage =
 		damage = 0;
 
 	// Allow momentum change without damage when player is waiting for opponent.
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 	{
 		if (match.state <= 0)
 			damage = 0;
 	}
-
-	if (mode_arena ())
+	else if (gamemode == MODE_ARENA)
 	{
 		if (arena.state == -2)
 			damage = 0;
 	}
-
-	if (deathmatch & DM_MODE_PRACTICE)
+	else if (gamemode == MODE_PRACTICE)
 	{
 		if (damage && attacker != targ)
 		{

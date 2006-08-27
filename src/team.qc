@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.70 2006/08/18 07:50:05 slotzero Exp $
+/*  $Id: team.qc,v 1.71 2006/08/27 00:15:40 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -208,7 +208,7 @@ is_allowable_team =
 
 	// In match mode, team nil is for observing admins, but admins
 	// can also be on teams.
-	if (teamplay & TEAM_MATCH_MODE)
+	if (gamemode == MODE_MATCH)
 	{
 		if (tm == TEAM_NIL && (!is_observer () || !self.aqflags & AQ_ADMIN))
 			return 0;
@@ -339,7 +339,7 @@ assign_teams =
 	}
 	while (e)
 	{
-		if (is_observer_e (e) && !teamplay & TEAM_MATCH_MODE)
+		if (is_observer_e (e) && gamemode != MODE_MATCH)
 			set_team_e (e, TEAM_NIL);
 		else
 		{
@@ -550,7 +550,7 @@ team_rotate =
 		return;
 	}
 
-	if (!teamplay & TEAM_MATCH_MODE && is_observer ())
+	if (gamemode != MODE_MATCH && is_observer ())
 	{
 		sprint (by_e, "Observers can't change teams\n");
 		return;
@@ -603,7 +603,7 @@ describe_team_mode =
 	if (teamplay & TEAM_ARMOR_PROT)		sprint (self, " armor-prot");
 	if (teamplay & TEAM_FRAG_PENALTY)	sprint (self, " frag-penalty");
 	if (teamplay & TEAM_ENFORCE_MASK)	sprint (self, " enforced");
-	if (teamplay & TEAM_MATCH_MODE)		sprint (self, " match");
+	if (gamemode == MODE_MATCH)		sprint (self, " match");
 
 	if (teamplay & TEAM_CHANGE_MASK == TEAM_CHANGE_ANY)
 		sprint (self, " change-any");
@@ -813,167 +813,69 @@ teamscores_off =
 void ()
 change_mode_to_match =
 {
-	local float new_deathmatch, new_teamplay;
 	local string s;
 
-	match_defaults ();
-	new_deathmatch = cvar ("deathmatch");
-
-	// turn on match, but turn off vote-team related options
-	new_teamplay = TEAM_MODE_MATCH;
-
-	// turn off arena
-	if (new_deathmatch & DM_MODE_ROCKET_ARENA)
-		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_ROCKET_ARENA;
-
-	// turn off practice
-	if (new_deathmatch & DM_MODE_PRACTICE)
-		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_PRACTICE;
-
-	if (new_deathmatch == deathmatch && new_teamplay == teamplay)
+	if (gamemode == MODE_MATCH)
 	{
 		self_sprint (self, "Already in match mode\n");
 		return;
 	}
 
-	s = ftos (new_deathmatch);
-	cvar_set ("deathmatch", s);
-	// this leaves us no way to return teamplay to its "normal" state
-	s = ftos (new_teamplay);
-	cvar_set ("teamplay", s);
+	match_defaults ();
+	s = ftos (MODE_MATCH);
+	cvar_set (CVAR_C3, s);
 	admin_changelevel_now (mapname);
 };
 
 void ()
 change_mode_to_arena =
 {
-	local float new_deathmatch, new_teamplay;
 	local string s;
 
-	arena_defaults ();
-	new_deathmatch = cvar ("deathmatch");
-	new_teamplay = cvar ("teamplay");
-
-	// turn on arena
-	if (!new_deathmatch & DM_MODE_ROCKET_ARENA)
-		new_deathmatch = new_deathmatch | DM_MODE_ROCKET_ARENA;
-
-	// turn off practice
-	if (new_deathmatch & DM_MODE_PRACTICE)
-		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_PRACTICE;
-
-	// turn off match
-	if (new_teamplay & TEAM_MODE_MATCH)
-		new_teamplay = new_teamplay - new_teamplay & TEAM_MODE_MATCH;
-
-	if (new_deathmatch == deathmatch && new_teamplay == teamplay)
+	if (gamemode == MODE_ARENA)
 	{
 		self_sprint (self, "Already in arena mode\n");
 		return;
 	}
 
-	s = ftos (new_deathmatch);
-	cvar_set ("deathmatch", s);
-	s = ftos (new_teamplay);
-	cvar_set ("teamplay", s);
+	arena_defaults ();
+	s = ftos (MODE_ARENA);
+	cvar_set (CVAR_C3, s);
 	admin_changelevel_now (mapname);
 };
 
 void ()
 change_mode_to_practice =
 {
-	local float new_deathmatch, new_teamplay;
 	local string s;
 
-	practice_defaults ();
-	new_deathmatch = cvar ("deathmatch");
-	new_teamplay = cvar ("teamplay");
-
-	// turn on practice
-	if (!new_deathmatch & DM_MODE_PRACTICE)
-		new_deathmatch = new_deathmatch | DM_MODE_PRACTICE;
-
-	// turn off arena
-	if (new_deathmatch & DM_MODE_ROCKET_ARENA)
-		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_ROCKET_ARENA;
-
-	// turn off match
-	if (new_teamplay & TEAM_MODE_MATCH)
-		new_teamplay = new_teamplay - new_teamplay & TEAM_MODE_MATCH;
-
-	if (new_deathmatch == deathmatch && new_teamplay == teamplay)
+	if (gamemode == MODE_PRACTICE)
 	{
 		self_sprint (self, "Already in practice mode\n");
 		return;
 	}
 
-	s = ftos (new_deathmatch);
-	cvar_set ("deathmatch", s);
-	s = ftos (new_teamplay);
-	cvar_set ("teamplay", s);
+	practice_defaults ();
+	s = ftos (MODE_PRACTICE);
+	cvar_set (CVAR_C3, s);
 	admin_changelevel_now (mapname);
 };
 
 void ()
 change_mode_to_normal =
 {
-	local float new_deathmatch, new_teamplay;
 	local string s;
 
-	normal_defaults ();
-
-	new_deathmatch = cvar ("deathmatch");
-	new_teamplay = cvar ("teamplay");
-
-	// turn off arena
-	if (new_deathmatch & DM_MODE_ROCKET_ARENA)
-		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_ROCKET_ARENA;
-
-	// turn off practice
-	if (new_deathmatch & DM_MODE_PRACTICE)
-		new_deathmatch = new_deathmatch - new_deathmatch & DM_MODE_PRACTICE;
-
-	// turn off match
-	if (new_teamplay & TEAM_MODE_MATCH)
-		new_teamplay = new_teamplay - new_teamplay & TEAM_MODE_MATCH;
-
-	if (new_deathmatch == deathmatch && new_teamplay == teamplay)
+	if (gamemode == MODE_NORMAL)
 	{
 		self_sprint (self, "Already in normal mode\n");
 		return;
 	}
 
-	s = ftos (new_deathmatch);
-	cvar_set ("deathmatch", s);
-	s = ftos (new_teamplay);
-	cvar_set ("teamplay", s);
+	normal_defaults ();
+	s = ftos (MODE_NORMAL);
+	cvar_set (CVAR_C3, s);
 	admin_changelevel_now (mapname);
-};
-
-float ()
-mode_normal =
-{
-	if (deathmatch & DM_MODE_PRACTICE)
-		return FALSE;
-	if (deathmatch & DM_MODE_ROCKET_ARENA)
-		return FALSE;
-	if (teamplay & TEAM_MODE_MATCH)
-		return FALSE;
-
-	return TRUE;
-};
-
-float ()
-mode_practice =
-{
-	if (!deathmatch & DM_MODE_PRACTICE)
-		return FALSE;
-	if (deathmatch & DM_MODE_ROCKET_ARENA)
-		return FALSE;
-	if (teamplay & TEAM_MODE_MATCH)
-		return FALSE;
-
-	return TRUE;
 };
 
 //-----------------------------------------------------------------------------

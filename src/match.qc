@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.45 2006/08/08 21:44:23 slotzero Exp $
+/*  $Id: match.qc,v 1.46 2006/08/27 00:15:40 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -21,17 +21,6 @@ float HUNK_TEAMS = %500;
 float HUNK_MATCH_TIMELIMIT = %517;
 float TEAMS_PRESENT;
 float MATCH_LOCKED;
-
-float ()
-mode_match =
-{
-	if (!match)
-		return FALSE;
-	if (!teamplay & TEAM_MODE_MATCH)
-		return FALSE;
-
-	return TRUE;
-};
 
 void ()
 match_hunk_init =
@@ -566,7 +555,7 @@ match_obs_join_game =
 		return FALSE;
 	}
 
-	if (!mode_match ())
+	if (gamemode != MODE_MATCH)
 	{
 		self_sprint (self, "you are not an observer\n");
 		return FALSE;
@@ -868,7 +857,7 @@ match_ready =
 void ()
 match_notready =
 {
-	if (!mode_match ())
+	if (gamemode != MODE_MATCH)
 	{
 		self_sprint (self, "command valid in match mode only\n");
 		return;
@@ -895,7 +884,7 @@ match_notready =
 void ()
 print_timeset_menu =
 {
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 	{
 		if (match.state)
 			self_sprint (self, "Cannot change timelimit while match is in progress\n");
@@ -930,7 +919,7 @@ match_impulse_override =
 {
 	local float force;
 
-	if (!mode_match ())
+	if (gamemode != MODE_MATCH)
 		return FALSE;
 
 	force = self.rqstate & RQS_TIMESET_OVERRIDE;

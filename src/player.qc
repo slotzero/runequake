@@ -1,4 +1,4 @@
-/*  $Id: player.qc,v 1.21 2006/08/18 07:50:05 slotzero Exp $
+/*  $Id: player.qc,v 1.22 2006/08/27 00:15:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -648,7 +648,7 @@ PlayerDie =
 			current_hooks = current_hooks - 1;
 	}
 
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 	{
 		if (match.state <= 0)
 			self.health = -41;

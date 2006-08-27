@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.136 2006/08/17 23:18:36 slotzero Exp $
+/*  $Id: client.qc,v 1.137 2006/08/27 00:15:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -185,13 +185,13 @@ SetArenaParms =
 void ()
 DecodeLevelParms =
 {
-	if (mode_arena ())
+	if (gamemode == MODE_ARENA)
 		SetArenaParms ();
-	else if (mode_practice ())
+	else if (gamemode == MODE_PRACTICE)
 		SetPracticeParms ();
 	else
 	{
-		if (mode_match ())
+		if (gamemode == MODE_MATCH)
 		{
 			if (match.state)
 			{
@@ -576,7 +576,7 @@ ClientKill =
 	self.health = 0;
 	Killed (self, self, "suicide");
 
-	if (!mode_arena ())
+	if (gamemode != MODE_ARENA)
 		kick_suicider ();
 };
 
@@ -618,7 +618,7 @@ SelectSpawnPoint =
 		// I would eventually like to create spawn spots for standard maps,
 		// and modify the map to restrict certain areaa.  For now, I will
 		// use the RA method of info_teleport_destinations.
-		if (mode_arena () && MAP_IS_CUSTOM)
+		if (gamemode == MODE_ARENA && MAP_IS_CUSTOM)
 		{
 			spot = find_spawn_point_class ("info_teleport_destination", lastspawn);
 			if (spot)
@@ -782,7 +782,7 @@ PutClientInServer =
 		spawn_as_observer = 1;
 	else
 	{
-		if (mode_arena ())
+		if (gamemode == MODE_ARENA)
 		{
 			self.takedamage = DAMAGE_NO;
 			if (put_client_in_arena ())
@@ -793,7 +793,7 @@ PutClientInServer =
 	}
 
 	// force all players observer at start of level
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 	{
 		if (!self.lefty)
 		{
@@ -1061,8 +1061,7 @@ CheckRules =
 	if (!timelimit)
 		return;
 
-	// mode_match()
-	if (match)
+	if (gamemode == MODE_MATCH)
 		return;
 
 	if (time >= timelimit)
@@ -1080,7 +1079,7 @@ PlayerDeathThink =
 {
 	local float forward;
 
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 	{
 		if (match.style > time)
 			return;
@@ -1094,7 +1093,7 @@ PlayerDeathThink =
 			return;
 		}
 	}
-	else if (mode_arena ())
+	else if (gamemode == MODE_ARENA)
 	{
 		arena_death_think ();
 		return;
@@ -1431,7 +1430,7 @@ PlayerPreThink =
 	if (!is_valid_player ())
 		return;
 	obs = is_observer ();
-	mm = mode_match ();
+	mm = gamemode == MODE_MATCH;
 
 	// player is afk, check every tick for his return
 	if (self.rqstate & RQS_AFK)
@@ -1990,9 +1989,9 @@ ClientDisconnect =
 
 	qsmack_status_valid = 0;
 
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 		match_client_disconnect ();
-	else if (mode_arena ())
+	else if (gamemode == MODE_ARENA)
 		arena_client_disconnect ();
 
 	i = !self.cl[CL_ACTIVE] / %1;
@@ -2058,7 +2057,7 @@ ClientObituary =
 	if (targ.classname != "player")
 		return;
 
-	mm = mode_match ();
+	mm = gamemode == MODE_MATCH;
 	if (mm)
 	{
 		if (!match.state)

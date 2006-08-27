@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.67 2006/08/18 07:50:05 slotzero Exp $
+/*  $Id: items.qc,v 1.68 2006/08/27 00:15:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -128,7 +128,7 @@ plants the object on the floor
 void ()
 PlaceItem =
 {
-	if (mode_arena ())
+	if (gamemode == MODE_ARENA)
 	{
 		remove (self);
 		return;
@@ -274,7 +274,7 @@ health_touch =
 	if (other.classname != "player")
 		return;
 
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 	{
 		if (match.state <= 0)
 			return;
@@ -377,7 +377,7 @@ armor_touch =
 	if (other.classname != "player")
 		return;
 
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 	{
 		if (match.state <= 0)
 			return;
@@ -672,7 +672,7 @@ weapon_touch =
 	if (!other.flags & FL_CLIENT)
 		return;
 
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 	{
 		if (match.state <= 0)
 			return;
@@ -856,7 +856,7 @@ weapon_set =
 	if (!spawn_no_precache)
 		precache_model (it_model);
 
-	if (deathmatch & DM_MODE_PRACTICE)
+	if (gamemode == MODE_PRACTICE)
 	{
 		remove (self);
 		return;
@@ -937,7 +937,7 @@ ammo_touch =
 	if (other.classname != "player")
 		return;
 
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 	{
 		if (match.state <= 0)
 			return;
@@ -1042,7 +1042,7 @@ ammo_set =
 {
 	precache_model (it_model);
 
-	if (deathmatch & DM_MODE_PRACTICE)
+	if (gamemode == MODE_PRACTICE)
 	{
 		remove (self);
 		return;
@@ -1362,7 +1362,7 @@ powerup_touch =
 	if (other.classname != "player")
 		return;
 
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 	{
 		if (match.state <= 0)
 			return;
@@ -1566,13 +1566,13 @@ BackpackTouch =
 	if (other.classname != "player")
 		return;
 
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 	{
 		if (match.state <= 0)
 			return;
 	}
 
-	if (mode_arena ())
+	if (gamemode == MODE_ARENA)
 	{
 		if (arena.state == -1)
 		return;
@@ -1676,13 +1676,13 @@ DropBackpack =
 	if (NO_BACKPACKS)
 		return;
 
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 	{
 		if (!match.state)
 			return;
 	}
 
-	if (deathmatch & DM_MODE_PRACTICE)
+	if (gamemode == MODE_PRACTICE)
 		return;
 
 	if (!(self.ammo_shells + self.ammo_nails + self.ammo_rockets + self.ammo_cells))
@@ -1743,7 +1743,7 @@ drop_powerup =
 	local float time_left;
 	local string it_noise, it_model;
 
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 	{
 		if (!match.state)
 			return;
@@ -1816,7 +1816,7 @@ drop_powerup_touch =
 	if (other.classname != "player")
 		return;
 
-	if (mode_match ())
+	if (gamemode == MODE_MATCH)
 	{
 		if (!match.state)
 			return;

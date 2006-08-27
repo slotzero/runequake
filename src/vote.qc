@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.66 2006/08/18 07:50:05 slotzero Exp $
+/*  $Id: vote.qc,v 1.67 2006/08/27 00:15:40 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -42,7 +42,7 @@ vote_impulse_commands =
 	if (is_observer ())
 	{
 		// allow in-game queued players to vote in arena mode
-		if (mode_arena () && self.runevar)
+		if (gamemode == MODE_ARENA && self.runevar)
 			vote ();
 		else
 			count_votes (2);
@@ -209,7 +209,7 @@ count_votes =
 	{
 		i = 0;
 		// count in-game queued players in arena mode
-		if (mode_arena ())
+		if (gamemode == MODE_ARENA)
 		{
 			if (is_observer_e (e) && e.runevar)
 				i = 1;
@@ -518,7 +518,7 @@ vote =
 		e.noise1	= "change";
 		e.noise2	= " mode to practice";
 
-		if (mode_practice ())
+		if (gamemode == MODE_PRACTICE)
 		{
 			if (!cancel)
 				self_sprint (self, "already in practice mode\n");
@@ -533,7 +533,7 @@ vote =
 		e.noise1	= "change";
 		e.noise2	= " mode to normal";
 
-		if (mode_normal ())
+		if (gamemode == MODE_NORMAL)
 		{
 			if (!cancel)
 				self_sprint (self, "already in normal mode\n");
@@ -643,7 +643,7 @@ vote =
 		else
 			e.noise1	= "disable";
 
-		if (mode_practice ())
+		if (gamemode == MODE_PRACTICE)
 		{
 			if (!cancel)
 				self_sprint (self, "disable practice mode first\n");
@@ -699,7 +699,7 @@ vote =
 		e.noise1	= "change";
 		e.noise2	= " mode to arena";
 
-		if (mode_arena ())
+		if (gamemode == MODE_ARENA)
 		{
 			if (!cancel)
 				self_sprint (self, "already in arena mode\n");
@@ -738,7 +738,7 @@ vote =
 		e.noise1	= "change";
 		e.noise2	= " mode to match";
 
-		if (mode_match ())
+		if (gamemode == MODE_MATCH)
 		{
 			if (!cancel)
 				self_sprint (self, "already in match mode\n");
@@ -887,7 +887,7 @@ vote_yes =
 		return;
 	}
 
-	if (mode_arena ())
+	if (gamemode == MODE_ARENA)
 		i = (is_observer () && !self.runevar);
 	else
 		i = is_observer ();
@@ -929,7 +929,7 @@ vote_no =
 		return;
 	}
 
-	if (mode_arena ())
+	if (gamemode == MODE_ARENA)
 		i = (is_observer () && !self.runevar);
 	else
 		i = is_observer ();
