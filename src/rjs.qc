@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.213 2006/08/27 00:15:40 slotzero Exp $
+/*  $Id: rjs.qc,v 1.214 2006/08/27 00:17:17 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -307,7 +307,6 @@ void ()
 rjs_worldspawn =
 {
 	local entity e;
-	local float i;
 	local string s;
 
 	sys_ticrate 	= cvar ("sys_ticrate");
