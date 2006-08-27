@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.190 2006/08/27 00:15:40 slotzero Exp $
+/*  $Id: defs.qc,v 1.191 2006/08/27 04:20:31 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -644,8 +644,7 @@ float TEAM_ENFORCE_MASK		= 24;
 float TEAM_2_TEAMS		= 8;
 float TEAM_3_TEAMS		= 16;
 float TEAM_4_TEAMS		= 24;
-//float TEAM_MATCH_MODE		= 32;	// deprecated
-//float TEAM_MODE_MATCH		= 32;	// use me instead
+//float TEAM_MODE_MATCH		= 32;
 float TEAM_CHANGE_MASK		= 192;
 float TEAM_CHANGE_NONE		= 0;
 float TEAM_CHANGE_ANY		= 64;

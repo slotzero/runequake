@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.71 2006/08/27 00:15:40 slotzero Exp $
+/*  $Id: team.qc,v 1.72 2006/08/27 04:20:31 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -410,6 +410,10 @@ change_teamplay =
 	teamplay = new_teamplay;
 	new_teams = enforced_teams ();
 
+	// Don't allow enforced teams in arena or match.
+	if (gamemode == MODE_ARENA || gamemode == MODE_MATCH)
+		return;
+
 	if ((!old_teams && new_teams) || (new_teams && old_teams > new_teams))
 	{
 		frag_init ();
@@ -427,15 +431,6 @@ change_teamplay =
 			e = find (e, classname, "player");
 		}
 	}
-
-	/* if (time < 3)
-		return;
-	if (teamplay & TEAM_MATCH_MODE && !old_teamplay & TEAM_MATCH_MODE)
-		bprint ("Match mode enabled\n");
-	else if (teamplay
-				&& !teamplay & TEAM_MATCH_MODE
-				&& old_teamplay & TEAM_MATCH_MODE)
-		bprint ("Match mode disabled\n"); */
 };
 
 // I used to do an initial change_teamplay() in rjs_worldspawn().
@@ -533,8 +528,7 @@ next_team =
 void (entity by_e)
 team_rotate =
 {
-	local float by_admin, any, ok, total_teams,
-			new_team, first_new_team, orig_team;
+	local float by_admin, any, ok, total_teams, new_team, first_new_team, orig_team;
 
 	by_admin = 1;
 	if (!by_e)
@@ -550,7 +544,7 @@ team_rotate =
 		return;
 	}
 
-	if (gamemode != MODE_MATCH && is_observer ())
+	if (is_observer ())
 	{
 		sprint (by_e, "Observers can't change teams\n");
 		return;
@@ -561,8 +555,7 @@ team_rotate =
 		any = 1;
 	else if (teamplay & TEAM_CHANGE_MASK == TEAM_CHANGE_ANY)
 		any = 1;
-	else if (teamplay & TEAM_CHANGE_MASK == TEAM_CHANGE_TOPDOG
-			&& is_topdog ())
+	else if (teamplay & TEAM_CHANGE_MASK == TEAM_CHANGE_TOPDOG && is_topdog ())
 		any = 1;
 
 	// I test against first_new_team instead of the original
