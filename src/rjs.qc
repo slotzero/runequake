@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.214 2006/08/27 00:17:17 slotzero Exp $
+/*  $Id: rjs.qc,v 1.215 2006/08/28 06:37:15 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2619,10 +2619,10 @@ W_ChangeWeapon =
 void ()
 CycleWeaponCommand =
 {
-	local float w;
+	local float i, w;
 
 	w = self.weapon;
-	while (1)
+	for (i = 0; i < 16; i = i + 1)
 	{
 		if (self.rqflags & RQ_CYCLE_ALTERNATES && !NO_ALT_WEAPONS)
 		{
@@ -2673,10 +2673,10 @@ CycleWeaponCommand =
 void ()
 CycleWeaponReverseCommand =
 {
-	local float	w;
+	local float i, w;
 
 	w = self.weapon;
-	while (1)
+	for (i = 0; i < 16; i = i + 1)
 	{
 		if (self.rqflags & RQ_CYCLE_ALTERNATES && !NO_ALT_WEAPONS)
 		{
@@ -2697,7 +2697,7 @@ CycleWeaponReverseCommand =
 			else if (w == IT_SHOTGUN)		w = IT_AXE;
 			else					w = WEAPON_BFG;
 		}
-			else
+		else
 		{
 			if (w == WEAPON_BFG)			w = IT_LIGHTNING;
 			else if (w == WEAPON_MORTAR)		w = IT_ROCKET_LAUNCHER;
