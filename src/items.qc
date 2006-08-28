@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.68 2006/08/27 00:15:40 slotzero Exp $
+/*  $Id: items.qc,v 1.69 2006/08/28 04:26:02 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1575,7 +1575,7 @@ BackpackTouch =
 	if (gamemode == MODE_ARENA)
 	{
 		if (arena.state == -1)
-		return;
+			return;
 	}
 
 	if (other.health <= 0)
