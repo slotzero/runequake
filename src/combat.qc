@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.49 2006/08/27 00:15:40 slotzero Exp $
+/*  $Id: combat.qc,v 1.50 2006/09/05 04:22:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -115,7 +115,7 @@ Killed =
 		WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
 	}
 
-	if (gamemode == MODE_ARENA)
+	if (gamemode & MODE_ARENA)
 		arena_death (targ, attacker, dtype);
 	else
 		ClientObituary (self, attacker, dtype);
@@ -167,16 +167,17 @@ T_Damage =
 	local vector dir;
 	local float save, take, real_take;
 
+	// MODE_MIDAIR
+	local float player_height, safe_height;
+
 	if (!targ.takedamage)
 		return 0;
 
 	// used by buttons and triggers to set activator for target firing
 	damage_attacker = attacker;
 
-	// check for quad damage powerup on the attacker or it's owner
-	// (for pets)
-	if (attacker.super_damage_finished >= time
-			|| attacker.owner.super_damage_finished >= time)
+	// check for quad damage powerup on the attacker or it's owner (for pets)
+	if (attacker.super_damage_finished >= time || attacker.owner.super_damage_finished >= time)
 		damage = damage * 4;
 
 	if (attacker.runetype)
@@ -308,8 +309,21 @@ T_Damage =
 	{
 		if (random () < TORCH_BURN_ATTACK_CHANCE * damage / 100)
 		{
-			burn_start (targ, attacker,
-					TORCH_BURN_ATTACK_DURATION);
+			burn_start (targ, attacker, TORCH_BURN_ATTACK_DURATION);
+		}
+	}
+
+	if (gamemode == MODE_MIDAIR)
+	{
+		traceline (targ.origin, targ.origin - '0 0 2048', TRUE, targ);
+		player_height = targ.absmin_z - trace_endpos_z;
+
+		if (player_height < 42.5 || targ.flags & FL_ONGROUND)
+			safe_height = TRUE;
+		else
+		{
+			damage = damage * floor (1 + (player_height - 42.5) / 128);
+			safe_height = FALSE;
 		}
 	}
 
@@ -344,6 +358,12 @@ T_Damage =
 		else
 			targ.velocity = targ.velocity + dir * damage * 8;
 
+		if (gamemode == MODE_MIDAIR)
+		{
+			if (safe_height)
+				targ.velocity_z = targ.velocity_z + dir_z * damage * 12;
+		}
+
 		IN_QW([-
 			// Rocket Jump modifiers
 			if (rj > 1 && targ == attacker)
@@ -351,34 +371,43 @@ T_Damage =
 		-])
 	}
 
-	// Activate self preservation after the momentum change so
-	// rocket jumping works.
-	if (targ.runetype == RN_SELFPRES
-			&& attacker == targ
-			&& damage < SURE_KILL_DAMAGE)
-		damage = 0;
+	if (damage < SURE_KILL_DAMAGE)
+	{
+		// Activate self preservation after the momentum change so
+		// rocket jumping works.
+		if (targ.runetype == RN_SELFPRES && attacker == targ)
+			damage = 0;
 
-	// Allow momentum change without damage when player is waiting for opponent.
-	if (gamemode == MODE_MATCH)
-	{
-		if (match.state <= 0)
-			damage = 0;
-	}
-	else if (gamemode == MODE_ARENA)
-	{
-		if (arena.state == -2)
-			damage = 0;
-	}
-	else if (gamemode == MODE_PRACTICE)
-	{
-		if (damage && attacker != targ)
+		// Allow momentum change without damage when player is waiting for opponent.
+		if (gamemode)
 		{
-			if (attacker.classname == "player" && targ.classname == "player")
+			if (gamemode == MODE_MATCH)
 			{
-				local string x;
+				if (match.state <= 0)
+					damage = 0;
+			}
+			else if (gamemode & MODE_ARENA)
+			{
+				if (arena.state == -2)
+					damage = 0;
+				else if (gamemode == MODE_MIDAIR)
+				{
+					if (safe_height && dtype != "axe")
+						damage = 0;
+				}
+			}
+			else if (gamemode == MODE_PRACTICE)
+			{
+				if (damage && attacker != targ)
+				{
+					if (attacker.classname == "player" && targ.classname == "player")
+					{
+						local string x;
 
-				x = ftos (damage);
-				centerprint4 (attacker, targ.netname, ": ", x, "\n\n\n\n");
+						x = ftos (damage);
+						centerprint4 (attacker, targ.netname, ": ", x, "\n\n\n\n");
+					}
+				}
 			}
 		}
 	}
@@ -441,8 +470,7 @@ T_Damage =
 		take = 0;
 
 	// invincibility
-	else if (targ.invincible_finished >= time
-			|| targ.owner.invincible_finished >= time)
+	else if (targ.invincible_finished >= time || targ.owner.invincible_finished >= time)
 	{
 		if (targ.invincible_sound < time)
 		{

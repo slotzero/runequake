@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.68 2006/08/27 04:20:31 slotzero Exp $
+/*  $Id: vote.qc,v 1.69 2006/09/05 04:22:00 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -42,12 +42,12 @@ vote_impulse_commands =
 	if (is_observer ())
 	{
 		// allow in-game queued players to vote in arena mode
-		if (gamemode == MODE_ARENA && self.runevar)
+		if (gamemode & MODE_ARENA && self.runevar)
 			vote ();
 		else
 			count_votes (2);
 	}
-	else if (self.impulse >= 1 && self.impulse <= 27)
+	else if (self.impulse >= 1 && self.impulse <= 28)
 		vote ();
 
 	impulse_override_cancel ();
@@ -67,7 +67,7 @@ vote_team_disabled =
 			|| (teamplay != 0 && teamplay != VOTE_TEAM_MODE)
 			|| VOTE_TEAM_PERCENTAGE	<= 0
 			|| VOTE_TEAM_PERCENTAGE > 1
-			|| gamemode == MODE_ARENA
+			|| gamemode & MODE_ARENA
 			|| gamemode == MODE_MATCH
 			// IN_QW(|| 1) // XXX QW team support still broken
 			)
@@ -211,7 +211,7 @@ count_votes =
 	{
 		i = 0;
 		// count in-game queued players in arena mode
-		if (gamemode == MODE_ARENA)
+		if (gamemode & MODE_ARENA)
 		{
 			if (is_observer_e (e) && e.runevar)
 				i = 1;
@@ -844,6 +844,21 @@ vote =
 		else
 			e.noise1	= "disable";
 	}
+	else if (self.impulse == IMP_VOTE_MIDAIR)
+	{
+		// cancel	= 1;	//
+		e.frag_rate	= 0.51;	// XXX move to settings.
+		e.think1	= change_mode_to_midair;
+		e.noise1	= "change";
+		e.noise2	= " mode to midair";
+
+		if (gamemode == MODE_MIDAIR)
+		{
+			if (!cancel)
+				self_sprint (self, "already in midair mode\n");
+			cancel = 1;
+		}
+	}
 	else
 		cancel = -1;
 
@@ -889,7 +904,7 @@ vote_yes =
 		return;
 	}
 
-	if (gamemode == MODE_ARENA)
+	if (gamemode & MODE_ARENA)
 		i = (is_observer () && !self.runevar);
 	else
 		i = is_observer ();
@@ -931,7 +946,7 @@ vote_no =
 		return;
 	}
 
-	if (gamemode == MODE_ARENA)
+	if (gamemode & MODE_ARENA)
 		i = (is_observer () && !self.runevar);
 	else
 		i = is_observer ();

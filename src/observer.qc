@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.70 2006/08/27 00:15:40 slotzero Exp $
+/*  $Id: observer.qc,v 1.71 2006/09/05 04:22:00 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -544,7 +544,7 @@ obs_become =
 		bprint (" became an observer\n");
 
 		// Reset arena entity when arena player goes observer.
-		if (gamemode == MODE_ARENA)
+		if (gamemode & MODE_ARENA)
 		{
 			if (arena.owner == self || arena.runent == self)
 			{
@@ -577,7 +577,7 @@ obs_become =
 
 	if (!is_observer ())
 	{
-		if (gamemode == MODE_ARENA && tell_type == 3)
+		if (gamemode & MODE_ARENA && tell_type == 3)
 			self.runevar = time;
 		else
 			self.runevar = 0;
@@ -837,7 +837,7 @@ obs_join_game =
 	local float maxp, i, ra, mm;
 	local string s1, s2, sx;
 
-	ra = gamemode == MODE_ARENA;
+	ra = gamemode & MODE_ARENA;
 
 	mm = gamemode == MODE_MATCH;
 	if (mm)

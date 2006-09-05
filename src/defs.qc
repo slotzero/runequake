@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.191 2006/08/27 04:20:31 slotzero Exp $
+/*  $Id: defs.qc,v 1.192 2006/09/05 04:22:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -611,6 +611,7 @@ float IMP_VOTE_FASTSTART	= 24;
 float IMP_VOTE_UNLOCK		= 25;
 float IMP_VOTE_LOCK		= 26;
 float IMP_VOTE_BACKPACKS	= 27;
+float IMP_VOTE_MIDAIR		= 28;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;
@@ -1179,13 +1180,15 @@ float	C2_FASTSTARTON		= 45;
 float	C2_FASTSTARTOFF		= 46;
 float	C2_BACKPACKSON		= 47;
 float	C2_BACKPACKSOFF		= 48;
+float	C2_MODE_MIDAIR		= 49;
 
 // game mode
 float	gamemode;
 float	MODE_NORMAL		= 0;
 float	MODE_PRACTICE		= 1;
 float	MODE_ARENA		= 2;
-float	MODE_MATCH		= 3;
+float	MODE_MATCH		= 4;
+float	MODE_MIDAIR		= 10;
 
 IN_QW([-
 //

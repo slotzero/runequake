@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.68 2006/08/27 00:15:40 slotzero Exp $
+/*  $Id: weapons.qc,v 1.69 2006/09/05 04:22:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1069,7 +1069,7 @@ W_Attack =
 	local	string	s;
 
 	// Prevent firing except when match begins and player is waiting for opponent.
-	if (gamemode == MODE_ARENA)
+	if (gamemode & MODE_ARENA)
 	{
 		if (arena.state && arena.state != -2)
 			return;

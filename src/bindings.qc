@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.92 2006/08/27 00:15:40 slotzero Exp $
+/*  $Id: bindings.qc,v 1.93 2006/09/05 04:22:00 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -311,6 +311,7 @@ vote_aliases =
 	player_vote_impulse_alias ("ffa",			IMP_VOTE_NORMAL);	// CRMod
 	player_vote_impulse_alias ("lock",			IMP_VOTE_LOCK);		// CRMod
 	player_vote_impulse_alias ("match",			IMP_VOTE_MATCH);	// CRMod
+	player_vote_impulse_alias ("midair",			IMP_VOTE_MIDAIR);	// CRMod (Style)
 	player_vote_impulse_alias ("normal",			IMP_VOTE_NORMAL);	// CRMod
 	player_vote_impulse_alias ("practice",			IMP_VOTE_PRACTICE);	// CRMod
 	player_vote_impulse_alias ("setpent",			IMP_VOTE_PENT);		// CRMod
@@ -332,6 +333,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-lithium",		IMP_VOTE_LITHIUM);
 	player_vote_impulse_alias ("vote-match",		IMP_VOTE_MATCH);
 	player_vote_impulse_alias ("vote-mega",			IMP_VOTE_MEGA);
+	player_vote_impulse_alias ("vote-midair",		IMP_VOTE_MIDAIR);
 	player_vote_impulse_alias ("vote-normal",		IMP_VOTE_NORMAL);
 	player_vote_impulse_alias ("vote-pent",			IMP_VOTE_PENT);
 	player_vote_impulse_alias ("vote-practice",		IMP_VOTE_PRACTICE);
@@ -448,6 +450,7 @@ console_aliases =
 	console_init_cvar_alias ("faststartoff",	CVAR_C2,	C2_FASTSTARTOFF);
 	console_init_cvar_alias ("backpackson",		CVAR_C2,	C2_BACKPACKSON);
 	console_init_cvar_alias ("backpacksoff",	CVAR_C2,	C2_BACKPACKSOFF);
+	console_init_cvar_alias ("midair",		CVAR_C2,	C2_MODE_MIDAIR);
 
 	level_aliases ();
 	custom_aliases ();
@@ -829,6 +832,7 @@ check_console_command =
 				setfaststart ();
 			}
 		}
+
 		else if (i == C2_BACKPACKSON)
 		{
 			if (NO_BACKPACKS)
@@ -846,6 +850,9 @@ check_console_command =
 				setbackpacks ();
 			}
 		}
+
+		else if (i == C2_MODE_MIDAIR)
+			change_mode_to_midair ();
 
 		else
 			dprint ("Unknown command\n");

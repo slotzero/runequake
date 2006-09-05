@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.69 2006/08/28 04:26:02 slotzero Exp $
+/*  $Id: items.qc,v 1.70 2006/09/05 04:22:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -128,7 +128,7 @@ plants the object on the floor
 void ()
 PlaceItem =
 {
-	if (gamemode == MODE_ARENA)
+	if (gamemode & MODE_ARENA)
 	{
 		remove (self);
 		return;
@@ -1572,7 +1572,7 @@ BackpackTouch =
 			return;
 	}
 
-	if (gamemode == MODE_ARENA)
+	if (gamemode & MODE_ARENA)
 	{
 		if (arena.state == -1)
 			return;

@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.72 2006/08/27 04:20:31 slotzero Exp $
+/*  $Id: team.qc,v 1.73 2006/09/05 04:22:00 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -411,7 +411,7 @@ change_teamplay =
 	new_teams = enforced_teams ();
 
 	// Don't allow enforced teams in arena or match.
-	if (gamemode == MODE_ARENA || gamemode == MODE_MATCH)
+	if (gamemode & MODE_ARENA || gamemode == MODE_MATCH)
 		return;
 
 	if ((!old_teams && new_teams) || (new_teams && old_teams > new_teams))
@@ -801,6 +801,24 @@ teamscores_off =
 
 		e = nextent (e);
 	}
+};
+
+void ()
+change_mode_to_midair =
+{
+	local string s;
+
+	if (gamemode == MODE_MIDAIR)
+	{
+		self_sprint (self, "Already in midair mode\n");
+		return;
+	}
+
+	// midair uses same defaults as arena
+	arena_defaults ();
+	s = ftos (MODE_MIDAIR);
+	cvar_set (CVAR_C3, s);
+	admin_changelevel_now (mapname);
 };
 
 void ()

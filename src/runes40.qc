@@ -1,4 +1,4 @@
-/*  $Id: runes40.qc,v 1.28 2006/08/27 00:15:40 slotzero Exp $
+/*  $Id: runes40.qc,v 1.29 2006/09/05 04:22:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -812,7 +812,7 @@ Resurrect =
 {
 	local float w;
 
-	if (gamemode == MODE_ARENA)
+	if (gamemode & MODE_ARENA)
 	{
 		SetParms ();
 		PutClientInServer ();

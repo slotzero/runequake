@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.30 2006/08/27 00:15:40 slotzero Exp $
+/*  $Id: arena.qc,v 1.31 2006/09/05 04:22:00 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -96,7 +96,10 @@ set_arena_parms_e =
 	os = self;
 	self = e;
 	self.takedamage = DAMAGE_NO;
-	SetArenaParms ();
+	if (gamemode == MODE_MIDAIR)
+		SetMidairParms ();
+	else
+		SetArenaParms ();
 	self = os;
 };
 

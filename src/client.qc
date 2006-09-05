@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.137 2006/08/27 00:15:40 slotzero Exp $
+/*  $Id: client.qc,v 1.138 2006/09/05 04:22:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -183,12 +183,36 @@ SetArenaParms =
 };
 
 void ()
+SetMidairParms =
+{
+	self.items		= IT_AXE | IT_ROCKET_LAUNCHER | IT_ARMOR3;
+	self.health		= MAX_HEALTH_MIDAIR;
+	self.armorvalue		= MAX_ARMOR_3;
+	self.ammo_shells	= 0;
+	self.ammo_nails		= 0;
+	self.ammo_rockets	= 100;
+	self.ammo_cells		= 0;
+
+	// Setting self.weapon is necessary because you retain your
+	// weapon setting across deaths.  If you die with the single
+	// shotgun set_weapon() won't do anything when this tries to set
+	// your weapon because it thinks you're already wielding that.
+	self.weapon		= 0;
+
+	set_weapon (IT_ROCKET_LAUNCHER);
+
+	self.armortype		= ARMOR_TYPE_3;
+};
+
+void ()
 DecodeLevelParms =
 {
 	if (gamemode == MODE_ARENA)
 		SetArenaParms ();
 	else if (gamemode == MODE_PRACTICE)
 		SetPracticeParms ();
+	else if (gamemode == MODE_MIDAIR)
+		SetMidairParms ();
 	else
 	{
 		if (gamemode == MODE_MATCH)
@@ -576,7 +600,7 @@ ClientKill =
 	self.health = 0;
 	Killed (self, self, "suicide");
 
-	if (gamemode != MODE_ARENA)
+	if (!gamemode & MODE_ARENA)
 		kick_suicider ();
 };
 
@@ -618,7 +642,7 @@ SelectSpawnPoint =
 		// I would eventually like to create spawn spots for standard maps,
 		// and modify the map to restrict certain areaa.  For now, I will
 		// use the RA method of info_teleport_destinations.
-		if (gamemode == MODE_ARENA && MAP_IS_CUSTOM)
+		if (gamemode & MODE_ARENA && MAP_IS_CUSTOM)
 		{
 			spot = find_spawn_point_class ("info_teleport_destination", lastspawn);
 			if (spot)
@@ -782,7 +806,7 @@ PutClientInServer =
 		spawn_as_observer = 1;
 	else
 	{
-		if (gamemode == MODE_ARENA)
+		if (gamemode & MODE_ARENA)
 		{
 			self.takedamage = DAMAGE_NO;
 			if (put_client_in_arena ())
@@ -1093,7 +1117,7 @@ PlayerDeathThink =
 			return;
 		}
 	}
-	else if (gamemode == MODE_ARENA)
+	else if (gamemode & MODE_ARENA)
 	{
 		arena_death_think ();
 		return;
@@ -1991,7 +2015,7 @@ ClientDisconnect =
 
 	if (gamemode == MODE_MATCH)
 		match_client_disconnect ();
-	else if (gamemode == MODE_ARENA)
+	else if (gamemode & MODE_ARENA)
 		arena_client_disconnect ();
 
 	i = !self.cl[CL_ACTIVE] / %1;

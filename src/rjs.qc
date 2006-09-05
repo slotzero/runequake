@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.215 2006/08/28 06:37:15 slotzero Exp $
+/*  $Id: rjs.qc,v 1.216 2006/09/05 04:22:00 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -332,7 +332,7 @@ rjs_worldspawn =
 	e.think		= update_frag_rates;
 	e.nextthink	= update_frag_rates_time = time + 60;
 
-	if (gamemode == MODE_ARENA)
+	if (gamemode & MODE_ARENA)
 		arena	= spawn ();
 	else if (gamemode == MODE_MATCH)
 		match	= spawn ();
@@ -973,7 +973,7 @@ get_max_armor =
 float ()
 max_players =
 {
-	if (gamemode == MODE_ARENA)
+	if (gamemode & MODE_ARENA)
 		return 2;
 
 	return (temp1 & T1_MAX_PLAYERS_MASK) / T1_MAX_PLAYERS_MULT;
@@ -2203,7 +2203,7 @@ use_ammo =
 	if (gamemode == MODE_PRACTICE)
 		return;
 
-	if (gamemode == MODE_ARENA)
+	if (gamemode & MODE_ARENA)
 	{
 		if (arena.state == -2)
 			return;
