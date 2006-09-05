@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.73 2006/09/05 04:22:00 slotzero Exp $
+/*  $Id: team.qc,v 1.74 2006/09/05 04:52:33 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -817,7 +817,7 @@ change_mode_to_midair =
 	// midair uses same defaults as arena
 	arena_defaults ();
 	s = ftos (MODE_MIDAIR);
-	cvar_set (CVAR_C3, s);
+	cvar_set_infokey (CVAR_C3, s);
 	admin_changelevel_now (mapname);
 };
 
@@ -834,7 +834,7 @@ change_mode_to_match =
 
 	match_defaults ();
 	s = ftos (MODE_MATCH);
-	cvar_set (CVAR_C3, s);
+	cvar_set_infokey (CVAR_C3, s);
 	admin_changelevel_now (mapname);
 };
 
@@ -851,7 +851,7 @@ change_mode_to_arena =
 
 	arena_defaults ();
 	s = ftos (MODE_ARENA);
-	cvar_set (CVAR_C3, s);
+	cvar_set_infokey (CVAR_C3, s);
 	admin_changelevel_now (mapname);
 };
 
@@ -868,7 +868,7 @@ change_mode_to_practice =
 
 	practice_defaults ();
 	s = ftos (MODE_PRACTICE);
-	cvar_set (CVAR_C3, s);
+	cvar_set_infokey (CVAR_C3, s);
 	admin_changelevel_now (mapname);
 };
 
@@ -885,7 +885,7 @@ change_mode_to_normal =
 
 	normal_defaults ();
 	s = ftos (MODE_NORMAL);
-	cvar_set (CVAR_C3, s);
+	cvar_set_infokey (CVAR_C3, s);
 	admin_changelevel_now (mapname);
 };
 
