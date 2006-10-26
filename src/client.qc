@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.138 2006/09/05 04:22:00 slotzero Exp $
+/*  $Id: client.qc,v 1.139 2006/10/26 09:48:07 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -741,7 +741,7 @@ PutClientInServer =
 	self.runevar = 0;
 	self.runevector = VEC_ORIGIN;
 	self.grenade_spam_time = 0;
-	self.afk = time;
+	// *** DEBUG 1.3+ *** self.afk = time;
 
 	DecodeLevelParms ();
 
@@ -1456,12 +1456,18 @@ PlayerPreThink =
 	obs = is_observer ();
 	mm = gamemode == MODE_MATCH;
 
+	// *** DEBUG 1.3+ *** START
+	/*
+
 	// player is afk, check every tick for his return
 	if (self.rqstate & RQS_AFK)
 	{
 		if (self.button0 || self.button2)
 			self.afk = time;
 	}
+
+	*/
+	// *** DEBUG 1.3+ *** FINISH
 
 	// updates
 	if (self.lefty < time)
@@ -1491,7 +1497,10 @@ PlayerPreThink =
 		if (self.rqflags & RQ_TEAMSCORES_ON)
 			teamscores_on (self);
 
-		// update players activity so he doesn't we know he's not afk
+		// *** DEBUG 1.3+ *** START
+		/*
+
+		// update players activity so we know he's not afk
 		if (self.button0 || self.button1 || self.cl[CL_CMD_FORWARD] || self.cl[CL_CMD_SIDE])
 			self.afk = time;
 
@@ -1522,6 +1531,9 @@ PlayerPreThink =
 				update_showscores_name (world, self);
 			}
 		}
+
+		*/
+		// *** DEBUG 1.3+ *** FINISH
 	}
 
 	if (self.aqstate & AQS_MENU_MASK && time > self.count)
