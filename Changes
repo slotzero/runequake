@@ -1,4 +1,4 @@
-$Id: Changes,v 1.88 2006/10/26 09:48:05 slotzero Exp $
+$Id: Changes,v 1.89 2006/10/29 21:35:29 slotzero Exp $
 
 // *** DEBUG 1.2+ ***
 
@@ -18,7 +18,11 @@ $Id: Changes,v 1.88 2006/10/26 09:48:05 slotzero Exp $
 
 	#1) Went into defs.qc and removed any variable with AFK in it.  Then
 	    ran compiler and commented out all files with reference.  They
-	    are client.qc, rjs.qc, and match.qc.
+	    are client.qc, rjs.qc, match.qc, and defs.qc.
+
+	*** The server crashed 6 hours after I made these changes.  I don't feel
+	the crash was a result, but I'm going to restore them since they didn't
+	seem make a difference. ***
 
 	// Next step after that, restore world.qc.
 
