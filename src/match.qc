@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.47 2006/10/26 09:48:07 slotzero Exp $
+/*  $Id: match.qc,v 1.48 2006/10/29 21:35:17 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -96,7 +96,7 @@ match_obs_become =
 	if (type)
 	{
 		maybe_remove_team ();
-		// *** DEBUG 1.3+ *** update_showscores_name (world, self);
+		update_showscores_name (world, self);
 	}
 };
 
@@ -328,7 +328,7 @@ match_unready_names =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		// *** DEBUG 1.3+ *** update_showscores_name (world, e);
+		update_showscores_name (world, e);
 		e = find (e, classname, "player");
 	}
 };
@@ -512,8 +512,8 @@ audit_match =
 	else
 		match_stop_countdown ();
 };
-// *** DEBUG 1.3+ *** START
-/*void (entity e, entity w)
+
+void (entity e, entity w)
 update_showscores_name =
 {
 	local float msg_type;
@@ -541,8 +541,7 @@ update_showscores_name =
 	match_name = flen (w.netname, -16);
 	match_name = strcat (match_name, s);
 	svc_updatename (msg_type, w.colormap - 1, match_name);
-};*/
-// *** DEBUG 1.3+ *** FINISH
+};
 
 float ()
 match_obs_join_game =
@@ -628,7 +627,7 @@ match_obs_join_game =
 	bprint ("\n");
 
 	audit_match ();
-	// *** DEBUG 1.3+ *** update_showscores_name (world, self);
+	update_showscores_name (world, self);
 
 	return TRUE;
 };
@@ -879,7 +878,7 @@ match_notready =
 	}
 
 	maybe_remove_team ();
-	// *** DEBUG 1.3+ *** update_showscores_name (world, self);
+	update_showscores_name (world, self);
 };
 
 void ()
