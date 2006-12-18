@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.74 2006/09/05 04:52:33 slotzero Exp $
+/*  $Id: team.qc,v 1.75 2006/12/18 23:33:04 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -464,6 +464,19 @@ check_teamplay =
 	local float i;
 
 	i = cvar ("teamplay");
+
+	// hack to allow mm2 in match mode
+	if (gamemode == MODE_MATCH)
+	{
+		if (!i & TEAM_MODE_MATCH)
+			i = i | TEAM_MODE_MATCH;
+	}
+	else
+	{
+		if (i & TEAM_MODE_MATCH)
+			i = i - i & TEAM_MODE_MATCH;
+	}
+
 	if (time > 3 && (teamplay_set_state < 2 || teamplay != i))
 	{
 		teamplay_set_state = 2;
