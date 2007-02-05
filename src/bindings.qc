@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.93 2006/09/05 04:22:00 slotzero Exp $
+/*  $Id: bindings.qc,v 1.94 2007/02/05 03:21:59 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -24,6 +24,18 @@
 //-------------------------------------------------------------------
 // PLAYER BINDINGS
 //-------------------------------------------------------------------
+
+void ()
+bind_keys =
+{
+	self_stuffcmd (self, "bind x rune-use\n");
+	self_stuffcmd (self, "bind c rune-tell\n");
+	self_stuffcmd (self, "bind q rune-delete\n");
+	self_stuffcmd (self, "bind 9 weapon-mode\n");
+	self_stuffcmd (self, "bind [ show-riders\n");
+	self_stuffcmd (self, "bind ] fix-angles\n");
+	sprint (self, "Standard keys bound\n");
+};
 
 void (string name, float name_num, float imp)
 player_init_switchfire_alias =
@@ -203,6 +215,8 @@ player_aliases =
 
 	player_init_impulse_alias ("admin-toggle",		IMP_ADMIN_TOGGLE);
 	player_init_impulse_alias ("best-weapon",		IMP_BEST_WEAPON);
+	player_init_impulse_alias ("bind-keys",			IMP_BIND_DEFAULT_KEYS);
+	player_init_impulse_alias ("bind-default-keys",		IMP_BIND_DEFAULT_KEYS);
 	player_init_impulse_alias ("autostats",			IMP_AUTOSTATS);
 	player_init_impulse_alias ("change-level",		IMP_LEVELS);
 	player_init_impulse_alias ("commands",			IMP_COMMANDS);
@@ -889,6 +903,7 @@ commands =
 	self_sprint (self, "\bremove-frags\b  reset frags to zero\n");
 	self_sprint (self, "\b+hook\b         use hook\n");
 	self_sprint (self, "\bquiet-toggle\b  mute many game messages\n");
+	self_sprint (self, "\bbind-keys\b     bind default keys\n");
 	// self_sprint (self, "\n");
 
 /*

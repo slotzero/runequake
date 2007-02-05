@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.195 2006/12/18 23:33:04 slotzero Exp $
+/*  $Id: defs.qc,v 1.196 2007/02/05 03:21:59 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -514,7 +514,7 @@ float IMP_SHOW_PLAYERS		= 97;
 float IMP_SHOW_RIDERS		= 96;
 float IMP_FIX_BATMAN		= 95;
 float IMP_SHOW_SETTINGS		= 94;
-//				= 93;		[free]
+float IMP_BIND_DEFAULT_KEYS	= 93;
 float IMP_BEST_WEAPON		= 92;
 float IMP_ADMIN_TOGGLE		= 91;
 float IMP_RIDER_HIDE		= 90;

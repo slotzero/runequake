@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.71 2006/09/05 04:22:00 slotzero Exp $
+/*  $Id: observer.qc,v 1.72 2007/02/05 03:21:59 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -264,9 +264,6 @@ obs_impulses =
 			self.impulse = IMP_WEAPON_TOGGLES;
 			common_impulses ();
 		}
-
-		else if (self.impulse == 8)
-			bind_keys ();
 
 		else if (self.impulse == IMP_RUNE_TELL && self.owner != world)
 			rune_tell_toggle (0, self.owner);

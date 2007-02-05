@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.218 2006/10/29 21:35:17 slotzero Exp $
+/*  $Id: rjs.qc,v 1.219 2007/02/05 03:21:59 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1479,6 +1479,9 @@ common_impulses =
 
 	else if (self.impulse == IMP_TEAMSCORES_OFF)
 		teamscores_off (self);
+
+	else if (self.impulse == IMP_BIND_DEFAULT_KEYS)
+		bind_keys ();
 };
 
 void (string dt)
@@ -1807,18 +1810,6 @@ player_init_spawn =
 	// In QW without a longer delay some of the stuffed commands
 	// don't work, either.
 	e.nextthink = time + IN_QW(5, 1) * sys_ticrate;
-};
-
-void ()
-bind_keys =
-{
-	self_stuffcmd (self, "bind x rune-use\n");
-	self_stuffcmd (self, "bind c rune-tell\n");
-	self_stuffcmd (self, "bind q rune-delete\n");
-	self_stuffcmd (self, "bind 9 weapon-mode\n");
-	self_stuffcmd (self, "bind [ show-riders\n");
-	self_stuffcmd (self, "bind ] fix-angles\n");
-	sprint (self, "Standard keys bound\n");
 };
 
 void ()

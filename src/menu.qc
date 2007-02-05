@@ -1,4 +1,4 @@
-/*  $Id: menu.qc,v 1.13 2006/08/26 23:02:42 slotzero Exp $
+/*  $Id: menu.qc,v 1.14 2007/02/05 03:21:59 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -100,7 +100,6 @@ aq_menu_print_n =
 			"\5\b.\b Ride next player  \n"
 			"\6\b.\b Admin menu        \n"
 			"\7\b.\b Weapon toggles    \n"
-			"\8\b.\b Bind default keys \n"
 			);
 	}
 
