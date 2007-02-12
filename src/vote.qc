@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.69 2006/09/05 04:22:00 slotzero Exp $
+/*  $Id: vote.qc,v 1.70 2007/02/12 17:50:01 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -514,13 +514,15 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_PRACTICE)
 	{
-		// cancel	= 1;	//
+		cancel		= MODE_LOCKED;
 		e.frag_rate	= 0.51;	// XXX move to settings.
 		e.think1	= change_mode_to_practice;
 		e.noise1	= "change";
 		e.noise2	= " mode to practice";
 
-		if (gamemode == MODE_PRACTICE)
+		if (cancel)
+			self_sprint (self, "mode is locked\n");
+		else if (gamemode == MODE_PRACTICE)
 		{
 			if (!cancel)
 				self_sprint (self, "already in practice mode\n");
@@ -529,13 +531,15 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_NORMAL)
 	{
-		// cancel	= 1;
+		cancel		= MODE_LOCKED;
 		e.frag_rate	= 0.51; // XXX move to settings (share with practice?)
 		e.think1	= change_mode_to_normal;
 		e.noise1	= "change";
 		e.noise2	= " mode to normal";
 
-		if (gamemode == MODE_NORMAL)
+		if (cancel)
+			self_sprint (self, "mode is locked\n");
+		else if (gamemode == MODE_NORMAL)
 		{
 			if (!cancel)
 				self_sprint (self, "already in normal mode\n");
@@ -695,13 +699,15 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_ARENA)
 	{
-		// cancel	= 1;	//
+		cancel		= MODE_LOCKED;
 		e.frag_rate	= 0.51;	// XXX move to settings.
 		e.think1	= change_mode_to_arena;
 		e.noise1	= "change";
 		e.noise2	= " mode to arena";
 
-		if (gamemode == MODE_ARENA)
+		if (cancel)
+			self_sprint (self, "mode is locked\n");
+		else if (gamemode == MODE_ARENA)
 		{
 			if (!cancel)
 				self_sprint (self, "already in arena mode\n");
@@ -734,13 +740,15 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_MATCH)
 	{
-		//cancel	= 1;
+		cancel		= MODE_LOCKED;
 		e.frag_rate	= 0.51;	// XXX move to settings.
 		e.think1	= change_mode_to_match;
 		e.noise1	= "change";
 		e.noise2	= " mode to match";
 
-		if (gamemode == MODE_MATCH)
+		if (cancel)
+			self_sprint (self, "mode is locked\n");
+		else if (gamemode == MODE_MATCH)
 		{
 			if (!cancel)
 				self_sprint (self, "already in match mode\n");
@@ -846,13 +854,15 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_MIDAIR)
 	{
-		// cancel	= 1;	//
+		cancel		= MODE_LOCKED;
 		e.frag_rate	= 0.51;	// XXX move to settings.
 		e.think1	= change_mode_to_midair;
 		e.noise1	= "change";
 		e.noise2	= " mode to midair";
 
-		if (gamemode == MODE_MIDAIR)
+		if (cancel)
+			self_sprint (self, "mode is locked\n");
+		else if (gamemode == MODE_MIDAIR)
 		{
 			if (!cancel)
 				self_sprint (self, "already in midair mode\n");

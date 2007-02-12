@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.219 2007/02/05 03:21:59 slotzero Exp $
+/*  $Id: rjs.qc,v 1.220 2007/02/12 17:50:01 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -384,34 +384,8 @@ set_runemax =
 };
 
 void ()
-process_misc =
+set_gamemode =
 {
-	if (time < LEVEL_RECONNECT_ALLOWANCE)
-		return;
-
-	set_runemax ();
-	ghost_check ();
-	update_server_time ();
-
-	if (intermission_running)
-		return;
-
- 	// superceeds all other mode defaults
-	if (scratch1 & S1_NO_DEFAULT)
-		return;
-
-	// Only process the remaining functions if the server is empty.
-	if (count_valid_players (0))
-		return;
-
-	// Restart the level after 6 hours.
-	if (time > 21600)
-		admin_changelevel_now (mapname);
-
-	// vote-team
-	if (VOTE_TEAM_MODE_DEFAULT)
-		toggle_teamplay (VOTE_TEAM_MODE_DEFAULT);
-
 	if (scratch1 & S1_MATCH_DEFAULT)
 	{
 		match_defaults ();
@@ -442,6 +416,41 @@ process_misc =
 		if (gamemode != MODE_NORMAL)
 			change_mode_to_normal ();
 	}
+};
+
+void ()
+process_misc =
+{
+	if (time < LEVEL_RECONNECT_ALLOWANCE)
+		return;
+
+	set_runemax ();
+	ghost_check ();
+	update_server_time ();
+
+	if (intermission_running)
+		return;
+
+ 	// superceeds all other mode defaults
+	if (scratch1 & S1_NO_DEFAULT)
+		return;
+
+	// Only process the remaining functions if the server is empty.
+	if (count_valid_players (0))
+		return;
+
+	// Restart the level after 6 hours.
+	if (time > 21600)
+		admin_changelevel_now (mapname);
+
+	// vote-team
+	if (VOTE_TEAM_MODE_DEFAULT)
+		toggle_teamplay (VOTE_TEAM_MODE_DEFAULT);
+
+	if (MODE_LOCKED)
+		return;
+
+	set_gamemode ();
 };
 
 void ()

@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.45 2006/08/18 07:50:05 slotzero Exp $
+/*  $Id: hunked.qc,v 1.46 2007/02/12 17:50:00 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -25,6 +25,7 @@ float LAST_TIME_UPDATE;
 float HUNK_SERVER_TIME		= %10;
 float HUNK_CLIENT_DISCONNECT	= %100;
 float HUNK_BAN_OFFSET		= %800;
+float HUNK_MODE_LOCKED		= %999;
 
 // 1000 + VOTE_IMPULSE
 float HUNK_NO_QUAD		= %1008;
@@ -470,6 +471,7 @@ Hunk_Settings =
 	NO_MEGA			= fget (HUNK_NO_MEGA,		0);
 	FASTSTART		= fget (HUNK_FASTSTART,		0);
 	NO_BACKPACKS		= fget (HUNK_NO_BACKPACKS,	0);
+	MODE_LOCKED		= fget (HUNK_MODE_LOCKED,	0);
 
 	set_runemax ();
 };

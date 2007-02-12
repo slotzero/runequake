@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.94 2007/02/05 03:21:59 slotzero Exp $
+/*  $Id: bindings.qc,v 1.95 2007/02/12 17:50:00 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -465,6 +465,8 @@ console_aliases =
 	console_init_cvar_alias ("backpackson",		CVAR_C2,	C2_BACKPACKSON);
 	console_init_cvar_alias ("backpacksoff",	CVAR_C2,	C2_BACKPACKSOFF);
 	console_init_cvar_alias ("midair",		CVAR_C2,	C2_MODE_MIDAIR);
+	console_init_cvar_alias ("modelock",		CVAR_C2,	C2_MODE_LOCK);
+	console_init_cvar_alias ("modeunlock",		CVAR_C2,	C2_MODE_UNLOCK);
 
 	level_aliases ();
 	custom_aliases ();
@@ -867,6 +869,24 @@ check_console_command =
 
 		else if (i == C2_MODE_MIDAIR)
 			change_mode_to_midair ();
+
+		else if (i == C2_MODE_LOCK)
+		{
+			if (!MODE_LOCKED)
+			{
+				dprint_force ("Mode is locked\n");
+				MODE_LOCKED = fput (HUNK_MODE_LOCKED, 1);
+			}
+		}
+
+		else if (i == C2_MODE_UNLOCK)
+		{
+			if (MODE_LOCKED)
+			{
+				dprint_force ("Mode is unlocked\n");
+				MODE_LOCKED = fput (HUNK_MODE_LOCKED, 0);
+			}
+		}
 
 		else
 			dprint ("Unknown command\n");

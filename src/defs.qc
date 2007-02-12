@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.196 2007/02/05 03:21:59 slotzero Exp $
+/*  $Id: defs.qc,v 1.197 2007/02/12 17:50:00 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1181,6 +1181,8 @@ float	C2_FASTSTARTOFF		= 46;
 float	C2_BACKPACKSON		= 47;
 float	C2_BACKPACKSOFF		= 48;
 float	C2_MODE_MIDAIR		= 49;
+float	C2_MODE_LOCK		= 50;
+float	C2_MODE_UNLOCK		= 51;
 
 // game mode
 float	gamemode;
