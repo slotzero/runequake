@@ -1,4 +1,4 @@
-/*  $Id: runes40.qc,v 1.29 2006/09/05 04:22:00 slotzero Exp $
+/*  $Id: runes40.qc,v 1.30 2007/07/13 03:16:51 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -474,8 +474,8 @@ float WEIRD_TWITCHING	= 4;
 float WEIRD_COFFEE	= 5;
 float WEIRD_STICKY	= 6;
 float WEIRD_SHOOTPHOB	= 7;
-float WEIRD_VERTIGO	= 8;
-float WEIRD_TWIRLY	= 9;
+float WEIRD_TWIRLY	= 8;
+float WEIRD_VERTIGO	= 9;
 float WEIRD_BLIND	= 10;
 
 // I've disabled blindness entirely.  What I don't like about it is that
@@ -484,8 +484,8 @@ float WEIRD_BLIND	= 10;
 //
 // Twirly head is disabled in QW because punchangle does not exist.
 
-float WEIRD_MAX_POQ	= 9;
-float WEIRD_MAX_QW	= 8;
+float WEIRD_MAX_POQ	= 8;
+float WEIRD_MAX_QW	= 7;
 
 void ()
 Weird_WanderThink =
@@ -509,7 +509,7 @@ void ()
 Weird_AllOff =
 {
 	stuffcmd (self, "v_idlescale 0\n");
-	stuffcmd (self, "fov 90\n");
+	// stuffcmd (self, "fov 90\n");
 	stuffcmd (self, CSHIFT_NONE);
 	stuffcmd (self, "bf\n");
 	IN_POQ([-
