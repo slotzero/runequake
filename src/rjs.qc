@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.220 2007/02/12 17:50:01 slotzero Exp $
+/*  $Id: rjs.qc,v 1.221 2007/07/20 00:59:13 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1502,6 +1502,17 @@ sure_kill =
 	// With old teamplay 1 rules you couldn't kill yourself this way
 	// (a workaround is set the attacker to world).
 	T_Damage (self, self, self, SURE_KILL_DAMAGE, dt);
+};
+
+void (entity e, string dt)
+sure_kill_e =
+{
+	local entity os;
+
+	os = self;
+	self = e;
+	sure_kill (dt);
+	self = os;
 };
 
 string (float c)

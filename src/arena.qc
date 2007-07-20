@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.31 2006/09/05 04:22:00 slotzero Exp $
+/*  $Id: arena.qc,v 1.32 2007/07/20 00:59:13 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -35,6 +35,7 @@
 // arena.movetarget	= winner
 // arena.dmg_inflictor	= current streaker
 // arena.dmg_take	= streak amount
+// arena.last_thought	= length match in progress
 
 void (entity e)
 arena_game_pos_announce =
@@ -186,6 +187,9 @@ arena_countdown =
 
 		if (self.state == 0)
 		{
+			// reset match time
+			self.last_thought = time;
+
 			bprint (self.owner.netname);
 			if (self.owner == self.dmg_inflictor && self.dmg_take > 1)
 			{
@@ -235,7 +239,24 @@ arena_countdown =
 		}
 	}
 	else
-		return;
+	{
+		// prevent match from taking too long
+		a = game_queue_len();
+		if (a)
+		{
+			b = ceil (time - self.last_thought);
+			if ((a > 3 && b == 50) || b == 80)
+				bprint ("\{1}match ends in 10 seconds\n");
+			if ((a > 3 && b > 60) || (b > 90))
+			{
+				bprint ("\{1}match timelimit reached\n");
+				if ((self.owner.health + self.owner.armorvalue) > (self.runent.health + self.runent.armorvalue))
+					sure_kill_e (self.runent, string_null);
+				else
+					sure_kill_e (self.owner, string_null);
+			}
+		}
+	}
 
 	arena.nextthink = time + 1;
 };
