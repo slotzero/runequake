@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.46 2007/02/12 17:50:00 slotzero Exp $
+/*  $Id: hunked.qc,v 1.47 2007/08/01 18:41:46 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -321,9 +321,12 @@ ip_to_vec =
 			{
 				ch = atoc (world[%5] / %1);
 				if (ch)
+				{
 					strcpy (octet[oc], ch);
-
-				oc = oc + %1;
+					oc = oc + %1;
+				}
+				else
+					i = 16;
 			}
 			else
 			{
