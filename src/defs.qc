@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.197 2007/02/12 17:50:00 slotzero Exp $
+/*  $Id: defs.qc,v 1.198 2007/08/02 03:15:05 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -582,6 +582,9 @@ float IMP_ADMIN_CYCLE_SHOW	= 13;
 float IMP_ADMIN_CHANGE_MAP	= 14;
 float IMP_ADMIN_DISP_INFO	= 15;
 float IMP_ADMIN_DISP_INFO_ALL	= 16;
+float IMP_ADMIN_BANLIST		= 17;
+float IMP_ADMIN_BANIP		= 18;
+float IMP_ADMIN_UNBANIP		= 19;
 
 // vote impulse commands
 float IMP_VOTE_EXIT		= 1;

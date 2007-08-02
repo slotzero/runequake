@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.95 2007/02/12 17:50:00 slotzero Exp $
+/*  $Id: bindings.qc,v 1.96 2007/08/02 03:15:05 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -283,6 +283,8 @@ admin_aliases =
 	self_stuffcmd (self, s);
 	self_stuffcmd (self, "\"\n");
 
+	player_admin_impulse_alias ("admin-banip",		IMP_ADMIN_BANIP);
+	player_admin_impulse_alias ("admin-banlist",		IMP_ADMIN_BANLIST);
 	player_admin_impulse_alias ("admin-cycle",		IMP_ADMIN_CYCLE);
 	player_admin_impulse_alias ("admin-cycle-show",		IMP_ADMIN_CYCLE_SHOW);
 	player_admin_impulse_alias ("admin-eyes",		IMP_ADMIN_EYES);
@@ -295,6 +297,7 @@ admin_aliases =
 	player_admin_impulse_alias ("admin-team-change-toggle",	IMP_ADMIN_TEAM_CHANGE_TOGGLE);
 	player_admin_impulse_alias ("admin-vote-team-toggle",	IMP_ADMIN_VOTE_TEAM_TOGGLE);
 	player_admin_impulse_alias ("admin-teamplay-zero",	IMP_ADMIN_TEAMPLAY_ZERO);
+	player_admin_impulse_alias ("admin-unbanip",		IMP_ADMIN_UNBANIP);
 	player_admin_impulse_alias ("admin-unbind",		IMP_ADMIN_UNBIND);
 	player_admin_impulse_alias ("change-level",		IMP_ADMIN_CHANGE_MAP);
 	player_admin_impulse_alias ("disp-info",		IMP_ADMIN_DISP_INFO);

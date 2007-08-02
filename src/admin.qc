@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.45 2006/09/05 04:22:00 slotzero Exp $
+/*  $Id: admin.qc,v 1.46 2007/08/02 03:15:05 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -661,6 +661,8 @@ admin_change_map =
 void ()
 admin_impulse_commands =
 {
+	local vector v;
+
 	if (!is_admin ())
 		impulse_override_cancel ();
 
@@ -723,6 +725,27 @@ admin_impulse_commands =
 
 	else if (self.impulse == IMP_ADMIN_DISP_INFO_ALL)
 		disp_info (1);
+
+	else if (self.impulse == IMP_ADMIN_BANLIST)
+		ban_list ();
+
+	else if (self.impulse == IMP_ADMIN_BANIP)
+	{
+		v = ip_to_vec (self.netname);
+		if (v == VEC_ORIGIN)
+			self_sprint (self, "invalid ip address\n");
+		else
+			ban_add (v);
+	}
+
+	else if (self.impulse == IMP_ADMIN_UNBANIP)
+	{
+		v = ip_to_vec (self.netname);
+		if (v == VEC_ORIGIN)
+			self_sprint (self, "invalid ip address\n");
+		else
+			ban_remove (v);
+	}
 
 	impulse_override_cancel ();
 };
