@@ -1,4 +1,4 @@
-$Id: Playing,v 1.8 2005/06/24 21:36:54 slotzero Exp $
+$Id: Playing,v 1.9 2007/09/24 06:46:07 slotzero Exp $
 
 This is the user documentation for Rune Quake.  You can learn
 more about Rune Quake at http://www.runequake.com.
@@ -1078,31 +1078,30 @@ Rune Descriptions
 	health with each activation. Your potential health loss will
 	increase with every kill. There is no recharge time!
 
-    Sonar Rune (54)
-
-	Activate your rune to detect the 4 closest players within a set
-	radius. You emit a sound after each pulse, and when a player is
-	detected, they too emit a sound.
-
-    Anti-Packs Rune (55)
+    Anti-Packs Rune (54)
 
 	Drop backpacks that remove ammo and weapons from your enemies. The
 	backpacks will bleed to indicate they are not standard backpacks.
 
-    Telefrag Deflect Rune (56)
+    Telefrag Deflect Rune (55)
 
 	Deflects most telefrags!
 
-    Bouncing Betty Rune (57)
+    Bouncing Betty Rune (56)
 
 	Also known as cluster grenades. You launch a single grenade which
 	after a second spawns multiple clusters of grenades. A real
 	crowd pleaser!
 
-    Tornado Rune (58)
+    Tornado Rune (57)
 
 	Launch a massive tornado that sucks you, and everyone else into its
 	center. If you touch the center you will be gibbed.
+
+    Requiem Rune (58)
+
+    Walking over ammo, health, or armor doesn't pick it up but provides a
+    continuous supply.
 
     Lithium Hook (59)
 
@@ -1141,4 +1140,4 @@ End
 That's it!  Have fun playing the game, and please mail me if you find
 bugs or have suggestions.
 
-Rune Quake Development Team <slotzero@runequake.com>
+Slot Zero <slotzero@runequake.com>
