@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.75 2006/12/18 23:33:04 slotzero Exp $
+/*  $Id: team.qc,v 1.76 2007/10/05 04:41:19 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -972,6 +972,10 @@ match_defaults =
 	// drop backpacks on
 	if (NO_BACKPACKS)
 		setbackpacks ();
+
+	// powerup drop off
+	if (!deathmatch & DM_NO_DROP_POWERUP)
+		toggle_powerup_drop ();
 };
 
 void ()
@@ -1040,6 +1044,10 @@ arena_defaults =
 	// drop backpacks off
 	if (!NO_BACKPACKS)
 		setbackpacks ();
+
+	// powerup drop on, no default
+	//if (deathmatch & DM_NO_DROP_POWERUP)
+	//	toggle_powerup_drop ();
 };
 
 void ()
@@ -1108,6 +1116,10 @@ practice_defaults =
 	// drop backpacks off
 	if (!NO_BACKPACKS)
 		setbackpacks ();
+
+	// powerup drop on
+	if (deathmatch & DM_NO_DROP_POWERUP)
+		toggle_powerup_drop ();
 };
 
 void ()
@@ -1176,4 +1188,8 @@ normal_defaults =
 	// drop backpacks on
 	if (NO_BACKPACKS)
 		setbackpacks ();
+
+	// powerup drop on
+	if (deathmatch & DM_NO_DROP_POWERUP)
+		toggle_powerup_drop ();
 };
