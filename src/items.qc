@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.70 2006/09/05 04:22:00 slotzero Exp $
+/*  $Id: items.qc,v 1.71 2007/10/05 04:18:49 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1806,6 +1806,7 @@ drop_powerup =
 	item.touch	= drop_powerup_touch;
 	item.nextthink	= item.cnt - 3;	// blink before removing
 	item.think	= blink_item;
+	item.classname	= "dropped_powerup"; // used by vote-powerup-drop
 };
 
 void ()

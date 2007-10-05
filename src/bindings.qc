@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.96 2007/08/02 03:15:05 slotzero Exp $
+/*  $Id: bindings.qc,v 1.97 2007/10/05 04:18:49 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -353,6 +353,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-midair",		IMP_VOTE_MIDAIR);
 	player_vote_impulse_alias ("vote-normal",		IMP_VOTE_NORMAL);
 	player_vote_impulse_alias ("vote-pent",			IMP_VOTE_PENT);
+	player_vote_impulse_alias ("vote-powerup-drop",		IMP_VOTE_POWERUP_DROP);
 	player_vote_impulse_alias ("vote-practice",		IMP_VOTE_PRACTICE);
 	player_vote_impulse_alias ("vote-quad",			IMP_VOTE_QUAD);
 	player_vote_impulse_alias ("vote-ring",			IMP_VOTE_RING);
@@ -461,8 +462,8 @@ console_aliases =
 	console_init_cvar_alias ("conprint",		CVAR_C2,	C2_CONPRINT);
 	console_init_cvar_alias ("eff",			CVAR_C2,	C2_EFFICIENCY);
 	console_init_cvar_alias ("match",		CVAR_C2,	C2_MODE_MATCH);
-	console_init_cvar_alias ("dropon",		CVAR_C2,	C2_DROPON);
-	console_init_cvar_alias ("dropoff",		CVAR_C2,	C2_DROPOFF);
+	console_init_cvar_alias ("armordropon",		CVAR_C2,	C2_ARMORDROPON);
+	console_init_cvar_alias ("armordropoff",	CVAR_C2,	C2_ARMORDROPOFF);
 	console_init_cvar_alias ("faststarton",		CVAR_C2,	C2_FASTSTARTON);
 	console_init_cvar_alias ("faststartoff",	CVAR_C2,	C2_FASTSTARTOFF);
 	console_init_cvar_alias ("backpackson",		CVAR_C2,	C2_BACKPACKSON);
@@ -470,6 +471,8 @@ console_aliases =
 	console_init_cvar_alias ("midair",		CVAR_C2,	C2_MODE_MIDAIR);
 	console_init_cvar_alias ("modelock",		CVAR_C2,	C2_MODE_LOCK);
 	console_init_cvar_alias ("modeunlock",		CVAR_C2,	C2_MODE_UNLOCK);
+	console_init_cvar_alias ("powerdropon",		CVAR_C2,	C2_POWERDROPON);
+	console_init_cvar_alias ("powerdropoff",	CVAR_C2,	C2_POWERDROPOFF);
 
 	level_aliases ();
 	custom_aliases ();
@@ -816,7 +819,7 @@ check_console_command =
 		else if (i == C2_MODE_MATCH)
 			change_mode_to_match ();
 
-		else if (i == C2_DROPON)
+		else if (i == C2_ARMORDROPON)
 		{
 			if (deathmatch & DM_NO_DROP_ARMOR)
 			{
@@ -825,7 +828,7 @@ check_console_command =
 			}
 		}
 
-		else if (i == C2_DROPOFF)
+		else if (i == C2_ARMORDROPOFF)
 		{
 			if (!deathmatch & DM_NO_DROP_ARMOR)
 			{
@@ -888,6 +891,24 @@ check_console_command =
 			{
 				dprint_force ("Mode is unlocked\n");
 				MODE_LOCKED = fput (HUNK_MODE_LOCKED, 0);
+			}
+		}
+
+		else if (i == C2_POWERDROPON)
+		{
+			if (deathmatch & DM_NO_DROP_POWERUP)
+			{
+				dprint_force ("Powerup dropping enabled\n");
+				toggle_powerup_drop ();
+			}
+		}
+
+		else if (i == C2_POWERDROPOFF)
+		{
+			if (!deathmatch & DM_NO_DROP_POWERUP)
+			{
+				dprint_force ("Powerup dropping disabled\n");
+				toggle_powerup_drop ();
 			}
 		}
 

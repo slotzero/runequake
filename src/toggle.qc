@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.25 2006/08/18 07:50:05 slotzero Exp $
+/*  $Id: toggle.qc,v 1.26 2007/10/05 04:18:50 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -305,4 +305,25 @@ setbackpacks =
 	NO_BACKPACKS = fput (HUNK_NO_BACKPACKS, !NO_BACKPACKS);
 	if (NO_BACKPACKS)
 		remove_classname ("backpack");
+};
+
+void ()
+toggle_powerup_drop =
+{
+	local float new_deathmatch;
+	local string s;
+
+	new_deathmatch = cvar ("deathmatch");
+
+	if (new_deathmatch & DM_NO_DROP_POWERUP)
+		new_deathmatch = new_deathmatch - new_deathmatch & DM_NO_DROP_POWERUP;
+	else
+	{
+		new_deathmatch = new_deathmatch | DM_NO_DROP_POWERUP;
+		remove_classname ("dropped_powerup");
+	}
+
+	s = ftos (new_deathmatch);
+	deathmatch = new_deathmatch;
+	cvar_set ("deathmatch", s);
 };
