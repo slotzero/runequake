@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.97 2007/10/05 04:18:49 slotzero Exp $
+/*  $Id: bindings.qc,v 1.98 2007/10/07 07:42:24 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -1046,6 +1046,7 @@ help_vote =
 	self_sprint (self, "\bvote-shields    vote-weapons-stay\n");
 	self_sprint (self, "\bvote-mega       vote-match\n");
 	self_sprint (self, "\bvote-backpacks  vote-armor-drop\n");
+	self_sprint (self, "\b                vote-powerup-drop\n");
 	// self_sprint (self, "\n");
 };
 
