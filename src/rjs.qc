@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.221 2007/07/20 00:59:13 slotzero Exp $
+/*  $Id: rjs.qc,v 1.222 2007/10/11 00:03:07 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2002,7 +2002,7 @@ show_settings =
 	self_sprint (self, "\n  items respawn  ");	self_sprint_boolean (self, deathmatch & DM_RESPAWN);
 	self_sprint (self, "  pent repl   ");		self_sprint_boolean (self, deathmatch & DM_PENT_REPLACEMENT);
 	self_sprint (self, "\n  weapons stay   ");	self_sprint_boolean (self, deathmatch & DM_WEAPONS_STAY);
-	self_sprint (self, "  removed     ");		self_sprint (self, "xxx");
+	self_sprint (self, "  dmg frags   ");		self_sprint_boolean (self, deathmatch & DM_DAMAGE_MATCH);
 	self_sprint (self, "\n  long quad resp "); 	self_sprint_boolean (self, deathmatch & DM_LONG_QUAD_RESPAWN);
 	self_sprint (self, "  exit safe   ");		self_sprint_boolean (self, deathmatch & DM_EXIT_NON_FATAL);
 	self_sprint (self, "\n  quad replace   ");	self_sprint_boolean (self, deathmatch & DM_QUAD_REPLACEMENT);
@@ -2010,17 +2010,10 @@ show_settings =
 	self_sprint (self, "\n  no drop powup  ");	self_sprint_boolean (self, deathmatch & DM_NO_DROP_POWERUP);
 	self_sprint (self, "  no altweap  ");		self_sprint_boolean (self, NO_ALT_WEAPONS);
 	self_sprint (self, "\n  no drop armor  ");	self_sprint_boolean (self, deathmatch & DM_NO_DROP_ARMOR);
-	self_sprint (self, "  dmg frags   ");		self_sprint_boolean (self, deathmatch & DM_DAMAGE_MATCH);
-	self_sprint (self, "\n  sv_maxspeed    ");
+	self_sprint (self, "  sv_maxspeed ");
 	i = cvar ("sv_maxspeed");
 	self_sprint_float (self, i);
-	self_sprint (self, "  sv_aim   ");
-	i = cvar ("sv_aim");
-	if (i == rint (i))
-		self_sprint (self, "   ");
-	self_sprint_float (self, i);
 	self_sprint (self, "\n");
-
 	self_sprint (self, "Runes:");
 	self_sprint (self, "\n  rune cheat     ");	self_sprint_boolean (self, temp1 & T1_RUNE_CHEAT);
 	self_sprint (self, "  max runes   ");		self_sprint_float (self, runemax);
@@ -2048,21 +2041,6 @@ show_settings =
 		self_sprint (self, "rune");
 	i = vote_hook_disabled (0);
 	self_sprint (self, " vote-hook   ");		self_sprint_boolean (self, !i);
-		self_sprint (self, "\n  hook default   ");
-	if (temp1 & T1_HOOK_DEFAULT_ON)
-	{
-		if (!HOOK_DEFAULT || HOOK_DEFAULT == T1_HOOK_MASK)
-			self_sprint (self, "rune");
-		else if (HOOK_DEFAULT == T1_FREE_HOOK)
-			self_sprint (self, "free");
-		else if (HOOK_DEFAULT == T1_LITHIUM_HOOK)
-			self_sprint (self, "lith");
-		else
-			self_sprint (self, "err ");
-	}
-	else
-		self_sprint (self, "off ");
-
 	self_sprint (self, "\n");
 };
 
