@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.98 2007/10/07 07:42:24 slotzero Exp $
+/*  $Id: bindings.qc,v 1.99 2007/10/11 01:17:02 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -228,6 +228,7 @@ player_aliases =
 	player_init_impulse_alias ("fix-angles",		IMP_FIX_BATMAN);
 	player_init_impulse_alias ("help-levels",		IMP_HELP_LEVELS);
 	player_init_impulse_alias ("help-match",		IMP_HELP_MATCH);
+	player_init_impulse_alias ("help-options",		IMP_HELP_OPTIONS);
 	player_init_impulse_alias ("help-vote",			IMP_HELP_VOTE);
 	player_init_impulse_alias ("+hook",			IMP_HOOK_ON);
 	player_init_impulse_alias ("-hook",			IMP_HOOK_OFF);
@@ -473,6 +474,7 @@ console_aliases =
 	console_init_cvar_alias ("modeunlock",		CVAR_C2,	C2_MODE_UNLOCK);
 	console_init_cvar_alias ("powerdropon",		CVAR_C2,	C2_POWERDROPON);
 	console_init_cvar_alias ("powerdropoff",	CVAR_C2,	C2_POWERDROPOFF);
+	console_init_cvar_alias ("help-options",	CVAR_C2,	C2_HELP_OPTIONS);
 
 	level_aliases ();
 	custom_aliases ();
@@ -912,6 +914,9 @@ check_console_command =
 			}
 		}
 
+		else if (i == C2_HELP_OPTIONS)
+			help_options ();
+
 		else
 			dprint ("Unknown command\n");
 
@@ -940,6 +945,7 @@ commands =
 	self_sprint (self, "\bhelp-levels\b   levels with full name\n");
 	self_sprint (self, "\bhelp-vote\b     vote descriptions\n");
 	self_sprint (self, "\bhelp-match\b    match mode help\n");
+	self_sprint (self, "\bhelp-options\b  current server options\n");
 	self_sprint (self, "\bcustom\b        custom levels on server\n");
 	self_sprint (self, "\bvote-exit\b     vote to exit the level\n");
 	self_sprint (self, "\bvote-team\b     vote to toggle teams\n");
@@ -1063,4 +1069,28 @@ help_match =
 	self_sprint (self, "\block\b          prevent new players\n");
 	self_sprint (self, "\bunlock\b        allow new teams\n");
 	self_sprint (self, "\bobserver\b      leave match/go observer\n");
+};
+
+void ()
+help_options =
+{
+	self_sprint (self, "\n\b             \.help-options\.\n");
+	self_sprint (self, "\b       (current state of options)\n");
+	self_sprint (self, "\n\bhook          ");	self_sprint_boolean (self, temp1 & T1_HOOK_MASK);
+	self_sprint (self, "\b  hook-damage   ");	self_sprint_boolean (self, !NO_HOOK_DAMAGE);
+	self_sprint (self, "\n\bquad          ");	self_sprint_boolean (self, !NO_QUAD);
+	self_sprint (self, "\b  pent          ");	self_sprint_boolean (self, !NO_PENT);
+	self_sprint (self, "\n\bring          ");	self_sprint_boolean (self, !NO_RING);
+	self_sprint (self, "\b  suit          ");	self_sprint_boolean (self, !NO_SUIT);
+	self_sprint (self, "\n\barmor         ");	self_sprint_boolean (self, !NO_ARMOR);
+	self_sprint (self, "\b  armor rotate  ");	self_sprint_boolean (self, ROTATE);
+	self_sprint (self, "\n\brunes         ");	self_sprint_boolean (self, !NO_RUNES);
+	self_sprint (self, "\b  alt weapons   ");	self_sprint_boolean (self, !NO_ALT_WEAPONS);
+	self_sprint (self, "\n\bshields       ");	self_sprint_boolean (self, !NO_SPAWN_SHIELDS);
+	self_sprint (self, "\b  weapons stay  ");	self_sprint_boolean (self, deathmatch & DM_WEAPONS_STAY);
+	self_sprint (self, "\n\bmega          ");	self_sprint_boolean (self, !NO_MEGA);
+	self_sprint (self, "\b  backpacks     ");	self_sprint_boolean (self, !NO_BACKPACKS);
+	self_sprint (self, "\n\barmor drop    ");	self_sprint_boolean (self, !deathmatch & DM_NO_DROP_ARMOR);
+	self_sprint (self, "\b  powerup drop  ");	self_sprint_boolean (self, !deathmatch & DM_NO_DROP_POWERUP);
+	self_sprint (self, "\n");
 };

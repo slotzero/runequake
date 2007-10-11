@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.59 2007/02/12 17:50:01 slotzero Exp $
+/*  $Id: settings.qc,v 1.60 2007/10/11 01:17:02 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -156,13 +156,9 @@ float VOTE_TEAM_PERCENTAGE	= 0.51;
 float VOTE_TEAM_MODE		= 141;	// health/armor prot, 2 teams, topdog
 float VOTE_TEAM_MODE_DEFAULT	= -1;	// -1 teams off, 0 disabled, 1 teams on
 
-// This does the same thing for hook mode (unless the T1_HOOK_NO_VOTE bit
-// is set in the temp1 variable).  If hook is enabled, it will use the value
-// in hook mode.  Unlike teamplay, the T1_HOOK_MODE_DEFAULT_ON bit must be turned
-// on in order for the server to reset hook automatically.
+// The percentage of players required to vote hook on or off.
 
 float VOTE_HOOK_PERCENTAGE	= 0.51;
-float HOOK_DEFAULT		= 262144; // 0 (off) or 262144 (free) or 524288 (lith)
 
 // This is the number of seconds of protection that newly spawned players
 // get.  Set to 0 to disable.
