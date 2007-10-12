@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.140 2006/10/29 21:35:17 slotzero Exp $
+/*  $Id: client.qc,v 1.141 2007/10/12 18:59:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -2050,7 +2050,6 @@ ClientDisconnect =
 	self.runetype	= 0;
 	self.aqflags	= 0;	// for AQ_INIT_DONE, for is_valid_player()
 	self.rqflags	= 0;
-	self.vote_flags	= 0;
 	self.effects	= 0;
 
 	// Set frags so the "unconnected" status list entry for the next
