@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.141 2007/10/12 18:59:48 slotzero Exp $
+/*  $Id: client.qc,v 1.142 2007/10/17 00:49:36 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -2116,11 +2116,14 @@ ClientObituary =
 			else
 				bprint ("'s pet shambler\n");
 			add_frag (attacker.owner, 1);
+			attacker.enemy_kills = attacker.enemy_kills + 1; // killstats
+			targ.killed = targ.killed + 1; // killstats
 		}
 		else
 		{
 			bprint (targ.netname);
 			bprint (" was smashed by a rogue shambler\n");
+			targ.killed = targ.killed + 1; // killstats
 		}
 		return;
 	}
@@ -2134,11 +2137,14 @@ ClientObituary =
 			bprint (attacker.owner.netname);
 			bprint ("'s zombies\n");
 			add_frag (attacker.owner, 1);
+			attacker.enemy_kills = attacker.enemy_kills + 1; // killstats
+			targ.killed = targ.killed + 1; // killstats
 		}
 		else
 		{
 			bprint (targ.netname);
 			bprint (" joined somebody's zombies\n");
+			targ.killed = targ.killed + 1; // killstats
 		}
 		return;
 	}
@@ -2151,6 +2157,7 @@ ClientObituary =
 				&& targ != attacker)
 		{
 			add_frag (attacker, -1);
+			attacker.mate_kills = attacker.mate_kills + 1; // killstats
 			bprint (attacker_name);
 			bprint (" squishes teammate ");
 			bprint (targ.netname);
@@ -2159,6 +2166,8 @@ ClientObituary =
 		else if (attacker_player && targ != attacker)
 		{
 			add_frag (attacker, 1);
+			attacker.enemy_kills = attacker.enemy_kills + 1; // killstats
+			targ.killed = targ.killed + 1; // killstats
 			bprint (attacker_name);
 			bprint (" squishes ");
 			bprint (targ.netname);
@@ -2167,6 +2176,7 @@ ClientObituary =
 		else
 		{
 			add_frag (targ, -1);
+			targ.suicide = targ.suicide + 1; // killstats
 			bprint (targ.netname);
 			bprint (" was squished\n");
 		}
@@ -2274,7 +2284,10 @@ ClientObituary =
 				bprint (" becomes bored with life\n");
 
 			if (f)
+			{
 				add_frag (attacker, f);
+				attacker.suicide = attacker.suicide + 1; // killstats
+			}
 			return;
 		}
 
@@ -2293,10 +2306,13 @@ ClientObituary =
 			bprint (attacker_name);
 			bprint (s1);
 			add_frag (attacker, -1);
+			attacker.mate_kills = attacker.mate_kills + 1; // killstats
 			return;
 		}
 
 		add_frag (attacker, 1);
+		attacker.enemy_kills = attacker.enemy_kills + 1; // killstats
+		targ.killed = targ.killed + 1; // killstats
 
 		if (dt == "kamikaze")
 		{
@@ -2560,6 +2576,7 @@ ClientObituary =
 	}
 
 	add_frag (targ, -1);
+	targ.suicide = targ.suicide + 1; // killstats
 	bprint (targ.netname);
 
 	// killed by a montser?

@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.113 2006/07/05 22:08:38 slotzero Exp $
+/*  $Id: develop.qc,v 1.114 2007/10/17 00:49:36 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -284,6 +284,79 @@ reset_efficiency_all =
 		reset_efficiency_e (e);
 		e = find (e, classname, "player");
 	}
+};
+
+void (entity to, entity e)
+sprint_killstats_player =
+{
+	local string s;
+
+	self_sprintf_len (to, e.netname, -15);
+
+	// frags
+	self_sprint (to, "\{252}");
+	if (e == to)
+		self_sprint (to, "\[");
+	else
+		self_sprint (to, " ");
+
+	s = ftos (e.frags);
+	self_sprintf_len (to, s, 3);
+
+	if (e == to)
+		self_sprint (to, "\]");
+	else
+		self_sprint (to, " ");
+
+	// enemy kills
+	self_sprint (to, "\{252}");
+	s = ftos (e.enemy_kills);
+	self_sprintf_len (to, s, 3);
+
+	// self kills
+	self_sprint (to, "\{252}");
+	s = ftos (e.suicide);
+	self_sprintf_len (to, s, 3);
+
+	// teammates killed
+	self_sprint (to, "\{252}");
+	s = ftos (e.mate_kills);
+	self_sprintf_len (to, s, 3);
+
+	// killed by enemy
+	self_sprint (to, "\{252}");
+	s = ftos (e.killed);
+	self_sprintf_len (to, s, 3);
+
+	self_sprint (to, "\n");
+};
+
+void (entity to)
+sprint_killstats_e =
+{
+	local entity e;
+
+	self_sprint (to, "opp - number of opponents killed\n");
+	self_sprint (to, "slf - number of times killed self\n");
+	self_sprint (to, "tm  - number of teammates killed\n");
+	self_sprint (to, "kld - number of times killed by enemy\n");
+	self_sprint (to, "\n     name      \{252}frags\{252}opp\{252}slf\{252}tm \{252}kld\n");
+	self_sprint (to, "\b---------------+-----+---+---+---+---\n");
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (!is_observer_e (e) || e.runevar)
+			sprint_killstats_player (to, e);
+
+		e = find (e, classname, "player");
+	}
+};
+
+void ()
+sprint_killstats =
+{
+	sprint_killstats_e (self);
 };
 
 void ()

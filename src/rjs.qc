@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.223 2007/10/11 01:17:02 slotzero Exp $
+/*  $Id: rjs.qc,v 1.224 2007/10/17 00:49:36 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1310,6 +1310,9 @@ common_impulses =
 
 	else if (self.impulse == IMP_EFFICIENCY)
 		sprint_efficiency ();
+
+	else if (self.impulse == IMP_KILLSTATS)
+		sprint_killstats ();
 
 	else if (self.impulse == IMP_AUTOSTATS)
 	{
