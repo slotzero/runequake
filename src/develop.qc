@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.115 2007/10/17 02:02:53 slotzero Exp $
+/*  $Id: develop.qc,v 1.116 2007/10/17 18:34:51 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -274,7 +274,10 @@ void (entity e)
 reset_efficiency_e =
 {
 	if (e.cl[CL_ACTIVE])
+	{
 		e.shell_dmg = e.shell_dmg_max = e.nail_dmg = e.nail_dmg_max = e.rocket_dmg = e.rocket_dmg_max = e.cell_dmg = e.cell_dmg_max = 0;
+		e.enemy_kills = e.suicide = e.mate_kills = e.killed = 0;
+	}
 };
 
 void ()

@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.142 2007/10/17 00:49:36 slotzero Exp $
+/*  $Id: client.qc,v 1.143 2007/10/17 18:34:51 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -458,8 +458,11 @@ execute_changelevel =
 	while (other != world)
 	{
 		if (other.rqflags & RQ_AUTOSTATS)
+		{
 			sprint_efficiency_e (other);
-
+			sprint_killstats_e (other);
+			sprint_stats_e (other);
+		}
 		move_to_intermission (other);
 		other = find (other, classname, "player");
 	}
