@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.100 2007/10/17 00:49:36 slotzero Exp $
+/*  $Id: bindings.qc,v 1.101 2007/10/17 02:02:53 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -255,6 +255,7 @@ player_aliases =
 	player_init_impulse_alias ("show-riders",		IMP_SHOW_RIDERS);
 	player_init_impulse_alias ("show-settings",		IMP_SHOW_SETTINGS);
 	player_init_impulse_alias ("show-votes",		IMP_SHOW_VOTES);
+	player_init_impulse_alias ("stats",			IMP_STATS);
 	player_init_impulse_alias ("team-change",		IMP_TEAM_ROTATE);
 	player_init_impulse_alias ("team-stats",		IMP_TEAM_STATS);
 	player_init_impulse_alias ("vote-help",			IMP_HELP_VOTE);
@@ -477,6 +478,7 @@ console_aliases =
 	console_init_cvar_alias ("powerdropoff",	CVAR_C2,	C2_POWERDROPOFF);
 	console_init_cvar_alias ("help-options",	CVAR_C2,	C2_HELP_OPTIONS);
 	console_init_cvar_alias ("killstats",		CVAR_C2,	C2_KILLSTATS);
+	console_init_cvar_alias ("stats",		CVAR_C2,	C2_STATS);
 
 	level_aliases ();
 	custom_aliases ();
@@ -921,6 +923,9 @@ check_console_command =
 
 		else if (i == C2_KILLSTATS)
 			sprint_killstats ();
+
+		else if (i == C2_STATS)
+			sprint_stats ();
 
 		else
 			dprint ("Unknown command\n");

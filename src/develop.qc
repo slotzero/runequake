@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.114 2007/10/17 00:49:36 slotzero Exp $
+/*  $Id: develop.qc,v 1.115 2007/10/17 02:02:53 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -247,6 +247,10 @@ sprint_efficiency_e =
 {
 	local entity e;
 
+	self_sprint (to, "bul - bullet efficiency\n");
+	self_sprint (to, "nls - nail efficiency\n");
+	self_sprint (to, "rox - rocket efficiency\n");
+	self_sprint (to, "lg  - lightning gun efficiency\n");
 	self_sprint (to, "\n     name      \{252}bul\{252}nls\{252}rox\{252}lg \{252}total\n");
 	self_sprint (to, "\b---------------+---+---+---+---+-----\n");
 
@@ -357,6 +361,96 @@ void ()
 sprint_killstats =
 {
 	sprint_killstats_e (self);
+};
+
+void (entity to, entity e)
+sprint_stats_player =
+{
+	local float i;
+	local string s;
+
+	self_sprintf_len (to, e.netname, -15);
+
+	// kill efficiency
+	self_sprint (to, "\{252}");
+
+	i = rint ((e.enemy_kills / (e.enemy_kills + e.suicide + e.mate_kills + e.killed)) * 100);
+
+	if (e == to)
+		self_sprint (to, "\[");
+	else
+		self_sprint (to, " ");
+
+	if (!(e.enemy_kills + e.suicide + e.mate_kills + e.killed))
+		self_sprint (to, "N/A");
+	else if (i < 100)
+	{
+		s = ftos (i);
+		self_sprintf_len (to, s, 2);
+		self_sprint (to, "%");
+	}
+	else
+		self_sprint (to, "100");
+
+	if (e == to)
+		self_sprint (to, "\]");
+	else
+		self_sprint (to, " ");
+
+	// weapon efficiency
+	self_sprint (to, "\{252}");
+
+	i = rint (((e.shell_dmg + e.nail_dmg + e.rocket_dmg + e.cell_dmg)
+			/ (e.shell_dmg_max + e.nail_dmg_max + e.rocket_dmg_max + e.cell_dmg_max)) * 100);
+
+	if (e == to)
+		self_sprint (to, "\[");
+	else
+		self_sprint (to, " ");
+
+	if (!(e.shell_dmg_max + e.nail_dmg_max + e.rocket_dmg_max + e.cell_dmg_max))
+		self_sprint (to, "N/A");
+	else if (i < 100)
+	{
+		s = ftos (i);
+		self_sprintf_len (to, s, 2);
+		self_sprint (to, "%");
+	}
+	else
+		self_sprint (to, "100");
+
+	if (e == to)
+		self_sprint (to, "\]");
+	else
+		self_sprint (to, " ");
+
+	self_sprint (to, "\n");
+};
+
+void (entity to)
+sprint_stats_e =
+{
+	local entity e;
+
+	self_sprint (to, "kill  - kill efficiency\n");
+	self_sprint (to, "weapn - weapon efficiency\n");
+	self_sprint (to, "\n     name      \{252}kill \{252}weapn\n");
+	self_sprint (to, "\b---------------+-----+-----\n");
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (!is_observer_e (e) || e.runevar)
+			sprint_stats_player (to, e);
+
+		e = find (e, classname, "player");
+	}
+};
+
+void ()
+sprint_stats =
+{
+	sprint_stats_e (self);
 };
 
 void ()

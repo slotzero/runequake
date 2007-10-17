@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.201 2007/10/17 00:49:36 slotzero Exp $
+/*  $Id: defs.qc,v 1.202 2007/10/17 02:02:53 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -502,7 +502,8 @@ float IMP_VOTE_YES		= 255;
 float IMP_VOTE_NO		= 254;
 //				= 238 - 253	[weapon aliases]
 //				= 220 - 237	[qsmack]
-//				= 219 - 205	[free]
+//				= 219 - 206	[free]
+float IMP_STATS			= 205;
 float IMP_KILLSTATS		= 204;
 float IMP_HELP_OPTIONS		= 203;
 float IMP_HELP_MATCH		= 202;
@@ -1193,6 +1194,7 @@ float	C2_POWERDROPON		= 52;
 float	C2_POWERDROPOFF		= 53;
 float	C2_HELP_OPTIONS		= 54;
 float	C2_KILLSTATS		= 55;
+float	C2_STATS		= 56;
 
 // game mode
 float	gamemode;
