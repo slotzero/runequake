@@ -1,4 +1,4 @@
-$Id: Configuring,v 1.13 2004/05/01 03:07:08 slotzero Exp $
+$Id: Configuring,v 1.14 2008/01/01 06:03:10 slotzero Exp $
 
 Starting the server
 
@@ -108,10 +108,6 @@ deathmatch
 	continues to tick while the powerup lies on the ground.
 	Setting this bit disables this behavior.
 
-    512 no alternate weapons			DM_NO_ALT_WEAPONS
-
-    	Disable the alternate weapons.
-
    1024 armor doesn't drop			DM_NO_DROP_ARMOR
 
     	Normally a player drops any armor she has left when she's killed.
@@ -158,19 +154,6 @@ deathmatch
 	value SLOW_POWERUP_RESPAWN_TIME (settings.qc), will be added to
 	the current pent and quad times.
 
-    8192 crmod style practice mode              DM_PRACTICE_MODE
-
-        Practice mode allows you to focus on the fighting instead of searching
-        for the best weapon and armor.  You start out with all the weapons and
-        an endless supply of ammo.  Theh weapons and ammo are removed from the
-        level, but the armors remain.  When you do damage to a player, the
-        amount of damage is displayed on your screen.
-
-   16384 rotating armors                        DM_ROTATING_ARMORS
-
-        All of the armors on the level will cycle through the three main classes
-        of armor (green, yellow, red).  The interval of each cycle as well as the
-        predictability can be configured in settings.qc.
 
 teamplay
 
@@ -195,11 +178,6 @@ teamplay
 	one of the teams when they join the game (or when enforced team
 	mode is switched on).  Players are allowed to switch teams, but
 	only to a team which has fewer players.
-
-    32 match mode				TEAM_MATCH_MODE
-
-    	In match mode observers are on teams and each team can have only
-    	a single observer.  This might control other behaviors some day.
 
     64 team change any				TEAM_CHANGE_ANY
    128 team change top dog			TEAM_CHANGE_TOPDOG
@@ -379,12 +357,6 @@ temp1
         the hook to either free or lithium hook (defined in settings.qc as
 	VOTE_HOOK_MODE).
 
-   2097152 empty server resets hook vote	T1_HOOK_MODE_DEFAULT_ON
-
-        The server will automatically reset the hook mode setting when
-        there are no players on and when process_cvars() is called.  The
-	default mode can be set in settings.qc (VOTE_HOOK_MODE_DEFAULT).
-
      65536 no rune drop delay			T1_RUNE_DROP_DELAY_0
      66048  15 second rune drop delay		T1_RUNE_DROP_DELAY_15
     131072  30 second rune drop delay		T1_RUNE_DROP_DELAY_30
@@ -444,6 +416,25 @@ scratch1
         If this is set, all of the level exits will teleport you instead of
         triggering a change level.  The destinations to these teleports may
         be stationary or random, depending on the level.
+
+ 1024 no default mode                           S1_NO_DEFAULT
+ 2048 default mode arena                        S1_ARENA_DEFAULT
+ 4096 default mode practice                     S1_PRACTICE_DEFAULT
+ 8192 default mode match                        S1_MATCH_DEFAULT
+
+        The server is setup to run as a runes server by default.  This means
+        that if the mode of the server has changed along with any of its votable
+        options, the server will restore its original settings once all of the
+        players have gone.  Each game mode has its own set of configurations
+        that can be further customized via the source code.
+
+        Use the bit settings to change the default mode of the server to either
+        arena, practice, or match.  If you select the no default mode setting,
+        the server will not revert back to any particular mode nor will any of
+        the votable options.
+
+	If you try and force multiple modes by adding more bits together, it
+        won't work as the lowest bit takes precedence.
 
 
 samelevel

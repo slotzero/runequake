@@ -1,6 +1,6 @@
-$Id: Changes,v 1.91 2007/07/13 21:45:48 slotzero Exp $
+$Id: Changes,v 1.92 2008/01/01 06:03:09 slotzero Exp $
 
-Version 1.3  Fri Jul 13 17:30:34 EST 2007
+Version 1.3  Tue Jan 01 00:56:52 EST 2008
 
     - Bug Fixes
 
@@ -14,15 +14,24 @@ Version 1.3  Fri Jul 13 17:30:34 EST 2007
 
         - Added extra spawn spots for rocket arena maps with only one spawn.
 
-        - Shamblers seeking vengeance
-
     - Changes
 
-        - The mod no longer adjust your field of view (FOV).
+        - Match will timeout with more than 2 players in rocket arena or
+          midair mode.
 
-        - Added new commands: faststart, lock, vote-backpacks.
+        - The mod no longer adjusts your field of view (FOV).
+
+        - Added new commands: faststart, help-options, killstats, lock, midair, stats,
+          unlock, vote-backpacks, vote-midair, vote-powerup-drop.
+
+        - Added a new mode called midair.  The physics of the game are exactly like
+          the original, however, instead of having a timed match where only two players
+          fight, the mode switches opponents after each death, just like rocket arena.
 
         - Server aim is disabled regardless of what sv_aim is set at.
+
+        - You can no longer bind the default keys via the menu; use bind-keys or
+          bind-default-keys instead.
 
         - The letters AFK are appended to your name in +showscores and GLQuake HUD
           when you are idle for more than 5 minutes.

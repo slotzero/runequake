@@ -1,7 +1,7 @@
-$Id: Playing,v 1.9 2007/09/24 06:46:07 slotzero Exp $
+$Id: Playing,v 1.10 2008/01/01 06:03:10 slotzero Exp $
 
 This is the user documentation for Rune Quake.  You can learn
-more about Rune Quake at http://www.runequake.com.
+more about Rune Quake at http://www.runequake.com
 
 
 Finding Servers
@@ -105,11 +105,6 @@ Observer Mode
 	    If you run this menu item then the toggling behavior of the
 	    weapon selection impulses will be disabled.
 
-	8. Bind default keys
-
-	    This command binds the most useful commands to a set of
-	    pre-defined keys.  The keys which are used are listed with
-	    the command descriptions below.
 
     You can use these commands any time when you're an observer or a
     rider, you don't have to have the menu up for them to work.  Pressing
@@ -337,14 +332,27 @@ Player Commands
 	For more information about the Clan Ring Modification, check out
 	the official website
 
-	http://www.clanring.com/ or http://www.crmod.com/
+	http://www.crmod.com/
+
+    command vote-match
+    command match
+
+	You can vote the server into Match mode by using this
+	command.  Match Mode is a mode from a popular Quake
+	modification called Clan Ring Mod (CRMod for short).  Match
+        mode allows you to play a timed match against other players
+        either 1v1 or team against team.
+
+	For more information about the Clan Ring Modification, check out
+	the official website
+
+	http://www.crmod.com/
 
     command vote-normal
     command normal
     command ffa
 
-	To turn off Practice Mode or Arena Mode, you must vote it off
-	with this command.
+	This sets the server back into runes mode.
 
     command vote-quad
     command setquad
@@ -366,9 +374,18 @@ Player Commands
 
 	Vote to enable or disable Environmental Protection Suit on the level.
 
+    command vote-powerup-drop
+
+        Toggles the ability to drop your powerup.
+
     command vote-armor
 
 	Vote to enable or disable armor on the level.
+
+    command vote-armor-drop
+
+        Vote to enable or disable armor dropping on the level.  This only works
+        if vote-armor is enabled.
 
     command vote-rotate
 
@@ -388,6 +405,7 @@ Player Commands
 	Vote to enable or disable runes on the level.
 
     command vote-alt-weapons
+    command vote-alts
 
 	Vote to enable or disable alternate weapons on the level.  For more
 	information on alternate weapons, see the Alternate Weapons section
@@ -405,6 +423,10 @@ Player Commands
 	is enabled, weapons will remain on the level even when picked up.  For
 	more information on Weapons Stay, see the Weapons Stay section in this
 	document.
+
+    command vote-backpacks
+
+        Vote to enable or disable backpack dropping.
 
     command levels
 
@@ -506,15 +528,15 @@ Alternate Weapons
 	    rune.  After your grenade exlplodes, a cloud of red particles
 	    appear and inflict damage to anyone around them.
 
-    	mortar (alternate for rocket launcher)
+    	reflective rocket (alternate for rocket launcher)
 
-    	    This is missile with a ballistic flight path.  It does a bit
-    	    less damage than a rocket (and over a smaller area), but it
-    	    can be directed at places you couldn't hit with a rocket.
+    	    Your rockets bounce of the walls for a maximum of three times
+            doing damage in the process.  It takes 3 rockets to fire this
+            weapon.
 
 	    The idea for this weapon comes from Expert Quake.
 
-	BFG (alternate for lightning gun)
+        BFG (alternate for lightning gun)
 
 	    This is like Quake 2's BFG rather than Doom's.  When you
 	    fire it a lava ball appears in front of you.  This is the
@@ -1119,25 +1141,26 @@ Rune Models
 
 	Earth magic:  haste, recall, death spots, camouflage, shielding,
 	ice traps, vengeance, shambler, floating cloud, lumberjack,
-	monk, quad
+	monk, quad, thor, betty
 
 	Black magic:  good health, environmental protection, electricity,
 	holograms, jumping, strength, gravity, Shub hat, dual recall,
-	firewalking, houngan, torch, jack of all runes
+	firewalking, houngan, torch, jack of all runes, sniper, tornado
 
 	Hell magic:  regeneration, flight, cloaking, orb of death,
 	action movie arsenal, radiation, teleport shuffle, repulsion,
-	weirdness, grappling hook, piercing, pack rat
+	weirdness, grappling hook, piercing, pack rat, glue traps,
+	antipack, requiem
 
 	Elder magic:  resistance, berserk, divine wind, blink, vampiric,
 	switch, impact, phasing, phoenix, athlete, self preservation,
-	good armor
+	good armor, blizzard, deflect
 
 
 End
 ---
 
-That's it!  Have fun playing the game, and please mail me if you find
-bugs or have suggestions.
+That's it!  Have fun playing the game and please email me if you find
+any bugs or have any suggestions.
 
 Slot Zero <slotzero@runequake.com>
