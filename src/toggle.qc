@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.26 2007/10/05 04:18:50 slotzero Exp $
+/*  $Id: toggle.qc,v 1.27 2008/01/22 07:51:51 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -326,4 +326,33 @@ toggle_powerup_drop =
 	s = ftos (new_deathmatch);
 	deathmatch = new_deathmatch;
 	cvar_set ("deathmatch", s);
+};
+
+void ()
+toggle_rune_drop =
+{
+	local entity e;
+	local float new_temp1;
+	local string s;
+
+	new_temp1 = cvar ("temp1");
+
+	if (new_temp1 & T1_NO_DROP_ON_DEATH)
+		new_temp1 = new_temp1 - new_temp1 & T1_NO_DROP_ON_DEATH;
+	else
+	{
+		new_temp1 = new_temp1 | T1_NO_DROP_ON_DEATH;
+
+		e = find (world, classname, "rune");
+		while (e)
+		{
+			e.owner = world;
+			e.enemy = world;
+			e = find (e, classname, "rune");
+		}
+	}
+
+	s = ftos (new_temp1);
+	temp1 = new_temp1;
+	cvar_set ("temp1", s);
 };

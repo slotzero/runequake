@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.101 2007/10/17 02:02:53 slotzero Exp $
+/*  $Id: bindings.qc,v 1.102 2008/01/22 07:51:51 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -360,6 +360,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-practice",		IMP_VOTE_PRACTICE);
 	player_vote_impulse_alias ("vote-quad",			IMP_VOTE_QUAD);
 	player_vote_impulse_alias ("vote-ring",			IMP_VOTE_RING);
+	player_vote_impulse_alias ("vote-rune-drop",		IMP_VOTE_RUNE_DROP);
 	player_vote_impulse_alias ("vote-runes",		IMP_VOTE_RUNES);
 	player_vote_impulse_alias ("vote-rotate",		IMP_VOTE_ROTATE);
 	player_vote_impulse_alias ("vote-shields",		IMP_VOTE_SHIELDS);
@@ -479,6 +480,8 @@ console_aliases =
 	console_init_cvar_alias ("help-options",	CVAR_C2,	C2_HELP_OPTIONS);
 	console_init_cvar_alias ("killstats",		CVAR_C2,	C2_KILLSTATS);
 	console_init_cvar_alias ("stats",		CVAR_C2,	C2_STATS);
+	console_init_cvar_alias ("runedropon",		CVAR_C2,	C2_RUNEDROPON);
+	console_init_cvar_alias ("runedropoff",		CVAR_C2,	C2_RUNEDROPOFF);
 
 	level_aliases ();
 	custom_aliases ();
@@ -927,6 +930,24 @@ check_console_command =
 		else if (i == C2_STATS)
 			sprint_stats ();
 
+		else if (i == C2_RUNEDROPON)
+		{
+			if (temp1 & T1_NO_DROP_ON_DEATH)
+			{
+				dprint_force ("Rune dropping enabled\n");
+				toggle_rune_drop ();
+			}
+		}
+
+		else if (i == C2_RUNEDROPOFF)
+		{
+			if (!temp1 & T1_NO_DROP_ON_DEATH)
+			{
+				dprint_force ("Rune dropping disabled\n");
+				toggle_rune_drop ();
+			}
+		}
+
 		else
 			dprint ("Unknown command\n");
 
@@ -1062,7 +1083,7 @@ help_vote =
 	self_sprint (self, "\bvote-shields    vote-weapons-stay\n");
 	self_sprint (self, "\bvote-mega       vote-match\n");
 	self_sprint (self, "\bvote-backpacks  vote-armor-drop\n");
-	self_sprint (self, "\b                vote-powerup-drop\n");
+	self_sprint (self, "\bvote-rune-drop  vote-powerup-drop\n");
 	// self_sprint (self, "\n");
 };
 
@@ -1095,12 +1116,13 @@ help_options =
 	self_sprint (self, "\n\barmor         ");	self_sprint_boolean (self, !NO_ARMOR);
 	self_sprint (self, "\b  armor rotate  ");	self_sprint_boolean (self, ROTATE);
 	self_sprint (self, "\n\brunes         ");	self_sprint_boolean (self, !NO_RUNES);
-	self_sprint (self, "\b  alt weapons   ");	self_sprint_boolean (self, !NO_ALT_WEAPONS);
-	self_sprint (self, "\n\bshields       ");	self_sprint_boolean (self, !NO_SPAWN_SHIELDS);
+	self_sprint (self, "\b  rune drop     ");	self_sprint_boolean (self, !temp1 & T1_NO_DROP_ON_DEATH);
+	self_sprint (self, "\n\balt weapons   ");	self_sprint_boolean (self, !NO_ALT_WEAPONS);
 	self_sprint (self, "\b  weapons stay  ");	self_sprint_boolean (self, deathmatch & DM_WEAPONS_STAY);
 	self_sprint (self, "\n\bmega          ");	self_sprint_boolean (self, !NO_MEGA);
 	self_sprint (self, "\b  backpacks     ");	self_sprint_boolean (self, !NO_BACKPACKS);
 	self_sprint (self, "\n\barmor drop    ");	self_sprint_boolean (self, !deathmatch & DM_NO_DROP_ARMOR);
 	self_sprint (self, "\b  powerup drop  ");	self_sprint_boolean (self, !deathmatch & DM_NO_DROP_POWERUP);
+	self_sprint (self, "\n\bshields       ");	self_sprint_boolean (self, !NO_SPAWN_SHIELDS);
 	self_sprint (self, "\n");
 };

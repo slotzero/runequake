@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.71 2007/10/05 04:18:50 slotzero Exp $
+/*  $Id: vote.qc,v 1.72 2008/01/22 07:51:51 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -47,7 +47,7 @@ vote_impulse_commands =
 		else
 			count_votes (2);
 	}
-	else if (self.impulse >= 1 && self.impulse <= 29)
+	else if (self.impulse >= 1 && self.impulse <= 30)
 		vote ();
 
 	impulse_override_cancel ();
@@ -877,6 +877,18 @@ vote =
 		e.noise2	= " powerup drop ";
 
 		if (deathmatch & DM_NO_DROP_POWERUP)
+			e.noise1	= "enable";
+		else
+			e.noise1	= "disable";
+	}
+	else if (self.impulse == IMP_VOTE_RUNE_DROP)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= toggle_rune_drop;
+		e.noise2	= " rune dropping ";
+
+		if (temp1 & T1_NO_DROP_ON_DEATH)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";

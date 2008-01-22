@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.76 2007/10/05 04:41:19 slotzero Exp $
+/*  $Id: team.qc,v 1.77 2008/01/22 07:51:51 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -957,6 +957,10 @@ match_defaults =
 	if (!NO_RUNES)
 		setrunes ();
 
+	// runes drop off
+	if (!temp1 & T1_NO_DROP_ON_DEATH)
+		toggle_rune_drop ();
+
 	// alt weapons off
 	if (!NO_ALT_WEAPONS)
 		setalts ();
@@ -1028,6 +1032,10 @@ arena_defaults =
 	// runes off
 	if (!NO_RUNES)
 		setrunes ();
+
+	// runes drop off
+	if (!temp1 & T1_NO_DROP_ON_DEATH)
+		toggle_rune_drop ();
 
 	// alt weapons off
 	if (!NO_ALT_WEAPONS)
@@ -1101,6 +1109,10 @@ practice_defaults =
 	if (!NO_RUNES)
 		setrunes ();
 
+	// runes drop off
+	if (!temp1 & T1_NO_DROP_ON_DEATH)
+		toggle_rune_drop ();
+
 	// alt weapons off
 	if (!NO_ALT_WEAPONS)
 		setalts ();
@@ -1172,6 +1184,10 @@ normal_defaults =
 	// runes on
 	if (NO_RUNES)
 		setrunes ();
+
+	// runes drop off
+	if (!temp1 & T1_NO_DROP_ON_DEATH)
+		toggle_rune_drop ();
 
 	// alt weapons on
 	if (NO_ALT_WEAPONS)
