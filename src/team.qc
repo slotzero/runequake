@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.77 2008/01/22 07:51:51 slotzero Exp $
+/*  $Id: team.qc,v 1.78 2008/01/24 07:21:40 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -980,6 +980,10 @@ match_defaults =
 	// powerup drop off
 	if (!deathmatch & DM_NO_DROP_POWERUP)
 		toggle_powerup_drop ();
+
+	// lightning discharge on
+	if (deathmatch & DM_NO_DISCHARGE)
+		toggle_lightning_discharge ();
 };
 
 void ()
@@ -1056,6 +1060,10 @@ arena_defaults =
 	// powerup drop on, no default
 	//if (deathmatch & DM_NO_DROP_POWERUP)
 	//	toggle_powerup_drop ();
+
+	// lightning discharge off
+	if (!deathmatch & DM_NO_DISCHARGE)
+		toggle_lightning_discharge ();
 };
 
 void ()
@@ -1132,6 +1140,10 @@ practice_defaults =
 	// powerup drop on
 	if (deathmatch & DM_NO_DROP_POWERUP)
 		toggle_powerup_drop ();
+
+	// lightning discharge off
+	if (!deathmatch & DM_NO_DISCHARGE)
+		toggle_lightning_discharge ();
 };
 
 void ()
@@ -1208,4 +1220,8 @@ normal_defaults =
 	// powerup drop on
 	if (deathmatch & DM_NO_DROP_POWERUP)
 		toggle_powerup_drop ();
+
+	// lightning discharge on
+	if (!deathmatch & DM_NO_DISCHARGE)
+		toggle_lightning_discharge ();
 };

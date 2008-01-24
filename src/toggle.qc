@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.27 2008/01/22 07:51:51 slotzero Exp $
+/*  $Id: toggle.qc,v 1.28 2008/01/24 07:21:40 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -355,4 +355,22 @@ toggle_rune_drop =
 	s = ftos (new_temp1);
 	temp1 = new_temp1;
 	cvar_set ("temp1", s);
+};
+
+void ()
+toggle_lightning_discharge =
+{
+	local float new_deathmatch;
+	local string s;
+
+	new_deathmatch = cvar ("deathmatch");
+
+	if (new_deathmatch & DM_NO_DISCHARGE)
+		new_deathmatch = new_deathmatch - new_deathmatch & DM_NO_DISCHARGE;
+	else
+		new_deathmatch = new_deathmatch | DM_NO_DISCHARGE;
+
+	s = ftos (new_deathmatch);
+	deathmatch = new_deathmatch;
+	cvar_set ("deathmatch", s);
 };

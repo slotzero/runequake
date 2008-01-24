@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.102 2008/01/22 07:51:51 slotzero Exp $
+/*  $Id: bindings.qc,v 1.103 2008/01/24 07:21:39 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -351,6 +351,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-hook",			IMP_VOTE_HOOK);
 	player_vote_impulse_alias ("vote-hook-damage",		IMP_VOTE_HOOK_DAMAGE);
 	player_vote_impulse_alias ("vote-lithium",		IMP_VOTE_LITHIUM);
+	player_vote_impulse_alias ("vote-lg-discharge",		IMP_VOTE_LG_DISCHARGE);
 	player_vote_impulse_alias ("vote-match",		IMP_VOTE_MATCH);
 	player_vote_impulse_alias ("vote-mega",			IMP_VOTE_MEGA);
 	player_vote_impulse_alias ("vote-midair",		IMP_VOTE_MIDAIR);
@@ -482,6 +483,8 @@ console_aliases =
 	console_init_cvar_alias ("stats",		CVAR_C2,	C2_STATS);
 	console_init_cvar_alias ("runedropon",		CVAR_C2,	C2_RUNEDROPON);
 	console_init_cvar_alias ("runedropoff",		CVAR_C2,	C2_RUNEDROPOFF);
+	console_init_cvar_alias ("lgdischargeon",	CVAR_C2,	C2_LGDISCHARGEON);
+	console_init_cvar_alias ("lgdischargeoff",	CVAR_C2,	C2_LGDISCHARGEOFF);
 
 	level_aliases ();
 	custom_aliases ();
@@ -948,6 +951,24 @@ check_console_command =
 			}
 		}
 
+		else if (i == C2_LGDISCHARGEON)
+		{
+			if (deathmatch & DM_NO_DISCHARGE)
+			{
+				dprint_force ("Lightning discharge enabled\n");
+				toggle_lightning_discharge ();
+			}
+		}
+
+		else if (i == C2_LGDISCHARGEOFF)
+		{
+			if (!deathmatch & DM_NO_DISCHARGE)
+			{
+				dprint_force ("Lightning discharge disabled\n");
+				toggle_lightning_discharge ();
+			}
+		}
+
 		else
 			dprint ("Unknown command\n");
 
@@ -1084,6 +1105,7 @@ help_vote =
 	self_sprint (self, "\bvote-mega       vote-match\n");
 	self_sprint (self, "\bvote-backpacks  vote-armor-drop\n");
 	self_sprint (self, "\bvote-rune-drop  vote-powerup-drop\n");
+	self_sprint (self, "\b                vote-lg_discharge\n");
 	// self_sprint (self, "\n");
 };
 
@@ -1124,5 +1146,6 @@ help_options =
 	self_sprint (self, "\n\barmor drop    ");	self_sprint_boolean (self, !deathmatch & DM_NO_DROP_ARMOR);
 	self_sprint (self, "\b  powerup drop  ");	self_sprint_boolean (self, !deathmatch & DM_NO_DROP_POWERUP);
 	self_sprint (self, "\n\bshields       ");	self_sprint_boolean (self, !NO_SPAWN_SHIELDS);
+	self_sprint (self, "\b  lg discharge  ");	self_sprint_boolean (self, !deathmatch & DM_NO_DISCHARGE);
 	self_sprint (self, "\n");
 };
