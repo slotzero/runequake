@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.103 2008/01/24 07:21:39 slotzero Exp $
+/*  $Id: bindings.qc,v 1.104 2008/01/31 10:34:29 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -485,6 +485,9 @@ console_aliases =
 	console_init_cvar_alias ("runedropoff",		CVAR_C2,	C2_RUNEDROPOFF);
 	console_init_cvar_alias ("lgdischargeon",	CVAR_C2,	C2_LGDISCHARGEON);
 	console_init_cvar_alias ("lgdischargeoff",	CVAR_C2,	C2_LGDISCHARGEOFF);
+	console_init_cvar_alias ("muteip",		CVAR_C2,	C2_MUTE_ADD);
+	console_init_cvar_alias ("unmuteip",		CVAR_C2,	C2_MUTE_REMOVE);
+	console_init_cvar_alias ("mutelist",		CVAR_C2,	C2_MUTE_LIST);
 
 	level_aliases ();
 	custom_aliases ();
@@ -495,6 +498,9 @@ console_aliases =
 	// prepare the hunk
 	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
 		Write_Hunk_Vector (HUNK_CONTEXT, HUNK_BAN_OFFSET + (i * 3), VEC_ORIGIN);
+
+	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
+		Write_Hunk_Vector (HUNK_CONTEXT, HUNK_MUTE_OFFSET + (i * 3), VEC_ORIGIN);
 
 	localcmd ("exec ban.txt\n");
 };
@@ -967,6 +973,31 @@ check_console_command =
 				dprint_force ("Lightning discharge disabled\n");
 				toggle_lightning_discharge ();
 			}
+		}
+
+		else if (i == C2_MUTE_ADD)
+		{	IN_QW(return;)
+			s = cvar_string ("skill", 1);
+			v = ip_to_vec (s);
+			if (v == VEC_ORIGIN)
+				self_sprint (self, "invalid ip address\n");
+			else
+				mute_add (v);
+		}
+
+		else if (i == C2_MUTE_REMOVE)
+		{	IN_QW(return;)
+			s = cvar_string ("skill", 1);
+			v = ip_to_vec (s);
+			if (v == VEC_ORIGIN)
+				self_sprint (self, "invalid ip address\n");
+			else
+				mute_remove (v);
+		}
+
+		else if (i == C2_MUTE_LIST)
+		{	IN_QW(return;)
+			mute_list ();
 		}
 
 		else

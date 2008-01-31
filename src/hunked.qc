@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.47 2007/08/01 18:41:46 slotzero Exp $
+/*  $Id: hunked.qc,v 1.48 2008/01/31 10:34:29 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -25,6 +25,7 @@ float LAST_TIME_UPDATE;
 float HUNK_SERVER_TIME		= %10;
 float HUNK_CLIENT_DISCONNECT	= %100;
 float HUNK_BAN_OFFSET		= %800;
+float HUNK_MUTE_OFFSET		= %1200;
 float HUNK_MODE_LOCKED		= %999;
 
 // 1000 + VOTE_IMPULSE
@@ -384,6 +385,88 @@ ban_add =
 
 	// list is full
 	return self_sprint (self, "ban list is full\n");
+};
+
+float MUTE_LIST_SIZE = %20;
+
+float (vector ip)
+mute_check =
+{
+	local float i;
+	local vector hunk_ip;
+
+   	if (ip == VEC_ORIGIN)
+		return -1;
+
+	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
+	{
+		hunk_ip = Read_Hunk_Vector (HUNK_CONTEXT, HUNK_MUTE_OFFSET + (i * 3));
+		if (hunk_ip == ip)
+			return i;
+	}
+
+	return -1;
+};
+
+void ()
+mute_list =
+{
+	local float i;
+	local vector hunk_ip;
+
+	self_sprint (self, "\bMute List\n\n");
+
+	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
+	{
+		hunk_ip = Read_Hunk_Vector (HUNK_CONTEXT, HUNK_MUTE_OFFSET + (i * 3));
+		if (hunk_ip != VEC_ORIGIN)
+		{
+			self_sprint_float (self, hunk_ip_x);
+			self_sprint (self, ".");
+			self_sprint_float (self, hunk_ip_y);
+			self_sprint (self, ".");
+			self_sprint_float (self, hunk_ip_z);
+			self_sprint (self, ".xxx\n");
+		}
+	}
+};
+
+void (vector ip)
+mute_remove =
+{
+	local float pos;
+
+	pos = mute_check (ip);
+	if (pos < 0)
+		return self_sprint (self, "ip doesn't exist\n");
+
+	Write_Hunk_Vector (HUNK_CONTEXT, HUNK_MUTE_OFFSET + (pos * 3), VEC_ORIGIN);
+	return self_sprint (self, "ip succesfully removed\n");
+};
+
+void (vector ip)
+mute_add =
+{
+	local float i;
+	local vector hunk_ip;
+
+	// check to make sure ban doesn't exist
+	if (mute_check (ip) >= 0)
+		return self_sprint (self, "ip already banned\n");
+
+	// check hunk for available slot
+	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
+	{
+		hunk_ip = Read_Hunk_Vector (HUNK_CONTEXT, HUNK_MUTE_OFFSET + (i * 3));
+		if (hunk_ip == VEC_ORIGIN)
+		{
+			Write_Hunk_Vector (HUNK_CONTEXT, HUNK_MUTE_OFFSET + (i * 3), ip);
+			return self_sprint (self, "ip added to the mute list\n");
+		}
+	}
+
+	// list is full
+	return self_sprint (self, "mute list is full\n");
 };
 
 IN_QW([-

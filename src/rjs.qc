@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.225 2007/10/17 02:02:53 slotzero Exp $
+/*  $Id: rjs.qc,v 1.226 2008/01/31 10:34:29 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1678,6 +1678,15 @@ player_init =
 
 		self.cl[CL_NOMAP] = %1;
  	}
+
+	if (*HUNK_CONTEXT)
+	{
+		if (mute_check (self.subnet) >= 0)
+		{
+			self.cl[CL_SPAM_TIME + %1] = sv[SV_TIME + %1]; // mute right away
+			self.rqflags = self.rqflags| RQ_MUTE;
+		}
+	}
 
 	self_sprint (self, "\buse\b -zone 1024 \bif quake crashes\n");
 	spawn_player_bindings ();

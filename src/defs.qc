@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.205 2008/01/24 07:21:39 slotzero Exp $
+/*  $Id: defs.qc,v 1.206 2008/01/31 10:34:29 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -723,6 +723,7 @@ float RQ_CUSTOM_SOUNDS		= 4;
 float RQ_BINDINGS_RECEIVED	= 8;
 float RQ_TEAMSCORES_ON		= 16;
 float RQ_AUTOSTATS		= 32;
+float RQ_MUTE			= 64;
 
 // rqstate flags (not saved across levels)
 
@@ -1201,6 +1202,9 @@ float	C2_RUNEDROPON		= 57;
 float	C2_RUNEDROPOFF		= 58;
 float	C2_LGDISCHARGEON	= 59;
 float	C2_LGDISCHARGEOFF	= 60;
+float	C2_MUTE_ADD		= 61;
+float	C2_MUTE_REMOVE		= 62;
+float	C2_MUTE_LIST		= 63;
 
 // game mode
 float	gamemode;

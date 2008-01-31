@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.143 2007/10/17 18:34:51 slotzero Exp $
+/*  $Id: client.qc,v 1.144 2008/01/31 10:34:29 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1470,6 +1470,10 @@ PlayerPreThink =
 	if (self.lefty < time)
 	{
 		self.lefty = time + 1;
+
+		// mute client
+		if (self.rqflags & RQ_MUTE)
+			self.cl[CL_SPAM_TIME + %1] = sv[SV_TIME + %1];
 
 		// ping
 		self.delay = client_ping (self);

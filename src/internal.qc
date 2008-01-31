@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.38 2007/02/12 17:50:00 slotzero Exp $
+/*  $Id: internal.qc,v 1.39 2008/01/31 10:34:29 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -72,7 +72,7 @@ float CL_PING_TIMES		= %2033;
 float CL_NUM_PINGS		= %2049;
 float CL_SPAWN_PARMS		= %2050;
 float CL_OLD_FRAGS		= %2066;
-float CL_SPAM_TIME		= %2068;
+float CL_SPAM_TIME		;//= %2068;
 float CL_CHANGE_TIME            = %2070;
 float CL_NOMAP			;//= %2072;
 
@@ -391,6 +391,7 @@ InternalInit =
 		CL_DROPASAP		= %2;
 		CL_PRIVILEGED		= %3;
 		CL_SENDSIGNON		= %4;
+		CL_SPAM_TIME		= %2068;
 		CL_NOMAP		= %2072;
 
 		QS_ADDR			= %4118;
@@ -416,6 +417,7 @@ InternalInit =
 		CL_DROPASAP		= %3;
 		CL_PRIVILEGED		= %4;
 		CL_SENDSIGNON		= %5;
+		CL_SPAM_TIME		= %2067;
 		CL_NOMAP		= %2071;
 
 		QS_ADDR			= %4117;
