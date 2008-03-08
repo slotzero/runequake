@@ -1,4 +1,4 @@
-/*  $Id: runes40.qc,v 1.30 2007/07/13 03:16:51 slotzero Exp $
+/*  $Id: runes40.qc,v 1.31 2008/03/08 05:27:01 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -467,8 +467,8 @@ Rune_Dual =
 	self.velocity = VEC_ORIGIN;
 };
 
-float WEIRD_SHROOMS	= 1;
-float WEIRD_JUMPING	= 2;
+float WEIRD_JUMPING	= 1;
+float WEIRD_SHROOMS	= 2;
 float WEIRD_DRUNK	= 3;
 float WEIRD_TWITCHING	= 4;
 float WEIRD_COFFEE	= 5;
@@ -571,18 +571,6 @@ Weird_Think =
 		self.attack_finished = time + 0.5;
 		stuffcmd (self.runent, "v_idlescale 120\n");
 	}
-	else if (self.runevar == WEIRD_JUMPING)
-	{
-		if (self.attack_finished > time)
-			return;
-		if (self.runent.flags & FL_ONGROUND)
-		{
-			self.runent.flags = self.runent.flags - FL_ONGROUND;
-			sound (self.runent, CHAN_JUMP, "player/plyrjmp8.wav", 1, ATTN_NORM);
-			self.runent.velocity_z = self.runent.velocity_z + 270;
-			self.attack_finished = time + sys_ticrate;
-		}
-	}
 	else if (self.runevar == WEIRD_DRUNK)
 	{
 		if (self.attack_finished > time)
@@ -629,12 +617,24 @@ Weird_Think =
 		self.attack_finished = time + 0.5;
 		stuffcmd (self.runent, "fov 160\n");
 	}
-	else
+	else if (self.runevar == WEIRD_BLIND)
 	{
 		if (self.attack_finished > time)
 			return;
 		self.attack_finished = time + 0.5;
 		stuffcmd (self.runent, CSHIFT_BLIND);
+	}
+	else
+	{
+		if (self.attack_finished > time)
+			return;
+		if (self.runent.flags & FL_ONGROUND)
+		{
+			self.runent.flags = self.runent.flags - FL_ONGROUND;
+			sound (self.runent, CHAN_JUMP, "player/plyrjmp8.wav", 1, ATTN_NORM);
+			self.runent.velocity_z = self.runent.velocity_z + 270;
+			self.attack_finished = time + sys_ticrate;
+		}
 	}
 };
 
@@ -687,11 +687,6 @@ Weird_Touch =
 		 self_desc = "shrooms";
 		other_desc = "SHROOM MODE!";
 	}
-	else if (self.runevar == WEIRD_JUMPING)
-	{
-		 self_desc = "jumping";
-		other_desc = "UNCONTROLLABLE JUMPING!";
-	}
 	else if (self.runevar == WEIRD_DRUNK)
 	{
 		 self_desc = "drunken walk";
@@ -727,10 +722,15 @@ Weird_Touch =
 		 self_desc = "vertigo";
 		other_desc = "VERTIGO!";
 	}
-	else
+	else if (self.runevar == WEIRD_BLIND)
 	{
 		 self_desc = "blindness";
 		other_desc = "I'M BLIND! I'M BLIND!";
+	}
+	else
+	{
+		 self_desc = "jumping";
+		other_desc = "UNCONTROLLABLE JUMPING!";
 	}
 
 	centerprint3 (other, "\b\.\b Hit by weirdness! \b\.\b\n",
