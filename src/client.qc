@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.144 2008/01/31 10:34:29 slotzero Exp $
+/*  $Id: client.qc,v 1.145 2008/03/08 10:35:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1966,6 +1966,8 @@ client_ip =
 
 	pch = AddInt(pch, %3);
 	(*pch)[0] = (*px)[0];
+
+	self.packed = self.subnet_x + (self.subnet_y * 256) + (self.subnet_z * 65536);
 };
 
 /*
@@ -1984,7 +1986,7 @@ ClientConnect =
 
 	if (*HUNK_CONTEXT)
 	{
-		if (ban_check (self.subnet) >= 0)
+		if (ban_check (self.packed) >= 0)
 		{
 			localcmd ("ban ");
 			localcmd (self.address);

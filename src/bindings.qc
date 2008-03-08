@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.104 2008/01/31 10:34:29 slotzero Exp $
+/*  $Id: bindings.qc,v 1.105 2008/03/08 10:35:46 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -497,10 +497,10 @@ console_aliases =
 
 	// prepare the hunk
 	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
-		Write_Hunk_Vector (HUNK_CONTEXT, HUNK_BAN_OFFSET + (i * 3), VEC_ORIGIN);
+		Write_Hunk_Float (HUNK_CONTEXT, HUNK_BAN_OFFSET + i, 0);
 
 	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
-		Write_Hunk_Vector (HUNK_CONTEXT, HUNK_MUTE_OFFSET + (i * 3), VEC_ORIGIN);
+		Write_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + i, 0);
 
 	localcmd ("exec ban.txt\n");
 };
@@ -795,7 +795,7 @@ check_console_command =
 			if (v == VEC_ORIGIN)
 				self_sprint (self, "invalid ip address\n");
 			else
-				ban_add (v);
+				ban_add (v_x + (v_y * 256) + (v_z * 65536));
 		}
 
 		else if (i == C2_BAN_REMOVE)
@@ -805,7 +805,7 @@ check_console_command =
 			if (v == VEC_ORIGIN)
 				self_sprint (self, "invalid ip address\n");
 			else
-				ban_remove (v);
+				ban_remove (v_x + (v_y * 256) + (v_z * 65536));
 		}
 
 		else if (i == C2_BAN_LIST)
@@ -982,7 +982,7 @@ check_console_command =
 			if (v == VEC_ORIGIN)
 				self_sprint (self, "invalid ip address\n");
 			else
-				mute_add (v);
+				mute_add (v_x + (v_y * 256) + (v_z * 65536));
 		}
 
 		else if (i == C2_MUTE_REMOVE)
@@ -992,7 +992,7 @@ check_console_command =
 			if (v == VEC_ORIGIN)
 				self_sprint (self, "invalid ip address\n");
 			else
-				mute_remove (v);
+				mute_remove (v_x + (v_y * 256) + (v_z * 65536));
 		}
 
 		else if (i == C2_MUTE_LIST)

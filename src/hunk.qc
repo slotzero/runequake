@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.41 2006/08/08 21:44:23 slotzero Exp $
+/*  $Id: hunk.qc,v 1.42 2008/03/08 10:35:47 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -21,34 +21,13 @@
 
 	%0 - %9		= [DO NOT USE]
 
-	// server_time(), update_server_time()
+	// hunked.qc
 	%10		= float time
 
-	// Log_Client_Disconnect(), Client_Disconnect_Log()
-	%100 - %103	= string netname	%104	= float elapsed
-	%105 - %108	= string netname	%109	= float elapsed
-	%110 - %113	= string netname	%114	= float elapsed
-	%115 - %118	= string netname	%119	= float elapsed
-	%120 - %123	= string netname	%124	= float elapsed
-	%125 - %128	= string netname	%129	= float elapsed
-	%130 - %133	= string netname	%134	= float elapsed
-	%135 - %138	= string netname	%139	= float elapsed
-	%140 - %143	= string netname	%144	= float elapsed
-	%145 - %148	= string netname	%149	= float elapsed
-	// 10
-	%150 - %153	= string netname	%154	= float elapsed
-	%155 - %158	= string netname	%159	= float elapsed
-	%160 - %163	= string netname	%164	= float elapsed
-	%165 - %168	= string netname	%169	= float elapsed
-	%170 - %173	= string netname	%174	= float elapsed
-	%175 - %178	= string netname	%179	= float elapsed
-	%180 - %183	= string netname	%184	= float elapsed
-	%185 - %188	= string netname	%189	= float elapsed
-	%190 - %193	= string netname	%194	= float elapsed
-	%195 - %198	= string netname	%199	= float elapsed
-	// 20
+	// hunked.qc
+	%100 - %199	= string netname, float elapsed [20 MAX]
 
-	// custom_hunk_pos()
+	// customap.qc
 	%200 - %298	= float details about small levels
 	%299		= float float small levels left in map rotation
 	%300 - %398	= float details about medium levels
@@ -56,12 +35,18 @@
 	%400 - %498	= float details about large levels
 	%499		= float large levels left in map rotation
 
+	// match.qc
 	%500 - %516	= float keep track of team colors in match mode
 	%517		= float match timelimit (set by timeset)
 
-	%799		= float number of denied maps
+	// hunked.qc
+	%800 - %999	= float ip address [199 MAX]
 
-	%1000-?		= hunk settings
+	// hunked.qc
+	%1000 - %1199	= hunk settings
+
+	// hunked.qc
+	%1200 - ?	= float ip address [? MAX]
 
 	// strman.qc
 	%3000 - %4000	= memory for string manipulation functions

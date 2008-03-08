@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.48 2008/01/31 10:34:29 slotzero Exp $
+/*  $Id: hunked.qc,v 1.49 2008/03/08 10:35:47 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -242,18 +242,18 @@ Client_Disconnect_Log =
 
 float BAN_LIST_SIZE = %50;
 
-float (vector ip)
+float (float ip)
 ban_check =
 {
 	local float i;
-	local vector hunk_ip;
+	local float hunk_ip;
 
-   	if (ip == VEC_ORIGIN)
+   	if (!ip)
 		return -1;
 
 	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
 	{
-		hunk_ip = Read_Hunk_Vector (HUNK_CONTEXT, HUNK_BAN_OFFSET + (i * 3));
+		hunk_ip = Read_Hunk_Float (HUNK_CONTEXT, HUNK_BAN_OFFSET + i);
 		if (hunk_ip == ip)
 			return i;
 	}
@@ -265,20 +265,20 @@ void ()
 ban_list =
 {
 	local float i;
-	local vector hunk_ip;
+	local float hunk_ip;
 
 	self_sprint (self, "\bBan List\n\n");
 
 	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
 	{
-		hunk_ip = Read_Hunk_Vector (HUNK_CONTEXT, HUNK_BAN_OFFSET + (i * 3));
-		if (hunk_ip != VEC_ORIGIN)
+		hunk_ip = Read_Hunk_Float (HUNK_CONTEXT, HUNK_BAN_OFFSET + i);
+		if (hunk_ip)
 		{
-			self_sprint_float (self, hunk_ip_x);
+			self_sprint_float (self, hunk_ip & 255);
 			self_sprint (self, ".");
-			self_sprint_float (self, hunk_ip_y);
+			self_sprint_float (self, hunk_ip & 65280 / 256);
 			self_sprint (self, ".");
-			self_sprint_float (self, hunk_ip_z);
+			self_sprint_float (self, hunk_ip & 16711680 / 65536);
 			self_sprint (self, ".xxx\n");
 		}
 	}
@@ -348,7 +348,7 @@ ip_to_vec =
 	return v;
 };
 
-void (vector ip)
+void (float ip)
 ban_remove =
 {
 	local float pos;
@@ -357,16 +357,16 @@ ban_remove =
 	if (pos < 0)
 		return self_sprint (self, "ip doesn't exist\n");
 
-	Write_Hunk_Vector (HUNK_CONTEXT, HUNK_BAN_OFFSET + (pos * 3), VEC_ORIGIN);
+	Write_Hunk_Float (HUNK_CONTEXT, HUNK_BAN_OFFSET + pos, 0);
 	localcmd ("ban off\n");
 	return self_sprint (self, "ip succesfully removed\n");
 };
 
-void (vector ip)
+void (float ip)
 ban_add =
 {
 	local float i;
-	local vector hunk_ip;
+	local float hunk_ip;
 
 	// check to make sure ban doesn't exist
 	if (ban_check (ip) >= 0)
@@ -375,10 +375,10 @@ ban_add =
 	// check hunk for available slot
 	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
 	{
-		hunk_ip = Read_Hunk_Vector (HUNK_CONTEXT, HUNK_BAN_OFFSET + (i * 3));
-		if (hunk_ip == VEC_ORIGIN)
+		hunk_ip = Read_Hunk_Float (HUNK_CONTEXT, HUNK_BAN_OFFSET + i);
+		if (!hunk_ip)
 		{
-			Write_Hunk_Vector (HUNK_CONTEXT, HUNK_BAN_OFFSET + (i * 3), ip);
+			Write_Hunk_Float (HUNK_CONTEXT, HUNK_BAN_OFFSET + i, ip);
 			return self_sprint (self, "ip added to the ban list\n");
 		}
 	}
@@ -389,18 +389,18 @@ ban_add =
 
 float MUTE_LIST_SIZE = %20;
 
-float (vector ip)
+float (float ip)
 mute_check =
 {
 	local float i;
-	local vector hunk_ip;
+	local float hunk_ip;
 
-   	if (ip == VEC_ORIGIN)
+   	if (!ip)
 		return -1;
 
 	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
 	{
-		hunk_ip = Read_Hunk_Vector (HUNK_CONTEXT, HUNK_MUTE_OFFSET + (i * 3));
+		hunk_ip = Read_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + i);
 		if (hunk_ip == ip)
 			return i;
 	}
@@ -412,26 +412,26 @@ void ()
 mute_list =
 {
 	local float i;
-	local vector hunk_ip;
+	local float hunk_ip;
 
 	self_sprint (self, "\bMute List\n\n");
 
 	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
 	{
-		hunk_ip = Read_Hunk_Vector (HUNK_CONTEXT, HUNK_MUTE_OFFSET + (i * 3));
-		if (hunk_ip != VEC_ORIGIN)
+		hunk_ip = Read_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + i);
+		if (hunk_ip)
 		{
-			self_sprint_float (self, hunk_ip_x);
+			self_sprint_float (self, hunk_ip & 255);
 			self_sprint (self, ".");
-			self_sprint_float (self, hunk_ip_y);
+			self_sprint_float (self, hunk_ip & 65280 / 256);
 			self_sprint (self, ".");
-			self_sprint_float (self, hunk_ip_z);
+			self_sprint_float (self, hunk_ip & 16711680 / 65536);
 			self_sprint (self, ".xxx\n");
 		}
 	}
 };
 
-void (vector ip)
+void (float ip)
 mute_remove =
 {
 	local float pos;
@@ -440,15 +440,15 @@ mute_remove =
 	if (pos < 0)
 		return self_sprint (self, "ip doesn't exist\n");
 
-	Write_Hunk_Vector (HUNK_CONTEXT, HUNK_MUTE_OFFSET + (pos * 3), VEC_ORIGIN);
+	Write_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + pos, 0);
 	return self_sprint (self, "ip succesfully removed\n");
 };
 
-void (vector ip)
+void (float ip)
 mute_add =
 {
 	local float i;
-	local vector hunk_ip;
+	local float hunk_ip;
 
 	// check to make sure ban doesn't exist
 	if (mute_check (ip) >= 0)
@@ -457,10 +457,10 @@ mute_add =
 	// check hunk for available slot
 	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
 	{
-		hunk_ip = Read_Hunk_Vector (HUNK_CONTEXT, HUNK_MUTE_OFFSET + (i * 3));
-		if (hunk_ip == VEC_ORIGIN)
+		hunk_ip = Read_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + i);
+		if (!hunk_ip)
 		{
-			Write_Hunk_Vector (HUNK_CONTEXT, HUNK_MUTE_OFFSET + (i * 3), ip);
+			Write_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + i, ip);
 			return self_sprint (self, "ip added to the mute list\n");
 		}
 	}

@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.226 2008/01/31 10:34:29 slotzero Exp $
+/*  $Id: rjs.qc,v 1.227 2008/03/08 10:35:47 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1681,7 +1681,7 @@ player_init =
 
 	if (*HUNK_CONTEXT)
 	{
-		if (mute_check (self.subnet) >= 0)
+		if (mute_check (self.packed) >= 0)
 		{
 			self.cl[CL_SPAM_TIME + %1] = sv[SV_TIME + %1]; // mute right away
 			self.rqflags = self.rqflags| RQ_MUTE;
