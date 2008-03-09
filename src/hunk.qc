@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.42 2008/03/08 10:35:47 slotzero Exp $
+/*  $Id: hunk.qc,v 1.43 2008/03/09 06:55:17 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -25,11 +25,11 @@
 	%10		= float time
 
 	// hunked.qc
-	%100 - %199	= string netname, float elapsed [20 MAX]
+	%100 - %199	= string[%4] netname, float elapsed [20 MAX]
 
 	// customap.qc
 	%200 - %298	= float details about small levels
-	%299		= float float small levels left in map rotation
+	%299		= float small levels left in map rotation
 	%300 - %398	= float details about medium levels
 	%399		= float medium levels left in map rotation
 	%400 - %498	= float details about large levels
@@ -40,13 +40,13 @@
 	%517		= float match timelimit (set by timeset)
 
 	// hunked.qc
-	%800 - %999	= float ip address [199 MAX]
+	%800 - %998	= float banned ip addresses [199 MAX]
 
 	// hunked.qc
-	%1000 - %1199	= hunk settings
+	%999 - %1199	= float Hunk_Settings()
 
 	// hunked.qc
-	%1200 - ?	= float ip address [? MAX]
+	%1200 - ?	= float muted ip addresses [? MAX]
 
 	// strman.qc
 	%3000 - %4000	= memory for string manipulation functions
