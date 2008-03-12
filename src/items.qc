@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.71 2007/10/05 04:18:49 slotzero Exp $
+/*  $Id: items.qc,v 1.72 2008/03/12 03:08:31 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -265,6 +265,30 @@ item_health =
 		health_set ("maps/b_bh25.bsp", "items/health1.wav");
 };
 
+void (entity e)
+maybe_respawn_mega =
+{
+	local entity mega;
+
+	if (!CLASSIC_MEGA)
+		return;
+
+	if (NO_MEGA)
+		return;
+
+	mega = find (world, classname, "item_health");
+	while (mega)
+	{
+		if (mega.nextthink > -2 && mega.spawnflags & H_MEGA && mega.owner == e)
+		{
+			mega.owner = world;
+			mega.nextthink = time + 20;
+			mega.think = SUB_regen;
+		}
+		mega = find (mega, classname, "item_health");
+	}
+};
+
 void ()
 health_touch =
 {
@@ -341,9 +365,6 @@ health_touch =
 		self.model = string_null;
 		self.solid = SOLID_NOT;
 
-		// Set up a health decaying entity for megahealth if necessary.
-		if (is_mega)
-			decay_health_spawn (other, 1);
 		if (deathmatch & DM_RESPAWN)
 		{
 			if (is_mega)
@@ -352,6 +373,10 @@ health_touch =
 				self.nextthink = time + HEALTH_RESPAWN_TIME;
 			self.think = SUB_regen;
 		}
+
+		// Set up a health decaying entity for megahealth if necessary.
+		if (is_mega)
+			decay_health_spawn (other, 1);
 
 		activator = other;
 		SUB_UseTargets (); // fire all targets / killtargets

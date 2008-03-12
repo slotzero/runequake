@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.73 2008/01/24 07:21:40 slotzero Exp $
+/*  $Id: vote.qc,v 1.74 2008/03/12 03:08:32 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -47,7 +47,7 @@ vote_impulse_commands =
 		else
 			count_votes (2);
 	}
-	else if (self.impulse >= 1 && self.impulse <= 31)
+	else if (self.impulse >= 1 && self.impulse <= MAX_IMP_VOTE)
 		vote ();
 
 	impulse_override_cancel ();
@@ -904,6 +904,18 @@ vote =
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
+	}
+	else if (self.impulse == IMP_VOTE_CLASSIC_MEGA)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= setclassicmega;
+		e.noise2	= " classic mega ";
+
+		if (CLASSIC_MEGA)
+			e.noise1	= "disable";
+		else
+			e.noise1	= "enable";
 	}
 	else
 		cancel = -1;

@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.60 2007/10/11 01:17:02 slotzero Exp $
+/*  $Id: settings.qc,v 1.61 2008/03/12 03:08:31 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -656,6 +656,7 @@ string	CSHIFT_SHIELD		= "v_cshift 100 100   0 100\n";
 
 // HUNK GLOBALS
 
+float MODE_LOCKED;
 float NO_QUAD;
 float NO_PENT;
 float NO_RING;
@@ -670,4 +671,4 @@ float NO_MEGA;
 float FASTSTART;
 float MATCHLOCK;
 float NO_BACKPACKS;
-float MODE_LOCKED;
+float CLASSIC_MEGA;

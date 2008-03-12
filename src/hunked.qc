@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.50 2008/03/09 06:55:17 slotzero Exp $
+/*  $Id: hunked.qc,v 1.51 2008/03/12 03:08:31 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -42,6 +42,7 @@ float HUNK_NO_HOOK_DAMAGE	= %1017;
 float HUNK_NO_MEGA		= %1019;
 float HUNK_FASTSTART		= %1024;
 float HUNK_NO_BACKPACKS		= %1027;
+float HUNK_CLASSIC_MEGA		= %1032;
 
 float ()
 server_time =
@@ -490,6 +491,9 @@ fput =
 	else if (*offset == *HUNK_NO_HOOK_DAMAGE)	cvar_set_infokey ("HO_HOOK_DAMAGE",	s);
 	else if (*offset == *HUNK_NO_MEGA)		cvar_set_infokey ("NO_MEGA",		s);
 	else if (*offset == *HUNK_FASTSTART)		cvar_set_infokey ("FASTSTART",		s);
+	else if (*offset == *HUNK_NO_BACKPACKS)		cvar_set_infokey ("NO_BACKPACKS",	s);
+	else if (*offset == *HUNK_FASTSTART)		cvar_set_infokey ("FASTSTART",		s);
+	else if (*offset == *HUNK_CLASSIC_MEGA)		cvar_set_infokey ("CLASSIC_MEGA",	s);
 
 	return value;
 };
@@ -511,7 +515,8 @@ fget =
 	else if (*offset == *HUNK_NO_SPAWN_SHIELDS)	i = NO_SPAWN_SHIELDS	= cvar_infokey ("NO_SPAWN_SHIELDS");
 	else if (*offset == *HUNK_NO_HOOK_DAMAGE)	i = NO_HOOK_DAMAGE	= cvar_infokey ("NO_HOOK_DAMAGE");
 	else if (*offset == *HUNK_NO_MEGA)		i = NO_MEGA		= cvar_infokey ("NO_MEGA");
-	else if (*offset == *HUNK_FASTSTART)		i = FASTSTART		= cvar_infokey ("FASTSTART");
+	else if (*offset == *HUNK_MODE_LOCKED)		i = FASTSTART		= cvar_infokey ("MODE_LOCKED");
+	else if (*offset == *HUNK_CLASSIC_MEGA)		i = CLASSIC_MEGA	= cvar_infokey ("CLASSIC_MEGA");
 
 	return i;
 };
@@ -558,6 +563,7 @@ Hunk_Settings =
 	FASTSTART		= fget (HUNK_FASTSTART,		0);
 	NO_BACKPACKS		= fget (HUNK_NO_BACKPACKS,	0);
 	MODE_LOCKED		= fget (HUNK_MODE_LOCKED,	0);
+	CLASSIC_MEGA		= fget (HUNK_CLASSIC_MEGA,	0);
 
 	set_runemax ();
 };

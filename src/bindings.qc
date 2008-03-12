@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.105 2008/03/08 10:35:46 slotzero Exp $
+/*  $Id: bindings.qc,v 1.106 2008/03/12 03:08:31 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -346,6 +346,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-armor",		IMP_VOTE_ARMOR);
 	player_vote_impulse_alias ("vote-armor-drop",		IMP_VOTE_ARMOR_DROP);
 	player_vote_impulse_alias ("vote-backpacks",		IMP_VOTE_BACKPACKS);
+	player_vote_impulse_alias ("vote-classic-mega",		IMP_VOTE_CLASSIC_MEGA);
 	player_vote_impulse_alias ("vote-exit",			IMP_VOTE_EXIT);
 	player_vote_impulse_alias ("vote-free",			IMP_VOTE_FREE);
 	player_vote_impulse_alias ("vote-hook",			IMP_VOTE_HOOK);
@@ -488,6 +489,8 @@ console_aliases =
 	console_init_cvar_alias ("muteip",		CVAR_C2,	C2_MUTE_ADD);
 	console_init_cvar_alias ("unmuteip",		CVAR_C2,	C2_MUTE_REMOVE);
 	console_init_cvar_alias ("mutelist",		CVAR_C2,	C2_MUTE_LIST);
+	console_init_cvar_alias ("classicmegaon",	CVAR_C2,	C2_CLASSICMEGAON);
+	console_init_cvar_alias ("classicmegaoff",	CVAR_C2,	C2_CLASSICMEGAOFF);
 
 	level_aliases ();
 	custom_aliases ();
@@ -1000,6 +1003,24 @@ check_console_command =
 			mute_list ();
 		}
 
+		else if (i == C2_CLASSICMEGAON)
+		{
+			if (!CLASSIC_MEGA)
+			{
+				dprint_force ("Classic mega enabled\n");
+				setclassicmega ();
+			}
+		}
+
+		else if (i == C2_CLASSICMEGAOFF)
+		{
+			if (CLASSIC_MEGA)
+			{
+				dprint_force ("Classic mega disabled\n");
+				setclassicmega ();
+			}
+		}
+
 		else
 			dprint ("Unknown command\n");
 
@@ -1137,6 +1158,7 @@ help_vote =
 	self_sprint (self, "\bvote-backpacks  vote-armor-drop\n");
 	self_sprint (self, "\bvote-rune-drop  vote-powerup-drop\n");
 	self_sprint (self, "\b                vote-lg_discharge\n");
+	self_sprint (self, "\b                vote-classic-mega\n");
 	// self_sprint (self, "\n");
 };
 
@@ -1173,10 +1195,11 @@ help_options =
 	self_sprint (self, "\n\balt weapons   ");	self_sprint_boolean (self, !NO_ALT_WEAPONS);
 	self_sprint (self, "\b  weapons stay  ");	self_sprint_boolean (self, deathmatch & DM_WEAPONS_STAY);
 	self_sprint (self, "\n\bmega          ");	self_sprint_boolean (self, !NO_MEGA);
-	self_sprint (self, "\b  backpacks     ");	self_sprint_boolean (self, !NO_BACKPACKS);
+	self_sprint (self, "\b  classic mega  ");	self_sprint_boolean (self, CLASSIC_MEGA);
 	self_sprint (self, "\n\barmor drop    ");	self_sprint_boolean (self, !deathmatch & DM_NO_DROP_ARMOR);
 	self_sprint (self, "\b  powerup drop  ");	self_sprint_boolean (self, !deathmatch & DM_NO_DROP_POWERUP);
 	self_sprint (self, "\n\bshields       ");	self_sprint_boolean (self, !NO_SPAWN_SHIELDS);
 	self_sprint (self, "\b  lg discharge  ");	self_sprint_boolean (self, !deathmatch & DM_NO_DISCHARGE);
+	self_sprint (self, "\n\bbackpacks     ");	self_sprint_boolean (self, !NO_BACKPACKS);
 	self_sprint (self, "\n");
 };

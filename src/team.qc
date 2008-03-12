@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.78 2008/01/24 07:21:40 slotzero Exp $
+/*  $Id: team.qc,v 1.79 2008/03/12 03:08:32 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -953,6 +953,10 @@ match_defaults =
 	if (NO_MEGA)
 		setmega ();
 
+	// classic mega on
+	if (!CLASSIC_MEGA)
+		setclassicmega ();
+
 	// runes off
 	if (!NO_RUNES)
 		setrunes ();
@@ -1032,6 +1036,10 @@ arena_defaults =
 	// megahealth, no default
 	//if (NO_MEGA)
 	//	setmega ();
+
+	// classic mega, no default
+	//if (CLASSIC_MEGA)
+	//	setclassicmega ();
 
 	// runes off
 	if (!NO_RUNES)
@@ -1113,6 +1121,10 @@ practice_defaults =
 	if (NO_MEGA)
 		setmega ();
 
+	// classic mega on
+	if (!CLASSIC_MEGA)
+		setclassicmega ();
+
 	// runes off
 	if (!NO_RUNES)
 		setrunes ();
@@ -1192,6 +1204,10 @@ normal_defaults =
 	// megahealth on
 	if (NO_MEGA)
 		setmega ();
+
+	// classic mega off
+	if (CLASSIC_MEGA)
+		setclassicmega ();
 
 	// runes on
 	if (NO_RUNES)

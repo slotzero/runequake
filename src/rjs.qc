@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.227 2008/03/08 10:35:47 slotzero Exp $
+/*  $Id: rjs.qc,v 1.228 2008/03/12 03:08:31 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -523,12 +523,39 @@ void (entity e, float rate)
 decay_health_spawn =
 {
 	local entity this;
+	local float init;
 
 	if (e.runetype == RN_VAMP)
 		return;
 
 	if (e.health <= e.max_health)
 		return;
+
+	init = 1;
+	if (CLASSIC_MEGA)
+	{
+		if (self.classname == "item_health" && self.spawnflags & H_MEGA)
+		{
+			self.owner = e;
+			self.nextthink = -1;
+			init = 5;
+
+			if (e.items & IT_SUPERHEALTH)
+			{
+				this = find (world, classname, "decay_health");
+				while (this)
+				{
+					if (this.owner == e)
+					{
+						this.runevar = this.runevar + 1;
+						this.nextthink = this.nextthink + 1.5;
+						return;
+					}
+					this = find (this, classname, "decay_health");
+				}
+			}
+		}
+	}
 
 	if (e.items & IT_SUPERHEALTH)
 		return;
@@ -540,7 +567,7 @@ decay_health_spawn =
 	this.classname	= "decay_health";
 	this.runevar	= rate;
 	this.think	= decay_health_think;
-	this.nextthink	= time + 1;
+	this.nextthink	= time + init;
 };
 
 void ()
@@ -550,8 +577,8 @@ decay_health_think =
 		self.nextthink = time + 1;
 	else
 	{
-		self.owner.items = self.owner.items
-			- self.owner.items & IT_SUPERHEALTH;
+		self.owner.items = self.owner.items - self.owner.items & IT_SUPERHEALTH;
+		maybe_respawn_mega (self.owner);
 		remove (self);
 	}
 };

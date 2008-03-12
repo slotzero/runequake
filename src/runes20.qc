@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.28 2006/05/12 03:29:02 slotzero Exp $
+/*  $Id: runes20.qc,v 1.29 2008/03/12 03:08:31 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -771,6 +771,7 @@ Vamp_Spawn =
 		{
 			if (e.owner.items & IT_SUPERHEALTH)
 				e.owner.items = e.owner.items - e.owner.items & IT_SUPERHEALTH;
+			maybe_respawn_mega (e.owner);
 			remove (e);
 		}
 		e = find (e, classname, "decay_health");

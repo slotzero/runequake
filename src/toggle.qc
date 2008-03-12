@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.28 2008/01/24 07:21:40 slotzero Exp $
+/*  $Id: toggle.qc,v 1.29 2008/03/12 03:08:32 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -373,4 +373,37 @@ toggle_lightning_discharge =
 	s = ftos (new_deathmatch);
 	deathmatch = new_deathmatch;
 	cvar_set ("deathmatch", s);
+};
+
+void ()
+setclassicmega =
+{
+	local entity e;
+
+	e = find (world, classname, "item_health");
+	while (e)
+	{
+		if (e.spawnflags & H_MEGA)
+		{
+			if (e.owner)
+				e.owner = world;
+
+			if (e.nextthink > -2 && e.solid == SOLID_NOT)
+			{
+				e.nextthink = time;
+				e.think = SUB_regen;
+			}
+		}
+		e = find (e, classname, "item_health");
+	}
+
+	e = find (world, classname, "decay_health");
+	while (e)
+	{
+		if (e.runevar > 1)
+			e.runevar = 1;
+		e = find (e, classname, "decay_health");
+	}
+
+	CLASSIC_MEGA = fput (HUNK_CLASSIC_MEGA, !CLASSIC_MEGA);
 };
