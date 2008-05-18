@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.47 2008/03/08 10:35:46 slotzero Exp $
+/*  $Id: admin.qc,v 1.48 2008/05/18 19:09:13 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -26,6 +26,9 @@ admin_init =
 		return;
 	}
 
+	//XXX create a log instead
+	dprint_force (self.netname);
+	dprint_force (" activated admin mode\n");
 	sprint_admin2 (self.netname, " activated admin mode\n");
 	self.aqflags = self.aqflags | AQ_ADMIN;
 	admin_aliases ();
