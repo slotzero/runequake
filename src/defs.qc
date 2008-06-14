@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.208 2008/03/12 03:08:31 slotzero Exp $
+/*  $Id: defs.qc,v 1.209 2008/06/14 08:29:43 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1155,7 +1155,7 @@ float	C2_COMMANDS		= 8;
 float	C2_LEVEL_TIME		= 9;
 float	C2_MODE_PRACTICE	= 10;
 float	C2_MODE_NORMAL		= 11;
-float	C2_TOGGLE_NOALTS	= 12;
+//float				= 12;
 float	C2_QUADON		= 13;
 float	C2_QUADOFF		= 14;
 float	C2_PENTON		= 15;

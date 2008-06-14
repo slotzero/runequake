@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.106 2008/03/12 03:08:31 slotzero Exp $
+/*  $Id: bindings.qc,v 1.107 2008/06/14 08:29:43 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -437,7 +437,6 @@ console_aliases =
 	console_init_cvar_alias ("level-time",		CVAR_C2,	C2_LEVEL_TIME);
 	console_init_cvar_alias ("practice",		CVAR_C2,	C2_MODE_PRACTICE);
 	console_init_cvar_alias ("normal",		CVAR_C2,	C2_MODE_NORMAL);
-	console_init_cvar_alias ("noalts",		CVAR_C2,	C2_TOGGLE_NOALTS);
 	console_init_cvar_alias ("quadon",		CVAR_C2,	C2_QUADON);
 	console_init_cvar_alias ("quadoff",		CVAR_C2,	C2_QUADOFF);
 	console_init_cvar_alias ("penton",		CVAR_C2,	C2_PENTON);
@@ -569,7 +568,7 @@ check_console_command =
 			custom ();
 
 		else if (i == C2_COMMANDS)
-			commands ();
+			console_commands ();
 
 		else if (i == C2_LEVEL_TIME)
 		{
@@ -1031,6 +1030,35 @@ check_console_command =
 //-------------------------------------------------------------------
 // HELP MENUS
 //-------------------------------------------------------------------
+
+void ()
+console_commands =
+{
+	self_sprint (self, "Rune Quake v");
+	self_sprint (self, version);
+	self_sprint (self, " console commands\n\n");
+
+	self_sprint (self, "show-players   show-settings  rune-cheat      last          commands\n");
+	self_sprint (self, "levels         custom         level-time      sping         update-bindings\n");
+	self_sprint (self, "banlist        banip          unbanip         conprint      help-options\n");
+	self_sprint (self, "mutelist       muteip         unmuteip        modelock      modeunlock\n");
+	self_sprint (self, "eff            killstats      stats                         \n");
+
+	self_sprint (self, "\ngame modes:\n\n");
+	self_sprint (self, "normal              practice            match               arena\n");
+	self_sprint (self, "midair\n");
+	self_sprint (self, "\nsettings:\n\n");
+
+	self_sprint (self, "quadon              quadoff             penton              pentoff\n");
+	self_sprint (self, "ringon              ringoff             suiton              suitoff\n");
+	self_sprint (self, "armoron             armoroff            armordropon         armordropoff\n");
+	self_sprint (self, "rotateon            rotateoff           altson              altsoff\n");
+	self_sprint (self, "shieldson           shieldsoff          hookdamageon        hookdamageoff\n");
+	self_sprint (self, "megaon              megaoff             classicmegaon       classicmegaoff\n");
+	self_sprint (self, "powerupdropon       powerupdropoff      lgdischargeon       lgdischargeoff\n");
+	self_sprint (self, "runeson             runesoff            runedropon          runedropoff\n");
+	self_sprint (self, "backpackson         backpacksoff        faststarton         faststartoff\n");
+};
 
 void ()
 commands =
