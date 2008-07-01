@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.74 2008/03/12 03:08:32 slotzero Exp $
+/*  $Id: vote.qc,v 1.75 2008/07/01 06:12:53 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -356,6 +356,7 @@ vote_think =
 			forced_nextmap = string_null;
 		else if (self.impulse == IMP_VOTE_TIMESET)
 			VOTE_TIMESET = 0;
+		self.owner.last_vote = time + 30; // prevent vote flood
 		remove_bit_from_players (vote_flags, VOTE_YES | VOTE_NO);
 		remove (self);
 		return;
@@ -381,6 +382,19 @@ vote =
 			return vote_yes ();
 
 		return self_sprint (self, "\{141} a vote is already in progress\n");
+	}
+
+	// prevent players from voting too often
+	if (self.last_vote > time)
+	{
+		if (!is_admin ())
+		{
+			if (count_players (1) > 1)
+			{
+				self.last_vote = time + 30; // reset
+				return self_sprint (self, "\{141} you can't initiate a vote so soon\n");
+			}
+		}
 	}
 
 	// match mode timeset
@@ -449,6 +463,10 @@ vote =
 		{
 			e.noise2	= " map to ";
 			e.noise3	= forced_nextmap;
+
+			// weight frequently voted levels higher
+			if (track_level_duplicate (forced_nextmap))
+				e.frag_rate = 1;
 		}
 		else
 			e.noise2	= " to a random map";

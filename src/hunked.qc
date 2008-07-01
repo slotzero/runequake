@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.51 2008/03/12 03:08:31 slotzero Exp $
+/*  $Id: hunked.qc,v 1.52 2008/07/01 06:12:53 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -24,6 +24,8 @@
 float LAST_TIME_UPDATE;
 float HUNK_SERVER_TIME		= %10;
 float HUNK_CLIENT_DISCONNECT	= %100;
+float HUNK_LAST_LEVEL		= %520;
+float HUNK_LAST_LEVEL_POS	= %530;
 float HUNK_BAN_OFFSET		= %800;
 float HUNK_MODE_LOCKED		= %999;
 float HUNK_MUTE_OFFSET		= %1200;
@@ -470,6 +472,37 @@ mute_add =
 	return self_sprint (self, "mute list is full\n");
 };
 
+float (string last_level)
+track_level_duplicate =
+{
+	local float i;
+	local string s;
+
+	for (i = %0; i < %10; i = i + %2)
+	{
+		s = Read_Hunk_String_Max (HUNK_CONTEXT, HUNK_LAST_LEVEL + i, 8);
+		if (s == last_level)
+			return 1;
+	}
+	return 0;
+};
+
+void (string last_level)
+track_last_level =
+{
+	local float pos;
+
+	pos = Read_Hunk_Float (HUNK_CONTEXT, HUNK_LAST_LEVEL_POS);
+	if (pos >=5)
+		pos = 0;
+
+	if (track_level_duplicate (last_level))
+		return;
+
+	Write_Hunk_String_Max (HUNK_CONTEXT, HUNK_LAST_LEVEL + ((pos * 2) * %1), last_level, 8);
+	Write_Hunk_Float (HUNK_CONTEXT, HUNK_LAST_LEVEL_POS, pos + 1);
+};
+
 IN_QW([-
 // My awful attempt to keep QW compatible...
 float (float offset, float value)
@@ -566,4 +599,5 @@ Hunk_Settings =
 	CLASSIC_MEGA		= fget (HUNK_CLASSIC_MEGA,	0);
 
 	set_runemax ();
+	track_last_level (mapname);
 };

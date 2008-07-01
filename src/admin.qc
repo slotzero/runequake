@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.48 2008/05/18 19:09:13 slotzero Exp $
+/*  $Id: admin.qc,v 1.49 2008/07/01 06:12:53 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -600,6 +600,19 @@ admin_impulse_map =
 		{
 			if (vip.impulse != self.impulse)
 				return self_sprint (self, "\{141} a vote is already in progress\n");
+		}
+
+		// prevent players from voting too often
+		if (self.last_vote > time)
+		{
+			if (!is_admin ())
+			{
+				if (count_players (1) > 1)
+				{
+					self.last_vote = time + 30; // reset
+					return self_sprint (self, "\{141} you can't initiate a vote so soon\n");
+				}
+			}
 		}
 
 		if (forced_nextmap)

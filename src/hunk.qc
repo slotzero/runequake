@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.43 2008/03/09 06:55:17 slotzero Exp $
+/*  $Id: hunk.qc,v 1.44 2008/07/01 06:12:53 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -38,6 +38,10 @@
 	// match.qc
 	%500 - %516	= float keep track of team colors in match mode
 	%517		= float match timelimit (set by timeset)
+
+	// vote.qc
+	%520 - %529	= string[%2] last 5 levels played
+	%530		= float last level position
 
 	// hunked.qc
 	%800 - %998	= float banned ip addresses [199 MAX]
