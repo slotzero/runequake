@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.53 2008/07/01 06:18:52 slotzero Exp $
+/*  $Id: hunked.qc,v 1.54 2008/07/01 06:22:16 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -474,7 +474,7 @@ mute_add =
 
 float (string last_level)
 track_level_duplicate =
-{
+{	IN_QW(return;)
 	local float i;
 	local string s;
 
@@ -489,7 +489,7 @@ track_level_duplicate =
 
 void (string last_level)
 track_last_level =
-{	IN_QW(return;)
+{
 	local float pos;
 
 	pos = Read_Hunk_Float (HUNK_CONTEXT, HUNK_LAST_LEVEL_POS);
