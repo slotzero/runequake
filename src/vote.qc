@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.76 2008/07/03 21:50:44 slotzero Exp $
+/*  $Id: vote.qc,v 1.77 2008/07/03 21:52:10 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -372,7 +372,7 @@ vote_think =
 void ()
 vote =
 {
-	local entity e, tmp, vip;
+	local entity e, vip;
 	local float i, cancel;
 
 	vip = find_vip ();
