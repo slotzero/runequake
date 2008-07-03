@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.54 2008/07/01 06:22:16 slotzero Exp $
+/*  $Id: hunked.qc,v 1.55 2008/07/03 07:47:31 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -474,7 +474,7 @@ mute_add =
 
 float (string last_level)
 track_level_duplicate =
-{	IN_QW(return;)
+{	IN_QW(return 0;)
 	local float i;
 	local string s;
 
