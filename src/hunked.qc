@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.56 2008/07/03 08:02:20 slotzero Exp $
+/*  $Id: hunked.qc,v 1.57 2008/07/03 19:56:17 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -489,7 +489,7 @@ track_level_duplicate =
 
 void (string last_level)
 track_last_level =
-{
+{	IN_QW(return;)
 	local float pos;
 
 	pos = Read_Hunk_Float (HUNK_CONTEXT, HUNK_LAST_LEVEL_POS);
