@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.80 2008/07/03 07:44:20 slotzero Exp $
+/*  $Id: team.qc,v 1.81 2008/07/03 07:46:02 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -819,19 +819,19 @@ teamscores_off =
 string (float mode)
 current_gamemode =
 {
-	if (gamemode == MODE_NORMAL)
+	if (mode == MODE_NORMAL)
 		return "normal";
 
-	if (gamemode == MODE_PRACTICE)
+	if (mode == MODE_PRACTICE)
 		return "practice";
 
-	if (gamemode == MODE_ARENA)
+	if (mode == MODE_ARENA)
 		return "arena";
 
-	if (gamemode == MODE_MATCH)
+	if (mode == MODE_MATCH)
 		return "match";
 
-	if (gamemode == MODE_MIDAIR)
+	if (mode == MODE_MIDAIR)
 		return "midair";
 
 	return "invalid gamemode";
