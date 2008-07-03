@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.108 2008/07/03 07:44:20 slotzero Exp $
+/*  $Id: bindings.qc,v 1.109 2008/07/03 07:50:33 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -1028,7 +1028,7 @@ check_console_command =
 			dprint_force (s);
 			if (MODE_LOCKED)
 				dprint (" (locked)");
-			dprint ("\n");
+			dprint_force ("\n");
 		}
 
 		else
