@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.210 2008/07/01 06:12:53 slotzero Exp $
+/*  $Id: defs.qc,v 1.211 2008/07/03 07:44:20 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1209,6 +1209,7 @@ float	C2_MUTE_REMOVE		= 62;
 float	C2_MUTE_LIST		= 63;
 float	C2_CLASSICMEGAON	= 64;
 float	C2_CLASSICMEGAOFF	= 65;
+float	C2_CURRENT_MODE		= 66;
 
 // game mode
 float	gamemode;

@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.79 2008/03/12 03:08:32 slotzero Exp $
+/*  $Id: team.qc,v 1.80 2008/07/03 07:44:20 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -815,6 +815,28 @@ teamscores_off =
 		e = nextent (e);
 	}
 };
+
+string (float mode)
+current_gamemode =
+{
+	if (gamemode == MODE_NORMAL)
+		return "normal";
+
+	if (gamemode == MODE_PRACTICE)
+		return "practice";
+
+	if (gamemode == MODE_ARENA)
+		return "arena";
+
+	if (gamemode == MODE_MATCH)
+		return "match";
+
+	if (gamemode == MODE_MIDAIR)
+		return "midair";
+
+	return "invalid gamemode";
+};
+
 
 void ()
 change_mode_to_midair =

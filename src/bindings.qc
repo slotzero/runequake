@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.107 2008/06/14 08:29:43 slotzero Exp $
+/*  $Id: bindings.qc,v 1.108 2008/07/03 07:44:20 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -490,6 +490,7 @@ console_aliases =
 	console_init_cvar_alias ("mutelist",		CVAR_C2,	C2_MUTE_LIST);
 	console_init_cvar_alias ("classicmegaon",	CVAR_C2,	C2_CLASSICMEGAON);
 	console_init_cvar_alias ("classicmegaoff",	CVAR_C2,	C2_CLASSICMEGAOFF);
+	console_init_cvar_alias ("mode",		CVAR_C2,	C2_CURRENT_MODE);
 
 	level_aliases ();
 	custom_aliases ();
@@ -1020,6 +1021,16 @@ check_console_command =
 			}
 		}
 
+		else if (i == C2_CURRENT_MODE)
+		{
+			dprint_force ("Current mode: ");
+			s = current_gamemode (gamemode);
+			dprint_force (s);
+			if (MODE_LOCKED)
+				dprint (" (locked)");
+			dprint ("\n");
+		}
+
 		else
 			dprint ("Unknown command\n");
 
@@ -1208,8 +1219,17 @@ help_match =
 void ()
 help_options =
 {
+	local string s;
+
 	self_sprint (self, "\n\b             \.help-options\.\n");
 	self_sprint (self, "\b       (current state of options)\n");
+
+	s = current_gamemode (gamemode);
+	self_sprint (self, "\b\ngamemode      ");
+	self_sprint (self, s);
+	if (MODE_LOCKED)
+		self_sprint (self, "\b (locked)");
+
 	self_sprint (self, "\n\bhook          ");	self_sprint_boolean (self, temp1 & T1_HOOK_MASK);
 	self_sprint (self, "\b  hook-damage   ");	self_sprint_boolean (self, !NO_HOOK_DAMAGE);
 	self_sprint (self, "\n\bquad          ");	self_sprint_boolean (self, !NO_QUAD);

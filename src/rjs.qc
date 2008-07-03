@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.228 2008/03/12 03:08:31 slotzero Exp $
+/*  $Id: rjs.qc,v 1.229 2008/07/03 07:44:20 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -315,6 +315,9 @@ rjs_worldspawn =
 	scratch1	= cvar_infokey ("scratch1");
 	gamemode	= cvar_infokey (CVAR_C3);
 
+	// XXX hack, maybe use this as a cvar instead?
+	MODE_LOCKED	= TRUE;
+
 	frag_init ();
 	orig_serverflags = serverflags;
 	if (deathmatch & DM_DM_MASK && mapname == "start" && serverflags & SERVERFLAGS_RUNE_MASK == SERVERFLAGS_RUNE_MASK)
@@ -386,6 +389,27 @@ set_runemax =
 void ()
 set_gamemode =
 {
+	if (MODE_LOCKED)
+	{
+		if (gamemode == MODE_NORMAL)
+			normal_defaults ();
+
+		if (gamemode == MODE_MATCH)
+			match_defaults ();
+
+		if (gamemode == MODE_PRACTICE)
+		{
+			practice_defaults ();
+			if (mapname != "dm6")
+				admin_changelevel_now ("dm6");
+		}
+
+		if (gamemode & MODE_ARENA)
+			arena_defaults ();
+
+		return;
+	}
+
 	if (scratch1 & S1_MATCH_DEFAULT)
 	{
 		match_defaults ();
@@ -446,9 +470,6 @@ process_misc =
 	// vote-team
 	if (VOTE_TEAM_MODE_DEFAULT)
 		toggle_teamplay (VOTE_TEAM_MODE_DEFAULT);
-
-	if (MODE_LOCKED)
-		return;
 
 	set_gamemode ();
 };
