@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.55 2008/07/03 07:47:31 slotzero Exp $
+/*  $Id: hunked.qc,v 1.56 2008/07/03 08:02:20 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -526,6 +526,7 @@ fput =
 	else if (*offset == *HUNK_FASTSTART)		cvar_set_infokey ("FASTSTART",		s);
 	else if (*offset == *HUNK_NO_BACKPACKS)		cvar_set_infokey ("NO_BACKPACKS",	s);
 	else if (*offset == *HUNK_FASTSTART)		cvar_set_infokey ("FASTSTART",		s);
+	else if (*offset == *HUNK_MODE_LOCKED)		cvar_set_infokey ("MODE_LOCKED",	s);
 	else if (*offset == *HUNK_CLASSIC_MEGA)		cvar_set_infokey ("CLASSIC_MEGA",	s);
 
 	return value;
@@ -548,7 +549,9 @@ fget =
 	else if (*offset == *HUNK_NO_SPAWN_SHIELDS)	i = NO_SPAWN_SHIELDS	= cvar_infokey ("NO_SPAWN_SHIELDS");
 	else if (*offset == *HUNK_NO_HOOK_DAMAGE)	i = NO_HOOK_DAMAGE	= cvar_infokey ("NO_HOOK_DAMAGE");
 	else if (*offset == *HUNK_NO_MEGA)		i = NO_MEGA		= cvar_infokey ("NO_MEGA");
-	else if (*offset == *HUNK_MODE_LOCKED)		i = FASTSTART		= cvar_infokey ("MODE_LOCKED");
+	else if (*offset == *HUNK_FASTSTART)		i = FASTSTART		= cvar_infokey ("FASTSTART");
+	else if (*offset == *HUNK_NO_BACKPACKS)		i = NO_BACKPACKS	= cvar_infokey ("NO_BACKPACKS");
+	else if (*offset == *HUNK_MODE_LOCKED)		i = MODE_LOCKED		= cvar_infokey ("MODE_LOCKED");
 	else if (*offset == *HUNK_CLASSIC_MEGA)		i = CLASSIC_MEGA	= cvar_infokey ("CLASSIC_MEGA");
 
 	return i;
