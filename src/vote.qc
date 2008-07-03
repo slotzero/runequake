@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.75 2008/07/01 06:12:53 slotzero Exp $
+/*  $Id: vote.qc,v 1.76 2008/07/03 21:50:44 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -372,7 +372,7 @@ vote_think =
 void ()
 vote =
 {
-	local entity e, vip;
+	local entity e, tmp, vip;
 	local float i, cancel;
 
 	vip = find_vip ();
@@ -391,7 +391,7 @@ vote =
 		{
 			if (count_players (1) > 1)
 			{
-				self.last_vote = time + 30; // reset
+				self.last_vote = time + 15; // reset
 				return self_sprint (self, "\{141} you can't initiate a vote so soon\n");
 			}
 		}
@@ -566,7 +566,7 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_QUAD)
 	{
-		// cancel	= 1;
+		cancel		= !find (world, classname, "item_artifact_super_damage");
 		e.frag_rate	= 0.51; // XXX
 		e.think1	= setquad;
 		e.noise2	= " quad ";
@@ -575,10 +575,13 @@ vote =
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
+
+		if (cancel)
+			self_sprint (self, "this level has no quads\n");
 	}
 	else if (self.impulse == IMP_VOTE_PENT)
 	{
-		// cancel	= 1;
+		cancel		= !find (world, classname, "item_artifact_invulnerability");
 		e.frag_rate	= 0.51; // XXX
 		e.think1	= setpent;
 		e.noise2	= " pentagram ";
@@ -587,10 +590,13 @@ vote =
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
+
+		if (cancel)
+			self_sprint (self, "this level has no pents\n");
 	}
 	else if (self.impulse == IMP_VOTE_RING)
 	{
-		// cancel	= 1;
+		cancel		= !find (world, classname, "item_artifact_invisibility");
 		e.frag_rate	= 0.51; // XXX
 		e.think1	= setring;
 		e.noise2	= " ring of shadows ";
@@ -599,10 +605,13 @@ vote =
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
+
+		if (cancel)
+			self_sprint (self, "this level has no rings\n");
 	}
 	else if (self.impulse == IMP_VOTE_SUIT)
 	{
-		// cancel	= 1;
+		cancel		= !find (world, classname, "item_artifact_envirosuit");
 		e.frag_rate	= 0.51; // XXX
 		e.think1	= setsuit;
 		e.noise2	= " environmental suit ";
@@ -611,10 +620,13 @@ vote =
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
+
+		if (cancel)
+			self_sprint (self, "this level has no suits\n");
 	}
 	else if (self.impulse == IMP_VOTE_ARMOR)
 	{
-		// cancel	= 1;
+		cancel		= !find (world, netname, "item_armor_all");
 		e.frag_rate	= 0.51; // XXX
 		e.think1	= setarmor;
 		e.noise2	= " armor ";
@@ -623,10 +635,13 @@ vote =
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
+
+		if (cancel)
+			self_sprint (self, "this level has no armors\n");
 	}
 	else if (self.impulse == IMP_VOTE_ROTATE)
 	{
-		// cancel	= 1;
+		cancel		= !find (world, netname, "item_armor_all");
 		e.frag_rate	= 0.51; // XXX
 		e.think1	= setrotate;
 		e.noise2	= " rotating armor ";
@@ -636,11 +651,15 @@ vote =
 		else
 			e.noise1	= "enable";
 
-		if (NO_ARMOR)
+		if (cancel)
+			self_sprint (self, "this level has no armors\n");
+		else
 		{
-			if (!cancel)
+			if (NO_ARMOR)
+			{
 				self_sprint (self, "enable armor first\n");
-			cancel = 1;
+				cancel = 1;
+			}
 		}
 	}
 	else if (self.impulse == IMP_VOTE_RUNES)
@@ -670,7 +689,7 @@ vote =
 		if (gamemode == MODE_PRACTICE)
 		{
 			if (!cancel)
-				self_sprint (self, "disable practice mode first\n");
+				self_sprint (self, "alt weapons disabled in practice\n");
 			cancel = 1;
 		}
 	}
