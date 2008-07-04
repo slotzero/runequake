@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.83 2006/07/16 01:46:08 slotzero Exp $
+/*  $Id: world.qc,v 1.84 2008/07/04 07:40:54 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -45,7 +45,7 @@ worldspawn =
 	precaches ();
 	Light_Setup ();
 	place_my_items ();
-	InitSearchHunk();
+	IN_POQ(InitSearchHunk();)
 };
 
 void ()
