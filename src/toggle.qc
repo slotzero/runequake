@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.30 2008/07/04 04:27:56 slotzero Exp $
+/*  $Id: toggle.qc,v 1.31 2008/07/04 05:17:07 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -63,7 +63,7 @@ setquad =
 
 	s = ftos (new_options);
 	options = new_options;
-	cvar_set (CVAR_C4, s);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
@@ -82,7 +82,7 @@ setpent =
 
 	s = ftos (new_options);
 	options = new_options;
-	cvar_set (CVAR_C4, s);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
@@ -101,7 +101,7 @@ setring =
 
 	s = ftos (new_options);
 	options = new_options;
-	cvar_set (CVAR_C4, s);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
@@ -120,7 +120,7 @@ setsuit =
 
 	s = ftos (new_options);
 	options = new_options;
-	cvar_set (CVAR_C4, s);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 void (float mode)
@@ -164,7 +164,7 @@ setarmor =
 
 	s = ftos (new_options);
 	options = new_options;
-	cvar_set (CVAR_C4, s);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
@@ -186,7 +186,7 @@ setrotate =
 
 	s = ftos (new_options);
 	options = new_options;
-	cvar_set (CVAR_C4, s);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
@@ -205,7 +205,7 @@ setrunes =
 
 	s = ftos (new_options);
 	options = new_options;
-	cvar_set (CVAR_C4, s);
+	cvar_set_infokey (CVAR_C4, s);
 
 	if (options & NO_RUNES)
 	{
@@ -251,7 +251,7 @@ setalts =
 
 	s = ftos (new_options);
 	options = new_options;
-	cvar_set (CVAR_C4, s);
+	cvar_set_infokey (CVAR_C4, s);
 
 	if (options & NO_ALT_WEAPONS)
 	{
@@ -283,7 +283,7 @@ setshields =
 
 	s = ftos (new_options);
 	options = new_options;
-	cvar_set (CVAR_C4, s);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
@@ -301,7 +301,7 @@ sethookdamage =
 
 	s = ftos (new_options);
 	options = new_options;
-	cvar_set (CVAR_C4, s);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 // -1 all
@@ -355,7 +355,7 @@ setmega =
 
 	s = ftos (new_options);
 	options = new_options;
-	cvar_set (CVAR_C4, s);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
@@ -434,7 +434,7 @@ setfaststart =
 
 	s = ftos (new_options);
 	options = new_options;
-	cvar_set (CVAR_C4, s);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
@@ -461,7 +461,7 @@ setbackpacks =
 
 	s = ftos (new_options);
 	options = new_options;
-	cvar_set (CVAR_C4, s);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
@@ -573,7 +573,7 @@ setclassicmega =
 
 	s = ftos (new_options);
 	options = new_options;
-	cvar_set (CVAR_C4, s);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
@@ -591,5 +591,5 @@ toggle_mode_lock =
 
 	s = ftos (new_options);
 	options = new_options;
-	cvar_set (CVAR_C4, s);
+	cvar_set_infokey (CVAR_C4, s);
 };
