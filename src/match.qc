@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.49 2008/07/04 04:27:56 slotzero Exp $
+/*  $Id: match.qc,v 1.50 2008/07/04 06:32:40 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -228,6 +228,7 @@ void ()
 match_abort =
 {
 	match.state = 0;
+	TEAMS_PRESENT = 0;
 
 	bprint ("Match aborted!\n");
 	pqc_match_time (world, 255, 0);
