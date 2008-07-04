@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.69 2006/09/05 04:22:00 slotzero Exp $
+/*  $Id: weapons.qc,v 1.70 2008/07/04 04:27:56 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1105,7 +1105,7 @@ W_Attack =
 	base_weapon = self.weapon & WEAPON_NONALT_MASK;
 
 	// This failed as a single expression.
-	if (NO_ALT_WEAPONS)
+	if (options & NO_ALT_WEAPONS)
 		is_alt = 0;
 	else
 		is_alt = self.weapon & WEAPON_ALT;

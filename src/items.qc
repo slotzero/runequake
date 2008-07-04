@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.72 2008/03/12 03:08:31 slotzero Exp $
+/*  $Id: items.qc,v 1.73 2008/07/04 04:27:56 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -94,23 +94,23 @@ maybe_disable_item =
 
 	if (self.touch == powerup_touch)
 	{
-		if (self.classname == "item_artifact_super_damage" && NO_QUAD)
+		if (self.classname == "item_artifact_super_damage" && options & NO_QUAD)
 			return;
-		if (self.classname == "item_artifact_invulnerability" && NO_PENT)
+		if (self.classname == "item_artifact_invulnerability" && options & NO_PENT)
 			return;
-		if (self.classname == "item_artifact_invisibility" && NO_RING)
+		if (self.classname == "item_artifact_invisibility" && options & NO_RING)
 			return;
-		if (self.classname == "item_artifact_envirosuit" && NO_SUIT)
+		if (self.classname == "item_artifact_envirosuit" && options & NO_SUIT)
 			return;
 	}
 	else if (self.touch == armor_touch)
 	{
-		if (NO_ARMOR)
+		if (options & NO_ARMOR)
 		 	return;
 	}
 	else if (self.touch == health_touch)
 	{
-		if (self.classname == "item_health" && self.spawnflags & 2 && NO_MEGA)
+		if (self.classname == "item_health" && self.spawnflags & 2 && options & NO_MEGA)
 			return;
 	}
 
@@ -270,10 +270,10 @@ maybe_respawn_mega =
 {
 	local entity mega;
 
-	if (!CLASSIC_MEGA)
+	if (!options & CLASSIC_MEGA)
 		return;
 
-	if (NO_MEGA)
+	if (options & NO_MEGA)
 		return;
 
 	mega = find (world, classname, "item_health");
@@ -555,7 +555,7 @@ armor_touch =
 void ()
 armor_cycle =
 {
-	if (!ROTATE)
+	if (!options & ARMOR_ROTATE)
 		return;
 
 	if (self.runetype < time)
@@ -1698,7 +1698,7 @@ DropBackpack =
 {
 	local entity item;
 
-	if (NO_BACKPACKS)
+	if (options & NO_BACKPACKS)
 		return;
 
 	if (gamemode == MODE_MATCH)

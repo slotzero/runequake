@@ -1,4 +1,4 @@
-/*  $Id: hunk.qc,v 1.44 2008/07/01 06:12:53 slotzero Exp $
+/*  $Id: hunk.qc,v 1.45 2008/07/04 04:27:56 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -45,9 +45,6 @@
 
 	// hunked.qc
 	%800 - %998	= float banned ip addresses [199 MAX]
-
-	// hunked.qc
-	%999 - %1199	= float Hunk_Settings()
 
 	// hunked.qc
 	%1200 - ?	= float muted ip addresses [? MAX]

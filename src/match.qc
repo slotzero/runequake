@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.48 2006/10/29 21:35:17 slotzero Exp $
+/*  $Id: match.qc,v 1.49 2008/07/04 04:27:56 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -442,7 +442,7 @@ match_spawn_countdown =
 	{
 			e		= spawn ();
 			e.classname	= "match_countdown";
-			if (FASTSTART)
+			if (options & FASTSTART)
 				e.frags = 20;
 			else
 				e.frags = 60;
@@ -456,7 +456,7 @@ match_spawn_countdown =
 				match.frags = 20;
 			}
 
-			if (FASTSTART)
+			if (options & FASTSTART)
 				bprint ("Match begins in 20 seconds\n");
 			else
 				bprint ("Match begins in 1 minute\n");

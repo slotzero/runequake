@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.81 2008/07/03 07:46:02 slotzero Exp $
+/*  $Id: team.qc,v 1.82 2008/07/04 04:27:56 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -946,25 +946,25 @@ match_defaults =
 	}
 
 	// hook damage on
-	if (NO_HOOK_DAMAGE)
+	if (options & NO_HOOK_DAMAGE)
 		sethookdamage ();
 
 	// powerups on
-	if (NO_QUAD)
+	if (options & NO_QUAD)
 		setquad ();
-	if (NO_PENT)
+	if (options & NO_PENT)
 		setpent ();
-	if (NO_RING)
+	if (options & NO_RING)
 		setring ();
-	if (NO_SUIT)
+	if (options & NO_SUIT)
 		setsuit ();
 
 	// armor on
-	if (NO_ARMOR)
+	if (options & NO_ARMOR)
 		setarmor ();
 
 	// rotate off
-	if (ROTATE)
+	if (options & ARMOR_ROTATE)
 		setrotate ();
 
 	// armor drop off
@@ -972,15 +972,15 @@ match_defaults =
 		toggle_armor_drop ();
 
 	// megahealth on
-	if (NO_MEGA)
+	if (options & NO_MEGA)
 		setmega ();
 
 	// classic mega on
-	if (!CLASSIC_MEGA)
+	if (!options & CLASSIC_MEGA)
 		setclassicmega ();
 
 	// runes off
-	if (!NO_RUNES)
+	if (!options & NO_RUNES)
 		setrunes ();
 
 	// runes drop off
@@ -988,7 +988,7 @@ match_defaults =
 		toggle_rune_drop ();
 
 	// alt weapons off
-	if (!NO_ALT_WEAPONS)
+	if (!options & NO_ALT_WEAPONS)
 		setalts ();
 
 	// weapons stay off
@@ -996,11 +996,11 @@ match_defaults =
 		toggle_weapons_stay ();
 
 	// spawn shields off
-	if (!NO_SPAWN_SHIELDS)
+	if (!options & NO_SPAWN_SHIELDS)
 		setshields ();
 
 	// drop backpacks on
-	if (NO_BACKPACKS)
+	if (options & NO_BACKPACKS)
 		setbackpacks ();
 
 	// powerup drop off
@@ -1030,25 +1030,25 @@ arena_defaults =
 	}
 
 	// hook damage on
-	if (NO_HOOK_DAMAGE)
+	if (options & NO_HOOK_DAMAGE)
 		sethookdamage ();
 
 	// powerups, no default
-	//if (NO_QUAD)
+	//if (options & NO_QUAD)
 	//	setquad ();
-	//if (NO_PENT)
+	//if (options & NO_PENT)
 	//	setpent ();
-	//if (NO_RING)
+	//if (options & NO_RING)
 	//	setring ();
-	//if (NO_SUIT)
+	//if (options & NO_SUIT)
 	//	setsuit ();
 
 	// armor, no default
-	//if (NO_ARMOR)
+	//if (options & NO_ARMOR)
 	//	setarmor ();
 
 	// rotate, no default
-	//if (ROTATE)
+	//if (options & ARMOR_ROTATE)
 	//	setrotate ();
 
 	// armor drop off
@@ -1056,15 +1056,15 @@ arena_defaults =
 		toggle_armor_drop ();
 
 	// megahealth, no default
-	//if (NO_MEGA)
+	//if (options & NO_MEGA)
 	//	setmega ();
 
 	// classic mega, no default
-	//if (CLASSIC_MEGA)
+	//if (options & CLASSIC_MEGA)
 	//	setclassicmega ();
 
 	// runes off
-	if (!NO_RUNES)
+	if (!options & NO_RUNES)
 		setrunes ();
 
 	// runes drop off
@@ -1072,7 +1072,7 @@ arena_defaults =
 		toggle_rune_drop ();
 
 	// alt weapons off
-	if (!NO_ALT_WEAPONS)
+	if (!options & NO_ALT_WEAPONS)
 		setalts ();
 
 	// weapons stay, no default
@@ -1080,11 +1080,11 @@ arena_defaults =
 	//	toggle_weapons_stay ();
 
 	// spawn shields off
-	if (!NO_SPAWN_SHIELDS)
+	if (!options & NO_SPAWN_SHIELDS)
 		setshields ();
 
 	// drop backpacks off
-	if (!NO_BACKPACKS)
+	if (!options & NO_BACKPACKS)
 		setbackpacks ();
 
 	// powerup drop on, no default
@@ -1114,25 +1114,25 @@ practice_defaults =
 	}
 
 	// hook damage on
-	if (NO_HOOK_DAMAGE)
+	if (options & NO_HOOK_DAMAGE)
 		sethookdamage ();
 
 	// powerups on
-	if (NO_QUAD)
+	if (options & NO_QUAD)
 		setquad ();
-	if (NO_PENT)
+	if (options & NO_PENT)
 		setpent ();
-	if (NO_RING)
+	if (options & NO_RING)
 		setring ();
-	if (NO_SUIT)
+	if (options & NO_SUIT)
 		setsuit ();
 
 	// armor on
-	if (NO_ARMOR)
+	if (options & NO_ARMOR)
 		setarmor ();
 
 	// rotate off
-	if (ROTATE)
+	if (options & ARMOR_ROTATE)
 		setrotate ();
 
 	// armor drop off
@@ -1140,15 +1140,15 @@ practice_defaults =
 		toggle_armor_drop ();
 
 	// megahealth on
-	if (NO_MEGA)
+	if (options & NO_MEGA)
 		setmega ();
 
 	// classic mega on
-	if (!CLASSIC_MEGA)
+	if (!options & CLASSIC_MEGA)
 		setclassicmega ();
 
 	// runes off
-	if (!NO_RUNES)
+	if (!options & NO_RUNES)
 		setrunes ();
 
 	// runes drop off
@@ -1156,7 +1156,7 @@ practice_defaults =
 		toggle_rune_drop ();
 
 	// alt weapons off
-	if (!NO_ALT_WEAPONS)
+	if (!options & NO_ALT_WEAPONS)
 		setalts ();
 
 	// weapons stay, no default
@@ -1164,11 +1164,11 @@ practice_defaults =
 	//	toggle_weapons_stay ();
 
 	// spawn shields off
-	if (!NO_SPAWN_SHIELDS)
+	if (!options & NO_SPAWN_SHIELDS)
 		setshields ();
 
 	// drop backpacks off
-	if (!NO_BACKPACKS)
+	if (!options & NO_BACKPACKS)
 		setbackpacks ();
 
 	// powerup drop on
@@ -1198,25 +1198,25 @@ normal_defaults =
 	}
 
 	// hook damage on
-	if (NO_HOOK_DAMAGE)
+	if (options & NO_HOOK_DAMAGE)
 		sethookdamage ();
 
 	// powerups on
-	if (NO_QUAD)
+	if (options & NO_QUAD)
 		setquad ();
-	if (NO_PENT)
+	if (options & NO_PENT)
 		setpent ();
-	if (NO_RING)
+	if (options & NO_RING)
 		setring ();
-	if (NO_SUIT)
+	if (options & NO_SUIT)
 		setsuit ();
 
 	// armor on
-	if (NO_ARMOR)
+	if (options & NO_ARMOR)
 		setarmor ();
 
 	// rotate on
-	if (!ROTATE)
+	if (!options & ARMOR_ROTATE)
 		setrotate ();
 
 	// armor drop on
@@ -1224,15 +1224,15 @@ normal_defaults =
 		toggle_armor_drop ();
 
 	// megahealth on
-	if (NO_MEGA)
+	if (options & NO_MEGA)
 		setmega ();
 
 	// classic mega off
-	if (CLASSIC_MEGA)
+	if (options & CLASSIC_MEGA)
 		setclassicmega ();
 
 	// runes on
-	if (NO_RUNES)
+	if (options & NO_RUNES)
 		setrunes ();
 
 	// runes drop off
@@ -1240,7 +1240,7 @@ normal_defaults =
 		toggle_rune_drop ();
 
 	// alt weapons on
-	if (NO_ALT_WEAPONS)
+	if (options & NO_ALT_WEAPONS)
 		setalts ();
 
 	// weapons stay on
@@ -1248,11 +1248,11 @@ normal_defaults =
 		toggle_weapons_stay ();
 
 	// spawn shields on
-	if (NO_SPAWN_SHIELDS)
+	if (options & NO_SPAWN_SHIELDS)
 		setshields ();
 
 	// drop backpacks on
-	if (NO_BACKPACKS)
+	if (options & NO_BACKPACKS)
 		setbackpacks ();
 
 	// powerup drop on

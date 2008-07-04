@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.29 2008/03/12 03:08:32 slotzero Exp $
+/*  $Id: toggle.qc,v 1.30 2008/07/04 04:27:56 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -50,29 +50,77 @@ toggle_powerup =
 void ()
 setquad =
 {
-	toggle_powerup ("item_artifact_super_damage", NO_QUAD);
-	NO_QUAD = fput (HUNK_NO_QUAD, !NO_QUAD);
+	local float new_options;
+	local string s;
+
+	new_options = cvar_infokey (CVAR_C4);
+	toggle_powerup ("item_artifact_super_damage", new_options & NO_QUAD);
+
+	if (new_options & NO_QUAD)
+		new_options = new_options - new_options & NO_QUAD;
+	else
+		new_options = new_options | NO_QUAD;
+
+	s = ftos (new_options);
+	options = new_options;
+	cvar_set (CVAR_C4, s);
 };
 
 void ()
 setpent =
 {
-	toggle_powerup ("item_artifact_invulnerability", NO_PENT);
-	NO_PENT = fput (HUNK_NO_PENT, !NO_PENT);
+	local float new_options;
+	local string s;
+
+	new_options = cvar_infokey (CVAR_C4);
+	toggle_powerup ("item_artifact_invulnerability", new_options & NO_PENT);
+
+	if (new_options & NO_PENT)
+		new_options = new_options - new_options & NO_PENT;
+	else
+		new_options = new_options | NO_PENT;
+
+	s = ftos (new_options);
+	options = new_options;
+	cvar_set (CVAR_C4, s);
 };
 
 void ()
 setring =
 {
-	toggle_powerup ("item_artifact_invisibility", NO_RING);
-	NO_RING = fput (HUNK_NO_RING, !NO_RING);
+	local float new_options;
+	local string s;
+
+	new_options = cvar_infokey (CVAR_C4);
+	toggle_powerup ("item_artifact_invisibility", new_options & NO_RING);
+
+	if (new_options & NO_RING)
+		new_options = new_options - new_options & NO_RING;
+	else
+		new_options = new_options | NO_RING;
+
+	s = ftos (new_options);
+	options = new_options;
+	cvar_set (CVAR_C4, s);
 };
 
 void ()
 setsuit =
 {
-	toggle_powerup ("item_artifact_envirosuit", NO_SUIT);
-	NO_SUIT = fput (HUNK_NO_SUIT, !NO_SUIT);
+	local float new_options;
+	local string s;
+
+	new_options = cvar_infokey (CVAR_C4);
+	toggle_powerup ("item_artifact_envirosuit", new_options & NO_SUIT);
+
+	if (new_options & NO_SUIT)
+		new_options = new_options - new_options & NO_SUIT;
+	else
+		new_options = new_options | NO_SUIT;
+
+	s = ftos (new_options);
+	options = new_options;
+	cvar_set (CVAR_C4, s);
 };
 
 void (float mode)
@@ -103,27 +151,63 @@ toggle_armor =
 void ()
 setarmor =
 {
-	toggle_armor (NO_ARMOR);
-	NO_ARMOR = fput (HUNK_NO_ARMOR, !NO_ARMOR);
+	local float new_options;
+	local string s;
+
+	new_options = cvar_infokey (CVAR_C4);
+	toggle_armor (new_options & NO_ARMOR);
+
+	if (new_options & NO_ARMOR)
+		new_options = new_options - new_options & NO_ARMOR;
+	else
+		new_options = new_options | NO_ARMOR;
+
+	s = ftos (new_options);
+	options = new_options;
+	cvar_set (CVAR_C4, s);
 };
 
 void ()
 setrotate =
 {
-	if (NO_ARMOR)
+	local float new_options;
+	local string s;
+
+	if (options & NO_ARMOR)
 		return;
 
+	new_options = cvar_infokey (CVAR_C4);
 	toggle_armor (1);
-	ROTATE = fput (HUNK_ROTATE, !ROTATE);
+
+	if (new_options & ARMOR_ROTATE)
+		new_options = new_options - new_options & ARMOR_ROTATE;
+	else
+		new_options = new_options | ARMOR_ROTATE;
+
+	s = ftos (new_options);
+	options = new_options;
+	cvar_set (CVAR_C4, s);
 };
 
 void ()
 setrunes =
 {
 	local entity e, os;
+	local float new_options;
+	local string s;
 
-	NO_RUNES = fput (HUNK_NO_RUNES, !NO_RUNES);
-	if (NO_RUNES)
+	new_options = cvar_infokey (CVAR_C4);
+
+	if (new_options & NO_RUNES)
+		new_options = new_options - new_options & NO_RUNES;
+	else
+		new_options = new_options | NO_RUNES;
+
+	s = ftos (new_options);
+	options = new_options;
+	cvar_set (CVAR_C4, s);
+
+	if (options & NO_RUNES)
 	{
 		runemax		= 0;
 		runecurrent	= 0;
@@ -155,9 +239,21 @@ void ()
 setalts =
 {
 	local entity e, os;
+	local float new_options;
+	local string s;
 
-	NO_ALT_WEAPONS = fput (HUNK_NO_ALT_WEAPONS, !NO_ALT_WEAPONS);
-	if (NO_ALT_WEAPONS)
+	new_options = cvar_infokey (CVAR_C4);
+
+	if (new_options & NO_ALT_WEAPONS)
+		new_options = new_options - new_options & NO_ALT_WEAPONS;
+	else
+		new_options = new_options | NO_ALT_WEAPONS;
+
+	s = ftos (new_options);
+	options = new_options;
+	cvar_set (CVAR_C4, s);
+
+	if (options & NO_ALT_WEAPONS)
 	{
 		e = find (world, classname, "player");
 		while (e)
@@ -175,13 +271,37 @@ setalts =
 void ()
 setshields =
 {
-	NO_SPAWN_SHIELDS = fput (HUNK_NO_SPAWN_SHIELDS, !NO_SPAWN_SHIELDS);
+	local float new_options;
+	local string s;
+
+	new_options = cvar_infokey (CVAR_C4);
+
+	if (new_options & NO_SPAWN_SHIELDS)
+		new_options = new_options - new_options & NO_SPAWN_SHIELDS;
+	else
+		new_options = new_options | NO_SPAWN_SHIELDS;
+
+	s = ftos (new_options);
+	options = new_options;
+	cvar_set (CVAR_C4, s);
 };
 
 void ()
 sethookdamage =
 {
-	NO_HOOK_DAMAGE = fput (HUNK_NO_HOOK_DAMAGE, !NO_HOOK_DAMAGE);
+	local float new_options;
+	local string s;
+
+	new_options = cvar_infokey (CVAR_C4);
+
+	if (new_options & NO_HOOK_DAMAGE)
+		new_options = new_options - new_options & NO_HOOK_DAMAGE;
+	else
+		new_options = new_options | NO_HOOK_DAMAGE;
+
+	s = ftos (new_options);
+	options = new_options;
+	cvar_set (CVAR_C4, s);
 };
 
 // -1 all
@@ -222,8 +342,20 @@ toggle_health =
 void ()
 setmega =
 {
-	toggle_health ("item_health", 2, NO_MEGA);
-	NO_MEGA = fput (HUNK_NO_MEGA, !NO_MEGA);
+	local float new_options;
+	local string s;
+
+	new_options = cvar_infokey (CVAR_C4);
+	toggle_health ("item_health", 2, new_options & NO_MEGA);
+
+	if (new_options & NO_MEGA)
+		new_options = new_options - new_options & NO_MEGA;
+	else
+		new_options = new_options | NO_MEGA;
+
+	s = ftos (new_options);
+	options = new_options;
+	cvar_set (CVAR_C4, s);
 };
 
 void ()
@@ -290,7 +422,19 @@ toggle_armor_drop =
 void ()
 setfaststart =
 {
-	FASTSTART = fput (HUNK_FASTSTART, !FASTSTART);
+	local float new_options;
+	local string s;
+
+	new_options = cvar_infokey (CVAR_C4);
+
+	if (new_options & FASTSTART)
+		new_options = new_options - new_options & FASTSTART;
+	else
+		new_options = new_options | FASTSTART;
+
+	s = ftos (new_options);
+	options = new_options;
+	cvar_set (CVAR_C4, s);
 };
 
 void ()
@@ -302,9 +446,22 @@ setmatchlock =
 void ()
 setbackpacks =
 {
-	NO_BACKPACKS = fput (HUNK_NO_BACKPACKS, !NO_BACKPACKS);
-	if (NO_BACKPACKS)
+	local float new_options;
+	local string s;
+
+	new_options = cvar_infokey (CVAR_C4);
+
+	if (new_options & NO_BACKPACKS)
+		new_options = new_options - new_options & NO_BACKPACKS;
+	else
+		new_options = new_options | NO_BACKPACKS;
+
+	if (new_options & NO_BACKPACKS)
 		remove_classname ("backpack");
+
+	s = ftos (new_options);
+	options = new_options;
+	cvar_set (CVAR_C4, s);
 };
 
 void ()
@@ -379,6 +536,8 @@ void ()
 setclassicmega =
 {
 	local entity e;
+	local float new_options;
+	local string s;
 
 	e = find (world, classname, "item_health");
 	while (e)
@@ -405,5 +564,32 @@ setclassicmega =
 		e = find (e, classname, "decay_health");
 	}
 
-	CLASSIC_MEGA = fput (HUNK_CLASSIC_MEGA, !CLASSIC_MEGA);
+	new_options = cvar_infokey (CVAR_C4);
+
+	if (new_options & CLASSIC_MEGA)
+		new_options = new_options - new_options & CLASSIC_MEGA;
+	else
+		new_options = new_options | CLASSIC_MEGA;
+
+	s = ftos (new_options);
+	options = new_options;
+	cvar_set (CVAR_C4, s);
+};
+
+void ()
+toggle_mode_lock =
+{
+	local float new_options;
+	local string s;
+
+	new_options = cvar_infokey (CVAR_C4);
+
+	if (new_options & MODE_LOCKED)
+		new_options = new_options - new_options & MODE_LOCKED;
+	else
+		new_options = new_options | MODE_LOCKED;
+
+	s = ftos (new_options);
+	options = new_options;
+	cvar_set (CVAR_C4, s);
 };

@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.211 2008/07/03 07:44:20 slotzero Exp $
+/*  $Id: defs.qc,v 1.212 2008/07/04 04:27:56 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1142,6 +1142,7 @@ float	skill;
 string	CVAR_C1	= "saved1";	// levels
 string	CVAR_C2	= "saved2";	// console commands
 string	CVAR_C3	= "saved3";	// game mode
+string	CVAR_C4 = "saved4";	// options
 
 // console commands
 float	C2_UPDATE_BINDINGS	= 1;
@@ -1218,6 +1219,24 @@ float	MODE_PRACTICE		= 1;
 float	MODE_ARENA		= 2;
 float	MODE_MATCH		= 4;
 float	MODE_MIDAIR		= 10;
+
+// options
+float	options;
+float	NO_QUAD			= 1;
+float	NO_PENT			= 2;
+float	NO_RING			= 4;
+float	NO_SUIT			= 8;
+float	NO_ARMOR		= 16;
+float	ARMOR_ROTATE		= 32;
+float	NO_RUNES		= 64;
+float	NO_ALT_WEAPONS		= 128;
+float	NO_SPAWN_SHIELDS	= 256;
+float	NO_HOOK_DAMAGE		= 512;
+float	NO_MEGA			= 1024;
+float	FASTSTART		= 2048;
+float	NO_BACKPACKS		= 4096;
+float	CLASSIC_MEGA		= 8192;
+float	MODE_LOCKED		= 16384;
 
 IN_QW([-
 //
@@ -1576,6 +1595,7 @@ entity	match;
 
 .float	team_colors;
 
+float	MATCHLOCK;
 float	VOTE_TIMESET;
 string	timeset = "5\{0}":"10":"15":"20":"25":"30";
 string	timeset_gold = "\5\{0}":"\1\0":"\1\5":"\2\0":"\2\5":"\3\0";

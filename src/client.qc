@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.145 2008/03/08 10:35:47 slotzero Exp $
+/*  $Id: client.qc,v 1.146 2008/07/04 04:27:56 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -753,7 +753,7 @@ PutClientInServer =
 
 	// Do not allow firing immediately after you respawn to prevent
 	// your from losing your spawn shield.
-	if (SPAWN_PROTECT_DURATION && !NO_SPAWN_SHIELDS)
+	if (SPAWN_PROTECT_DURATION && !options & NO_SPAWN_SHIELDS)
 	{
 		self.button1 = FALSE;
 		self.attack_finished = time + 1.5;
@@ -885,7 +885,7 @@ PutClientInServer =
 			spawn_tfog (self.origin + v_forward*20);
 		}
 		spawn_tdeath (self.origin, self);
-		if (SPAWN_PROTECT_DURATION > 0 && !NO_SPAWN_SHIELDS)
+		if (SPAWN_PROTECT_DURATION > 0 && !options & NO_SPAWN_SHIELDS)
 		{
 			self.invincible_finished = time + SPAWN_PROTECT_DURATION;
 			self.takedamage = DAMAGE_NO;

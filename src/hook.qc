@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.30 2005/09/10 06:46:57 slotzero Exp $
+/*  $Id: hook.qc,v 1.31 2008/07/04 04:27:56 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -214,7 +214,7 @@ HookTouch =
 {
 	local float d;
 
-	if (NO_HOOK_DAMAGE)
+	if (options & NO_HOOK_DAMAGE)
 		d = 0;
 	else
 		d = hook_damage_e (self.owner);

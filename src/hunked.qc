@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.57 2008/07/03 19:56:17 slotzero Exp $
+/*  $Id: hunked.qc,v 1.58 2008/07/04 04:27:56 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -27,24 +27,7 @@ float HUNK_CLIENT_DISCONNECT	= %100;
 float HUNK_LAST_LEVEL		= %520;
 float HUNK_LAST_LEVEL_POS	= %530;
 float HUNK_BAN_OFFSET		= %800;
-float HUNK_MODE_LOCKED		= %999;
 float HUNK_MUTE_OFFSET		= %1200;
-
-// 1000 + VOTE_IMPULSE
-float HUNK_NO_QUAD		= %1008;
-float HUNK_NO_PENT		= %1009;
-float HUNK_NO_RING		= %1010;
-float HUNK_NO_SUIT		= %1011;
-float HUNK_NO_ARMOR		= %1012;
-float HUNK_ROTATE		= %1013;
-float HUNK_NO_RUNES		= %1014;
-float HUNK_NO_ALT_WEAPONS	= %1015;
-float HUNK_NO_SPAWN_SHIELDS	= %1016;
-float HUNK_NO_HOOK_DAMAGE	= %1017;
-float HUNK_NO_MEGA		= %1019;
-float HUNK_FASTSTART		= %1024;
-float HUNK_NO_BACKPACKS		= %1027;
-float HUNK_CLASSIC_MEGA		= %1032;
 
 float ()
 server_time =
@@ -503,104 +486,9 @@ track_last_level =
 	Write_Hunk_Float (HUNK_CONTEXT, HUNK_LAST_LEVEL_POS, pos + 1);
 };
 
-IN_QW([-
-// My awful attempt to keep QW compatible...
-float (float offset, float value)
-fput =
-{
-	local string s;
-
-	s = ftos (value);
-
-	if	(*offset == *HUNK_NO_QUAD)		cvar_set_infokey ("NO_QUAD",		s);
-	else if (*offset == *HUNK_NO_PENT)		cvar_set_infokey ("NO_PENT",		s);
-	else if (*offset == *HUNK_NO_RING)		cvar_set_infokey ("NO_RING",		s);
-	else if (*offset == *HUNK_NO_SUIT)		cvar_set_infokey ("NO_SUIT",		s);
-	else if (*offset == *HUNK_NO_ARMOR)		cvar_set_infokey ("NO_ARMOR",		s);
-	else if (*offset == *HUNK_ROTATE)		cvar_set_infokey ("ROTATE",		s);
-	else if (*offset == *HUNK_NO_RUNES)		cvar_set_infokey ("NO_RUNES",		s);
-	else if (*offset == *HUNK_NO_ALT_WEAPONS)	cvar_set_infokey ("NO_ALT_WEAPONS",	s);
-	else if (*offset == *HUNK_NO_SPAWN_SHIELDS)	cvar_set_infokey ("NO_SPAWN_SHIELDS",	s);
-	else if (*offset == *HUNK_NO_HOOK_DAMAGE)	cvar_set_infokey ("HO_HOOK_DAMAGE",	s);
-	else if (*offset == *HUNK_NO_MEGA)		cvar_set_infokey ("NO_MEGA",		s);
-	else if (*offset == *HUNK_FASTSTART)		cvar_set_infokey ("FASTSTART",		s);
-	else if (*offset == *HUNK_NO_BACKPACKS)		cvar_set_infokey ("NO_BACKPACKS",	s);
-	else if (*offset == *HUNK_FASTSTART)		cvar_set_infokey ("FASTSTART",		s);
-	else if (*offset == *HUNK_MODE_LOCKED)		cvar_set_infokey ("MODE_LOCKED",	s);
-	else if (*offset == *HUNK_CLASSIC_MEGA)		cvar_set_infokey ("CLASSIC_MEGA",	s);
-
-	return value;
-};
-
-float (float offset, float default)
-fget =
-{
-	local float i;
-	if (0) default = default; // frikqcc
-
-	if	(*offset == *HUNK_NO_QUAD)		i = NO_QUAD		= cvar_infokey ("NO_QUAD");
-	else if (*offset == *HUNK_NO_PENT)		i = NO_PENT		= cvar_infokey ("NO_PENT");
-	else if (*offset == *HUNK_NO_RING)		i = NO_RING		= cvar_infokey ("NO_RING");
-	else if (*offset == *HUNK_NO_SUIT)		i = NO_SUIT		= cvar_infokey ("NO_SUIT");
-	else if (*offset == *HUNK_NO_ARMOR)		i = NO_ARMOR		= cvar_infokey ("NO_ARMOR");
-	else if (*offset == *HUNK_ROTATE)		i = ROTATE		= cvar_infokey ("ROTATE");
-	else if (*offset == *HUNK_NO_RUNES)		i = NO_RUNES		= cvar_infokey ("NO_RUNES");
-	else if (*offset == *HUNK_NO_ALT_WEAPONS)	i = NO_ALT_WEAPONS	= cvar_infokey ("NO_ALT_WEAPONS");
-	else if (*offset == *HUNK_NO_SPAWN_SHIELDS)	i = NO_SPAWN_SHIELDS	= cvar_infokey ("NO_SPAWN_SHIELDS");
-	else if (*offset == *HUNK_NO_HOOK_DAMAGE)	i = NO_HOOK_DAMAGE	= cvar_infokey ("NO_HOOK_DAMAGE");
-	else if (*offset == *HUNK_NO_MEGA)		i = NO_MEGA		= cvar_infokey ("NO_MEGA");
-	else if (*offset == *HUNK_FASTSTART)		i = FASTSTART		= cvar_infokey ("FASTSTART");
-	else if (*offset == *HUNK_NO_BACKPACKS)		i = NO_BACKPACKS	= cvar_infokey ("NO_BACKPACKS");
-	else if (*offset == *HUNK_MODE_LOCKED)		i = MODE_LOCKED		= cvar_infokey ("MODE_LOCKED");
-	else if (*offset == *HUNK_CLASSIC_MEGA)		i = CLASSIC_MEGA	= cvar_infokey ("CLASSIC_MEGA");
-
-	return i;
-};
--])
-
-IN_POQ([-
-float (float offset, float value)
-fput =
-{
-	Write_Hunk_Float (HUNK_CONTEXT, offset, value);
-	return value;
-};
-
-float (float offset, float default)
-fget =
-{
-	local float i;
-
-	i = Read_Hunk_Float (HUNK_CONTEXT, offset);
-	if (i == 0x20202020)
-	{
-		fput (offset, default);
-		return default;
-	}
-
-	return i;
-};
--])
-
 void ()
 Hunk_Settings =
 {
-	NO_QUAD			= fget (HUNK_NO_QUAD,		0);
-	NO_PENT			= fget (HUNK_NO_PENT,		0);
-	NO_RING			= fget (HUNK_NO_RING,		0);
-	NO_SUIT			= fget (HUNK_NO_SUIT,		0);
-	NO_ARMOR		= fget (HUNK_NO_ARMOR,		0);
-	ROTATE			= fget (HUNK_ROTATE,		0);
-	NO_RUNES		= fget (HUNK_NO_RUNES,		0);
-	NO_ALT_WEAPONS		= fget (HUNK_NO_ALT_WEAPONS,	0);
-	NO_SPAWN_SHIELDS	= fget (HUNK_NO_SPAWN_SHIELDS,	0);
-	NO_HOOK_DAMAGE		= fget (HUNK_NO_HOOK_DAMAGE,	0);
-	NO_MEGA			= fget (HUNK_NO_MEGA,		0);
-	FASTSTART		= fget (HUNK_FASTSTART,		0);
-	NO_BACKPACKS		= fget (HUNK_NO_BACKPACKS,	0);
-	MODE_LOCKED		= fget (HUNK_MODE_LOCKED,	0);
-	CLASSIC_MEGA		= fget (HUNK_CLASSIC_MEGA,	0);
-
 	set_runemax ();
 	track_last_level (mapname);
 };

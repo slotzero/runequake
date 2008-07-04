@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.77 2008/07/03 21:52:10 slotzero Exp $
+/*  $Id: vote.qc,v 1.78 2008/07/04 04:27:56 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -532,7 +532,7 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_PRACTICE)
 	{
-		cancel		= MODE_LOCKED;
+		cancel		= options & MODE_LOCKED;
 		e.frag_rate	= 0.51;	// XXX move to settings.
 		e.think1	= change_mode_to_practice;
 		e.noise1	= "change";
@@ -549,7 +549,7 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_NORMAL)
 	{
-		cancel		= MODE_LOCKED;
+		cancel		= options & MODE_LOCKED;
 		e.frag_rate	= 0.51; // XXX move to settings (share with practice?)
 		e.think1	= change_mode_to_normal;
 		e.noise1	= "change";
@@ -571,7 +571,7 @@ vote =
 		e.think1	= setquad;
 		e.noise2	= " quad ";
 
-		if (NO_QUAD)
+		if (options & NO_QUAD)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -586,7 +586,7 @@ vote =
 		e.think1	= setpent;
 		e.noise2	= " pentagram ";
 
-		if (NO_PENT)
+		if (options & NO_PENT)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -601,7 +601,7 @@ vote =
 		e.think1	= setring;
 		e.noise2	= " ring of shadows ";
 
-		if (NO_RING)
+		if (options & NO_RING)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -616,7 +616,7 @@ vote =
 		e.think1	= setsuit;
 		e.noise2	= " environmental suit ";
 
-		if (NO_SUIT)
+		if (options & NO_SUIT)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -631,7 +631,7 @@ vote =
 		e.think1	= setarmor;
 		e.noise2	= " armor ";
 
-		if (NO_ARMOR)
+		if (options & NO_ARMOR)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -646,7 +646,7 @@ vote =
 		e.think1	= setrotate;
 		e.noise2	= " rotating armor ";
 
-		if (ROTATE)
+		if (options & ARMOR_ROTATE)
 			e.noise1	= "disable";
 		else
 			e.noise1	= "enable";
@@ -655,7 +655,7 @@ vote =
 			self_sprint (self, "this level has no armors\n");
 		else
 		{
-			if (NO_ARMOR)
+			if (options & NO_ARMOR)
 			{
 				self_sprint (self, "enable armor first\n");
 				cancel = 1;
@@ -669,7 +669,7 @@ vote =
 		e.think1	= setrunes;
 		e.noise2	= " runes ";
 
-		if (NO_RUNES)
+		if (options & NO_RUNES)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -681,7 +681,7 @@ vote =
 		e.think1	= setalts;
 		e.noise2	= " alternate weapons ";
 
-		if (NO_ALT_WEAPONS)
+		if (options & NO_ALT_WEAPONS)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -700,7 +700,7 @@ vote =
 		e.think1	= setshields;
 		e.noise2	= " spawn shields ";
 
-		if (NO_SPAWN_SHIELDS)
+		if (options & NO_SPAWN_SHIELDS)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -719,7 +719,7 @@ vote =
 		e.think1	= sethookdamage;
 		e.noise2	= " hook damage ";
 
-		if (NO_HOOK_DAMAGE)
+		if (options & NO_HOOK_DAMAGE)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -736,7 +736,7 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_ARENA)
 	{
-		cancel		= MODE_LOCKED;
+		cancel		= options & MODE_LOCKED;
 		e.frag_rate	= 0.51;	// XXX move to settings.
 		e.think1	= change_mode_to_arena;
 		e.noise1	= "change";
@@ -758,7 +758,7 @@ vote =
 		e.think1	= setmega;
 		e.noise2	= " mega-health boxes ";
 
-		if (NO_MEGA)
+		if (options & NO_MEGA)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -777,7 +777,7 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_MATCH)
 	{
-		cancel		= MODE_LOCKED;
+		cancel		= options & MODE_LOCKED;
 		e.frag_rate	= 0.51;	// XXX move to settings.
 		e.think1	= change_mode_to_match;
 		e.noise1	= "change";
@@ -828,7 +828,7 @@ vote =
 		e.think1	= setfaststart;
 		e.noise2	= " fast match starts ";
 
-		if (FASTSTART)
+		if (options & FASTSTART)
 			e.noise1	= "disable";
 		else
 			e.noise1	= "enable";
@@ -884,14 +884,14 @@ vote =
 		e.think1	= setbackpacks;
 		e.noise2	= " backpacks ";
 
-		if (NO_BACKPACKS)
+		if (options & NO_BACKPACKS)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
 	}
 	else if (self.impulse == IMP_VOTE_MIDAIR)
 	{
-		cancel		= MODE_LOCKED;
+		cancel		= options & MODE_LOCKED;
 		e.frag_rate	= 0.51;	// XXX move to settings.
 		e.think1	= change_mode_to_midair;
 		e.noise1	= "change";
@@ -949,7 +949,7 @@ vote =
 		e.think1	= setclassicmega;
 		e.noise2	= " classic mega ";
 
-		if (CLASSIC_MEGA)
+		if (options & CLASSIC_MEGA)
 			e.noise1	= "disable";
 		else
 			e.noise1	= "enable";

@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.110 2008/07/03 07:53:51 slotzero Exp $
+/*  $Id: bindings.qc,v 1.111 2008/07/04 04:27:56 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -587,7 +587,7 @@ check_console_command =
 
 		else if (i == C2_QUADON)
 		{
-			if (NO_QUAD)
+			if (options & NO_QUAD)
 			{
 				dprint_force ("Quad enabled\n");
 				setquad ();
@@ -596,7 +596,7 @@ check_console_command =
 
 		else if (i == C2_QUADOFF)
 		{
-			if (!NO_QUAD)
+			if (!options & NO_QUAD)
 			{
 				dprint_force ("Quad disabled\n");
 				setquad ();
@@ -605,7 +605,7 @@ check_console_command =
 
 		else if (i == C2_PENTON)
 		{
-			if (NO_PENT)
+			if (options & NO_PENT)
 			{
 				dprint_force ("Pentagram enabled\n");
 				setpent ();
@@ -614,7 +614,7 @@ check_console_command =
 
 		else if (i == C2_PENTOFF)
 		{
-			if (!NO_PENT)
+			if (!options & NO_PENT)
 			{
 				dprint_force ("Pentagram disabled\n");
 				setpent ();
@@ -623,7 +623,7 @@ check_console_command =
 
 		else if (i == C2_RINGON)
 		{
-			if (NO_RING)
+			if (options & NO_RING)
 			{
 				dprint_force ("Ring of shadows enabled\n");
 				setring ();
@@ -632,7 +632,7 @@ check_console_command =
 
 		else if (i == C2_RINGOFF)
 		{
-			if (!NO_RING)
+			if (!options & NO_RING)
 			{
 				dprint_force ("Ring of shadows disabled\n");
 				setring ();
@@ -641,7 +641,7 @@ check_console_command =
 
 		else if (i == C2_SUITON)
 		{
-			if (NO_SUIT)
+			if (options & NO_SUIT)
 			{
 				dprint_force ("Environmental protection suit enabled\n");
 				setsuit ();
@@ -650,7 +650,7 @@ check_console_command =
 
 		else if (i == C2_SUITOFF)
 		{
-			if (!NO_SUIT)
+			if (!options & NO_SUIT)
 			{
 				dprint_force ("Environmental protection suit disabled\n");
 				setsuit ();
@@ -659,7 +659,7 @@ check_console_command =
 
 		else if (i == C2_ARMORON)
 		{
-			if (NO_ARMOR)
+			if (options & NO_ARMOR)
 			{
 				dprint_force ("Armor enabled\n");
 				setarmor ();
@@ -668,7 +668,7 @@ check_console_command =
 
 		else if (i == C2_ARMOROFF)
 		{
-			if (!NO_ARMOR)
+			if (!options & NO_ARMOR)
 			{
 				dprint_force ("Armor disabled\n");
 				setarmor ();
@@ -677,7 +677,7 @@ check_console_command =
 
 		else if (i == C2_ROTATEON)
 		{
-			if (!ROTATE)
+			if (!options & ARMOR_ROTATE)
 			{
 				dprint_force ("Rotating armors enabled\n");
 				setrotate ();
@@ -686,7 +686,7 @@ check_console_command =
 
 		else if (i == C2_ROTATEOFF)
 		{
-			if (ROTATE)
+			if (options & ARMOR_ROTATE)
 			{
 				dprint_force ("Rotating armors disabled\n");
 				setrotate ();
@@ -695,7 +695,7 @@ check_console_command =
 
 		else if (i == C2_RUNESON)
 		{
-			if (NO_RUNES)
+			if (options & NO_RUNES)
 			{
 				dprint_force ("Runes enabled\n");
 				setrunes ();
@@ -704,7 +704,7 @@ check_console_command =
 
 		else if (i == C2_RUNESOFF)
 		{
-			if (!NO_RUNES)
+			if (!options & NO_RUNES)
 			{
 				dprint_force ("Runes disabled\n");
 				setrunes ();
@@ -715,7 +715,7 @@ check_console_command =
 		{
 			if (gamemode == MODE_PRACTICE)
 				dprint_force ("Alternate weapons disabled in practice mode\n");
-			else if (NO_ALT_WEAPONS)
+			else if (options & NO_ALT_WEAPONS)
 			{
 				dprint_force ("Alternate weapons enabled\n");
 				setalts ();
@@ -724,7 +724,7 @@ check_console_command =
 
 		else if (i == C2_ALTSOFF)
 		{
-			if (!NO_ALT_WEAPONS)
+			if (!options & NO_ALT_WEAPONS)
 			{
 				dprint_force ("Alternate weapons disabled\n");
 				setalts ();
@@ -733,7 +733,7 @@ check_console_command =
 
 		else if (i == C2_SHIELDSON)
 		{
-			if (NO_SPAWN_SHIELDS)
+			if (options & NO_SPAWN_SHIELDS)
 			{
 				dprint_force ("Spawn shields enabled\n");
 				setshields ();
@@ -742,7 +742,7 @@ check_console_command =
 
 		else if (i == C2_SHIELDSOFF)
 		{
-			if (!NO_SPAWN_SHIELDS)
+			if (!options & NO_SPAWN_SHIELDS)
 			{
 				dprint_force ("Spawn shields disabled\n");
 				setshields ();
@@ -751,7 +751,7 @@ check_console_command =
 
 		else if (i == C2_HOOKDAMAGEON)
 		{
-			if (NO_HOOK_DAMAGE)
+			if (options & NO_HOOK_DAMAGE)
 			{
 				dprint_force ("Hook damage enabled\n");
 				sethookdamage ();
@@ -760,7 +760,7 @@ check_console_command =
 
 		else if (i == C2_HOOKDAMAGEOFF)
 		{
-			if (!NO_HOOK_DAMAGE)
+			if (!options & NO_HOOK_DAMAGE)
 			{
 				dprint_force ("Hook damage disabled\n");
 				sethookdamage ();
@@ -775,7 +775,7 @@ check_console_command =
 
 		else if (i == C2_MEGAON)
 		{
-			if (NO_MEGA)
+			if (options & NO_MEGA)
 			{
 				dprint_force ("Mega-health boxes enabled\n");
 				setmega ();
@@ -784,7 +784,7 @@ check_console_command =
 
 		else if (i == C2_MEGAOFF)
 		{
-			if (!NO_MEGA)
+			if (!options & NO_MEGA)
 			{
 				dprint_force ("Mega-health boxes disabled\n");
 				setmega ();
@@ -860,7 +860,7 @@ check_console_command =
 
 		else if (i == C2_FASTSTARTON)
 		{
-			if (!FASTSTART)
+			if (!options & FASTSTART)
 			{
 				dprint_force ("Fast match starts enabled\n");
 				setfaststart ();
@@ -869,7 +869,7 @@ check_console_command =
 
 		else if (i == C2_FASTSTARTOFF)
 		{
-			if (FASTSTART)
+			if (options & FASTSTART)
 			{
 				dprint_force ("Fast match starts disabled\n");
 				setfaststart ();
@@ -878,7 +878,7 @@ check_console_command =
 
 		else if (i == C2_BACKPACKSON)
 		{
-			if (NO_BACKPACKS)
+			if (options & NO_BACKPACKS)
 			{
 				dprint_force ("Backpack dropping enabled\n");
 				setbackpacks ();
@@ -887,7 +887,7 @@ check_console_command =
 
 		else if (i == C2_BACKPACKSOFF)
 		{
-			if (!NO_BACKPACKS)
+			if (!options & NO_BACKPACKS)
 			{
 				dprint_force ("Backpack dropping disabled\n");
 				setbackpacks ();
@@ -899,19 +899,19 @@ check_console_command =
 
 		else if (i == C2_MODE_LOCK)
 		{
-			if (!MODE_LOCKED)
+			if (!options & MODE_LOCKED)
 			{
 				dprint_force ("Mode is locked\n");
-				MODE_LOCKED = fput (HUNK_MODE_LOCKED, 1);
+				toggle_mode_lock ();
 			}
 		}
 
 		else if (i == C2_MODE_UNLOCK)
 		{
-			if (MODE_LOCKED)
+			if (options & MODE_LOCKED)
 			{
 				dprint_force ("Mode is unlocked\n");
-				MODE_LOCKED = fput (HUNK_MODE_LOCKED, 0);
+				toggle_mode_lock ();
 			}
 		}
 
@@ -1005,7 +1005,7 @@ check_console_command =
 
 		else if (i == C2_CLASSICMEGAON)
 		{
-			if (!CLASSIC_MEGA)
+			if (!options & CLASSIC_MEGA)
 			{
 				dprint_force ("Classic mega enabled\n");
 				setclassicmega ();
@@ -1014,7 +1014,7 @@ check_console_command =
 
 		else if (i == C2_CLASSICMEGAOFF)
 		{
-			if (CLASSIC_MEGA)
+			if (options & CLASSIC_MEGA)
 			{
 				dprint_force ("Classic mega disabled\n");
 				setclassicmega ();
@@ -1026,7 +1026,7 @@ check_console_command =
 			dprint_force ("Current mode: ");
 			s = current_gamemode (gamemode);
 			dprint_force (s);
-			if (MODE_LOCKED)
+			if (options & MODE_LOCKED)
 				dprint_force (" (locked)");
 			dprint_force ("\n");
 		}
@@ -1227,27 +1227,27 @@ help_options =
 	s = current_gamemode (gamemode);
 	self_sprint (self, "\b\ngamemode      ");
 	self_sprint (self, s);
-	if (MODE_LOCKED)
+	if (options & MODE_LOCKED)
 		self_sprint (self, "\b (locked)");
 
 	self_sprint (self, "\n\bhook          ");	self_sprint_boolean (self, temp1 & T1_HOOK_MASK);
-	self_sprint (self, "\b  hook-damage   ");	self_sprint_boolean (self, !NO_HOOK_DAMAGE);
-	self_sprint (self, "\n\bquad          ");	self_sprint_boolean (self, !NO_QUAD);
-	self_sprint (self, "\b  pent          ");	self_sprint_boolean (self, !NO_PENT);
-	self_sprint (self, "\n\bring          ");	self_sprint_boolean (self, !NO_RING);
-	self_sprint (self, "\b  suit          ");	self_sprint_boolean (self, !NO_SUIT);
-	self_sprint (self, "\n\barmor         ");	self_sprint_boolean (self, !NO_ARMOR);
-	self_sprint (self, "\b  armor rotate  ");	self_sprint_boolean (self, ROTATE);
-	self_sprint (self, "\n\brunes         ");	self_sprint_boolean (self, !NO_RUNES);
+	self_sprint (self, "\b  hook-damage   ");	self_sprint_boolean (self, !options & NO_HOOK_DAMAGE);
+	self_sprint (self, "\n\bquad          ");	self_sprint_boolean (self, !options & NO_QUAD);
+	self_sprint (self, "\b  pent          ");	self_sprint_boolean (self, !options & NO_PENT);
+	self_sprint (self, "\n\bring          ");	self_sprint_boolean (self, !options & NO_RING);
+	self_sprint (self, "\b  suit          ");	self_sprint_boolean (self, !options & NO_SUIT);
+	self_sprint (self, "\n\barmor         ");	self_sprint_boolean (self, !options & NO_ARMOR);
+	self_sprint (self, "\b  armor rotate  ");	self_sprint_boolean (self, options & ARMOR_ROTATE);
+	self_sprint (self, "\n\brunes         ");	self_sprint_boolean (self, !options & NO_RUNES);
 	self_sprint (self, "\b  rune drop     ");	self_sprint_boolean (self, !temp1 & T1_NO_DROP_ON_DEATH);
-	self_sprint (self, "\n\balt weapons   ");	self_sprint_boolean (self, !NO_ALT_WEAPONS);
+	self_sprint (self, "\n\balt weapons   ");	self_sprint_boolean (self, !options & NO_ALT_WEAPONS);
 	self_sprint (self, "\b  weapons stay  ");	self_sprint_boolean (self, deathmatch & DM_WEAPONS_STAY);
-	self_sprint (self, "\n\bmega          ");	self_sprint_boolean (self, !NO_MEGA);
-	self_sprint (self, "\b  classic mega  ");	self_sprint_boolean (self, CLASSIC_MEGA);
+	self_sprint (self, "\n\bmega          ");	self_sprint_boolean (self, !options & NO_MEGA);
+	self_sprint (self, "\b  classic mega  ");	self_sprint_boolean (self, options & CLASSIC_MEGA);
 	self_sprint (self, "\n\barmor drop    ");	self_sprint_boolean (self, !deathmatch & DM_NO_DROP_ARMOR);
 	self_sprint (self, "\b  powerup drop  ");	self_sprint_boolean (self, !deathmatch & DM_NO_DROP_POWERUP);
-	self_sprint (self, "\n\bshields       ");	self_sprint_boolean (self, !NO_SPAWN_SHIELDS);
+	self_sprint (self, "\n\bshields       ");	self_sprint_boolean (self, !options & NO_SPAWN_SHIELDS);
 	self_sprint (self, "\b  lg discharge  ");	self_sprint_boolean (self, !deathmatch & DM_NO_DISCHARGE);
-	self_sprint (self, "\n\bbackpacks     ");	self_sprint_boolean (self, !NO_BACKPACKS);
+	self_sprint (self, "\n\bbackpacks     ");	self_sprint_boolean (self, !options & NO_BACKPACKS);
 	self_sprint (self, "\n");
 };
