@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.33 2008/07/05 01:51:48 slotzero Exp $
+/*  $Id: toggle.qc,v 1.34 2008/07/05 03:37:29 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -325,10 +325,7 @@ void ()
 toggle_weapons_stay =
 {
 	local entity e;
-	local float new_deathmatch;
 	local string s;
-
-	new_deathmatch = cvar ("deathmatch");
 
 	// XXX slow?  maybe assign second classname and use find?
 	e = nextent (world);
@@ -340,46 +337,38 @@ toggle_weapons_stay =
 			e.think		= SUB_regen;
 			e.nextthink	= time;
 
-			if (new_deathmatch & DM_WEAPONS_STAY)
+			if (options & WEAPONS_STAY)
 				setorigin (e, e.runevector);
 			else
-			{
-
 				setorigin (e, e.runevector + '0 0 25');
-			}
 		}
 		e = nextent (e);
 	}
 
-	if (new_deathmatch & DM_WEAPONS_STAY)
-		new_deathmatch = new_deathmatch - new_deathmatch & DM_WEAPONS_STAY;
+	if (options & WEAPONS_STAY)
+		options = options - options & WEAPONS_STAY;
 	else
-		new_deathmatch = new_deathmatch | DM_WEAPONS_STAY;
+		options = options | WEAPONS_STAY;
 
-	s = ftos (new_deathmatch);
-	deathmatch = new_deathmatch;
-	cvar_set ("deathmatch", s);
+	s = ftos (options);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
 toggle_armor_drop =
 {
-	local float new_deathmatch;
 	local string s;
 
-	new_deathmatch = cvar ("deathmatch");
-
-	if (new_deathmatch & DM_NO_DROP_ARMOR)
-		new_deathmatch = new_deathmatch - new_deathmatch & DM_NO_DROP_ARMOR;
+	if (options & NO_DROP_ARMOR)
+		options = options - options & NO_DROP_ARMOR;
 	else
 	{
-		new_deathmatch = new_deathmatch | DM_NO_DROP_ARMOR;
+		options = options | NO_DROP_ARMOR;
 		remove_classname ("dropped_armor");
 	}
 
-	s = ftos (new_deathmatch);
-	deathmatch = new_deathmatch;
-	cvar_set ("deathmatch", s);
+	s = ftos (options);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
@@ -422,38 +411,31 @@ setbackpacks =
 void ()
 toggle_powerup_drop =
 {
-	local float new_deathmatch;
 	local string s;
 
-	new_deathmatch = cvar ("deathmatch");
-
-	if (new_deathmatch & DM_NO_DROP_POWERUP)
-		new_deathmatch = new_deathmatch - new_deathmatch & DM_NO_DROP_POWERUP;
+	if (options & NO_DROP_POWERUP)
+		options = options - options & NO_DROP_POWERUP;
 	else
 	{
-		new_deathmatch = new_deathmatch | DM_NO_DROP_POWERUP;
+		options = options | NO_DROP_POWERUP;
 		remove_classname ("dropped_powerup");
 	}
 
-	s = ftos (new_deathmatch);
-	deathmatch = new_deathmatch;
-	cvar_set ("deathmatch", s);
+	s = ftos (options);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
 toggle_rune_drop =
 {
 	local entity e;
-	local float new_temp1;
 	local string s;
 
-	new_temp1 = cvar_infokey ("temp1");
-
-	if (new_temp1 & T1_NO_DROP_ON_DEATH)
-		new_temp1 = new_temp1 - new_temp1 & T1_NO_DROP_ON_DEATH;
+	if (options & NO_DROP_ON_DEATH)
+		options = options - options & NO_DROP_ON_DEATH;
 	else
 	{
-		new_temp1 = new_temp1 | T1_NO_DROP_ON_DEATH;
+		options = options | NO_DROP_ON_DEATH;
 
 		e = find (world, classname, "rune");
 		while (e)
@@ -464,27 +446,22 @@ toggle_rune_drop =
 		}
 	}
 
-	s = ftos (new_temp1);
-	temp1 = new_temp1;
-	cvar_set_infokey ("temp1", s);
+	s = ftos (options);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
 toggle_lightning_discharge =
 {
-	local float new_deathmatch;
 	local string s;
 
-	new_deathmatch = cvar ("deathmatch");
-
-	if (new_deathmatch & DM_NO_DISCHARGE)
-		new_deathmatch = new_deathmatch - new_deathmatch & DM_NO_DISCHARGE;
+	if (options & NO_DISCHARGE)
+		options = options - options & NO_DISCHARGE;
 	else
-		new_deathmatch = new_deathmatch | DM_NO_DISCHARGE;
+		options = options | NO_DISCHARGE;
 
-	s = ftos (new_deathmatch);
-	deathmatch = new_deathmatch;
-	cvar_set ("deathmatch", s);
+	s = ftos (options);
+	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()

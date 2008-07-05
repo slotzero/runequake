@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.73 2008/07/04 04:27:56 slotzero Exp $
+/*  $Id: items.qc,v 1.74 2008/07/05 03:37:29 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -159,10 +159,10 @@ PlaceItem =
 	// I set runevector here only.
 	if (self.touch == weapon_touch)
 	{
-		// Save the origin no matter what in case DM_WEAPONS_STAY
+		// Save the origin no matter what in case WEAPONS_STAY
 		// is turned on later.
 		self.runevector = self.origin;
-		if (deathmatch & DM_WEAPONS_STAY || coop)
+		if (options & WEAPONS_STAY || coop)
 		{
 			self.runetime	= time;
 			self.think	= weapon_up;
@@ -620,7 +620,7 @@ drop_armor =
 {
 	local entity item;
 
-	if (deathmatch & DM_NO_DROP_ARMOR)
+	if (options & NO_DROP_ARMOR)
 		return;
 
 	if (self.armorvalue <= 0)
@@ -719,7 +719,7 @@ weapon_touch =
 
 	charged = time >= self.runetime;
 
-	if (deathmatch & DM_WEAPONS_STAY || coop)
+	if (options & WEAPONS_STAY || coop)
 		leave = 1;
 	else
 		leave = 0;
@@ -865,7 +865,7 @@ weapon_touch =
 void ()
 weapon_up =
 {
-	if (deathmatch & DM_WEAPONS_STAY || coop)
+	if (options & WEAPONS_STAY || coop)
 	{
 		setorigin (self, self.runevector + '0 0 25');
 		// Keep on moving it due to the rocket in the squish

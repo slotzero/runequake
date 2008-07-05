@@ -1,4 +1,4 @@
-/*  $Id: combat.qc,v 1.51 2007/07/13 21:46:53 slotzero Exp $
+/*  $Id: combat.qc,v 1.52 2008/07/05 03:37:29 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -626,7 +626,7 @@ T_Damage =
 								attacker);
 			}
 
-			if (!temp1 & T1_NO_DROP_ON_DEATH
+			if (!options & NO_DROP_ON_DEATH
 
 				// I disabled the bomb just because of
 				// the exploding aspect.  There's a good
@@ -756,7 +756,7 @@ T_RadiusDamage =
 						&& dtype == "ftrapexplode")
 					points = 0;
 				else if (discharge_hack
-					&& ((deathmatch & DM_NO_DISCHARGE
+					&& ((options & NO_DISCHARGE
 							&& head != attacker)
 						|| head.waterlevel == 0))
 					points = 0;

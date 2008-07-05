@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.82 2008/07/04 04:27:56 slotzero Exp $
+/*  $Id: team.qc,v 1.83 2008/07/05 03:37:29 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -968,7 +968,7 @@ match_defaults =
 		setrotate ();
 
 	// armor drop off
-	if (!deathmatch & DM_NO_DROP_ARMOR)
+	if (!options & NO_DROP_ARMOR)
 		toggle_armor_drop ();
 
 	// megahealth on
@@ -984,7 +984,7 @@ match_defaults =
 		setrunes ();
 
 	// runes drop off
-	if (!temp1 & T1_NO_DROP_ON_DEATH)
+	if (!options & NO_DROP_ON_DEATH)
 		toggle_rune_drop ();
 
 	// alt weapons off
@@ -992,7 +992,7 @@ match_defaults =
 		setalts ();
 
 	// weapons stay off
-	if (deathmatch & DM_WEAPONS_STAY)
+	if (options & WEAPONS_STAY)
 		toggle_weapons_stay ();
 
 	// spawn shields off
@@ -1004,11 +1004,11 @@ match_defaults =
 		setbackpacks ();
 
 	// powerup drop off
-	if (!deathmatch & DM_NO_DROP_POWERUP)
+	if (!options & NO_DROP_POWERUP)
 		toggle_powerup_drop ();
 
 	// lightning discharge on
-	if (deathmatch & DM_NO_DISCHARGE)
+	if (options & NO_DISCHARGE)
 		toggle_lightning_discharge ();
 };
 
@@ -1052,7 +1052,7 @@ arena_defaults =
 	//	setrotate ();
 
 	// armor drop off
-	if (!deathmatch & DM_NO_DROP_ARMOR)
+	if (!options & NO_DROP_ARMOR)
 		toggle_armor_drop ();
 
 	// megahealth, no default
@@ -1068,7 +1068,7 @@ arena_defaults =
 		setrunes ();
 
 	// runes drop off
-	if (!temp1 & T1_NO_DROP_ON_DEATH)
+	if (!options & NO_DROP_ON_DEATH)
 		toggle_rune_drop ();
 
 	// alt weapons off
@@ -1076,7 +1076,7 @@ arena_defaults =
 		setalts ();
 
 	// weapons stay, no default
-	//if (deathmatch & DM_WEAPONS_STAY)
+	//if (options & WEAPONS_STAY)
 	//	toggle_weapons_stay ();
 
 	// spawn shields off
@@ -1088,11 +1088,11 @@ arena_defaults =
 		setbackpacks ();
 
 	// powerup drop on, no default
-	//if (deathmatch & DM_NO_DROP_POWERUP)
+	//if (options & NO_DROP_POWERUP)
 	//	toggle_powerup_drop ();
 
 	// lightning discharge off
-	if (!deathmatch & DM_NO_DISCHARGE)
+	if (!options & NO_DISCHARGE)
 		toggle_lightning_discharge ();
 };
 
@@ -1136,7 +1136,7 @@ practice_defaults =
 		setrotate ();
 
 	// armor drop off
-	if (!deathmatch & DM_NO_DROP_ARMOR)
+	if (!options & NO_DROP_ARMOR)
 		toggle_armor_drop ();
 
 	// megahealth on
@@ -1152,7 +1152,7 @@ practice_defaults =
 		setrunes ();
 
 	// runes drop off
-	if (!temp1 & T1_NO_DROP_ON_DEATH)
+	if (!options & NO_DROP_ON_DEATH)
 		toggle_rune_drop ();
 
 	// alt weapons off
@@ -1160,7 +1160,7 @@ practice_defaults =
 		setalts ();
 
 	// weapons stay, no default
-	//if (deathmatch & DM_WEAPONS_STAY)
+	//if (options & WEAPONS_STAY)
 	//	toggle_weapons_stay ();
 
 	// spawn shields off
@@ -1172,11 +1172,11 @@ practice_defaults =
 		setbackpacks ();
 
 	// powerup drop on
-	if (deathmatch & DM_NO_DROP_POWERUP)
+	if (options & NO_DROP_POWERUP)
 		toggle_powerup_drop ();
 
 	// lightning discharge off
-	if (!deathmatch & DM_NO_DISCHARGE)
+	if (!options & NO_DISCHARGE)
 		toggle_lightning_discharge ();
 };
 
@@ -1220,7 +1220,7 @@ normal_defaults =
 		setrotate ();
 
 	// armor drop on
-	if (deathmatch & DM_NO_DROP_ARMOR)
+	if (options & NO_DROP_ARMOR)
 		toggle_armor_drop ();
 
 	// megahealth on
@@ -1236,7 +1236,7 @@ normal_defaults =
 		setrunes ();
 
 	// runes drop off
-	if (!temp1 & T1_NO_DROP_ON_DEATH)
+	if (!options & NO_DROP_ON_DEATH)
 		toggle_rune_drop ();
 
 	// alt weapons on
@@ -1244,7 +1244,7 @@ normal_defaults =
 		setalts ();
 
 	// weapons stay on
-	if (!deathmatch & DM_WEAPONS_STAY)
+	if (!options & WEAPONS_STAY)
 		toggle_weapons_stay ();
 
 	// spawn shields on
@@ -1256,10 +1256,10 @@ normal_defaults =
 		setbackpacks ();
 
 	// powerup drop on
-	if (deathmatch & DM_NO_DROP_POWERUP)
+	if (options & NO_DROP_POWERUP)
 		toggle_powerup_drop ();
 
 	// lightning discharge on
-	if (!deathmatch & DM_NO_DISCHARGE)
+	if (!options & NO_DISCHARGE)
 		toggle_lightning_discharge ();
 };

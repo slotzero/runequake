@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.78 2008/07/04 04:27:56 slotzero Exp $
+/*  $Id: vote.qc,v 1.79 2008/07/05 03:37:29 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -770,7 +770,7 @@ vote =
 		e.think1	= toggle_weapons_stay;
 		e.noise2	= " weapons stay ";
 
-		if (!deathmatch & DM_WEAPONS_STAY)
+		if (!options & WEAPONS_STAY)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -816,7 +816,7 @@ vote =
 		e.think1	= toggle_armor_drop;
 		e.noise2	= " armor drop ";
 
-		if (deathmatch & DM_NO_DROP_ARMOR)
+		if (options & NO_DROP_ARMOR)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -913,7 +913,7 @@ vote =
 		e.think1	= toggle_powerup_drop;
 		e.noise2	= " powerup drop ";
 
-		if (deathmatch & DM_NO_DROP_POWERUP)
+		if (options & NO_DROP_POWERUP)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -925,7 +925,7 @@ vote =
 		e.think1	= toggle_rune_drop;
 		e.noise2	= " rune dropping ";
 
-		if (temp1 & T1_NO_DROP_ON_DEATH)
+		if (options & NO_DROP_ON_DEATH)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";
@@ -937,7 +937,7 @@ vote =
 		e.think1	= toggle_lightning_discharge;
 		e.noise2	= " lightning discharge ";
 
-		if (deathmatch & DM_NO_DISCHARGE)
+		if (options & NO_DISCHARGE)
 			e.noise1	= "enable";
 		else
 			e.noise1	= "disable";

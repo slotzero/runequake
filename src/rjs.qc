@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.230 2008/07/04 04:27:56 slotzero Exp $
+/*  $Id: rjs.qc,v 1.231 2008/07/05 03:37:29 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2065,15 +2065,15 @@ show_settings =
 	self_sprint (self, "General:");
 	self_sprint (self, "\n  items respawn  ");	self_sprint_boolean (self, deathmatch & DM_RESPAWN);
 	self_sprint (self, "  pent repl   ");		self_sprint_boolean (self, deathmatch & DM_PENT_REPLACEMENT);
-	self_sprint (self, "\n  weapons stay   ");	self_sprint_boolean (self, deathmatch & DM_WEAPONS_STAY);
+	self_sprint (self, "\n  weapons stay   ");	self_sprint_boolean (self, options & WEAPONS_STAY);
 	self_sprint (self, "  dmg frags   ");		self_sprint_boolean (self, deathmatch & DM_DAMAGE_MATCH);
 	self_sprint (self, "\n  long quad resp "); 	self_sprint_boolean (self, deathmatch & DM_LONG_QUAD_RESPAWN);
 	self_sprint (self, "  exit safe   ");		self_sprint_boolean (self, deathmatch & DM_EXIT_NON_FATAL);
 	self_sprint (self, "\n  quad replace   ");	self_sprint_boolean (self, deathmatch & DM_QUAD_REPLACEMENT);
-	self_sprint (self, "  no dischrg  ");		self_sprint_boolean (self, deathmatch & DM_NO_DISCHARGE);
-	self_sprint (self, "\n  no drop powup  ");	self_sprint_boolean (self, deathmatch & DM_NO_DROP_POWERUP);
+	self_sprint (self, "  no dischrg  ");		self_sprint_boolean (self, options & NO_DISCHARGE);
+	self_sprint (self, "\n  no drop powup  ");	self_sprint_boolean (self, options & NO_DROP_POWERUP);
 	self_sprint (self, "  no altweap  ");		self_sprint_boolean (self, options & NO_ALT_WEAPONS);
-	self_sprint (self, "\n  no drop armor  ");	self_sprint_boolean (self, deathmatch & DM_NO_DROP_ARMOR);
+	self_sprint (self, "\n  no drop armor  ");	self_sprint_boolean (self, options & NO_DROP_ARMOR);
 	self_sprint (self, "  sv_maxspeed ");
 	i = cvar ("sv_maxspeed");
 	self_sprint_float (self, i);
@@ -2081,7 +2081,7 @@ show_settings =
 	self_sprint (self, "Runes:");
 	self_sprint (self, "\n  rune cheat     ");	self_sprint_boolean (self, temp1 & T1_RUNE_CHEAT);
 	self_sprint (self, "  max runes   ");		self_sprint_float (self, runemax);
-	self_sprint (self, "\n  no death drop  ");	self_sprint_boolean (self, temp1 & T1_NO_DROP_ON_DEATH);
+	self_sprint (self, "\n  no death drop  ");	self_sprint_boolean (self, options & NO_DROP_ON_DEATH);
 	self_sprint (self, "  max players ");
 	i = max_players ();
 	if (!i)

@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.112 2008/07/05 01:51:48 slotzero Exp $
+/*  $Id: bindings.qc,v 1.113 2008/07/05 03:37:29 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -428,7 +428,9 @@ console_aliases =
 
 	console_init_cvar_alias ("update-bindings",	CVAR_C2,	C2_UPDATE_BINDINGS);
 	console_init_cvar_alias ("show-players",	CVAR_C2,	C2_SHOW_PLAYERS);
+	console_init_cvar_alias ("players",		CVAR_C2,	C2_SHOW_PLAYERS);
 	console_init_cvar_alias ("show-settings",	CVAR_C2,	C2_SHOW_SETTINGS);
+	console_init_cvar_alias ("settings",		CVAR_C2,	C2_SHOW_SETTINGS);
 	console_init_cvar_alias ("rune-cheat",		CVAR_C2,	C2_TOGGLE_RUNE_CHEAT);
 	console_init_cvar_alias ("last",		CVAR_C2,	C2_LAST);
 	console_init_cvar_alias ("levels",		CVAR_C2,	C2_LEVELS);
@@ -492,6 +494,8 @@ console_aliases =
 	console_init_cvar_alias ("classicmegaon",	CVAR_C2,	C2_CLASSICMEGAON);
 	console_init_cvar_alias ("classicmegaoff",	CVAR_C2,	C2_CLASSICMEGAOFF);
 	console_init_cvar_alias ("mode",		CVAR_C2,	C2_CURRENT_MODE);
+	console_init_cvar_alias ("weaponsstayon",	CVAR_C2,	C2_WEAPONSSTAYON);
+	console_init_cvar_alias ("weaponsstayoff",	CVAR_C2,	C2_WEAPONSSTAYOFF);
 
 	level_aliases ();
 	custom_aliases ();
@@ -843,7 +847,7 @@ check_console_command =
 
 		else if (i == C2_ARMORDROPON)
 		{
-			if (deathmatch & DM_NO_DROP_ARMOR)
+			if (options & NO_DROP_ARMOR)
 			{
 				dprint_force ("Armor dropping enabled\n");
 				toggle_armor_drop ();
@@ -852,7 +856,7 @@ check_console_command =
 
 		else if (i == C2_ARMORDROPOFF)
 		{
-			if (!deathmatch & DM_NO_DROP_ARMOR)
+			if (!options & NO_DROP_ARMOR)
 			{
 				dprint_force ("Armor dropping disabled\n");
 				toggle_armor_drop ();
@@ -918,7 +922,7 @@ check_console_command =
 
 		else if (i == C2_POWERDROPON)
 		{
-			if (deathmatch & DM_NO_DROP_POWERUP)
+			if (options & NO_DROP_POWERUP)
 			{
 				dprint_force ("Powerup dropping enabled\n");
 				toggle_powerup_drop ();
@@ -927,7 +931,7 @@ check_console_command =
 
 		else if (i == C2_POWERDROPOFF)
 		{
-			if (!deathmatch & DM_NO_DROP_POWERUP)
+			if (!options & NO_DROP_POWERUP)
 			{
 				dprint_force ("Powerup dropping disabled\n");
 				toggle_powerup_drop ();
@@ -945,7 +949,7 @@ check_console_command =
 
 		else if (i == C2_RUNEDROPON)
 		{
-			if (temp1 & T1_NO_DROP_ON_DEATH)
+			if (options & NO_DROP_ON_DEATH)
 			{
 				dprint_force ("Rune dropping enabled\n");
 				toggle_rune_drop ();
@@ -954,7 +958,7 @@ check_console_command =
 
 		else if (i == C2_RUNEDROPOFF)
 		{
-			if (!temp1 & T1_NO_DROP_ON_DEATH)
+			if (!options & NO_DROP_ON_DEATH)
 			{
 				dprint_force ("Rune dropping disabled\n");
 				toggle_rune_drop ();
@@ -963,7 +967,7 @@ check_console_command =
 
 		else if (i == C2_LGDISCHARGEON)
 		{
-			if (deathmatch & DM_NO_DISCHARGE)
+			if (options & NO_DISCHARGE)
 			{
 				dprint_force ("Lightning discharge enabled\n");
 				toggle_lightning_discharge ();
@@ -972,7 +976,7 @@ check_console_command =
 
 		else if (i == C2_LGDISCHARGEOFF)
 		{
-			if (!deathmatch & DM_NO_DISCHARGE)
+			if (!options & NO_DISCHARGE)
 			{
 				dprint_force ("Lightning discharge disabled\n");
 				toggle_lightning_discharge ();
@@ -1032,6 +1036,24 @@ check_console_command =
 			dprint_force ("\n");
 		}
 
+		else if (i == C2_WEAPONSSTAYON)
+		{
+			if (options & WEAPONS_STAY)
+			{
+				dprint_force ("Weapons-stay disabled\n");
+				toggle_weapons_stay ();
+			}
+		}
+
+		else if (i == C2_WEAPONSSTAYOFF)
+		{
+			if (!options & WEAPONS_STAY)
+			{
+				dprint_force ("Weapons-stay enabled\n");
+				toggle_weapons_stay ();
+			}
+		}
+
 		else
 			dprint ("Unknown command\n");
 
@@ -1050,10 +1072,10 @@ console_commands =
 	self_sprint (self, version);
 	self_sprint (self, " console commands\n\n");
 
-	self_sprint (self, "show-players   show-settings  rune-cheat      last          commands\n");
+	self_sprint (self, "commands       settings       options         players       last\n");
 	self_sprint (self, "levels         custom         level-time      sping         update-bindings\n");
-	self_sprint (self, "banlist        banip          unbanip         conprint      help-options\n");
-	self_sprint (self, "mutelist       muteip         unmuteip        modelock      modeunlock\n");
+	self_sprint (self, "banlist        banip          unbanip         conprint      rune-cheat\n");
+	self_sprint (self, "mutelist       muteip         unmuteip        mode          \n");
 	self_sprint (self, "eff            killstats      stats                         \n");
 
 	self_sprint (self, "\ngame modes:\n\n");
@@ -1065,6 +1087,7 @@ console_commands =
 	self_sprint (self, "ringon              ringoff             suiton              suitoff\n");
 	self_sprint (self, "armoron             armoroff            armordropon         armordropoff\n");
 	self_sprint (self, "rotateon            rotateoff           altson              altsoff\n");
+	self_sprint (self, "weaponsstayon       weaponsstayoff      modelock            modeunlock\n");
 	self_sprint (self, "shieldson           shieldsoff          hookdamageon        hookdamageoff\n");
 	self_sprint (self, "megaon              megaoff             classicmegaon       classicmegaoff\n");
 	self_sprint (self, "powerupdropon       powerupdropoff      lgdischargeon       lgdischargeoff\n");
@@ -1240,15 +1263,15 @@ help_options =
 	self_sprint (self, "\n\barmor         ");	self_sprint_boolean (self, !options & NO_ARMOR);
 	self_sprint (self, "\b  armor rotate  ");	self_sprint_boolean (self, options & ARMOR_ROTATE);
 	self_sprint (self, "\n\brunes         ");	self_sprint_boolean (self, !options & NO_RUNES);
-	self_sprint (self, "\b  rune drop     ");	self_sprint_boolean (self, !temp1 & T1_NO_DROP_ON_DEATH);
+	self_sprint (self, "\b  rune drop     ");	self_sprint_boolean (self, !options & NO_DROP_ON_DEATH);
 	self_sprint (self, "\n\balt weapons   ");	self_sprint_boolean (self, !options & NO_ALT_WEAPONS);
-	self_sprint (self, "\b  weapons stay  ");	self_sprint_boolean (self, deathmatch & DM_WEAPONS_STAY);
+	self_sprint (self, "\b  weapons stay  ");	self_sprint_boolean (self, options & WEAPONS_STAY);
 	self_sprint (self, "\n\bmega          ");	self_sprint_boolean (self, !options & NO_MEGA);
 	self_sprint (self, "\b  classic mega  ");	self_sprint_boolean (self, options & CLASSIC_MEGA);
-	self_sprint (self, "\n\barmor drop    ");	self_sprint_boolean (self, !deathmatch & DM_NO_DROP_ARMOR);
-	self_sprint (self, "\b  powerup drop  ");	self_sprint_boolean (self, !deathmatch & DM_NO_DROP_POWERUP);
+	self_sprint (self, "\n\barmor drop    ");	self_sprint_boolean (self, !options & NO_DROP_ARMOR);
+	self_sprint (self, "\b  powerup drop  ");	self_sprint_boolean (self, !options & NO_DROP_POWERUP);
 	self_sprint (self, "\n\bshields       ");	self_sprint_boolean (self, !options & NO_SPAWN_SHIELDS);
-	self_sprint (self, "\b  lg discharge  ");	self_sprint_boolean (self, !deathmatch & DM_NO_DISCHARGE);
+	self_sprint (self, "\b  lg discharge  ");	self_sprint_boolean (self, !options & NO_DISCHARGE);
 	self_sprint (self, "\n\bbackpacks     ");	self_sprint_boolean (self, !options & NO_BACKPACKS);
 	self_sprint (self, "\n");
 };

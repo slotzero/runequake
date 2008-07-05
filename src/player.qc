@@ -1,4 +1,4 @@
-/*  $Id: player.qc,v 1.22 2006/08/27 00:15:40 slotzero Exp $
+/*  $Id: player.qc,v 1.23 2008/07/05 03:37:29 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -573,7 +573,7 @@ PlayerDie =
 	spawn_protect_off ();
 	self.items = self.items - self.items & IT_INVISIBILITY;
 
-	if (!deathmatch & DM_NO_DROP_POWERUP)
+	if (!options & NO_DROP_POWERUP)
 	{
 		// Don't drop phoenix quad.
 		if (self.super_damage_finished > time + 3 && self.super_time != -2)

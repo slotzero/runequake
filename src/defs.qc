@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.212 2008/07/04 04:27:56 slotzero Exp $
+/*  $Id: defs.qc,v 1.213 2008/07/05 03:37:29 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -626,16 +626,16 @@ float MAX_IMP_VOTE		= 32;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;
-float DM_WEAPONS_STAY		= 2;
+// float DM_WEAPONS_STAY	= 2;
 float DM_LONG_QUAD_RESPAWN	= 4;
 float DM_QUAD_REPLACEMENT	= 8;
 float DM_PENT_REPLACEMENT	= 16;
 // float DM_LAN_MODE		= 32;
 float DM_EXIT_NON_FATAL		= 64;
-float DM_NO_DISCHARGE		= 128;
-float DM_NO_DROP_POWERUP	= 256;
+// float DM_NO_DISCHARGE	= 128;
+// float DM_NO_DROP_POWERUP	= 256;
 // float DM_NO_ALT_WEAPONS	= 512;
-float DM_NO_DROP_ARMOR		= 1024;
+// float DM_NO_DROP_ARMOR	= 1024;
 float DM_DAMAGE_MATCH		= 2048;
 float DM_RANDOM_POWERUP_RESPAWN	= 4096;
 //float DM_MODE_PRACTICE	= 8192;
@@ -794,7 +794,7 @@ float AQS_ADMIN_CHANGE_MAP_MENU	= 8388608;
 float temp1;
 float T1_NRUNES_MASK		= 63;
 float T1_RUNE_CHEAT		= 64;
-float T1_NO_DROP_ON_DEATH	= 128;
+// float T1_NO_DROP_ON_DEATH	= 128;
 float T1_CAN_GET_OWN_RUNE	= 256;
 // drop delay			= 512;
 float T1_RANDOM_RUNE_MODELS	= 1024;
@@ -1211,6 +1211,8 @@ float	C2_MUTE_LIST		= 63;
 float	C2_CLASSICMEGAON	= 64;
 float	C2_CLASSICMEGAOFF	= 65;
 float	C2_CURRENT_MODE		= 66;
+float	C2_WEAPONSSTAYON	= 67;
+float	C2_WEAPONSSTAYOFF	= 68;
 
 // game mode
 float	gamemode;
@@ -1237,6 +1239,15 @@ float	FASTSTART		= 2048;
 float	NO_BACKPACKS		= 4096;
 float	CLASSIC_MEGA		= 8192;
 float	MODE_LOCKED		= 16384;
+float	WEAPONS_STAY		= 32768;
+float	NO_DROP_POWERUP		= 65536;
+float	NO_DROP_ON_DEATH	= 131072;
+float	NO_DROP_ARMOR		= 262144;
+float	NO_DISCHARGE		= 524288;
+//float = 1048576
+//float = 2097152
+//float = 4194304
+//float = 8388608
 
 IN_QW([-
 //
