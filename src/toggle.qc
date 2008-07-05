@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.31 2008/07/04 05:17:07 slotzero Exp $
+/*  $Id: toggle.qc,v 1.32 2008/07/05 00:58:46 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -492,7 +492,7 @@ toggle_rune_drop =
 	local float new_temp1;
 	local string s;
 
-	new_temp1 = cvar ("temp1");
+	new_temp1 = cvar_infokey ("temp1");
 
 	if (new_temp1 & T1_NO_DROP_ON_DEATH)
 		new_temp1 = new_temp1 - new_temp1 & T1_NO_DROP_ON_DEATH;
@@ -511,7 +511,7 @@ toggle_rune_drop =
 
 	s = ftos (new_temp1);
 	temp1 = new_temp1;
-	cvar_set ("temp1", s);
+	cvar_set_infokey ("temp1", s);
 };
 
 void ()
