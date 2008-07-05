@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.32 2008/07/05 00:58:46 slotzero Exp $
+/*  $Id: toggle.qc,v 1.33 2008/07/05 01:51:48 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -50,76 +50,64 @@ toggle_powerup =
 void ()
 setquad =
 {
-	local float new_options;
 	local string s;
 
-	new_options = cvar_infokey (CVAR_C4);
-	toggle_powerup ("item_artifact_super_damage", new_options & NO_QUAD);
+	toggle_powerup ("item_artifact_super_damage", options & NO_QUAD);
 
-	if (new_options & NO_QUAD)
-		new_options = new_options - new_options & NO_QUAD;
+	if (options & NO_QUAD)
+		options = options - options & NO_QUAD;
 	else
-		new_options = new_options | NO_QUAD;
+		options = options | NO_QUAD;
 
-	s = ftos (new_options);
-	options = new_options;
+	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
 setpent =
 {
-	local float new_options;
 	local string s;
 
-	new_options = cvar_infokey (CVAR_C4);
-	toggle_powerup ("item_artifact_invulnerability", new_options & NO_PENT);
+	toggle_powerup ("item_artifact_invulnerability", options & NO_PENT);
 
-	if (new_options & NO_PENT)
-		new_options = new_options - new_options & NO_PENT;
+	if (options & NO_PENT)
+		options = options - options & NO_PENT;
 	else
-		new_options = new_options | NO_PENT;
+		options = options | NO_PENT;
 
-	s = ftos (new_options);
-	options = new_options;
+	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
 setring =
 {
-	local float new_options;
 	local string s;
 
-	new_options = cvar_infokey (CVAR_C4);
-	toggle_powerup ("item_artifact_invisibility", new_options & NO_RING);
+	toggle_powerup ("item_artifact_invisibility", options & NO_RING);
 
-	if (new_options & NO_RING)
-		new_options = new_options - new_options & NO_RING;
+	if (options & NO_RING)
+		options = options - options & NO_RING;
 	else
-		new_options = new_options | NO_RING;
+		options = options | NO_RING;
 
-	s = ftos (new_options);
-	options = new_options;
+	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
 setsuit =
 {
-	local float new_options;
 	local string s;
 
-	new_options = cvar_infokey (CVAR_C4);
-	toggle_powerup ("item_artifact_envirosuit", new_options & NO_SUIT);
+	toggle_powerup ("item_artifact_envirosuit", options & NO_SUIT);
 
-	if (new_options & NO_SUIT)
-		new_options = new_options - new_options & NO_SUIT;
+	if (options & NO_SUIT)
+		options = options - options & NO_SUIT;
 	else
-		new_options = new_options | NO_SUIT;
+		options = options | NO_SUIT;
 
-	s = ftos (new_options);
-	options = new_options;
+	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);
 };
 
@@ -151,41 +139,35 @@ toggle_armor =
 void ()
 setarmor =
 {
-	local float new_options;
 	local string s;
 
-	new_options = cvar_infokey (CVAR_C4);
-	toggle_armor (new_options & NO_ARMOR);
+	toggle_armor (options & NO_ARMOR);
 
-	if (new_options & NO_ARMOR)
-		new_options = new_options - new_options & NO_ARMOR;
+	if (options & NO_ARMOR)
+		options = options - options & NO_ARMOR;
 	else
-		new_options = new_options | NO_ARMOR;
+		options = options | NO_ARMOR;
 
-	s = ftos (new_options);
-	options = new_options;
+	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
 setrotate =
 {
-	local float new_options;
 	local string s;
 
 	if (options & NO_ARMOR)
 		return;
 
-	new_options = cvar_infokey (CVAR_C4);
 	toggle_armor (1);
 
-	if (new_options & ARMOR_ROTATE)
-		new_options = new_options - new_options & ARMOR_ROTATE;
+	if (options & ARMOR_ROTATE)
+		options = options - options & ARMOR_ROTATE;
 	else
-		new_options = new_options | ARMOR_ROTATE;
+		options = options | ARMOR_ROTATE;
 
-	s = ftos (new_options);
-	options = new_options;
+	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);
 };
 
@@ -193,18 +175,14 @@ void ()
 setrunes =
 {
 	local entity e, os;
-	local float new_options;
 	local string s;
 
-	new_options = cvar_infokey (CVAR_C4);
-
-	if (new_options & NO_RUNES)
-		new_options = new_options - new_options & NO_RUNES;
+	if (options & NO_RUNES)
+		options = options - options & NO_RUNES;
 	else
-		new_options = new_options | NO_RUNES;
+		options = options | NO_RUNES;
 
-	s = ftos (new_options);
-	options = new_options;
+	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);
 
 	if (options & NO_RUNES)
@@ -239,18 +217,14 @@ void ()
 setalts =
 {
 	local entity e, os;
-	local float new_options;
 	local string s;
 
-	new_options = cvar_infokey (CVAR_C4);
-
-	if (new_options & NO_ALT_WEAPONS)
-		new_options = new_options - new_options & NO_ALT_WEAPONS;
+	if (options & NO_ALT_WEAPONS)
+		options = options - options & NO_ALT_WEAPONS;
 	else
-		new_options = new_options | NO_ALT_WEAPONS;
+		options = options | NO_ALT_WEAPONS;
 
-	s = ftos (new_options);
-	options = new_options;
+	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);
 
 	if (options & NO_ALT_WEAPONS)
@@ -271,36 +245,28 @@ setalts =
 void ()
 setshields =
 {
-	local float new_options;
 	local string s;
 
-	new_options = cvar_infokey (CVAR_C4);
-
-	if (new_options & NO_SPAWN_SHIELDS)
-		new_options = new_options - new_options & NO_SPAWN_SHIELDS;
+	if (options & NO_SPAWN_SHIELDS)
+		options = options - options & NO_SPAWN_SHIELDS;
 	else
-		new_options = new_options | NO_SPAWN_SHIELDS;
+		options = options | NO_SPAWN_SHIELDS;
 
-	s = ftos (new_options);
-	options = new_options;
+	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
 sethookdamage =
 {
-	local float new_options;
 	local string s;
 
-	new_options = cvar_infokey (CVAR_C4);
-
-	if (new_options & NO_HOOK_DAMAGE)
-		new_options = new_options - new_options & NO_HOOK_DAMAGE;
+	if (options & NO_HOOK_DAMAGE)
+		options = options - options & NO_HOOK_DAMAGE;
 	else
-		new_options = new_options | NO_HOOK_DAMAGE;
+		options = options | NO_HOOK_DAMAGE;
 
-	s = ftos (new_options);
-	options = new_options;
+	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);
 };
 
@@ -342,19 +308,16 @@ toggle_health =
 void ()
 setmega =
 {
-	local float new_options;
 	local string s;
 
-	new_options = cvar_infokey (CVAR_C4);
-	toggle_health ("item_health", 2, new_options & NO_MEGA);
+	toggle_health ("item_health", 2, options & NO_MEGA);
 
-	if (new_options & NO_MEGA)
-		new_options = new_options - new_options & NO_MEGA;
+	if (options & NO_MEGA)
+		options = options - options & NO_MEGA;
 	else
-		new_options = new_options | NO_MEGA;
+		options = options | NO_MEGA;
 
-	s = ftos (new_options);
-	options = new_options;
+	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);
 };
 
@@ -422,18 +385,14 @@ toggle_armor_drop =
 void ()
 setfaststart =
 {
-	local float new_options;
 	local string s;
 
-	new_options = cvar_infokey (CVAR_C4);
-
-	if (new_options & FASTSTART)
-		new_options = new_options - new_options & FASTSTART;
+	if (options & FASTSTART)
+		options = options - options & FASTSTART;
 	else
-		new_options = new_options | FASTSTART;
+		options = options | FASTSTART;
 
-	s = ftos (new_options);
-	options = new_options;
+	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);
 };
 
@@ -446,21 +405,17 @@ setmatchlock =
 void ()
 setbackpacks =
 {
-	local float new_options;
 	local string s;
 
-	new_options = cvar_infokey (CVAR_C4);
-
-	if (new_options & NO_BACKPACKS)
-		new_options = new_options - new_options & NO_BACKPACKS;
+	if (options & NO_BACKPACKS)
+		options = options - options & NO_BACKPACKS;
 	else
-		new_options = new_options | NO_BACKPACKS;
+		options = options | NO_BACKPACKS;
 
-	if (new_options & NO_BACKPACKS)
+	if (options & NO_BACKPACKS)
 		remove_classname ("backpack");
 
-	s = ftos (new_options);
-	options = new_options;
+	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);
 };
 
@@ -536,7 +491,6 @@ void ()
 setclassicmega =
 {
 	local entity e;
-	local float new_options;
 	local string s;
 
 	e = find (world, classname, "item_health");
@@ -564,32 +518,25 @@ setclassicmega =
 		e = find (e, classname, "decay_health");
 	}
 
-	new_options = cvar_infokey (CVAR_C4);
-
-	if (new_options & CLASSIC_MEGA)
-		new_options = new_options - new_options & CLASSIC_MEGA;
+	if (options & CLASSIC_MEGA)
+		options = options - options & CLASSIC_MEGA;
 	else
-		new_options = new_options | CLASSIC_MEGA;
+		options = options | CLASSIC_MEGA;
 
-	s = ftos (new_options);
-	options = new_options;
+	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);
 };
 
 void ()
 toggle_mode_lock =
 {
-	local float new_options;
 	local string s;
 
-	new_options = cvar_infokey (CVAR_C4);
-
-	if (new_options & MODE_LOCKED)
-		new_options = new_options - new_options & MODE_LOCKED;
+	if (options & MODE_LOCKED)
+		options = options - options & MODE_LOCKED;
 	else
-		new_options = new_options | MODE_LOCKED;
+		options = options | MODE_LOCKED;
 
-	s = ftos (new_options);
-	options = new_options;
+	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);
 };

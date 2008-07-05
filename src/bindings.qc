@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.111 2008/07/04 04:27:56 slotzero Exp $
+/*  $Id: bindings.qc,v 1.112 2008/07/05 01:51:48 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -479,6 +479,7 @@ console_aliases =
 	console_init_cvar_alias ("powerdropon",		CVAR_C2,	C2_POWERDROPON);
 	console_init_cvar_alias ("powerdropoff",	CVAR_C2,	C2_POWERDROPOFF);
 	console_init_cvar_alias ("help-options",	CVAR_C2,	C2_HELP_OPTIONS);
+	console_init_cvar_alias ("options",		CVAR_C2,	C2_HELP_OPTIONS);
 	console_init_cvar_alias ("killstats",		CVAR_C2,	C2_KILLSTATS);
 	console_init_cvar_alias ("stats",		CVAR_C2,	C2_STATS);
 	console_init_cvar_alias ("runedropon",		CVAR_C2,	C2_RUNEDROPON);
