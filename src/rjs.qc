@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.231 2008/07/05 03:37:29 slotzero Exp $
+/*  $Id: rjs.qc,v 1.232 2008/07/08 23:52:43 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -316,6 +316,16 @@ rjs_worldspawn =
 	gamemode	= cvar_infokey (CVAR_C3);
 	options		= cvar_infokey (CVAR_C4);
 
+	if (!options & OPTIONS_INIT)
+	{
+		console_aliases ();
+		set_gamemode ();
+
+		options = options | OPTIONS_INIT;
+		s = ftos (options);
+		cvar_set_infokey (CVAR_C4, s);
+	}
+
 	frag_init ();
 	orig_serverflags = serverflags;
 	if (deathmatch & DM_DM_MASK && mapname == "start" && serverflags & SERVERFLAGS_RUNE_MASK == SERVERFLAGS_RUNE_MASK)
@@ -349,10 +359,6 @@ rjs_worldspawn =
 
 	if (!map_size (mapname))
 		MAP_IS_CUSTOM = 1;
-
-	IN_QW([-
-		Hunk_Settings ();
-	-])
 
 	if (mapname == "e1m8")
 		sv_gravity = 100;
@@ -446,7 +452,6 @@ process_misc =
 	if (time < LEVEL_RECONNECT_ALLOWANCE)
 		return;
 
-	set_runemax ();
 	ghost_check ();
 	update_server_time ();
 
@@ -487,6 +492,8 @@ process_cvars =
 		FORWARD_MAX_PLAYERS_REAL = FORWARD_MAX_PLAYERS;
 
 	temp1 = cvar_infokey ("temp1");
+
+	set_runemax ();
 
 	i = temp1 & T1_RUNE_DROP_DELAY_MASK;
 	if (i == T1_RUNE_DROP_DELAY_0)		rune_drop_delay = 0;

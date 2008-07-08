@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.39 2008/01/31 10:34:29 slotzero Exp $
+/*  $Id: internal.qc,v 1.40 2008/07/08 23:52:43 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -550,16 +550,9 @@ SearchHunkThink =
 		lasth = self;
 		self = world;
 
-		// console bindings
+		// Initialize hunk for newly spawned server.
 		if (server_time () < 10)
-		{
-			console_aliases ();
-			set_gamemode ();
-		}
-
-		// initialize match mode
-		if (gamemode == MODE_MATCH)
-			match_hunk_init ();
+			Hunk_Settings_Init ();
 
 		remove (lasth);
 		return;

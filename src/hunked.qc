@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.58 2008/07/04 04:27:56 slotzero Exp $
+/*  $Id: hunked.qc,v 1.59 2008/07/08 23:52:43 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -486,9 +486,30 @@ track_last_level =
 	Write_Hunk_Float (HUNK_CONTEXT, HUNK_LAST_LEVEL_POS, pos + 1);
 };
 
+// Called when the server is spawned.
+void ()
+Hunk_Settings_Init =
+{
+	local float i;
+
+	// initialize storage for ban
+	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
+		Write_Hunk_Float (HUNK_CONTEXT, HUNK_BAN_OFFSET + i, 0);
+
+	// initialize storage for mute
+	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
+		Write_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + i, 0);
+
+	localcmd ("exec ban.txt\n");
+};
+
+// Called every level.
 void ()
 Hunk_Settings =
 {
-	set_runemax ();
 	track_last_level (mapname);
+
+	// initialize match mode
+	if (gamemode == MODE_MATCH)
+		match_hunk_init ();
 };
