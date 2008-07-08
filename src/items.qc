@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.74 2008/07/05 03:37:29 slotzero Exp $
+/*  $Id: items.qc,v 1.75 2008/07/08 00:51:56 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -176,7 +176,7 @@ PlaceItem =
 		self.model	= string_null;
 		self.solid	= SOLID_NOT;
 		self.think	= maybe_disable_item;
-		self.nextthink	= time + 2;
+		self.nextthink	= time;
 	}
 };
 
