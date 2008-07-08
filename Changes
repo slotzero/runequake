@@ -1,4 +1,22 @@
-$Id: Changes,v 1.92 2008/01/01 06:03:09 slotzero Exp $
+$Id: Changes,v 1.93 2008/07/08 02:37:09 slotzero Exp $
+
+Version 1.3.?  Mon Jul 07 21:45:30 EST 2008
+
+    - Bug Fixes
+
+        - All teams are removed when match is aborted.
+
+        - Mode switch voting wasn't working properly in Quakeworld.
+
+    - Changes
+
+        - Recently played levels require a greater vote percentage.
+
+        - Players are prevented from voting too ofen.
+
+     	- Added new player commands: vote-rune-drop, vote-lg-discharge.
+
+        - Added new server commands: mode, modelock, modeunlock.
 
 Version 1.3  Tue Jan 01 00:56:52 EST 2008
 
