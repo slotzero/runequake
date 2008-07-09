@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.232 2008/07/08 23:52:43 slotzero Exp $
+/*  $Id: rjs.qc,v 1.233 2008/07/09 04:45:48 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -317,14 +317,7 @@ rjs_worldspawn =
 	options		= cvar_infokey (CVAR_C4);
 
 	if (!options & OPTIONS_INIT)
-	{
 		console_aliases ();
-		set_gamemode ();
-
-		options = options | OPTIONS_INIT;
-		s = ftos (options);
-		cvar_set_infokey (CVAR_C4, s);
-	}
 
 	frag_init ();
 	orig_serverflags = serverflags;
@@ -481,6 +474,7 @@ void ()
 process_cvars =
 {
 	local float new_deathmatch, i;
+	local string s;
 
 	self.nextthink = time + 15;
 
@@ -520,6 +514,15 @@ process_cvars =
 	// XXX This shouldn't be necessary, but there's a bug with the
 	// current_hooks handling.
 	current_hooks = count_hooks ();
+
+	if (!options & OPTIONS_INIT)
+	{
+		set_gamemode ();
+
+		options = options | OPTIONS_INIT;
+		s = ftos (options);
+		cvar_set_infokey (CVAR_C4, s);
+	}
 
 	process_misc ();
 };
