@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.234 2008/07/09 05:48:13 slotzero Exp $
+/*  $Id: rjs.qc,v 1.235 2008/07/09 05:49:57 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -471,7 +471,6 @@ void ()
 process_cvars =
 {
 	local float new_deathmatch, i;
-	local string s;
 
 	self.nextthink = time + 15;
 
