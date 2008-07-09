@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.79 2008/07/05 03:37:29 slotzero Exp $
+/*  $Id: vote.qc,v 1.80 2008/07/09 03:21:13 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -789,14 +789,6 @@ vote =
 		{
 			if (!cancel)
 				self_sprint (self, "already in match mode\n");
-			cancel = 1;
-		}
-
-		// workaround to prevent match mode on main server
-		if (!scratch1 & (S1_PRACTICE_DEFAULT | S1_MATCH_DEFAULT))
-		{
-			if (!cancel)
-				self_sprint (self, "match voting disabled\n");
 			cancel = 1;
 		}
 	}
