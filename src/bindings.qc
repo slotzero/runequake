@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.114 2008/07/08 23:52:43 slotzero Exp $
+/*  $Id: bindings.qc,v 1.115 2008/07/09 05:48:13 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -422,6 +422,8 @@ console_init_cvar_alias =
 void ()
 console_aliases =
 {
+	local float i;
+
 	dprint_force ("Sending console bindings\n");
 
 	console_init_cvar_alias ("update-bindings",	CVAR_C2,	C2_UPDATE_BINDINGS);
@@ -498,6 +500,19 @@ console_aliases =
 	level_aliases ();
 	custom_aliases ();
 	custom_maps ();
+
+	if (!HUNK_CONTEXT)
+		return;
+
+	// initialize storage for ban
+	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
+		Write_Hunk_Float (HUNK_CONTEXT, HUNK_BAN_OFFSET + i, 0);
+
+	// initialize storage for mute
+	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
+		Write_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + i, 0);
+
+	localcmd ("exec ban.txt\n");
 };
 
 void ()

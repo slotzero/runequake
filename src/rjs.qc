@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.233 2008/07/09 04:45:48 slotzero Exp $
+/*  $Id: rjs.qc,v 1.234 2008/07/09 05:48:13 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -316,9 +316,6 @@ rjs_worldspawn =
 	gamemode	= cvar_infokey (CVAR_C3);
 	options		= cvar_infokey (CVAR_C4);
 
-	if (!options & OPTIONS_INIT)
-		console_aliases ();
-
 	frag_init ();
 	orig_serverflags = serverflags;
 	if (deathmatch & DM_DM_MASK && mapname == "start" && serverflags & SERVERFLAGS_RUNE_MASK == SERVERFLAGS_RUNE_MASK)
@@ -514,15 +511,6 @@ process_cvars =
 	// XXX This shouldn't be necessary, but there's a bug with the
 	// current_hooks handling.
 	current_hooks = count_hooks ();
-
-	if (!options & OPTIONS_INIT)
-	{
-		set_gamemode ();
-
-		options = options | OPTIONS_INIT;
-		s = ftos (options);
-		cvar_set_infokey (CVAR_C4, s);
-	}
 
 	process_misc ();
 };

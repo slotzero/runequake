@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.40 2008/07/08 23:52:43 slotzero Exp $
+/*  $Id: internal.qc,v 1.41 2008/07/09 05:48:13 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -520,10 +520,7 @@ SearchHunk =
 				if (hname == "iplog")
 					HUNK_IPLOG = SubInt (4 * i, self.count * %131072);
 				else if (hname == "context")
-				{
 					HUNK_CONTEXT = SubInt (4 * i, self.count * %131072);
-					Hunk_Settings ();
-				}
 				else if (hname == "zone")
 				{
 					HUNK_ZONE = SubInt (4 * i, self.count * %131072);
@@ -550,9 +547,19 @@ SearchHunkThink =
 		lasth = self;
 		self = world;
 
-		// Initialize hunk for newly spawned server.
+		// newly spawned server settings
 		if (server_time () < 10)
-			Hunk_Settings_Init ();
+		{
+			console_aliases ();
+			set_gamemode ();
+		}
+
+		// keep track of recent levels
+		track_last_level (mapname);
+
+		// initialize match mode
+		if (gamemode == MODE_MATCH)
+			match_hunk_init ();
 
 		remove (lasth);
 		return;

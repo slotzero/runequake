@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.215 2008/07/09 03:21:13 slotzero Exp $
+/*  $Id: defs.qc,v 1.216 2008/07/09 05:48:13 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1239,7 +1239,7 @@ float	NO_DISCHARGE		= 524288;
 //float = 1048576
 //float = 2097152
 //float = 4194304
-float	OPTIONS_INIT		= 8388608;	// Move this eventually.
+//float = 8388608;
 
 IN_QW([-
 //
