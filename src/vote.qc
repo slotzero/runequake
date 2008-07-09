@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.80 2008/07/09 03:21:13 slotzero Exp $
+/*  $Id: vote.qc,v 1.81 2008/07/09 07:58:43 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -777,7 +777,7 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_MATCH)
 	{
-		cancel		= options & MODE_LOCKED;
+		cancel		= IN_POQ(options & MODE_LOCKED, 1);
 		e.frag_rate	= 0.51;	// XXX move to settings.
 		e.think1	= change_mode_to_match;
 		e.noise1	= "change";
