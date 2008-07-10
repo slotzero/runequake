@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.235 2008/07/09 05:49:57 slotzero Exp $
+/*  $Id: rjs.qc,v 1.236 2008/07/10 07:53:25 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -460,9 +460,9 @@ process_misc =
 	if (time > 21600)
 		admin_changelevel_now (mapname);
 
-	// vote-team
-	if (VOTE_TEAM_MODE_DEFAULT)
-		toggle_teamplay (VOTE_TEAM_MODE_DEFAULT);
+	// vote-team (disabled default for this)
+	//if (VOTE_TEAM_MODE_DEFAULT)
+	//	toggle_teamplay (VOTE_TEAM_MODE_DEFAULT);
 
 	set_gamemode ();
 };

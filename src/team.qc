@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.83 2008/07/05 03:37:29 slotzero Exp $
+/*  $Id: team.qc,v 1.84 2008/07/10 07:53:25 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -464,19 +464,6 @@ check_teamplay =
 	local float i;
 
 	i = cvar ("teamplay");
-
-	// hack to allow mm2 in match mode
-	if (gamemode == MODE_MATCH)
-	{
-		if (!i & TEAM_MODE_MATCH)
-			i = i | TEAM_MODE_MATCH;
-	}
-	else
-	{
-		if (i & TEAM_MODE_MATCH)
-			i = i - i & TEAM_MODE_MATCH;
-	}
-
 	if (time > 3 && (teamplay_set_state < 2 || teamplay != i))
 	{
 		teamplay_set_state = 2;
@@ -933,6 +920,10 @@ match_defaults =
 {
 	local float wanted;
 
+	// allow mm2 in match mode
+	if (teamplay != 32)
+		change_teamplay (32, 1);
+
 	// hook off
 	wanted = hook_type (0);
 	if (wanted != hook_type (temp1))
@@ -1016,6 +1007,10 @@ void ()
 arena_defaults =
 {
 	local float wanted;
+
+	// turn off teams
+	if (teamplay)
+		change_teamplay (0, 1);
 
 	// hook off
 	wanted = hook_type (0);
@@ -1101,6 +1096,10 @@ practice_defaults =
 {
 	local float wanted;
 
+	// turn off teams
+	if (teamplay)
+		change_teamplay (0, 1);
+
 	// hook off
 	wanted = hook_type (0);
 	if (wanted != hook_type (temp1))
@@ -1184,6 +1183,10 @@ void ()
 normal_defaults =
 {
 	local float wanted;
+
+	// turn off teams
+	if (teamplay)
+		change_teamplay (0, 1);
 
 	// hook on
 	wanted = hook_type (262144);
