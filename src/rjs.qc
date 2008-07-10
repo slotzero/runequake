@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.236 2008/07/10 07:53:25 slotzero Exp $
+/*  $Id: rjs.qc,v 1.237 2008/07/10 08:58:32 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1299,6 +1299,25 @@ common_impulses =
 
 	else if (self.impulse == IMP_VOTE_NO)
 		vote_no ();
+
+	else if (self.impulse == IMP_VOTE_NEVER)
+	{
+		if (find_vip ())
+		{
+			self.rqflags = self.rqflags | RQ_AUTO_VOTE_NO;
+			vote_no ();
+		}
+		else if (self.rqflags & RQ_AUTO_VOTE_NO)
+		{
+			self.rqflags = self.rqflags - self.rqflags & RQ_AUTO_VOTE_NO;
+			self_sprint (self, "auto vote no disabled\n");
+		}
+		else
+		{
+			self.rqflags = self.rqflags | RQ_AUTO_VOTE_NO;
+			self_sprint (self, "auto vote no \benabled\n");
+		}
+	}
 
 	else if (self.impulse == IMP_READY)
 		match_ready ();

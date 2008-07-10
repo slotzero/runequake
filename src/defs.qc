@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.216 2008/07/09 05:48:13 slotzero Exp $
+/*  $Id: defs.qc,v 1.217 2008/07/10 08:58:32 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -502,7 +502,8 @@ float IMP_VOTE_YES		= 255;
 float IMP_VOTE_NO		= 254;
 //				= 238 - 253	[weapon aliases]
 //				= 220 - 237	[qsmack]
-//				= 219 - 206	[free]
+//				= 219 - 207	[free]
+float IMP_VOTE_NEVER		= 206;
 float IMP_STATS			= 205;
 float IMP_KILLSTATS		= 204;
 float IMP_HELP_OPTIONS		= 203;
@@ -718,9 +719,9 @@ float RQ_BINDINGS_RECEIVED	= 8;
 float RQ_TEAMSCORES_ON		= 16;
 float RQ_AUTOSTATS		= 32;
 float RQ_MUTE			= 64;
+float RQ_AUTO_VOTE_NO		= 128;
 
 // rqstate flags (not saved across levels)
-
 float RQS_LAGGED_OUT		= 1;
 float RQS_READY			= 2;
 float RQS_AFK			= 4;

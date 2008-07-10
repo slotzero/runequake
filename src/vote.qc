@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.81 2008/07/09 07:58:43 slotzero Exp $
+/*  $Id: vote.qc,v 1.82 2008/07/10 08:58:32 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -413,25 +413,31 @@ vote =
 
 	// compare new vote to last vote and auto-vote if necessary
 	if (LAST_VOTE_IMPULSE == self.impulse)
+		i = 1;
+	else
 	{
-		e = find (world, classname, "player");
-		while (e)
+		i = 0;
+		LAST_VOTE_IMPULSE = self.impulse;
+		LAST_VOTE_LEVEL = string_null;
+		remove_bit_from_players (vote_flags, VOTE_LAST_YES | VOTE_LAST_NO);
+	}
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (e != self)
 		{
-			if (e != self)
+			if (e.rqflags & RQ_AUTO_VOTE_NO && !e.vote_flags & VOTE_LAST_YES)
+				e.vote_flags = e.vote_flags | VOTE_NO | VOTE_LAST_NO;
+			else if (i)
 			{
 				if (e.vote_flags & VOTE_LAST_YES)
 					e.vote_flags = e.vote_flags | VOTE_YES;
 				else if (e.vote_flags & VOTE_LAST_NO)
 					e.vote_flags = e.vote_flags | VOTE_NO;
 			}
-			e = find (e, classname, "player");
 		}
-	}
-	else
-	{
-		LAST_VOTE_IMPULSE = self.impulse;
-		LAST_VOTE_LEVEL = string_null;
-		remove_bit_from_players (vote_flags, VOTE_LAST_YES | VOTE_LAST_NO);
+		e = find (e, classname, "player");
 	}
 
 	self.vote_flags = self.vote_flags | VOTE_YES | VOTE_LAST_YES;
