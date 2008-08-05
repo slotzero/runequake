@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#    $Id: map,v 1.35 2006/08/27 00:15:40 slotzero Exp $
+#    $Id: map,v 1.36 2008/08/05 23:58:29 slotzero Exp $
 
 use strict;
 use warnings;
@@ -477,17 +477,21 @@ print "string ()\n";
 print "impulse_to_map =\n";
 print "{\n";
 
+print "\tlocal float i;\n\n";
+print "\ti = self.impulse;\n";
+print "\tif (i >= MAP_IMPULSE_MIN && i <= MAP_IMPULSE_MAX)\n";
+print "\t\ti = i - MAP_IMPULSE_MIN;\n\n";
 for my $map (map { @$_ } @lev ) {
     my $impulse = $map;
     if ($map =~ /^dm([1-6])$/)	{ $impulse = "5$1" }
     elsif ($map eq 'start')	{ $impulse = 57 }
     elsif ($map eq 'end')	{ $impulse = 58 }
     else 			{ $impulse =~ tr/0-9//cd or die "oops `$map'" };
-    print "\tif (self.impulse == $impulse) { return \"$map\"; }\n";
+    print "\tif (i == $impulse) { return \"$map\"; }\n";
 }
 my $impulse = 59;
 for my $map (map { @$_ } @custom_lev) {
-    print "\tif (self.impulse == $impulse) { return \"$map\"; }\n";
+    print "\tif (i == $impulse) { return \"$map\"; }\n";
     $impulse++;
 }
 

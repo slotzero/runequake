@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.116 2008/07/10 08:58:32 slotzero Exp $
+/*  $Id: bindings.qc,v 1.117 2008/08/05 23:58:29 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -377,6 +377,9 @@ player_console_init_level_alias =
 {
 	local string s;
 
+	if (CMD_IMPULSES)
+		imp = imp + MAP_IMPULSE_MIN;
+
 	// Console
 	if (self == world)
 	{
@@ -394,10 +397,19 @@ player_console_init_level_alias =
 	{
 		self_stuffcmd (self, "alias ");
 		self_stuffcmd (self, level);
-		self_stuffcmd (self, " \"cl;w5;w5;impulse ");
+
+		if (CMD_IMPULSES)
+			self_stuffcmd (self, " \"cmd impulse ");
+		else
+			self_stuffcmd (self, " \"cl;w5;w5;impulse ");
+
 		s = ftos (imp);
 		self_stuffcmd (self, s);
-		self_stuffcmd (self, ";w5\"\n");
+
+		if (CMD_IMPULSES)
+			self_stuffcmd (self, "\"\n");
+		else
+			self_stuffcmd (self, ";w5\"\n");
 	}
 };
 

@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.49 2008/07/01 06:12:53 slotzero Exp $
+/*  $Id: admin.qc,v 1.50 2008/08/05 23:58:29 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -526,7 +526,7 @@ admin_changelevel_now =
 void ()
 admin_impulse_map =
 {
-	local float admin_menu;
+	local float i, admin_menu;
 	local string m;
 
 	admin_menu = self.aqstate & AQS_ADMIN_CHANGE_MAP_MENU;
@@ -556,9 +556,13 @@ admin_impulse_map =
 	aq_menu_set (0);
 	m = impulse_to_map ();
 
+	i = self.impulse;
+	if (i >= MAP_IMPULSE_MIN && i <= MAP_IMPULSE_MAX)
+		i = i - MAP_IMPULSE_MIN;
+
 	if (!admin_menu)
 	{
-		if (noexit & NOEXIT_NO_CUSTOM_LEVELS && self.impulse > 58)
+		if (noexit & NOEXIT_NO_CUSTOM_LEVELS && i > 58)
 		{
 			if (custom_size (m))
 			{
@@ -566,7 +570,7 @@ admin_impulse_map =
 				return;
 			}
 		}
-		else if (noexit & NOEXIT_CUSTOM_LEVELS_ONLY && self.impulse < 59)
+		else if (noexit & NOEXIT_CUSTOM_LEVELS_ONLY && i < 59)
 		{
 			if (map_size (m))
 			{

@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.62 2008/07/04 04:27:56 slotzero Exp $
+/*  $Id: settings.qc,v 1.63 2008/08/05 23:58:29 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -653,3 +653,8 @@ string	CSHIFT_CLOAK		= "v_cshift   0   0   0  75\n";
 string	CSHIFT_FREEZE		= "v_cshift  50  50 256 100\n";
 string	CSHIFT_NONE		= "v_cshift   0   0   0   0\n";
 string	CSHIFT_SHIELD		= "v_cshift 100 100   0 100\n";
+
+// requires runequake engine
+float CMD_IMPULSES		= 1;
+float MAP_IMPULSE_MIN		= 300;
+float MAP_IMPULSE_MAX		= 599;

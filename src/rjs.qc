@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.237 2008/07/10 08:58:32 slotzero Exp $
+/*  $Id: rjs.qc,v 1.238 2008/08/05 23:58:29 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1438,6 +1438,10 @@ common_impulses =
 
 	else if (self.impulse == IMP_CHANGE_MAP)
 		change_map ();
+
+	// requires runequake engine
+	else if (self.impulse >= MAP_IMPULSE_MIN && self.impulse <= MAP_IMPULSE_MAX)
+		admin_impulse_map ();
 
 	else if (self.impulse == IMP_QUIET_TOGGLE)
 	{
