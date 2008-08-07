@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.51 2008/08/07 02:07:20 slotzero Exp $
+/*  $Id: admin.qc,v 1.52 2008/08/07 02:15:46 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -526,7 +526,7 @@ admin_changelevel_now =
 void ()
 admin_impulse_map =
 {
-	local float i, admin_menu;
+	local float admin_menu;
 	local string m;
 
 	admin_menu = self.aqstate & AQS_ADMIN_CHANGE_MAP_MENU;
