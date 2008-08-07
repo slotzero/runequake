@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.82 2008/07/10 08:58:32 slotzero Exp $
+/*  $Id: vote.qc,v 1.83 2008/08/07 02:07:20 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -47,7 +47,7 @@ vote_impulse_commands =
 		else
 			count_votes (2);
 	}
-	else if (self.impulse >= 1 && self.impulse <= MAX_IMP_VOTE)
+	else if (self.impulse >= 1 && self.impulse <= IMP_VOTE_MAX)
 		vote ();
 
 	impulse_override_cancel ();

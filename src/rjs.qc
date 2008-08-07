@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.238 2008/08/05 23:58:29 slotzero Exp $
+/*  $Id: rjs.qc,v 1.239 2008/08/07 02:07:20 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1440,8 +1440,25 @@ common_impulses =
 		change_map ();
 
 	// requires runequake engine
-	else if (self.impulse >= MAP_IMPULSE_MIN && self.impulse <= MAP_IMPULSE_MAX)
+	else if (self.impulse >= IMP_LEVEL_MIN && self.impulse <= IMP_LEVEL_MAX)
+	{
+		self.impulse = self.impulse - IMP_LEVEL_MIN;
 		admin_impulse_map ();
+	}
+
+	// requires runequake engine
+	else if (self.impulse >= IMP_VOTE_MIN && self.impulse <= IMP_VOTE_MAX)
+	{
+		self.impulse = self.impulse - IMP_VOTE_MIN;
+		vote_impulse_commands ();
+	}
+
+	// requires runequake engine
+	else if (self.impulse >= IMP_ADMIN_MIN && self.impulse <= IMP_ADMIN_MAX)
+	{
+		self.impulse = self.impulse - IMP_ADMIN_MIN;
+		admin_impulse_commands ();
+	}
 
 	else if (self.impulse == IMP_QUIET_TOGGLE)
 	{

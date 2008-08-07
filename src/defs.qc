@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.217 2008/07/10 08:58:32 slotzero Exp $
+/*  $Id: defs.qc,v 1.218 2008/08/07 02:07:20 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -569,6 +569,10 @@ float IMP_QSMACK_KICK_BASE	= 221;
 float IMP_QSMACK_KICK_COUNT	= 16;
 float IMP_QSMACK_COMMAND	= 237;
 
+// extended impulses for levels
+float IMP_LEVEL_MIN		= 300;
+float IMP_LEVEL_MAX		= 599;
+
 // admin impulse commands
 float IMP_ADMIN_KICK		= 1;
 float IMP_ADMIN_KILL		= 2;
@@ -589,6 +593,10 @@ float IMP_ADMIN_DISP_INFO_ALL	= 16;
 float IMP_ADMIN_BANLIST		= 17;
 float IMP_ADMIN_BANIP		= 18;
 float IMP_ADMIN_UNBANIP		= 19;
+
+// extended impulses for admin commands
+float IMP_ADMIN_MIN		= 600;
+float IMP_ADMIN_MAX		= 619;
 
 // vote impulse commands
 float IMP_VOTE_EXIT		= 1;
@@ -623,7 +631,10 @@ float IMP_VOTE_POWERUP_DROP	= 29;
 float IMP_VOTE_RUNE_DROP	= 30;
 float IMP_VOTE_LG_DISCHARGE	= 31;
 float IMP_VOTE_CLASSIC_MEGA	= 32;
-float MAX_IMP_VOTE		= 32;
+
+// extended impulses for votes
+float IMP_VOTE_MIN		= 700;
+float IMP_VOTE_MAX		= 732;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;

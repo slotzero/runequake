@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.117 2008/08/05 23:58:29 slotzero Exp $
+/*  $Id: bindings.qc,v 1.118 2008/08/07 02:07:20 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -103,13 +103,28 @@ player_admin_impulse_alias =
 {
 	local string s;
 
-	self_stuffcmd (self, "alias ");
-	self_stuffcmd (self, cmd);
-	self_stuffcmd (self, " \"");
-	self_stuffcmd (self, "ac;w5;w5;impulse ");
-	s = ftos (imp);
-	self_stuffcmd (self, s);
-	self_stuffcmd (self, ";w5\"\n");
+	if (MOD_PROTOCOL)
+	{
+		imp = imp + IMP_ADMIN_MIN;
+
+		self_stuffcmd (self, "alias ");
+		self_stuffcmd (self, cmd);
+		self_stuffcmd (self, " \"");
+		self_stuffcmd (self, "cmd impulse ");
+		s = ftos (imp);
+		self_stuffcmd (self, s);
+		self_stuffcmd (self, "\"\n");
+	}
+	else
+	{
+		self_stuffcmd (self, "alias ");
+		self_stuffcmd (self, cmd);
+		self_stuffcmd (self, " \"");
+		self_stuffcmd (self, "ac;w5;w5;impulse ");
+		s = ftos (imp);
+		self_stuffcmd (self, s);
+		self_stuffcmd (self, ";w5\"\n");
+	}
 };
 
 void (string cmd, float imp)
@@ -117,13 +132,28 @@ player_vote_impulse_alias =
 {
 	local string s;
 
-	self_stuffcmd (self, "alias ");
-	self_stuffcmd (self, cmd);
-	self_stuffcmd (self, " \"");
-	self_stuffcmd (self, "vc;w5;w5;impulse ");
-	s = ftos (imp);
-	self_stuffcmd (self, s);
-	self_stuffcmd (self, ";w5\"\n");
+	if (MOD_PROTOCOL)
+	{
+		imp = imp + IMP_VOTE_MIN;
+
+		self_stuffcmd (self, "alias ");
+		self_stuffcmd (self, cmd);
+		self_stuffcmd (self, " \"");
+		self_stuffcmd (self, "cmd impulse ");
+		s = ftos (imp);
+		self_stuffcmd (self, s);
+		self_stuffcmd (self, "\"\n");
+	}
+	else
+	{
+		self_stuffcmd (self, "alias ");
+		self_stuffcmd (self, cmd);
+		self_stuffcmd (self, " \"");
+		self_stuffcmd (self, "vc;w5;w5;impulse ");
+		s = ftos (imp);
+		self_stuffcmd (self, s);
+		self_stuffcmd (self, ";w5\"\n");
+	}
 };
 
 void ()
@@ -377,9 +407,6 @@ player_console_init_level_alias =
 {
 	local string s;
 
-	if (CMD_IMPULSES)
-		imp = imp + MAP_IMPULSE_MIN;
-
 	// Console
 	if (self == world)
 	{
@@ -395,21 +422,26 @@ player_console_init_level_alias =
 	// Player
 	else
 	{
-		self_stuffcmd (self, "alias ");
-		self_stuffcmd (self, level);
+		if (MOD_PROTOCOL)
+		{
+			imp = imp + IMP_LEVEL_MIN;
 
-		if (CMD_IMPULSES)
+			self_stuffcmd (self, "alias ");
+			self_stuffcmd (self, level);
 			self_stuffcmd (self, " \"cmd impulse ");
-		else
-			self_stuffcmd (self, " \"cl;w5;w5;impulse ");
-
-		s = ftos (imp);
-		self_stuffcmd (self, s);
-
-		if (CMD_IMPULSES)
+			s = ftos (imp);
+			self_stuffcmd (self, s);
 			self_stuffcmd (self, "\"\n");
+		}
 		else
+		{
+			self_stuffcmd (self, "alias ");
+			self_stuffcmd (self, level);
+			self_stuffcmd (self, " \"cl;w5;w5;impulse ");
+			s = ftos (imp);
+			self_stuffcmd (self, s);
 			self_stuffcmd (self, ";w5\"\n");
+		}
 	}
 };
 
