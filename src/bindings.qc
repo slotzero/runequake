@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.118 2008/08/07 02:07:20 slotzero Exp $
+/*  $Id: bindings.qc,v 1.119 2008/08/09 05:53:10 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -360,6 +360,7 @@ vote_aliases =
 	player_vote_impulse_alias ("arena",			IMP_VOTE_ARENA);	// CRMod (Style)
 	player_vote_impulse_alias ("faststart",			IMP_VOTE_FASTSTART);	// CRMod
 	player_vote_impulse_alias ("ffa",			IMP_VOTE_NORMAL);	// CRMod
+	player_vote_impulse_alias ("heads",			IMP_VOTE_HEADS);	// CRMod (Style)
 	player_vote_impulse_alias ("lock",			IMP_VOTE_LOCK);		// CRMod
 	player_vote_impulse_alias ("match",			IMP_VOTE_MATCH);	// CRMod
 	player_vote_impulse_alias ("midair",			IMP_VOTE_MIDAIR);	// CRMod (Style)
@@ -380,6 +381,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-classic-mega",		IMP_VOTE_CLASSIC_MEGA);
 	player_vote_impulse_alias ("vote-exit",			IMP_VOTE_EXIT);
 	player_vote_impulse_alias ("vote-free",			IMP_VOTE_FREE);
+	player_vote_impulse_alias ("vote-heads",		IMP_VOTE_HEADS);
 	player_vote_impulse_alias ("vote-hook",			IMP_VOTE_HOOK);
 	player_vote_impulse_alias ("vote-hook-damage",		IMP_VOTE_HOOK_DAMAGE);
 	player_vote_impulse_alias ("vote-lithium",		IMP_VOTE_LITHIUM);
@@ -541,6 +543,7 @@ console_aliases =
 	console_init_cvar_alias ("mode",		CVAR_C2,	C2_CURRENT_MODE);
 	console_init_cvar_alias ("weaponsstayon",	CVAR_C2,	C2_WEAPONSSTAYON);
 	console_init_cvar_alias ("weaponsstayoff",	CVAR_C2,	C2_WEAPONSSTAYOFF);
+	console_init_cvar_alias ("heads",		CVAR_C2,	C2_MODE_HEADS);
 
 	level_aliases ();
 	custom_aliases ();
@@ -1101,8 +1104,11 @@ check_console_command =
 			}
 		}
 
+		else if (i == C2_MODE_HEADS)
+			change_mode_to_heads ();
+
 		else
-			dprint ("Unknown command\n");
+			dprint_force ("Unknown command\n");
 
 		cvar_set_infokey (CVAR_C2, "0");
 	}

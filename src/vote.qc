@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.83 2008/08/07 02:07:20 slotzero Exp $
+/*  $Id: vote.qc,v 1.84 2008/08/09 05:53:10 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -28,12 +28,6 @@
 
 	// warnings
 	* make sure that you don't try to assign value to a world entity (!vip for example)!!!
-
-	// ideas
-	* maybe a new command, auto-vote to disable your LAST_VOTE_*
-	* auto-yes/auto-no to always vote yes or no whatever the vote.
-	* a command to toggle the amount of bprints (from 3 to 1).
-	* limit the number of votes per given time
 */
 
 void ()
@@ -548,8 +542,7 @@ vote =
 			self_sprint (self, "mode is locked\n");
 		else if (gamemode == MODE_PRACTICE)
 		{
-			if (!cancel)
-				self_sprint (self, "already in practice mode\n");
+			self_sprint (self, "already in practice mode\n");
 			cancel = 1;
 		}
 	}
@@ -565,8 +558,7 @@ vote =
 			self_sprint (self, "mode is locked\n");
 		else if (gamemode == MODE_NORMAL)
 		{
-			if (!cancel)
-				self_sprint (self, "already in normal mode\n");
+			self_sprint (self, "already in normal mode\n");
 			cancel = 1;
 		}
 	}
@@ -752,8 +744,7 @@ vote =
 			self_sprint (self, "mode is locked\n");
 		else if (gamemode == MODE_ARENA)
 		{
-			if (!cancel)
-				self_sprint (self, "already in arena mode\n");
+			self_sprint (self, "already in arena mode\n");
 			cancel = 1;
 		}
 	}
@@ -793,8 +784,7 @@ vote =
 			self_sprint (self, "mode is locked\n");
 		else if (gamemode == MODE_MATCH)
 		{
-			if (!cancel)
-				self_sprint (self, "already in match mode\n");
+			self_sprint (self, "already in match mode\n");
 			cancel = 1;
 		}
 	}
@@ -899,8 +889,7 @@ vote =
 			self_sprint (self, "mode is locked\n");
 		else if (gamemode == MODE_MIDAIR)
 		{
-			if (!cancel)
-				self_sprint (self, "already in midair mode\n");
+			self_sprint (self, "already in midair mode\n");
 			cancel = 1;
 		}
 	}
@@ -951,6 +940,22 @@ vote =
 			e.noise1	= "disable";
 		else
 			e.noise1	= "enable";
+	}
+	else if (self.impulse == IMP_VOTE_HEADS)
+	{
+		cancel		= options & MODE_LOCKED;
+		e.frag_rate	= 0.51;	// XXX
+		e.think1	= change_mode_to_heads;
+		e.noise1	= "change";
+		e.noise2	= " mode to head hunters";
+
+		if (cancel)
+			self_sprint (self, "mode is locked\n");
+		else if (gamemode == MODE_HEADS)
+		{
+			self_sprint (self, "already in head hunters mode\n");
+			cancel = 1;
+		}
 	}
 	else
 		cancel = -1;

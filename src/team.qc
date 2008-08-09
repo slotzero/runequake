@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.84 2008/07/10 07:53:25 slotzero Exp $
+/*  $Id: team.qc,v 1.85 2008/08/09 05:53:10 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -821,9 +821,31 @@ current_gamemode =
 	if (mode == MODE_MIDAIR)
 		return "midair";
 
+	if (mode == MODE_HEADS)
+		return "heads";
+
 	return "invalid gamemode";
 };
 
+// XXX Merge change_mode_to functions?
+
+void ()
+change_mode_to_heads =
+{
+	local string s;
+
+	if (gamemode == MODE_HEADS)
+	{
+		self_sprint (self, "Already in head hunters mode\n");
+		return;
+	}
+
+	// head hunters uses same defaults as normal (for now)
+	normal_defaults ();
+	s = ftos (MODE_HEADS);
+	cvar_set_infokey (CVAR_C3, s);
+	admin_changelevel_now (mapname);
+};
 
 void ()
 change_mode_to_midair =

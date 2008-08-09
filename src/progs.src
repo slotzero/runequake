@@ -1,4 +1,4 @@
-// $Id: progs.src,v 1.26 2005/11/05 05:27:19 slotzero Exp $
+// $Id: progs.src,v 1.27 2008/08/09 05:53:10 slotzero Exp $
 
 PROGS_FILE
 
@@ -51,6 +51,7 @@ print.qc
 team.qc
 arena.qc
 match.qc
+heads.qc
 
 monsters.qc
 doors.qc
