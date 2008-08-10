@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.66 2006/08/27 00:15:40 slotzero Exp $
+/*  $Id: runes60.qc,v 1.67 2008/08/10 08:27:08 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -808,7 +808,6 @@ Rune_Betty =
 	nospam = 0;
 	if (gamemode == MODE_PRACTICE)
 		nospam = 3;
-
 	else if (self.ammo_rockets >= AMMO_BETTY)
 	{
 		self.ammo_rockets = self.ammo_rockets - AMMO_BETTY;
@@ -826,43 +825,36 @@ Rune_Betty =
 };
 
 void ()
-tornado_random_move =
+tornado_move =
 {
-	local float n;
-	local vector v;
+	local float rspeed;
 
-	self.velocity	= self.velocity * 0.2;
-	n		= ceil (100 + (random () * 300));
+	rspeed = 4 - (self.attack_finished - time);
+	rspeed = rspeed * rspeed;
 
-	v_x = rint (random () * 2) - 1;
-	v_y = rint (random () * 2) - 1;
+	self.runent.angles_y = self.runent.angles_y + (300 * sys_ticrate);
 
-	self.velocity = self.velocity + (v * n);
+	if (self.runent.angles_y > 360)
+		self.runent.angles_y = self.runent.angles_y - 360;
+
+	makevectors (self.runent.angles);
+
+	traceline (self.runent.origin, self.runent.origin + (v_forward * 7 * rspeed), 1, self.runent);
+	self.origin = trace_endpos - v_forward + ('0 0 6' * rspeed);
 };
 
 void ()
 tornado_pull =
 {
 	local entity e;
-	local vector org;
-	local float d, gDist, gPower, gPercent;
+	local float d, dist, percent;
 
-	gDist = 960;
+	dist = 960;
 
-	//This makes the wind build up speed from 1 to 512 very rapidly
-	gPower = self.runevar;
-
-	if (gPower >= 512 && time < self.attack_finished + 0.5)
-		gPower = 512;
+	if (self.runevar >= 512 && time < self.attack_finished + 0.5)
+		self.runevar = 512;
 	else
 		self.runevar = self.runevar * 2;
-
-	setorigin (self, self.origin + '0 0 2');
-
-	self.movetype = MOVETYPE_FLYMISSILE;
-	self.flags = self.flags - FL_ONGROUND;
-
-	tornado_random_move ();
 
 	if (time > self.attack_finished)
 	{
@@ -870,51 +862,50 @@ tornado_pull =
 			self.effects = self.effects - EF_BRIGHTLIGHT;
 
 		T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 40, world, "tornado");
+		remove (self.runent);
 		create_te_explosion (self.origin, 1);
 		return;
 	}
 
-	org = (self.absmin + self.absmax) * 0.5;
-	e = findradius (self.origin, gDist);
+	tornado_move ();
+
+	e = findradius (self.origin, dist);
 	while (e)
 	{
-		if (visible(e) && e.classname != "tornado"
-				&& e.movetype != MOVETYPE_NONE
-				&& e.movetype != MOVETYPE_PUSH
-				&& e.movetype != MOVETYPE_NOCLIP
-				&& !environmental (e)
-				&& e.health > 0
-				&& !(isfriend2 (self.owner, e) && self.owner != e))
+		if (visible (e))
 		{
-			d = vlen (e.origin - org);
-			if (e.flags & FL_ONGROUND)
+			if (!environmental (e))
 			{
-				// raise the object a bit
-				setorigin (e, e.origin + '0 0 1');
-				e.flags = e.flags - FL_ONGROUND;
-			}
-			// dprint(e.classname);
-			gPercent = 1 - (d / gDist);
-
-			// modify the velocity
-			// I added '0 0 10' to give it more lift (x y z, z being up and down)
-			e.velocity = e.velocity + '0 0 10' + normalize (self.origin - e.origin) * gPower * gPercent;
-
-			IN_POQ([-
-
-				if (teamplay & TEAM_TEAM_MASK)
+				if (!isfriend2 (self.owner, e) || self.owner == e)
 				{
-					local float particle_team;
+					if (e.movetype != MOVETYPE_NONE
+						&& e.movetype != MOVETYPE_PUSH
+						&& e.movetype != MOVETYPE_NOCLIP
+						&& e.health > 0)
+					{
+						d = vlen (e.origin - self.origin);
+						percent = 1 - (d / dist);
 
-					particle_team = team_to_particle (self.owner.team);
-					particle (e.origin + v_up * random () * 30, e.velocity, particle_team, 3);
+						e.velocity = e.velocity + '0 0 11' + normalize (self.origin - e.origin) * self.runevar * percent;
+						e.flags = e.flags - e.flags & FL_ONGROUND;
+
+						IN_POQ([-
+							// Fire those particles toward the tornado
+							if (teamplay & TEAM_TEAM_MASK)
+							{
+								local float particle_team;
+
+								particle_team = team_to_particle (self.owner.team);
+								particle (e.origin + v_up * random () * 30, e.velocity, particle_team, 3);
+							}
+							else
+								particle (e.origin + v_up * random () * 30, e.velocity, 96, 3);
+						-])
+					}
 				}
-				else
-				// Fire those particles toward the tornado
-				particle (e.origin + v_up * random () * 30, e.velocity, 96, 3);
-			-])
+			}
 		}
-			e = e.chain;
+		e = e.chain;
 	}
 	self.nextthink = time + sys_ticrate;
 };
@@ -937,12 +928,20 @@ tornado_touch =
 void ()
 tornado_explode =
 {
-	setmodel (self, "progs/w_spike.mdl");
-	self.attack_finished = time + 3 + random ();      // duration of tornado well
+	local entity e;
+
+	e		= spawn ();
+	e.classname	= "tornado_center";
+	self.runent	= e;
+
+	setorigin (e, self.origin + '0 0 1');
+
+	self.attack_finished = time + 3 + random ();
 	self.touch	= tornado_touch;
 	self.effects	= self.effects | EF_BRIGHTLIGHT;
 	self.think	= tornado_pull;
 	self.nextthink	= time + 0.1;
+
 	sound (self, CHAN_BODY, "boss1/out1.wav", 1, ATTN_NORM);
 };
 
@@ -970,33 +969,22 @@ Rune_Tornado =
 
  	self.runevector_x	= time + 1.5 + nospam;
 
-	// create a tornado object
-	tornado			= spawn();
+	tornado 		= spawn();
 	tornado.classname	= "tornado";
-
 	tornado.owner		= self;
 	tornado.solid		= SOLID_TRIGGER;
 	tornado.movetype	= MOVETYPE_TOSS;
-
-	// set it's placement and velocity
-
-	setorigin (tornado, self.origin + self.view_ofs);
-
-	tornado.velocity	= self.velocity * 0.5;
-
-	setmodel(tornado, "progs/w_spike.mdl");
-
-	// XXX get accurate sizing
-	setsize (tornado, VEC_ORIGIN, '32 32 32');
-
 	tornado.angles		= '90 0 0';
 	tornado.runevar		= 1;
+
+	setorigin (tornado, self.origin + self.view_ofs);
+	setmodel(tornado, "progs/w_spike.mdl");
+
 	tornado.think		= tornado_explode;
 	tornado.nextthink	= time + 2;
 
 	sound (self, CHAN_BODY, "doors/meduse.wav", 1, ATTN_NORM);
 
-	// Throw away from you
 	makevectors (self.angles);
-	tornado.velocity = (v_forward * (200 + random() * 100)) + (v_up * (200 + random() * 100));
+	tornado.velocity	= (v_forward * 250) + (v_up * 250);
 };
