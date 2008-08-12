@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.1 2008/08/09 05:53:10 slotzero Exp $
+/*  $Id: heads.qc,v 1.2 2008/08/12 06:34:02 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -28,15 +28,15 @@ void (vector spot) altar_create =
 	dprint ("altar_create\n");
 	local entity altar;
 
-	altar = spawn ();
+	altar		= spawn ();
 	setorigin (altar, spot);
-	altar.touch = altar_touch;
-	altar.movetype = MOVETYPE_TOSS;
-	altar.solid = SOLID_BBOX;
+	altar.touch	= altar_touch;
+	altar.movetype	= MOVETYPE_TOSS;
+	altar.solid	= SOLID_BBOX;
 	setsize (altar, '-8 -8 0', '8 8 8');
-	altar.nextthink = time;
-	altar.think = altar_spit;
-	altar.classname = "altar";
+	altar.nextthink	= time;
+	altar.think	= altar_spit;
+	altar.classname	= "altar";
 };
 
 // XXX Use a custom file for this using an x,y,z method via cvar so servers can move these without recompiling.

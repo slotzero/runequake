@@ -1,4 +1,4 @@
-/*  $Id: player.qc,v 1.23 2008/07/05 03:37:29 slotzero Exp $
+/*  $Id: player.qc,v 1.24 2008/08/12 06:34:02 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -654,7 +654,7 @@ PlayerDie =
 			self.health = -41;
 	}
 
-	if (self.health < -40)
+	if (self.health < -40 || gamemode == MODE_HEADS)
 	{
 		GibPlayer ();
 		return;
