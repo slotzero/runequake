@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.67 2008/08/10 08:27:08 slotzero Exp $
+/*  $Id: runes60.qc,v 1.68 2008/08/12 06:11:03 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -926,7 +926,7 @@ tornado_touch =
 };
 
 void ()
-tornado_explode =
+tornado_spawn =
 {
 	local entity e;
 
@@ -980,7 +980,7 @@ Rune_Tornado =
 	setorigin (tornado, self.origin + self.view_ofs);
 	setmodel(tornado, "progs/w_spike.mdl");
 
-	tornado.think		= tornado_explode;
+	tornado.think		= tornado_spawn;
 	tornado.nextthink	= time + 2;
 
 	sound (self, CHAN_BODY, "doors/meduse.wav", 1, ATTN_NORM);
