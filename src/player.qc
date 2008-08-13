@@ -1,4 +1,4 @@
-/*  $Id: player.qc,v 1.24 2008/08/12 06:34:02 slotzero Exp $
+/*  $Id: player.qc,v 1.25 2008/08/13 03:56:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -529,6 +529,12 @@ ThrowGib =
 void (string gibname, float dm)
 ThrowHead =
 {
+	if (gamemode == MODE_HEADS)
+	{
+		head_throw (gibname, dm);
+		return;
+	}
+
 	setmodel (self, gibname);
 	self.frame	= 0;
 	self.nextthink	= -1;
