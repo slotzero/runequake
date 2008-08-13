@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.2 2008/08/12 06:34:02 slotzero Exp $
+/*  $Id: heads.qc,v 1.3 2008/08/13 06:39:04 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -17,9 +17,33 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
+.float	num_heads;
+.entity	head_chain;
+
 void () altar_touch =
 {
-	dprint ("altar_touch\n");
+	if (other.classname != "player")
+		return;
+
+	if (other.num_heads)
+	{
+		if (other.num_heads > 1)
+		{
+			bprint (other.netname);
+			bprint (" scores multiple heads\n");
+		}
+		else
+		{
+			bprint (other.netname);
+			bprint (" brings ");
+			bprint (other.head_chain.owner.netname);
+			bprint ("'s head to the altar\n");
+		}
+		add_frag (other, (0.5 * (other.num_heads - 1) * other.num_heads) + other.num_heads);
+		other.num_heads = 0;
+
+
+	}
 	misc_touch ();
 };
 
@@ -290,4 +314,66 @@ altar_place =
 		// warning: fix this
 		altar_create (self.origin);
 	}
+};
+
+void ()
+head_touch =
+{
+	if (other.classname != "player")
+		return;
+
+	self.touch = SUB_Null;
+
+	// bprint messages call
+	bprint (other.netname);
+	bprint (" picks up ");
+	bprint (self.owner.netname);
+	bprint ("'s head\n");
+
+	other.num_heads = other.num_heads + 1;
+	if (other.head_chain)
+	{
+		self.head_chain = other.head_chain;
+		other.head_chain = self;
+	}
+	else
+		other.head_chain = self;
+
+	setmodel (self, string_null);
+};
+
+void (string gibname, float dm)
+head_throw =
+{
+	local entity head;
+
+	head		= spawn ();
+	head.classname	= "thrown_head";
+
+	setmodel (head, gibname);
+	setorigin (head, self.origin);
+
+	head.owner	= self;
+	head.movetype	= MOVETYPE_BOUNCE;
+	head.takedamage	= DAMAGE_NO;
+	head.solid	= SOLID_TRIGGER;
+	head.view_ofs	= '0 0 8';
+	setsize (head, '-16 -16 0', '0 0 8');
+	head.velocity	= VelocityForDamage (dm);
+	head.origin_z	= head.origin_z - 24;
+	head.flags	= head.flags - self.flags & FL_ONGROUND;
+	head.avelocity	= crandom () * '0 600 0';
+	head.touch	= head_touch;
+
+	setmodel (self, "progs/spike.mdl");
+	self.movetarget	= head;
+	self.frame	= 0;
+	self.nextthink	= -1;
+	self.movetype	= MOVETYPE_BOUNCE;
+	self.takedamage	= DAMAGE_NO;
+	self.solid	= SOLID_NOT;
+	self.view_ofs	= '0 0 8';
+	setsize (self, '-16 -16 0', '16 16 56');
+	self.origin_z	= self.origin_z - 24;
+	self.flags	= self.flags - self.flags & FL_ONGROUND;
 };

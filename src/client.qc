@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.146 2008/07/04 04:27:56 slotzero Exp $
+/*  $Id: client.qc,v 1.147 2008/08/13 06:39:04 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -547,6 +547,9 @@ trigger_changelevel =
 void ()
 respawn =
 {
+	if (gamemode == MODE_HEADS)
+		self.movetarget = world;
+
 	//RUNE SERV: remove color shifts
 	stuffcmd (self, CSHIFT_NONE);
 	//RUNE SERV: Phoenix rune
@@ -931,6 +934,8 @@ The normal starting point for a level.
 void ()
 info_player_start =
 {
+	if (gamemode == MODE_HEADS)
+		altar_place ();
 };
 
 /*QUAKED info_player_start2 (1 0 0) (-16 -16 -24) (16 16 24)
@@ -1124,6 +1129,14 @@ PlayerDeathThink =
 	{
 		arena_death_think ();
 		return;
+	}
+	else if (gamemode == MODE_HEADS)
+	{
+		if (self.movetarget)
+		{
+			setorigin (self, self.movetarget.origin);
+			self.angles = self.movetarget.angles;
+		}
 	}
 
 	IN_QW([-
