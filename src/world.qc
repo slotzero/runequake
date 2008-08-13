@@ -1,4 +1,4 @@
-/*  $Id: world.qc,v 1.84 2008/07/04 07:40:54 slotzero Exp $
+/*  $Id: world.qc,v 1.85 2008/08/13 03:54:59 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -88,6 +88,9 @@ InitBodyQue =
 void (entity ent)
 CopyToBodyQue =
 {
+	if (gamemode == MODE_HEADS)
+		return;
+
 	bodyque_head.angles	= ent.angles;
 	bodyque_head.model	= ent.model;
 	bodyque_head.modelindex	= ent.modelindex;
