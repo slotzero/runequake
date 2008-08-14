@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.4 2008/08/14 05:07:49 slotzero Exp $
+/*  $Id: heads.qc,v 1.5 2008/08/14 07:38:23 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -28,14 +28,41 @@ bprint_head_owner =
 		bprint ("somebody");
 };
 
+void ()
+head_think =
+{
+	if (pointcontents (self.origin) == CONTENT_SOLID)
+	{
+		dprint ("debug: head fell out of level\n");
+		remove (self);
+		return;
+	}
+
+	if (self.dropdelay < time)
+	{
+		dprint ("debug: head timed out\n");
+		remove (self);
+	}
+
+	self.nextthink = time + 1;
+};
+
 void () altar_touch =
 {
+	local entity e_chain;
+	local float heads;
+
 	if (other.classname != "player")
 		return;
 
-	if (other.num_heads)
+	heads		 = other.num_heads;
+	e_chain		 = other.head_chain;
+	other.num_heads	 = 0;
+	other.head_chain = world;
+
+	if (heads)
 	{
-		if (other.num_heads > 1)
+		if (heads > 1)
 		{
 			bprint (other.netname);
 			bprint (" scores multiple heads\n");
@@ -44,13 +71,34 @@ void () altar_touch =
 		{
 			bprint (other.netname);
 			bprint (" brings ");
-			bprint_head_owner (other.head_chain);
+			bprint_head_owner (e_chain);
 			bprint ("'s head to the altar\n");
 		}
-		add_frag (other, (0.5 * (other.num_heads - 1) * other.num_heads) + other.num_heads);
-		other.num_heads = 0;
 
+		add_frag (other, (0.5 * (heads - 1) * heads) + heads);
 
+		while (heads > 0)
+		{
+			if (e_chain.classname == "thrown_head")
+			{
+				e_chain.nextthink	= time;
+				e_chain.think		= head_think;
+				e_chain.dropdelay	= time + 10;
+				e_chain.movetype	= MOVETYPE_BOUNCE;
+				e_chain.takedamage	= DAMAGE_NO;
+				e_chain.solid		= SOLID_TRIGGER;
+				e_chain.flags		= e_chain.flags - e_chain.flags & FL_ONGROUND;
+
+				// do this from head_think?
+				if (e_chain.owner.movetarget)
+				{
+					e_chain.owner.movetarget = world;
+					setmodel (e_chain.owner, string_null);
+				}
+			}
+			e_chain = e_chain.head_chain;
+			heads = heads - 1;
+		}
 	}
 	misc_touch ();
 };
@@ -70,7 +118,8 @@ altar_spit =
 	self.nextthink	= time + 0.1;
 };
 
-void (vector spot) altar_create =
+void (vector spot)
+altar_create =
 {
 	local entity altar;
 
@@ -102,6 +151,7 @@ head_touch =
 	self.solid	= SOLID_NOT;
 	self.velocity	= VEC_ORIGIN;
 	self.avelocity	= VEC_ORIGIN;
+	self.nextthink	= -1;
 
 	// bprint messages call
 	bprint (other.netname);
@@ -143,6 +193,9 @@ head_throw =
 	head.flags	= head.flags - self.flags & FL_ONGROUND;
 	head.avelocity	= crandom () * '0 600 0';
 	head.touch	= head_touch;
+	head.nextthink	= time;
+	head.think	= head_think;
+	head.dropdelay	= time + 120; // head timeout
 
 	setmodel (self, "progs/spike.mdl");
 	self.movetarget	= head;
@@ -165,10 +218,13 @@ head_drop =
 	local entity e_chain;
 	local float heads;
 
-	if (self.num_heads)
+	e_chain		= self.head_chain;
+	heads		= self.num_heads;
+	self.num_heads	= 0;
+	self.head_chain	= world;
+
+	if (heads)
 	{
-		e_chain = self.head_chain;
-		heads = self.num_heads;
 		if (heads == 1)
 		{
 			bprint_head_owner (e_chain);
@@ -187,8 +243,9 @@ head_drop =
 		{
 			if (e_chain.classname == "thrown_head")
 			{
-				//e_chain.nextthink = time + 20;
-				//e_chain.think = head_think;
+				e_chain.nextthink	= time;
+				e_chain.think		= head_think;
+				e_chain.dropdelay	= time + 120; // make global, move to settings.qc
 				e_chain.touch		= head_touch;
 				e_chain.velocity	= VEC_ORIGIN;
 				e_chain.velocity	= VelocityForDamage (-100);
@@ -198,13 +255,11 @@ head_drop =
 				e_chain.takedamage	= DAMAGE_NO;
 				e_chain.solid		= SOLID_TRIGGER;
 
-				setorigin (e_chain, self.origin); // ??
+				setorigin (e_chain, self.origin);
 			}
 			e_chain = e_chain.head_chain;
 			heads = heads - 1;
 		}
-		self.num_heads = 0;
-		self.head_chain = world;
 	}
 };
 
@@ -215,7 +270,7 @@ head_carry =
 	local vector e_org, e_drag;
 	local float heads;
 
-	if (self.num_heads > 0)
+	if (self.num_heads)
 	{
 		makevectors (self.angles);
 		e_org		= self.origin - (v_right * 16);
@@ -224,7 +279,6 @@ head_carry =
 
 		while (heads > 0)
 		{
-			// move this to its own function?
 			if (e_chain.owner)
 			{
 				if (!e_chain.owner.cl[CL_ACTIVE])

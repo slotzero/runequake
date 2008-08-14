@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.148 2008/08/14 04:24:33 slotzero Exp $
+/*  $Id: client.qc,v 1.149 2008/08/14 07:38:23 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1134,6 +1134,7 @@ PlayerDeathThink =
 	{
 		if (self.movetarget)
 		{
+			self.flags = self.flags | FL_ONGROUND;
 			setorigin (self, self.movetarget.origin);
 			self.angles = self.movetarget.angles;
 		}
