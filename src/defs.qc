@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.219 2008/08/09 05:53:10 slotzero Exp $
+/*  $Id: defs.qc,v 1.220 2008/08/14 02:28:39 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1626,3 +1626,6 @@ float	UPDATE_CLIENT_PINGS;
 .float	killed;
 
 .float	last_vote;
+
+.float	num_heads;
+.entity	head_chain;
