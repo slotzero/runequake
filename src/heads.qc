@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.3 2008/08/13 06:39:04 slotzero Exp $
+/*  $Id: heads.qc,v 1.4 2008/08/14 05:07:49 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -17,8 +17,16 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-.float	num_heads;
-.entity	head_chain;
+// XXX This function needs some clarification with respect to the argument "head", that is
+// what do you submit, the head or the head.owner?
+void (entity head)
+bprint_head_owner =
+{
+	if (head.owner.classname == "player" && head.owner.netname != string_null)
+		bprint (head.owner.netname);
+	else
+		bprint ("somebody");
+};
 
 void () altar_touch =
 {
@@ -36,7 +44,7 @@ void () altar_touch =
 		{
 			bprint (other.netname);
 			bprint (" brings ");
-			bprint (other.head_chain.owner.netname);
+			bprint_head_owner (other.head_chain);
 			bprint ("'s head to the altar\n");
 		}
 		add_frag (other, (0.5 * (other.num_heads - 1) * other.num_heads) + other.num_heads);
@@ -47,9 +55,23 @@ void () altar_touch =
 	misc_touch ();
 };
 
+// XXX Don't forget to fix QW!
+void ()
+altar_spit =
+{
+	local float color;
+
+	color		= random () * 255;
+
+	IN_POQ([-
+		particle (self.origin, '0 0 1000', color, 100);
+	-])
+
+	self.nextthink	= time + 0.1;
+};
+
 void (vector spot) altar_create =
 {
-	dprint ("altar_create\n");
 	local entity altar;
 
 	altar		= spawn ();
@@ -61,6 +83,167 @@ void (vector spot) altar_create =
 	altar.nextthink	= time;
 	altar.think	= altar_spit;
 	altar.classname	= "altar";
+};
+
+void ()
+head_client_disconnect =
+{
+	head_drop ();
+};
+
+void ()
+head_touch =
+{
+	if (other.classname != "player")
+		return;
+
+	self.touch	= SUB_Null;
+	self.movetype	= MOVETYPE_NONE;
+	self.solid	= SOLID_NOT;
+	self.velocity	= VEC_ORIGIN;
+	self.avelocity	= VEC_ORIGIN;
+
+	// bprint messages call
+	bprint (other.netname);
+	bprint (" picks up ");
+	bprint_head_owner (self);
+	bprint ("'s head\n");
+
+	other.num_heads = other.num_heads + 1;
+	if (other.head_chain)
+	{
+		self.head_chain = other.head_chain;
+		other.head_chain = self;
+	}
+	else
+		other.head_chain = self;
+};
+
+void (string gibname, float dm)
+head_throw =
+{
+	local entity head;
+
+	head_drop ();
+
+	head		= spawn ();
+	head.classname	= "thrown_head";
+
+	setmodel (head, gibname);
+	setorigin (head, self.origin);
+
+	head.owner	= self;
+	head.movetype	= MOVETYPE_BOUNCE;
+	head.takedamage	= DAMAGE_NO;
+	head.solid	= SOLID_TRIGGER;
+	head.view_ofs	= '0 0 8';
+	setsize (head, '-16 -16 0', '0 0 8');
+	head.velocity	= VelocityForDamage (dm - 140);
+	head.origin_z	= head.origin_z - 24;
+	head.flags	= head.flags - self.flags & FL_ONGROUND;
+	head.avelocity	= crandom () * '0 600 0';
+	head.touch	= head_touch;
+
+	setmodel (self, "progs/spike.mdl");
+	self.movetarget	= head;
+	self.num_heads	= 0; // only do this here?
+	self.frame	= 0;
+	self.nextthink	= -1;
+	self.movetype	= MOVETYPE_BOUNCE;
+	self.takedamage	= DAMAGE_NO;
+	self.solid	= SOLID_NOT;
+	self.view_ofs	= '0 0 8';
+	setsize (self, '-16 -16 0', '16 16 56');
+	self.origin_z	= self.origin_z - 24;
+	self.flags	= self.flags - self.flags & FL_ONGROUND;
+	//self.effects	= self.effects | EF_MAYBE_DRAW;
+};
+
+void ()
+head_drop =
+{
+	local entity e_chain;
+	local float heads;
+
+	if (self.num_heads)
+	{
+		e_chain = self.head_chain;
+		heads = self.num_heads;
+		if (heads == 1)
+		{
+			bprint_head_owner (e_chain);
+			bprint ("'s head is fumbled!\n");
+		}
+		else if (heads == 2)
+			bprint ("Two heads are dropped!\n");
+
+		else if (heads < 5)
+			bprint ("Many heads fly free!\n");
+
+		else
+			bprint ("It's a sea of heads!!!\n");
+
+		while (heads > 0)
+		{
+			if (e_chain.classname == "thrown_head")
+			{
+				//e_chain.nextthink = time + 20;
+				//e_chain.think = head_think;
+				e_chain.touch		= head_touch;
+				e_chain.velocity	= VEC_ORIGIN;
+				e_chain.velocity	= VelocityForDamage (-100);
+				e_chain.flags		= e_chain.flags - e_chain.flags & FL_ONGROUND;
+				e_chain.avelocity	= crandom () * '0 600 0';
+				e_chain.movetype	= MOVETYPE_BOUNCE;
+				e_chain.takedamage	= DAMAGE_NO;
+				e_chain.solid		= SOLID_TRIGGER;
+
+				setorigin (e_chain, self.origin); // ??
+			}
+			e_chain = e_chain.head_chain;
+			heads = heads - 1;
+		}
+		self.num_heads = 0;
+		self.head_chain = world;
+	}
+};
+
+void ()
+head_carry =
+{
+	local entity e_chain;
+	local vector e_org, e_drag;
+	local float heads;
+
+	if (self.num_heads > 0)
+	{
+		makevectors (self.angles);
+		e_org		= self.origin - (v_right * 16);
+		e_chain		= self.head_chain;
+		heads		= self.num_heads;
+
+		while (heads > 0)
+		{
+			// move this to its own function?
+			if (e_chain.owner)
+			{
+				if (!e_chain.owner.cl[CL_ACTIVE])
+					e_chain.owner = world;
+			}
+
+			setorigin (e_chain, e_org + e_drag);
+			e_org		= e_chain.origin;
+			e_chain		= e_chain.head_chain;
+			heads		= heads - 1;
+
+			if (heads > 0)
+			{
+				e_drag = e_org - e_chain.origin + e_chain.velocity + '0 0 2';
+				e_drag = normalize (e_drag);
+				e_drag = e_drag * -10;
+			}
+		}
+	}
 };
 
 // XXX Use a custom file for this using an x,y,z method via cvar so servers can move these without recompiling.
@@ -311,69 +494,7 @@ altar_place =
 	}
 	else
 	{
-		// warning: fix this
+		// XXX fix this
 		altar_create (self.origin);
 	}
-};
-
-void ()
-head_touch =
-{
-	if (other.classname != "player")
-		return;
-
-	self.touch = SUB_Null;
-
-	// bprint messages call
-	bprint (other.netname);
-	bprint (" picks up ");
-	bprint (self.owner.netname);
-	bprint ("'s head\n");
-
-	other.num_heads = other.num_heads + 1;
-	if (other.head_chain)
-	{
-		self.head_chain = other.head_chain;
-		other.head_chain = self;
-	}
-	else
-		other.head_chain = self;
-
-	setmodel (self, string_null);
-};
-
-void (string gibname, float dm)
-head_throw =
-{
-	local entity head;
-
-	head		= spawn ();
-	head.classname	= "thrown_head";
-
-	setmodel (head, gibname);
-	setorigin (head, self.origin);
-
-	head.owner	= self;
-	head.movetype	= MOVETYPE_BOUNCE;
-	head.takedamage	= DAMAGE_NO;
-	head.solid	= SOLID_TRIGGER;
-	head.view_ofs	= '0 0 8';
-	setsize (head, '-16 -16 0', '0 0 8');
-	head.velocity	= VelocityForDamage (dm);
-	head.origin_z	= head.origin_z - 24;
-	head.flags	= head.flags - self.flags & FL_ONGROUND;
-	head.avelocity	= crandom () * '0 600 0';
-	head.touch	= head_touch;
-
-	setmodel (self, "progs/spike.mdl");
-	self.movetarget	= head;
-	self.frame	= 0;
-	self.nextthink	= -1;
-	self.movetype	= MOVETYPE_BOUNCE;
-	self.takedamage	= DAMAGE_NO;
-	self.solid	= SOLID_NOT;
-	self.view_ofs	= '0 0 8';
-	setsize (self, '-16 -16 0', '16 16 56');
-	self.origin_z	= self.origin_z - 24;
-	self.flags	= self.flags - self.flags & FL_ONGROUND;
 };
