@@ -1,4 +1,4 @@
-/*  $Id: develop.qc,v 1.116 2007/10/17 18:34:51 slotzero Exp $
+/*  $Id: develop.qc,v 1.117 2008/08/14 04:55:18 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -71,20 +71,6 @@ maxplayers =
 		e = nextent (e);
 	}
 	return 16;
-};
-
-void ()
-altar_spit =
-{
-	local float color;
-
-	color		= random () * 255;
-
-	IN_POQ([-
-		particle (self.origin, '0 0 1000', color, 100);
-	-])
-
-	self.nextthink	= time + 0.1;
 };
 
 void (vector spot)
