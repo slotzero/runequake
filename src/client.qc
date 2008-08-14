@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.147 2008/08/13 06:39:04 slotzero Exp $
+/*  $Id: client.qc,v 1.148 2008/08/14 04:24:33 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1924,6 +1924,9 @@ PlayerPostThink =
 
 	CheckPowerups ();
 
+	if (gamemode == MODE_HEADS)
+		head_carry ();
+
 	if (self.runetype)
 		Rune_PostThink ();
 
@@ -2039,6 +2042,8 @@ ClientDisconnect =
 		match_client_disconnect ();
 	else if (gamemode & MODE_ARENA)
 		arena_client_disconnect ();
+	else if (gamemode == MODE_HEADS)
+		head_client_disconnect ();
 
 	i = !self.cl[CL_ACTIVE] / %1;
 
