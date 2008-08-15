@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.6 2008/08/15 07:15:46 slotzero Exp $
+/*  $Id: heads.qc,v 1.7 2008/08/15 09:59:25 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -17,32 +17,31 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
+/*
+
+HEAD DEVELOPMENT:
+
+	* quakenbake found himself 1/2 way in the floor
+	* head count still not reset, put in PCIS / Resurrect!
+	* phoenix not working properly
+	* evaluate the dead head carry code, will this cause problems?
+	* investigate pickup sound, maybe chan_auto not good
+	* client disconnect on intermission drops heads
+	* remember to lose owner during client disconnect
+	* head tilt (self.health)
+
+*/
+
 void ()
-head_think =
-{
-	if (pointcontents (self.origin) == CONTENT_SOLID)
-	{
-		dprint ("debug: head fell out of level\n");
-		remove (self);
-		return;
-	}
-
-	if (self.dropdelay < time)
-	{
-		dprint ("debug: head timed out\n");
-		remove (self);
-	}
-
-	self.nextthink = time + 1;
-};
-
-void () altar_touch =
+altar_touch =
 {
 	local entity e_chain;
 	local float heads;
 
 	if (other.classname != "player")
 		return;
+
+	misc_touch ();
 
 	if (!other.num_heads)
 		return;
@@ -78,8 +77,6 @@ void () altar_touch =
 		e_chain = e_chain.head_chain;
 		heads = heads - 1;
 	}
-
-	misc_touch ();
 };
 
 // XXX Don't forget to fix QW!
@@ -120,6 +117,25 @@ head_client_disconnect =
 };
 
 void ()
+head_think =
+{
+	if (pointcontents (self.origin) == CONTENT_SOLID)
+	{
+		dprint ("debug: head fell out of level\n");
+		remove (self);
+		return;
+	}
+
+	if (self.dropdelay < time)
+	{
+		dprint ("debug: head timed out\n");
+		remove (self);
+	}
+
+	self.nextthink = time + 1;
+};
+
+void ()
 head_touch =
 {
 	if (other.classname != "player")
@@ -132,11 +148,6 @@ head_touch =
 	self.avelocity	= VEC_ORIGIN;
 	self.nextthink	= -1;
 
-	bprint_head_touch ();
-
-	// head pick-up sound, move to settings?
-	sound (self, CHAN_AUTO, "player/pain1.wav", 1, ATTN_NONE);
-
 	other.num_heads = other.num_heads + 1;
 	if (other.head_chain)
 	{
@@ -145,6 +156,11 @@ head_touch =
 	}
 	else
 		other.head_chain = self;
+
+	// head pick-up sound, move to settings?
+	sound (other, CHAN_AUTO, "player/pain1.wav", 1, ATTN_NONE);
+
+	bprint_head_touch ();
 };
 
 void (string gibname, float dm)
@@ -416,17 +432,26 @@ bprint_head_touch =
 
 	num = random ();
 	if (num < 0.2)
-		bprint (" skull.\n");
+		bprint (" skull.");
 	else if (num < 0.36)
-		bprint (" noggin.\n");
+		bprint (" noggin.");
 	else if (num < 0.5)
-		bprint (" brain.\n");
+		bprint (" brain.");
 	else if (num < 0.65)
-	 	bprint (" melon.\n");
+	 	bprint (" melon.");
 	else if (num < 0.8)
-		bprint (" cranium.\n");
+		bprint (" cranium.");
 	else
-		bprint (" head.\n");
+		bprint (" head.");
+
+	if (other.num_heads > 1)
+	{
+		bprint (" He has ");
+		bprint_float (other.num_heads);
+		bprint (".\n");
+	}
+	else
+		bprint ("\n");
 };
 
 // XXX Use a custom file for this using an x,y,z method via cvar so servers can move these without recompiling.
