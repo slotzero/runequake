@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.5 2008/08/14 07:38:23 slotzero Exp $
+/*  $Id: heads.qc,v 1.6 2008/08/15 07:15:46 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -16,17 +16,6 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
-
-// XXX This function needs some clarification with respect to the argument "head", that is
-// what do you submit, the head or the head.owner?
-void (entity head)
-bprint_head_owner =
-{
-	if (head.owner.classname == "player" && head.owner.netname != string_null)
-		bprint (head.owner.netname);
-	else
-		bprint ("somebody");
-};
 
 void ()
 head_think =
@@ -55,51 +44,41 @@ void () altar_touch =
 	if (other.classname != "player")
 		return;
 
+	if (!other.num_heads)
+		return;
+
+	bprint_altar_touch (other.num_heads);
+
 	heads		 = other.num_heads;
 	e_chain		 = other.head_chain;
 	other.num_heads	 = 0;
 	other.head_chain = world;
 
-	if (heads)
+	add_frag (other, (0.5 * (heads - 1) * heads) + heads);
+
+	while (heads > 0)
 	{
-		if (heads > 1)
+		if (e_chain.classname == "thrown_head")
 		{
-			bprint (other.netname);
-			bprint (" scores multiple heads\n");
-		}
-		else
-		{
-			bprint (other.netname);
-			bprint (" brings ");
-			bprint_head_owner (e_chain);
-			bprint ("'s head to the altar\n");
-		}
+			e_chain.nextthink	= time;
+			e_chain.think		= head_think;
+			e_chain.dropdelay	= time + 10;
+			e_chain.movetype	= MOVETYPE_BOUNCE;
+			e_chain.takedamage	= DAMAGE_NO;
+			e_chain.solid		= SOLID_TRIGGER;
+			e_chain.flags		= e_chain.flags - e_chain.flags & FL_ONGROUND;
 
-		add_frag (other, (0.5 * (heads - 1) * heads) + heads);
-
-		while (heads > 0)
-		{
-			if (e_chain.classname == "thrown_head")
+			// do this from head_think?
+			if (e_chain.owner.movetarget)
 			{
-				e_chain.nextthink	= time;
-				e_chain.think		= head_think;
-				e_chain.dropdelay	= time + 10;
-				e_chain.movetype	= MOVETYPE_BOUNCE;
-				e_chain.takedamage	= DAMAGE_NO;
-				e_chain.solid		= SOLID_TRIGGER;
-				e_chain.flags		= e_chain.flags - e_chain.flags & FL_ONGROUND;
-
-				// do this from head_think?
-				if (e_chain.owner.movetarget)
-				{
-					e_chain.owner.movetarget = world;
-					setmodel (e_chain.owner, string_null);
-				}
+				e_chain.owner.movetarget = world;
+				setmodel (e_chain.owner, string_null);
 			}
-			e_chain = e_chain.head_chain;
-			heads = heads - 1;
 		}
+		e_chain = e_chain.head_chain;
+		heads = heads - 1;
 	}
+
 	misc_touch ();
 };
 
@@ -153,11 +132,10 @@ head_touch =
 	self.avelocity	= VEC_ORIGIN;
 	self.nextthink	= -1;
 
-	// bprint messages call
-	bprint (other.netname);
-	bprint (" picks up ");
-	bprint_head_owner (self);
-	bprint ("'s head\n");
+	bprint_head_touch ();
+
+	// head pick-up sound, move to settings?
+	sound (self, CHAN_AUTO, "player/pain1.wav", 1, ATTN_NONE);
 
 	other.num_heads = other.num_heads + 1;
 	if (other.head_chain)
@@ -298,6 +276,157 @@ head_carry =
 			}
 		}
 	}
+};
+
+// XXX This function needs some clarification with respect to the argument "head", that is
+// what do you submit, the head or the head.owner?
+void (entity head)
+bprint_head_owner =
+{
+	if (head.owner.classname == "player" && head.owner.netname != string_null)
+		bprint (head.owner.netname);
+	else
+		bprint ("somebody");
+};
+
+void (float heads)
+bprint_altar_touch =
+{
+	local float num;
+
+	if (heads == 1)
+	{
+		if (self.owner == other)
+		{
+			bprint (other.netname);
+			bprint (" brought his own head to the altar.\n");
+		}
+		else
+		{
+			num = random ();
+			if (num < 0.2)
+			{
+				bprint (other.netname);
+				bprint (" presented ");
+				bprint_head_owner (other.head_chain);
+				bprint ("'s head at the altar!!\n");
+			}
+			else if (num < 0.4)
+			{
+				bprint (other.netname);
+				bprint (" donates ");
+				bprint_head_owner (other.head_chain);
+				bprint ("'s head to the gods!!\n");
+			}
+			else if (num < 0.6)
+			{
+				bprint_head_owner (other.head_chain);
+				bprint ("'s head gains favor for ");
+				bprint (other.netname);
+				bprint ("!!\n");
+			}
+			else if (num < 0.8)
+			{
+				bprint (other.netname);
+				bprint (" blesses the altar with ");
+				bprint_head_owner (other.head_chain);
+				bprint ("'s head!!\n");
+			}
+			else
+			{
+				bprint_head_owner (other.head_chain);
+				bprint ("'s head moves the gods.  Thanks ");
+				bprint (other.netname);
+				bprint ("!!\n");
+			}
+		}
+	}
+	else if (heads == 2)
+	{
+		bprint (other.netname);
+		bprint (" brought two heads to the altar!\n");
+	}
+	else
+	{
+		if (heads < 5)
+		{
+			bprint (other.netname);
+			bprint (" scores multiple heads!\n");
+		}
+		else
+		{
+			bprint (other.netname);
+			bprint (" hits the big time!!!\n");
+		}
+	}
+};
+
+void ()
+bprint_head_touch =
+{
+	local float num;
+
+	bprint (other.netname);
+	num = random ();
+	if (num < 0.1)
+		bprint (" picked up ");
+	else if (num < 0.2)
+		bprint (" grabbed ");
+	else if (num < 0.3)
+		bprint (" looted ");
+	else if (num < 0.4)
+		bprint (" latched onto ");
+	else if (num < 0.5)
+		bprint (" scooped up ");
+	else if (num < 0.6)
+		bprint (" found ");
+	else if (num < 0.7)
+		bprint (" took ");
+	else if (num < 0.8)
+		bprint (" came upon ");
+	else if (num < 0.9)
+		bprint (" was lucky to find ");
+	else
+		bprint (" plucked up ");
+
+	bprint_head_owner (self);
+	num = random ();
+	if (num < 0.1)
+		bprint ("'s worm infested");
+	else if (num < 0.2)
+		bprint ("'s bloody");
+	else if (num < 0.3)
+		bprint ("'s empty");
+	else if (num < 0.4)
+		bprint ("'s ugly");
+	else if (num < 0.5)
+		bprint ("'s putrid");
+	else if (num < 0.6)
+		bprint ("'s deformed");
+	else if (num < 0.7)
+		bprint ("'s bloated");
+	else if (num < 0.8)
+		bprint ("'s crusty");
+	else if (num < 0.9)
+		bprint ("'s slimey");
+	else if (num < 0.95)
+		bprint ("'s poor excuse for a");
+	else
+		bprint ("'s lifeless");
+
+	num = random ();
+	if (num < 0.2)
+		bprint (" skull.\n");
+	else if (num < 0.36)
+		bprint (" noggin.\n");
+	else if (num < 0.5)
+		bprint (" brain.\n");
+	else if (num < 0.65)
+	 	bprint (" melon.\n");
+	else if (num < 0.8)
+		bprint (" cranium.\n");
+	else
+		bprint (" head.\n");
 };
 
 // XXX Use a custom file for this using an x,y,z method via cvar so servers can move these without recompiling.

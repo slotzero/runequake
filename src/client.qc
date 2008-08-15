@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.149 2008/08/14 07:38:23 slotzero Exp $
+/*  $Id: client.qc,v 1.150 2008/08/15 07:15:45 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -2338,7 +2338,9 @@ ClientObituary =
 			return;
 		}
 
-		add_frag (attacker, 1);
+		if (gamemode != MODE_HEADS)
+			add_frag (attacker, 1);
+
 		attacker.enemy_kills = attacker.enemy_kills + 1; // killstats
 		targ.killed = targ.killed + 1; // killstats
 
