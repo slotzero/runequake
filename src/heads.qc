@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.7 2008/08/15 09:59:25 slotzero Exp $
+/*  $Id: heads.qc,v 1.8 2008/08/15 19:27:48 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -21,7 +21,7 @@
 
 HEAD DEVELOPMENT:
 
-	* quakenbake found himself 1/2 way in the floor
+	* quakenbake found himself 1/2 way in the floor, movetarget issue?
 	* head count still not reset, put in PCIS / Resurrect!
 	* phoenix not working properly
 	* evaluate the dead head carry code, will this cause problems?
@@ -29,7 +29,6 @@ HEAD DEVELOPMENT:
 	* client disconnect on intermission drops heads
 	* remember to lose owner during client disconnect
 	* head tilt (self.health)
-
 */
 
 void ()
@@ -119,10 +118,17 @@ head_client_disconnect =
 void ()
 head_think =
 {
+	local entity e;
+
 	if (pointcontents (self.origin) == CONTENT_SOLID)
 	{
-		dprint ("debug: head fell out of level\n");
-		remove (self);
+		dprint ("debug: head fell out of level, respawning\n");
+		e = SelectRuneSpawnPoint ();
+		self.velocity = VEC_ORIGIN;
+		setorigin (self, e.origin);
+		self.velocity	= VelocityForDamage (-150);
+		// put some code prevention that checks how many times head
+		// fell out of level and remove it if it exceeds.
 		return;
 	}
 
@@ -139,6 +145,9 @@ void ()
 head_touch =
 {
 	if (other.classname != "player")
+		return;
+
+	if (other.deadflag)
 		return;
 
 	self.touch	= SUB_Null;
@@ -312,7 +321,7 @@ bprint_altar_touch =
 
 	if (heads == 1)
 	{
-		if (self.owner == other)
+		if (other.head_chain.owner == other)
 		{
 			bprint (other.netname);
 			bprint (" brought his own head to the altar.\n");
