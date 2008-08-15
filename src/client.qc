@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.150 2008/08/15 07:15:45 slotzero Exp $
+/*  $Id: client.qc,v 1.151 2008/08/15 09:57:22 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1151,11 +1151,10 @@ PlayerDeathThink =
 		local float OLD_STYLE_PHOENIX = 1;
 	-])
 
-	// Warn phoenix users.
-
 	IN_QW([-
 		if (!OLD_STYLE_PHOENIX)
 	-])
+	// Warn phoenix users.
 	if (self.runetype == RN_PHOENIX)
 		centerprint (self, "\<\bwarning\b\>\nphoenix rune detected\nuse jump to respawn");
 
@@ -1192,8 +1191,7 @@ PlayerDeathThink =
 	-])
 	// Don't let phoenixes respawn until they come to a rest.
 	// Allows you to respawn if your corpse gets pushed outside the level.
-	if ((self.runetype == RN_PHOENIX && !self.flags & FL_ONGROUND)
-				&& pointcontents (self.origin) != CONTENT_SOLID)
+	if ((self.runetype == RN_PHOENIX && !self.flags & FL_ONGROUND) && pointcontents (self.origin) != CONTENT_SOLID)
 		return;
 
 	// wait for all buttons released
@@ -1206,9 +1204,7 @@ PlayerDeathThink =
 	}
 
 	// Prevent phoenix holders from firing.
-	if (self.runetype == RN_PHOENIX
-		IN_QW(&& !OLD_STYLE_PHOENIX)
-			)
+	if (self.runetype == RN_PHOENIX IN_QW(&& !OLD_STYLE_PHOENIX))
 	{
 		if (!self.button2 || self.aqflags & AQ_KICKED)
 			return;
@@ -1216,9 +1212,8 @@ PlayerDeathThink =
 	else
 	{
 		// wait for any button down
-		if ((!self.button2 && !self.button0)
-			|| self.aqflags & AQ_KICKED)
-		return;
+		if ((!self.button2 && !self.button0) || self.aqflags & AQ_KICKED)
+			return;
 	}
 
 	// self.button0 = 0;
