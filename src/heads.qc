@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.9 2008/08/16 08:55:47 slotzero Exp $
+/*  $Id: heads.qc,v 1.10 2008/08/16 09:03:20 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -132,7 +132,7 @@ head_think =
 	local entity e;
 
 	// forget owner
-	if (self.owner)
+	if (IN_POQ(self.owner,0))
 	{
 		if (!self.owner.cl[CL_ACTIVE])
 		self.owner = world;
@@ -313,7 +313,7 @@ head_carry =
 
 		while (heads > 0)
 		{
-			if (e_chain.owner)
+			if (IN_POQ(e_chain.owner,0))
 			{
 				if (!e_chain.owner.cl[CL_ACTIVE])
 					e_chain.owner = world;
