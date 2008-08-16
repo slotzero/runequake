@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.8 2008/08/15 19:27:48 slotzero Exp $
+/*  $Id: heads.qc,v 1.9 2008/08/16 08:55:47 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -21,14 +21,19 @@
 
 HEAD DEVELOPMENT:
 
+	* maybe draw head spike and head > value
+	* how to implement max heads?
+	* command to see how many heads,or use rune-tell?
 	* quakenbake found himself 1/2 way in the floor, movetarget issue?
-	* head count still not reset, put in PCIS / Resurrect!
 	* phoenix not working properly
 	* evaluate the dead head carry code, will this cause problems?
-	* investigate pickup sound, maybe chan_auto not good
-	* client disconnect on intermission drops heads
-	* remember to lose owner during client disconnect
-	* head tilt (self.health)
+	* investigate pickup/dropoff sound, maybe chan_auto not good?
+
+	[FIXED] remember to lose owner during client disconnect
+	[FIXED] head count still not reset, put in PCIS / Resurrect!
+	[FIXED] client disconnect on intermission drops heads
+	[FIXED] head tilt (self.health)
+	[FIXED] altar touch dropoff sound
 */
 
 void ()
@@ -44,6 +49,8 @@ altar_touch =
 
 	if (!other.num_heads)
 		return;
+
+	sound (other, CHAN_AUTO, "player/pain2.wav", 1, ATTN_NONE);
 
 	bprint_altar_touch (other.num_heads);
 
@@ -110,9 +117,13 @@ altar_create =
 };
 
 void ()
-head_client_disconnect =
+head_death_think =
 {
-	head_drop ();
+	if (self.movetarget)
+	{
+		setorigin (self, self.movetarget.origin);
+		self.angles = self.movetarget.angles;
+	}
 };
 
 void ()
@@ -120,21 +131,30 @@ head_think =
 {
 	local entity e;
 
+	// forget owner
+	if (self.owner)
+	{
+		if (!self.owner.cl[CL_ACTIVE])
+		self.owner = world;
+	}
+
+	// head fell out of level
 	if (pointcontents (self.origin) == CONTENT_SOLID)
 	{
 		dprint ("debug: head fell out of level, respawning\n");
-		e = SelectRuneSpawnPoint ();
-		self.velocity = VEC_ORIGIN;
+		e		= SelectRuneSpawnPoint ();
+		self.velocity	= VEC_ORIGIN;
 		setorigin (self, e.origin);
 		self.velocity	= VelocityForDamage (-150);
-		// put some code prevention that checks how many times head
-		// fell out of level and remove it if it exceeds.
 		return;
 	}
 
+	// head timed out
 	if (self.dropdelay < time)
 	{
 		dprint ("debug: head timed out\n");
+		if (self.owner.movetarget == self)
+			self.owner.movetarget = world;
 		remove (self);
 	}
 
@@ -149,6 +169,15 @@ head_touch =
 
 	if (other.deadflag)
 		return;
+
+	if (self.owner.movetarget == self)
+	{
+		if (self.owner.runetype == RN_PHOENIX)
+			return;
+
+		self.owner.health = 1;
+		self.owner.flags = self.owner.flags | FL_ONGROUND;
+	}
 
 	self.touch	= SUB_Null;
 	self.movetype	= MOVETYPE_NONE;
@@ -202,7 +231,6 @@ head_throw =
 
 	setmodel (self, "progs/spike.mdl");
 	self.movetarget	= head;
-	self.num_heads	= 0; // only do this here?
 	self.frame	= 0;
 	self.nextthink	= -1;
 	self.movetype	= MOVETYPE_BOUNCE;
@@ -225,6 +253,9 @@ head_drop =
 	heads		= self.num_heads;
 	self.num_heads	= 0;
 	self.head_chain	= world;
+
+	if (intermission_running)
+		return;
 
 	if (heads)
 	{
@@ -304,7 +335,7 @@ head_carry =
 };
 
 // XXX This function needs some clarification with respect to the argument "head", that is
-// what do you submit, the head or the head.owner?
+// what do you submit, the head or the head.owner? (currently it is head)
 void (entity head)
 bprint_head_owner =
 {

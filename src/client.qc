@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.151 2008/08/15 09:57:22 slotzero Exp $
+/*  $Id: client.qc,v 1.152 2008/08/16 08:55:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -749,6 +749,11 @@ PutClientInServer =
 	self.grenade_spam_time = 0;
 	self.afk = time;
 
+	// head hunters
+	self.num_heads = 0;
+	self.head_chain = world;
+	self.movetarget = world;
+
 	DecodeLevelParms ();
 
 	if (self.rqflags & RQ_LOW_BANDWIDTH_CLIENT)
@@ -1131,14 +1136,7 @@ PlayerDeathThink =
 		return;
 	}
 	else if (gamemode == MODE_HEADS)
-	{
-		if (self.movetarget)
-		{
-			self.flags = self.flags | FL_ONGROUND;
-			setorigin (self, self.movetarget.origin);
-			self.angles = self.movetarget.angles;
-		}
-	}
+		head_death_think ();
 
 	IN_QW([-
 		// XXX The phoenix rune allows you to respawn at odd locations.
@@ -2039,7 +2037,7 @@ ClientDisconnect =
 	else if (gamemode & MODE_ARENA)
 		arena_client_disconnect ();
 	else if (gamemode == MODE_HEADS)
-		head_client_disconnect ();
+		head_drop ();
 
 	i = !self.cl[CL_ACTIVE] / %1;
 

@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.65 2006/08/27 00:15:40 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.66 2008/08/16 08:55:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -1052,6 +1052,7 @@ SelectRuneSpawnPoint =
 			(runespawn.classname == "player"
 				|| runespawn.classname == "rune"
 				|| runespawn.classname == "hook"
+				|| runespawn.classname == "thrown_head"
 				|| runespawn.origin == VEC_ORIGIN))
 	{
 		runespawn = nextent (runespawn);
