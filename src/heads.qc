@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.10 2008/08/16 09:03:20 slotzero Exp $
+/*  $Id: heads.qc,v 1.11 2008/08/18 05:37:08 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -25,10 +25,10 @@ HEAD DEVELOPMENT:
 	* how to implement max heads?
 	* command to see how many heads,or use rune-tell?
 	* quakenbake found himself 1/2 way in the floor, movetarget issue?
-	* phoenix not working properly
 	* evaluate the dead head carry code, will this cause problems?
 	* investigate pickup/dropoff sound, maybe chan_auto not good?
 
+	[FIXED] phoenix not working properly
 	[FIXED] remember to lose owner during client disconnect
 	[FIXED] head count still not reset, put in PCIS / Resurrect!
 	[FIXED] client disconnect on intermission drops heads
@@ -67,10 +67,11 @@ altar_touch =
 		{
 			e_chain.nextthink	= time;
 			e_chain.think		= head_think;
-			e_chain.dropdelay	= time + 10;
+			e_chain.dropdelay	= time + 5;
 			e_chain.movetype	= MOVETYPE_BOUNCE;
 			e_chain.takedamage	= DAMAGE_NO;
 			e_chain.solid		= SOLID_TRIGGER;
+			e_chain.last_drop_delay	= 1;
 			e_chain.flags		= e_chain.flags - e_chain.flags & FL_ONGROUND;
 
 			// do this from head_think?
@@ -139,7 +140,7 @@ head_think =
 	}
 
 	// head fell out of level
-	if (pointcontents (self.origin) == CONTENT_SOLID)
+	if (pointcontents (self.origin) == CONTENT_SOLID && !self.last_drop_delay)
 	{
 		dprint ("debug: head fell out of level, respawning\n");
 		e		= SelectRuneSpawnPoint ();
@@ -445,30 +446,37 @@ bprint_head_touch =
 	else
 		bprint (" plucked up ");
 
-	bprint_head_owner (self);
+	if (self.owner == other)
+		bprint ("his own ");
+	else
+	{
+		bprint_head_owner (self);
+		bprint ("'s ");
+	}
+
 	num = random ();
 	if (num < 0.1)
-		bprint ("'s worm infested");
+		bprint ("worm infested");
 	else if (num < 0.2)
-		bprint ("'s bloody");
+		bprint ("bloody");
 	else if (num < 0.3)
-		bprint ("'s empty");
+		bprint ("empty");
 	else if (num < 0.4)
-		bprint ("'s ugly");
+		bprint ("ugly");
 	else if (num < 0.5)
-		bprint ("'s putrid");
+		bprint ("putrid");
 	else if (num < 0.6)
-		bprint ("'s deformed");
+		bprint ("deformed");
 	else if (num < 0.7)
-		bprint ("'s bloated");
+		bprint ("bloated");
 	else if (num < 0.8)
-		bprint ("'s crusty");
+		bprint ("crusty");
 	else if (num < 0.9)
-		bprint ("'s slimey");
+		bprint ("slimey");
 	else if (num < 0.95)
-		bprint ("'s poor excuse for a");
+		bprint ("poor excuse for a");
 	else
-		bprint ("'s lifeless");
+		bprint ("lifeless");
 
 	num = random ();
 	if (num < 0.2)

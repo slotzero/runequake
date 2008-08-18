@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.152 2008/08/16 08:55:47 slotzero Exp $
+/*  $Id: client.qc,v 1.153 2008/08/18 05:37:08 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1293,6 +1293,9 @@ WaterMove =
 		return;
 
 	if (self.health <= 0)
+		return;
+
+	if (self.deadflag)
 		return;
 
 	if (self.waterlevel)
