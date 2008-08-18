@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.239 2008/08/07 02:07:20 slotzero Exp $
+/*  $Id: rjs.qc,v 1.240 2008/08/18 06:26:46 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -426,6 +426,12 @@ set_gamemode =
 			change_mode_to_practice ();
 		else if (mapname != "dm6")
 			admin_changelevel_now ("dm6");
+	}
+	else if (scratch1 & S1_HEADS_DEFAULT)
+	{
+		normal_defaults ();
+		if (gamemode != MODE_HEADS)
+			change_mode_to_heads ();
 	}
 	else
 	{
