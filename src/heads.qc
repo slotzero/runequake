@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.11 2008/08/18 05:37:08 slotzero Exp $
+/*  $Id: heads.qc,v 1.12 2008/08/18 09:13:35 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -139,17 +139,6 @@ head_think =
 		self.owner = world;
 	}
 
-	// head fell out of level
-	if (pointcontents (self.origin) == CONTENT_SOLID && !self.last_drop_delay)
-	{
-		dprint ("debug: head fell out of level, respawning\n");
-		e		= SelectRuneSpawnPoint ();
-		self.velocity	= VEC_ORIGIN;
-		setorigin (self, e.origin);
-		self.velocity	= VelocityForDamage (-150);
-		return;
-	}
-
 	// head timed out
 	if (self.dropdelay < time)
 	{
@@ -157,6 +146,16 @@ head_think =
 		if (self.owner.movetarget == self)
 			self.owner.movetarget = world;
 		remove (self);
+	}
+
+	// head fell out of level
+	if ((pointcontents (self.origin) == CONTENT_SOLID || pointcontents (self.origin) == CONTENT_LAVA) && !self.last_drop_delay)
+	{
+		dprint ("debug: head fell out of level or is in lava, respawning\n");
+		e		= SelectRuneSpawnPoint ();
+		self.velocity	= VEC_ORIGIN;
+		setorigin (self, e.origin);
+		self.velocity	= VelocityForDamage (-150);
 	}
 
 	self.nextthink = time + 1;
