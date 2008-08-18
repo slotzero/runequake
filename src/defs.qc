@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.220 2008/08/14 02:28:39 slotzero Exp $
+/*  $Id: defs.qc,v 1.221 2008/08/18 06:23:45 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -845,6 +845,7 @@ float S1_NO_DEFAULT		= 1024; // temporary
 float S1_ARENA_DEFAULT		= 2048; // temporary
 float S1_PRACTICE_DEFAULT	= 4096; // temporary
 float S1_MATCH_DEFAULT		= 8192; // temporary
+float S1_HEADS_DEFAULT		= 16384;
 
 // vote flags
 float VOTE_YES			= 1;
