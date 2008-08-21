@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.12 2008/08/18 09:13:35 slotzero Exp $
+/*  $Id: heads.qc,v 1.13 2008/08/21 06:34:43 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -27,7 +27,11 @@ HEAD DEVELOPMENT:
 	* quakenbake found himself 1/2 way in the floor, movetarget issue?
 	* evaluate the dead head carry code, will this cause problems?
 	* investigate pickup/dropoff sound, maybe chan_auto not good?
+	* put head count in ammo count?
+	* should head spawn in phoenix?
+	* should heads live in slime?
 
+	[FIXED] switch rune switches heads
 	[FIXED] phoenix not working properly
 	[FIXED] remember to lose owner during client disconnect
 	[FIXED] head count still not reset, put in PCIS / Resurrect!

@@ -1,4 +1,4 @@
-/*  $Id: runes30.qc,v 1.43 2005/10/09 00:17:09 slotzero Exp $
+/*  $Id: runes30.qc,v 1.44 2008/08/21 06:34:43 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -327,12 +327,8 @@ Rune_Switch =
 
 	// Switch lithium hook
 	tempf = switch.aqflags & AQ_HOOK;
-	switch.aqflags = switch.aqflags
-			- switch.aqflags & AQ_HOOK
-			+ self.aqflags & AQ_HOOK;
-	self.aqflags = self.aqflags
-			- self.aqflags & AQ_HOOK
-			+ tempf;
+	switch.aqflags = switch.aqflags - switch.aqflags & AQ_HOOK + self.aqflags & AQ_HOOK;
+	self.aqflags = self.aqflags - self.aqflags & AQ_HOOK + tempf;
 
 	// Switch ammo
 	tempf = switch.ammo_shells;
@@ -365,13 +361,21 @@ Rune_Switch =
 	set_armor_items_e (self);
 	set_armor_items_e (switch);
 
+	// Switch head count
+	tempf = switch.num_heads;
+	switch.num_heads = self.num_heads;
+	self.num_heads = tempf;
+
+	// Switch head entities
+	tempe = switch.head_chain;
+	switch.head_chain = self.head_chain;
+	self.head_chain = tempe;
+
 	// Take dim light from both, if they still have
 	// the powerup they'll get it right back from
 	// CheckPowerups().
-	self.effects = self.effects
-			- self.effects & EF_DIMLIGHT;
-	switch.effects = switch.effects
-			- switch.effects & EF_DIMLIGHT;
+	self.effects = self.effects - self.effects & EF_DIMLIGHT;
+	switch.effects = switch.effects	- switch.effects & EF_DIMLIGHT;
 
 	if (self.ammo_shells < 25)
 		self.ammo_shells = 25;
