@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.13 2008/08/21 06:34:43 slotzero Exp $
+/*  $Id: heads.qc,v 1.14 2008/08/22 01:34:25 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -150,6 +150,7 @@ head_think =
 		if (self.owner.movetarget == self)
 			self.owner.movetarget = world;
 		remove (self);
+		return;
 	}
 
 	// head fell out of level
@@ -160,6 +161,8 @@ head_think =
 		self.velocity	= VEC_ORIGIN;
 		setorigin (self, e.origin);
 		self.velocity	= VelocityForDamage (-150);
+		self.nextthink	= time + 2;
+		return;
 	}
 
 	self.nextthink = time + 1;
@@ -229,9 +232,9 @@ head_throw =
 	head.flags	= head.flags - self.flags & FL_ONGROUND;
 	head.avelocity	= crandom () * '0 600 0';
 	head.touch	= head_touch;
+	head.dropdelay	= time + 120; // head timeout
 	head.nextthink	= time;
 	head.think	= head_think;
-	head.dropdelay	= time + 120; // head timeout
 
 	setmodel (self, "progs/spike.mdl");
 	self.movetarget	= head;

@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.153 2008/08/18 05:37:08 slotzero Exp $
+/*  $Id: client.qc,v 1.154 2008/08/22 01:34:25 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -548,7 +548,14 @@ void ()
 respawn =
 {
 	if (gamemode == MODE_HEADS)
+	{
+		if (self.runetype == RN_PHOENIX && self.runevar > 0)
+		{
+			if (self.movetarget.owner == self)
+				remove (self.movetarget);
+		}
 		self.movetarget = world;
+	}
 
 	//RUNE SERV: remove color shifts
 	stuffcmd (self, CSHIFT_NONE);
