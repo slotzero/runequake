@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.14 2008/08/22 01:34:25 slotzero Exp $
+/*  $Id: heads.qc,v 1.15 2008/08/22 23:15:31 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -28,7 +28,6 @@ HEAD DEVELOPMENT:
 	* evaluate the dead head carry code, will this cause problems?
 	* investigate pickup/dropoff sound, maybe chan_auto not good?
 	* put head count in ammo count?
-	* should head spawn in phoenix?
 	* should heads live in slime?
 
 	[FIXED] switch rune switches heads
@@ -38,6 +37,7 @@ HEAD DEVELOPMENT:
 	[FIXED] client disconnect on intermission drops heads
 	[FIXED] head tilt (self.health)
 	[FIXED] altar touch dropoff sound
+	[FIXED] heads don't spawn in phoenix
 */
 
 void ()
