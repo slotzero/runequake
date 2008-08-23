@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.16 2008/08/23 04:43:08 slotzero Exp $
+/*  $Id: heads.qc,v 1.17 2008/08/23 05:36:33 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -100,6 +100,8 @@ altar_spit =
 
 	IN_POQ([-
 		particle (self.origin, '0 0 1000', color, 100);
+	-], [-
+		create_te_gunshot (self.origin, 30);
 	-])
 
 	self.nextthink	= time + 0.1;
