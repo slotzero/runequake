@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.15 2008/08/22 23:15:31 slotzero Exp $
+/*  $Id: heads.qc,v 1.16 2008/08/23 04:43:08 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -69,13 +69,13 @@ altar_touch =
 	{
 		if (e_chain.classname == "thrown_head")
 		{
+			e_chain.dropdelay	= time + 5;
 			e_chain.nextthink	= time;
 			e_chain.think		= head_think;
-			e_chain.dropdelay	= time + 5;
 			e_chain.movetype	= MOVETYPE_BOUNCE;
 			e_chain.takedamage	= DAMAGE_NO;
 			e_chain.solid		= SOLID_TRIGGER;
-			e_chain.last_drop_delay	= 1;
+			e_chain.last_drop_delay	= 1; // don't respawn head
 			e_chain.flags		= e_chain.flags - e_chain.flags & FL_ONGROUND;
 
 			// do this from head_think?
@@ -161,6 +161,7 @@ head_think =
 		self.velocity	= VEC_ORIGIN;
 		setorigin (self, e.origin);
 		self.velocity	= VelocityForDamage (-150);
+		self.flags	= self.flags - self.flags & FL_ONGROUND;
 		self.nextthink	= time + 2;
 		return;
 	}
@@ -171,6 +172,9 @@ head_think =
 void ()
 head_touch =
 {
+	local entity e;
+	local float heads;
+
 	if (other.classname != "player")
 		return;
 
@@ -202,10 +206,46 @@ head_touch =
 	else
 		other.head_chain = self;
 
+	if (MAX_VISIBLE_HEADS > 0)
+	{
+		heads = 0;
+		e = other.head_chain;
+		while (heads < other.num_heads)
+		{
+			if (heads >= MAX_VISIBLE_HEADS)
+				setmodel (e, string_null);
+
+			e = e.head_chain;
+			heads = heads + 1;
+		}
+	}
+
 	// head pick-up sound, move to settings?
 	sound (other, CHAN_AUTO, "player/pain1.wav", 1, ATTN_NONE);
 
 	bprint_head_touch ();
+};
+
+void (entity head, string gibname, float dm)
+set_thrown_head =
+{
+	setmodel (head, gibname);
+	setorigin (head, self.origin);
+	setsize (head, '-16 -16 0', '0 0 8');
+
+	head.movetype	= MOVETYPE_BOUNCE;
+	head.takedamage	= DAMAGE_NO;
+	head.solid	= SOLID_TRIGGER;
+	head.view_ofs	= '0 0 8';
+	head.velocity	= VEC_ORIGIN;
+	head.velocity	= VelocityForDamage (dm);
+	head.origin_z	= head.origin_z - 24;
+	head.flags	= head.flags - head.flags & FL_ONGROUND;
+	head.avelocity	= crandom () * '0 600 0';
+	head.touch	= head_touch;
+	head.dropdelay	= time + HEAD_TIMEOUT;
+	head.nextthink	= time;
+	head.think	= head_think;
 };
 
 void (string gibname, float dm)
@@ -216,25 +256,10 @@ head_throw =
 	head_drop ();
 
 	head		= spawn ();
+	head.owner	= self;
 	head.classname	= "thrown_head";
 
-	setmodel (head, gibname);
-	setorigin (head, self.origin);
-
-	head.owner	= self;
-	head.movetype	= MOVETYPE_BOUNCE;
-	head.takedamage	= DAMAGE_NO;
-	head.solid	= SOLID_TRIGGER;
-	head.view_ofs	= '0 0 8';
-	setsize (head, '-16 -16 0', '0 0 8');
-	head.velocity	= VelocityForDamage (dm - 140);
-	head.origin_z	= head.origin_z - 24;
-	head.flags	= head.flags - self.flags & FL_ONGROUND;
-	head.avelocity	= crandom () * '0 600 0';
-	head.touch	= head_touch;
-	head.dropdelay	= time + 120; // head timeout
-	head.nextthink	= time;
-	head.think	= head_think;
+	set_thrown_head (head, gibname, (dm - 125));
 
 	setmodel (self, "progs/spike.mdl");
 	self.movetarget	= head;
@@ -283,21 +308,8 @@ head_drop =
 		while (heads > 0)
 		{
 			if (e_chain.classname == "thrown_head")
-			{
-				e_chain.nextthink	= time;
-				e_chain.think		= head_think;
-				e_chain.dropdelay	= time + 120; // make global, move to settings.qc
-				e_chain.touch		= head_touch;
-				e_chain.velocity	= VEC_ORIGIN;
-				e_chain.velocity	= VelocityForDamage (-100);
-				e_chain.flags		= e_chain.flags - e_chain.flags & FL_ONGROUND;
-				e_chain.avelocity	= crandom () * '0 600 0';
-				e_chain.movetype	= MOVETYPE_BOUNCE;
-				e_chain.takedamage	= DAMAGE_NO;
-				e_chain.solid		= SOLID_TRIGGER;
+				set_thrown_head (e_chain, "progs/h_player.mdl", -100);
 
-				setorigin (e_chain, self.origin);
-			}
 			e_chain = e_chain.head_chain;
 			heads = heads - 1;
 		}

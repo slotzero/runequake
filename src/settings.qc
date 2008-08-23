@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.65 2008/08/21 23:54:14 slotzero Exp $
+/*  $Id: settings.qc,v 1.66 2008/08/23 04:43:08 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -653,3 +653,15 @@ string	CSHIFT_CLOAK		= "v_cshift   0   0   0  75\n";
 string	CSHIFT_FREEZE		= "v_cshift  50  50 256 100\n";
 string	CSHIFT_NONE		= "v_cshift   0   0   0   0\n";
 string	CSHIFT_SHIELD		= "v_cshift 100 100   0 100\n";
+
+//-----------------------------------------------------------------------------
+// Head Hunters
+//-----------------------------------------------------------------------------
+
+// Number of seconds before a head times out.
+
+float HEAD_TIMEOUT		= 120;
+
+// This sets the amount of visible heads you can carry.  For no limit, set to zero.
+
+float MAX_VISIBLE_HEADS		= 16;
