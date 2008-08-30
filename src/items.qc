@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.75 2008/07/08 00:51:56 slotzero Exp $
+/*  $Id: items.qc,v 1.76 2008/08/30 07:46:23 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -867,7 +867,7 @@ weapon_up =
 {
 	if (options & WEAPONS_STAY || coop)
 	{
-		setorigin (self, self.runevector + '0 0 25');
+		setorigin (self, self.runevector + WEAPON_CHARGED_OFFSET);
 		// Keep on moving it due to the rocket in the squish
 		// room in Hell's Atrium (the squishing ceiling moves it
 		// down to the floor).
