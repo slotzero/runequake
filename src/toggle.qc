@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.34 2008/07/05 03:37:29 slotzero Exp $
+/*  $Id: toggle.qc,v 1.35 2008/08/30 23:39:01 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -338,9 +338,9 @@ toggle_weapons_stay =
 			e.nextthink	= time;
 
 			if (options & WEAPONS_STAY)
-				setorigin (e, e.runevector);
+				setorigin (e, e.oldorigin);
 			else
-				setorigin (e, e.runevector + '0 0 25');
+				setorigin (e, e.oldorigin + WEAPON_CHARGED_OFFSET);
 		}
 		e = nextent (e);
 	}

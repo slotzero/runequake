@@ -1,4 +1,4 @@
-/*  $Id: items.qc,v 1.76 2008/08/30 07:46:23 slotzero Exp $
+/*  $Id: items.qc,v 1.77 2008/08/30 23:39:01 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -156,12 +156,12 @@ PlaceItem =
 	// Get weapons up right away in weapons-stay mode.  Without this
 	// they don't go up until after somebody gets them for the first
 	// time (weapon_touch sets it up).  Since I have this init step
-	// I set runevector here only.
+	// I set oldorigin here only.
 	if (self.touch == weapon_touch)
 	{
 		// Save the origin no matter what in case WEAPONS_STAY
 		// is turned on later.
-		self.runevector = self.origin;
+		self.oldorigin = self.origin;
 		if (options & WEAPONS_STAY || coop)
 		{
 			self.runetime	= time;
@@ -837,7 +837,7 @@ weapon_touch =
 		// think function to raise it.
 		if (charged)
 		{
-			setorigin (self, self.runevector);
+			setorigin (self, self.oldorigin);
 			self.runetime = time + WEAPON_RESPAWN_TIME;
 			self.think = weapon_up;
 			self.nextthink = self.runetime;
@@ -867,7 +867,7 @@ weapon_up =
 {
 	if (options & WEAPONS_STAY || coop)
 	{
-		setorigin (self, self.runevector + WEAPON_CHARGED_OFFSET);
+		setorigin (self, self.oldorigin + WEAPON_CHARGED_OFFSET);
 		// Keep on moving it due to the rocket in the squish
 		// room in Hell's Atrium (the squishing ceiling moves it
 		// down to the floor).

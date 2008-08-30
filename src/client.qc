@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.154 2008/08/22 01:34:25 slotzero Exp $
+/*  $Id: client.qc,v 1.155 2008/08/30 23:39:01 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -725,6 +725,7 @@ void ()
 PutClientInServer =
 {
 	local entity spot;
+	local vector v;
 	local float newplayer, spawn_as_observer;
 
 	spot = SelectSpawnPoint ();
@@ -780,10 +781,18 @@ PutClientInServer =
 	self.deadflag = DEAD_NO;
 	self.aflag = 0;
 
-	if (!is_player_start_class (spot.classname))
-		self.origin = spot.origin + SPAWN_ITEM_OFFSET;
+	// hack to prevent spawning at charged offset
+	if (spot.oldorigin)
+		v = spot.oldorigin;
 	else
-		self.origin = spot.origin + '0 0 1';
+		v = spot.origin;
+
+	if (!is_player_start_class (spot.classname))
+		v = v + SPAWN_ITEM_OFFSET;
+	else
+		v = v + '0 0 1';
+
+	setorigin (self, v);
 
 	// arena
 	if (spot.classname == "info_teleport_destination")
