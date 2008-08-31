@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.241 2008/08/21 23:54:14 slotzero Exp $
+/*  $Id: rjs.qc,v 1.242 2008/08/31 02:24:04 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2571,14 +2571,42 @@ safe_spawn_point =
 	return TRUE;
 };
 
+// for testing
+float RANDOM_RESPAWN = 1;
+
 entity (string targ_class, entity start_after)
 find_spawn_point_class =
 {
 	local entity e, first;
+	local float i, r;
 
-	e = find (start_after, classname, targ_class);
-	if (!e)
-		e = find (e, classname, targ_class);
+	if (RANDOM_RESPAWN)
+	{
+		e = find (world, classname, targ_class);
+		while (e)
+		{
+			i = i + 1;
+			e = find (e, classname, targ_class);
+		}
+
+		r = ceil (random () * i);
+		if (!r)
+			r = i;
+
+		e = find (world, classname, targ_class);
+		while (r > 1)
+		{
+			e = find (e, classname, targ_class);
+			r = r - 1;
+		}
+	}
+	else
+	{
+		e = find (start_after, classname, targ_class);
+		if (!e)
+			e = find (e, classname, targ_class);
+	}
+
 	if (!e)
 	{
 		// There aren't actually any entities with that class.
@@ -2599,7 +2627,7 @@ find_spawn_point_class =
 			else if (e == first)
 				return world;
 
-			if (safe_spawn_point (e))
+			if (safe_spawn_point (e) && e != lastspawn)
 				return e;
 		}
 		e = find (e, classname, targ_class);
