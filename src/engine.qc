@@ -1,4 +1,4 @@
-/*  $Id: engine.qc,v 1.46 2008/07/09 05:48:13 slotzero Exp $
+/*  $Id: engine.qc,v 1.47 2008/09/02 06:01:01 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -53,16 +53,6 @@ void ()
 update_deathmatch =
 {
 	deathmatch = cvar ("deathmatch");
-
-	if (!cvar_infokey ("console_bindings"))
-	{
-		if (time > 3)
-		{
-			console_aliases ();
-			set_gamemode ();
-			cvar_set_infokey ("console_bindings", "1");
-		}
-	}
 };
 -])
 

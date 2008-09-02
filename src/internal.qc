@@ -1,4 +1,4 @@
-/*  $Id: internal.qc,v 1.41 2008/07/09 05:48:13 slotzero Exp $
+/*  $Id: internal.qc,v 1.42 2008/09/02 06:01:01 slotzero Exp $
 
     Copyright (C) 2000  J.P. Grossman.
 
@@ -549,10 +549,7 @@ SearchHunkThink =
 
 		// newly spawned server settings
 		if (server_time () < 10)
-		{
-			console_aliases ();
-			set_gamemode ();
-		}
+			hunk_storage_init ();
 
 		// keep track of recent levels
 		track_last_level (mapname);

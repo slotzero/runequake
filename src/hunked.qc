@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.60 2008/07/09 05:48:13 slotzero Exp $
+/*  $Id: hunked.qc,v 1.61 2008/09/02 06:01:01 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -484,4 +484,23 @@ track_last_level =
 
 	Write_Hunk_String_Max (HUNK_CONTEXT, HUNK_LAST_LEVEL + ((pos * 2) * %1), last_level, 8);
 	Write_Hunk_Float (HUNK_CONTEXT, HUNK_LAST_LEVEL_POS, pos + 1);
+};
+
+void ()
+hunk_storage_init =
+{
+	local float i;
+
+	if (!HUNK_CONTEXT)
+		return;
+
+	// initialize storage for ban
+	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
+		Write_Hunk_Float (HUNK_CONTEXT, HUNK_BAN_OFFSET + i, 0);
+
+	// initialize storage for mute
+	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
+		Write_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + i, 0);
+
+	localcmd ("exec ban.txt\n");
 };

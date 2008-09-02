@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.120 2008/09/02 01:22:21 slotzero Exp $
+/*  $Id: bindings.qc,v 1.121 2008/09/02 06:01:01 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -470,8 +470,6 @@ console_init_cvar_alias =
 void ()
 console_aliases =
 {
-	local float i;
-
 	dprint_force ("Sending console bindings\n");
 
 	console_init_cvar_alias ("update-bindings",	CVAR_C2,	C2_UPDATE_BINDINGS);
@@ -526,8 +524,8 @@ console_aliases =
 	console_init_cvar_alias ("midair",		CVAR_C2,	C2_MODE_MIDAIR);
 	console_init_cvar_alias ("modelock",		CVAR_C2,	C2_MODE_LOCK);
 	console_init_cvar_alias ("modeunlock",		CVAR_C2,	C2_MODE_UNLOCK);
-	console_init_cvar_alias ("powerdropon",		CVAR_C2,	C2_POWERDROPON);
-	console_init_cvar_alias ("powerdropoff",	CVAR_C2,	C2_POWERDROPOFF);
+	console_init_cvar_alias ("powerupdropon",	CVAR_C2,	C2_POWERDROPON);
+	console_init_cvar_alias ("powerupdropoff",	CVAR_C2,	C2_POWERDROPOFF);
 	console_init_cvar_alias ("help-options",	CVAR_C2,	C2_HELP_OPTIONS);
 	console_init_cvar_alias ("options",		CVAR_C2,	C2_HELP_OPTIONS);
 	console_init_cvar_alias ("killstats",		CVAR_C2,	C2_KILLSTATS);
@@ -551,19 +549,6 @@ console_aliases =
 	level_aliases ();
 	custom_aliases ();
 	custom_maps ();
-
-	if (!HUNK_CONTEXT)
-		return;
-
-	// initialize storage for ban
-	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
-		Write_Hunk_Float (HUNK_CONTEXT, HUNK_BAN_OFFSET + i, 0);
-
-	// initialize storage for mute
-	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
-		Write_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + i, 0);
-
-	localcmd ("exec ban.txt\n");
 };
 
 void ()

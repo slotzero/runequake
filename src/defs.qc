@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.223 2008/09/02 01:22:21 slotzero Exp $
+/*  $Id: defs.qc,v 1.224 2008/09/02 06:01:01 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1258,7 +1258,7 @@ float	NO_DISCHARGE		= 524288;
 float	RANDOM_SPAWN		= 1048576;
 //float = 2097152;
 //float = 4194304;
-//float = 8388608;
+float	CONSOLE_ALIASES		= 8388608;
 
 IN_QW([-
 //

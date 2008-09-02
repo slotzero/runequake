@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.243 2008/09/02 01:22:21 slotzero Exp $
+/*  $Id: rjs.qc,v 1.244 2008/09/02 06:01:01 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -316,6 +316,15 @@ rjs_worldspawn =
 	gamemode	= cvar_infokey (CVAR_C3);
 	options		= cvar_infokey (CVAR_C4);
 	MOD_PROTOCOL	= cvar_infokey ("mod_protocol"); // requires runequake engine
+
+	if (!options & CONSOLE_ALIASES)
+	{
+		console_aliases ();
+		options = options | CONSOLE_ALIASES;
+		s = ftos (options);
+		cvar_set_infokey (CVAR_C4, s);
+		set_gamemode ();
+	}
 
 	frag_init ();
 	orig_serverflags = serverflags;
