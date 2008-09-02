@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.51 2007/07/13 21:46:53 slotzero Exp $
+/*  $Id: strman.qc,v 1.52 2008/09/02 03:51:12 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -383,7 +383,8 @@ IN_POQ([-
 float (string s)
 stof =
 {
-	cvar_set ("skill", s);
-	return cvar ("skill");
+	// XXX Don't use 'skill' cvar as it conflicts with the ban code.
+	cvar_set ("lcd_x", s);
+	return cvar ("lcd_x");
 };
 -])
