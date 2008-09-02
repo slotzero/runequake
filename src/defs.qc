@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.222 2008/08/21 23:54:14 slotzero Exp $
+/*  $Id: defs.qc,v 1.223 2008/09/02 01:22:21 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -632,10 +632,11 @@ float IMP_VOTE_RUNE_DROP	= 30;
 float IMP_VOTE_LG_DISCHARGE	= 31;
 float IMP_VOTE_CLASSIC_MEGA	= 32;
 float IMP_VOTE_HEADS		= 33;
+float IMP_VOTE_RANDOM_SPAWN	= 34;
 
 // extended impulses for votes
 float IMP_VOTE_MIN		= 700;
-float IMP_VOTE_MAX		= 733;
+float IMP_VOTE_MAX		= 734;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;
@@ -1220,6 +1221,8 @@ float	C2_CURRENT_MODE		= 66;
 float	C2_WEAPONSSTAYON	= 67;
 float	C2_WEAPONSSTAYOFF	= 68;
 float	C2_MODE_HEADS		= 69;
+float	C2_RANDOMSPAWNON	= 70;
+float	C2_RANDOMSPAWNOFF	= 71;
 
 // game mode
 float	gamemode;
@@ -1252,9 +1255,9 @@ float	NO_DROP_POWERUP		= 65536;
 float	NO_DROP_ON_DEATH	= 131072;
 float	NO_DROP_ARMOR		= 262144;
 float	NO_DISCHARGE		= 524288;
-//float = 1048576
-//float = 2097152
-//float = 4194304
+float	RANDOM_SPAWN		= 1048576;
+//float = 2097152;
+//float = 4194304;
 //float = 8388608;
 
 IN_QW([-

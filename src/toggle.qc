@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.35 2008/08/30 23:39:01 slotzero Exp $
+/*  $Id: toggle.qc,v 1.36 2008/09/02 01:22:21 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -513,6 +513,22 @@ toggle_mode_lock =
 		options = options - options & MODE_LOCKED;
 	else
 		options = options | MODE_LOCKED;
+
+	s = ftos (options);
+	cvar_set_infokey (CVAR_C4, s);
+};
+
+void ()
+toggle_random_spawn =
+{
+	local string s;
+
+	if (options & RANDOM_SPAWN)
+		options = options - options & RANDOM_SPAWN;
+	else
+		options = options | RANDOM_SPAWN;
+
+	lastspawn = world;
 
 	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);

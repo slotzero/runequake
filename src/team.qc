@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.85 2008/08/09 05:53:10 slotzero Exp $
+/*  $Id: team.qc,v 1.86 2008/09/02 01:22:21 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1023,6 +1023,10 @@ match_defaults =
 	// lightning discharge on
 	if (options & NO_DISCHARGE)
 		toggle_lightning_discharge ();
+
+	// random spawn on
+	if (!options & RANDOM_SPAWN)
+		toggle_random_spawn ();
 };
 
 void ()
@@ -1111,6 +1115,10 @@ arena_defaults =
 	// lightning discharge off
 	if (!options & NO_DISCHARGE)
 		toggle_lightning_discharge ();
+
+	// random spawn off
+	if (options & RANDOM_SPAWN)
+		toggle_random_spawn ();
 };
 
 void ()
@@ -1199,6 +1207,10 @@ practice_defaults =
 	// lightning discharge off
 	if (!options & NO_DISCHARGE)
 		toggle_lightning_discharge ();
+
+	// random spawn on
+	if (!options & RANDOM_SPAWN)
+		toggle_random_spawn ();
 };
 
 void ()
@@ -1287,4 +1299,8 @@ normal_defaults =
 	// lightning discharge on
 	if (!options & NO_DISCHARGE)
 		toggle_lightning_discharge ();
+
+	// random spawn off
+	if (options & RANDOM_SPAWN)
+		toggle_random_spawn ();
 };

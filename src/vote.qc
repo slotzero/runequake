@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.84 2008/08/09 05:53:10 slotzero Exp $
+/*  $Id: vote.qc,v 1.85 2008/09/02 01:22:21 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -957,6 +957,18 @@ vote =
 			cancel = 1;
 		}
 	}
+	else if (self.impulse == IMP_VOTE_RANDOM_SPAWN)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= toggle_random_spawn;
+		e.noise2	= " random spawn ";
+
+		if (options & RANDOM_SPAWN)
+			e.noise1	= "disable";
+		else
+			e.noise1	= "enable";
+	}
 	else
 		cancel = -1;
 
@@ -1019,7 +1031,6 @@ vote_yes =
 		vote_action (vip);
 };
 
-// this doesn't work yet
 void ()
 vote_no =
 {

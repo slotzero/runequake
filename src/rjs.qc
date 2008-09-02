@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.242 2008/08/31 02:24:04 slotzero Exp $
+/*  $Id: rjs.qc,v 1.243 2008/09/02 01:22:21 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -2571,16 +2571,13 @@ safe_spawn_point =
 	return TRUE;
 };
 
-// for testing
-float RANDOM_RESPAWN = 1;
-
 entity (string targ_class, entity start_after)
 find_spawn_point_class =
 {
 	local entity e, first;
 	local float i, r;
 
-	if (RANDOM_RESPAWN)
+	if (options & RANDOM_SPAWN)
 	{
 		e = find (world, classname, targ_class);
 		while (e)

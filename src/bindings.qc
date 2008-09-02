@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.119 2008/08/09 05:53:10 slotzero Exp $
+/*  $Id: bindings.qc,v 1.120 2008/09/02 01:22:21 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -394,6 +394,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-powerup-drop",		IMP_VOTE_POWERUP_DROP);
 	player_vote_impulse_alias ("vote-practice",		IMP_VOTE_PRACTICE);
 	player_vote_impulse_alias ("vote-quad",			IMP_VOTE_QUAD);
+	player_vote_impulse_alias ("vote-random-spawn",		IMP_VOTE_RANDOM_SPAWN);
 	player_vote_impulse_alias ("vote-ring",			IMP_VOTE_RING);
 	player_vote_impulse_alias ("vote-rune-drop",		IMP_VOTE_RUNE_DROP);
 	player_vote_impulse_alias ("vote-runes",		IMP_VOTE_RUNES);
@@ -544,6 +545,8 @@ console_aliases =
 	console_init_cvar_alias ("weaponsstayon",	CVAR_C2,	C2_WEAPONSSTAYON);
 	console_init_cvar_alias ("weaponsstayoff",	CVAR_C2,	C2_WEAPONSSTAYOFF);
 	console_init_cvar_alias ("heads",		CVAR_C2,	C2_MODE_HEADS);
+	console_init_cvar_alias ("randomspawnon",	CVAR_C2,	C2_RANDOMSPAWNON);
+	console_init_cvar_alias ("randomspawnoff",	CVAR_C2,	C2_RANDOMSPAWNOFF);
 
 	level_aliases ();
 	custom_aliases ();
@@ -1088,15 +1091,6 @@ check_console_command =
 
 		else if (i == C2_WEAPONSSTAYON)
 		{
-			if (options & WEAPONS_STAY)
-			{
-				dprint_force ("Weapons-stay disabled\n");
-				toggle_weapons_stay ();
-			}
-		}
-
-		else if (i == C2_WEAPONSSTAYOFF)
-		{
 			if (!options & WEAPONS_STAY)
 			{
 				dprint_force ("Weapons-stay enabled\n");
@@ -1104,8 +1098,35 @@ check_console_command =
 			}
 		}
 
+		else if (i == C2_WEAPONSSTAYOFF)
+		{
+			if (options & WEAPONS_STAY)
+			{
+				dprint_force ("Weapons-stay disabled\n");
+				toggle_weapons_stay ();
+			}
+		}
+
 		else if (i == C2_MODE_HEADS)
 			change_mode_to_heads ();
+
+		else if (i == C2_RANDOMSPAWNON)
+		{
+			if (!options & RANDOM_SPAWN)
+			{
+				dprint_force ("Random spawn enabled\n");
+				toggle_random_spawn ();
+			}
+		}
+
+		else if (i == C2_RANDOMSPAWNOFF)
+		{
+			if (options & RANDOM_SPAWN)
+			{
+				dprint_force ("Random spawn disabled\n");
+				toggle_random_spawn ();
+			}
+		}
 
 		else
 			dprint_force ("Unknown command\n");
@@ -1132,10 +1153,10 @@ console_commands =
 	self_sprint (self, "eff            killstats      stats                         \n");
 
 	self_sprint (self, "\ngame modes:\n\n");
-	self_sprint (self, "normal              practice            match               arena\n");
-	self_sprint (self, "midair\n");
-	self_sprint (self, "\nsettings:\n\n");
+	self_sprint (self, "normal         practice       match           arena         midair\n");
+	self_sprint (self, "heads\n");
 
+	self_sprint (self, "\nsettings:\n\n");
 	self_sprint (self, "quadon              quadoff             penton              pentoff\n");
 	self_sprint (self, "ringon              ringoff             suiton              suitoff\n");
 	self_sprint (self, "armoron             armoroff            armordropon         armordropoff\n");
@@ -1146,6 +1167,7 @@ console_commands =
 	self_sprint (self, "powerupdropon       powerupdropoff      lgdischargeon       lgdischargeoff\n");
 	self_sprint (self, "runeson             runesoff            runedropon          runedropoff\n");
 	self_sprint (self, "backpackson         backpacksoff        faststarton         faststartoff\n");
+	self_sprint (self, "randomspawnon       randomspawnoff                          \n");
 };
 
 void ()
@@ -1275,6 +1297,7 @@ help_vote =
 	self_sprint (self, "\bvote-rune-drop  vote-powerup-drop\n");
 	self_sprint (self, "\b                vote-lg_discharge\n");
 	self_sprint (self, "\b                vote-classic-mega\n");
+	self_sprint (self, "\b                vote-random-spawn\n");
 	// self_sprint (self, "\n");
 };
 
@@ -1326,5 +1349,6 @@ help_options =
 	self_sprint (self, "\n\bshields       ");	self_sprint_boolean (self, !options & NO_SPAWN_SHIELDS);
 	self_sprint (self, "\b  lg discharge  ");	self_sprint_boolean (self, !options & NO_DISCHARGE);
 	self_sprint (self, "\n\bbackpacks     ");	self_sprint_boolean (self, !options & NO_BACKPACKS);
+	self_sprint (self, "\b  random spawn  ");       self_sprint_boolean (self, options & RANDOM_SPAWN);
 	self_sprint (self, "\n");
 };
