@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.88 2008/09/02 09:57:45 slotzero Exp $
+/*  $Id: team.qc,v 1.89 2008/09/02 10:04:23 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -913,8 +913,6 @@ change_mode_to_normal =
 void ()
 match_defaults =
 {
-	local float wanted;
-
 	// allow mm2 in match mode
 	if (teamplay != 32)
 		change_teamplay (32, 1);
@@ -996,8 +994,6 @@ match_defaults =
 void ()
 arena_defaults =
 {
-	local float wanted;
-
 	// turn off teams
 	if (teamplay)
 		change_teamplay (0, 1);
@@ -1079,8 +1075,6 @@ arena_defaults =
 void ()
 practice_defaults =
 {
-	local float wanted;
-
 	// turn off teams
 	if (teamplay)
 		change_teamplay (0, 1);
@@ -1162,8 +1156,6 @@ practice_defaults =
 void ()
 normal_defaults =
 {
-	local float wanted;
-
 	// turn off teams
 	if (teamplay)
 		change_teamplay (0, 1);
