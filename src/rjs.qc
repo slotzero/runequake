@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.244 2008/09/02 06:01:01 slotzero Exp $
+/*  $Id: rjs.qc,v 1.245 2008/09/02 06:17:29 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -317,15 +317,6 @@ rjs_worldspawn =
 	options		= cvar_infokey (CVAR_C4);
 	MOD_PROTOCOL	= cvar_infokey ("mod_protocol"); // requires runequake engine
 
-	if (!options & CONSOLE_ALIASES)
-	{
-		console_aliases ();
-		options = options | CONSOLE_ALIASES;
-		s = ftos (options);
-		cvar_set_infokey (CVAR_C4, s);
-		set_gamemode ();
-	}
-
 	frag_init ();
 	orig_serverflags = serverflags;
 	if (deathmatch & DM_DM_MASK && mapname == "start" && serverflags & SERVERFLAGS_RUNE_MASK == SERVERFLAGS_RUNE_MASK)
@@ -498,6 +489,17 @@ process_cvars =
 		FORWARD_MAX_PLAYERS_REAL = FORWARD_MAX_PLAYERS;
 
 	temp1 = cvar_infokey ("temp1");
+
+	if (!options & CONSOLE_ALIASES)
+	{
+		local string s;
+
+		console_aliases ();
+		options = options | CONSOLE_ALIASES;
+		s = ftos (options);
+		cvar_set_infokey (CVAR_C4, s);
+		set_gamemode ();
+	}
 
 	set_runemax ();
 
