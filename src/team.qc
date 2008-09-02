@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.87 2008/09/02 09:09:19 slotzero Exp $
+/*  $Id: team.qc,v 1.88 2008/09/02 09:57:45 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -920,16 +920,7 @@ match_defaults =
 		change_teamplay (32, 1);
 
 	// hook off
-	wanted = hook_type (0);
-	if (wanted != hook_type (temp1))
-	{
-		if (wanted == 0)
-			toggle_free_hook ();
-		else if (wanted == 1)
-			free_hook ();
-		else if (wanted == 2)
-			lithium_hook ();
-	}
+	set_hook (0);
 
 	// hook damage on
 	if (options & NO_HOOK_DAMAGE)
@@ -1012,16 +1003,7 @@ arena_defaults =
 		change_teamplay (0, 1);
 
 	// hook off
-	wanted = hook_type (0);
-	if (wanted != hook_type (temp1))
-	{
-		if (wanted == 0)
-			toggle_free_hook ();
-		else if (wanted == 1)
-			free_hook ();
-		else if (wanted == 2)
-			lithium_hook ();
-	}
+	set_hook (0);
 
 	// hook damage on
 	if (options & NO_HOOK_DAMAGE)
@@ -1104,16 +1086,7 @@ practice_defaults =
 		change_teamplay (0, 1);
 
 	// hook off
-	wanted = hook_type (0);
-	if (wanted != hook_type (temp1))
-	{
-		if (wanted == 0)
-			toggle_free_hook ();
-		else if (wanted == 1)
-			free_hook ();
-		else if (wanted == 2)
-			lithium_hook ();
-	}
+	set_hook (0);
 
 	// hook damage on
 	if (options & NO_HOOK_DAMAGE)
@@ -1195,17 +1168,8 @@ normal_defaults =
 	if (teamplay)
 		change_teamplay (0, 1);
 
-	// hook on
-	wanted = hook_type (262144);
-	if (wanted != hook_type (temp1))
-	{
-		if (wanted == 0)
-			toggle_free_hook ();
-		else if (wanted == 1)
-			free_hook ();
-		else if (wanted == 2)
-			lithium_hook ();
-	}
+	// free hook on
+	set_hook (1);
 
 	// hook damage on
 	if (options & NO_HOOK_DAMAGE)

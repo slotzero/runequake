@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.121 2008/09/02 06:01:01 slotzero Exp $
+/*  $Id: bindings.qc,v 1.122 2008/09/02 09:57:45 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -545,6 +545,10 @@ console_aliases =
 	console_init_cvar_alias ("heads",		CVAR_C2,	C2_MODE_HEADS);
 	console_init_cvar_alias ("randomspawnon",	CVAR_C2,	C2_RANDOMSPAWNON);
 	console_init_cvar_alias ("randomspawnoff",	CVAR_C2,	C2_RANDOMSPAWNOFF);
+	console_init_cvar_alias ("freehookon",		CVAR_C2,	C2_FREEHOOKON);
+	console_init_cvar_alias ("hookon",		CVAR_C2,	C2_FREEHOOKON);
+	console_init_cvar_alias ("lithhookon",		CVAR_C2,	C2_LITHHOOKON);
+	console_init_cvar_alias ("hookoff",		CVAR_C2,	C2_HOOKOFF);
 
 	level_aliases ();
 	custom_aliases ();
@@ -1110,6 +1114,33 @@ check_console_command =
 			{
 				dprint_force ("Random spawn disabled\n");
 				toggle_random_spawn ();
+			}
+		}
+
+		else if (i == C2_FREEHOOKON)
+		{
+			if (hook_type (temp1) != 1)
+			{
+				dprint_force ("Free hook enabled\n");
+				free_hook ();
+			}
+		}
+
+		else if (i == C2_LITHHOOKON)
+		{
+			if (hook_type (temp1) != 2)
+			{
+				dprint_force ("Lithium hook enabled\n");
+				lithium_hook ();
+			}
+		}
+
+		else if (i == C2_HOOKOFF)
+		{
+			if (hook_type (temp1))
+			{
+				dprint_force ("Hook disabled\n");
+				toggle_free_hook ();
 			}
 		}
 

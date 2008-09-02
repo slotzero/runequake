@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.31 2008/07/04 04:27:56 slotzero Exp $
+/*  $Id: hook.qc,v 1.32 2008/09/02 09:57:45 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -495,4 +495,20 @@ hook_type =
 	if (bits & T1_LITHIUM_HOOK)
 		return 2;
 	return 0;
+};
+
+void (float type)
+set_hook =
+{
+	if (type != hook_type (temp1))
+	{
+		if (type == 0)
+			toggle_free_hook ();
+		else if (type == 1)
+			free_hook ();
+		else if (type == 2)
+			lithium_hook ();
+		else
+			dprint_force ("set_hook: invalid hook type\n");
+	}
 };
