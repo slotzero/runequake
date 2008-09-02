@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.246 2008/09/02 06:42:42 slotzero Exp $
+/*  $Id: rjs.qc,v 1.247 2008/09/02 08:03:31 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -313,7 +313,6 @@ rjs_worldspawn =
 	if (!sys_ticrate) sys_ticrate = 0.1;
 
 	scratch1	= cvar_infokey ("scratch1");
-	temp1		= cvar_infokey ("temp1");
 	gamemode	= cvar_infokey (CVAR_C3);
 	options		= cvar_infokey (CVAR_C4);
 	MOD_PROTOCOL	= cvar_infokey ("mod_protocol"); // requires runequake engine
@@ -326,6 +325,7 @@ rjs_worldspawn =
 		options = options | CONSOLE_ALIASES;
 		s = ftos (options);
 		cvar_set_infokey (CVAR_C4, s);
+		temp1 = cvar_infokey ("temp1");
 		set_gamemode ();
 	}
 
@@ -340,7 +340,7 @@ rjs_worldspawn =
 	// variables, and do what initial processing of them is necessary.
 	e		= spawn ();
 	e.think		= process_cvars;
-	e.nextthink	= time;
+	e.nextthink	= IN_POQ(time,time + 0.2);
 
 	e		= spawn ();
 	e.think		= update_frag_rates;
