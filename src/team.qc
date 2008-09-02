@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.86 2008/09/02 01:22:21 slotzero Exp $
+/*  $Id: team.qc,v 1.87 2008/09/02 09:09:19 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -827,110 +827,83 @@ current_gamemode =
 	return "invalid gamemode";
 };
 
-// XXX Merge change_mode_to functions?
+void (float mode)
+gamemode_default =
+{
+	if (mode == MODE_NORMAL)
+		normal_defaults ();
+
+	else if (mode == MODE_PRACTICE)
+		practice_defaults ();
+
+	else if (mode == MODE_ARENA)
+		arena_defaults ();
+
+	else if (mode == MODE_MATCH)
+		match_defaults ();
+
+	else if (mode == MODE_MIDAIR)
+		arena_defaults ();
+
+	else if (mode == MODE_HEADS)
+		normal_defaults ();
+};
+
+void (float mode)
+change_mode_to =
+{
+	local string s;
+
+	if (gamemode == mode)
+	{
+		self_sprint (self, "Already in ");
+		s = current_gamemode (mode);
+		self_sprint (self, s);
+		self_sprint (self, " mode\n");
+		return;
+	}
+
+	gamemode_default (mode);
+
+	s = ftos (mode);
+	cvar_set_infokey (CVAR_C3, s);
+	admin_changelevel_now (mapname);
+};
 
 void ()
 change_mode_to_heads =
 {
-	local string s;
-
-	if (gamemode == MODE_HEADS)
-	{
-		self_sprint (self, "Already in head hunters mode\n");
-		return;
-	}
-
-	// head hunters uses same defaults as normal (for now)
-	normal_defaults ();
-	s = ftos (MODE_HEADS);
-	cvar_set_infokey (CVAR_C3, s);
-	admin_changelevel_now (mapname);
+	change_mode_to (MODE_HEADS);
 };
 
 void ()
 change_mode_to_midair =
 {
-	local string s;
-
-	if (gamemode == MODE_MIDAIR)
-	{
-		self_sprint (self, "Already in midair mode\n");
-		return;
-	}
-
-	// midair uses same defaults as arena
-	arena_defaults ();
-	s = ftos (MODE_MIDAIR);
-	cvar_set_infokey (CVAR_C3, s);
-	admin_changelevel_now (mapname);
+	change_mode_to (MODE_MIDAIR);
 };
 
 void ()
 change_mode_to_match =
 {
-	local string s;
-
-	if (gamemode == MODE_MATCH)
-	{
-		self_sprint (self, "Already in match mode\n");
-		return;
-	}
-
-	match_defaults ();
-	s = ftos (MODE_MATCH);
-	cvar_set_infokey (CVAR_C3, s);
-	admin_changelevel_now (mapname);
+	change_mode_to (MODE_MATCH);
 };
 
 void ()
 change_mode_to_arena =
 {
-	local string s;
-
-	if (gamemode == MODE_ARENA)
-	{
-		self_sprint (self, "Already in arena mode\n");
-		return;
-	}
-
-	arena_defaults ();
-	s = ftos (MODE_ARENA);
-	cvar_set_infokey (CVAR_C3, s);
-	admin_changelevel_now (mapname);
+	change_mode_to (MODE_ARENA);
 };
 
 void ()
 change_mode_to_practice =
 {
-	local string s;
-
-	if (gamemode == MODE_PRACTICE)
-	{
-		self_sprint (self, "Already in practice mode\n");
-		return;
-	}
-
-	practice_defaults ();
-	s = ftos (MODE_PRACTICE);
-	cvar_set_infokey (CVAR_C3, s);
-	admin_changelevel_now (mapname);
+	change_mode_to (MODE_PRACTICE);
 };
 
 void ()
 change_mode_to_normal =
 {
-	local string s;
-
-	if (gamemode == MODE_NORMAL)
-	{
-		self_sprint (self, "Already in normal mode\n");
-		return;
-	}
-
-	normal_defaults ();
-	s = ftos (MODE_NORMAL);
-	cvar_set_infokey (CVAR_C3, s);
-	admin_changelevel_now (mapname);
+	change_mode_to (MODE_NORMAL);
 };
 
 //-----------------------------------------------------------------------------

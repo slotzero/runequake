@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.247 2008/09/02 08:03:31 slotzero Exp $
+/*  $Id: rjs.qc,v 1.248 2008/09/02 09:09:19 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -396,62 +396,42 @@ set_runemax =
 void ()
 set_gamemode =
 {
+	// XXX Right now this is being set regardless if it's the correct
+	// gamemode.  If it isn't, it'll be called again from change_mode_to().
+	gamemode_default (gamemode);
+
 	if (options & MODE_LOCKED)
-	{
-		if (gamemode == MODE_NORMAL)
-			normal_defaults ();
-
-		if (gamemode == MODE_MATCH)
-			match_defaults ();
-
-		if (gamemode == MODE_PRACTICE)
-		{
-			practice_defaults ();
-			if (mapname != "dm6")
-				admin_changelevel_now ("dm6");
-		}
-
-		if (gamemode & MODE_ARENA)
-			arena_defaults ();
-
 		return;
-	}
 
+	// XXX Make this it's own function and return the mode
+	// expect.  We can compare with gamemode and determine
+	// if we want to process gamemode_default().
 	if (scratch1 & S1_MATCH_DEFAULT)
 	{
-		match_defaults ();
-
 		if (gamemode != MODE_MATCH)
-			change_mode_to_match ();
+			change_mode_to (MODE_MATCH);
 	}
  	else if (scratch1 & S1_ARENA_DEFAULT)
 	{
-		arena_defaults ();
-
 		if (gamemode != MODE_ARENA)
-			change_mode_to_arena ();
+			change_mode_to (MODE_ARENA);
 	}
 	else if (scratch1 & S1_PRACTICE_DEFAULT)
 	{
-		practice_defaults ();
-
 		if (gamemode != MODE_PRACTICE)
-			change_mode_to_practice ();
+			change_mode_to (MODE_PRACTICE);
 		else if (mapname != "dm6")
 			admin_changelevel_now ("dm6");
 	}
 	else if (scratch1 & S1_HEADS_DEFAULT)
 	{
-		normal_defaults ();
 		if (gamemode != MODE_HEADS)
-			change_mode_to_heads ();
+			change_mode_to (MODE_HEADS);
 	}
 	else
 	{
-		normal_defaults ();
-
 		if (gamemode != MODE_NORMAL)
-			change_mode_to_normal ();
+			change_mode_to (MODE_NORMAL);
 	}
 };
 
