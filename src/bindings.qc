@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.122 2008/09/02 09:57:45 slotzero Exp $
+/*  $Id: bindings.qc,v 1.123 2008/09/02 22:40:35 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -1162,17 +1162,19 @@ console_commands =
 	self_sprint (self, version);
 	self_sprint (self, " console commands\n\n");
 
-	self_sprint (self, "commands       settings       options         players       last\n");
-	self_sprint (self, "levels         custom         level-time      sping         update-bindings\n");
-	self_sprint (self, "banlist        banip          unbanip         conprint      rune-cheat\n");
-	self_sprint (self, "mutelist       muteip         unmuteip        mode          \n");
-	self_sprint (self, "eff            killstats      stats                         \n");
+	self_sprint (self, "commands            settings            options             players\n");
+	self_sprint (self, "levels              custom              level-time          sping\n");
+	self_sprint (self, "last                update-bindings     conprint            rune-cheat\n");
+	self_sprint (self, "banlist             banip               unbanip             mode\n");
+	self_sprint (self, "mutelist            muteip              unmuteip            stats\n");
+	self_sprint (self, "eff                 killstats                               \n");
 
-	self_sprint (self, "\ngame modes:\n\n");
-	self_sprint (self, "normal         practice       match           arena         midair\n");
-	self_sprint (self, "heads\n");
+	self_sprint (self, "\n");
+	self_sprint (self, "normal              practice            match               arena\n");
+	self_sprint (self, "midair              heads\n");
 
-	self_sprint (self, "\nsettings:\n\n");
+	self_sprint (self, "\n");
+	self_sprint (self, "hookon              lithhookon          hookoff             \n");
 	self_sprint (self, "quadon              quadoff             penton              pentoff\n");
 	self_sprint (self, "ringon              ringoff             suiton              suitoff\n");
 	self_sprint (self, "armoron             armoroff            armordropon         armordropoff\n");
