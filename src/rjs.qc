@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.245 2008/09/02 06:17:29 slotzero Exp $
+/*  $Id: rjs.qc,v 1.246 2008/09/02 06:42:42 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -313,9 +313,21 @@ rjs_worldspawn =
 	if (!sys_ticrate) sys_ticrate = 0.1;
 
 	scratch1	= cvar_infokey ("scratch1");
+	temp1		= cvar_infokey ("temp1");
 	gamemode	= cvar_infokey (CVAR_C3);
 	options		= cvar_infokey (CVAR_C4);
 	MOD_PROTOCOL	= cvar_infokey ("mod_protocol"); // requires runequake engine
+
+	// I only send console aliases when the server spawns.  You can use
+	// update-bindings to refresh them.  I need to set the gamemode too.
+	if (!options & CONSOLE_ALIASES)
+	{
+		console_aliases ();
+		options = options | CONSOLE_ALIASES;
+		s = ftos (options);
+		cvar_set_infokey (CVAR_C4, s);
+		set_gamemode ();
+	}
 
 	frag_init ();
 	orig_serverflags = serverflags;
@@ -489,17 +501,6 @@ process_cvars =
 		FORWARD_MAX_PLAYERS_REAL = FORWARD_MAX_PLAYERS;
 
 	temp1 = cvar_infokey ("temp1");
-
-	if (!options & CONSOLE_ALIASES)
-	{
-		local string s;
-
-		console_aliases ();
-		options = options | CONSOLE_ALIASES;
-		s = ftos (options);
-		cvar_set_infokey (CVAR_C4, s);
-		set_gamemode ();
-	}
 
 	set_runemax ();
 
