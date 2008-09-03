@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.89 2008/09/02 10:04:23 slotzero Exp $
+/*  $Id: team.qc,v 1.90 2008/09/03 00:46:51 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -917,7 +917,7 @@ match_defaults =
 	if (teamplay != 32)
 		change_teamplay (32, 1);
 
-	// hook off
+	// hook off (0=off|1=free|2=lithium)
 	set_hook (0);
 
 	// hook damage on
@@ -998,7 +998,7 @@ arena_defaults =
 	if (teamplay)
 		change_teamplay (0, 1);
 
-	// hook off
+	// hook off (0=off|1=free|2=lithium)
 	set_hook (0);
 
 	// hook damage on
@@ -1079,7 +1079,7 @@ practice_defaults =
 	if (teamplay)
 		change_teamplay (0, 1);
 
-	// hook off
+	// hook off (0=off|1=free|2=lithium)
 	set_hook (0);
 
 	// hook damage on
@@ -1160,7 +1160,7 @@ normal_defaults =
 	if (teamplay)
 		change_teamplay (0, 1);
 
-	// free hook on
+	// free hook on (0=off|1=free|2=lithium)
 	set_hook (1);
 
 	// hook damage on
