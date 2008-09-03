@@ -1,4 +1,4 @@
-/*  $Id: print.qc,v 1.17 2006/08/13 03:19:00 slotzero Exp $
+/*  $Id: print.qc,v 1.18 2008/09/03 08:52:11 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -83,6 +83,14 @@ void (string s)
 dprint_force =
 {
 	local float developer;
+
+	IN_POQ([-
+		if (MOD_PROTOCOL)
+		{
+			xself_sprint (world, s);
+			return;
+		}
+	-])
 
 	developer = cvar ("developer");
 	if (developer == 0)

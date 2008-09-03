@@ -1,4 +1,4 @@
-/*  $Id: strman.qc,v 1.52 2008/09/02 03:51:12 slotzero Exp $
+/*  $Id: strman.qc,v 1.53 2008/09/03 08:52:11 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -68,7 +68,12 @@ strlen_qc =
 float (string s)
 strlen =
 {
-	IN_QW([-
+	IN_POQ([-
+		if (MOD_PROTOCOL)
+		{
+			return xstof (s, 1);
+		}
+	-], [-
 		return strlen_qc (s);
 	-])
 
@@ -383,7 +388,9 @@ IN_POQ([-
 float (string s)
 stof =
 {
-	// XXX Don't use 'skill' cvar as it conflicts with the ban code.
+	if (MOD_PROTOCOL)
+		return xstof (s);
+
 	cvar_set ("lcd_x", s);
 	return cvar ("lcd_x");
 };

@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.226 2008/09/03 02:47:57 slotzero Exp $
+/*  $Id: defs.qc,v 1.227 2008/09/03 08:52:11 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1578,7 +1578,8 @@ void	(vector pos, string samp, float vol,
 //string(string s)				precache_model2	= #75;	[disabled]
 //string(string s)				precache_sound2	= #76;	[disabled]
 //string(string s)				precache_file2	= #77;	[disabled]
-void	(entity e)				setspawnparms	= #78;	// set parm1... to the values at level start for coop respawn
+void	(entity e)				setspawnparms	= #78; // set parm1... to the values at level start for coop respawn
+float	(string s, ...)				xstof		= #81; // requires runequake engine
 
 IN_QW([-
 void	(entity killer, entity killee)		logfrag		= #79; // add to stats
