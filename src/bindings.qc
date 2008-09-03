@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.123 2008/09/02 22:40:35 slotzero Exp $
+/*  $Id: bindings.qc,v 1.124 2008/09/03 02:47:57 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -549,6 +549,11 @@ console_aliases =
 	console_init_cvar_alias ("hookon",		CVAR_C2,	C2_FREEHOOKON);
 	console_init_cvar_alias ("lithhookon",		CVAR_C2,	C2_LITHHOOKON);
 	console_init_cvar_alias ("hookoff",		CVAR_C2,	C2_HOOKOFF);
+	console_init_cvar_alias ("help-deathmatch",	CVAR_C2,	C2_HELP_DEATHMATCH);
+	console_init_cvar_alias ("help-teamplay",	CVAR_C2,	C2_HELP_TEAMPLAY);
+	console_init_cvar_alias ("help-noexit",		CVAR_C2,	C2_HELP_NOEXIT);
+	console_init_cvar_alias ("help-temp1",		CVAR_C2,	C2_HELP_TEMP1);
+	console_init_cvar_alias ("help-scratch1",	CVAR_C2,	C2_HELP_SCRATCH1);
 
 	level_aliases ();
 	custom_aliases ();
@@ -586,8 +591,8 @@ check_console_command =
 			show_players ();
 
 		else if (i == C2_SHOW_SETTINGS)
-			show_settings ();
-
+			//show_settings ();
+			help_scratch1 ();
 		else if (i == C2_TOGGLE_RUNE_CHEAT)
 		{
 			// XXX Move this to its own function, for in-game use.
@@ -1144,6 +1149,21 @@ check_console_command =
 			}
 		}
 
+		else if (i == C2_HELP_DEATHMATCH)
+			help_deathmatch ();
+
+		else if (i == C2_HELP_TEAMPLAY)
+			help_teamplay ();
+
+		else if (i == C2_HELP_NOEXIT)
+			help_noexit ();
+
+		else if (i == C2_HELP_TEMP1)
+			help_temp1 ();
+
+		else if (i == C2_HELP_SCRATCH1)
+			help_scratch1 ();
+
 		else
 			dprint_force ("Unknown command\n");
 
@@ -1167,7 +1187,8 @@ console_commands =
 	self_sprint (self, "last                update-bindings     conprint            rune-cheat\n");
 	self_sprint (self, "banlist             banip               unbanip             mode\n");
 	self_sprint (self, "mutelist            muteip              unmuteip            stats\n");
-	self_sprint (self, "eff                 killstats                               \n");
+	self_sprint (self, "eff                 killstats           help-deathmatch     help-teamplay\n");
+	self_sprint (self, "help-noexit         help-temp1          help-scratch1       \n");
 
 	self_sprint (self, "\n");
 	self_sprint (self, "normal              practice            match               arena\n");
@@ -1368,5 +1389,128 @@ help_options =
 	self_sprint (self, "\b  lg discharge  ");	self_sprint_boolean (self, !options & NO_DISCHARGE);
 	self_sprint (self, "\n\bbackpacks     ");	self_sprint_boolean (self, !options & NO_BACKPACKS);
 	self_sprint (self, "\b  random spawn  ");       self_sprint_boolean (self, options & RANDOM_SPAWN);
+	self_sprint (self, "\n");
+};
+
+void ()
+help_deathmatch =
+{
+	local float dm;
+
+	dm = cvar ("deathmatch");
+
+	self_sprint (self, "deathmatch = "); self_sprint_float (self, (dm));
+	self_sprint (self, "\n");
+	self_sprint (self, "\n    1 items respawn                     "); self_sprint_boolean (self, dm & DM_RESPAWN);
+	self_sprint (self, "\n    2 long quad respawn                 "); self_sprint_boolean (self, dm & DM_LONG_QUAD_RESPAWN);
+	self_sprint (self, "\n    4 quad replacement                  "); self_sprint_boolean (self, dm & DM_QUAD_REPLACEMENT);
+	self_sprint (self, "\n    8 pentagram replacement             "); self_sprint_boolean (self, dm & DM_PENT_REPLACEMENT);
+	self_sprint (self, "\n   16 exit attempt doesn't kill you     "); self_sprint_boolean (self, dm & DM_EXIT_NON_FATAL);
+	self_sprint (self, "\n   32 random powerup respawn            "); self_sprint_boolean (self, dm & DM_RANDOM_POWERUP_RESPAWN);
+	self_sprint (self, "\n   64 damage-based frag scoring         "); self_sprint_boolean (self, dm & DM_DAMAGE_MATCH);
+	self_sprint (self, "\n");
+};
+
+void ()
+help_teamplay =
+{
+	local float tm;
+
+	tm = cvar ("teamplay");
+
+	self_sprint (self, "teamplay = "); self_sprint_float (self, (tm));
+	self_sprint (self, "\n");
+	self_sprint (self, "\n    1 health protect                    "); self_sprint_boolean (self, tm & TEAM_HEALTH_PROT);
+	self_sprint (self, "\n    2 frag penalty                      "); self_sprint_boolean (self, tm & TEAM_FRAG_PENALTY);
+	self_sprint (self, "\n    4 armor protect                     "); self_sprint_boolean (self, tm & TEAM_ARMOR_PROT);
+	self_sprint (self, "\n    8 enforce two teams                 "); self_sprint_boolean (self, tm & TEAM_2_TEAMS);
+	self_sprint (self, "\n   16 enforce three teams               "); self_sprint_boolean (self, tm & TEAM_3_TEAMS);
+	self_sprint (self, "\n   24 enforce four teams                "); self_sprint_boolean (self, tm & TEAM_4_TEAMS);
+	self_sprint (self, "\n   64 team change any                   "); self_sprint_boolean (self, tm & TEAM_CHANGE_ANY);
+	self_sprint (self, "\n  128 team change top dog               "); self_sprint_boolean (self, tm & TEAM_CHANGE_TOPDOG);
+	self_sprint (self, "\n  256 no team voting                    "); self_sprint_boolean (self, tm & TEAM_NO_VOTE);
+	self_sprint (self, "\n  512 self health protect               "); self_sprint_boolean (self, tm & TEAM_SELF_HEALTH_PROT);
+	self_sprint (self, "\n 1024 self armor protect                "); self_sprint_boolean (self, tm & TEAM_SELF_ARMOR_PROT);
+	self_sprint (self, "\n");
+};
+
+void ()
+help_noexit =
+{
+	local float i, ne;
+
+	ne = cvar_infokey ("noexit");
+
+	self_sprint (self, "noexit = "); self_sprint_float (self, (ne));
+	self_sprint (self, "\n");
+	self_sprint (self, "\n    1 no exiting                        "); self_sprint_boolean (self, ne & NOEXIT_NO_EXITING);
+	self_sprint (self, "\n    2 allow exiting start level         "); self_sprint_boolean (self, ne & NOEXIT_ALLOW_EXITING_START);
+	self_sprint (self, "\n    4 randomize                         "); self_sprint_boolean (self, ne & NOEXIT_RANDOMIZE);
+	self_sprint (self, "\n    8 select level by number of players "); self_sprint_boolean (self, ne & NOEXIT_CHOOSE_BY_NPLAYERS);
+	self_sprint (self, "\n   16 use Marlinspike levels            "); self_sprint_boolean (self, ne & NOEXIT_MARLINSPIKE_LEVELS);
+	self_sprint (self, "\n   32 don't loop back to dm1 after dm6  "); self_sprint_boolean (self, ne & NOEXIT_DM_NO_LOOP);
+	self_sprint (self, "\n   64 * max players before forwarding   "); i = ne & NOEXIT_FORWARD_MASK;
+	if (i) self_sprint_float (self, i / NOEXIT_FORWARD_MULT); else self_sprint (self, "0");
+	self_sprint (self, "\n 1024 don't use custom levels           "); self_sprint_boolean (self, ne & NOEXIT_NO_CUSTOM_LEVELS);
+	self_sprint (self, "\n 2048 don't use standard maps           "); self_sprint_boolean (self, ne & NOEXIT_CUSTOM_LEVELS_ONLY);
+	self_sprint (self, "\n");
+};
+
+void ()
+help_temp1 =
+{
+	local float i, t1;
+
+	t1 = cvar_infokey ("temp1");
+
+	self_sprint (self, "temp1 = "); self_sprint_float (self, (t1));
+	self_sprint (self, "\n");
+
+	self_sprint (self, "\n     1-63 number of runes               "); self_sprint_float (self, t1 & T1_NRUNES_MASK);
+	self_sprint (self, "\n       64 rune selection by impulse     "); self_sprint_boolean (self, t1 & T1_RUNE_CHEAT);
+	self_sprint (self, "\n      256 can pick up own rune          "); self_sprint_boolean (self, t1 & T1_CAN_GET_OWN_RUNE);
+	self_sprint (self, "\n     1024 random rune models            "); self_sprint_boolean (self, t1 & T1_RANDOM_RUNE_MODELS);
+	self_sprint (self, "\n     2048 fast rune spawn               "); self_sprint_boolean (self, t1 & T1_FAST_RUNE_SPAWN);
+	self_sprint (self, "\n     4096 * max players                 "); i = max_players ();
+	if (!i) self_sprint (self, "off"); else self_sprint_float (self, i);
+	self_sprint (self, "\n");
+	self_sprint (self, "\n   262144 free hook                     "); self_sprint_boolean (self, t1 & T1_FREE_HOOK);
+	self_sprint (self, "\n   524288 Lithium hook                  "); self_sprint_boolean (self, t1 & T1_LITHIUM_HOOK);
+	self_sprint (self, "\n  1048576 no hook voting                "); self_sprint_boolean (self, t1 & T1_HOOK_NO_VOTE);
+	self_sprint (self, "\n");
+	i = t1 & T1_RUNE_DROP_DELAY_MASK;
+	self_sprint (self, "\n    65536 no rune drop delay            "); self_sprint_boolean (self, i == T1_RUNE_DROP_DELAY_0);
+	self_sprint (self, "\n    66048  15 second rune drop delay    "); self_sprint_boolean (self, i == T1_RUNE_DROP_DELAY_15);
+	self_sprint (self, "\n   131072  30 second rune drop delay    "); self_sprint_boolean (self, i == T1_RUNE_DROP_DELAY_30);
+	self_sprint (self, "\n      512  60 second rune drop delay    "); self_sprint_boolean (self, i == T1_RUNE_DROP_DELAY_60);
+	self_sprint (self, "\n   131584 120 second rune drop delay    "); self_sprint_boolean (self, i == T1_RUNE_DROP_DELAY_120);
+	self_sprint (self, "\n   196608 240 second rune drop delay    "); self_sprint_boolean (self, i == T1_RUNE_DROP_DELAY_240);
+	self_sprint (self, "\n   197120 rune dropping disabled        "); self_sprint_boolean (self, i == T1_RUNE_DROP_DELAY_INF);
+	self_sprint (self, "\n");
+};
+
+void ()
+help_scratch1 =
+{
+	local float s1;
+
+	s1 = cvar_infokey ("scratch1");
+
+	self_sprint (self, "scratch1 = "); self_sprint_float (self, (s1));
+	self_sprint (self, "\n");
+
+	self_sprint (self, "\n     1 equalize all lightstyles         "); self_sprint_boolean (self, s1 & S1_EQUALIZE_LIGHTSTYLE);
+	self_sprint (self, "\n     2 disable all ambient sounds       "); self_sprint_boolean (self, s1 & S1_AMBIENT_SOUND_OFF);
+	self_sprint (self, "\n     4 don't spawn any static lights    "); self_sprint_boolean (self, s1 & S1_LIGHT_MAKESTATIC_OFF);
+	self_sprint (self, "\n     8 bprint prints to server console  "); self_sprint_boolean (self, s1 & S1_BPRINT_TO_CONSOLE);
+	self_sprint (self, "\n    16 keep original level items        "); self_sprint_boolean (self, s1 & S1_ORIGINAL_LEVELS);
+	self_sprint (self, "\n    32 limit maximum traps per rune     "); self_sprint_boolean (self, s1 & S1_MAX_TRAPS_FOR_LEVEL);
+	self_sprint (self, "\n    64 basic/lite runes                 "); self_sprint_boolean (self, s1 & S1_BASIC_RUNES);
+	self_sprint (self, "\n   128 custom exits                     "); self_sprint_boolean (self, s1 & S1_CUSTOM_EXITS);
+	self_sprint (self, "\n  1024 no default mode                  "); self_sprint_boolean (self, s1 & S1_NO_DEFAULT);
+	self_sprint (self, "\n  2048 default mode arena               "); self_sprint_boolean (self, s1 & S1_ARENA_DEFAULT);
+	self_sprint (self, "\n  4096 default mode practice            "); self_sprint_boolean (self, s1 & S1_PRACTICE_DEFAULT);
+	self_sprint (self, "\n  8192 default mode match               "); self_sprint_boolean (self, s1 & S1_MATCH_DEFAULT);
+	self_sprint (self, "\n 16384 default mode heads               "); self_sprint_boolean (self, s1 & S1_HEADS_DEFAULT);
 	self_sprint (self, "\n");
 };

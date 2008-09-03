@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.225 2008/09/02 09:57:45 slotzero Exp $
+/*  $Id: defs.qc,v 1.226 2008/09/03 02:47:57 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1226,6 +1226,11 @@ float	C2_RANDOMSPAWNOFF	= 71;
 float	C2_FREEHOOKON		= 72;
 float	C2_LITHHOOKON		= 73;
 float	C2_HOOKOFF		= 74;
+float	C2_HELP_DEATHMATCH	= 75;
+float	C2_HELP_TEAMPLAY	= 76;
+float	C2_HELP_NOEXIT		= 77;
+float	C2_HELP_TEMP1		= 78;
+float	C2_HELP_SCRATCH1	= 79;
 
 // game mode
 float	gamemode;
