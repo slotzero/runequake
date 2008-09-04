@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.61 2008/09/02 06:01:01 slotzero Exp $
+/*  $Id: hunked.qc,v 1.62 2008/09/04 03:31:15 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -491,8 +491,7 @@ hunk_storage_init =
 {
 	local float i;
 
-	if (!HUNK_CONTEXT)
-		return;
+	custom_maps ();
 
 	// initialize storage for ban
 	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
