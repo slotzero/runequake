@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.124 2008/09/03 02:47:57 slotzero Exp $
+/*  $Id: bindings.qc,v 1.125 2008/09/04 05:05:19 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -163,22 +163,26 @@ player_bindings_think =
 
 	os = self;
 	self = self.owner;
-
-	// trickle the aliases or else client crashes
-	if (os.runevar == 1)
+	if (os.count == 1)
 	{
 		self_sprint (self, "Sending player bindings\n");
 		player_aliases ();
 		switchfire_aliases ();
    	}
-	else if (os.runevar == 2)
+	else if (os.count == 2)
 	{
 		vote_aliases ();
 		level_aliases ();
 	}
-  	else if (os.runevar == 3 && total_customs ())
+	else if (os.count == 3)
+		custom_aliases_small ();
+
+	else if (os.count == 4)
+		custom_aliases_medium ();
+
+  	else if (os.count == 5)
 	{
-		custom_aliases ();
+		custom_aliases_large ();
 
 		// XXX Move this to settings.qc.
 		if (MAP_IS_CUSTOM)
@@ -197,20 +201,18 @@ player_bindings_think =
 			}
 		}
 	}
-
 	self = os;
 
-	if (self.runevar > 2)
+	if (self.count >= self.cnt)
 	{
 		self_stuffcmd (self.owner, "init\n");
 		self.owner.rqflags = self.owner.rqflags | RQ_BINDINGS_RECEIVED;
 		remove (self);
+		return;
 	}
-	else
-	{
-		self.runevar = self.runevar + 1;
-		self.nextthink = time + 1;
-	}
+
+	self.count = self.count + 1;
+	self.nextthink = time + 1;
 };
 
 void ()
@@ -221,7 +223,13 @@ spawn_player_bindings =
 	e		= spawn ();
 	e.classname	= "spawn_player_bindings";
 	e.owner		= self;
-	e.runevar	= 1;
+	e.count		= 1;
+
+	if (total_customs ())
+		e.cnt	= 5;
+	else
+		e.cnt	= 2;
+
 	e.think		= player_bindings_think;
 	e.nextthink	= time + 2;
 };
@@ -468,6 +476,45 @@ console_init_cvar_alias =
 };
 
 void ()
+custom_aliases_think =
+{
+	local entity os;
+
+	if (!total_customs ())
+		return;
+
+	os = self;
+	self = world;
+	if (os.count == 1)
+		custom_aliases_small ();
+	else if (os.count == 2)
+		custom_aliases_medium ();
+	else if (os.count == 3)
+		custom_aliases_medium ();
+	self = os;
+
+	if (self.count > 2)
+	{
+		remove (self);
+		return;
+	}
+
+	self.count = self.count + 1;
+	self.nextthink = time + 1;
+};
+
+void ()
+spawn_custom_aliases =
+{
+	local entity e;
+
+	e		= spawn ();
+	e.count		= 1;
+	e.think		= custom_aliases_think;
+	e.nextthink	= time + 1;
+};
+
+void ()
 console_aliases =
 {
 	dprint_force ("Sending console bindings\n");
@@ -556,8 +603,7 @@ console_aliases =
 	console_init_cvar_alias ("help-scratch1",	CVAR_C2,	C2_HELP_SCRATCH1);
 
 	level_aliases ();
-	custom_aliases ();
-	custom_maps ();
+	spawn_custom_aliases ();
 };
 
 void ()
