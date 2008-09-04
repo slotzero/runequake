@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.125 2008/09/04 05:05:19 slotzero Exp $
+/*  $Id: bindings.qc,v 1.126 2008/09/04 05:27:26 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -532,6 +532,7 @@ console_aliases =
 	console_init_cvar_alias ("level-time",		CVAR_C2,	C2_LEVEL_TIME);
 	console_init_cvar_alias ("practice",		CVAR_C2,	C2_MODE_PRACTICE);
 	console_init_cvar_alias ("normal",		CVAR_C2,	C2_MODE_NORMAL);
+	console_init_cvar_alias ("update-hunkinit",	CVAR_C2,	C2_UPDATE_HUNKINIT);
 	console_init_cvar_alias ("quadon",		CVAR_C2,	C2_QUADON);
 	console_init_cvar_alias ("quadoff",		CVAR_C2,	C2_QUADOFF);
 	console_init_cvar_alias ("penton",		CVAR_C2,	C2_PENTON);
@@ -1210,6 +1211,14 @@ check_console_command =
 		else if (i == C2_HELP_SCRATCH1)
 			help_scratch1 ();
 
+		else if (i == C2_UPDATE_HUNKINIT)
+		{
+			if (HUNK_CONTEXT_MAX)
+				hunk_storage_init ();
+			else
+				dprint_force ("Command not supported on this server\n");
+		}
+
 		else
 			dprint_force ("Unknown command\n");
 
@@ -1230,11 +1239,11 @@ console_commands =
 
 	self_sprint (self, "commands            settings            options             players\n");
 	self_sprint (self, "levels              custom              level-time          sping\n");
-	self_sprint (self, "last                update-bindings     conprint            rune-cheat\n");
+	self_sprint (self, "last                update-bindings     update-hunkinit     rune-cheat\n");
 	self_sprint (self, "banlist             banip               unbanip             mode\n");
-	self_sprint (self, "mutelist            muteip              unmuteip            stats\n");
-	self_sprint (self, "eff                 killstats           help-deathmatch     help-teamplay\n");
-	self_sprint (self, "help-noexit         help-temp1          help-scratch1       \n");
+	self_sprint (self, "mutelist            muteip              unmuteip            conprint\n");
+	self_sprint (self, "eff                 killstats           stats               help-deathmatch\n");
+	self_sprint (self, "help-teamplay       help-noexit         help-temp1          help-scratch1\n");
 
 	self_sprint (self, "\n");
 	self_sprint (self, "normal              practice            match               arena\n");
