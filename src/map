@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#    $Id: map,v 1.38 2008/08/07 02:09:20 slotzero Exp $
+#    $Id: map,v 1.39 2008/09/04 04:02:18 slotzero Exp $
 
 use strict;
 use warnings;
@@ -512,11 +512,35 @@ print "};\n";
 
 print "\n";
 print "void ()\n";
-print "custom_aliases =\n";
+print "custom_aliases_small =\n";
 print "{\n";
 
 $impulse = 59;
-for my $map (map { @$_ } @custom_lev) {
+for my $map (@{ $custom_lev[1] }) {
+    print "\tplayer_console_init_level_alias (\"$map\", $impulse);\n";
+    $impulse++;
+}
+print "};\n";
+
+
+print "\n";
+print "void ()\n";
+print "custom_aliases_medium =\n";
+print "{\n";
+
+for my $map (@{ $custom_lev[2] }) {
+    print "\tplayer_console_init_level_alias (\"$map\", $impulse);\n";
+    $impulse++;
+}
+print "};\n";
+
+
+print "\n";
+print "void ()\n";
+print "custom_aliases_large =\n";
+print "{\n";
+
+for my $map (@{ $custom_lev[3] }) {
     print "\tplayer_console_init_level_alias (\"$map\", $impulse);\n";
     $impulse++;
 }
