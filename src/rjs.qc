@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.248 2008/09/02 09:09:19 slotzero Exp $
+/*  $Id: rjs.qc,v 1.249 2008/09/06 07:08:42 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1266,6 +1266,9 @@ impulse_override =
 	else if (self.aqstate & AQS_IMPOVER_MASK == AQS_IMPOVER_VOTE_COMMANDS)
 		vote_impulse_commands ();
 
+	else if (self.aqstate & AQS_IMPOVER_MASK == AQS_IMPOVER_MAP2)
+		admin_impulse_map ();
+
 	else
 		impulse_override_cancel ();
 
@@ -1437,6 +1440,9 @@ common_impulses =
 
 	else if (self.impulse == IMP_CHANGE_MAP)
 		change_map ();
+
+	else if (self.impulse == IMP_CHANGE_MAP2)
+		change_map2 ();
 
 	// requires runequake engine
 	else if (self.impulse >= IMP_LEVEL_MIN && self.impulse <= IMP_LEVEL_MAX)

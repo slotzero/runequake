@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.126 2008/09/04 05:27:26 slotzero Exp $
+/*  $Id: bindings.qc,v 1.127 2008/09/06 07:08:42 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -251,6 +251,11 @@ player_aliases =
 	self_stuffcmd (self, s);
 	self_stuffcmd (self, "\"\n");
 
+	self_stuffcmd (self, "alias cl2 \"impulse ");
+	s = ftos (IMP_CHANGE_MAP2);
+	self_stuffcmd (self, s);
+	self_stuffcmd (self, "\"\n");
+
 	player_init_impulse_alias ("admin-toggle",		IMP_ADMIN_TOGGLE);
 	player_init_impulse_alias ("best-weapon",		IMP_BEST_WEAPON);
 	player_init_impulse_alias ("bind-keys",			IMP_BIND_DEFAULT_KEYS);
@@ -448,7 +453,16 @@ player_console_init_level_alias =
 		{
 			self_stuffcmd (self, "alias ");
 			self_stuffcmd (self, level);
-			self_stuffcmd (self, " \"cl;w5;w5;impulse ");
+
+			// hack to allow more than 255 map impulses
+			if (imp > 255)
+			{
+				imp = imp - 255;
+				self_stuffcmd (self, " \"cl2;w5;w5;impulse ");
+			}
+			else
+				self_stuffcmd (self, " \"cl;w5;w5;impulse ");
+
 			s = ftos (imp);
 			self_stuffcmd (self, s);
 			self_stuffcmd (self, ";w5\"\n");
@@ -490,7 +504,7 @@ custom_aliases_think =
 	else if (os.count == 2)
 		custom_aliases_medium ();
 	else if (os.count == 3)
-		custom_aliases_medium ();
+		custom_aliases_large ();
 	self = os;
 
 	if (self.count > 2)

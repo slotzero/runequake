@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.52 2008/08/07 02:15:46 slotzero Exp $
+/*  $Id: admin.qc,v 1.53 2008/09/06 07:08:42 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -552,6 +552,10 @@ admin_impulse_map =
 		}
 	}
 
+	// hack to allow more than 255 map impulses
+	if (self.aqstate & AQS_IMPOVER_MASK == AQS_IMPOVER_MAP2)
+		self.impulse = self.impulse + 255;
+
 	impulse_override_cancel ();
 	aq_menu_set (0);
 	m = impulse_to_map ();
@@ -658,6 +662,13 @@ change_map =
 {
 	self.state	= 0;
 	self.aqstate	= self.aqstate | AQS_IMPOVER_MAP;
+};
+
+void ()
+change_map2 =
+{
+	self.state	= 0;
+	self.aqstate	= self.aqstate | AQS_IMPOVER_MAP2;
 };
 
 void ()

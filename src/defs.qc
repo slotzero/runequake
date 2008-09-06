@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.228 2008/09/04 05:27:26 slotzero Exp $
+/*  $Id: defs.qc,v 1.229 2008/09/06 07:08:42 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -502,7 +502,8 @@ float IMP_VOTE_YES		= 255;
 float IMP_VOTE_NO		= 254;
 //				= 238 - 253	[weapon aliases]
 //				= 220 - 237	[qsmack]
-//				= 219 - 207	[free]
+//				= 219 - 208	[free]
+float IMP_CHANGE_MAP2		= 207;
 float IMP_VOTE_NEVER		= 206;
 float IMP_STATS			= 205;
 float IMP_KILLSTATS		= 204;
@@ -571,7 +572,7 @@ float IMP_QSMACK_COMMAND	= 237;
 
 // extended impulses for levels
 float IMP_LEVEL_MIN		= 300;
-float IMP_LEVEL_MAX		= 599;
+float IMP_LEVEL_MAX		= 655;
 
 // admin impulse commands
 float IMP_ADMIN_KICK		= 1;
@@ -595,8 +596,8 @@ float IMP_ADMIN_BANIP		= 18;
 float IMP_ADMIN_UNBANIP		= 19;
 
 // extended impulses for admin commands
-float IMP_ADMIN_MIN		= 600;
-float IMP_ADMIN_MAX		= 619;
+float IMP_ADMIN_MIN		= 700;
+float IMP_ADMIN_MAX		= 719;
 
 // vote impulse commands
 float IMP_VOTE_EXIT		= 1;
@@ -635,8 +636,8 @@ float IMP_VOTE_HEADS		= 33;
 float IMP_VOTE_RANDOM_SPAWN	= 34;
 
 // extended impulses for votes
-float IMP_VOTE_MIN		= 700;
-float IMP_VOTE_MAX		= 734;
+float IMP_VOTE_MIN		= 800;
+float IMP_VOTE_MAX		= 834;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;
@@ -778,8 +779,8 @@ float AQS_IMPOVER_QSMACK_PASSWORD = 8192;
 float AQS_IMPOVER_MAP		= 12288;
 float AQS_IMPOVER_ADMIN_COMMANDS = 16384;
 float AQS_IMPOVER_VOTE_COMMANDS	= 20480;
-//				= 24576
-//				= 28672
+float AQS_IMPOVER_MAP2		= 24576;
+//				= 28672;
 
 float AQS_HOOK			= 32768;
 float AQS_HAS_RIDERS		= 65536;
