@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.127 2008/09/06 07:08:42 slotzero Exp $
+/*  $Id: bindings.qc,v 1.128 2008/09/06 08:14:26 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -338,6 +338,8 @@ admin_aliases =
 	player_admin_impulse_alias ("admin-join",		IMP_ADMIN_JOIN);
 	player_admin_impulse_alias ("admin-kick",		IMP_ADMIN_KICK);
 	player_admin_impulse_alias ("admin-kill",		IMP_ADMIN_KILL);
+	player_admin_impulse_alias ("admin-muteip",		IMP_ADMIN_MUTEIP);
+	player_admin_impulse_alias ("admin-mutelist",		IMP_ADMIN_MUTELIST);
 	player_admin_impulse_alias ("admin-rename",		IMP_ADMIN_RENAME);
 	player_admin_impulse_alias ("admin-rune-delete",	IMP_ADMIN_RUNE_DELETE);
 	player_admin_impulse_alias ("admin-team-change",	IMP_ADMIN_TEAM_CHANGE);
@@ -346,6 +348,7 @@ admin_aliases =
 	player_admin_impulse_alias ("admin-teamplay-zero",	IMP_ADMIN_TEAMPLAY_ZERO);
 	player_admin_impulse_alias ("admin-unbanip",		IMP_ADMIN_UNBANIP);
 	player_admin_impulse_alias ("admin-unbind",		IMP_ADMIN_UNBIND);
+	player_admin_impulse_alias ("admin-unmuteip",		IMP_ADMIN_UNMUTEIP);
 	player_admin_impulse_alias ("change-level",		IMP_ADMIN_CHANGE_MAP);
 	player_admin_impulse_alias ("disp-info",		IMP_ADMIN_DISP_INFO);
 	player_admin_impulse_alias ("disp-info-all",		IMP_ADMIN_DISP_INFO_ALL);
@@ -906,8 +909,20 @@ check_console_command =
 
 		else if (i == C2_BAN_ADD)
 		{	IN_QW(return;)
-			s = cvar_string ("skill", 1);
-			v = ip_to_vec (s);
+			if (MOD_PROTOCOL)
+			{
+				s = cvar_string ("skill", 1);
+				v = ip_to_vec (s);
+			}
+			else
+			{
+				v_x = cvar ("scr_ofsx");
+				v_y = cvar ("scr_ofsy");
+				v_z = cvar ("scr_ofsz");
+
+				if (v_x < 0 || v_y < 0 || v_z < 0 || v_x > 255 || v_y > 255 || v_z > 255)
+					v = VEC_ORIGIN;
+			}
 			if (v == VEC_ORIGIN)
 				self_sprint (self, "invalid ip address\n");
 			else
@@ -916,8 +931,20 @@ check_console_command =
 
 		else if (i == C2_BAN_REMOVE)
 		{	IN_QW(return;)
-			s = cvar_string ("skill", 1);
-			v = ip_to_vec (s);
+			if (MOD_PROTOCOL)
+			{
+				s = cvar_string ("skill", 1);
+				v = ip_to_vec (s);
+			}
+			else
+			{
+				v_x = cvar ("scr_ofsx");
+				v_y = cvar ("scr_ofsy");
+				v_z = cvar ("scr_ofsz");
+
+				if (v_x < 0 || v_y < 0 || v_z < 0 || v_x > 255 || v_y > 255 || v_z > 255)
+					v = VEC_ORIGIN;
+			}
 			if (v == VEC_ORIGIN)
 				self_sprint (self, "invalid ip address\n");
 			else
@@ -1093,8 +1120,20 @@ check_console_command =
 
 		else if (i == C2_MUTE_ADD)
 		{	IN_QW(return;)
-			s = cvar_string ("skill", 1);
-			v = ip_to_vec (s);
+			if (MOD_PROTOCOL)
+			{
+				s = cvar_string ("skill", 1);
+				v = ip_to_vec (s);
+			}
+			else
+			{
+				v_x = cvar ("scr_ofsx");
+				v_y = cvar ("scr_ofsy");
+				v_z = cvar ("scr_ofsz");
+
+				if (v_x < 0 || v_y < 0 || v_z < 0 || v_x > 255 || v_y > 255 || v_z > 255)
+					v = VEC_ORIGIN;
+			}
 			if (v == VEC_ORIGIN)
 				self_sprint (self, "invalid ip address\n");
 			else
@@ -1103,8 +1142,20 @@ check_console_command =
 
 		else if (i == C2_MUTE_REMOVE)
 		{	IN_QW(return;)
-			s = cvar_string ("skill", 1);
-			v = ip_to_vec (s);
+			if (MOD_PROTOCOL)
+			{
+				s = cvar_string ("skill", 1);
+				v = ip_to_vec (s);
+			}
+			else
+			{
+				v_x = cvar ("scr_ofsx");
+				v_y = cvar ("scr_ofsy");
+				v_z = cvar ("scr_ofsz");
+
+				if (v_x < 0 || v_y < 0 || v_z < 0 || v_x > 255 || v_y > 255 || v_z > 255)
+					v = VEC_ORIGIN;
+			}
 			if (v == VEC_ORIGIN)
 				self_sprint (self, "invalid ip address\n");
 			else

@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.53 2008/09/06 07:08:42 slotzero Exp $
+/*  $Id: admin.qc,v 1.54 2008/09/06 08:14:26 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -772,6 +772,27 @@ admin_impulse_commands =
 			self_sprint (self, "invalid ip address\n");
 		else
 			ban_remove (v_x + (v_y * 256) + (v_z * 65536));
+	}
+
+	else if (self.impulse == IMP_ADMIN_MUTELIST)
+		mute_list ();
+
+	else if (self.impulse == IMP_ADMIN_MUTEIP)
+	{
+		v = ip_to_vec (self.netname);
+		if (v == VEC_ORIGIN)
+			self_sprint (self, "invalid ip address\n");
+		else
+			mute_add (v_x + (v_y * 256) + (v_z * 65536));
+	}
+
+	else if (self.impulse == IMP_ADMIN_UNMUTEIP)
+	{
+		v = ip_to_vec (self.netname);
+		if (v == VEC_ORIGIN)
+			self_sprint (self, "invalid ip address\n");
+		else
+			mute_remove (v_x + (v_y * 256) + (v_z * 65536));
 	}
 
 	impulse_override_cancel ();
