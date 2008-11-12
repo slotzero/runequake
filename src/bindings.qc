@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.128 2008/09/06 08:14:26 slotzero Exp $
+/*  $Id: bindings.qc,v 1.129 2008/11/12 06:10:17 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -279,6 +279,7 @@ player_aliases =
 	player_init_impulse_alias ("hook-on",			IMP_HOOK_ON);
 	player_init_impulse_alias ("hook-toggle",		IMP_HOOK_TOGGLE);
 	player_init_impulse_alias ("hud-toggle",		IMP_HUD_TOGGLE);
+	player_init_impulse_alias ("ignore-mute-client",	IMP_IGNORE_MUTE_CLIENT);
 	player_init_impulse_alias ("killstats",			IMP_KILLSTATS);
 	player_init_impulse_alias ("last",			IMP_LAST);
 	player_init_impulse_alias ("levels",			IMP_LEVELS);
