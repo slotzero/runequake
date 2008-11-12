@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.249 2008/09/06 07:08:42 slotzero Exp $
+/*  $Id: rjs.qc,v 1.250 2008/11/12 01:22:25 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1526,6 +1526,23 @@ common_impulses =
 		}
 	}
 
+	// requires runequake engine
+	else if (self.impulse == IMP_IGNORE_MUTE_CLIENT)
+	{
+		if (self.rqflags & RQ_IGNORE_MUTE_CLIENT)
+		{
+			self.rqflags = self.rqflags - self.rqflags & RQ_IGNORE_MUTE_CLIENT;
+			self.flags = self.flags - self.flags & FL_IGNORE_MUTE_CLIENT;
+			sprint (self, "filter muted clients off\n");
+		}
+		else
+		{
+			self.rqflags = self.rqflags | RQ_IGNORE_MUTE_CLIENT;
+			self.flags = self.flags | FL_IGNORE_MUTE_CLIENT;
+			sprint (self, "filter muted clients \bon\n");
+		}
+	}
+
 	else if (self.impulse == IMP_CUSTOM_SOUNDS)
 	{
 		if (self.rqflags & RQ_CUSTOM_SOUNDS)
@@ -1771,8 +1788,16 @@ player_init =
 	{
 		if (mute_check (self.packed) >= 0)
 		{
-			self.cl[CL_SPAM_TIME + %1] = sv[SV_TIME + %1]; // mute right away
-			self.rqflags = self.rqflags| RQ_MUTE;
+			if (MOD_PROTOCOL)
+			{
+				self.effects = self.effects | EF_MUTE_CLIENT;
+				self.rqflags = self.rqflags | RQ_MUTE;
+			}
+			else
+			{
+				self.cl[CL_SPAM_TIME + %1] = sv[SV_TIME + %1]; // mute right away
+				self.rqflags = self.rqflags | RQ_MUTE;
+			}
 		}
 	}
 

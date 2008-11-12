@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.155 2008/08/30 23:39:01 slotzero Exp $
+/*  $Id: client.qc,v 1.156 2008/11/12 01:22:25 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -764,8 +764,17 @@ PutClientInServer =
 
 	DecodeLevelParms ();
 
-	if (self.rqflags & RQ_LOW_BANDWIDTH_CLIENT)
-		self.flags = self.flags | FL_LOW_BANDWIDTH_CLIENT;
+	if (MOD_PROTOCOL)
+	{
+		if (self.rqflags & RQ_LOW_BANDWIDTH_CLIENT)
+			self.flags = self.flags | FL_LOW_BANDWIDTH_CLIENT;
+
+ 		if (self.rqflags & RQ_IGNORE_MUTE_CLIENT)
+			self.flags = self.flags | FL_IGNORE_MUTE_CLIENT;
+
+		if (self.rqflags & RQ_MUTE)
+			self.effects = self.effects | EF_MUTE_CLIENT;
+	}
 
 	// Do not allow firing immediately after you respawn to prevent
 	// your from losing your spawn shield.
@@ -1498,8 +1507,11 @@ PlayerPreThink =
 		self.lefty = time + 1;
 
 		// mute client
-		if (self.rqflags & RQ_MUTE)
-			self.cl[CL_SPAM_TIME + %1] = sv[SV_TIME + %1];
+		if (!MOD_PROTOCOL)
+		{
+			if (self.rqflags & RQ_MUTE)
+				self.cl[CL_SPAM_TIME + %1] = sv[SV_TIME + %1];
+		}
 
 		// ping
 		self.delay = client_ping (self);

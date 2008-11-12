@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.230 2008/09/06 08:14:26 slotzero Exp $
+/*  $Id: defs.qc,v 1.231 2008/11/12 01:22:25 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -502,7 +502,8 @@ float IMP_VOTE_YES		= 255;
 float IMP_VOTE_NO		= 254;
 //				= 238 - 253	[weapon aliases]
 //				= 220 - 237	[qsmack]
-//				= 219 - 208	[free]
+//				= 219 - 207	[free]
+float IMP_IGNORE_MUTE_CLIENT	= 208;
 float IMP_CHANGE_MAP2		= 207;
 float IMP_VOTE_NEVER		= 206;
 float IMP_STATS			= 205;
@@ -738,6 +739,7 @@ float RQ_TEAMSCORES_ON		= 16;
 float RQ_AUTOSTATS		= 32;
 float RQ_MUTE			= 64;
 float RQ_AUTO_VOTE_NO		= 128;
+float RQ_IGNORE_MUTE_CLIENT	= 256;
 
 // rqstate flags (not saved across levels)
 float RQS_LAGGED_OUT		= 1;
@@ -914,6 +916,7 @@ float	FL_WATERJUMP			= 2048;	// player jumping out of water
 float	FL_JUMPRELEASED			= 4096;	// for jump debouncing
 float	FL_LOW_BANDWIDTH_CLIENT		= 8192;	// low bandwidth mode (requires runequake engine)
 float	FL_OBSERVER			= 16384;// engine recongizes observer (requires runequake engine)
+float	FL_IGNORE_MUTE_CLIENT		= 32768;// (requires runequake engine)
 
 // edict.movetype values
 float	MOVETYPE_NONE			= 0;	// never moves
@@ -1093,6 +1096,7 @@ float	EF_DIMLIGHT 			= 8;
 float	EF_FROZEN			= 32;		// EF_ZERO_VELOCITY (requires runequake engine)
 float	EF_WEIRD			= 64;
 float	EF_MAYBE_DRAW			= 32768;	// requires runequake engine
+float	EF_MUTE_CLIENT			= 65536;	// requires runequake engine
 
 // messages
 float	MSG_BROADCAST			= IN_POQ(0, 4);	// unreliable to all
