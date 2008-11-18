@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.130 2008/11/12 07:13:53 slotzero Exp $
+/*  $Id: bindings.qc,v 1.131 2008/11/18 06:54:29 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -497,14 +497,10 @@ void ()
 custom_aliases_think =
 {
 	local entity os;
-
-	// XXX For some reason, this doesn't get run in Linux.  I'm not sure
-	// why yet.  I workaround it by sending it in hunk_init_storage()
-	// if this global isn't detected.
-	custom_aliases_sent = 1;
+	local string s;
 
 	if (!total_customs ())
-		return;
+		self.count = 4;
 
 	os = self;
 	self = world;
@@ -518,6 +514,9 @@ custom_aliases_think =
 
 	if (self.count > 2)
 	{
+		options = options | CONSOLE_ALIASES;
+		s = ftos (options);
+		cvar_set_infokey (CVAR_C4, s);
 		remove (self);
 		return;
 	}

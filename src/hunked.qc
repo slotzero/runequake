@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.63 2008/11/12 07:13:53 slotzero Exp $
+/*  $Id: hunked.qc,v 1.64 2008/11/18 06:54:29 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -486,17 +486,12 @@ track_last_level =
 	Write_Hunk_Float (HUNK_CONTEXT, HUNK_LAST_LEVEL_POS, pos + 1);
 };
 
-float custom_aliases_sent;
-
 void ()
 hunk_storage_init =
 {
 	local float i;
 
 	custom_maps ();
-
-	if (!custom_aliases_sent)
-		spawn_custom_aliases ();
 
 	// initialize storage for ban
 	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)

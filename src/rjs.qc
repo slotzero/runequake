@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.250 2008/11/12 01:22:25 slotzero Exp $
+/*  $Id: rjs.qc,v 1.251 2008/11/18 06:54:29 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -322,9 +322,6 @@ rjs_worldspawn =
 	if (!options & CONSOLE_ALIASES)
 	{
 		console_aliases ();
-		options = options | CONSOLE_ALIASES;
-		s = ftos (options);
-		cvar_set_infokey (CVAR_C4, s);
 		temp1 = cvar_infokey ("temp1");
 		set_gamemode ();
 	}
