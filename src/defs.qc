@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.231 2008/11/12 01:22:25 slotzero Exp $
+/*  $Id: defs.qc,v 1.232 2008/11/18 08:55:55 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -917,6 +917,7 @@ float	FL_JUMPRELEASED			= 4096;	// for jump debouncing
 float	FL_LOW_BANDWIDTH_CLIENT		= 8192;	// low bandwidth mode (requires runequake engine)
 float	FL_OBSERVER			= 16384;// engine recongizes observer (requires runequake engine)
 float	FL_IGNORE_MUTE_CLIENT		= 32768;// (requires runequake engine)
+float	FL_MUTE_CLIENT			= 65536;// (requires runequake engine)
 
 // edict.movetype values
 float	MOVETYPE_NONE			= 0;	// never moves
@@ -1096,7 +1097,6 @@ float	EF_DIMLIGHT 			= 8;
 float	EF_FROZEN			= 32;		// EF_ZERO_VELOCITY (requires runequake engine)
 float	EF_WEIRD			= 64;
 float	EF_MAYBE_DRAW			= 32768;	// requires runequake engine
-float	EF_MUTE_CLIENT			= 65536;	// requires runequake engine
 
 // messages
 float	MSG_BROADCAST			= IN_POQ(0, 4);	// unreliable to all

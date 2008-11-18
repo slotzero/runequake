@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.251 2008/11/18 06:54:29 slotzero Exp $
+/*  $Id: rjs.qc,v 1.252 2008/11/18 08:55:55 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1787,7 +1787,7 @@ player_init =
 		{
 			if (MOD_PROTOCOL)
 			{
-				self.effects = self.effects | EF_MUTE_CLIENT;
+				self.flags = self.flags | FL_MUTE_CLIENT;
 				self.rqflags = self.rqflags | RQ_MUTE;
 			}
 			else
