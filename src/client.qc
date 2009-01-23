@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.157 2008/11/18 08:55:54 slotzero Exp $
+/*  $Id: client.qc,v 1.158 2009/01/23 06:33:18 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -761,6 +761,10 @@ PutClientInServer =
 	self.num_heads = 0;
 	self.head_chain = world;
 	self.movetarget = world;
+
+	// Prevent damage when you join the game as an observer
+	// in lava or slime.
+	self.waterlevel = 0;
 
 	DecodeLevelParms ();
 
