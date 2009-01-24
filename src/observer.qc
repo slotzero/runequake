@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.72 2007/02/05 03:21:59 slotzero Exp $
+/*  $Id: observer.qc,v 1.73 2009/01/24 06:43:54 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -106,7 +106,12 @@ dead_impulses =
 		impulse_override ();
 
 	else if (self.impulse == 4)
-		corpse_to_observer (1);
+	{
+		if (self.aqflags & AQ_NO_WEAPON_TOGGLE || gamemode == MODE_MATCH)
+			self_sprint (self, "Menu observer disabled, type \bobserver\b in console instead.\n");
+		else
+			corpse_to_observer (1);
+	}
 
 	// Allow dead people to remove a phoenix rune, to avoid somebody
 	// waiting for them to spawn.
