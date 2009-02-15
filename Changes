@@ -1,20 +1,57 @@
-$Id: Changes,v 1.93 2008/07/08 02:37:09 slotzero Exp $
+$Id: Changes,v 1.94 2009/02/15 21:17:05 slotzero Exp $
 
-Version 1.3.?  Mon Jul 07 21:45:30 EST 2008
+Version 1.3.?  Sun Feb 15 16:16:27 EST 2009
 
     - Bug Fixes
 
-        - All teams are removed when match is aborted.
+        - Joining the game as observer while in lava or slime would cause damage
+          when you joined the game. [FIXED]
+
+        - The custom maps code sends the aliases for small, medium, and large at
+          different intervals to prevent both client crashing and console
+          overflow. This now increases the total number of maps to 197 for normal
+          Quake/ProQuake servers, and 297 for my modified engine.
+
+        - Prevented vote-team in match mode.
+
+        - WEAPON_CHARGED_OFFSET in settings.qc wasn't referenced to anything but
+          works now. Use VEC_ORIGIN ('0 0 0') for no weapons up.]
+
+        - Fixed a rare bug with weirdness rune and shamblers that caused
+          the server to crash.
+
+        - All teams are removed when match is aborted in match mode.
 
         - Mode switch voting wasn't working properly in Quakeworld.
 
+        - Vote commands now work in Dark Places.
+
     - Changes
+
+        - Added head hunters mode (vote-heads).  This mode is based off of the mod
+          Head Hunters.  It's still in the development stage because I need more
+          people to play it and give me feedback.
+
+        - Type help-"deathmatch, teamplay, noexit, temp1, or scratch1" in the server
+          console to get a list of the various options available and whether they're on or off.
+
+        - Typing "commands" in the server console displays every available server command.
+
+        - Mod officially supports in-game banning and in-game muting without any
+          server-side modifications, however, the in-game muting requires ProQuake
+          version 3.00 or greater.
+
+        - Improved the tornado rune trajectory.
+
+        - Added the command 'never' to always vote no. Use the command again
+          to toggle this feature when a vote is not in progress.
 
         - Recently played levels require a greater vote percentage.
 
         - Players are prevented from voting too ofen.
 
-     	- Added new player commands: vote-rune-drop, vote-lg-discharge.
+     	- Added new player commands: vote-rune-drop, vote-lg-discharge,
+          vote-classic-mega, vote-random-spawn.
 
         - Added new server commands: mode, modelock, modeunlock.
 
