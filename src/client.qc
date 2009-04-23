@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.158 2009/01/23 06:33:18 slotzero Exp $
+/*  $Id: client.qc,v 1.159 2009/04/23 02:23:40 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -907,7 +907,7 @@ PutClientInServer =
 			spot.owner = self;
 			spot.enemy = player_num_to_ent (parm13);
 			spot.think = rider_wait_think;
-			spot.runetime = time + 20;	// time out
+			spot.runetime = time + 15;	// time out
 			if (spot.enemy)
 				spot.nextthink = time;
 			else
