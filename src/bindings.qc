@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.131 2008/11/18 06:54:29 slotzero Exp $
+/*  $Id: bindings.qc,v 1.132 2009/04/23 03:18:08 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -660,8 +660,8 @@ check_console_command =
 			show_players ();
 
 		else if (i == C2_SHOW_SETTINGS)
-			//show_settings ();
-			help_scratch1 ();
+			show_settings ();
+
 		else if (i == C2_TOGGLE_RUNE_CHEAT)
 		{
 			// XXX Move this to its own function, for in-game use.
