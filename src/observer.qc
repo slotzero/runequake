@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.73 2009/01/24 06:43:54 slotzero Exp $
+/*  $Id: observer.qc,v 1.74 2009/04/23 03:05:00 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1293,6 +1293,14 @@ rider_wait_think =
 
 	if (!is_valid_player_e (self.enemy))
 	{
+		// If rider is in fast/high track mode, give up after a bit
+		// and try to find a new ridee.
+		if (self.runetime - time < 9)
+		{
+			if (self.owner.aqstate & AQS_RIDE_MASK)
+				self.enemy = ridee_pick ();
+		}
+
 		self.nextthink = time + 1;
 		return;
 	}
