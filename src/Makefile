@@ -1,4 +1,4 @@
-#    $Id: Makefile,v 1.13 2009/05/03 04:26:42 slotzero Exp $
+#    $Id: Makefile,v 1.14 2009/05/03 04:49:11 slotzero Exp $
 
 #    Copyright (C) 1998-2001  Roderick Schertler.
 #
@@ -64,7 +64,7 @@ M4		:= m4
 M4FLAGS		:= --prefix-builtins
 
 base_files	:=  Changes Configuring Copying Playing \
-			aliases.cfg example.cfg gnu.txt runequake.qst
+			example.cfg gnu.txt runequake.qst
 base_files_src	:= Notes
 
 dist_version	:= runequake-$(shell \
