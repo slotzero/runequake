@@ -1,8 +1,11 @@
-$Id: Changes,v 1.94 2009/02/15 21:17:05 slotzero Exp $
+$Id: Changes,v 1.95 2009/05/03 04:47:00 slotzero Exp $
 
-Version 1.3.?  Sun Feb 15 16:16:27 EST 2009
+Version 1.3.61  Sun May 03 00:46:44 EST 2009
 
     - Bug Fixes
+
+        - When riding a player who disconnects during intermission and you are
+          in fast/high track mode, you lose your ridee. [FIXED]
 
         - Joining the game as observer while in lava or slime would cause damage
           when you joined the game. [FIXED]
@@ -37,9 +40,7 @@ Version 1.3.?  Sun Feb 15 16:16:27 EST 2009
 
         - Typing "commands" in the server console displays every available server command.
 
-        - Mod officially supports in-game banning and in-game muting without any
-          server-side modifications, however, the in-game muting requires ProQuake
-          version 3.00 or greater.
+        - Mod officially supports in-game banning without any server-side modifications.
 
         - Improved the tornado rune trajectory.
 
