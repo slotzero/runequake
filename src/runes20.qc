@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.29 2008/03/12 03:08:31 slotzero Exp $
+/*  $Id: runes20.qc,v 1.30 2009/05/03 04:15:31 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -609,6 +609,10 @@ void (entity e, string tmodel, vector offs, vector ang, float type)
 Hat_Spawn =
 {
 	local entity dot;
+
+	// option to prevent quad/pent hat
+	if (scratch1 & S1_ORIGINAL_LEVELS && type)
+		return;
 
 	dot		= spawn ();
 	dot.movetype	= MOVETYPE_FLY;
