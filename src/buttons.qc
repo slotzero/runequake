@@ -1,4 +1,4 @@
-/*  $Id: buttons.qc,v 1.16 2009/05/03 04:15:31 slotzero Exp $
+/*  $Id: buttons.qc,v 1.17 2009/05/09 05:45:27 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -169,19 +169,10 @@ func_button =
 	self.blocked	= button_blocked;
 	self.use	= button_use;
 
-	// option to prevent shootable buttons
-	if (scratch1 & S1_ORIGINAL_LEVELS)
-	{
-		if (self.health)
-		{
-			self.max_health	= self.health;
-			self.th_die	= button_killed;
-			self.takedamage	= DAMAGE_YES;
-		}
-		else
-			self.touch	= button_touch;
-	}
-	else
+	if (!self.health)
+		self.netname = "func_button_shootable";
+
+	if (options & SHOOT_BUTTONS)
 	{
 		if (!self.health)
 		{
@@ -193,6 +184,17 @@ func_button =
 		self.max_health	= self.health;
 		self.th_die	= button_killed;
 		self.takedamage	= DAMAGE_YES;
+	}
+	else
+	{
+		if (self.health)
+		{
+			self.max_health	= self.health;
+			self.th_die	= button_killed;
+			self.takedamage	= DAMAGE_YES;
+		}
+		else
+			self.touch	= button_touch;
 	}
 
 	if (!self.speed)

@@ -1,4 +1,4 @@
-/*  $Id: toggle.qc,v 1.36 2008/09/02 01:22:21 slotzero Exp $
+/*  $Id: toggle.qc,v 1.37 2009/05/09 05:45:27 slotzero Exp $
 
     Copyright (C) 2004  David 'Slot Zero' Roberts.
 
@@ -529,6 +529,39 @@ toggle_random_spawn =
 		options = options | RANDOM_SPAWN;
 
 	lastspawn = world;
+
+	s = ftos (options);
+	cvar_set_infokey (CVAR_C4, s);
+};
+
+void ()
+toggle_shoot_buttons =
+{
+	local entity e;
+	local string s;
+
+	e = find (world, netname, "func_button_shootable");
+	while (e)
+	{
+		if (options & SHOOT_BUTTONS)
+		{
+			e.takedamage = DAMAGE_NO;
+			e.health = 0;
+		}
+		else
+		{
+			e.health	= 1;
+			e.max_health	= e.health;
+			e.th_die	= button_killed;
+			e.takedamage	= DAMAGE_YES;
+		}
+		e = find (e, netname, "func_button_shootable");
+	}
+
+	if (options & SHOOT_BUTTONS)
+		options = options - options & SHOOT_BUTTONS;
+	else
+		options = options | SHOOT_BUTTONS;
 
 	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);

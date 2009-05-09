@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.132 2009/04/23 03:18:08 slotzero Exp $
+/*  $Id: bindings.qc,v 1.133 2009/05/09 05:45:27 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -417,6 +417,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-runes",		IMP_VOTE_RUNES);
 	player_vote_impulse_alias ("vote-rotate",		IMP_VOTE_ROTATE);
 	player_vote_impulse_alias ("vote-shields",		IMP_VOTE_SHIELDS);
+	player_vote_impulse_alias ("vote-shoot-buttons",	IMP_VOTE_SHOOT_BUTTONS);
 	player_vote_impulse_alias ("vote-suit",			IMP_VOTE_SUIT);
 	player_vote_impulse_alias ("vote-team",			IMP_VOTE_TEAM);
 	player_vote_impulse_alias ("vote-weapons-stay",		IMP_VOTE_WEAPONS_STAY);
@@ -624,6 +625,8 @@ console_aliases =
 	console_init_cvar_alias ("help-noexit",		CVAR_C2,	C2_HELP_NOEXIT);
 	console_init_cvar_alias ("help-temp1",		CVAR_C2,	C2_HELP_TEMP1);
 	console_init_cvar_alias ("help-scratch1",	CVAR_C2,	C2_HELP_SCRATCH1);
+	console_init_cvar_alias ("shootbuttonson",	CVAR_C2,	C2_SHOOTBUTTONSON);
+	console_init_cvar_alias ("shootbuttonsoff",	CVAR_C2,	C2_SHOOTBUTTONSOFF);
 
 	level_aliases ();
 	spawn_custom_aliases ();
@@ -1289,6 +1292,24 @@ check_console_command =
 				dprint_force ("Command not supported on this server\n");
 		}
 
+		else if (i == C2_SHOOTBUTTONSON)
+		{
+			if (!options & SHOOT_BUTTONS)
+			{
+				dprint ("Shootable buttons on\n");
+				toggle_shoot_buttons ();
+			}
+		}
+
+		else if (i == C2_SHOOTBUTTONSOFF)
+		{
+			if (options & SHOOT_BUTTONS)
+			{
+				dprint ("Shootable buttons off\n");
+				toggle_shoot_buttons ();
+			}
+		}
+
 		else
 			dprint_force ("Unknown command\n");
 
@@ -1331,7 +1352,7 @@ console_commands =
 	self_sprint (self, "powerupdropon       powerupdropoff      lgdischargeon       lgdischargeoff\n");
 	self_sprint (self, "runeson             runesoff            runedropon          runedropoff\n");
 	self_sprint (self, "backpackson         backpacksoff        faststarton         faststartoff\n");
-	self_sprint (self, "randomspawnon       randomspawnoff                          \n");
+	self_sprint (self, "randomspawnon       randomspawnoff      shootbuttonson      shootbuttonsoff\n");
 };
 
 void ()
@@ -1462,6 +1483,7 @@ help_vote =
 	self_sprint (self, "\b                vote-lg_discharge\n");
 	self_sprint (self, "\b                vote-classic-mega\n");
 	self_sprint (self, "\b                vote-random-spawn\n");
+	self_sprint (self, "\b                vote-shoot-buttons\n");
 	// self_sprint (self, "\n");
 };
 
@@ -1514,6 +1536,7 @@ help_options =
 	self_sprint (self, "\b  lg discharge  ");	self_sprint_boolean (self, !options & NO_DISCHARGE);
 	self_sprint (self, "\n\bbackpacks     ");	self_sprint_boolean (self, !options & NO_BACKPACKS);
 	self_sprint (self, "\b  random spawn  ");       self_sprint_boolean (self, options & RANDOM_SPAWN);
+	self_sprint (self, "\n\bshoot buttons ");	self_sprint_boolean (self, options & SHOOT_BUTTONS);
 	self_sprint (self, "\n");
 };
 

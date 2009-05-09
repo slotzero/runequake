@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.232 2008/11/18 08:55:55 slotzero Exp $
+/*  $Id: defs.qc,v 1.233 2009/05/09 05:45:27 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -639,10 +639,11 @@ float IMP_VOTE_LG_DISCHARGE	= 31;
 float IMP_VOTE_CLASSIC_MEGA	= 32;
 float IMP_VOTE_HEADS		= 33;
 float IMP_VOTE_RANDOM_SPAWN	= 34;
+float IMP_VOTE_SHOOT_BUTTONS	= 35;
 
 // extended impulses for votes
 float IMP_VOTE_MIN		= 800;
-float IMP_VOTE_MAX		= 834;
+float IMP_VOTE_MAX		= 835;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;
@@ -1240,6 +1241,8 @@ float	C2_HELP_TEAMPLAY	= 76;
 float	C2_HELP_NOEXIT		= 77;
 float	C2_HELP_TEMP1		= 78;
 float	C2_HELP_SCRATCH1	= 79;
+float	C2_SHOOTBUTTONSON	= 80;
+float	C2_SHOOTBUTTONSOFF	= 81;
 
 // game mode
 float	gamemode;
@@ -1273,7 +1276,7 @@ float	NO_DROP_ON_DEATH	= 131072;
 float	NO_DROP_ARMOR		= 262144;
 float	NO_DISCHARGE		= 524288;
 float	RANDOM_SPAWN		= 1048576;
-//float = 2097152;
+float	SHOOT_BUTTONS		= 2097152;
 //float = 4194304;
 float	CONSOLE_ALIASES		= 8388608;
 

@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.85 2008/09/02 01:22:21 slotzero Exp $
+/*  $Id: vote.qc,v 1.86 2009/05/09 05:45:27 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -965,6 +965,18 @@ vote =
 		e.noise2	= " random spawn ";
 
 		if (options & RANDOM_SPAWN)
+			e.noise1	= "disable";
+		else
+			e.noise1	= "enable";
+	}
+	else if (self.impulse == IMP_VOTE_SHOOT_BUTTONS)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= toggle_shoot_buttons;
+		e.noise2	= " shootable buttons ";
+
+		if (options & SHOOT_BUTTONS)
 			e.noise1	= "disable";
 		else
 			e.noise1	= "enable";
