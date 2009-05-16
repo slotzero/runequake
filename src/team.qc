@@ -1,4 +1,4 @@
-/*  $Id: team.qc,v 1.91 2009/05/09 05:45:27 slotzero Exp $
+/*  $Id: team.qc,v 1.92 2009/05/16 02:26:05 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1159,6 +1159,10 @@ practice_defaults =
 	// random spawn on
 	if (!options & RANDOM_SPAWN)
 		toggle_random_spawn ();
+
+	// shootable buttons off
+	if (options & SHOOT_BUTTONS)
+		toggle_shoot_buttons ();
 };
 
 void ()
