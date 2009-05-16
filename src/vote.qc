@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.86 2009/05/09 05:45:27 slotzero Exp $
+/*  $Id: vote.qc,v 1.87 2009/05/16 06:27:02 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -35,8 +35,11 @@ vote_impulse_commands =
 {
 	if (is_observer ())
 	{
-		// allow in-game queued players to vote in arena mode
+		// allow queued players to vote in arena mode
 		if (gamemode & MODE_ARENA && self.runevar)
+			vote ();
+		// allow observers to vote except during match
+		else if (gamemode == MODE_MATCH && !match.state)
 			vote ();
 		else
 			count_votes (2);
@@ -193,7 +196,14 @@ count_votes =
 		if (type == 3)
 			self_sprint (self, "vote: nothing to vote on\n");
 		else if (type)
-			self_sprint (self, "Join the game to vote\n");
+		{
+			if (gamemode & MODE_ARENA)
+				self_sprint (self, "Join the queue to vote\n");
+			else if (gamemode == MODE_MATCH && match.state)
+				self_sprint (self, "Observers can't vote while match in progress\n");
+			else
+				self_sprint (self, "Join the game to vote\n");
+		}
 		return 0;
 	}
 
@@ -204,10 +214,11 @@ count_votes =
 	while (e)
 	{
 		i = 0;
-		// count in-game queued players in arena mode
-		if (gamemode & MODE_ARENA)
+		if (is_observer_e (e))
 		{
-			if (is_observer_e (e) && e.runevar)
+			if (gamemode & MODE_ARENA && e.runevar)
+				i = 1;
+			else if (gamemode == MODE_MATCH && !match.state)
 				i = 1;
 		}
 
@@ -1026,10 +1037,16 @@ vote_yes =
 		return;
 	}
 
-	if (gamemode & MODE_ARENA)
-		i = (is_observer () && !self.runevar);
-	else
-		i = is_observer ();
+	i = 0;
+	if (is_observer ())
+	{
+		if (gamemode & MODE_ARENA && self.runevar)
+			i = 0;
+		else if (gamemode == MODE_MATCH && !match.state)
+			i = 0;
+		else
+			i = 1;
+	}
 
 	if (self.vote_flags & VOTE_YES || i)
 	{
@@ -1067,10 +1084,16 @@ vote_no =
 		return;
 	}
 
-	if (gamemode & MODE_ARENA)
-		i = (is_observer () && !self.runevar);
-	else
-		i = is_observer ();
+	i = 0;
+	if (is_observer ())
+	{
+		if (gamemode & MODE_ARENA && self.runevar)
+			i = 0;
+		else if (gamemode == MODE_MATCH && !match.state)
+			i = 0;
+		else
+			i = 1;
+	}
 
 	if (self.vote_flags & VOTE_NO || i)
 	{
