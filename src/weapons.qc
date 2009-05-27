@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.70 2008/07/04 04:27:56 slotzero Exp $
+/*  $Id: weapons.qc,v 1.71 2009/05/27 02:07:36 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -699,7 +699,7 @@ W_FireGrenade =
 		eff	= 0;
 	}
 
-	if (gamemode == MODE_PRACTICE)
+	if (gamemode == MODE_PRACTICE || GRENADE_SPAM_OVERRIDE)
 	{
 		if (self.grenade_spam_time > time)
 		{

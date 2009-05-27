@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.66 2008/08/23 04:43:08 slotzero Exp $
+/*  $Id: settings.qc,v 1.67 2009/05/27 02:07:36 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -495,6 +495,11 @@ float MORTAR_REFIRE		= 1.4;
 float MORTAR_DAMAGE		= 90;
 float MORTAR_RADIUS		= 100;
 float MORTAR_TAPER		= 0.1;
+
+// Set this to a value other than zero to turn on grenade spam protection
+// in all modes.
+
+float GRENADE_SPAM_OVERRIDE	= 0;
 
 //-----------------------------------------------------------------------------
 // Runes
