@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.159 2009/04/23 02:23:40 slotzero Exp $
+/*  $Id: client.qc,v 1.160 2009/10/08 03:48:43 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1442,6 +1442,8 @@ WaterMove =
 	IN_POQ([-
 		if (!self.flags & FL_WATERJUMP)
 			self.velocity = self.velocity - 0.8 * self.waterlevel * frametime * self.velocity;
+		else if (self.velocity_z == 0)
+			self.flags = self.flags - self.flags & FL_WATERJUMP;
 	-])
 };
 
@@ -1456,12 +1458,12 @@ CheckWaterJump =
 	start_z = start_z + 8;
 	v_forward_z = 0;
 	normalize (v_forward);
-	end = start + v_forward*24;
+	end = start + v_forward * 24;
 	traceline (start, end, TRUE, self);
 	if (trace_fraction < 1)
 	{	// solid at waist
 		start_z = start_z + self.maxs_z - 8;
-		end = start + v_forward*24;
+		end = start + v_forward * 24;
 		self.movedir = trace_plane_normal * -50;
 		traceline (start, end, TRUE, self);
 		if (trace_fraction == 1)
@@ -1470,7 +1472,6 @@ CheckWaterJump =
 			self.velocity_z = 225;
 			self.flags = self.flags - (self.flags & FL_JUMPRELEASED);
 			self.teleport_time = time + 2;	// safety net
-			return;
 		}
 	}
 };
