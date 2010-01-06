@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.87 2009/05/16 06:27:02 slotzero Exp $
+/*  $Id: vote.qc,v 1.88 2010/01/06 08:12:36 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -222,7 +222,20 @@ count_votes =
 				i = 1;
 		}
 
-		if (is_player_e (e) || i)
+		if (is_player_e (e))
+			i = 1;
+
+		// only count afk with vote flags
+		if (e.rqstate & RQS_AFK)
+		{
+			if (i)
+			{
+				if (!e.vote_flags & (VOTE_YES | VOTE_NO))
+					i = 0;
+			}
+		}
+
+		if (i)
 		{
 			tot = tot + 1;
 			if (e.vote_flags & VOTE_YES)
@@ -432,7 +445,10 @@ vote =
 	{
 		if (e != self)
 		{
-			if (e.rqflags & RQ_AUTO_VOTE_NO && !e.vote_flags & VOTE_LAST_YES)
+			// remove vote flags from afk and prevent auto vote
+			if (e.rqstate & RQS_AFK)
+				e.vote_flags = 0;
+			else if (e.rqflags & RQ_AUTO_VOTE_NO && !e.vote_flags & VOTE_LAST_YES)
 				e.vote_flags = e.vote_flags | VOTE_NO | VOTE_LAST_NO;
 			else if (i)
 			{
@@ -446,6 +462,7 @@ vote =
 	}
 
 	self.vote_flags = self.vote_flags | VOTE_YES | VOTE_LAST_YES;
+	self.afk = time;
 
 	// entity init
 	//
@@ -1055,6 +1072,7 @@ vote_yes =
 	}
 
 	self.vote_flags = self.vote_flags | VOTE_YES | VOTE_LAST_YES;
+	self.afk = time;
 
 	if (count_votes (1) <= 0)
 		vote_action (vip);
@@ -1102,6 +1120,7 @@ vote_no =
 	}
 
 	self.vote_flags = self.vote_flags | VOTE_NO | VOTE_LAST_NO;
+	self.afk = time;
 
 	count_votes (1);
 };
