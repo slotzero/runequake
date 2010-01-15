@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.134 2009/05/16 02:27:07 slotzero Exp $
+/*  $Id: bindings.qc,v 1.135 2010/01/15 08:11:50 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -1601,6 +1601,7 @@ help_noexit =
 	if (i) self_sprint_float (self, i / NOEXIT_FORWARD_MULT); else self_sprint (self, "0");
 	self_sprint (self, "\n 1024 don't use custom levels           "); self_sprint_boolean (self, ne & NOEXIT_NO_CUSTOM_LEVELS);
 	self_sprint (self, "\n 2048 don't use standard maps           "); self_sprint_boolean (self, ne & NOEXIT_CUSTOM_LEVELS_ONLY);
+	self_sprint (self, "\n 4096 allow voting non-rotatable maps   "); self_sprint_boolean (self, ne & NOEXIT_VOTE_ALL_MAPS);
 	self_sprint (self, "\n");
 };
 

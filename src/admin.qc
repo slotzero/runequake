@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.55 2009/05/16 06:27:02 slotzero Exp $
+/*  $Id: admin.qc,v 1.56 2010/01/15 08:11:50 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -562,7 +562,7 @@ admin_impulse_map =
 
 	if (!admin_menu)
 	{
-		if (noexit & NOEXIT_NO_CUSTOM_LEVELS && self.impulse > 58)
+		if (noexit & NOEXIT_NO_CUSTOM_LEVELS && self.impulse > 58 && !noexit & NOEXIT_VOTE_ALL_MAPS)
 		{
 			if (custom_size (m))
 			{
@@ -570,7 +570,7 @@ admin_impulse_map =
 				return;
 			}
 		}
-		else if (noexit & NOEXIT_CUSTOM_LEVELS_ONLY && self.impulse < 59)
+		else if (noexit & NOEXIT_CUSTOM_LEVELS_ONLY && self.impulse < 59 && !noexit & NOEXIT_VOTE_ALL_MAPS)
 		{
 			if (map_size (m))
 			{

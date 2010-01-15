@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.233 2009/05/09 05:45:27 slotzero Exp $
+/*  $Id: defs.qc,v 1.234 2010/01/15 08:11:50 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -697,7 +697,7 @@ float NOEXIT_FORWARD_MULT	= 64;
 float NOEXIT_FORWARD_MASK	= 960;
 float NOEXIT_NO_CUSTOM_LEVELS	= 1024;
 float NOEXIT_CUSTOM_LEVELS_ONLY	= 2048;
-
+float NOEXIT_VOTE_ALL_MAPS	= 4096;
 
 // aqflags flags (saved across levels)
 float AQ_INIT_DONE		= 1;
