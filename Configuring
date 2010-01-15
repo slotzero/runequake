@@ -1,4 +1,4 @@
-$Id: Configuring,v 1.14 2008/01/01 06:03:10 slotzero Exp $
+$Id: Configuring,v 1.15 2010/01/15 08:10:52 slotzero Exp $
 
 Starting the server
 
@@ -277,6 +277,11 @@ noexit
 	Providing there are custom maps on the server, you can avoid
         seeing the standard levels in the map rotation.  Voting options
         for the standard maps are disabled as well.
+
+  4096 allow voting non-rotatable maps          NOEXIT_VOTE_ALL_MAPS
+
+        If you explicitly deny custom or standard maps you will not be
+        allowed to vote for them without using this option.
 
 
 temp1
