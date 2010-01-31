@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#    $Id: map,v 1.39 2008/09/04 04:02:18 slotzero Exp $
+#    $Id: map,v 1.40 2010/01/31 05:32:42 slotzero Exp $
 
 use strict;
 use warnings;
@@ -305,9 +305,9 @@ for my $size (1..$#custom_lev)
 {
 	for my $map (@{ $custom_lev[$size] })
 	{
-		if (length ($map) > 8)
+		if (length ($map) > 12)
 		{
-			die "$Me: $map is over 8 characters\n";
+			die "$Me: $map is over 12 characters\n";
 		}
 		if (exists $custom{$map})
 		{

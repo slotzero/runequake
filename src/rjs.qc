@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.252 2008/11/18 08:55:55 slotzero Exp $
+/*  $Id: rjs.qc,v 1.253 2010/01/31 05:32:42 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1726,9 +1726,9 @@ custom_sprint =
 	for (i = n = 1; i <= nmaps; i = i + 1)
 	{
 		m = sized_custom (levsize, i);
-		self_sprintf_len (self, m, -9);
+		self_sprintf_len (self, m, -13);
 
-		if (n > 3)
+		if (n > 2)
 		{
 			self_sprint (self, "\n");
 			n = 0;
