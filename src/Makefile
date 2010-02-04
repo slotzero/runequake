@@ -1,4 +1,4 @@
-#    $Id: Makefile,v 1.14 2009/05/03 04:49:11 slotzero Exp $
+#    $Id: Makefile,v 1.15 2010/02/04 04:16:14 slotzero Exp $
 
 #    Copyright (C) 1998-2001  Roderick Schertler.
 #
@@ -86,7 +86,7 @@ diff		:= cd .. && diff -rNc -x progdefs.h -x func.qc -x TAGS -x CVS \
 
 source_list	:= \
     `perl -anle 'print $$F[0] unless m-^//|^\s*$$- || $$F[0] eq "func.qc"' \
-	progs.src | tail +2`
+	progs.src | tail -n +2`
 
 make_func	:= \
 	perl -0777ne 'print "$$1 $$2 $$3;\n" \
