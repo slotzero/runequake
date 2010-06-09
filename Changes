@@ -1,4 +1,22 @@
-$Id: Changes,v 1.95 2009/05/03 04:47:00 slotzero Exp $
+$Id: Changes,v 1.96 2010/06/09 06:09:57 slotzero Exp $
+
+Version 1.3.67  Wed Jun 09 01:49:25 EST 2010
+
+    - Bug Fixes
+
+        - Noticable specifically on DM5, when you jump up to the pent you would get stuck if you
+          tried to jump up too close to the opening in the wall.  [FIXED]
+
+    - Changes
+
+        - If you explicitly deny custom or standard maps you will not be allowed to vote
+          for them without using the NOEXIT_VOTE_ALL_MAPS.
+
+        - Added new command vote-shoot-buttons to toggle shootable buttons.
+
+        - Map names length changed from 8 to 12.
+
+        - You can now vote for options while in the queue in match mode, except during a match.
 
 Version 1.3.61  Sun May 03 00:46:44 EST 2009
 
