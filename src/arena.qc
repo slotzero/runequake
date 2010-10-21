@@ -1,4 +1,4 @@
-/*  $Id: arena.qc,v 1.32 2007/07/20 00:59:13 slotzero Exp $
+/*  $Id: arena.qc,v 1.33 2010/10/21 07:14:56 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -408,6 +408,10 @@ arena_death =
 		arena.oldenemy   = arena.enemy;
 		arena.goalentity = arena.aiment;
 	}
+
+	// prevent an outside force from being the winner
+	if (arena.owner != attacker && arena.runent != attacker)
+		attacker = targ;
 
 	arena.enemy	= attacker;
 	arena.aiment	= targ;
