@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.30 2009/05/03 04:15:31 slotzero Exp $
+/*  $Id: runes20.qc,v 1.31 2010/10/24 07:16:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -857,6 +857,23 @@ Vamp_Resurrect =
 	self = oself;
 };
 
+// use this function to prevent takedamage overwrite under certain conditions
+void ()
+takedamage_hack =
+{
+	if (gamemode & MODE_ARENA)
+	{
+		if (arena.state)
+			return 0;
+	}
+	else if (gamemode == MODE_MATCH)
+	{
+		if (!match.state)
+			return 0;
+	}
+	return 1;
+};
+
 // Shield runevar:
 //    0 shields off and no shield requested
 //    1 shields on
@@ -871,8 +888,11 @@ Shield_On =
 		stuffcmd (self, CSHIFT_NONE);
 		self.effects = self.effects - self.effects & EF_BRIGHTFIELD;
 		self.runevar = 0;
-		self.takedamage = DAMAGE_AIM;
 		self.runetime = time + RN_SHIELD_RECHARGE;	// recharge time
+
+		// prevent overwriting takedamage in arena mode
+		if (takedamage_hack ())
+			self.takedamage = DAMAGE_AIM;
 	}
 	else if (self.runevar == 2 && self.runetime <= time)
 	{

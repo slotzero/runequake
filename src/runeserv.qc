@@ -1,4 +1,4 @@
-/*  $Id: runeserv.qc,v 1.67 2010/10/21 07:14:56 slotzero Exp $
+/*  $Id: runeserv.qc,v 1.68 2010/10/24 07:16:47 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -1337,7 +1337,6 @@ Rune_Type_Allowed =
 	if (gamemode & MODE_ARENA)
 	{
 		if (type == RN_BLINK)				return 0;
-		if (type == RN_SHIELD)				return 0;
 	}
 
 	return 1;
