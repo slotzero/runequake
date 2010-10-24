@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.31 2010/10/24 07:16:47 slotzero Exp $
+/*  $Id: runes20.qc,v 1.32 2010/10/24 07:32:07 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -858,7 +858,7 @@ Vamp_Resurrect =
 };
 
 // use this function to prevent takedamage overwrite under certain conditions
-void ()
+float ()
 takedamage_hack =
 {
 	if (gamemode & MODE_ARENA)
