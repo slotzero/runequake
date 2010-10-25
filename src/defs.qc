@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.234 2010/01/15 08:11:50 slotzero Exp $
+/*  $Id: defs.qc,v 1.235 2010/10/25 01:09:14 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1243,6 +1243,7 @@ float	C2_HELP_TEMP1		= 78;
 float	C2_HELP_SCRATCH1	= 79;
 float	C2_SHOOTBUTTONSON	= 80;
 float	C2_SHOOTBUTTONSOFF	= 81;
+float	C2_MAXRUNES		= 82;
 
 // game mode
 float	gamemode;

@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.135 2010/01/15 08:11:50 slotzero Exp $
+/*  $Id: bindings.qc,v 1.136 2010/10/25 01:09:14 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -627,6 +627,7 @@ console_aliases =
 	console_init_cvar_alias ("help-scratch1",	CVAR_C2,	C2_HELP_SCRATCH1);
 	console_init_cvar_alias ("shootbuttonson",	CVAR_C2,	C2_SHOOTBUTTONSON);
 	console_init_cvar_alias ("shootbuttonsoff",	CVAR_C2,	C2_SHOOTBUTTONSOFF);
+	console_init_cvar_alias ("maxrunes",		CVAR_C2,	C2_MAXRUNES);
 
 	level_aliases ();
 	spawn_custom_aliases ();
@@ -1296,7 +1297,7 @@ check_console_command =
 		{
 			if (!options & SHOOT_BUTTONS)
 			{
-				dprint ("Shootable buttons on\n");
+				dprint_force ("Shootable buttons on\n");
 				toggle_shoot_buttons ();
 			}
 		}
@@ -1305,8 +1306,30 @@ check_console_command =
 		{
 			if (options & SHOOT_BUTTONS)
 			{
-				dprint ("Shootable buttons off\n");
+				dprint_force ("Shootable buttons off\n");
 				toggle_shoot_buttons ();
+			}
+		}
+
+		else if (i == C2_MAXRUNES)
+		{
+			skill = cvar ("skill");
+			if (skill < 0 || skill > 63)
+				dprint_force ("Maxrunes must be a value between 0-63\n");
+			else
+			{
+				temp1 = cvar_infokey ("temp1");
+				if (temp1 & T1_NRUNES_MASK != skill)
+				{
+					temp1 = temp1 - temp1 & T1_NRUNES_MASK;
+					temp1 = temp1 | skill;
+					s = ftos (temp1);
+					cvar_set_infokey ("temp1", s);
+					dprint_force ("Maxrunes set to ");
+					s = ftos (skill);
+					dprint_force (s);
+					dprint_force ("\n");
+				}
 			}
 		}
 
@@ -1335,6 +1358,7 @@ console_commands =
 	self_sprint (self, "mutelist            muteip              unmuteip            conprint\n");
 	self_sprint (self, "eff                 killstats           stats               help-deathmatch\n");
 	self_sprint (self, "help-teamplay       help-noexit         help-temp1          help-scratch1\n");
+	self_sprint (self, "maxrunes\n");
 
 	self_sprint (self, "\n");
 	self_sprint (self, "normal              practice            match               arena\n");
