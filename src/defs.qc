@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.236 2010/10/26 09:06:50 slotzero Exp $
+/*  $Id: defs.qc,v 1.237 2010/10/26 21:50:28 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1285,8 +1285,8 @@ float	CONSOLE_ALIASES		= 8388608;
 
 // storage1
 float storage1;
-float	SETAFK_MULTIPLIER	= 16;
-float	SETAFK_MASK		= 240;
+float	SETAFK_MULTIPLIER	= 1;	// starting bit of mask
+float	SETAFK_MASK		= 31;	// bits 1, 2, 4, 8, 16
 
 IN_QW([-
 //

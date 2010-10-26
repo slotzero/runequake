@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.138 2010/10/26 09:06:50 slotzero Exp $
+/*  $Id: bindings.qc,v 1.139 2010/10/26 21:50:28 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -1339,11 +1339,12 @@ check_console_command =
 		else if (i == C2_SETAFK)
 		{
 			skill = cvar ("skill");
-			if (skill < 0 || skill > 15)
-				dprint_force ("Set 'skill' to a value between 0-15, then type setafk\n");
+			if (skill < 0 || skill > 30)
+				dprint_force ("Set 'skill' to a value between 0-30, then type setafk\n");
 			else
 			{
 				storage1 = cvar_infokey (CVAR_C5);
+				if (skill == 0) skill = 31; // zero bit hack
 				if (storage1 & SETAFK_MASK != skill)
 				{
 					storage1 = storage1 - storage1 & SETAFK_MASK;
@@ -1352,6 +1353,7 @@ check_console_command =
 					cvar_set_infokey (CVAR_C5, s);
 				}
 				dprint_force ("Setafk set to ");
+				if (skill == 31) skill = 0; // zero bit hack
 				s = ftos (skill);
 				dprint_force (s);
 				dprint_force ("\n");
