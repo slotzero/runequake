@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.137 2010/10/26 06:34:17 slotzero Exp $
+/*  $Id: bindings.qc,v 1.138 2010/10/26 09:06:50 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -628,6 +628,7 @@ console_aliases =
 	console_init_cvar_alias ("shootbuttonson",	CVAR_C2,	C2_SHOOTBUTTONSON);
 	console_init_cvar_alias ("shootbuttonsoff",	CVAR_C2,	C2_SHOOTBUTTONSOFF);
 	console_init_cvar_alias ("maxrunes",		CVAR_C2,	C2_MAXRUNES);
+	console_init_cvar_alias ("setafk",		CVAR_C2,	C2_SETAFK);
 
 	level_aliases ();
 	spawn_custom_aliases ();
@@ -1314,8 +1315,11 @@ check_console_command =
 		else if (i == C2_MAXRUNES)
 		{
 			skill = cvar ("skill");
-			if (skill < 0 || skill > 63)
-				dprint_force ("Set 'skill' to a value between 0-63, then type maxrunes\n");
+
+			if (!skill)
+				dprint_force ("You cannot set maxrunes to 0, use 'runesoff' instead\n");
+			else if (skill < 1 || skill > 63)
+				dprint_force ("Set 'skill' to a value between 1-63, then type maxrunes\n");
 			else
 			{
 				temp1 = cvar_infokey ("temp1");
@@ -1327,6 +1331,27 @@ check_console_command =
 					cvar_set_infokey ("temp1", s);
 				}
 				dprint_force ("Maxrunes set to ");
+				s = ftos (skill);
+				dprint_force (s);
+				dprint_force ("\n");
+			}
+		}
+		else if (i == C2_SETAFK)
+		{
+			skill = cvar ("skill");
+			if (skill < 0 || skill > 15)
+				dprint_force ("Set 'skill' to a value between 0-15, then type setafk\n");
+			else
+			{
+				storage1 = cvar_infokey (CVAR_C5);
+				if (storage1 & SETAFK_MASK != skill)
+				{
+					storage1 = storage1 - storage1 & SETAFK_MASK;
+					storage1 = storage1 | skill * SETAFK_MULTIPLIER;
+					s = ftos (storage1);
+					cvar_set_infokey (CVAR_C5, s);
+				}
+				dprint_force ("Setafk set to ");
 				s = ftos (skill);
 				dprint_force (s);
 				dprint_force ("\n");

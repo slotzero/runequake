@@ -1,4 +1,4 @@
-/*  $Id: defs.qc,v 1.235 2010/10/25 01:09:14 slotzero Exp $
+/*  $Id: defs.qc,v 1.236 2010/10/26 09:06:50 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1160,6 +1160,7 @@ string	CVAR_C1	= "saved1";	// levels
 string	CVAR_C2	= "saved2";	// console commands
 string	CVAR_C3	= "saved3";	// game mode
 string	CVAR_C4 = "saved4";	// options
+string	CVAR_C5 = "lcd_x";	// storage1
 
 // console commands
 float	C2_UPDATE_BINDINGS	= 1;
@@ -1244,6 +1245,7 @@ float	C2_HELP_SCRATCH1	= 79;
 float	C2_SHOOTBUTTONSON	= 80;
 float	C2_SHOOTBUTTONSOFF	= 81;
 float	C2_MAXRUNES		= 82;
+float	C2_SETAFK		= 83;
 
 // game mode
 float	gamemode;
@@ -1280,6 +1282,11 @@ float	RANDOM_SPAWN		= 1048576;
 float	SHOOT_BUTTONS		= 2097152;
 //float = 4194304;
 float	CONSOLE_ALIASES		= 8388608;
+
+// storage1
+float storage1;
+float	SETAFK_MULTIPLIER	= 16;
+float	SETAFK_MASK		= 240;
 
 IN_QW([-
 //
