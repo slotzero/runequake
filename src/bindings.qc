@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.136 2010/10/25 01:09:14 slotzero Exp $
+/*  $Id: bindings.qc,v 1.137 2010/10/26 06:34:17 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -1315,7 +1315,7 @@ check_console_command =
 		{
 			skill = cvar ("skill");
 			if (skill < 0 || skill > 63)
-				dprint_force ("Maxrunes must be a value between 0-63\n");
+				dprint_force ("Set 'skill' to a value between 0-63, then type maxrunes\n");
 			else
 			{
 				temp1 = cvar_infokey ("temp1");
@@ -1325,11 +1325,11 @@ check_console_command =
 					temp1 = temp1 | skill;
 					s = ftos (temp1);
 					cvar_set_infokey ("temp1", s);
-					dprint_force ("Maxrunes set to ");
-					s = ftos (skill);
-					dprint_force (s);
-					dprint_force ("\n");
 				}
+				dprint_force ("Maxrunes set to ");
+				s = ftos (skill);
+				dprint_force (s);
+				dprint_force ("\n");
 			}
 		}
 
