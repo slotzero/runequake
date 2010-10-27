@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.140 2010/10/27 00:55:26 slotzero Exp $
+/*  $Id: bindings.qc,v 1.141 2010/10/27 02:15:38 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -1386,7 +1386,7 @@ console_commands =
 	self_sprint (self, "mutelist            muteip              unmuteip            conprint\n");
 	self_sprint (self, "eff                 killstats           stats               help-deathmatch\n");
 	self_sprint (self, "help-teamplay       help-noexit         help-temp1          help-scratch1\n");
-	self_sprint (self, "maxrunes\n");
+	self_sprint (self, "maxrunes            setafk\n");
 
 	self_sprint (self, "\n");
 	self_sprint (self, "normal              practice            match               arena\n");
