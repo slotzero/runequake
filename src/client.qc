@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.161 2010/10/27 00:55:26 slotzero Exp $
+/*  $Id: client.qc,v 1.162 2010/10/27 05:12:59 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1473,6 +1473,45 @@ CheckWaterJump =
 			self.flags = self.flags - (self.flags & FL_JUMPRELEASED);
 			self.teleport_time = time + 2;	// safety net
 		}
+	}
+};
+
+float (entity e)
+client_ping =
+{	IN_QW(return 1;)
+	local float i, ping;
+
+	for (i = 0 ; i < %16 ; i = i + %1)
+		ping = ping + (e.cl[CL_PING_TIMES + i] * 1000);
+
+	ping = floor (ping / 16);
+	if (ping < 0)
+		ping = 0;
+	else if (ping > 9999)
+		ping = 9999;
+
+	return ping;
+};
+
+void ()
+client_ping_times =
+{
+	local entity e;
+	local float ping;
+	local string s;
+
+	dprint_force ("Client ping times:\n");
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		ping = client_ping (e);
+		s = ftos (ping);
+		self_sprintf_len (world, s, 4);
+		dprint_force (" ");
+		dprint_force (e.netname);
+		dprint_force ("\n");
+		e = find (e, classname, "player");
 	}
 };
 

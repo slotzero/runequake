@@ -1,4 +1,4 @@
-/*  $Id: match.qc,v 1.50 2008/07/04 06:32:40 slotzero Exp $
+/*  $Id: match.qc,v 1.51 2010/10/27 05:13:00 slotzero Exp $
 
     Copyright (C) 2005  David 'Slot Zero' Roberts.
 
@@ -330,6 +330,29 @@ match_unready_names =
 	while (e)
 	{
 		update_showscores_name (world, e);
+		e = find (e, classname, "player");
+	}
+};
+
+void (entity e)
+reset_efficiency_e =
+{
+	if (e.cl[CL_ACTIVE])
+	{
+		e.shell_dmg = e.shell_dmg_max = e.nail_dmg = e.nail_dmg_max = e.rocket_dmg = e.rocket_dmg_max = e.cell_dmg = e.cell_dmg_max = 0;
+		e.enemy_kills = e.suicide = e.mate_kills = e.killed = 0;
+	}
+};
+
+void ()
+reset_efficiency_all =
+{
+	local entity e;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		reset_efficiency_e (e);
 		e = find (e, classname, "player");
 	}
 };

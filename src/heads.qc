@@ -1,4 +1,4 @@
-/*  $Id: heads.qc,v 1.17 2008/08/23 05:36:33 slotzero Exp $
+/*  $Id: heads.qc,v 1.18 2010/10/27 05:12:59 slotzero Exp $
 
     Copyright (C) 2008  David 'Slot Zero' Roberts.
 
@@ -773,4 +773,18 @@ altar_place =
 		// XXX fix this
 		altar_create (self.origin);
 	}
+};
+
+void (vector spot)
+spawn_altar =
+{
+	local entity altar;
+
+	altar			= spawn ();
+	altar.classname		= "altar";
+
+	setorigin (altar, spot);
+
+	altar.think		= altar_spit;
+	altar.nextthink		= time;
 };

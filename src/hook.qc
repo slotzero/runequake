@@ -1,4 +1,4 @@
-/*  $Id: hook.qc,v 1.32 2008/09/02 09:57:45 slotzero Exp $
+/*  $Id: hook.qc,v 1.33 2010/10/27 05:12:59 slotzero Exp $
 
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
@@ -407,6 +407,19 @@ remove_hook_rune_from_players =
 
 			self	= os;
 		}
+		e = find (e, classname, "player");
+	}
+};
+
+void (.float field, float bit)
+remove_bit_from_players =
+{
+	local entity e;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		e.field = e.field - e.field & bit;
 		e = find (e, classname, "player");
 	}
 };

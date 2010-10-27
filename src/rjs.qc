@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.254 2010/10/27 00:55:27 slotzero Exp $
+/*  $Id: rjs.qc,v 1.255 2010/10/27 05:13:00 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -450,6 +450,27 @@ set_gamemode =
 	{
 		if (gamemode != MODE_NORMAL)
 			change_mode_to (MODE_NORMAL);
+	}
+};
+
+void ()
+ghost_check =
+{	IN_QW(return;)
+	local entity e, os;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (!e.cl[CL_ACTIVE])
+		{
+			dprint ("Ghost player removed\n");
+			os = self;
+			self = e;
+			ClientDisconnect ();
+			self = os;
+		}
+
+		e = find (e, classname, "player");
 	}
 };
 
@@ -1037,6 +1058,22 @@ float ()
 get_max_armor =
 {
 	return get_max_armor_e (self);
+};
+
+float ()
+maxplayers =
+{
+	local entity e;
+	local float i;
+
+	e = nextent (world);
+	for (i = 0; i < 16; i = i + 1)
+	{
+		if (e.classname == "bodyque")
+			return i;
+		e = nextent (e);
+	}
+	return 16;
 };
 
 float ()

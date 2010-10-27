@@ -1,4 +1,4 @@
-/*  $Id: print.qc,v 1.18 2008/09/03 08:52:11 slotzero Exp $
+/*  $Id: print.qc,v 1.19 2010/10/27 05:13:00 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -634,4 +634,300 @@ self_sprintf_len =
 		self_sprint (e, space[len]);
 		self_sprint (e, s);
 	}
+};
+
+//=============================================================================
+// custom sprint
+
+void (entity to, entity e)
+sprint_eff_player =
+{
+	local float i;
+	local string s;
+
+	self_sprintf_len (to, e.netname, -15);
+
+	// shells
+	i = rint ((e.shell_dmg / e.shell_dmg_max) * 100);
+
+	self_sprint (to, "\{252}");
+
+	if (!e.shell_dmg_max)
+		self_sprint (to, "N/A");
+	else if (i < 100)
+	{
+		s = ftos (i);
+		self_sprintf_len (to, s, 2);
+		self_sprint (to, "%");
+	}
+	else
+		self_sprint (to, "100");
+
+	// nails
+	i = rint ((e.nail_dmg / e.nail_dmg_max) * 100);
+
+	self_sprint (to, "\{252}");
+
+	if (!e.nail_dmg_max)
+		self_sprint (to, "N/A");
+	else if (i < 100)
+	{
+		s = ftos (i);
+		self_sprintf_len (to, s, 2);
+		self_sprint (to, "%");
+	}
+	else
+		self_sprint (to, "100");
+
+	// rockets
+	i = rint ((e.rocket_dmg / e.rocket_dmg_max) * 100);
+
+	self_sprint (to, "\{252}");
+
+	if (!e.rocket_dmg_max)
+		self_sprint (to, "N/A");
+	else if (i < 100)
+	{
+		s = ftos (i);
+		self_sprintf_len (to, s, 2);
+		self_sprint (to, "%");
+	}
+	else
+		self_sprint (to, "100");
+
+	// cells
+	i = rint ((e.cell_dmg / e.cell_dmg_max) * 100);
+
+	self_sprint (to, "\{252}");
+
+	if (!e.cell_dmg_max)
+		self_sprint (to, "N/A");
+	else if (i < 100)
+	{
+		s = ftos (i);
+		self_sprintf_len (to, s, 2);
+		self_sprint (to, "%");
+	}
+	else
+		self_sprint (to, "100");
+
+	// total
+	i = rint (((e.shell_dmg + e.nail_dmg + e.rocket_dmg + e.cell_dmg)
+			/ (e.shell_dmg_max + e.nail_dmg_max + e.rocket_dmg_max + e.cell_dmg_max)) * 100);
+
+	self_sprint (to, "\{252}");
+
+	if (e == to)
+		self_sprint (to, "\[");
+	else
+		self_sprint (to, " ");
+
+	if (!(e.shell_dmg_max + e.nail_dmg_max + e.rocket_dmg_max + e.cell_dmg_max))
+		self_sprint (to, "N/A");
+	else if (i < 100)
+	{
+		s = ftos (i);
+		self_sprintf_len (to, s, 2);
+		self_sprint (to, "%");
+	}
+	else
+		self_sprint (to, "100");
+
+	if (e == to)
+		self_sprint (to, "\]");
+	else
+		self_sprint (to, " ");
+
+	self_sprint (to, "\n");
+};
+
+void (entity to)
+sprint_efficiency_e =
+{
+	local entity e;
+
+	self_sprint (to, "bul - bullet efficiency\n");
+	self_sprint (to, "nls - nail efficiency\n");
+	self_sprint (to, "rox - rocket efficiency\n");
+	self_sprint (to, "lg  - lightning gun efficiency\n");
+	self_sprint (to, "\n     name      \{252}bul\{252}nls\{252}rox\{252}lg \{252}total\n");
+	self_sprint (to, "\b---------------+---+---+---+---+-----\n");
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (!is_observer_e (e) || e.runevar)
+			sprint_eff_player (to, e);
+
+		e = find (e, classname, "player");
+	}
+};
+
+void (entity to, entity e)
+sprint_killstats_player =
+{
+	local string s;
+
+	self_sprintf_len (to, e.netname, -15);
+
+	// frags
+	self_sprint (to, "\{252}");
+	if (e == to)
+		self_sprint (to, "\[");
+	else
+		self_sprint (to, " ");
+
+	s = ftos (e.frags);
+	self_sprintf_len (to, s, 3);
+
+	if (e == to)
+		self_sprint (to, "\]");
+	else
+		self_sprint (to, " ");
+
+	// enemy kills
+	self_sprint (to, "\{252}");
+	s = ftos (e.enemy_kills);
+	self_sprintf_len (to, s, 3);
+
+	// self kills
+	self_sprint (to, "\{252}");
+	s = ftos (e.suicide);
+	self_sprintf_len (to, s, 3);
+
+	// teammates killed
+	self_sprint (to, "\{252}");
+	s = ftos (e.mate_kills);
+	self_sprintf_len (to, s, 3);
+
+	// killed by enemy
+	self_sprint (to, "\{252}");
+	s = ftos (e.killed);
+	self_sprintf_len (to, s, 3);
+
+	self_sprint (to, "\n");
+};
+
+void (entity to)
+sprint_killstats_e =
+{
+	local entity e;
+
+	self_sprint (to, "opp - number of opponents killed\n");
+	self_sprint (to, "slf - number of times killed self\n");
+	self_sprint (to, "tm  - number of teammates killed\n");
+	self_sprint (to, "kld - number of times killed by enemy\n");
+	self_sprint (to, "\n     name      \{252}frags\{252}opp\{252}slf\{252}tm \{252}kld\n");
+	self_sprint (to, "\b---------------+-----+---+---+---+---\n");
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (!is_observer_e (e) || e.runevar)
+			sprint_killstats_player (to, e);
+
+		e = find (e, classname, "player");
+	}
+};
+
+void ()
+sprint_killstats =
+{
+	sprint_killstats_e (self);
+};
+
+void (entity to, entity e)
+sprint_stats_player =
+{
+	local float i;
+	local string s;
+
+	self_sprintf_len (to, e.netname, -15);
+
+	// kill efficiency
+	self_sprint (to, "\{252}");
+
+	i = rint ((e.enemy_kills / (e.enemy_kills + e.suicide + e.mate_kills + e.killed)) * 100);
+
+	if (e == to)
+		self_sprint (to, "\[");
+	else
+		self_sprint (to, " ");
+
+	if (!(e.enemy_kills + e.suicide + e.mate_kills + e.killed))
+		self_sprint (to, "N/A");
+	else if (i < 100)
+	{
+		s = ftos (i);
+		self_sprintf_len (to, s, 2);
+		self_sprint (to, "%");
+	}
+	else
+		self_sprint (to, "100");
+
+	if (e == to)
+		self_sprint (to, "\]");
+	else
+		self_sprint (to, " ");
+
+	// weapon efficiency
+	self_sprint (to, "\{252}");
+
+	i = rint (((e.shell_dmg + e.nail_dmg + e.rocket_dmg + e.cell_dmg)
+			/ (e.shell_dmg_max + e.nail_dmg_max + e.rocket_dmg_max + e.cell_dmg_max)) * 100);
+
+	if (e == to)
+		self_sprint (to, "\[");
+	else
+		self_sprint (to, " ");
+
+	if (!(e.shell_dmg_max + e.nail_dmg_max + e.rocket_dmg_max + e.cell_dmg_max))
+		self_sprint (to, "N/A");
+	else if (i < 100)
+	{
+		s = ftos (i);
+		self_sprintf_len (to, s, 2);
+		self_sprint (to, "%");
+	}
+	else
+		self_sprint (to, "100");
+
+	if (e == to)
+		self_sprint (to, "\]");
+	else
+		self_sprint (to, " ");
+
+	self_sprint (to, "\n");
+};
+
+void ()
+sprint_efficiency =
+{
+	sprint_efficiency_e (self);
+};
+
+void (entity to)
+sprint_stats_e =
+{
+	local entity e;
+
+	self_sprint (to, "kill  - kill efficiency\n");
+	self_sprint (to, "weapn - weapon efficiency\n");
+	self_sprint (to, "\n     name      \{252}kill \{252}weapn\n");
+	self_sprint (to, "\b---------------+-----+-----\n");
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (!is_observer_e (e) || e.runevar)
+			sprint_stats_player (to, e);
+
+		e = find (e, classname, "player");
+	}
+};
+
+void ()
+sprint_stats =
+{
+	sprint_stats_e (self);
 };
