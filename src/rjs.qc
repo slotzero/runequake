@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.253 2010/01/31 05:32:42 slotzero Exp $
+/*  $Id: rjs.qc,v 1.254 2010/10/27 00:55:27 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -300,6 +300,26 @@ kick_suicider =
 	return 0;
 };
 
+void ()
+process_storage_cvars =
+{
+	local float wanted;
+
+	storage1 = cvar_infokey (CVAR_C5);
+
+	// AFK_TIME
+	wanted = storage1 & SETAFK_MASK / SETAFK_MULTIPLIER;
+	if (wanted)
+	{
+		if (wanted == 31)
+			AFK_TIME = 0;
+		else
+			AFK_TIME = wanted;
+	}
+	else
+		AFK_TIME = DEFAULT_AFK_TIME;
+};
+
 // I used to do an initial change_teamplay() here to get the mod
 // and version into the teamplay string.  See the comments in
 // StartFrame().
@@ -349,6 +369,7 @@ rjs_worldspawn =
 		match	= spawn ();
 
 	timelimit_countdown_spawn ();
+	process_storage_cvars ();
 
 	if (START_LEVEL_EXEC != string_null)
 	{

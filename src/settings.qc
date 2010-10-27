@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.67 2009/05/27 02:07:36 slotzero Exp $
+/*  $Id: settings.qc,v 1.68 2010/10/27 00:55:27 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -382,6 +382,11 @@ float POWERUP_PICKUP_WARN	= 0;
 // command.  Use 0 to disable.
 
 float MAX_CLIENT_DISCONNECT_LOG	= 10;
+
+// Amount of minutes a player has to remain idle before going AFK.  Use
+// setafk in console to override.
+
+float DEFAULT_AFK_TIME = 5;
 
 //-----------------------------------------------------------------------------
 // Weapons

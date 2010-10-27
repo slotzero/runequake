@@ -1,4 +1,4 @@
-/*  $Id: client.qc,v 1.160 2009/10/08 03:48:43 slotzero Exp $
+/*  $Id: client.qc,v 1.161 2010/10/27 00:55:26 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -1556,10 +1556,13 @@ PlayerPreThink =
 		}
 		else
 		{
-			if (self.afk < time - 300 && !is_qsmack () IN_QW(&& 0)) // 5 minutes (XXX set this from console)
+			if (AFK_TIME)
 			{
-				self.rqstate = self.rqstate | RQS_AFK;
-				update_showscores_name (world, self);
+				if (self.afk < time - AFK_TIME * 60 && !is_qsmack () IN_QW(&& 0))
+				{
+					self.rqstate = self.rqstate | RQS_AFK;
+					update_showscores_name (world, self);
+				}
 			}
 		}
 

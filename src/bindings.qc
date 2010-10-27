@@ -1,4 +1,4 @@
-/*  $Id: bindings.qc,v 1.139 2010/10/26 21:50:28 slotzero Exp $
+/*  $Id: bindings.qc,v 1.140 2010/10/27 00:55:26 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -1354,6 +1354,7 @@ check_console_command =
 				}
 				dprint_force ("Setafk set to ");
 				if (skill == 31) skill = 0; // zero bit hack
+				AFK_TIME = skill;
 				s = ftos (skill);
 				dprint_force (s);
 				dprint_force ("\n");
