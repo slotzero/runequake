@@ -1,4 +1,4 @@
-/*  $Id: runes20.qc,v 1.32 2010/10/24 07:32:07 slotzero Exp $
+/*  $Id: runes20.qc,v 1.33 2010/10/27 01:55:51 slotzero Exp $
 
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
@@ -802,10 +802,14 @@ Vamp_Heal =
 
 	wasdead = vamp.health <= 0;
 
-	if (victim.classname == "player")
-		vamp.health = vamp.health + (damage);
-	else
-		vamp.health = vamp.health + (0.2 * damage);
+	// prevent resurrect abuse
+	if (vamp.runevector_x < time)
+	{
+		if (victim.classname == "player")
+			vamp.health = vamp.health + (damage);
+		else
+			vamp.health = vamp.health + (0.2 * damage);
+	}
 	if (vamp.health > (vamp.max_health + MAX_OVER_HEALTH))
 		vamp.health = vamp.max_health + MAX_OVER_HEALTH;
 
@@ -826,6 +830,10 @@ Vamp_Resurrect =
 	bprint (self.netname);
 	bprint (" comes back to life!\n");
 	Resurrect (0);
+
+	// prevent resurrect abuse
+	self.runevector_x = time + self.runevector_y;
+	self.runevector_y = self.runevector_y + 0.5;
 
 	// Remove her rune and backpack if possible.
 	e = findradius (self.origin, 250);
