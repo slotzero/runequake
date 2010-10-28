@@ -1,4 +1,4 @@
-/*  $Id: settings.qc,v 1.68 2010/10/27 00:55:27 slotzero Exp $
+/*  $Id: settings.qc,v 1.69 2010/10/28 03:49:14 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -303,23 +303,17 @@ float TEAM_2	= 14;	// blue
 float TEAM_3	= 4;	// green
 float TEAM_4	= 2;	// brown
 
-// Number of observers allowed per team in match mode.
-
-float MAX_TEAM_OBSERVERS = 1;
-
 // These control the colors used for the various particle effects.  I
 // don't know of a list which details the color values used here.
 
 float PARTICLE_BARREL		= 75;
 float PARTICLE_BLOOD		= 73;
-float PARTICLE_CHUNK		= 0;
 float PARTICLE_DEATH_SPOT	= 255;	// originally 40, same as freeze trap
 float PARTICLE_ENT_DAMAGE	= 225;
 float PARTICLE_FREEZE_TRAP	= 40;
 float PARTICLE_IMPACT		= 96;
 float PARTICLE_ORB_REMOVE	= 192;
 float PARTICLE_RADIATION	= 104;
-float PARTICLE_RADIATION_ARM	= 0;
 float PARTICLE_SWITCH_1		= 36;
 float PARTICLE_SWITCH_2		= 44;
 float PARTICLE_TELEPORT_SHUFFLE	= 8;
