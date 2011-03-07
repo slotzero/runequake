@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.65 2011/03/07 06:31:16 slotzero Exp $
+/*  $Id: hunked.qc,v 1.66 2011/03/07 07:10:52 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -507,5 +507,7 @@ hunk_storage_init =
 	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
 		Write_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + i, 0);
 
-	localcmd ("exec ban.txt\n");
+	// XXX settings.qc?
+	if (!MOD_PROTOCOL)
+		localcmd ("exec ban.txt\n");
 };
