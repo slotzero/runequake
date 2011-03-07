@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.64 2008/11/18 06:54:29 slotzero Exp $
+/*  $Id: hunked.qc,v 1.65 2011/03/07 06:31:16 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -250,6 +250,8 @@ ban_check =
 void ()
 ban_list =
 {
+	if (MOD_PROTOCOL)
+		return self_sprint (self, "Type '\bban\b' from console for list\n");
 	local float i;
 	local float hunk_ip;
 
@@ -337,6 +339,8 @@ ip_to_vec =
 void (float ip)
 ban_remove =
 {
+	if (MOD_PROTOCOL)
+		return self_sprint (self, "Type '\bban <ip address> off\b' from console to unban IP\n");
 	local float pos;
 
 	pos = ban_check (ip);
@@ -351,6 +355,8 @@ ban_remove =
 void (float ip)
 ban_add =
 {
+	if (MOD_PROTOCOL)
+		return self_sprint (self, "Type '\bban <ip address>\b' from console to ban IP\n");
 	local float i;
 	local float hunk_ip;
 
