@@ -1,4 +1,4 @@
-/*  $Id: hunked.qc,v 1.67 2011/03/08 22:05:00 slotzero Exp $
+/*  $Id: hunked.qc,v 1.68 2011/03/09 04:14:37 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -507,7 +507,7 @@ hunk_storage_init =
 	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
 		Write_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + i, 0);
 
-	if (!MOD_PROTOCOL)
+	if (MOD_PROTOCOL)
 		localcmd ("exec mute.txt\n");
 	else
 		localcmd ("exec ban.txt\n");
