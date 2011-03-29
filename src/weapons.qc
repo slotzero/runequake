@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.71 2009/05/27 02:07:36 slotzero Exp $
+/*  $Id: weapons.qc,v 1.72 2011/03/29 07:50:26 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -360,12 +360,12 @@ ROCKETS
 ==============================================================================
 */
 
-void ()	s_explode1	=	[0,		s_explode2] {};
-void ()	s_explode2	=	[1,		s_explode3] {};
-void ()	s_explode3	=	[2,		s_explode4] {};
-void ()	s_explode4	=	[3,		s_explode5] {};
-void ()	s_explode5	=	[4,		s_explode6] {};
-void ()	s_explode6	=	[5,		SUB_Remove] {};
+void ()	s_explode1 = [0, s_explode2] {};
+void ()	s_explode2 = [1, s_explode3] {};
+void ()	s_explode3 = [2, s_explode4] {};
+void ()	s_explode4 = [3, s_explode5] {};
+void ()	s_explode5 = [4, s_explode6] {};
+void ()	s_explode6 = [5, SUB_Remove] {};
 
 void ()
 BecomeExplosion =
@@ -415,8 +415,9 @@ T_MissileTouch =
 
 	reflect = self.classname == "mortar";
 
+	// don't explode on owner
 	if (other == self.owner)
-		return;		// don't explode on owner
+		return;
 
 	if (pointcontents (self.origin) == CONTENT_SKY)
 	{
@@ -980,7 +981,7 @@ W_SetCurrentAmmo =
 float ()
 W_BestWeapon =
 {
-	local	float	it, nw;
+	local	float	n, it, nw;
 	local	entity	e;
 
 	if (self.runetype == RN_LUMBER)
@@ -1013,10 +1014,8 @@ W_BestWeapon =
 
 	if (it & IT_SUPER_SHOTGUN)
 	{
-		if (nw
-			&& weapon_it_have_min_ammo (WEAPON_FLAMETHROWER, 0)
-			&& (self.runetype == RN_TORCH
-				|| weapon_it_is_alt (IT_SUPER_SHOTGUN)))
+		n = weapon_it_is_alt (IT_SUPER_SHOTGUN);
+		if (nw && weapon_it_have_min_ammo (WEAPON_FLAMETHROWER, 0) && (self.runetype == RN_TORCH || n))
 			return WEAPON_FLAMETHROWER;
 		else if (weapon_it_have_min_ammo (IT_SUPER_SHOTGUN, 0))
 			return IT_SUPER_SHOTGUN;
@@ -1024,10 +1023,8 @@ W_BestWeapon =
 
 	if (it & IT_NAILGUN)
 	{
-		if (nw
-			&& weapon_it_have_min_ammo (WEAPON_LAVA, 0)
-			&& (self.runetype == RN_TORCH
-				|| weapon_it_is_alt (IT_NAILGUN)))
+		n = weapon_it_is_alt (IT_NAILGUN);
+		if (nw && weapon_it_have_min_ammo (WEAPON_LAVA, 0) && (self.runetype == RN_TORCH || n))
 			return WEAPON_LAVA;
 		else if (weapon_it_have_min_ammo (IT_NAILGUN, 0))
 			return IT_NAILGUN;
@@ -1287,8 +1284,7 @@ ImpulseCommands =
 	else if (self.impulse == 12)
 		CycleWeaponReverseCommand ();
 
-	else if (self.impulse >= IMP_RUNE_CHEAT_BASE
-			&& self.impulse < IMP_RUNE_CHEAT_BASE + RN_MAX_ALL)
+	else if (self.impulse >= IMP_RUNE_CHEAT_BASE && self.impulse < IMP_RUNE_CHEAT_BASE + RN_MAX_ALL)
 	{
 		local float wanted;
 
@@ -1297,12 +1293,8 @@ ImpulseCommands =
 			wanted = 0;
 		//if (wanted && self.runetype == RN_SHIELD && self.runevar == 1)
 		//	wanted = 0;
-		if (wanted
-				&& deathmatch & DM_DM_MASK
-				&& !temp1 & T1_RUNE_CHEAT
-				// Let admins use camo to help spot cheaters.
-				&& (!self.aqflags & AQ_ADMIN
-					|| wanted != RN_CAMO))
+		// Let admins use camo to help spot cheaters.
+		if (wanted && deathmatch & DM_DM_MASK && !temp1 & T1_RUNE_CHEAT && (!self.aqflags & AQ_ADMIN || wanted != RN_CAMO))
 			wanted = 0;
 		if (wanted)
 			Rune_Activate (wanted, 1);
@@ -1327,9 +1319,7 @@ ImpulseCommands =
 			pack_rat_rune_drop (1);
 		else if (rune_drop_delay == -1)
 		{
-			centerprint2 (self,
-				"Rune deletion is disabled,\n",
-				"make the best of what you have!\n");
+			centerprint2 (self, "Rune deletion is disabled,\n", "make the best of what you have!\n");
 		}
 		else if (self.dropdelay < 0)
 		{
@@ -1364,8 +1354,7 @@ ImpulseCommands =
 	else if (self.impulse == IMP_SWITCHFIRE_OFF)
 		switchfire_off ();
 
-	else if (self.impulse >= IMP_SWITCHFIRE_BASE
-			&& self.impulse <= IMP_SWITCHFIRE_BASE + IMP_SWITCHFIRE_COUNT - 1)
+	else if (self.impulse >= IMP_SWITCHFIRE_BASE && self.impulse <= IMP_SWITCHFIRE_BASE + IMP_SWITCHFIRE_COUNT - 1)
 	{
 		self.impulse = self.impulse - IMP_SWITCHFIRE_BASE + 1;
 		switchfire ();
@@ -1374,9 +1363,7 @@ ImpulseCommands =
 	else if (self.impulse == IMP_SWITCHFIRE_BEST)
 		switchfire_best ();
 
-	else if (self.impulse == IMP_HOOK_ON
-			|| self.impulse == IMP_HOOK_OFF
-			|| self.impulse == IMP_HOOK_TOGGLE)
+	else if (self.impulse == IMP_HOOK_ON || self.impulse == IMP_HOOK_OFF || self.impulse == IMP_HOOK_TOGGLE)
 	{
 		if (!have_hook ())
 		{
@@ -1401,8 +1388,7 @@ ImpulseCommands =
 	else if (self.impulse == IMP_WEAPON_MODE)
 		weapon_mode ();
 
-	else if (self.impulse >= IMP_WEAPON_BASE
-			&& self.impulse <= IMP_WEAPON_BASE + IMP_WEAPON_COUNT - 1)
+	else if (self.impulse >= IMP_WEAPON_BASE && self.impulse <= IMP_WEAPON_BASE + IMP_WEAPON_COUNT - 1)
 	{
 		self.impulse = self.impulse - IMP_WEAPON_BASE + IMP_WEAPON_START;
 		W_ChangeWeapon (0, 1);
@@ -1483,8 +1469,7 @@ void ()
 SuperDamageSound =
 {
 
-	if (self.super_damage_finished > time
-			|| self.owner.super_damage_finished > time)
+	if (self.super_damage_finished > time || self.owner.super_damage_finished > time)
 	{
 		if (self.super_sound < time)
 		{

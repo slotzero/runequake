@@ -1,4 +1,4 @@
-/*  $Id: runes60.qc,v 1.68 2008/08/12 06:11:03 slotzero Exp $
+/*  $Id: runes60.qc,v 1.69 2011/03/29 07:50:26 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -206,18 +206,17 @@ Rune_Blizzard =
 	{
 		if (e.classname == "player" || is_pet_e (e))
 		{
-			if (!environmental (e)
-					&& e.runetype != RN_BLIZZARD
-					&& e.runetype != RN_FREEZE
-					&& !(isfriend2 (self, e) && self != e)
-					&& !e.effects & EF_FROZEN)
+			if (!environmental (e) && e.runetype != RN_BLIZZARD)
 			{
-				if (e.health > 0 && e != self && e.owner != self)
+				if (e.runetype != RN_FREEZE && !(isfriend2 (self, e) && self != e) && !e.effects & EF_FROZEN)
 				{
-					if (CanDamage (e, self))
+					if (e.health > 0 && e != self && e.owner != self)
 					{
-						Blizzard_Freeze (e, 1.2);
-						i = i + 1;
+						if (CanDamage (e, self))
+						{
+							Blizzard_Freeze (e, 1.2);
+							i = i + 1;
+						}
 					}
 				}
 			}
@@ -878,10 +877,7 @@ tornado_pull =
 			{
 				if (!isfriend2 (self.owner, e) || self.owner == e)
 				{
-					if (e.movetype != MOVETYPE_NONE
-						&& e.movetype != MOVETYPE_PUSH
-						&& e.movetype != MOVETYPE_NOCLIP
-						&& e.health > 0)
+					if (e.movetype != MOVETYPE_NONE && e.movetype != MOVETYPE_PUSH && e.movetype != MOVETYPE_NOCLIP && e.health > 0)
 					{
 						d = vlen (e.origin - self.origin);
 						percent = 1 - (d / dist);
