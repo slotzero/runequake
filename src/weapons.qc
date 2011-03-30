@@ -1,4 +1,4 @@
-/*  $Id: weapons.qc,v 1.72 2011/03/29 07:50:26 slotzero Exp $
+/*  $Id: weapons.qc,v 1.73 2011/03/30 02:43:48 slotzero Exp $
 
     Copyright (C) 1996, 1997  Id Software, Inc.
 
@@ -981,7 +981,7 @@ W_SetCurrentAmmo =
 float ()
 W_BestWeapon =
 {
-	local	float	n, it, nw;
+	local	float	it, nw, alt;
 	local	entity	e;
 
 	if (self.runetype == RN_LUMBER)
@@ -1014,8 +1014,8 @@ W_BestWeapon =
 
 	if (it & IT_SUPER_SHOTGUN)
 	{
-		n = weapon_it_is_alt (IT_SUPER_SHOTGUN);
-		if (nw && weapon_it_have_min_ammo (WEAPON_FLAMETHROWER, 0) && (self.runetype == RN_TORCH || n))
+		alt = weapon_it_is_alt (IT_SUPER_SHOTGUN);
+		if (nw && weapon_it_have_min_ammo (WEAPON_FLAMETHROWER, 0) && (self.runetype == RN_TORCH || alt))
 			return WEAPON_FLAMETHROWER;
 		else if (weapon_it_have_min_ammo (IT_SUPER_SHOTGUN, 0))
 			return IT_SUPER_SHOTGUN;
@@ -1023,8 +1023,8 @@ W_BestWeapon =
 
 	if (it & IT_NAILGUN)
 	{
-		n = weapon_it_is_alt (IT_NAILGUN);
-		if (nw && weapon_it_have_min_ammo (WEAPON_LAVA, 0) && (self.runetype == RN_TORCH || n))
+		alt = weapon_it_is_alt (IT_NAILGUN);
+		if (nw && weapon_it_have_min_ammo (WEAPON_LAVA, 0) && (self.runetype == RN_TORCH || alt))
 			return WEAPON_LAVA;
 		else if (weapon_it_have_min_ammo (IT_NAILGUN, 0))
 			return IT_NAILGUN;
