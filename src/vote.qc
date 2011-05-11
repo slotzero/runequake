@@ -1,4 +1,4 @@
-/*  $Id: vote.qc,v 1.88 2010/01/06 08:12:36 slotzero Exp $
+/*  $Id: vote.qc,v 1.89 2011/05/11 20:25:05 slotzero Exp $
 
     Copyright (C) 2003  David 'Slot Zero' Roberts.
 
@@ -1129,7 +1129,7 @@ void ()
 show_votes =
 {
 	local entity e, vip;
-	local float yes, no, tot;
+	local float i, yes, no, tot;
 
 	vip = find_vip ();
 	if (vip)
@@ -1150,7 +1150,19 @@ show_votes =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		if (e.vote_flags & VOTE_YES)
+		i = 0;
+		if (is_observer_e (e))
+		{
+			if (gamemode & MODE_ARENA && e.runevar)
+				i = 1;
+			else if (gamemode == MODE_MATCH && !match.state)
+				i = 1;
+		}
+
+		if (is_player_e (e))
+			i = 1;
+
+		if (e.vote_flags & VOTE_YES && i)
 		{
 			if (e == self)
 				self_sprint (self, "\byes\b - ");
@@ -1169,7 +1181,19 @@ show_votes =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		if (e.vote_flags & VOTE_NO)
+		i = 0;
+		if (is_observer_e (e))
+		{
+			if (gamemode & MODE_ARENA && e.runevar)
+				i = 1;
+			else if (gamemode == MODE_MATCH && !match.state)
+				i = 1;
+		}
+
+		if (is_player_e (e))
+			i = 1;
+
+		if (e.vote_flags & VOTE_NO && i)
 		{
 			if (e == self)
 				self_sprint (self, " \bno\b - ");
