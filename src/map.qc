@@ -1,4 +1,4 @@
-/*  $Id: map.qc,v 1.19 2006/08/06 20:40:08 slotzero Exp $
+/*  $Id: map.qc,v 1.20 2012/10/08 05:24:57 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -233,6 +233,11 @@ float (string m)
 allowed_map =
 {
 	local float i;
+
+	if (gamemode != MODE_MIDAIR)
+	{
+		if (m == "endif") return 0;
+	}
 
 	if (noexit & NOEXIT_MARLINSPIKE_LEVELS)
 	{
