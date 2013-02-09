@@ -1,4 +1,4 @@
-/*  $Id: print.qc,v 1.19 2010/10/27 05:13:00 slotzero Exp $
+/*  $Id: print.qc,v 1.20 2013/02/09 06:02:56 slotzero Exp $
 
     Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
 
@@ -384,6 +384,10 @@ void (string s1, string s2)
 sprint_admin2 =
 {
 	local entity e;
+
+	//XXX maybe have engine parse admin commands to its own log
+	dprint_force (s1);
+	dprint_force (s2);
 
 	e = find (world, classname, "player");
 	while (e)

@@ -1,4 +1,4 @@
-/*  $Id: admin.qc,v 1.56 2010/01/15 08:11:50 slotzero Exp $
+/*  $Id: admin.qc,v 1.57 2013/02/09 06:02:56 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -26,9 +26,6 @@ admin_init =
 		return;
 	}
 
-	//XXX create a log instead
-	dprint_force (self.netname);
-	dprint_force (" activated admin mode\n");
 	sprint_admin2 (self.netname, " activated admin mode\n");
 	self.aqflags = self.aqflags | AQ_ADMIN;
 	admin_aliases ();
@@ -390,13 +387,19 @@ admin_rename =
 	if (!e)
 		return;
 
-	sprint_admin2 (e.netname, " was renamed to ");
+	bprint (e.netname);
+	bprint (" was renamed to ");
+	//sprint_admin2 (e.netname, " was renamed to ");
 	self_stuffcmd (e, "name \"");
 	newname = random_name ();
 	self_stuffcmd (e, newname);
 	self_stuffcmd (e, "\"\n");
-	sprint_admin2 (newname, " by ");
-	sprint_admin2 (self.netname, "\n");
+	bprint (newname);
+	bprint (" by ");
+	bprint (self.netname);
+	bprint ("\n");
+	//sprint_admin2 (newname, " by ");
+	//sprint_admin2 (self.netname, "\n");
 };
 
 void ()
@@ -499,8 +502,14 @@ admin_unbind =
 
 	self_stuffcmd (e, "unbindall\n");
 	self_stuffcmd (e, "sensitivity 0\n");
-	sprint_admin2 (e.netname, "'s keys unbound by ");
-	sprint_admin2 (self.netname, "\n");
+
+	bprint (e.netname);
+	bprint ("'s keys unbound by ");
+	bprint (self.netname);
+	bprint ("\n");
+
+	//sprint_admin2 (e.netname, "'s keys unbound by ");
+	//sprint_admin2 (self.netname, "\n");
 };
 
 void (string m)

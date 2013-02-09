@@ -1,4 +1,4 @@
-/*  $Id: rjs.qc,v 1.255 2010/10/27 05:13:00 slotzero Exp $
+/*  $Id: rjs.qc,v 1.256 2013/02/09 06:02:56 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1908,10 +1908,10 @@ player_init =
 	else
 	{
 		bprint (self.netname);
-		bprint (" connected to the server");
+		bprint (" connected to the server\n");
 
-		sprint_admin (PQ_Version ());
-		bprint ("\n");
+		//sprint_admin (PQ_Version ());
+		//bprint ("\n");
 
 		sound (self, CHAN_BODY, "shalrath/sight.wav", 1, ATTN_NONE);
 	}
