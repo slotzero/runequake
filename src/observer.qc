@@ -1,4 +1,4 @@
-/*  $Id: observer.qc,v 1.74 2009/04/23 03:05:00 slotzero Exp $
+/*  $Id: observer.qc,v 1.75 2013-05-02 18:34:37 slotzero Exp $
 
     Copyright (C) 1998-2001  Roderick Schertler.
 
@@ -1342,7 +1342,18 @@ set_has_riders_e =
 void ()
 show_ridee =
 {
+	local float n;
+	local string s;
+
 	self_sprint (self, self.owner.netname);
+
+	// add status # to ridee
+	n = player_ent_to_num (self.owner);
+	s = ftos (n);
+	sprint (self, " \[#");
+	sprint (self, s);
+	sprint (self, "\]");
+
 	sprint (self, " (rate ");
 	sprint_float_f (self, self.owner.frag_rate, 0, 2);
 	if (self.aqstate & AQS_RIDE_MASK == AQS_RIDE_FAST)
