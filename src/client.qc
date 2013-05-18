@@ -1130,6 +1130,9 @@ CheckRules =
 	if (gamemode == MODE_MATCH)
 		return;
 
+	if (gamemode & MODE_ARENA && arena.delay)
+		return;
+
 	if (time >= timelimit)
 	{
 		forced_nextmap = string_null;

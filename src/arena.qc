@@ -36,6 +36,7 @@
 // arena.dmg_inflictor	= current streaker
 // arena.dmg_take	= streak amount
 // arena.last_thought	= length match in progress
+// arena.delay		= timelimit override
 
 void (entity e)
 arena_game_pos_announce =
@@ -189,6 +190,9 @@ arena_countdown =
 		{
 			// reset match time
 			self.last_thought = time;
+
+			// prevent timelimit during match
+			self.delay = 1;
 
 			bprint (self.owner.netname);
 			if (self.owner == self.dmg_inflictor && self.dmg_take > 1)
@@ -430,6 +434,7 @@ arena_init =
 {
 	arena.state		= -1;
 	arena.deadflag		= 0;
+	arena.delay		= 0;
 	arena.enemy		= world;
 	arena.oldenemy		= world;
 	arena.aiment		= world;
