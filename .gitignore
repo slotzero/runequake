@@ -3,6 +3,9 @@ poq/
 qw/
 progs.dat
 qwprogs.dat
+shmack-progs.dat
+shmack-qwprogs.dat
+rune-progs.dat
 src/map-auto.qc
 src/find.log
 iplog.dat
