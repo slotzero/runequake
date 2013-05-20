@@ -10,3 +10,4 @@ src/map-auto.qc
 src/find.log
 iplog.dat
 qconsole.log
+banlog.dat
