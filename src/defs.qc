@@ -915,10 +915,13 @@ float	FL_ONGROUND			= 512;	// standing on something
 float	FL_PARTIALGROUND		= 1024;	// not all corners are valid
 float	FL_WATERJUMP			= 2048;	// player jumping out of water
 float	FL_JUMPRELEASED			= 4096;	// for jump debouncing
-float	FL_LOW_BANDWIDTH_CLIENT		= 8192;	// low bandwidth mode (requires runequake engine)
-float	FL_OBSERVER			= 16384;// engine recongizes observer (requires runequake engine)
-float	FL_IGNORE_MUTE_CLIENT		= 32768;// (requires runequake engine)
-float	FL_MUTE_CLIENT			= 65536;// (requires runequake engine)
+
+// requires manquake dedicated server
+float	FL_LOW_BANDWIDTH_CLIENT		= 8192;	// don't draw ents with EF_MAYBE_DRAW
+float	FL_OBSERVER			= 16384;// observers can chat using mm2
+float	FL_IGNORE_MUTE_CLIENT		= 32768;// don't show chat from muted clients
+float	FL_MUTE_CLIENT			= 65536;// muted client
+float	FL_USE_VIEWPORT_ORIGIN		= 131072;// viewport uses .vp_origin instead of .origin
 
 // edict.movetype values
 float	MOVETYPE_NONE			= 0;	// never moves
@@ -1095,9 +1098,9 @@ float	EF_MUZZLEFLASH 			= 2;
 float	EF_BRIGHTLIGHT 			= 4;
 float	EF_DIMLIGHT 			= 8;
 //	EF_NO_DRAW			= 16;		// joequake uses this
-float	EF_FROZEN			= 32;		// EF_ZERO_VELOCITY (requires runequake engine)
+float	EF_FROZEN			= 32;		// EF_ZERO_VELOCITY (requires manquake dedicated server)
 float	EF_WEIRD			= 64;
-float	EF_MAYBE_DRAW			= 32768;	// requires runequake engine
+float	EF_MAYBE_DRAW			= 32768;	// requires manquake dedicated server
 
 // messages
 float	MSG_BROADCAST			= IN_POQ(0, 4);	// unreliable to all
@@ -1483,7 +1486,7 @@ void	(vector ang)				makevectors	= #1;	// sets v_forward, etc globals
 void	(entity e, vector o)			setorigin	= #2;
 void	(entity e, string m)			setmodel	= #3;	// set movetype and solid first
 void	(entity e, vector min, vector max)	setsize		= #4;
-string	(string format)				strftime	= #5;	// requires runequake engine
+string	(string format)				strftime	= #5;	// requires manquake dedicated server
 //void	()					break		= #6;	[disabled]
 float	()					random		= #7;	// returns 0 - 1
 void	(entity e, float chan, string samp,
@@ -1546,7 +1549,7 @@ float	(vector v)				pointcontents	= #41;	// returns a CONTENT_*
 float	(float f)				fabs		= #43;
 vector	(entity e, float speed)			aim		= #44;	// returns the shooting vector
 float	(string s)				cvar		= #45;	// return cvar.value
-string	(string s, ...)				cvar_string	= #45;	// requires runequake engine
+string	(string s, ...)				cvar_string	= #45;	// requires manquake dedicated server
 void	(string s)				localcmd	= #46;	// put string into local que
 entity	(entity e)				nextent		= #47;	// for looping through all ents
 
@@ -1583,9 +1586,10 @@ void	(float to, entity s)			WriteEntity	= #59;
 // void	(string s)				bWriteString	= #65;
 // void	(entity e)				bWriteEntity	= #66;
 
-float	(float f)				sin		= #60;	// requires runequake engine
-float	(float f)				cos		= #61;	// requires runequake engine
-float	(float f)				sqrt		= #62;	// requires runequake engine
+// requires manquake dedicated server
+float	(float f)				sin		= #60;
+float	(float f)				cos		= #61;
+float	(float f)				sqrt		= #62;
 
 void	(float step)				movetogoal	= #67;
 //string (string s)				precache_file	= #68;	[disabled]
@@ -1600,7 +1604,7 @@ void	(vector pos, string samp, float vol,
 //string(string s)				precache_sound2	= #76;	[disabled]
 //string(string s)				precache_file2	= #77;	[disabled]
 void	(entity e)				setspawnparms	= #78; // set parm1... to the values at level start for coop respawn
-float	(string s, ...)				xstof		= #81; // requires runequake engine
+float	(string s, ...)				xstof		= #81; // requires manquake dedicated server
 
 IN_QW([-
 void	(entity killer, entity killee)		logfrag		= #79; // add to stats
@@ -1665,3 +1669,5 @@ float	UPDATE_CLIENT_PINGS;
 .entity	head_chain;
 
 float	MOD_PROTOCOL;
+
+.vector vp_origin;
