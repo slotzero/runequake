@@ -378,6 +378,7 @@ BecomeExplosion =
 	s_explode1 ();
 };
 
+// XXX MOVE TO ATTIC
 void ()
 RocketDamageExplosion =
 {
@@ -388,6 +389,7 @@ RocketDamageExplosion =
 	create_te_explosion (self.origin, 1);
 };
 
+// XXX MOVE TO ATTIC
 void ()
 reflect_projectile =
 {
@@ -407,13 +409,50 @@ reflect_projectile =
 	self.think	= RocketDamageExplosion;
 };
 
+void (entity e)
+restore_gmissile_owner =
+{
+	local entity os;
+
+	if (!e.rqstate & RQS_GUIDED_MISSILE)
+		return;
+
+	os = self;
+	self = e;
+
+	// restore your viewport and remove flags
+	set_viewport (self);
+	self.flags = self.flags - self.flags & FL_USE_VIEWPORT_ORIGIN;
+	self.rqstate = self.rqstate - self.rqstate & RQS_GUIDED_MISSILE;
+
+	// only update these if your'e alive
+	if (self != os)
+	{
+		// restore model
+		W_SetCurrentAmmo (1);
+
+		// prevent firing immediately after explosion
+		self.attack_finished = time + 0.25;
+
+		// reset your angle
+		if (os.delay < time)
+		{
+			self.angles = os.runevector;
+			self.fixangle = 1;
+		}
+	}
+
+	self = os;
+};
+
 void ()
 T_MissileTouch =
 {
-	local float reflect, damg;
+	local float gmissile, damg;
 	local entity head;
 
-	reflect = self.classname == "mortar";
+	// guided missile
+	gmissile = self.classname == "gmissile";
 
 	// don't explode on owner
 	if (other == self.owner)
@@ -421,6 +460,9 @@ T_MissileTouch =
 
 	if (pointcontents (self.origin) == CONTENT_SKY)
 	{
+		if (gmissile)
+			restore_gmissile_owner (self.owner);
+
 		remove (self);
 		return;
 	}
@@ -456,7 +498,7 @@ T_MissileTouch =
 		}
 	}
 
-	if (reflect)
+	if (gmissile)
 		damg = MORTAR_DAMAGE; // XXX fixme
 	else
 		damg = 120;
@@ -473,22 +515,52 @@ T_MissileTouch =
 	if (self.rocket_dmg && self.owner.classname == "player")
 		self.owner.rocket_dmg_max = self.owner.rocket_dmg_max + 120;
 
-	if (reflect)
+	if (gmissile)
+		restore_gmissile_owner (self.owner);
+
+	create_te_explosion (self.origin, 1);
+};
+
+void ()
+W_GuidedRocket_think =
+{
+	// more than likely you are dead, so explode
+	if (!self.owner.rqstate & RQS_GUIDED_MISSILE || !self.owner.cl[CL_ACTIVE])
 	{
-		if (self.runevar == 2)
-			create_te_explosion (self.origin, 1);
+		create_te_explosion (self.origin, 1);
+		return;
+	}
+
+	if (intermission_running)
+		restore_gmissile_owner (self.owner);
+
+	// update missile direction
+	makevectors (self.owner.v_angle);
+	self.velocity		= v_forward * 350;
+	self.angles		= vectoangles (self.velocity);
+
+
+	// remove ammo, explode if none
+	if (self.runetime < time)
+	{
+		if (self.owner.ammo_rockets >= 1)
+			self.owner.ammo_rockets = self.owner.ammo_rockets - 1;
 		else
 		{
-			self.runevar	= self.runevar + 1;
-			self.movetype	= MOVETYPE_BOUNCE;
-			self.nextthink	= time;
-			self.think	= reflect_projectile;
-			self.velocity	= self.velocity * 1.4;
+			restore_gmissile_owner (self.owner);
+			create_te_explosion (self.origin, 1);
 			return;
 		}
+		self.runetime = time + 1;
 	}
-	else
-		create_te_explosion (self.origin, 1);
+
+	// don't show weapon model
+	self.owner.weaponmodel = string_null;
+
+	// calculate pvs based on viewpoint origin
+	self.owner.vp_origin = self.origin;
+
+	self.nextthink = time + sys_ticrate;
 };
 
 /*
@@ -529,6 +601,27 @@ W_FireRocket =
 	setmodel (newmis, "progs/missile.mdl");
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
 	setorigin (newmis, self.origin + v_forward * 8 + PLAYER_WEAPON_OFFSET);
+
+	// guided missile
+	if (newmis.classname == "gmissile")
+	{
+		newmis.nextthink	= time;
+		newmis.think		= W_GuidedRocket_think;
+
+		// don't perform a fixangle right away
+		newmis.delay		= time + 0.5;
+
+		// keep track of last known angle
+		newmis.runevector	= self.angles;
+
+		// don't explode right away if low ammo
+		newmis.runetime		= time + 2;
+
+		// set your view to missiles and set flags
+		set_viewport (newmis);
+		self.flags		= self.flags | FL_USE_VIEWPORT_ORIGIN;
+		self.rqstate		= self.rqstate | RQS_GUIDED_MISSILE;
+	}
 
 	// efficiency
 	head = findradius (self.origin, 250);
@@ -1231,8 +1324,8 @@ W_Attack =
 		player_rocket1 ();
 		if (is_alt)
 		{
-			W_FireRocket ("mortar");
-			t = MORTAR_REFIRE * haste_mult;
+			W_FireRocket ("gmissile");
+			t = 99999999;
 		}
 		else
 		{

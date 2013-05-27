@@ -579,6 +579,9 @@ PlayerDie =
 	spawn_protect_off ();
 	self.items = self.items - self.items & IT_INVISIBILITY;
 
+	if (self.rqstate & RQS_GUIDED_MISSILE)
+		restore_gmissile_owner (self);
+
 	if (!options & NO_DROP_POWERUP)
 	{
 		// Don't drop phoenix quad.
