@@ -424,8 +424,12 @@ restore_gmissile_owner =
 	set_viewport (self);
 	self.flags = self.flags - self.flags & FL_USE_VIEWPORT_ORIGIN;
 	self.rqstate = self.rqstate - self.rqstate & RQS_GUIDED_MISSILE;
+	self.effects = self.effects - self.effects & (EF_DIMLIGHT | EF_FROZEN);
 
-	// only update these if your'e alive
+	// reset player view
+	self.view_ofs = PLAYER_VIEW_OFFSET;
+
+	// only update these if you're alive
 	if (self != os)
 	{
 		// restore model
@@ -435,11 +439,11 @@ restore_gmissile_owner =
 		self.attack_finished = time + 0.25;
 
 		// reset your angle
-		if (os.delay < time)
+		/*if (os.delay < time)
 		{
 			self.angles = os.runevector;
 			self.fixangle = 1;
-		}
+		}*/
 	}
 
 	self = os;
@@ -554,6 +558,9 @@ W_GuidedRocket_think =
 		self.runetime = time + 1;
 	}
 
+	if (self.owner.flags & FL_ONGROUND && !self.owner.effects & EF_FROZEN)
+		self.owner.effects = self.owner.effects | EF_FROZEN;
+
 	// don't show weapon model
 	self.owner.weaponmodel = string_null;
 
@@ -621,6 +628,9 @@ W_FireRocket =
 		set_viewport (newmis);
 		self.flags		= self.flags | FL_USE_VIEWPORT_ORIGIN;
 		self.rqstate		= self.rqstate | RQS_GUIDED_MISSILE;
+		//self.effects		= self.effects | EF_DIMLIGHT | EF_FROZEN;
+
+		self.view_ofs		= VEC_ORIGIN;
 	}
 
 	// efficiency
