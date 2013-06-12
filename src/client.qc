@@ -2372,6 +2372,8 @@ ClientObituary =
 				bprint (" likes the smell of his own gas\n");
 			else if (dt == "mortar")
 				bprint (" pretends his rocket is a boomerang\n");
+			else if (dt = "gmissile")
+				bprint (" decided to use his rocket as a suppository\n");
 			else if (dt == "bfgblast")
 				bprint (" was too close to his own BFG\n");
 			else if (dt == "grenade" || dt == "gasbomb")
@@ -2613,8 +2615,13 @@ ClientObituary =
 		}
 		else if (dt == "mortar")
 		{
-			s1 = " uses his face to ricochet ";
+			s1 = " used his face to ricochet ";
 			s2 = "'s rocket\n";
+		}
+		else if (dt == "gmissile")
+		{
+			s1 = " couldn't escape ";
+			s2 = "'s guided missile\n";
 		}
 		else if (dt == "bfgzap")
 		{

@@ -570,6 +570,8 @@ maybe_remove_hat =
 			return TRUE;
 		if (self.runevar == 4 && self.owner.super_damage_finished < time)
 			return TRUE;
+		if (self.runevar == 5 && !self.owner.rqstate & RQS_GUIDED_MISSILE)
+			return TRUE;
 	}
 	return FALSE;
 };
@@ -585,7 +587,7 @@ Hat_Think =
 		return;
 	}
 
-	if (self.runevar)
+	if (self.runevar < 5)
 		setorigin (self, self.owner.origin + self.runevector);
 	else
 	{

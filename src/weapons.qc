@@ -536,7 +536,10 @@ W_GuidedRocket_think =
 	}
 
 	if (intermission_running)
+	{
 		restore_gmissile_owner (self.owner);
+		return;
+	}
 
 	// update missile direction
 	makevectors (self.owner.v_angle);
@@ -630,6 +633,10 @@ W_FireRocket =
 		self.rqstate		= self.rqstate | RQS_GUIDED_MISSILE;
 		//self.effects		= self.effects | EF_DIMLIGHT | EF_FROZEN;
 
+		// spawn a rocket hat
+		Hat_Spawn (self, "progs/missile.mdl", '-4 1 32', VEC_ORIGIN, 5);
+
+		// center view on rocket, reduces PVS stickyness.
 		self.view_ofs		= VEC_ORIGIN;
 	}
 
