@@ -2372,7 +2372,7 @@ ClientObituary =
 				bprint (" likes the smell of his own gas\n");
 			else if (dt == "mortar")
 				bprint (" pretends his rocket is a boomerang\n");
-			else if (dt = "gmissile")
+			else if (dt == "gmissile")
 				bprint (" decided to use his rocket as a suppository\n");
 			else if (dt == "bfgblast")
 				bprint (" was too close to his own BFG\n");
