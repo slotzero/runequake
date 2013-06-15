@@ -1,5 +1,4 @@
-/*  $Id: player.qc,v 1.25 2008/08/13 03:56:40 slotzero Exp $
-
+/*
     Copyright (C) 1996, 1997  Id Software, Inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -297,7 +296,7 @@ PainSound =
 	dt	= self.damage_type;
 
 	// no self-pain with rl
-	if ((dt == "missile" || dt == "mortar") && damage_attacker == self)
+	if ((dt == "missile" || dt == "reflect") && damage_attacker == self)
 		return;
 	else if (dt == "sniped" && damage_attacker == self)	// RN_SNIPER
 		return;

@@ -60,7 +60,7 @@ void ()
 gmissile_think =
 {
 	// more than likely you are dead, so explode
-	if (!self.owner.rqstate & RQS_GUIDED_MISSILE || !self.owner.cl[CL_ACTIVE])
+	if (!self.owner.rqstate & RQS_GUIDED_MISSILE)
 	{
 		create_te_explosion (self.origin, 1);
 		return;

@@ -735,9 +735,7 @@ T_RadiusDamage =
 					bprint_float (points);
 					bprint ("\n");
 				}
-				if (head == attacker
-						&& monk_radius_hack)
-						// && dtype != "mortar")
+				if (head == attacker && monk_radius_hack)
 					points = points * 0.5;
 				if (head.runetype == RN_MONK
 						&& head != attacker

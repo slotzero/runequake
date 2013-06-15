@@ -472,9 +472,13 @@ float AXE_REACH_LUMBER		= 140;
 float AXE_DAMAGE_NORMAL		= 20;
 float AXE_DAMAGE_LUMBER		= 100;	// also gets lumberjack adjustment
 
-// Guided missile
+// The guided missile only works with manquake dedicated server.
 
 float GUIDED_MISSILE_DAMAGE	= 90;
+
+// Reflective rocket
+
+float REFLECT_DAMAGE		= 90;
 
 // Set this to a value other than zero to turn on grenade spam protection
 // in all modes.

@@ -2369,7 +2369,7 @@ ClientObituary =
 				bprint (" was there when his own bomb blew\n");
 			else if (dt == "gas")
 				bprint (" likes the smell of his own gas\n");
-			else if (dt == "mortar")
+			else if (dt == "reflect")
 				bprint (" pretends his rocket is a boomerang\n");
 			else if (dt == "gmissile")
 				bprint (" decided to use his rocket as a suppository\n");
@@ -2612,7 +2612,7 @@ ClientObituary =
 			s1 = " exploded along with ";
 			s2 = "'s gas grenade\n";
 		}
-		else if (dt == "mortar")
+		else if (dt == "reflect")
 		{
 			s1 = " used his face to ricochet ";
 			s2 = "'s rocket\n";

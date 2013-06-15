@@ -377,18 +377,18 @@ BecomeExplosion =
 	s_explode1 ();
 };
 
-// XXX MOVE TO ATTIC
+// reflect rocket
 void ()
 RocketDamageExplosion =
 {
 	monk_radius_hack = 1;
-	T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 90, other, self.classname); // XXX Reflect Damage = 90
+	T_RadiusDamage (RADIUS_NORMAL, self, self.owner, REFLECT_DAMAGE, other, self.classname);
 	monk_radius_hack = 0;
 
 	create_te_explosion (self.origin, 1);
 };
 
-// XXX MOVE TO ATTIC
+// reflect rocket
 void ()
 reflect_projectile =
 {
@@ -411,7 +411,7 @@ reflect_projectile =
 void ()
 T_MissileTouch =
 {
-	local float gmissile, damg;
+	local float damg, gmissile, reflect;
 	local entity head;
 
 	// don't explode on owner
@@ -420,6 +420,9 @@ T_MissileTouch =
 
 	// guided missile
 	gmissile = self.classname == "gmissile";
+
+	// reflect rocket
+	reflect = self.classname == "reflect";
 
 	if (pointcontents (self.origin) == CONTENT_SKY)
 	{
@@ -463,6 +466,8 @@ T_MissileTouch =
 
 	if (gmissile)
 		damg = GUIDED_MISSILE_DAMAGE;
+	else if (reflect)
+		damg = REFLECT_DAMAGE;
 	else
 		damg = 120;
 
@@ -481,7 +486,22 @@ T_MissileTouch =
 	if (gmissile)
 		restore_gmissile_owner (self.owner);
 
-	create_te_explosion (self.origin, 1);
+	if (reflect)
+	{
+		if (self.runevar == 2)
+			create_te_explosion (self.origin, 1);
+		else
+		{
+			self.runevar = self.runevar + 1;
+			self.movetype = MOVETYPE_BOUNCE;
+			self.nextthink = time;
+			self.think = reflect_projectile;
+			self.velocity = self.velocity * 1.4;
+			return;
+		}
+	}
+	else
+		create_te_explosion (self.origin, 1);
 };
 
 /*
@@ -1228,8 +1248,16 @@ W_Attack =
 		player_rocket1 ();
 		if (is_alt)
 		{
-			W_FireRocket ("gmissile");
-			t = 99999999;
+			if (MOD_PROTOCOL) // XXX add a server command option to turn on
+			{
+				W_FireRocket ("gmissile");
+				t = 99999999;
+			}
+			else
+			{
+				W_FireRocket ("reflect");
+				t = 1.4 * haste_mult;
+			}
 		}
 		else
 		{
