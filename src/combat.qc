@@ -1,5 +1,4 @@
-/*  $Id: combat.qc,v 1.52 2008/07/05 03:37:29 slotzero Exp $
-
+/*
     Copyright (C) 1996, 1997  Id Software, Inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -698,8 +697,6 @@ T_RadiusDamage =
 
 	if (attn == RADIUS_150)
 		dist = 10000;
-	else if (attn == RADIUS_MORTAR)
-		dist = MORTAR_RADIUS;
 	else
 		dist = damage+40;
 	head = findradius (inflictor.origin, dist);
@@ -721,8 +718,6 @@ T_RadiusDamage =
 					if (dist > 150)
 						points = damage * 150 / dist;
 				}
-				else if (attn == RADIUS_MORTAR)
-					save = MORTAR_TAPER * dist;
 				// Save a half point for each unit of
 				// distance.
 				else

@@ -1,6 +1,5 @@
-/*  $Id: attic.qc,v 1.17 2006/08/13 05:17:02 slotzero Exp $
-
-    Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
+/*
+    Copyright (C) 2001-2013  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -779,3 +778,25 @@ stof =
 
 	return sum;
 };
+
+// The mortar gun comes from Expert Quake.  I reimplemented it but I
+// used their specific numbers, except for the taper.  They use a 30%
+// taper, I use 10%.  The difference is:
+//
+//                rocket   30% mortar   10% mortar
+//     dist  25      107           82           87
+//     dist  50       95           75           85
+//     dist  75       82           67           82
+//     dist 100       70           60           80
+//     dist 125       57            -            -
+//     dist 150       45            -            -
+//
+// The mortar with 10% taper is still worse than a rocket except for at
+// the extreme end of its radius.  Since the blast radius is also less
+// than 2/3 that of a rocket (100 vs. 160), I don't think this makes it
+// too powerful (even though it can fire slightly faster).
+
+float MORTAR_REFIRE		= 1.4;
+float MORTAR_DAMAGE		= 90;
+float MORTAR_RADIUS		= 100;
+float MORTAR_TAPER		= 0.1;

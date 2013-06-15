@@ -1,5 +1,4 @@
-/*  $Id: rjs.qc,v 1.256 2013/02/09 06:02:56 slotzero Exp $
-
+/*
     Copyright (C) 1998-2001  Roderick Schertler.
 
     This program is free software; you can redistribute it and/or modify
@@ -2302,7 +2301,7 @@ weapon_it_min_ammo =
 	else if (it == WEAPON_LAVA)		return AMMO_LAVAGUN;
 	else if (it == WEAPON_BOMB)		return AMMO_BOMB;
 	else if (it == WEAPON_FLASH_GRENADE)	return AMMO_FLASH_GRENADE;
-	else if (it == WEAPON_MORTAR)		return AMMO_MORTAR;
+	else if (it == WEAPON_GUIDED_MISSILE)	return AMMO_GUIDED_MISSILE;
 	else if (it == WEAPON_BFG)		return AMMO_BFG;
 	else return 0;
 };
@@ -2334,7 +2333,7 @@ weapon_it_ammo_type =
 	else if (it == WEAPON_LAVA)		return IT_NAILS;
 	else if (it == WEAPON_BOMB)		return IT_ROCKETS;
 	else if (it == WEAPON_FLASH_GRENADE)	return IT_ROCKETS;
-	else if (it == WEAPON_MORTAR)		return IT_ROCKETS;
+	else if (it == WEAPON_GUIDED_MISSILE)	return IT_ROCKETS;
 	else if (it == WEAPON_BFG)		return IT_CELLS;
 	else return 0;
 };
@@ -2416,7 +2415,7 @@ weapon_it_to_num =
 	else if (it == WEAPON_LAVA)		return 12;
 	else if (it == WEAPON_BOMB)		return 13;
 	else if (it == WEAPON_FLASH_GRENADE)	return 14;
-	else if (it == WEAPON_MORTAR)		return 15;
+	else if (it == WEAPON_GUIDED_MISSILE)	return 15;
 	else if (it == WEAPON_BFG)		return 16;
 	else					return 0;
 };
@@ -2438,7 +2437,7 @@ weapon_it_to_name =
 	else if (it == WEAPON_LAVA)		return "Lava      ";
 	else if (it == WEAPON_BOMB)		return "Bomb      ";
 	else if (it == WEAPON_FLASH_GRENADE)	return "Gas       ";
-	else if (it == WEAPON_MORTAR)		return "Mortar    ";
+	else if (it == WEAPON_GUIDED_MISSILE)	return "GMissile  ";
 	else if (it == WEAPON_BFG)		return "BFG       ";
 	else					return "?         ";
 };
@@ -2839,8 +2838,8 @@ CycleWeaponCommand =
 			else if (w == WEAPON_FLAMETHROWER)	w = WEAPON_LAVA;
 			else if (w == WEAPON_LAVA)		w = WEAPON_BOMB;
 			else if (w == WEAPON_BOMB)		w = WEAPON_FLASH_GRENADE;
-			else if (w == WEAPON_FLASH_GRENADE)	w = WEAPON_MORTAR;
-			else if (w == WEAPON_MORTAR)		w = WEAPON_BFG;
+			else if (w == WEAPON_FLASH_GRENADE)	w = WEAPON_GUIDED_MISSILE;
+			else if (w == WEAPON_GUIDED_MISSILE)	w = WEAPON_BFG;
 			else					w = IT_AXE;
 		}
 		else
@@ -2857,7 +2856,7 @@ CycleWeaponCommand =
 			else if (w == WEAPON_LAVA)		w = IT_NAILGUN;
 			else if (w == WEAPON_BOMB)		w = IT_SUPER_NAILGUN;
 			else if (w == WEAPON_FLASH_GRENADE)	w = IT_GRENADE_LAUNCHER;
-			else if (w == WEAPON_MORTAR)		w = IT_ROCKET_LAUNCHER;
+			else if (w == WEAPON_GUIDED_MISSILE)	w = IT_ROCKET_LAUNCHER;
 			else if (w == WEAPON_BFG)		w = IT_LIGHTNING;
 			else					w = IT_AXE;
 		}
@@ -2880,8 +2879,8 @@ CycleWeaponReverseCommand =
 	{
 		if (self.rqflags & RQ_CYCLE_ALTERNATES && !options & NO_ALT_WEAPONS)
 		{
-			if (w == WEAPON_BFG)			w = WEAPON_MORTAR;
-			else if (w == WEAPON_MORTAR)		w = WEAPON_FLASH_GRENADE;
+			if (w == WEAPON_BFG)			w = WEAPON_GUIDED_MISSILE;
+			else if (w == WEAPON_GUIDED_MISSILE)	w = WEAPON_FLASH_GRENADE;
 			else if (w == WEAPON_FLASH_GRENADE)	w = WEAPON_BOMB;
 			else if (w == WEAPON_BOMB)		w = WEAPON_LAVA;
 			else if (w == WEAPON_LAVA)		w = WEAPON_FLAMETHROWER;
@@ -2900,7 +2899,7 @@ CycleWeaponReverseCommand =
 		else
 		{
 			if (w == WEAPON_BFG)			w = IT_LIGHTNING;
-			else if (w == WEAPON_MORTAR)		w = IT_ROCKET_LAUNCHER;
+			else if (w == WEAPON_GUIDED_MISSILE)	w = IT_ROCKET_LAUNCHER;
 			else if (w == WEAPON_FLASH_GRENADE)	w = IT_GRENADE_LAUNCHER;
 			else if (w == WEAPON_BOMB)		w = IT_SUPER_NAILGUN;
 			else if (w == WEAPON_LAVA)		w = IT_NAILGUN;

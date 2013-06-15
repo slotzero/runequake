@@ -1,5 +1,4 @@
-/*  $Id: runes20.qc,v 1.33 2010/10/27 01:55:51 slotzero Exp $
-
+/*
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
     This program is free software; you can redistribute it and/or modify

@@ -1,5 +1,4 @@
-/*  $Id: defs.qc,v 1.238 2010/10/27 00:55:26 slotzero Exp $
-
+/*
     Copyright (C) 1996, 1997  Id Software, Inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -879,7 +878,7 @@ float CENTERPRINT_REFRESH	= 1.5;		// a little less
 // attenuations used by T_RadiusDamage()
 float RADIUS_NORMAL		= 0;
 float RADIUS_150		= 1;
-float RADIUS_MORTAR		= 2;
+//float RADIUS_MORTAR		= 2;
 float MIN_TEAM			= 1;
 float MAX_TEAM			= 14;
 float SURE_KILL_DAMAGE		= 50000;
@@ -989,7 +988,7 @@ float WEAPON_FLAMETHROWER		= 130;
 float WEAPON_LAVA			= 132;
 float WEAPON_BOMB			= 136;
 float WEAPON_FLASH_GRENADE		= 144;
-float WEAPON_MORTAR			= 160;
+float WEAPON_GUIDED_MISSILE		= 160;
 float WEAPON_BFG			= 192;
 
 float	IT_SHELLS			= 256;

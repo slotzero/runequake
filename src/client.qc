@@ -1,5 +1,4 @@
-/*  $Id: client.qc,v 1.162 2010/10/27 05:12:59 slotzero Exp $
-
+/*
     Copyright (C) 1996, 1997  Id Software, Inc.
 
     This program is free software; you can redistribute it and/or modify

@@ -1,5 +1,4 @@
-/*  $Id: settings.qc,v 1.69 2010/10/28 03:49:14 slotzero Exp $
-
+/*
     Copyright (C) 1998-2001  Roderick Schertler.
 
     This program is free software; you can redistribute it and/or modify
@@ -393,7 +392,7 @@ float AMMO_FLAMETHROWER		= 1;
 float AMMO_LAVAGUN		= 1;
 float AMMO_BOMB			= 10;
 float AMMO_FLASH_GRENADE	= 3;
-float AMMO_MORTAR		= 3;
+float AMMO_GUIDED_MISSILE	= 3;
 float AMMO_BFG			= 30;
 
 // Amount of damage done by the hook, per tick, for the various hook
@@ -473,27 +472,9 @@ float AXE_REACH_LUMBER		= 140;
 float AXE_DAMAGE_NORMAL		= 20;
 float AXE_DAMAGE_LUMBER		= 100;	// also gets lumberjack adjustment
 
-// The mortar gun comes from Expert Quake.  I reimplemented it but I
-// used their specific numbers, except for the taper.  They use a 30%
-// taper, I use 10%.  The difference is:
-//
-//                rocket   30% mortar   10% mortar
-//     dist  25      107           82           87
-//     dist  50       95           75           85
-//     dist  75       82           67           82
-//     dist 100       70           60           80
-//     dist 125       57            -            -
-//     dist 150       45            -            -
-//
-// The mortar with 10% taper is still worse than a rocket except for at
-// the extreme end of its radius.  Since the blast radius is also less
-// than 2/3 that of a rocket (100 vs. 160), I don't think this makes it
-// too powerful (even though it can fire slightly faster).
+// Guided missile
 
-float MORTAR_REFIRE		= 1.4;
-float MORTAR_DAMAGE		= 90;
-float MORTAR_RADIUS		= 100;
-float MORTAR_TAPER		= 0.1;
+float GUIDED_MISSILE_DAMAGE	= 90;
 
 // Set this to a value other than zero to turn on grenade spam protection
 // in all modes.
