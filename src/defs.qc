@@ -639,10 +639,11 @@ float IMP_VOTE_CLASSIC_MEGA	= 32;
 float IMP_VOTE_HEADS		= 33;
 float IMP_VOTE_RANDOM_SPAWN	= 34;
 float IMP_VOTE_SHOOT_BUTTONS	= 35;
+float IMP_VOTE_POWERUP_HATS	= 36;
 
 // extended impulses for votes
 float IMP_VOTE_MIN		= 800;
-float IMP_VOTE_MAX		= 835;
+float IMP_VOTE_MAX		= 836;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;
@@ -862,11 +863,12 @@ float VOTE_NO			= 2;
 float VOTE_LAST_YES		= 4;
 float VOTE_LAST_NO		= 8;
 
-// Bit settings for POWERUP_PICKUP_WARN in settings.qc.
-float ITEM_PENT = 1;
-float ITEM_QUAD = 2;
-float ITEM_EYES = 4;
-float ITEM_SUIT = 8;
+// bit settings for POWERUP_PICKUP_WARN and Hat_Spawn()
+float ITEM_PENT			= 1;
+float ITEM_QUAD			= 2;
+float ITEM_EYES			= 4;
+float ITEM_SUIT			= 8;
+float ITEM_POWERUP_ANY		= 15;
 
 // miscellaneous constants which should have been defined
 float SERVERFLAGS_RUNE_MASK	= 15;
@@ -1164,6 +1166,7 @@ string	CVAR_C2	= "saved2";	// console commands
 string	CVAR_C3	= "saved3";	// game mode
 string	CVAR_C4 = "saved4";	// options
 string	CVAR_C5 = "lcd_x";	// storage1
+string	CVAR_C6 = "lcd_yaw";	// options2
 
 // console commands
 float	C2_UPDATE_BINDINGS	= 1;
@@ -1249,6 +1252,8 @@ float	C2_SHOOTBUTTONSON	= 80;
 float	C2_SHOOTBUTTONSOFF	= 81;
 float	C2_MAXRUNES		= 82;
 float	C2_SETAFK		= 83;
+float	C2_POWERUPHATSON	= 84;
+float	C2_POWERUPHATSOFF	= 85;
 
 // game mode
 float	gamemode;
@@ -1283,7 +1288,7 @@ float	NO_DROP_ARMOR		= 262144;
 float	NO_DISCHARGE		= 524288;
 float	RANDOM_SPAWN		= 1048576;
 float	SHOOT_BUTTONS		= 2097152;
-//float = 4194304;
+float	NO_POWERUP_HATS		= 4194304;
 float	CONSOLE_ALIASES		= 8388608;
 
 // storage1
@@ -1291,6 +1296,9 @@ float storage1;
 float	AFK_TIME;
 float	SETAFK_MULTIPLIER	= 16;	// starting bit of mask  (16,32,64,128,256)
 float	SETAFK_MASK		= 496;	// bits 1, 2, 4, 8, 16
+
+// options2
+float	options2;
 
 IN_QW([-
 //

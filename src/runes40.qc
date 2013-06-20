@@ -1,5 +1,4 @@
-/*  $Id: runes40.qc,v 1.31 2008/03/08 05:27:01 slotzero Exp $
-
+/*
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
     This program is free software; you can redistribute it and/or modify
@@ -263,7 +262,7 @@ shambler_slave_retribution =
 	shambler_slave_respawn (sham, 0);
 	sham.trigger_field.runevar = 1;
 	sham.super_damage_finished = time + 15;
-	Hat_Spawn (sham, "progs/quaddama.mdl", '0 0 60', VEC_ORIGIN, 4);
+	Hat_Spawn (sham, "progs/quaddama.mdl", '0 0 60', VEC_ORIGIN, ITEM_QUAD);
 	sham.effects = sham.effects | EF_DIMLIGHT;
 	sprint (sham.owner, "Shambler seeks retribution!\n");
 
@@ -845,7 +844,7 @@ Resurrect =
 		self.super_time = -2;
 
 		if (self.super_damage_finished < time)
-			Hat_Spawn (self, "progs/quaddama.mdl", '0 0 30', VEC_ORIGIN, 4);
+			Hat_Spawn (self, "progs/quaddama.mdl", '0 0 30', VEC_ORIGIN, ITEM_QUAD);
 
 		self.super_damage_finished = time + 15;
 		self.items = self.items | IT_QUAD;

@@ -334,7 +334,8 @@ rjs_worldspawn =
 	scratch1	= cvar_infokey ("scratch1");
 	gamemode	= cvar_infokey (CVAR_C3);
 	options		= cvar_infokey (CVAR_C4);
-	MOD_PROTOCOL	= cvar_infokey ("mod_protocol"); // requires runequake engine
+	options2	= cvar_infokey (CVAR_C6);
+	MOD_PROTOCOL	= cvar_infokey ("mod_protocol"); // requires manquake dedicated server
 
 	// I only send console aliases when the server spawns.  You can use
 	// update-bindings to refresh them.  I need to set the gamemode too.

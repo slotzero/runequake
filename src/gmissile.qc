@@ -119,7 +119,7 @@ W_FireGuidedMissile =
 	self.rqstate		= self.rqstate | RQS_GUIDED_MISSILE;
 
 	// spawn a rocket hat
-	Hat_Spawn (self, "progs/missile.mdl", '-4 1 32', VEC_ORIGIN, 5);
+	Hat_Spawn (self, "progs/missile.mdl", '-4 1 32', VEC_ORIGIN, 16);
 
 	// center view on rocket, reduces PVS stickyness.
 	self.view_ofs		= VEC_ORIGIN;

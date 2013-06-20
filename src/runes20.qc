@@ -565,11 +565,11 @@ maybe_remove_hat =
 	{
 		if (!self.owner.health)
 			return TRUE;
-		if (self.runevar == 1 && self.owner.invincible_finished < time)
+		if (self.runevar == ITEM_PENT && (self.owner.invincible_finished < time || options & NO_POWERUP_HATS))
 			return TRUE;
-		if (self.runevar == 4 && self.owner.super_damage_finished < time)
+		if (self.runevar == ITEM_QUAD && (self.owner.super_damage_finished < time || options & NO_POWERUP_HATS))
 			return TRUE;
-		if (self.runevar == 5 && !self.owner.rqstate & RQS_GUIDED_MISSILE)
+		if (self.runevar == 16 && !self.owner.rqstate & RQS_GUIDED_MISSILE)
 			return TRUE;
 	}
 	return FALSE;
@@ -586,7 +586,7 @@ Hat_Think =
 		return;
 	}
 
-	if (self.runevar < 5)
+	if (self.runevar & ITEM_POWERUP_ANY)
 		setorigin (self, self.owner.origin + self.runevector);
 	else
 	{
@@ -611,8 +611,7 @@ Hat_Spawn =
 {
 	local entity dot;
 
-	// option to prevent quad/pent hat
-	if (scratch1 & S1_ORIGINAL_LEVELS && type)
+	if (options & NO_POWERUP_HATS && type & ITEM_POWERUP_ANY)
 		return;
 
 	dot		= spawn ();

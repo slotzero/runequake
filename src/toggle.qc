@@ -1,6 +1,5 @@
-/*  $Id: toggle.qc,v 1.37 2009/05/09 05:45:27 slotzero Exp $
-
-    Copyright (C) 2004  David 'Slot Zero' Roberts.
+/*
+    Copyright (C) 2004-2013  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -562,6 +561,39 @@ toggle_shoot_buttons =
 		options = options - options & SHOOT_BUTTONS;
 	else
 		options = options | SHOOT_BUTTONS;
+
+	s = ftos (options);
+	cvar_set_infokey (CVAR_C4, s);
+};
+
+
+void ()
+toggle_powerup_hats =
+{
+	local entity e;
+	local string s;
+
+	if (options & NO_POWERUP_HATS)
+	{
+		options = options - options & NO_POWERUP_HATS;
+
+		// put hats back on players
+		e = find (world, classname, "player");
+		while (e)
+		{
+			if (e.invincible_finished > time)
+				Hat_Spawn (e, "progs/invulner.mdl", '0 0 35', VEC_ORIGIN, ITEM_PENT);
+
+			if (e.super_damage_finished > time)
+				Hat_Spawn (e, "progs/quaddama.mdl", '0 0 30', VEC_ORIGIN, ITEM_QUAD);
+
+			e = find (e, classname, "player");
+		}
+	}
+	else
+		options = options | NO_POWERUP_HATS;
+
+
 
 	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);

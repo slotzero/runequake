@@ -1,6 +1,5 @@
-/*  $Id: bindings.qc,v 1.141 2010/10/27 02:15:38 slotzero Exp $
-
-    Copyright (C) 2003  David 'Slot Zero' Roberts.
+/*
+    Copyright (C) 2003-2013  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -409,6 +408,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-normal",		IMP_VOTE_NORMAL);
 	player_vote_impulse_alias ("vote-pent",			IMP_VOTE_PENT);
 	player_vote_impulse_alias ("vote-powerup-drop",		IMP_VOTE_POWERUP_DROP);
+	player_vote_impulse_alias ("vote-powerup-hats",		IMP_VOTE_POWERUP_HATS);
 	player_vote_impulse_alias ("vote-practice",		IMP_VOTE_PRACTICE);
 	player_vote_impulse_alias ("vote-quad",			IMP_VOTE_QUAD);
 	player_vote_impulse_alias ("vote-random-spawn",		IMP_VOTE_RANDOM_SPAWN);
@@ -629,6 +629,8 @@ console_aliases =
 	console_init_cvar_alias ("shootbuttonsoff",	CVAR_C2,	C2_SHOOTBUTTONSOFF);
 	console_init_cvar_alias ("maxrunes",		CVAR_C2,	C2_MAXRUNES);
 	console_init_cvar_alias ("setafk",		CVAR_C2,	C2_SETAFK);
+	console_init_cvar_alias ("poweruphatson",	CVAR_C2,	C2_POWERUPHATSON);
+	console_init_cvar_alias ("poweruphatsoff",	CVAR_C2,	C2_POWERUPHATSOFF);
 
 	level_aliases ();
 	spawn_custom_aliases ();
@@ -1336,6 +1338,7 @@ check_console_command =
 				dprint_force ("\n");
 			}
 		}
+
 		else if (i == C2_SETAFK)
 		{
 			skill = cvar ("skill");
@@ -1358,6 +1361,24 @@ check_console_command =
 				s = ftos (skill);
 				dprint_force (s);
 				dprint_force ("\n");
+			}
+		}
+
+		else if (i == C2_POWERUPHATSON)
+		{
+			if (options & NO_POWERUP_HATS)
+			{
+				dprint_force ("Powerup hats on\n");
+				toggle_powerup_hats ();
+			}
+		}
+
+		else if (i == C2_POWERUPHATSOFF)
+		{
+			if (!options & NO_POWERUP_HATS)
+			{
+				dprint_force ("Powerup hats off\n");
+				toggle_powerup_hats ();
 			}
 		}
 
@@ -1405,6 +1426,7 @@ console_commands =
 	self_sprint (self, "runeson             runesoff            runedropon          runedropoff\n");
 	self_sprint (self, "backpackson         backpacksoff        faststarton         faststartoff\n");
 	self_sprint (self, "randomspawnon       randomspawnoff      shootbuttonson      shootbuttonsoff\n");
+	self_sprint (self, "poweruphatson       poweruphatsoff\n");
 };
 
 void ()
@@ -1536,6 +1558,7 @@ help_vote =
 	self_sprint (self, "\b                vote-classic-mega\n");
 	self_sprint (self, "\b                vote-random-spawn\n");
 	self_sprint (self, "\b                vote-shoot-buttons\n");
+	self_sprint (self, "\b                vote-powerup-hats\n");
 	// self_sprint (self, "\n");
 };
 

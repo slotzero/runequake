@@ -1,6 +1,5 @@
-/*  $Id: vote.qc,v 1.89 2011/05/11 20:25:05 slotzero Exp $
-
-    Copyright (C) 2003  David 'Slot Zero' Roberts.
+/*
+    Copyright (C) 2003-2013  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -1011,6 +1010,18 @@ vote =
 
 		if (cancel)
 			self_sprint (self, "this level has no shootable buttons\n");
+	}
+	else if (self.impulse == IMP_VOTE_POWERUP_HATS)
+	{
+		// cancel	= 1;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= toggle_powerup_hats;
+		e.noise2	= " powerup hats ";
+
+		if (options & NO_POWERUP_HATS)
+			e.noise1	= "enable";
+		else
+			e.noise1	= "disable";
 	}
 	else
 		cancel = -1;

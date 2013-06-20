@@ -1,5 +1,4 @@
-/*  $Id: items.qc,v 1.77 2008/08/30 23:39:01 slotzero Exp $
-
+/*
     Copyright (C) 1996, 1997  Id Software, Inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -1439,7 +1438,7 @@ powerup_touch =
 	else if (self.classname == "item_artifact_invulnerability")
 	{
 		if (other.invincible_finished < time)
-			Hat_Spawn (other, self.mdl, '0 0 35', VEC_ORIGIN, 1);
+			Hat_Spawn (other, self.mdl, '0 0 35', VEC_ORIGIN, ITEM_PENT);
 		if (POWERUP_PICKUP_WARN & ITEM_PENT)
 			tell = 1;
 		other.invincible_time = -1;
@@ -1455,7 +1454,7 @@ powerup_touch =
 	else if (self.classname == "item_artifact_super_damage")
 	{
 		if (other.super_damage_finished < time)
-			Hat_Spawn (other, self.mdl, '0 0 30', VEC_ORIGIN, 4);
+			Hat_Spawn (other, self.mdl, '0 0 30', VEC_ORIGIN, ITEM_QUAD);
 
 		if (POWERUP_PICKUP_WARN & ITEM_QUAD)
 			tell = 1;
@@ -1865,7 +1864,7 @@ drop_powerup_touch =
 		else
 		{
 			other.super_damage_finished = self.cnt;
-			Hat_Spawn (other, self.mdl, '0 0 30', VEC_ORIGIN, 4);
+			Hat_Spawn (other, self.mdl, '0 0 30', VEC_ORIGIN, ITEM_QUAD);
 		}
 	}
 	else if (self.netname == "ring")
@@ -1907,7 +1906,7 @@ drop_powerup_touch =
 		else
 		{
 			other.invincible_finished = self.cnt;
-			Hat_Spawn (other, self.mdl, '0 0 35', VEC_ORIGIN, 1);
+			Hat_Spawn (other, self.mdl, '0 0 35', VEC_ORIGIN, ITEM_PENT);
 		}
 	}
 	else

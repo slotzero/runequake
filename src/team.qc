@@ -1,5 +1,4 @@
-/*  $Id: team.qc,v 1.92 2009/05/16 02:26:05 slotzero Exp $
-
+/*
     Copyright (C) 1998-2001  Roderick Schertler.
 
     This program is free software; you can redistribute it and/or modify
@@ -993,6 +992,10 @@ match_defaults =
 	// shootable buttons off
 	if (options & SHOOT_BUTTONS)
 		toggle_shoot_buttons ();
+
+	// powerup hats off
+	if (!options & NO_POWERUP_HATS)
+		toggle_powerup_hats ();
 };
 
 void ()
@@ -1078,6 +1081,10 @@ arena_defaults =
 	// shootable buttons on
 	if (!options & SHOOT_BUTTONS)
 		toggle_shoot_buttons ();
+
+	// powerup hats on
+	if (options & NO_POWERUP_HATS)
+		toggle_powerup_hats ();
 };
 
 void ()
@@ -1163,6 +1170,10 @@ practice_defaults =
 	// shootable buttons off
 	if (options & SHOOT_BUTTONS)
 		toggle_shoot_buttons ();
+
+	// powerup hats off
+	if (!options & NO_POWERUP_HATS)
+		toggle_powerup_hats ();
 };
 
 void ()
@@ -1248,4 +1259,8 @@ normal_defaults =
 	// shootable buttons on
 	if (!options & SHOOT_BUTTONS)
 		toggle_shoot_buttons ();
+
+	// powerup hats on
+	if (options & NO_POWERUP_HATS)
+		toggle_powerup_hats ();
 };

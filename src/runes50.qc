@@ -1,5 +1,4 @@
-/*  $Id: runes50.qc,v 1.21 2006/05/13 05:50:25 slotzero Exp $
-
+/*
     Copyright (C) 1998-2001  Roderick Schertler.
 
     This program is free software; you can redistribute it and/or modify
@@ -707,7 +706,7 @@ quad_activate =
 	self.super_time	= -2;
 
 	if (self.super_damage_finished < time)
-		Hat_Spawn (self, "progs/quaddama.mdl", '0 0 30', VEC_ORIGIN, 4);
+		Hat_Spawn (self, "progs/quaddama.mdl", '0 0 30', VEC_ORIGIN, ITEM_QUAD);
 
 	self.super_damage_finished = time + RN_QUAD_DURATION;
 	self.runetime	= self.super_damage_finished + RN_QUAD_RECHARGE;
