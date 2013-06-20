@@ -999,7 +999,7 @@ vote =
 	}
 	else if (self.impulse == IMP_VOTE_SHOOT_BUTTONS)
 	{
-		// cancel	= 1;
+		cancel	= !find (world, netname, "func_button_shootable");
 		e.frag_rate	= 0.51; // XXX
 		e.think1	= toggle_shoot_buttons;
 		e.noise2	= " shootable buttons ";
@@ -1008,6 +1008,9 @@ vote =
 			e.noise1	= "disable";
 		else
 			e.noise1	= "enable";
+
+		if (cancel)
+			self_sprint (self, "this level has no shootable buttons\n");
 	}
 	else
 		cancel = -1;
