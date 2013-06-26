@@ -1,5 +1,4 @@
-/*  $Id: engine.qc,v 1.47 2008/09/02 06:01:01 slotzero Exp $
-
+/*
     Copyright (C) 1998-2001  Roderick Schertler.
 
     This program is free software; you can redistribute it and/or modify
@@ -186,6 +185,24 @@ create_te_spike =
 	WriteCoord (MSG_BROADCAST, o_y);
 	WriteCoord (MSG_BROADCAST, o_z);
 	multicast (self.origin, MULTICAST_PHS);
+};
+
+void (entity targ)
+set_viewport =
+{
+	IN_POQ([-
+		if (self == targ)
+			self.viewentity = world;
+		else
+			self.viewentity = targ;
+
+		msg_entity = self;
+		WriteByte (MSG_ONE, SVC_SETVIEWPORT);
+		WriteEntity (MSG_ONE, targ);
+	-], [-
+		if (0) targ = targ;	// prevent frikqcc compiler warning
+		SUB_Null ();
+	-])
 };
 
 void (entity e)

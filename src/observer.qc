@@ -1,5 +1,4 @@
-/*  $Id: observer.qc,v 1.75 2013-05-02 18:34:37 slotzero Exp $
-
+/*
     Copyright (C) 1998-2001  Roderick Schertler.
 
     This program is free software; you can redistribute it and/or modify
@@ -395,6 +394,19 @@ obs_post_think =
 		local vector newpos;
 
 		IN_POQ([-
+			if (MOD_PROTOCOL)
+			{
+				if (self.owner.viewentity)
+				{
+					if (self.viewentity != self.owner.viewentity)
+						set_viewport (self.owner.viewentity);
+				}
+				else if (self.viewentity != self.owner)
+					set_viewport (self.owner);
+
+				if (self.view_ofs != self.owner.view_ofs)
+					self.view_ofs = self.owner.view_ofs;
+			}
 			// Place the eyes a little below the ridee.
 			// Originally I placed them a little behind, but
 			// then they were sometimes visible when the

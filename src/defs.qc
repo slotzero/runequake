@@ -933,7 +933,6 @@ float	FL_LOW_BANDWIDTH_CLIENT		= 8192;	// don't draw ents with EF_MAYBE_DRAW
 float	FL_OBSERVER			= 16384;// observers can chat using mm2
 float	FL_IGNORE_MUTE_CLIENT		= 32768;// don't show chat from muted clients
 float	FL_MUTE_CLIENT			= 65536;// muted client
-float	FL_USE_VIEWPORT_ORIGIN		= 131072;// viewport uses .vp_origin instead of .origin
 
 // edict.movetype values
 float	MOVETYPE_NONE			= 0;	// never moves
@@ -1688,4 +1687,4 @@ float	UPDATE_CLIENT_PINGS;
 
 float	MOD_PROTOCOL;
 
-.vector vp_origin;
+.entity viewentity;

@@ -29,7 +29,6 @@ restore_gmissile_owner =
 
 	// restore your viewport and remove flags
 	set_viewport (self);
-	self.flags = self.flags - self.flags & FL_USE_VIEWPORT_ORIGIN;
 	self.rqstate = self.rqstate - self.rqstate & RQS_GUIDED_MISSILE;
 	self.effects = self.effects - self.effects & EF_FROZEN;
 
@@ -98,9 +97,6 @@ gmissile_think =
 	// don't show weapon model
 	self.owner.weaponmodel = string_null;
 
-	// calculate pvs based on viewpoint origin
-	self.owner.vp_origin = self.origin;
-
 	self.nextthink = time + sys_ticrate;
 };
 
@@ -115,7 +111,6 @@ W_FireGuidedMissile =
 
 	// set your view to missiles and set flags
 	set_viewport (newmis);
-	self.flags		= self.flags | FL_USE_VIEWPORT_ORIGIN;
 	self.rqstate		= self.rqstate | RQS_GUIDED_MISSILE;
 
 	// spawn a rocket hat

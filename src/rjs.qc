@@ -1279,24 +1279,6 @@ fix_batman_villain_syndrome =
 	Weird_AllOff ();
 };
 
-void (entity targ)
-set_viewport =
-{
-	IN_POQ([-
-		msg_entity = self;
-		WriteByte (MSG_ONE, SVC_SETVIEWPORT);
-		WriteEntity (MSG_ONE, targ);
-		// XXX
-		//WriteByte (MSG_ONE, SVC_SETVIEWANGLES);
-		//WriteAngle (MSG_ONE, targ.angles_x);
-		//WriteAngle (MSG_ONE, targ.angles_y);
-		//WriteAngle (MSG_ONE, targ.angles_z);
-	-], [-
-		if (0) targ = targ;	// prevent frikqcc compiler warning
-		SUB_Null ();
-	-])
-};
-
 void ()
 impulse_override_cancel =
 {
