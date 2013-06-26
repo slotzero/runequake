@@ -21,10 +21,10 @@
 // DEVELOPMENT FUNCTIONS
 //-------------------------------------------------------------------
 
-float DEVELOPER_MODE = 0;
+float DEVELOPER_MODE = 1;
 
 void ()
 Test_Button =
 {
-	SUB_Null ();
+	current_keys = 0;
 };

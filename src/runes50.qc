@@ -487,7 +487,7 @@ pack_rat_rune_touch =
 	local entity old_self;
 	local string s;
 
-	s = Rune_Tell_real (0, self.runetype, 0, 2);
+	s = Rune_Tell_real (0, self.runetype, 0, 0, 2);
 	sprint3 (other, "You've picked up", s, "\n");
 	old_self = self;
 	self = other;

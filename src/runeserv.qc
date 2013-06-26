@@ -98,7 +98,7 @@ Rune_Button =
 // automatically and on request (impulse 99).  The riders are only told
 // when it's done automatically.
 
-string (float riders, float type, float also_hook, float return_desc)
+string (float riders, float type, float key, float also_hook, float return_desc)
 Rune_Tell_real =
 {
 	local string s1, s2, s3, s4, desc_l, desc_s, d1, d2, d3;
@@ -628,6 +628,14 @@ Rune_Tell_real =
 			"use with axe toggle or +hook\n"
 			"or hook-on or hook-toggle";
 	}
+	else if (type == RN_PLENTIFUL)
+	{
+		desc_l = "Plentiful Health Upgrade";
+		desc_s = "       ";
+
+		d1 = "Health boxes contain twice\n"
+			"as much health!";
+	}
 	else
 	{
 		desc_l = "Invalid Rune";
@@ -644,11 +652,21 @@ Rune_Tell_real =
 			return desc_s;
 	}
 
-	s1 = "\n\n\n\n\n\n";
-	if (also_hook)
-		s2 = "Grappling hook, plus";
+	// XXX Is there a cleaner way to do this?
+	if (key)
+	{
+		s1 = Rune_Tell_real (0, key + RN_KEY_BASE, 0, 0, 1);
+
+		if (also_hook)
+			s2 = strcat (s1, ", Hook, plus");
+		else
+			s2 = strcat (s1, ", plus");
+	}
+	else if (also_hook)
+		s2 = "Grappling Hook, plus";
 	else
 		s2 = string_null;
+
 	s3 = "\n\<\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\>\n\b\.\b ";
 	s4 = " \b\.\b\n\<\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\>\n";
 
@@ -712,12 +730,28 @@ Rune_Activate =
 		self.aqflags = self.aqflags | AQ_HOOK;
 		if (tell)
 		{
-			cloaked_sound (self, CHAN_BODY, SOUND_RUNE_PICKUP,
-					1, ATTN_NORM);
+			cloaked_sound (self, CHAN_BODY, SOUND_RUNE_PICKUP, 1, ATTN_NORM);
 			muzzleflash ();
-			Rune_Tell (1, self, type, 0);
+			Rune_Tell (1, self, type, 0, 0);
 		}
 		draw_hud (1);
+		return;
+	}
+
+	if (type > RN_KEY_BASE)
+	{
+		self.keytype = type - RN_KEY_BASE;
+
+		dprint (self.netname);
+		dprint (" picked up a key of type (");
+		dprint_float (self.keytype);
+		dprint (")\n");
+		if (tell)
+		{
+			cloaked_sound (self, CHAN_BODY, SOUND_RUNE_PICKUP, 1, ATTN_NORM); // XXX change this to key pickup sound
+			muzzleflash ();
+			Rune_Tell (1, self, type, 0, 0);
+		}
 		return;
 	}
 
@@ -785,7 +819,7 @@ Rune_Activate =
 				self.dropdelay = time + rune_drop_delay;
 			muzzleflash ();
 			cloaked_sound (self, CHAN_BODY, SOUND_RUNE_PICKUP, 1, ATTN_NORM);
-			Rune_Tell (1, self, self.runetype, 0);
+			Rune_Tell (1, self, self.runetype, self.keytype, 0);
 		}
 		else
 		{
@@ -1052,6 +1086,7 @@ SelectRuneSpawnPoint =
 			(runespawn.classname == "player"
 				|| runespawn.classname == "rune"
 				|| runespawn.classname == "hook"
+				|| runespawn.classname == "key"
 				|| runespawn.classname == "thrown_head"
 				|| runespawn.origin == VEC_ORIGIN))
 	{
@@ -1160,7 +1195,7 @@ Rune_Move =
 	self.runetime = time + 60 + random ()*60;
 	self.nextthink = self.runetime - 3;
 
-	self.flags = self.flags-(self.flags & FL_ONGROUND);
+	self.flags = self.flags - self.flags & FL_ONGROUND;
 
 	self.velocity_x = crandom ()*500;
 	self.velocity_y = crandom ()*500;
@@ -1200,12 +1235,16 @@ Rune_Touch =
 		if (other.aqflags & AQ_HOOK)
 			return;
 	}
+	else if (self.runetype > RN_KEY_BASE)
+	{
+		if (other.keytype)
+			return;
+	}
 	else if (other.runetype == RN_PACK_RAT && self.enemy == other)
 	{
 		if (!self.runevar & 2)
 		{
-			centerprint (other,
-					"You killed the owner of this rune");
+			centerprint (other, "You killed the owner of this rune");
 			self.runevar = self.runevar | 2;
 		}
 		return;
@@ -1224,6 +1263,8 @@ Rune_Touch =
 		{
 			if (self.runetype == RN_LITHIUM_HOOK)
 				s = "hook";
+			else if (self.runetype & 256)
+				s = "key";
 			else
 				s = "rune";
 			centerprint2 (other, "This was your ", s);
@@ -1237,7 +1278,7 @@ Rune_Touch =
 	Rune_Activate (temp.runetype, 1);
 	self = temp;
 
-	if (self.runetype != RN_LITHIUM_HOOK)
+	if (self.runetype <= RN_MAX)
 		runecurrent = runecurrent - 1;
 	remove (self);
 };
@@ -1246,6 +1287,7 @@ string (float ix)
 Rune_Model =
 {
 	     if (ix == -1)	return "progs/v_spike.mdl";
+	else if (ix == -2)	return "progs/b_s_key.mdl";
 	else if (ix == 0)	return "progs/end1.mdl";
 	else if (ix == 1)	return "progs/end2.mdl";
 	else if (ix == 2)	return "progs/end3.mdl";
@@ -1261,6 +1303,8 @@ Rune_Spawn =
 	rune = spawn ();
 	if (type == RN_LITHIUM_HOOK)
 		current_hooks = current_hooks + 1;
+	else if (type > RN_KEY_BASE)
+		current_keys = current_keys + 1;
 	else
 		runecurrent = runecurrent + 1;
 	setorigin (rune, sorigin);
@@ -1274,6 +1318,8 @@ Rune_Spawn =
 	rune.velocity_z = random ()*zmax;
 	if (type == RN_LITHIUM_HOOK)
 		rune.classname = "hook";
+	else if (type > RN_KEY_BASE)
+		rune.classname = "key";
 	else
 		rune.classname = "rune";
 	rune.runetype = type;
@@ -1285,6 +1331,8 @@ Rune_Spawn =
 
 	if (type == RN_LITHIUM_HOOK)
 		ix = -1;
+	else if (type > RN_KEY_BASE)
+		ix = -2;
 	else if (temp1 & T1_RANDOM_RUNE_MODELS)
 		ix = floor (random () * 4);
 	else
@@ -1365,6 +1413,31 @@ Rune_SpawnAll =
 	}
 };
 
+void (float numspawn)
+Key_SpawnAll =
+{
+	local float counter, type;
+	local entity temp;
+
+	counter = 0;
+	while (counter < numspawn)
+	{
+		temp = SelectRuneSpawnPoint ();
+		do
+		{
+			type = random () * RN_KEY_MAX;
+			type = ceil (type) + RN_KEY_BASE;
+		} while (!Rune_Type_Allowed (type));
+
+		dprint ("Spawning key (");
+		dprint_float (type);
+		dprint (")\n");
+
+		Rune_Spawn (temp.origin, 500, 500, 500, type, world, world);
+		counter = counter + 1;
+	}
+};
+
 void ()
 spawn_runes =
 {
@@ -1393,6 +1466,19 @@ spawn_runes =
 					i = current_hooks + 1;
 				while (current_hooks < i)
 					spawn_lithium_hook ();
+			}
+		}
+
+		if (1) // XXX Add option to disable.
+		{
+			i = count_players (0);
+			i = ceil (i / 3);
+			if (current_keys < i)
+			{
+				if (!temp1 & T1_FAST_RUNE_SPAWN)
+					i = current_keys + 1;
+				while (current_keys < i)
+					Key_SpawnAll (1);
 			}
 		}
 

@@ -656,6 +656,13 @@ PlayerDie =
 			current_hooks = current_hooks - 1;
 	}
 
+	// treat keys similar to lithium hook
+	if (self.keytype)
+	{
+		if (current_keys > 0)
+			current_keys = current_keys - 1;
+	}
+
 	if (gamemode == MODE_MATCH)
 	{
 		if (match.state <= 0)

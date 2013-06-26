@@ -2965,7 +2965,7 @@ draw_hud =
 		else
 			willdrop = " ";
 
-		runedesc = Rune_Tell_real (0, self.runetype, 0, 2);
+		runedesc = Rune_Tell_real (0, self.runetype, 0, 0, 2);
 
 		s = string_null;
 		i = strlen (runedesc);
@@ -2978,8 +2978,7 @@ draw_hud =
 			s = " ";
 
 		in_hud_hack = 1;
-		centerprint7 (self, "\n\n\n\n\n\n\n\n\n\n\n\n",
-				weap, "                 ", lithhook, willdrop, runedesc, s);
+		centerprint7 (self, "\n\n\n\n\n\n\n\n\n\n\n\n", weap, "                 ", lithhook, willdrop, runedesc, s);
 		in_hud_hack = 0;
 	}
 };
@@ -3013,50 +3012,16 @@ draw_hud_e =
 // save the invocation info and makes the first call.  Additional calls
 // will happen from PlayerPreThink().
 
-void (float riders, entity of_e, float type, float also_hook)
+void (float riders, entity of_e, float type, float key, float also_hook)
 Rune_Tell =
 {
 	if (riders && self.aqflags & AQ_QUIET)
 		return;
 
-	// If this is a simple "no rune" message, don't refresh it.
-	if (!type && !also_hook)
-	{
-		Rune_Tell_real (riders, type, also_hook, 0);
-		rune_tell_stop (1);
-		return;
-	}
-
-	self.waitmin = 32 * type;
-	if (riders)
-		self.waitmin = self.waitmin + 8;
-	if (also_hook)
-		self.waitmin = self.waitmin + 16;
-	rune_tell_refresh ();
-	Rune_Tell_sprint (riders, of_e);
-};
-
-// This translates the saved data back to the form the original
-// Rune_Tell() wanted and calls it.
-
-void ()
-rune_tell_refresh =
-{
-	self.waitmax = time + CENTERPRINT_REFRESH;
-	in_runedesc_hack = 1;
-	Rune_Tell_real (self.waitmin & 8,
-			(self.waitmin - self.waitmin & 31) / 32,
-			self.waitmin & 16, 0);
-	in_runedesc_hack = 0;
-
-	// Increment number of times I've shown it.
-	self.waitmin = self.waitmin + 1;
-
-	// If this is the 4th time I'm printing it, don't print it
-	// any more.  That gives 2*1.5 (CENTERPRINT_REFRESH) + 2
-	// (CENTERPRINT_TIME) = 5 seconds.
-	if (self.waitmin & 7 >= 1)
-		rune_tell_stop (1);
+	Rune_Tell_real (riders, type, key, also_hook, 0);
+	rune_tell_stop (1);
+	if (type || also_hook)
+		Rune_Tell_sprint (riders, of_e);
 };
 
 // This stops a Rune_Tell() happening for self.  If NO_CLEAR is true
@@ -3067,10 +3032,11 @@ rune_tell_stop =
 {
 	if (!no_clear)
 	{
-		if (self.waitmin & 8)
+		/*if (self.waitmin & 8)
 			centerprint (self, "");
 		else
-			self_centerprint (self, "");
+			self_centerprint (self, "");*/
+		centerprint (self, "");
 		self.waitmax = 0;
 	}
 	else
@@ -3084,7 +3050,7 @@ rune_tell_toggle =
 	if (self.waitmax)
 		rune_tell_stop (0);
 	else
-		Rune_Tell (riders, of_e, of_e.runetype, of_e.aqflags & AQ_HOOK);
+		Rune_Tell (riders, of_e, of_e.runetype, of_e.keytype, of_e.aqflags & AQ_HOOK);
 };
 
 void ()

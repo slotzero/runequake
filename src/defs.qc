@@ -296,6 +296,9 @@ entity runespawn;
 // Each players' rune type. Runes' runetype used for what they are.
 .float runetype;
 
+// key of awesome
+.float keytype;
+
 // Time at which you can drop your rune.  If negative, you've already
 // requested the drop, this is 0 - the time it will be dropped.
 .float dropdelay;
@@ -382,6 +385,10 @@ float orig_serverflags;
 // by players or lying on the ground.
 float current_hooks;
 
+// This counts the number of keys either held by players or lying on
+// the ground.
+float current_keys;
+
 // XXX BFG hack
 .float last_bfg_zap;
 
@@ -418,7 +425,6 @@ float update_frag_rates_time;
 float MAP_IS_CUSTOM;
 
 // Rune constants (NONE MAY BE OVER 100!)
-
 float RN_STRENGTH	= 1;
 float RN_REGEN		= 2;
 float RN_RESIST		= 3;
@@ -480,9 +486,13 @@ float RN_REQUIEM	= 58;
 float RN_MAX		= 58;
 
 // Only partially runes.
-
 float RN_LITHIUM_HOOK	= 59;
 float RN_MAX_ALL	= 59;
+
+// Rune keys.
+float RN_KEY_BASE	= 100;
+float RN_PLENTIFUL	= 101;
+float RN_KEY_MAX	= 1;
 
 // impulses
 

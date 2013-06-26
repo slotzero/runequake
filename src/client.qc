@@ -755,6 +755,7 @@ PutClientInServer =
 	self.runevector = VEC_ORIGIN;
 	self.grenade_spam_time = 0;
 	self.afk = time;
+	self.keytype = 0;
 
 	// head hunters
 	self.num_heads = 0;
@@ -1625,8 +1626,6 @@ PlayerPreThink =
 	{
 		if (self.deadflag || (obs && self.owner.deadflag))
 			rune_tell_stop (0);
-		else if (self.waitmax > 0 && time > self.waitmax)
-			rune_tell_refresh ();	// refresh
 		else if (self.waitmax < 0 && 0 - self.waitmax + CENTERPRINT_TIME < time)
 			self.waitmax = 0;	// it just went away
 	}

@@ -128,6 +128,7 @@ precaches =
 	// progs/
 	precache_model ("progs/armor.mdl");		// armor drop
 	precache_model ("progs/backpack.mdl");		// backpack/antipack
+	precache_model ("progs/b_s_key.mdl");		// key
 	precache_model ("progs/bolt.mdl");		// *** TE_LIGHTNING1
 	precache_model ("progs/bolt2.mdl");		// *** TE_LIGHTNING2
 	precache_model ("progs/bolt3.mdl");		// *** TE_LIGHTNING3
