@@ -491,8 +491,9 @@ float RN_MAX_ALL	= 59;
 
 // Rune keys.
 float RN_KEY_BASE	= 100;
-float RN_PLENTIFUL	= 101;
-float RN_KEY_MAX	= 1;
+float RN_DBL_HEALTH_BOX	= 101;
+float RN_DBL_AMMO_BOX	= 102;
+float RN_KEY_MAX	= 103;
 
 // impulses
 

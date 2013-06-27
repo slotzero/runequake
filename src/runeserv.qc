@@ -628,17 +628,28 @@ Rune_Tell_real =
 			"use with axe toggle or +hook\n"
 			"or hook-on or hook-toggle";
 	}
-	else if (type == RN_PLENTIFUL)
+	else if (type == RN_DBL_HEALTH_BOX)
 	{
-		desc_l = "Plentiful Health Upgrade";
+		desc_l = "Double Health Boxes";
 		desc_s = "       ";
 
 		d1 = "Health boxes contain twice\n"
-			"as much health!";
+			"as much health";
+	}
+	else if (type == RN_DBL_AMMO_BOX)
+	{
+		desc_l = "Double Ammo Boxes";
+		desc_s = "       ";
+
+		d1 = "Ammo boxes contain twice\n"
+			"as much health";
 	}
 	else
 	{
-		desc_l = "Invalid Rune";
+		if (key)
+			desc_l = "Invalid Key";
+		else
+			desc_l = "Invalid Rune";
 		desc_s = "       ";
 
 		d1 = string_null;
@@ -655,8 +666,7 @@ Rune_Tell_real =
 	// XXX Is there a cleaner way to do this?
 	if (key)
 	{
-		s1 = Rune_Tell_real (0, key + RN_KEY_BASE, 0, 0, 1);
-
+		s1 = Rune_Tell_real (0, key, 0, 0, 1);
 		if (also_hook)
 			s2 = strcat (s1, ", Hook, plus");
 		else
@@ -740,12 +750,13 @@ Rune_Activate =
 
 	if (type > RN_KEY_BASE)
 	{
-		self.keytype = type - RN_KEY_BASE;
+		self.keytype = type;
 
 		dprint (self.netname);
 		dprint (" picked up a key of type (");
 		dprint_float (self.keytype);
 		dprint (")\n");
+
 		if (tell)
 		{
 			cloaked_sound (self, CHAN_BODY, SOUND_RUNE_PICKUP, 1, ATTN_NORM); // XXX change this to key pickup sound
@@ -1263,7 +1274,7 @@ Rune_Touch =
 		{
 			if (self.runetype == RN_LITHIUM_HOOK)
 				s = "hook";
-			else if (self.runetype & 256)
+			else if (self.runetype > RN_KEY_BASE)
 				s = "key";
 			else
 				s = "rune";
@@ -1425,7 +1436,7 @@ Key_SpawnAll =
 		temp = SelectRuneSpawnPoint ();
 		do
 		{
-			type = random () * RN_KEY_MAX;
+			type = random () * (RN_KEY_MAX - RN_KEY_BASE);
 			type = ceil (type) + RN_KEY_BASE;
 		} while (!Rune_Type_Allowed (type));
 

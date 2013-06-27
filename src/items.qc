@@ -340,6 +340,9 @@ health_touch =
 		}
 	}
 
+	if (other.keytype == RN_DBL_HEALTH_BOX)
+		amount = amount * 2;
+
 	if (!T_Heal (other, amount, is_mega))
 		return;
 
@@ -978,6 +981,9 @@ ammo_touch =
 	}
 	else
 		ammo_flag = self.aflag;
+
+	if (other.keytype == RN_DBL_AMMO_BOX)
+		ammo_flag = ammo_flag * 2;
 
 	// if the player was using his best weapon, change up to the new one if better
 	stemp = self;
