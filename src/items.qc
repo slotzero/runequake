@@ -1519,14 +1519,11 @@ void ()
 item_artifact_invulnerability =
 {
 	num_pent = num_pent + 1;
-	if (deathmatch & DM_PENT_REPLACEMENT && (num_pent > 1 || scratch1 & S1_NOPENT))
+	if (deathmatch & DM_PENT_REPLACEMENT && num_pent > 1)
 	{
 		item_powerup_replacement (num_pent);
 		return;
 	}
-
-	if (scratch1 & S1_NOPENT)
-		return;
 
 	precache_sound ("items/protect2.wav");
 	precache_sound ("items/protect3.wav");
@@ -1565,14 +1562,11 @@ void ()
 item_artifact_super_damage =
 {
 	num_quad = num_quad + 1;
-	if (deathmatch & DM_QUAD_REPLACEMENT && (num_quad > 1 || scratch1 & S1_NOQUAD))
+	if (deathmatch & DM_QUAD_REPLACEMENT && num_quad > 1)
 	{
 		item_powerup_replacement (num_quad);
 		return;
 	}
-
-	if (scratch1 & S1_NOQUAD)
-		return;
 
 	precache_sound ("items/damage2.wav");
 	precache_sound ("items/damage3.wav");

@@ -304,10 +304,6 @@ temp1
 	what's what, and the aliases.cfg file for a way to select runes
 	by name.
 
-    128 runes don't drop when killed		T1_NO_DROP_ON_DEATH
-
-	You don't drop your rune when you are killed.
-
     256 can pick up own rune			T1_CAN_GET_OWN_RUNE
 
 	You can pick up a rune you dropped when you were killed.  This
