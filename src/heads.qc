@@ -69,7 +69,7 @@ altar_touch =
 	{
 		if (e_chain.classname == "thrown_head")
 		{
-			e_chain.dropdelay	= time + 5;
+			e_chain.dropdelay	= time + 5 + random() * 5;
 			e_chain.nextthink	= time;
 			e_chain.think		= head_think;
 			e_chain.movetype	= MOVETYPE_BOUNCE;
@@ -148,9 +148,10 @@ head_think =
 	// head timed out
 	if (self.dropdelay < time)
 	{
-		dprint ("debug: head timed out\n");
 		if (self.owner.movetarget == self)
 			self.owner.movetarget = world;
+
+		ThrowGib ("progs/gib1.mdl", 1);
 		remove (self);
 		return;
 	}
