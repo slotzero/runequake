@@ -61,7 +61,7 @@ gmissile_think =
 	// more than likely you are dead, so explode
 	if (!self.owner.rqstate & RQS_GUIDED_MISSILE || !self.owner.cl[CL_ACTIVE])
 	{
-		create_te_explosion (self.origin, 1);
+		RocketDamageExplosion ();
 		return;
 	}
 
@@ -84,7 +84,7 @@ gmissile_think =
 		else
 		{
 			restore_gmissile_owner (self.owner);
-			create_te_explosion (self.origin, 1);
+			RocketDamageExplosion ();
 			return;
 		}
 		self.runetime = time + 1;
