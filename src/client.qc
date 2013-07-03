@@ -2095,6 +2095,15 @@ ClientConnect =
 	// client connecting during an intermission can cause problems",
 	// but I just fixed the problems.  I can't move the client from
 	// here, so I do that from player_init(), too.
+
+	self.runevar_entity = spawn();
+	self.runevar_array = *(&self.runevar_entity + %400);
+
+	self.runetime_entity = spawn();
+	self.runetime_array = *(&self.runetime_entity + %400);
+
+	self.runevector_entity = spawn();
+	self.runevector_array = *(&self.runevector_entity + %400);
 };
 
 /*
@@ -2139,6 +2148,13 @@ ClientDisconnect =
 		bprint (" frags\n");
 		sound (self, CHAN_BODY, "player/tornoff2.wav", 1, ATTN_NONE);
 	}
+
+	if (self.runevar_array)
+		remove(self.runevar_array);
+	if (self.runetime_array)
+		remove(self.runetime_array);
+	if (self.runevector_array)
+		remove(self.runevector_array);
 
 	spawn_protect_off ();
 	forget_rune_owner ();

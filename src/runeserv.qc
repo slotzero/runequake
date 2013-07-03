@@ -17,6 +17,18 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
+float ()
+Has_Rune = 
+{
+	return FALSE;
+};
+
+float ()
+Has_Rune_e =
+{
+	return FALSE;
+};
+
 void ()
 Rune_Think =
 {

@@ -306,11 +306,20 @@ entity runespawn;
 // For players, various functions based on rune.  For observers, time at
 // which to tell ridee of new rider.  For weapons, time at which it will
 // be charged in DM_WEAPONS_STAY mode.
-.float runetime;
+.float oldrunetime;
+.entity runetime_array;
+.entity runetime_entity;
+
 // For players, various functions based on rune.  For observers, time at
 // which joined game queue.  For weapons, primary model index.
-.float runevar;
-.vector runevector;
+
+.float oldrunevar;
+.entity runevar_array;
+.entity runevar_entity;
+
+.vector oldrunevector;
+.entity runevector_array;
+.entity runevector_entity;
 
 // various per-player flags, some retained across levels
 .float aqflags;
