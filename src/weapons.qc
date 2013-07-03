@@ -377,12 +377,21 @@ BecomeExplosion =
 	s_explode1 ();
 };
 
-// reflect rocket
+// explosion effect with radius damage
 void ()
 RocketDamageExplosion =
 {
+	local float damg;
+
+	if (self.classname == "gmissile")
+		damg = GUIDED_MISSILE_DAMAGE;
+	else if (self.classname == "reflect")
+		damg = REFLECT_DAMAGE;
+	else
+		damg = 120;
+
 	monk_radius_hack = 1;
-	T_RadiusDamage (RADIUS_NORMAL, self, self.owner, REFLECT_DAMAGE, other, self.classname);
+	T_RadiusDamage (RADIUS_NORMAL, self, self.owner, damg, world, self.classname);
 	monk_radius_hack = 0;
 
 	create_te_explosion (self.origin, 1);
