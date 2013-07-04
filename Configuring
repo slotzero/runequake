@@ -333,8 +333,8 @@ temp1
 	connect, but I limit the game to 10 players by adding 40960 to
 	the temp1 value.
 
-    262144 free hook				T1_FREE_HOOK
-    524288 Lithium hook				T1_LITHIUM_HOOK
+    262144 [REMOVED]
+    524288 [REMOVED]
 
     	Normally the grappling hook is a rune like any other.  You can
     	use one of these settings to change that.  If either of these is
