@@ -517,7 +517,7 @@ vote =
 		e.think1	= toggle_free_hook;
 		e.noise2	= " free hook ";
 
-		i = hook_type (temp1);
+		i = hook_type (storage1);
 		if (i)
 		{
 			if (i == 2)
@@ -535,7 +535,7 @@ vote =
 		e.noise1	= "enable";
 		e.noise2	= " free hook ";
 
-		if (hook_type (temp1) == 1)
+		if (hook_type (storage1) == 1)
 		{
 			if (!cancel)
 				self_sprint (self, "free hook already enabled\n");
@@ -550,7 +550,7 @@ vote =
 		e.noise1	= "enable";
 		e.noise2	= " lithium hook ";
 
-		if (hook_type (temp1) == 2)
+		if (hook_type (storage1) == 2)
 		{
 			if (!cancel)
 				self_sprint (self, "lithium hook already enabled\n");
@@ -749,7 +749,7 @@ vote =
 		else
 			e.noise1	= "disable";
 
-		i = hook_type (temp1);
+		i = hook_type (storage1);
 		if ((i == 1 && !HOOK_DAMAGE_FREE)
 				|| (i == 2 && !HOOK_DAMAGE_LITHIUM)
 				|| (!i && !HOOK_DAMAGE_RUNE))

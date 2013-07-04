@@ -1248,7 +1248,7 @@ check_console_command =
 
 		else if (i == C2_FREEHOOKON)
 		{
-			if (hook_type (temp1) != 1)
+			if (hook_type (storage1) != 1)
 			{
 				dprint_force ("Free hook enabled\n");
 				free_hook ();
@@ -1257,7 +1257,7 @@ check_console_command =
 
 		else if (i == C2_LITHHOOKON)
 		{
-			if (hook_type (temp1) != 2)
+			if (hook_type (storage1) != 2)
 			{
 				dprint_force ("Lithium hook enabled\n");
 				lithium_hook ();
@@ -1266,7 +1266,7 @@ check_console_command =
 
 		else if (i == C2_HOOKOFF)
 		{
-			if (hook_type (temp1))
+			if (hook_type (storage1))
 			{
 				dprint_force ("Hook disabled\n");
 				toggle_free_hook ();
@@ -1591,7 +1591,7 @@ help_options =
 	if (options & MODE_LOCKED)
 		self_sprint (self, "\b (locked)");
 
-	self_sprint (self, "\n\bhook          ");	self_sprint_boolean (self, temp1 & T1_HOOK_MASK);
+	self_sprint (self, "\n\bhook          ");	self_sprint_boolean (self, storage1 & HOOK_MASK);
 	self_sprint (self, "\b  hook-damage   ");	self_sprint_boolean (self, !options & NO_HOOK_DAMAGE);
 	self_sprint (self, "\n\bquad          ");	self_sprint_boolean (self, !options & NO_QUAD);
 	self_sprint (self, "\b  pent          ");	self_sprint_boolean (self, !options & NO_PENT);
@@ -1698,8 +1698,8 @@ help_temp1 =
 	self_sprint (self, "\n     4096 * max players                 "); i = max_players ();
 	if (!i) self_sprint (self, "off"); else self_sprint_float (self, i);
 	self_sprint (self, "\n");
-	self_sprint (self, "\n   262144 free hook                     "); self_sprint_boolean (self, t1 & T1_FREE_HOOK);
-	self_sprint (self, "\n   524288 Lithium hook                  "); self_sprint_boolean (self, t1 & T1_LITHIUM_HOOK);
+	//self_sprint (self, "\n   262144 free hook                     "); self_sprint_boolean (self, t1 & T1_FREE_HOOK);
+	//self_sprint (self, "\n   524288 Lithium hook                  "); self_sprint_boolean (self, t1 & T1_LITHIUM_HOOK);
 	self_sprint (self, "\n  1048576 no hook voting                "); self_sprint_boolean (self, t1 & T1_HOOK_NO_VOTE);
 	self_sprint (self, "\n");
 	i = t1 & T1_RUNE_DROP_DELAY_MASK;

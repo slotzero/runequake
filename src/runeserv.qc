@@ -1,5 +1,4 @@
-/*  $Id: runeserv.qc,v 1.68 2010/10/24 07:16:47 slotzero Exp $
-
+/*
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
     This program is free software; you can redistribute it and/or modify
@@ -1312,9 +1311,8 @@ Rune_Spawn =
 float (float type)
 Rune_Type_Allowed =
 {
-	if (type == RN_HOOK	&& temp1 & T1_HOOK_MASK)	return 0;
-	if (type == RN_SUCK
-			&& sv_gravity != DEFAULT_GRAVITY)	return 0;
+	if (type == RN_HOOK && storage1 & HOOK_MASK)		return 0;
+	if (type == RN_SUCK && sv_gravity != DEFAULT_GRAVITY)	return 0;
 	if (type == RN_SELFPRES && teamplay & TEAM_SELF_HEALTH_PROT
 			&& teamplay & TEAM_SELF_ARMOR_PROT)	return 0;
 	IN_QW([-
@@ -1383,7 +1381,7 @@ spawn_runes =
 				Rune_SpawnAll (1);
 		}
 
-		if (temp1 & T1_HOOK_MASK == T1_LITHIUM_HOOK)
+		if (storage1 & HOOK_MASK == LITHIUM_HOOK)
 		{
 			i = count_players (0);
 			i = ceil (i / 3);

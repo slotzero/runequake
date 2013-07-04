@@ -818,9 +818,9 @@ float T1_MAX_PLAYERS_MULT	= 4096;
 float T1_MAX_PLAYERS_MASK	= 61440;
 // drop delay			= 65536;
 // drop delay			= 131072;
-float T1_HOOK_MASK		= 786432;
-float T1_FREE_HOOK		= 262144;
-float T1_LITHIUM_HOOK		= 524288;
+//float T1_HOOK_MASK		= 786432;
+//float T1_FREE_HOOK		= 262144;
+//float T1_LITHIUM_HOOK		= 524288;
 float T1_HOOK_NO_VOTE		= 1048576;
 //float T1_HOOK_DEFAULT_ON	= 2097152;
 
@@ -1292,6 +1292,10 @@ float	CONSOLE_ALIASES		= 8388608;
 
 // storage1
 float storage1;
+
+float	FREE_HOOK		= 1;
+float	LITHIUM_HOOK		= 2;
+float	HOOK_MASK		= 3;
 float	AFK_TIME;
 float	SETAFK_MULTIPLIER	= 16;	// starting bit of mask  (16,32,64,128,256)
 float	SETAFK_MASK		= 496;	// bits 1, 2, 4, 8, 16
