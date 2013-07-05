@@ -91,16 +91,25 @@ bubbles =
 void ()
 burn_think =
 {
+    local float runetest;
+
+    if (Has_Rune_e(self.enemy, RN_ENVIRO)
+        runetest = 1;
+    else if (Has_Rune_e(self.enemy, RN_FIREWALK)
+        runetest = 1;
+    else if (Has_Rune_e(self.enemy, RN_TORCH)
+        runetest = 1;
+    else
+        runetest = 0;
+
 	// Stop burning if appropriate.
-	if (self.runevar < time
+	if (self.oldrunevar < time
 			|| (self.enemy.waterlevel > 1 &&
 				self.enemy.watertype != CONTENT_LAVA)
 			|| self.enemy.health < 1
 			|| !self.enemy.aqstate & AQS_BURNING
-			|| self.enemy.runetype == RN_ENVIRO
+			|| runetest
 			|| self.enemy.items & IT_SUIT
-			|| self.enemy.runetype == RN_FIREWALK
-			|| self.enemy.runetype == RN_TORCH
 			|| intermission_running)
 	{
 		if (self.enemy.waterlevel > 0)
@@ -118,7 +127,7 @@ burn_think =
 	{
 		local float timeleft, d;
 
-		timeleft = self.runevar - time;
+		timeleft = self.oldrunevar - time;
 		if (timeleft > BURN_3_TIME)		d = BURN_3_DAMAGE;
 		else if (timeleft > BURN_2_TIME)	d = BURN_2_DAMAGE;
 		else					d = BURN_1_DAMAGE;
@@ -157,14 +166,21 @@ void (entity targ, entity attacker, float duration)
 burn_start =
 {
 	local entity e;
+	local float runetest;
 
-	if (targ.runetype == RN_ENVIRO
-			|| targ.items & IT_SUIT
-			|| targ.runetype == RN_FIREWALK
-			|| targ.runetype == RN_TORCH
+    if (Has_Rune_e(self.enemy, RN_ENVIRO)
+        runetest = 1;
+    else if (Has_Rune_e(self.enemy, RN_FIREWALK)
+        runetest = 1;
+    else if (Has_Rune_e(self.enemy, RN_TORCH)
+        runetest = 1;
+    else
+        runetest = 0;
+
+	if (targ.items & IT_SUIT
 			|| (targ.waterlevel > 1
 			&& targ.watertype != CONTENT_LAVA)
-			|| (targ.runetype == RN_SELFPRES && targ == attacker))
+			|| (Has_Rune_e(targ, RN_SELFPRES) && targ == attacker))
 		return;
 
 	if (teamplay & TEAM_HEALTH_PROT
@@ -193,7 +209,7 @@ burn_start =
 		e		= spawn ();
 		e.classname	= "burn";
 		e.think		= burn_think;
-		e.runevar	= time;
+		e.oldrunevar= time;
 		e.enemy		= targ;
 
 		// Originally I updated the owner to track the last
@@ -218,7 +234,7 @@ burn_start =
 		}
 	}
 
-	e.runevar	= e.runevar + duration;
+	e.oldrunevar= e.oldrunevar + duration;
 	e.lip		= time;
 	e.nextthink	= time;
 };
@@ -230,13 +246,13 @@ burn_radius =
 	local entity e;
 
 	// Torch does more damage with flame weapons.
-	if (attacker.runetype == RN_TORCH)
+	if (Has_Rune_e(attacker, RN_TORCH))
 		damage = damage * 2;
 
 	e = findradius (inflictor.origin, 50);
 	while (e)
 	{
-		if (e.takedamage && e.runetype != RN_TORCH && e != ignore)
+		if (e.takedamage && !Has_Rune_e(e, RN_TORCH) && e != ignore)
 		{
 			T_Damage (e, inflictor, attacker, damage, dtype);
 			if (random () < burn_chance)
@@ -289,7 +305,7 @@ flamemissile_think =
 		return;
 	}
 
-	if (time > self.runevar)
+	if (time > self.oldrunevar)
 		self.think = flamemissile_touch;
 	self.nextthink = time + sys_ticrate;
 };
@@ -332,12 +348,12 @@ W_FireFlameMissile =
 		newmis.pos1_z	= FLAMETHROWER_BURN_DURATION;
 		newmis.mdl	= "progs/s_explod.spr";
 
-		if (self.runetype == RN_HASTE)
-			newmis.runevar = time + 1.2;
-		else if (self.runetype == RN_JACK)
-			newmis.runevar = time + 0.75;
+		if (Has_Rune_e(self, RN_HASTE))
+			newmis.oldrunevar = time + 1.2;
+		else if (Has_Rune_e(self, RN_JACK))
+			newmis.oldrunevar = time + 0.75;
 		else
-			newmis.runevar = time + 0.6;
+			newmis.oldrunevar = time + 0.6;
 
 		org = self.origin + PLAYER_WEAPON_OFFSET + v_forward * 16;
 	}
@@ -345,7 +361,7 @@ W_FireFlameMissile =
 	else if (class == "lavagun")
 	{
 		snd		= "shambler/sboom.wav";
-		if (self.runetype == RN_HASTE)
+		if (Has_Rune_e(self, RN_HASTE))
 			newmis.movetype = MOVETYPE_FLYMISSILE;
 		else
 			newmis.movetype	= MOVETYPE_TOSS;
@@ -355,7 +371,7 @@ W_FireFlameMissile =
 		newmis.pos1_y	= LAVAGUN_BURN_CHANCE;
 		newmis.pos1_z	= LAVAGUN_BURN_DURATION;
 		newmis.mdl	= "progs/flame2.mdl";
-		newmis.runevar	= time + 6;
+		newmis.oldrunevar	= time + 6;
 		org = self.origin + PLAYER_WEAPON_OFFSET + v_right * ox;
 	}
 

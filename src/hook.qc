@@ -20,7 +20,7 @@
 float (entity e)
 have_hook_e =
 {
-	return e.runetype == RN_HOOK
+	return Has_Rune_e(e, RN_HOOK)
 			|| e.aqflags & AQ_HOOK
 			|| temp1 & T1_HOOK_MASK == T1_FREE_HOOK;
 };
@@ -34,7 +34,7 @@ have_hook =
 float (entity e)
 hook_damage_e =
 {
-	if (e.runetype == RN_HOOK)	return HOOK_DAMAGE_RUNE;
+	if (Has_Rune_e(e, RN_HOOK))	return HOOK_DAMAGE_RUNE;
 	else if (e.aqflags & AQ_HOOK)	return HOOK_DAMAGE_LITHIUM;
 	else if (temp1 & T1_HOOK_MASK == T1_FREE_HOOK)
 					return HOOK_DAMAGE_FREE;
@@ -118,10 +118,10 @@ HookPull =
 	local vector vel, spray;
 	local float v;
 
-	if (self.owner.runetype == RN_CLOAK)
-		self.owner.runetime = time + RECLOAK_DELAY;
-	else if (self.owner.runetype == RN_MONK)
-		self.owner.runetime = time + MONK_MOVE_DELAY;
+	if (Has_Rune_e(self.owner, RN_CLOAK))
+		self.owner.runetime_array[RN_CLOAK * %1] = time + RECLOAK_DELAY;
+    if (Has_Rune_e(self.owner, RN_MONK))
+		self.owner.runetime_array[RN_MONK * %1] = time + MONK_MOVE_DELAY;
 
 	if (MaybeDropHook ())
 		return;
@@ -212,7 +212,7 @@ CreateChain =
 void ()
 HookTouch =
 {
-	local float d;
+	local float d, runetest;
 
 	if (options & NO_HOOK_DAMAGE)
 		d = 0;
@@ -224,10 +224,12 @@ HookTouch =
 			return;
 	-])
 
+	runetest = other.runetype == RN_ENVIRO;
+
 	if (isfriend2 (self.owner, other)
 			|| (!d && other.takedamage == DAMAGE_AIM)
 			|| other.items & IT_SUIT
-			|| other.runetype == RN_ENVIRO
+			|| runetest
 			|| other.aqstate & AQS_SPAWN_PROTECT)
 	{
 		sound (self, CHAN_AUTO, "weapons/bounce.wav", 1, ATTN_NORM);
@@ -272,8 +274,8 @@ LaunchHook =
 	local vector chainvec;		// chain vector
 	local float chainlength;	// length of extended chain
 
-	if (self.owner.runetype == RN_CLOAK)
-		self.owner.runetime = time + RECLOAK_DELAY;
+	if (Has_Rune_e(self.owner, RN_CLOAK))
+		self.owner.runetime_array[RN_CLOAK * %1] = time + RECLOAK_DELAY;
 
 	if (MaybeDropHook ())
 		return;
@@ -299,8 +301,9 @@ HookOn =
 		HookOff ();
 
 	spawn_protect_off ();
-	if (self.runetype == RN_CLOAK)
-		self.runetime = time + RECLOAK_DELAY;
+
+	if (Has_Rune_e(self, RN_CLOAK))
+		self.runetime_array[RN_CLOAK * %1] = time + RECLOAK_DELAY;
 
 	self.aqstate = self.aqstate | AQS_HOOK;
 	newhook = spawn ();
@@ -364,7 +367,7 @@ HookOff_by_targ_e =
 	this_e = find (world, classname, "hook-head");
 	while (this_e)
 	{
-		if (this_e.enemy == e && this_e.owner.runetype != RN_HOOK)
+		if (this_e.enemy == e && !Has_Rune_e(this_e.owner, RN_HOOK))
 		{
 			old_self = self;
 			self = this_e;
@@ -398,13 +401,11 @@ remove_hook_rune_from_players =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		if (e.runetype == RN_HOOK)
+		if (Has_Rune_e(e, RN_HOOK))
 		{
 			os	= self;
 			self	= e;
-
 			Rune_Delete (0);
-
 			self	= os;
 		}
 		e = find (e, classname, "player");

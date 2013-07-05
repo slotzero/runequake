@@ -35,7 +35,7 @@ vote_impulse_commands =
 	if (is_observer ())
 	{
 		// allow queued players to vote in arena mode
-		if (gamemode & MODE_ARENA && self.runevar)
+		if (gamemode & MODE_ARENA && self.oldrunevar)
 			vote ();
 		// allow observers to vote except during match
 		else if (gamemode == MODE_MATCH && !match.state)
@@ -215,7 +215,7 @@ count_votes =
 		i = 0;
 		if (is_observer_e (e))
 		{
-			if (gamemode & MODE_ARENA && e.runevar)
+			if (gamemode & MODE_ARENA && e.oldrunevar)
 				i = 1;
 			else if (gamemode == MODE_MATCH && !match.state)
 				i = 1;
@@ -310,7 +310,7 @@ vote_think =
 		return;
 	}
 
-	if (self.runevar)
+	if (self.oldrunevar)
 	{
 		IN_POQ([-
 			// poq
@@ -325,7 +325,7 @@ vote_think =
 			e = find (world, classname, "player");
 			while (e)
 			{
-				if (!e.vote_flags & (VOTE_LAST_YES | VOTE_LAST_NO) || self.runevar == 3)
+				if (!e.vote_flags & (VOTE_LAST_YES | VOTE_LAST_NO) || self.oldrunevar == 3)
 				{
 				IN_POQ([-
 					// poq
@@ -355,7 +355,7 @@ vote_think =
 			}
 
 		// Feature request for Toyo.  XXX Remove this at some point?
-		if (self.impulse == IMP_VOTE_EXIT && !forced_nextmap && self.runevar == 3)
+		if (self.impulse == IMP_VOTE_EXIT && !forced_nextmap && self.oldrunevar == 3)
 		{
 			e		= spawn ();
 			e.owner		= self.owner;
@@ -363,7 +363,7 @@ vote_think =
 			e.nextthink	= time + 3;
 		}
 
-		self.runevar = self.runevar - 1;
+		self.oldrunevar = self.oldrunevar - 1;
 	}
 	else
 	{
@@ -468,7 +468,7 @@ vote =
 	e		= spawn ();
 	e.classname	= "vote_in_progress";
 
-	e.runevar	= 3;		// request attempts
+	e.oldrunevar= 3;		// request attempts
 	e.impulse	= self.impulse;	// impulse command
 	e.owner		= self;		// owner
 
@@ -1071,7 +1071,7 @@ vote_yes =
 	i = 0;
 	if (is_observer ())
 	{
-		if (gamemode & MODE_ARENA && self.runevar)
+		if (gamemode & MODE_ARENA && self.oldrunevar)
 			i = 0;
 		else if (gamemode == MODE_MATCH && !match.state)
 			i = 0;
@@ -1104,7 +1104,7 @@ vote_no =
 
 	if (is_admin ())
 	{
-		vip.runevar	= 0;
+		vip.oldrunevar	= 0;
 		vip.nextthink	= time;
 		return;
 	}
@@ -1119,7 +1119,7 @@ vote_no =
 	i = 0;
 	if (is_observer ())
 	{
-		if (gamemode & MODE_ARENA && self.runevar)
+		if (gamemode & MODE_ARENA && self.oldrunevar)
 			i = 0;
 		else if (gamemode == MODE_MATCH && !match.state)
 			i = 0;
@@ -1167,7 +1167,7 @@ show_votes =
 		i = 0;
 		if (is_observer_e (e))
 		{
-			if (gamemode & MODE_ARENA && e.runevar)
+			if (gamemode & MODE_ARENA && e.oldrunevar)
 				i = 1;
 			else if (gamemode == MODE_MATCH && !match.state)
 				i = 1;
@@ -1198,7 +1198,7 @@ show_votes =
 		i = 0;
 		if (is_observer_e (e))
 		{
-			if (gamemode & MODE_ARENA && e.runevar)
+			if (gamemode & MODE_ARENA && e.oldrunevar)
 				i = 1;
 			else if (gamemode == MODE_MATCH && !match.state)
 				i = 1;

@@ -47,7 +47,7 @@ restore_gmissile_owner =
 		// reset your angle
 		/*if (os.delay < time)
 		{
-			self.angles = os.runevector;
+			self.angles = os.oldrunevector;
 			self.fixangle = 1;
 		}*/
 	}
@@ -77,7 +77,7 @@ gmissile_think =
 	self.angles		= vectoangles (self.velocity);
 
 	// remove ammo, explode if none
-	if (self.runetime < time)
+	if (self.oldrunetime < time)
 	{
 		if (self.owner.ammo_rockets >= 1)
 			self.owner.ammo_rockets = self.owner.ammo_rockets - 1;
@@ -87,7 +87,7 @@ gmissile_think =
 			create_te_explosion (self.origin, 1);
 			return;
 		}
-		self.runetime = time + 1;
+		self.oldrunetime = time + 1;
 	}
 
 	// lock player down only when he's on ground
@@ -107,7 +107,7 @@ W_FireGuidedMissile =
 	newmis.think		= gmissile_think;
 
 	// don't explode right away if low ammo
-	newmis.runetime		= time + 2;
+	newmis.oldrunetime		= time + 2;
 
 	// set your view to missiles and set flags
 	set_viewport (newmis);

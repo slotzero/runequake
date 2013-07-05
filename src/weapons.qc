@@ -488,11 +488,11 @@ T_MissileTouch =
 
 	if (reflect)
 	{
-		if (self.runevar == 2)
+		if (self.oldrunevar == 2)
 			create_te_explosion (self.origin, 1);
 		else
 		{
-			self.runevar = self.runevar + 1;
+			self.oldrunevar = self.oldrunevar + 1;
 			self.movetype = MOVETYPE_BOUNCE;
 			self.nextthink = time;
 			self.think = reflect_projectile;
@@ -895,11 +895,11 @@ spike_touch =
 		// developing reflect code
 		if (0)
 		{
-			if (self.runevar == 1)
+			if (self.oldrunevar == 1)
 				create_te_spike (type, self.origin);
 			else
 			{
-				self.runevar	= 1;
+				self.oldrunevar = 1;
 				self.movetype	= MOVETYPE_BOUNCE;
 				self.nextthink	= time;
 				self.think	= reflect_projectile;
@@ -1316,7 +1316,7 @@ ImpulseCommands =
 		wanted = self.impulse - IMP_RUNE_CHEAT_BASE + 1;
 		if (wanted == self.runetype)
 			wanted = 0;
-		//if (wanted && self.runetype == RN_SHIELD && self.runevar == 1)
+		//if (wanted && self.runetype == RN_SHIELD && self.oldrunevar == 1)
 		//	wanted = 0;
 		// Let admins use camo to help spot cheaters.
 		if (wanted && deathmatch & DM_DM_MASK && !temp1 & T1_RUNE_CHEAT && (!self.aqflags & AQ_ADMIN || wanted != RN_CAMO))

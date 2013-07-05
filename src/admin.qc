@@ -650,7 +650,7 @@ admin_impulse_map =
 		}
 		else if (is_observer () && !self.vote_flags & VOTE_YES)
 		{
-			if (gamemode & MODE_ARENA && self.runevar)
+			if (gamemode & MODE_ARENA && self.oldrunevar)
 			{
 				forced_nextmap = m;
 				vote ();

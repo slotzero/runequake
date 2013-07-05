@@ -490,7 +490,7 @@ Freeze_Frozen =
 			|| self.runent.health <= 0
 			|| self.runent.runetype == RN_FREEZE
 			|| self.runent.runetype == RN_ENVIRO
-			|| (self.runent.runetype == RN_BLIZZARD && self.runent.runevector_x < time)
+			|| (self.runent.runetype == RN_BLIZZARD && Get_Runevector_x(self.runent, RN_BLIZZARD) < time)
 			|| self.runent.items & IT_SUIT)
 	{
 		self.runent.effects		= self.runent.effects - self.runent.effects & EF_FROZEN;
@@ -513,7 +513,7 @@ Freeze_Frozen =
 			stuffcmd (self.runent, CSHIFT_NONE);
 		}
 		else if (self.runent.classname == "shambler_slave")
-			self.runent.runevar = 0;
+			self.runent.oldrunevar = 0;
 
 		sound (self, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
 		remove (self);
@@ -586,7 +586,7 @@ Freeze_Touch =
 	sound (self, CHAN_BODY, "shambler/smack.wav", 1, ATTN_NORM);
 
 	self.runent	= other;
-	self.runevar	= other.frame;
+	self.oldrunevar	= other.frame;
 
 	// If you use angles here you get batman villain syndrome if you're
 	// frozen while in the middle of a roll.
@@ -703,18 +703,17 @@ Suck =
 void ()
 Suck_Think =
 {
-	if ((self.owner.runevar == 0 && self.owner.runetype == RN_SUCK)
-			|| self.runetime < time)
+	if ((self.owner.runevar_array[RN_SUCK * %1] == 0 && Has_Rune_e(self.owner, RN_SUCK))
+			|| self.oldrunetime < time)
 	{
 		spawn_tfog (self.origin);
 		remove (self);
-		if (self.owner.runetype == RN_SUCK)
-			self.owner.class_cnt = 0;
+		self.owner.runetime_array[RN_SUCK * %1] = 0;
 		return;
 	}
 
-	if (self.owner.runetype == RN_SUCK)
-		self.runetime = time + 20;
+	if (Has_Rune_e(self.owner, RN_SUCK))
+		self.oldrunetime = time + 20;
 
 	// I used to set this to sys_ticrate but every time the rate changes
 	// SUCK_FORCE is either too weak or too strong.
@@ -757,14 +756,12 @@ Suck_Spawn =
 	setsize (suck, VEC_ORIGIN, VEC_ORIGIN);
 	setmodel (suck, "progs/s_light.spr");
 	suck.classname = "sucker";
-
-	sound (suck, CHAN_WEAPON, "buttons/switch04.wav", 1, ATTN_NORM);
-
 	suck.nextthink = time;
 	suck.think = Suck_Think;
-	suck.runetime = time + 1;
+	suck.oldrunetime = time + 1;
 	suck.touch = Suck_Touch;
 
+	sound (suck, CHAN_WEAPON, "buttons/switch04.wav", 1, ATTN_NORM);
 	centerprint (self, "Gravity well dropped");
 };
 
@@ -780,20 +777,20 @@ Rune_Suck_sprint =
 void ()
 Suck_Button =
 {
-	if (self.runevar == 0 && !self.class_cnt)
+	if (self.runevar_array[RN_SUCK * %1] == 0 && !self.runetime_array[RN_SUCK * %1])
 	{
 		if (sv_gravity != DEFAULT_GRAVITY)
 			centerprint (self, "Can't use gravity well on this level");
 		else
 		{
-			self.runevar = 1;
-			self.class_cnt = 1;
+			self.runevar_array[RN_SUCK * %1] = 1;
+			self.runetime_array[RN_SUCK * %1] = 1;
 			Suck_Spawn ();
 		}
 	}
 	else
 	{
-		self.runevar = 0;
+		self.runevar_array[RN_SUCK * %1] = 0;
 		centerprint (self, "Gravity well recalled");
 	}
 };
@@ -966,7 +963,6 @@ VengHead_Spawn =
 	temp.nextthink = time;
 	temp.angles_z = -30;
 	temp.colormap = self.colormap;
-	self.runent = temp;
 };
 
 void ()
@@ -1024,7 +1020,6 @@ ShubHat_Spawn =
 	else
 		temp.avelocity_y = -100;
 	temp.colormap = self.colormap;
-	self.runent = temp;
 };
 
 void ()

@@ -65,7 +65,7 @@ bomb_arm =
 	if (other.takedamage == DAMAGE_AIM)
 	{
 		T_Damage (other, self, self.owner, 30, "bombhit");
-		self.runevar = 1;
+		self.oldrunevar = 1;
 		self.enemy = other;
 
 		// v_angle is used to keep the bomb pointing in the
@@ -81,27 +81,27 @@ bomb_arm =
 		// position and the target's origin, and I save the
 		// distance between the two.
 
-		self.runevector	= self.origin - self.enemy.origin;
-		self.runetime	= vlen (self.runevector);
-		self.runevector	= vectoangles (self.runevector);
-		self.runevector	= self.runevector - self.enemy.angles;
+		self.oldrunevector	= self.origin - self.enemy.origin;
+		self.oldrunetime	= vlen (self.oldrunevector);
+		self.oldrunevector	= vectoangles (self.oldrunevector);
+		self.oldrunevector	= self.oldrunevector - self.enemy.angles;
 
-		if (self.runetime > 15)
-			self.runetime = 15;
+		if (self.oldrunetime > 15)
+			self.oldrunetime = 15;
 	}
 	else
-		self.runevar = 0;
+		self.oldrunevar = 0;
 
 	// dropdelay is tick time
 	// ltime is explode time
-	if (self.owner.runetype == RN_HASTE)
+	if (Has_Rune_e(self.owner, RN_HASTE))
 		self.ltime = time + 2.5;
-	else if (self.owner.runetype == RN_JACK)
+	else if (Has_Rune_e(self.owner, RN_JACK))
 		self.ltime = time + 4.375;
 	else
 		self.ltime = time + 5;
 
-	self.velocity	= VEC_ORIGIN;
+	self.velocity = VEC_ORIGIN;
 
 	// XXX The bomb locks the player down in Quakeworld.  I work around it
 	// here.
@@ -125,15 +125,15 @@ bomb_tick =
 		return;
 	}
 
-	if (self.runevar && (self.enemy.health <= 0
+	if (self.oldrunevar && (self.enemy.health <= 0
 			|| self.enemy.origin == VEC_ORIGIN))
 	{
 		self.velocity = self.enemy.velocity;
 		self.movetype = MOVETYPE_TOSS;
-		self.runevar = 0;
+		self.oldrunevar = 0;
 	}
 
-	if (self.runevar)
+	if (self.oldrunevar)
 	{
 		// XXX I'm not sure this is quite right for differences
 		// in pitch.
@@ -148,11 +148,11 @@ bomb_tick =
 
 		// makevectors() uses e.v_angle-style angles rather than
 		// e.angles-style.  The pitch goes the other way.
-		a = self.enemy.angles + self.runevector;
+		a = self.enemy.angles + self.oldrunevector;
 		a_x = 0 - a_x;
 		makevectors (a);
 		setorigin (self, self.enemy.origin
-					+ v_forward * self.runetime);
+					+ v_forward * self.oldrunetime);
 	}
 
 	if (self.ltime <= time)
@@ -163,7 +163,7 @@ bomb_tick =
 
 	if (self.dropdelay <= time)
 	{
-		if (self.owner.runetype != RN_CLOAK)
+		if (!Has_Rune_e(self.owner, RN_CLOAK))
 		{
 			sound (self, CHAN_WEAPON, "doors/runetry.wav",
 				1, ATTN_NORM);
@@ -174,7 +174,7 @@ bomb_tick =
 		self.dropdelay = time + timeleft;
 	}
 
-	if (self.runevar)
+	if (self.oldrunevar)
 		self.nextthink = time + sys_ticrate;
 	else
 		self.nextthink = self.dropdelay;
@@ -183,7 +183,7 @@ bomb_tick =
 void ()
 bomb_explode =
 {
-	if (self.runevar)
+	if (self.oldrunevar)
 		T_Damage (self.enemy, self, self.owner, 100, "bombed");
 	else
 		self.enemy = world;

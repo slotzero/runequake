@@ -163,7 +163,7 @@ PlaceItem =
 		self.oldorigin = self.origin;
 		if (options & WEAPONS_STAY || coop)
 		{
-			self.runetime	= time;
+			self.oldrunetime	= time;
 			self.think	= weapon_up;
 			self.nextthink	= time;
 		}
@@ -303,9 +303,9 @@ health_touch =
 			return;
 	}
 
-	if (other.runetype == RN_REQUIEM)
+	if (Has_Rune_e(other, RN_REQUIEM))
 	{
-		if (other.runevector_y > time)
+		if (Get_Runevector_y(other, RN_REQUIEM) > time)
 			return;
 	}
 
@@ -323,17 +323,17 @@ health_touch =
 
 	if (is_mega)
 	{
-		if (other.runetype == RN_REQUIEM)
+		if (Has_Rune_e(other, RN_REQUIEM))
 			amount = 25;
 	}
 	else
 	{
-		if (other.runetype == RN_VAMP)
+		if (Has_Rune_e(other, RN_VAMP))
 		{
 			amount = 5;
 			s = "items/r_item1.wav";
 		}
-		else if (other.runetype == RN_REQUIEM)
+		else if (Has_Rune_e(other, RN_REQUIEM))
 		{
 			amount = 15;
 			s = "items/r_item1.wav";
@@ -353,9 +353,9 @@ health_touch =
 	// health touch sound
 	item_sound (other, CHAN_ITEM, s, 1, ATTN_NORM);
 
-	if (other.runetype == RN_REQUIEM)
+	if (Has_Rune_e(other, RN_REQUIEM))
 	{
-		other.runevector_y = time + RN_REQUIEM_RECHARGE;
+		Set_Runevector_y (other, time + RN_REQUIEM_RECHARGE, RN_REQUIEM);
 		if (is_mega)
 			decay_health_spawn (other, 1);
 	}
@@ -408,15 +408,15 @@ armor_touch =
 	}
 
 	// Someone touched me, so don't cycle if configured.
-	self.runetype	= time + 5;
+	self.oldrunetype = time + 5;
 
-	if (other.runetype == RN_REQUIEM)
+	if (Has_Rune_e(other, RN_REQUIEM))
 	{
-		if (other.runevector_z > time)
+		if (Get_Runevector_z(other, RN_REQUIEM) > time)
 			return;
 	}
 
-	if (self.runevar)
+	if (self.oldrunevar)
 	{
 		type	= self.armortype;
 		value	= self.armorvalue;
@@ -444,8 +444,17 @@ armor_touch =
 	this_tot	= type * value;
 	other_tot	= other.armortype * other.armorvalue;
 
-
-	if (other.runetype == RN_REGEN)
+    if (Has_Rune_e(other, RN_ARMOR))
+	{
+		if (other.armorvalue >= get_max_armor_e (other))
+			return;
+	}
+	else if (Has_Rune_e(other, RN_REQUIEM))
+	{
+		if (other.armorvalue && other.armortype >= type && other.armorvalue >= get_max_armor_e (other))
+			return;
+	}
+	else if (Has_Rune_e(other, RN_REGEN))
 	{
 		// Don't go to a worse type if you have regen, even if
 		// there's more of it.
@@ -454,25 +463,15 @@ armor_touch =
 					&& other_tot >= this_tot))
 			return;
 	}
-	else if (other.runetype == RN_ARMOR)
-	{
-		if (other.armorvalue >= get_max_armor_e (other))
-			return;
-	}
-	else if (other.runetype == RN_REQUIEM)
-	{
-		if (other.armorvalue && other.armortype >= type && other.armorvalue >= get_max_armor_e (other))
-			return;
-	}
 	else if (other_tot >= this_tot)
 		return;
 
-	if (other.runetype == RN_ARMOR)
+	if (Has_Rune_e(other, RN_ARMOR))
 	{
 		other.armortype		= ARMOR_TYPE_3;
 		other.armorvalue	= other.armorvalue + value;
 	}
-	else if (other.runetype == RN_REQUIEM)
+	else if (Has_Rune_e(other, RN_REQUIEM))
 	{
 		if (other.armortype > type)
 			type = other.armortype;
@@ -499,9 +498,7 @@ armor_touch =
 
 				old_self	= self;
 				self		= other;
-
 				drop_armor();
-
 				self		= old_self;
 			}
 		}*/
@@ -518,11 +515,16 @@ armor_touch =
 		other.armorvalue = max;
 
 	// Have to do this after capping armorvalue.
-	if (other.runetype == RN_ARMOR)
+	if (Has_Rune_e(other, RN_ARMOR))
 		good_armor_set_armor_items_e (other);
 
 	if (!deathmatch & DM_DM_MASK)
-		sprint (other, "You got armor\n");
+    {
+        if (random < 0.02)
+            sprint (other, "You got armour\n");
+        else
+            sprint (other, "You got armor\n");
+    }
 
 	// armor touch sound
 	item_sound (other, CHAN_ITEM, "items/armor1.wav", 1, ATTN_NORM);
@@ -530,11 +532,11 @@ armor_touch =
 	// Stop burning, for levels with no water.
 	other.aqstate = other.aqstate - other.aqstate & AQS_BURNING;
 
-	if (other.runetype == RN_REQUIEM)
-		other.runevector_z = time + RN_REQUIEM_RECHARGE;
+	if (Has_Rune_e(other, RN_REQUIEM))
+		Set_Runevector_z (other, time + RN_REQUIEM_RECHARGE, RN_REQUIEM);
 	else
 	{
-		if (self.runevar)
+		if (self.oldrunevar)
 		{
 			remove (self);
 			return;
@@ -557,7 +559,7 @@ armor_cycle =
 	if (!options & ARMOR_ROTATE)
 		return;
 
-	if (self.runetype < time)
+	if (self.oldrunetype < time)
 	{
 		if (ARMOR_ROTATE_RANDOM)
 			self.skin = rint (random () * 2);
@@ -626,7 +628,7 @@ drop_armor =
 		return;
 
 	item		= spawn ();
-	item.runevar	= 1;
+	item.oldrunevar	= 1;
 	item.classname	= "dropped_armor";
 	item.armortype	= self.armortype;
 	item.armorvalue	= self.armorvalue;
@@ -702,10 +704,10 @@ weapon_touch =
 			return;
 	}
 
-	requiem = other.runetype == RN_REQUIEM;
+	requiem = Has_Rune_e(other, RN_REQUIEM;)
 	if (requiem)
 	{
-		if (other.runevector_x > time)
+		if (Get_Runevector_x(other, RN_REQUIEM) > time)
 			return;
 	}
 
@@ -716,7 +718,7 @@ weapon_touch =
 	best = W_BestWeapon ();
 	self = stemp;
 
-	charged = time >= self.runetime;
+	charged = time >= self.oldrunetime;
 
 	if (options & WEAPONS_STAY || coop)
 		leave = 1;
@@ -837,17 +839,17 @@ weapon_touch =
 		if (charged)
 		{
 			setorigin (self, self.oldorigin);
-			self.runetime = time + WEAPON_RESPAWN_TIME;
+			self.oldrunetime = time + WEAPON_RESPAWN_TIME;
 			self.think = weapon_up;
-			self.nextthink = self.runetime;
+			self.nextthink = self.oldrunetime;
 		}
 		if (!requiem)
 			return;
 	}
 
 	// remove it in single player, or setup for respawning in deathmatch
-	if (other.runetype == RN_REQUIEM)
-		other.runevector_x = time + RN_REQUIEM_RECHARGE;
+	if (Has_Rune_e(other, RN_REQUIEM))
+		Set_Runevector_x (other, time + RN_REQUIEM_RECHARGE, RN_REQUIEM);
 	else
 	{
 		self.model = string_null;
@@ -969,9 +971,9 @@ ammo_touch =
 
 	if (other.health <= 0)
 		return;
-	if (other.runetype == RN_REQUIEM)
+	if (Has_Rune_e(other, RN_REQUIEM))
 	{
-		if (other.runevector_x > time)
+		if (Get_Runevector_x(other, RN_REQUIEM > time)
 			return;
 
 		ammo_flag = 5;
@@ -1044,8 +1046,8 @@ ammo_touch =
 	self = stemp;
 
 	// remove it in single player, or setup for respawning in deathmatch
-	if (other.runetype == RN_REQUIEM)
-		other.runevector_x = time + RN_REQUIEM_RECHARGE;
+	if (Has_Rune_e(other, RN_REQUIEM))
+		Set_Runevector_x (other, time + RN_REQUIEM_RECHARGE, RN_REQUIEM);
 	else
 	{
 		self.model = string_null;

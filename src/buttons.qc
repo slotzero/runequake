@@ -94,7 +94,7 @@ button_touch =
 		self.enemy = other;
 
 	// dmg hack
-   	self.runevar = 1;
+   	self.oldrunevar = 1;
 
 	if (self.health)
 		button_killed ();
@@ -106,8 +106,8 @@ void ()
 button_killed =
 {
 	// dmg hack
-	if (self.runevar)
-		self.runevar	= 0;
+	if (self.oldrunevar)
+		self.oldrunevar = 0;
 	else
 		self.enemy	= damage_attacker;
 

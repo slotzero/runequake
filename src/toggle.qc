@@ -332,7 +332,7 @@ toggle_weapons_stay =
 	{
 		if (e.touch == weapon_touch)
 		{
-			e.runetime	= time;
+			e.oldrunetime	= time;
 			e.think		= SUB_regen;
 			e.nextthink	= time;
 
@@ -489,8 +489,8 @@ setclassicmega =
 	e = find (world, classname, "decay_health");
 	while (e)
 	{
-		if (e.runevar > 1)
-			e.runevar = 1;
+		if (e.oldrunevar > 1)
+			e.oldrunevar = 1;
 		e = find (e, classname, "decay_health");
 	}
 

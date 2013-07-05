@@ -40,11 +40,12 @@ BFG_Zap =
 		return;
 	}
 
-	i = 1;
-	if (self.owner.runetype == RN_ZAP)
+	if (Has_Rune_e(self.owner, RN_ZAP))
 		i = 5;
- 	else if (self.owner.runetype == RN_THOR)
+ 	else if (Has_Rune_e(self.owner, RN_THOR))
 		i = 2.5;
+    else
+        i = 1;
 
 	// Find everything within range
 	head = findradius (self.origin, BFG_ZAP_RANGE * i);
@@ -119,9 +120,9 @@ BFG_Warmup =
 
 	// Make the sound and return unless this is the last tick.
 	self.count = self.count + 1;
-	if (self.owner.runetype == RN_HASTE)
+	if (Has_Rune_e(self.owner, RN_HASTE))
 		number = 2;
-	else if (self.owner.runetype == RN_JACK)
+	else if (Has_Rune_e(self.owner, RN_JACK))
 		number = 3;
 	else
 		number = 4;
@@ -137,13 +138,13 @@ BFG_Warmup =
 	self.effects = self.effects | EF_BRIGHTLIGHT;
 
 	// Don't make launch sound while cloaked.
-	if (self.owner.runetype != RN_CLOAK)
+	if (!Has_Rune_e(self.owner, RN_CLOAK))
 		sound (self, CHAN_WEAPON, "weapons/sgun1.wav", 1, ATTN_NORM);
 
 	self.movetype = MOVETYPE_FLYMISSILE;
-	if (self.owner.runetype == RN_HASTE)
+	if (Has_Rune_e(self.owner, RN_HASTE))
 		self.velocity = v_forward * 800;
-	else if (self.owner.runetype == RN_JACK)
+	else if (Has_Rune_e(self.owner, RN_JACK))
 		self.velocity = v_forward * 500;
 	else
 		self.velocity = v_forward * 400;
@@ -174,6 +175,6 @@ W_BFG =
 	missile.nextthink	= time;
 	missile.think		= BFG_Warmup;
 
-	if (self.runetype == RN_THOR)
-		self.runetime = time + 15;
+	if (Has_Rune_e(self, RN_THOR))
+		self.runetime_array[RN_THOR * %1] = time + 15;
 };

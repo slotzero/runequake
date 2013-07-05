@@ -227,7 +227,7 @@ sham_melee =
 {
 	local float chance;
 
-	if (self.runevar == 2)
+	if (self.oldrunevar == 2)
 		return;
 
 	chance = random ();
@@ -277,18 +277,18 @@ void ()	sham_magic3	= [$magic3,	sham_magic4]
 	ai_face ();
 
 	//RUNE SERV: Changing this around JUST for the sake of the shambler slaves
-	// using '.runent' instead of '.owner'
+	// using '.cl' instead of '.owner'
 	// self.owner = spawn ();
 	//o = self.owner;
 
-	self.runent	= spawn ();
-	o		= self.runent;
+	o = spawn ();
+	self.runent = o;
 
 	setmodel (o, "progs/s_light.mdl");
 	setorigin (o, self.origin);
 
 	o.angles	= self.angles;
-	o.nextthink	= time + 0.7;
+	o.nextthink	= time + 0.4; // Zop: lagged lightning animation removal on death
 	o.think		= SUB_Remove;
 };
 void ()	sham_magic4	= [$magic4,	sham_magic5]	{ muzzleflash (); self.runent.frame = 1; };

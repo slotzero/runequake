@@ -55,9 +55,9 @@ match_client_init =
 void ()
 match_obs_init =
 {
-	if (is_observer_e (self.owner) || self.runevar)
+	if (is_observer_e (self.owner) || self.oldrunevar)
 	{
-		if (self.runevar)
+		if (self.oldrunevar)
 		{
 			pqc_match_time (self.owner, 255, 0);
 			self_stuffcmd (self.owner, "color 1\n");
@@ -84,7 +84,7 @@ match_obs_become =
 
 	e		= spawn ();
 	e.owner		= self;
-	e.runevar	= !type;
+	e.oldrunevar	= !type;
 
 	e.think		= match_obs_init;
 
@@ -175,7 +175,7 @@ match_respawn_all_items =
 		if (self.classname == "bodyque")
 			self.model = string_null;
 
-		else if ((self.classname == "shambler_slave" && self.trigger_field.runevar)
+		else if ((self.classname == "shambler_slave" && self.trigger_field.oldrunevar)
 				|| self.classname == "backpack"
 				|| self.classname == "dropped_armor"
 				|| self.netname == "quad"
@@ -194,7 +194,7 @@ match_respawn_all_items =
 				|| self.classname == "torchtrap"
 				|| self.classname == "glue"
 				|| self.classname == "antipack")
-			self.nextthink = self.runetime = time;
+			self.nextthink = self.oldrunetime = time;
 
 		else if (self.flags & FL_ITEM && self.nextthink != -2)
 			SUB_regen ();
@@ -388,7 +388,7 @@ match_countdown =
 		vip = find_vip ();
 		if (vip.impulse == IMP_VOTE_TIMESET)
 		{
-			vip.runevar = 0;
+			vip.oldrunevar = 0;
 			vip.nextthink = time;
 		}
 

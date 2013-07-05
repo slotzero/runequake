@@ -17,48 +17,224 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-float ()
-Has_Rune = 
-{
-	return FALSE;
-};
-
-float ()
+float (entity e, float rn)
 Has_Rune_e =
 {
-	return FALSE;
+	if (e.runetype1 == rn)
+        return 1;
+	if (e.runetype2 == rn)
+        return 1;
+	return 0;
+};
+
+float (float i)
+RuneToVecIndex =
+{
+    if (i == RN_RECALL)
+        return RVI_1;
+    if (i == RN_ZAP)
+        return RVI_2;
+    if (i == RN_MONK)
+        return RVI_3;
+    if (i == RN_DUAL)
+        return RVI_4;
+    if (i == RN_CAMO)
+        return RVI_5;
+    if (i == RN_VAMP)
+        return RVI_6;
+    if (i == RN_JACK)
+        return RVI_7;
+    if (i == RN_FLY)
+        return RVI_8;
+    if (i == RN_REQUIEM)
+        return RVI_9;
+    return 0;
+};
+
+vector (entity e, float rn)
+Runevector =
+{
+    local float i;
+    local vector v;
+    local string s;
+
+    i = RuneToVecIndex(rn);
+    if (i == 0)
+    {
+        s = ftos(i);
+        dprint("Bad RetrieveVector with index: ");
+        dprint(s);
+        dprint("\n");
+    }
+
+    v_x = e.runevector_array[i];
+    v_y = e.runevector_array[i + %1];
+    v_z = e.runevector_array[i + %2];
+
+    return v;
+};
+
+float (entity e, float rn)
+Runevector_x =
+{
+    local float i;
+    local string s;
+
+    i = RuneToVecIndex(rn);
+    if (i == 0)
+    {
+        s = ftos(i);
+        dprint("Bad RetrieveVectorx with index: ");
+        dprint(s);
+        dprint("\n");
+        return 0;
+    }
+
+    return e.runevector_array[i];
+};
+
+float (entity e, float rn)
+Runevector_y =
+{
+    local float i;
+    local string s;
+
+    float i = RuneToVecIndex(rn);
+    if (i == 0)
+    {
+        s = ftos(i);
+        dprint("Bad RetrieveVectory with index: ");
+        dprint(s);
+        dprint("\n");
+        return 0;
+    }
+
+    return e.runevector_array[i + %1];
+};
+
+float (entity e, float rn)
+Runevector_z =
+{
+    local float i;
+    local string s;
+
+    i = RuneToVecIndex(rn);
+    if (i == 0)
+    {
+        s = ftos(rn);
+        dprint("Bad RetrieveVectorz with index: ");
+        dprint(s);
+        dprint("\n");
+        return 0;
+    }
+
+    return e.runevector_array[i + %2];
+};
+
+void (entity e, vector v, float rn)
+Set_Runevector =
+{
+    local float n;
+    local string s;
+
+    n = RuneToVecIndex(rn);
+    if (n == 0)
+    {
+        s = ftos(rn);
+        dprint("Bad StoreVector with index: ");
+        dprint(s);
+        dprint("\n");
+    } else {
+        e.runevector_array[n] = v_x;
+        e.runevector_array[n + %1] = v_y;
+        e.runevector_array[n + %2] = v_z;
+    }
+};
+
+void (entity e, float value, float rn)
+Set_Runevector_x =
+{
+    local float n;
+    local string s;
+
+    n = RuneToVecIndex(rn);
+    if (n == 0)
+    {
+        s = ftos(rn);
+        dprint("Bad StoreVectorx with index: ");
+        dprint(s);
+        dprint("\n");
+    } else {
+        e.runevector_array[n] = value;
+    }
+};
+
+void (entity e, float value, float rn)
+Set_Runevector_y =
+{
+    local float n;
+    local string s;
+
+    n = RuneToVecIndex(rn);
+    if (n == 0)
+    {
+        s = ftos(rn);
+        dprint("Bad StoreVectory with index: ");
+        dprint(s);
+        dprint("\n");
+    } else {
+        e.runevector_array[n + %1] = value;
+    }
+};
+
+void (entity e, float value, float rn)
+Set_Runevector_z =
+{
+    local float n;
+    local string s;
+
+    n = RuneToVecIndex(rn);
+    if (n == 0)
+    {
+        s = ftos(i);
+        dprint("Bad StoreVectorz with index: ");
+        dprint(s);
+        dprint("\n");
+    } else {
+        e.runevector_array[n + %2] = value;
+    }
 };
 
 void ()
 Rune_Think =
 {
-	if	(self.runetype == RN_REGEN)		Rune_Regen ();
-	else if (self.runetype == RN_FIREWALK)		Rune_Firewalk ();
-	else if (self.runetype == RN_ZAP)		Rune_Zap ();
-	else if (self.runetype == RN_BOMB)		Rune_Bomb ();
-	else if (self.runetype == RN_CLOAK)		Rune_Cloak ();
-	else if (self.runetype == RN_CAMO)		Rune_Camo ();
-	else if (self.runetype == RN_JUMP)		Rune_Jump ();
-	else if (self.runetype == RN_AMMO)		Rune_Ammo ();
-	else if (self.runetype == RN_SHIELD)		Shield_On ();
-	else if (self.runetype == RN_REPEL)		Rune_Repel ();
-	else if (self.runetype == RN_FLY)		Rune_Fly ();
-	else if (self.runetype == RN_WEIRD)		Rune_Weird ();
+	if (Has_Rune_e(self, RN_REGEN))		Rune_Regen ();
+	if (Has_Rune_e(self, RN_FIREWALK))	Rune_Firewalk ();
+	if (Has_Rune_e(self, RN_ZAP))		Rune_Zap ();
+	if (Has_Rune_e(self, RN_BOMB))		Rune_Bomb ();
+	if (Has_Rune_e(self, RN_CLOAK))		Rune_Cloak ();
+	if (Has_Rune_e(self, RN_CAMO))		Rune_Camo ();
+	if (Has_Rune_e(self, RN_JUMP))		Rune_Jump ();
+	if (Has_Rune_e(self, RN_AMMO))		Rune_Ammo ();
+	if (Has_Rune_e(self, RN_SHIELD))	Shield_On ();
+	if (Has_Rune_e(self, RN_REPEL))		Rune_Repel ();
+	if (Has_Rune_e(self, RN_FLY))		Rune_Fly ();
+	if (Has_Rune_e(self, RN_WEIRD))		Rune_Weird ();
 	IN_QW([-
-	else if (self.runetype == RN_IMPACT)		Rune_Impact ();
+	if (Has_Rune_e(self, RN_IMPACT))	Rune_Impact ();
 	-])
-	else if (self.runetype == RN_BERSERK)		Berserk_Bleed ();
-	else if (self.runetype == RN_ATHLETE)		Athlete_Run ();
-	else if (self.runetype == RN_QUAD)		quad_think ();
-	else if (self.runetype == RN_JACK)		jack_think ();
-	else if (self.runetype == RN_BLIZZARD)		Blizzard_Think ();
-	else if (self.runetype == RN_THOR)		Rune_Thor ();
+	if (Has_Rune_e(self, RN_BERSERK))	Berserk_Bleed ();
+	if (Has_Rune_e(self, RN_ATHLETE))	Athlete_Run ();
+	if (Has_Rune_e(self, RN_QUAD))		quad_think ();
+	if (Has_Rune_e(self, RN_JACK))		jack_think ();
+	if (Has_Rune_e(self, RN_BLIZZARD))	Blizzard_Think ();
+	if (Has_Rune_e(self, RN_THOR))		Rune_Thor ();
 };
 
 void ()
 Rune_PostThink =
 {
-	if	(self.runetype == RN_MONK)		monk_think ();
+	if	(Has_Rune_e(self, RN_MONK))		monk_think ();
 };
 
 void ()
@@ -66,7 +242,7 @@ Rune_Button =
 {
 	rune_tell_stop (0);
 
-	if (!self.runetype)
+	if (!(self.runetype1 + self.runetype2)
 		return;
 
 	if (self.effects & EF_FROZEN)
@@ -74,36 +250,36 @@ Rune_Button =
 
 	spawn_protect_off ();
 
-	if 	(self.runetype == RN_REGEN)		Regen_Activate ();
-	else if (self.runetype == RN_FLY)		Rune_Fly_Activate ();
-	else if (self.runetype == RN_RECALL)		Rune_Recall ();
-	else if (self.runetype == RN_BOMB)		Bomb_Arm ();
-	else if (self.runetype == RN_DSPOTS)		Rune_DSpots ();
-	else if (self.runetype == RN_HOLO)		Rune_Holo ();
-	else if (self.runetype == RN_BLINK)		Rune_Blink (0);
-	else if (self.runetype == RN_SHIELD)		Rune_Shield ();
-	else if (self.runetype == RN_RADIO)		Rune_Radio ();
-	else if (self.runetype == RN_SWITCH)		Rune_Switch ();
-	else if (self.runetype == RN_FREEZE)		Rune_Freeze ();
-	else if (self.runetype == RN_SUCK)		Suck_Button ();
-	else if (self.runetype == RN_ENVIRO)		Enviro_Jump ();
-	else if (self.runetype == RN_TWALK)		Rune_Twalk ();
-	else if (self.runetype == RN_PHASE)		Wall_Check ();
-	else if (self.runetype == RN_SHAMB)		Rune_ShamblerReloc (1);
-	else if (self.runetype == RN_DUAL)		Rune_Dual ();
-	else if (self.runetype == RN_WEIRD)		Weird_Throw ();
-	else if (self.runetype == RN_HOOK)		HookToggle ();
-	else if (self.runetype == RN_ATHLETE)		Athlete_Jump ();
-	else if (self.runetype == RN_ZOMBIE)		Rune_Zombie ();
-	else if (self.runetype == RN_TORCH)		Rune_Torch ();
-	else if (self.runetype == RN_QUAD)		quad_activate ();
-	else if (self.runetype == RN_GLUE)		Rune_Glue ();
-	else if (self.runetype == RN_BLIZZARD)		Rune_Blizzard ();
-	else if (self.runetype == RN_SNIPER)		Rune_Sniper ();
-	else if (self.runetype == RN_CLOAK)		Rune_Sonar ();
-	else if (self.runetype == RN_ANTIPACK)		Rune_AntiPack ();
-	else if (self.runetype == RN_BETTY)		Rune_Betty ();
-	else if (self.runetype == RN_TORNADO)		Rune_Tornado ();
+	if (Has_Rune_e(self, RN_REGEN))		Regen_Activate ();
+	if (Has_Rune_e(self, RN_FLY))		Rune_Fly_Activate ();
+	if (Has_Rune_e(self, RN_RECALL))	Rune_Recall ();
+	if (Has_Rune_e(self, RN_BOMB))		Bomb_Arm ();
+	if (Has_Rune_e(self, RN_DSPOTS))	Rune_DSpots ();
+	if (Has_Rune_e(self, RN_HOLO))		Rune_Holo ();
+	if (Has_Rune_e(self, RN_BLINK))		Rune_Blink (0);
+	if (Has_Rune_e(self, RN_SHIELD))	Rune_Shield ();
+	if (Has_Rune_e(self, RN_RADIO))		Rune_Radio ();
+	if (Has_Rune_e(self, RN_SWITCH))	Rune_Switch ();
+	if (Has_Rune_e(self, RN_FREEZE))	Rune_Freeze ();
+	if (Has_Rune_e(self, RN_SUCK))		Suck_Button ();
+	if (Has_Rune_e(self, RN_ENVIRO))	Enviro_Jump ();
+	if (Has_Rune_e(self, RN_TWALK))		Rune_Twalk ();
+	if (Has_Rune_e(self, RN_PHASE))		Wall_Check ();
+	if (Has_Rune_e(self, RN_SHAMB))		Rune_ShamblerReloc (1);
+	if (Has_Rune_e(self, RN_DUAL))		Rune_Dual ();
+	if (Has_Rune_e(self, RN_WEIRD))		Weird_Throw ();
+	if (Has_Rune_e(self, RN_HOOK))		HookToggle ();
+	if (Has_Rune_e(self, RN_ATHLETE))	Athlete_Jump ();
+	if (Has_Rune_e(self, RN_ZOMBIE))	Rune_Zombie ();
+	if (Has_Rune_e(self, RN_TORCH))		Rune_Torch ();
+	if (Has_Rune_e(self, RN_QUAD))		quad_activate ();
+	if (Has_Rune_e(self, RN_GLUE))		Rune_Glue ();
+	if (Has_Rune_e(self, RN_BLIZZARD))	Rune_Blizzard ();
+	if (Has_Rune_e(self, RN_SNIPER))	Rune_Sniper ();
+	if (Has_Rune_e(self, RN_CLOAK))		Rune_Sonar ();
+	if (Has_Rune_e(self, RN_ANTIPACK))	Rune_AntiPack ();
+	if (Has_Rune_e(self, RN_BETTY))		Rune_Betty ();
+	if (Has_Rune_e(self, RN_TORNADO))	Rune_Tornado ();
 };
 
 // This doesn't always tell the riders because it can be triggered both
@@ -695,21 +871,21 @@ Rune_Tell_sprint =
 			rprint (self, r, "Rune will be removed\n");
 	}
 
-	if	(of_e.runetype == RN_FLY)	Rune_Fly_sprint (r, of_e);
-	else if (of_e.runetype == RN_RECALL)	Rune_Recall_sprint (r, of_e);
-	else if (of_e.runetype == RN_DSPOTS)	Rune_DSpots_sprint (r, of_e);
-	else if (of_e.runetype == RN_HOLO)	Rune_Holo_sprint (r, of_e);
-	else if (of_e.runetype == RN_RADIO)	Rune_Radio_sprint (r, of_e);
-	else if (of_e.runetype == RN_FREEZE)	Rune_Freeze_sprint (r, of_e);
-	else if (of_e.runetype == RN_SUCK)	Rune_Suck_sprint (r, of_e);
-	else if (of_e.runetype == RN_SHAMB)	Rune_Shambler_sprint (r, of_e);
-	else if (of_e.runetype == RN_PHOENIX)	Rune_Phoenix_sprint (r, of_e);
-	else if (of_e.runetype == RN_ZOMBIE)	Rune_Zombie_sprint (r, of_e);
-	else if (of_e.runetype == RN_TORCH)	Rune_Torch_sprint (r, of_e);
-	else if (of_e.runetype == RN_PACK_RAT)	pack_rat_sprint (r, of_e);
-	else if (of_e.runetype == RN_GLUE)	Rune_Glue_sprint (r, of_e);
-	else if (of_e.runetype == RN_BLIZZARD)	Rune_Blizzard_sprint (r);
-	else if (of_e.runetype == RN_ANTIPACK)	Rune_AntiPack_sprint (r, of_e);
+	if (Has_Rune_e(of_e, RN_FLY))	    Rune_Fly_sprint (r, of_e);
+	if (Has_Rune_e(of_e, RN_RECALL))	Rune_Recall_sprint (r, of_e);
+	if (Has_Rune_e(of_e, RN_DSPOTS))	Rune_DSpots_sprint (r, of_e);
+	if (Has_Rune_e(of_e, RN_HOLO))	    Rune_Holo_sprint (r, of_e);
+	if (Has_Rune_e(of_e, RN_RADIO))	    Rune_Radio_sprint (r, of_e);
+	if (Has_Rune_e(of_e, RN_FREEZE))	Rune_Freeze_sprint (r, of_e);
+	if (Has_Rune_e(of_e, RN_SUCK))	    Rune_Suck_sprint (r, of_e);
+	if (Has_Rune_e(of_e, RN_SHAMB))	    Rune_Shambler_sprint (r, of_e);
+	if (Has_Rune_e(of_e, RN_PHOENIX))	Rune_Phoenix_sprint (r, of_e);
+	if (Has_Rune_e(of_e, RN_ZOMBIE))	Rune_Zombie_sprint (r, of_e);
+	if (Has_Rune_e(of_e, RN_TORCH))	    Rune_Torch_sprint (r, of_e);
+	if (Has_Rune_e(of_e, RN_PACK_RAT))	pack_rat_sprint (r, of_e);
+	if (Has_Rune_e(of_e, RN_GLUE))	    Rune_Glue_sprint (r, of_e);
+	if (Has_Rune_e(of_e, RN_BLIZZARD))	Rune_Blizzard_sprint (r);
+	if (Has_Rune_e(of_e, RN_ANTIPACK))	Rune_AntiPack_sprint (r, of_e);
 };
 
 void (float type, float tell)
@@ -735,54 +911,14 @@ Rune_Activate =
 
 	best = W_BestWeapon ();
 
-	// Clean up rune being removed.
-	if (self.runetype == RN_PACK_RAT)
-		pack_rat_rune_drop (0);
-	else if (self.runetype == RN_HOOK)
-		HookOff ();
-	else if (self.runetype == RN_MONK)
-		monk_trance_off ();
-
-	self.max_health	= MAX_HEALTH_NORMAL;
-	self.movetype	= MOVETYPE_WALK;
-	self.runent	= world;
-	self.runetime	= time;
-	self.runevar	= 0;
-	self.class_cnt	= 0;
-	self.runevector	= VEC_ORIGIN;
-	self.touch	= misc_touch;
-	stuffcmd (self, CSHIFT_NONE);
-
-	old_rune = self.runetype;
-	self.runetype = 0;
-
-	// This has to run after max_health is reset else no rotting
-	// will take place.
-	if (old_rune == RN_HEALTH
-			|| old_rune == RN_LUMBER
-			|| old_rune == RN_JACK
-			|| old_rune == RN_ATHLETE)
-		decay_health_spawn (self, 1);
-	else if (old_rune == RN_ARMOR)
-	{
-		decay_armor_spawn (self, ARMOR_DECAY_RATE);
-		set_armor_items_e (self);
-	}
-	else if (old_rune == RN_SHIELD)
-	{
-		if (self.effects & EF_BRIGHTFIELD)
-			self.effects = self.effects - self.effects & EF_BRIGHTFIELD;
-		if (!self.takedamage)
-			self.takedamage = DAMAGE_AIM;
-	}
-
 	self.runetype	= type;
+	FIXME
 
 	// If tell is set this is a new pick up, so enforce the delay before
 	// allowing a drop.  Otherwise, this is the rune she had last level.
 	if (tell)
 	{
-		if (self.runetype)
+		if (self.runetype1 + self.runetype2)
 		{
 			if (rune_drop_delay == -1)
 				self.dropdelay = time + 5;		// in case it changes
@@ -1039,8 +1175,74 @@ Rune_Activate =
 void (float tell)
 Rune_Delete =
 {
-	if (self.runetype) // && !(self.runetype == RN_SHIELD && self.runevar == 1))
-		Rune_Activate (0, tell);
+	if (!(self.runetype1 + self.runetype2))
+        return;
+
+    //Rune_Activate (0, tell);
+    best = W_BestWeapon ();
+    draw_hud (1);
+
+	// Clean up rune being removed.
+	if (self.runetype == RN_PACK_RAT)
+		pack_rat_rune_drop (0);
+	else if (self.runetype == RN_HOOK)
+		HookOff ();
+	else if (self.runetype == RN_MONK)
+		monk_trance_off ();
+
+	self.max_health 	= MAX_HEALTH_NORMAL;
+	self.movetype	    = MOVETYPE_WALK;
+	self.oldrunent	    = world;
+	self.oldrunetime	= time;
+	self.oldrunevar	    = 0;
+	self.class_cnt	    = 0;
+	self.oldrunevector	= VEC_ORIGIN;
+	self.touch	        = misc_touch;
+	stuffcmd (self, CSHIFT_NONE);
+
+	old_rune = self.runetype1;
+	self.runetype1 = 0;
+
+	// This has to run after max_health is reset else no rotting
+	// will take place.
+	if (old_rune == RN_HEALTH
+			|| old_rune == RN_LUMBER
+			|| old_rune == RN_JACK
+			|| old_rune == RN_ATHLETE)
+		decay_health_spawn (self, 1);
+	else if (old_rune == RN_ARMOR)
+	{
+		decay_armor_spawn (self, ARMOR_DECAY_RATE);
+		set_armor_items_e (self);
+	}
+	else if (old_rune == RN_SHIELD)
+	{
+		if (self.effects & EF_BRIGHTFIELD)
+			self.effects = self.effects - self.effects & EF_BRIGHTFIELD;
+		if (!self.takedamage)
+			self.takedamage = DAMAGE_AIM;
+	}
+
+	old_rune = self.runetype2;
+	self.runetype2 = 0;
+
+	if (old_rune == RN_HEALTH
+			|| old_rune == RN_LUMBER
+			|| old_rune == RN_JACK
+			|| old_rune == RN_ATHLETE)
+		decay_health_spawn (self, 1);
+	else if (old_rune == RN_ARMOR)
+	{
+		decay_armor_spawn (self, ARMOR_DECAY_RATE);
+		set_armor_items_e (self);
+	}
+	else if (old_rune == RN_SHIELD)
+	{
+		if (self.effects & EF_BRIGHTFIELD)
+			self.effects = self.effects - self.effects & EF_BRIGHTFIELD;
+		if (!self.takedamage)
+			self.takedamage = DAMAGE_AIM;
+	}
 };
 
 entity ()
@@ -1204,52 +1406,58 @@ Rune_Touch =
 		return;
 	if (other.health <= 0)
 		return;
-	if (other == self.runent && time < self.lip)
+	if (other == self.oldenemy && time < self.lip)
 		return;
 
-	if (self.runetype == RN_LITHIUM_HOOK)
+	if (self.oldrunetype == RN_LITHIUM_HOOK)
 	{
 		if (other.aqflags & AQ_HOOK)
 			return;
 	}
-	else if (other.runetype == RN_PACK_RAT && self.enemy == other)
-	{
-		if (!self.runevar & 2)
-		{
-			centerprint (other,
-					"You killed the owner of this rune");
-			self.runevar = self.runevar | 2;
-		}
-		return;
-	}
 	else if (other.runetype == RN_PACK_RAT)
 	{
-		pack_rat_rune_touch ();
-		return;
+	    if (self.enemy == other)
+        {
+            if (!self.oldrunevar & 2)
+            {
+                centerprint (other,
+                        "You killed the owner of this rune");
+                self.oldrunevar = self.oldrunevar | 2;
+            }
+        } else
+            pack_rat_rune_touch ();
+        return;
 	}
-	else if (other.runetype != 0)
+    else if (other.runetype1 && other.runetype2)
+        return;
+	else if (Has_Rune_e(other, self.oldrunetype))
+    {
+        centerprint (other, "You already have this rune");
 		return;
+    }
+
+
 
 	if (other == self.owner && !temp1 & T1_CAN_GET_OWN_RUNE)
 	{
-		if (!self.runevar & 1)
+		if (!self.oldrunevar & 1)
 		{
 			if (self.runetype == RN_LITHIUM_HOOK)
 				s = "hook";
 			else
 				s = "rune";
 			centerprint2 (other, "This was your ", s);
-			self.runevar = self.runevar | 1;
+			self.oldrunevar = self.oldrunevar | 1;
 		}
 		return;
 	}
 
 	temp = self;
 	self = other;
-	Rune_Activate (temp.runetype, 1);
+	Rune_Activate (temp.oldrunetype, 1);
 	self = temp;
 
-	if (self.runetype != RN_LITHIUM_HOOK)
+	if (self.oldrunetype != RN_LITHIUM_HOOK)
 		runecurrent = runecurrent - 1;
 	remove (self);
 };
@@ -1288,11 +1496,11 @@ Rune_Spawn =
 		rune.classname = "hook";
 	else
 		rune.classname = "rune";
-	rune.runetype = type;
+	rune.oldrunetype = type;
 	rune.owner = spawnee;		// dropper
 	rune.enemy = killer;		// killer
-	rune.runevar = 0;		// |1 = dropper told, |2 = killer told
-	rune.runent = world;		// link for pack rat chain
+	rune.oldrunevar = 0;		// |1 = dropper told, |2 = killer told
+	rune.oldenemy = world;		// link for pack rat chain
 	rune.lip = 0;			// pack rat pickup time
 
 	if (type == RN_LITHIUM_HOOK)

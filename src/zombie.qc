@@ -80,7 +80,7 @@ void ()	zombie_stand1	= [$stand1,	zombie_stand2]
 	{
 		if (maybe_remove_zombie_camper ())
 			return;
-		self.ideal_yaw = self.runevar;
+		self.ideal_yaw = self.oldrunevar;
 		ai_turn ();
 	}
 	else
@@ -528,7 +528,7 @@ zombie_die =
 			&& self.owner.runetype == RN_ZOMBIE
 			&& self.owner.runevar > 0)
 	{
-		if (!self.owner.runetime > self.runetime)
+		if (!self.owner.runetime > self.oldrunetime)
 		{
 			if (self.last_thought)
 				sprint (self.owner, "The Gods");

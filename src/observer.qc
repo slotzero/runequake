@@ -114,9 +114,10 @@ dead_impulses =
 
 	// Allow dead people to remove a phoenix rune, to avoid somebody
 	// waiting for them to spawn.
-	else if (self.impulse == IMP_RUNE_DELETE && self.runetype == RN_PHOENIX)
+	else if (self.impulse == IMP_RUNE_DELETE && Has_Rune_e(self, RN_PHOENIX))
 	{
-		self.runetype = 0;
+		self.runetype1 = 0;
+		self.runetype2 = 0;
 		centerprint (self, "Rune Removed");
 	}
 
@@ -508,7 +509,7 @@ obs_post_think =
 				self.armorvalue = self.owner.armorvalue;
 		}
 
-		if ((self.runetime > 0 && time > self.runetime) || self.runetime == -2)
+		if ((self.oldrunetime > 0 && time > self.oldrunetime) || self.oldrunetime == -2)
 		{
 			if (deathmatch & DM_DM_MASK)
 			{
@@ -520,13 +521,13 @@ obs_post_think =
 			self_sprint (self.owner, "Rider ");
 			self_sprint (self.owner, self.netname);
 			self_sprint (self.owner, " acquired\n");
-			if (self.runetime != -2)
+			if (self.oldrunetime != -2)
 			{
 				sprint (self, "Notified ");
 				sprint (self, self.owner.netname);
 				sprint (self, " of new rider\n");
 			}
-			self.runetime = -1;
+			self.oldrunetime = -1;
 		}
 	}
 };
@@ -592,21 +593,22 @@ obs_become =
 	if (!is_observer ())
 	{
 		if (gamemode & MODE_ARENA && tell_type == 3)
-			self.runevar = time;
+			self.oldrunevar = time;
 		else
-			self.runevar = 0;
+			self.oldrunevar = 0;
 	}
 	self.aqflags		= self.aqflags | AQ_OBSERVER;
 	self.flags		= self.flags | FL_OBSERVER;
 	// Look for classname tests if you try changing this.
 	//self.classname	= "observer";
 	self.owner		= world;
-	self.runetype		= 0;
+	self.runetype1		= 0;
+	self.runetype2      = 0;
 
 	// if 0 not a rider or rider but admin, if positive, time to
 	// notify ridee, if -1 ridee already notified, if -2 notify
 	// ridee immediately but don't tell rider about it
-	self.runetime		= 0;
+	self.oldrunetime		= 0;
 
 	self.takedamage		= DAMAGE_NO;
 	self.solid		= SOLID_NOT;
@@ -821,7 +823,7 @@ game_queue_pos_e =
 	ie = find (world, classname, "player");
 	while (ie)
 	{
-		if (is_observer_e (ie) && ie.runevar && ie.runevar < e.runevar)
+		if (is_observer_e (ie) && ie.oldrunevar && ie.oldrunevar < e.oldrunevar)
 			epos = epos + 1;
 		ie = find (ie, classname, "player");
 	}
@@ -838,7 +840,7 @@ game_queue_len =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		if (is_observer_e (e) && e.runevar)
+		if (is_observer_e (e) && e.oldrunevar)
 			qlen = qlen + 1;
 		e = find (e, classname, "player");
 	}
@@ -862,20 +864,20 @@ obs_join_game =
 			return;
 	}
 
-	if (!force && self.runevar)
+	if (!force && self.oldrunevar)
 	{
-		if (self.runevar > time)
+		if (self.oldrunevar > time)
 		{
 			bprint ("bug: runevar for ");
 			bprint (self.netname);
 			bprint (" is in the future (");
-			bprint_float (self.runevar);
+			bprint_float (self.oldrunevar);
 			bprint (")\n");
 		}
 
 		if (ra)
 		{
-			self.runevar = 0;
+			self.oldrunevar = 0;
 			self_sprint (self, "you are \bout\b of line\n");
 			return;
 		}
@@ -909,7 +911,7 @@ obs_join_game =
 	// arrive.
 	if (!force && time <= LEVEL_RECONNECT_ALLOWANCE && !temp1 & T1_RUNE_CHEAT)
 	{
-		self.runevar = time;
+		self.oldrunevar = time;
 
 		if (ra)
 			arena_game_pos_announce (self);
@@ -928,7 +930,7 @@ obs_join_game =
 	maxp = max_players ();
 	if (!force && maxp && count_players (0) >= maxp)
 	{
-		self.runevar = time;
+		self.oldrunevar = time;
 
 		if (ra)
 			arena_game_pos_announce (self);
@@ -996,10 +998,10 @@ obs_process_game_queue =
 		e = find (world, classname, "player");
 		while (e)
 		{
-			if (is_observer_e (e) && e.runevar)
+			if (is_observer_e (e) && e.oldrunevar)
 			{
 				any = 1;
-				if (ehead == world || e.runevar < ehead.runevar)
+				if (ehead == world || e.oldrunevar < ehead.oldrunevar)
 					ehead = e;
 			}
 			e = find (e, classname, "player");
@@ -1034,13 +1036,13 @@ obs_rider_drop =
 	if (old)
 	{
 		self.owner = world;
-		if (self.runetime == -1 && tell)
+		if (self.oldrunetime == -1 && tell)
 		{
 			self_sprint (old, "Rider ");
 			self_sprint (old, self.netname);
 			self_sprint (old, " dropped\n");
 		}
-		self.runetime = 0;
+		self.oldrunetime = 0;
 		set_has_riders_e (old);
 		if (!old.aqstate & AQS_HAS_RIDERS && deathmatch & DM_DM_MASK)
 			old.items = old.items - (old.items & IT_KEY2);
@@ -1083,14 +1085,14 @@ obs_rider_set =
 	{
 		// Tell about ridees acquired via tracking right away.
 		if (tell == 2)
-			self.runetime = -2;
+			self.oldrunetime = -2;
 		else
-			self.runetime = time + 5;
+			self.oldrunetime = time + 5;
 	}
 
 	// prevent ridee notification
 	if (self.aqflags & AQ_RIDER_HIDE)
-		self.runetime = 0;
+		self.oldrunetime = 0;
 
 	// This prevents you from moving around and seeing
 	// yourself, and from bobbing your display as you try
@@ -1290,7 +1292,7 @@ rider_wait_think =
 	local entity old_self;
 
 	// Give up waiting after a while.
-	if (time > self.runetime)
+	if (time > self.oldrunetime)
 	{
 		remove (self);
 		return;
@@ -1307,7 +1309,7 @@ rider_wait_think =
 	{
 		// If rider is in fast/high track mode, give up after a bit
 		// and try to find a new ridee.
-		if (self.runetime - time < 9)
+		if (self.oldrunetime - time < 9)
 		{
 			if (self.owner.aqstate & AQS_RIDE_MASK)
 				self.enemy = ridee_pick ();

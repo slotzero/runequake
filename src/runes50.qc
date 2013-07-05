@@ -122,7 +122,7 @@ Rune_Zombie =
 	self.owner = old_self;
 	self.origin = self.owner.origin;
 	self.angles = self.owner.angles;
-	self.runevar = self.angles_y;	// preferred yaw
+	self.oldrunevar = self.angles_y;	// preferred yaw
 	self.yaw_speed = 40;
 	self.runetime = time;
 

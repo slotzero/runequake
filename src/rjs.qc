@@ -108,7 +108,7 @@ sound =
 		bprint ("\n");
 	} */
 
-	if (e.runetype != RN_CLOAK)
+	if (!Has_Rune_e(e, RN_CLOAK))
 		xsound (e, chan, samp, vol, atten);
 };
 
@@ -579,7 +579,7 @@ decay_health_spawn =
 	local entity this;
 	local float init;
 
-	if (e.runetype == RN_VAMP)
+	if (Has_Rune_e(e, RN_VAMP))
 		return;
 
 	if (e.health <= e.max_health)
@@ -601,7 +601,7 @@ decay_health_spawn =
 				{
 					if (this.owner == e)
 					{
-						this.runevar = this.runevar + 1;
+						this.oldrunevar = this.oldrunevar + 1;
 						this.nextthink = this.nextthink + 1.5;
 						return;
 					}
@@ -619,7 +619,7 @@ decay_health_spawn =
 	this		= spawn ();
 	this.owner	= e;
 	this.classname	= "decay_health";
-	this.runevar	= rate;
+	this.oldrunevar	= rate;
 	this.think	= decay_health_think;
 	this.nextthink	= time + init;
 };
@@ -627,7 +627,7 @@ decay_health_spawn =
 void ()
 decay_health_think =
 {
-	if (decay_health (self.owner, self.runevar))
+	if (decay_health (self.owner, self.oldrunevar))
 		self.nextthink = time + 1;
 	else
 	{
@@ -791,14 +791,29 @@ disp_info =
 	// my rune info
 	if (all || 1)
 	{
-		self_sprint (self, "rune type ");
-		self_sprint_float (self, of_e.runetype);
+		self_sprint (self, "rune1 type ");
+		self_sprint_float (self, of_e.runetype1);
 		self_sprint (self, " var ");
-		self_sprint_float (self, of_e.runevar);
+		self_sprint_float (self, of_e.oldrunevar_array[of_e.runetype1 * %1]);
 		self_sprint (self, " time ");
-		self_sprint_float (self, of_e.runetime);
+		self_sprint_float (self, of_e.runetime_array[of_e.runetype1 * %1]);
 		self_sprint (self, "/");
-		self_sprint_float (self, of_e.runetime - time);
+		self_sprint_float (self, of_e.runetime_array[of_e.runetype1 * %1] - time);
+		self_sprint (self, "\n");
+	}
+
+	// my rune2 info
+	if (all || 1)
+	{
+		self_sprint (self, "rune2 type ");
+		self_sprint_float (self, of_e.runetype2);
+		self_sprint (self, " var ");
+		self_sprint (self, " var ");
+		self_sprint_float (self, of_e.oldrunevar_array[of_e.runetype2 * %1]);
+		self_sprint (self, " time ");
+		self_sprint_float (self, of_e.runetime_array[of_e.runetype2 * %1]);
+		self_sprint (self, "/");
+		self_sprint_float (self, of_e.runetime_array[of_e.runetype2 * %1] - time);
 		self_sprint (self, "\n");
 	}
 
@@ -1027,7 +1042,7 @@ set_armor_items_e =
 {
 	local float bit;
 
-	if (e.runetype == RN_ARMOR)
+	if (Has_Rune_e(e, RN_ARMOR))
 	{
 		good_armor_set_armor_items_e (e);
 		return;
@@ -1047,7 +1062,7 @@ get_max_armor_e =
 
 	it = armor_type_to_it (e.armortype);
 
-	if (e.runetype == RN_ARMOR)	return MAX_ARMOR_GOOD_ARMOR;
+	if (Has_Rune_e(e, RN_ARMOR))	return MAX_ARMOR_GOOD_ARMOR;
 	else if (it == IT_ARMOR1)	return MAX_ARMOR_1;
 	else if (it == IT_ARMOR2)	return MAX_ARMOR_2;
 	else if (it == IT_ARMOR3)	return MAX_ARMOR_3;
@@ -1105,7 +1120,7 @@ count_players =
 		{
 			if (is_observer_e (e))
 			{
-				if (include_queued && e.runevar)
+				if (include_queued && e.oldrunevar)
 					players = players + 1;
 			}
 			else
@@ -2038,7 +2053,7 @@ show_players =
 					self_sprint (self, e.netname);
 				}
 
-				if (e.runevar)
+				if (e.oldrunevar)
 				{
 					local float qpos, qlen;
 
@@ -2049,7 +2064,7 @@ show_players =
 					self_sprint (self, " of ");
 					self_sprint_float (self, qlen);
 					self_sprint (self, ", since ");
-					self_sprint_float (self, e.runevar);
+					self_sprint_float (self, e.oldrunevar);
 					self_sprint (self, ")");
 				}
 			}
@@ -3137,15 +3152,17 @@ is_topdog =
 float (entity e)
 environmental =
 {
-	return e.items & IT_SUIT || e.runetype == RN_ENVIRO || e.aqstate & AQS_SPAWN_PROTECT;
+	return e.items & IT_SUIT || Has_Rune_e(e, RN_ENVIRO) || e.aqstate & AQS_SPAWN_PROTECT;
 };
 
 float (entity e)
 invisible =
 {
-	return e.items & IT_INVISIBILITY
-		|| ((e.runetype == RN_CLOAK || e.runetype == RN_CAMO)
-			&& e.runevar == 1);
+    if (Has_Rune_e(e, RN_CLOAK) && e.runevar_array[RN_CLOAK * %1] == 1)
+        return 1;
+    if (Has_Rune_e(e, RN_CAMO) && e.runevar_array[RN_CAMO * %1] == 1)
+        return 1;
+	return e.items & IT_INVISIBILITY;
 };
 
 float (entity e)
@@ -3184,7 +3201,7 @@ see_damage =
 	if (!attacker || attacker.classname != "player")
 		attacker = targ;
 
-	if (attacker.runetype == RN_PACK_RAT)
+	if (Has_Rune_e(attacker, RN_PACK_RAT))
 		d = d + d * pack_rat_frag_bonus_e (attacker);
 
 	if (targ == attacker
@@ -3227,11 +3244,11 @@ see_damage =
 float (entity e, float type)
 maybe_update_trap_count =
 {
-	if (e.runetype == type)
+	if (e.runetype1 == type)
 	{
 		if (e.class_cnt)
 			e.class_cnt = e.class_cnt - 1;
-		else if (e.runevar > 0)
+		else if (e.runevar_array[type * %1] > 0)
 		{
 			e.runevar = e.runevar - 1;
 			return TRUE;

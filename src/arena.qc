@@ -27,7 +27,7 @@
 //
 // arena.state		= neg (waiting for players) | pos (counting down) | zero (game in progress)
 // arena.owner		= opponent 1
-// arena.runent		= opponent 2
+// arena.runent 	= opponent 2
 // arena.enemy		= last person to kill
 // arena.oldenemy	= first person to kill, if both dead
 // arena.aiment		= last person to die
@@ -75,11 +75,11 @@ arena_game_queue_announce =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		if (is_observer_e (e) && e.runevar)
+		if (is_observer_e (e) && e.oldrunevar)
 		{
-			if (!next_in_line || next_in_line > e.runevar)
+			if (!next_in_line || next_in_line > e.oldrunevar)
 			{
-				next_in_line = e.runevar;
+				next_in_line = e.oldrunevar;
 				e_next = e;
 			}
 		}
@@ -108,7 +108,7 @@ set_arena_parms_e =
 void ()
 arena_fight =
 {
-	if (self.runevar)
+	if (self.oldrunevar)
 	{
 		self_custom_sound (arena.owner, string_null, "misc/medkey.wav");
 		self_custom_sound (arena.runent, string_null, "misc/medkey.wav");
@@ -120,7 +120,7 @@ arena_fight =
 		self_custom_sound (arena.runent, "ra/fight.wav", string_null);
 	}
 
-	self.runevar = 1;
+	self.oldrunevar = 1;
 	self.nextthink = time + 0.30;
 };
 

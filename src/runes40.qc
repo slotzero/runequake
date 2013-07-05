@@ -20,12 +20,16 @@
 void ()
 Ball_Touch =
 {
-	if (other == self.owner.runent)
+    /* megaball hat doesn't have health
+    if (other == self.owner.runent)
 		return;
+    */
 	if (other.classname == "spikeball")
 		return;
+    if (other.solid == SOLID_BSP)
+        return;
 
-	if ((other.health > 0) && !isfriend2 (other, self.owner) && other.solid != SOLID_BSP)
+	if ((other.health > 0) && !isfriend2 (other, self.owner))
 	{
 		T_Damage (other, self, self.owner, 40, "spikeball");
 		other.flags = other.flags-(other.flags & FL_ONGROUND);
@@ -47,8 +51,8 @@ Ball_Touch2 =
 		return;
 	}
 
-	if (other == self.owner.runent)
-		return;
+    // megaball hat doesn't have health
+
 	if (other.classname == "spikeball")
 		return;
 
@@ -74,7 +78,7 @@ Ball_Move =
 	self.nextthink = time + 3 + crandom ()*0.3;
 
 	setmodel (self, string_null);
-	setorigin (self, self.owner.runent.origin);
+	setorigin (self, self.owner.origin + '0 0 60');
 	setmodel (self, "progs/v_spike.mdl");
 
 	self.touch = Ball_Touch;
@@ -133,7 +137,7 @@ Balls_Spawn =
 		temp.movetype = MOVETYPE_BOUNCE;
 		temp.solid = SOLID_TRIGGER;
 		temp.owner = self;
-		setorigin (temp, self.runent.origin);
+		setorigin (temp, self.origin + '0 0 60');
 		setsize (temp, '-15 -15 -15', '15 15 15');
 		setmodel (temp, "progs/v_spike.mdl");
 
@@ -212,7 +216,6 @@ Cloud_Spawn =
 	temp.avelocity_z = crandom ()*360;
 	temp.think = Cloud_Think;
 	temp.nextthink = time;
-	self.runent = temp;
 
 	Balls_Spawn ();
 };
@@ -228,7 +231,7 @@ void (entity sham, float tell)
 shambler_slave_respawn =
 {
 	// If this is a vengeful shambler, he doesn't respawn.
-	if (sham.trigger_field.runevar)
+	if (sham.trigger_field.oldrunevar)
 	{
 		Killed (sham, sham.owner, string_null);
 		remove (sham.trigger_field);
@@ -237,11 +240,11 @@ shambler_slave_respawn =
 	}
 
 	// Shambler is frozen; unfreeze her.
-	if (sham.runevar == 2)
+	if (sham.oldrunevar == 2)
 		Unfreeze (sham);
 
 	// Reset the runevar so he'll be unstuck.
-	sham.runevar = 0;
+	sham.oldrunevar = 0;
 
 	HookOff_by_targ_e (sham);
 
@@ -260,7 +263,7 @@ shambler_slave_retribution =
 	local entity old_self;
 
 	shambler_slave_respawn (sham, 0);
-	sham.trigger_field.runevar = 1;
+	sham.trigger_field.oldrunevar = 1;
 	sham.super_damage_finished = time + 15;
 	Hat_Spawn (sham, "progs/quaddama.mdl", '0 0 60', VEC_ORIGIN, ITEM_QUAD);
 	sham.effects = sham.effects | EF_DIMLIGHT;
@@ -489,7 +492,7 @@ float WEIRD_MAX_QW	= 7;
 void ()
 Weird_WanderThink =
 {
-	if (self.runetime < time)
+	if (self.oldrunetime < time)
 	{
 		remove (self);
 		return;
@@ -532,11 +535,11 @@ Weird_Think =
 	if (self.runent.health < 1 || self.runetime < time || intermission_running)
 	{
 		self.runent.effects = self.runent.effects - self.runent.effects & EF_WEIRD;
-		if (self.runevar == WEIRD_SHROOMS) stuffcmd (self.runent, "v_idlescale 0\n"); else
-		if (self.runevar == WEIRD_VERTIGO) stuffcmd (self.runent, "fov 90\n"); else
-		if (self.runevar == WEIRD_BLIND) stuffcmd (self.runent, CSHIFT_NONE); else
+		if (self.oldrunevar == WEIRD_SHROOMS) stuffcmd (self.runent, "v_idlescale 0\n"); else
+		if (self.oldrunevar == WEIRD_VERTIGO) stuffcmd (self.runent, "fov 90\n"); else
+		if (self.oldrunevar == WEIRD_BLIND) stuffcmd (self.runent, CSHIFT_NONE); else
 		IN_POQ([-
-			if (self.runevar == WEIRD_TWIRLY)
+			if (self.oldrunevar == WEIRD_TWIRLY)
 				self.runent.punchangle = VEC_ORIGIN;
 		-])
 		remove (self);
@@ -563,14 +566,14 @@ Weird_Think =
 	-])
 
 	// The weirdness factors
-	if (self.runevar == WEIRD_SHROOMS)
+	if (self.oldrunevar == WEIRD_SHROOMS)
 	{
 		if (self.attack_finished > time)
 			return;
 		self.attack_finished = time + 0.5;
 		stuffcmd (self.runent, "v_idlescale 120\n");
 	}
-	else if (self.runevar == WEIRD_DRUNK)
+	else if (self.oldrunevar == WEIRD_DRUNK)
 	{
 		if (self.attack_finished > time)
 			return;
@@ -578,14 +581,14 @@ Weird_Think =
 		self.runent.angles_y = self.runent.angles_y + crandom ()*40;
 		self.runent.fixangle = 1;
 	}
-	else if (self.runevar == WEIRD_TWIRLY)
+	else if (self.oldrunevar == WEIRD_TWIRLY)
 	{
 		IN_POQ([-
 			self.runent.punchangle_z = self.runent.punchangle_z - 5;
 		-])
 		return;
 	}
-	else if (self.runevar == WEIRD_TWITCHING)
+	else if (self.oldrunevar == WEIRD_TWITCHING)
 	{
 		if (random () > 0.3)
 		{
@@ -596,27 +599,27 @@ Weird_Think =
 			self.runent.flags = self.runent.flags-(self.runent.flags & FL_ONGROUND);
 		}
 	}
-	else if (self.runevar == WEIRD_COFFEE)
+	else if (self.oldrunevar == WEIRD_COFFEE)
 	{
 		self.runent.velocity = self.runent.velocity * 2;
 	}
-	else if (self.runevar == WEIRD_STICKY)
+	else if (self.oldrunevar == WEIRD_STICKY)
 	{
 		self.runent.velocity = self.runent.velocity * -1;
 	}
-	else if (self.runevar == WEIRD_SHOOTPHOB)
+	else if (self.oldrunevar == WEIRD_SHOOTPHOB)
 	{
 		self.runent.effects = self.runent.effects | EF_WEIRD;
 		self.runent.attack_finished = time + 0.5;
 	}
-	else if (self.runevar == WEIRD_VERTIGO)
+	else if (self.oldrunevar == WEIRD_VERTIGO)
 	{
 		if (self.attack_finished > time)
 			return;
 		self.attack_finished = time + 0.5;
 		stuffcmd (self.runent, "fov 160\n");
 	}
-	else if (self.runevar == WEIRD_BLIND)
+	else if (self.oldrunevar == WEIRD_BLIND)
 	{
 		if (self.attack_finished > time)
 			return;
@@ -665,63 +668,63 @@ Weird_Touch =
 	self.touch	= SUB_Null;
 	self.think	= Weird_Think;
 	self.nextthink	= time;
-	self.runevar	= ceil (random ()* IN_POQ(WEIRD_MAX_POQ, WEIRD_MAX_QW));
+	self.oldrunevar	= ceil (random ()* IN_POQ(WEIRD_MAX_POQ, WEIRD_MAX_QW));
 
 	setmodel (self, string_null);
 
 	// shambler/zombie
 	if (other.classname != "player")
 	{
-		if (self.runevar == WEIRD_SHROOMS
-				|| self.runevar == WEIRD_TWIRLY
-				|| self.runevar == WEIRD_VERTIGO
-				|| self.runevar == WEIRD_BLIND
-				|| self.runevar == WEIRD_DRUNK)
-		self.runevar = WEIRD_JUMPING;
+		if (self.oldrunevar == WEIRD_SHROOMS
+				|| self.oldrunevar == WEIRD_TWIRLY
+				|| self.oldrunevar == WEIRD_VERTIGO
+				|| self.oldrunevar == WEIRD_BLIND
+				|| self.oldrunevar == WEIRD_DRUNK)
+		self.oldrunevar = WEIRD_JUMPING;
 	}
 
 	sound (self, CHAN_BODY, "boss2/idle.wav", 1, ATTN_NORM);
-	if (self.runevar == WEIRD_SHROOMS)
+	if (self.oldrunevar == WEIRD_SHROOMS)
 	{
 		 self_desc = "shrooms";
 		other_desc = "SHROOM MODE!";
 	}
-	else if (self.runevar == WEIRD_DRUNK)
+	else if (self.oldrunevar == WEIRD_DRUNK)
 	{
 		 self_desc = "drunken walk";
 		other_desc = "DRUNKEN WALK!";
 	}
-	else if (self.runevar == WEIRD_TWIRLY)
+	else if (self.oldrunevar == WEIRD_TWIRLY)
 	{
 		 self_desc = "twirly head";
 		other_desc = "TWIRLY HEAD!";
 	}
-	else if (self.runevar == WEIRD_TWITCHING)
+	else if (self.oldrunevar == WEIRD_TWITCHING)
 	{
 		 self_desc = "twitching";
 		other_desc = "RANDOM TWITCHING!";
 	}
-	else if (self.runevar == WEIRD_COFFEE)
+	else if (self.oldrunevar == WEIRD_COFFEE)
 	{
 		 self_desc = "too much coffee";
 		other_desc = "TOO MUCH COFFEE!";
 	}
-	else if (self.runevar == WEIRD_STICKY)
+	else if (self.oldrunevar == WEIRD_STICKY)
 	{
 		 self_desc = "sticky feet";
 		other_desc = "STICKY FEET!";
 	}
-	else if (self.runevar == WEIRD_SHOOTPHOB)
+	else if (self.oldrunevar == WEIRD_SHOOTPHOB)
 	{
 		 self_desc = "shootphobia";
 		other_desc = "HOW DO I SHOOT?!";
 	}
-	else if (self.runevar == WEIRD_VERTIGO)
+	else if (self.oldrunevar == WEIRD_VERTIGO)
 	{
 		 self_desc = "vertigo";
 		other_desc = "VERTIGO!";
 	}
-	else if (self.runevar == WEIRD_BLIND)
+	else if (self.oldrunevar == WEIRD_BLIND)
 	{
 		 self_desc = "blindness";
 		other_desc = "I'M BLIND! I'M BLIND!";

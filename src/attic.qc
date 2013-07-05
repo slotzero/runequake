@@ -525,36 +525,38 @@ T_RadiusLight =
 	while (head)
 	{
 		self = head;
-		if (head.classname == "player"
-			&& head.runetype != RN_ENVIRO
-			&& !head.items & IT_SUIT
-			&& infront (inflictor))
+		if (head.classname == "player")
 		{
-			// Have flash grenades report.
-			if (old_self.owner == self)
-				sprint (old_self.owner, "You've blinded yourself!\n");
-			else
-			{
-				sprint (self, "You were blinded by ");
-				sprint (self, old_self.owner.netname);
-				sprint (self, "'s flash grenade!\n");
+            if (Has_Rune_e(head, RN_ENVIRO)
+                0; // do nothing
+			else if (!head.items & IT_SUIT && infront (inflictor))
+            {
+                // Have flash grenades report.
+                else if (old_self.owner == self)
+                    sprint (old_self.owner, "You've blinded yourself!\n");
+                else
+                {
+                    sprint (self, "You were blinded by ");
+                    sprint (self, old_self.owner.netname);
+                    sprint (self, "'s flash grenade!\n");
 
-				sprint (old_self.owner, self.netname);
-				sprint (old_self.owner, " was blinded by your flash grenade\n");
-			}
-			e = world;
-			do
-				e = find (e, classname, "light_think");
-			while (e != world && e.owner != head);
-			if (!e)
-			{
-				e = spawn ();
-				e.classname = "light_think";
-				e.owner = head;
-				e.think = blind_think;
-			}
-			e.cnt = 18;
-			e.nextthink = time;
+                    sprint (old_self.owner, self.netname);
+                    sprint (old_self.owner, " was blinded by your flash grenade\n");
+                }
+                e = world;
+                do
+                    e = find (e, classname, "light_think");
+                while (e != world && e.owner != head);
+                if (!e)
+                {
+                    e = spawn ();
+                    e.classname = "light_think";
+                    e.owner = head;
+                    e.think = blind_think;
+                }
+                e.cnt = 18;
+                e.nextthink = time;
+            }
 		}
 		head = head.chain;
 	}

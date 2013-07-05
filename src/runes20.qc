@@ -215,7 +215,7 @@ Rune_DSpots =
 void ()
 Holo_Think =
 {
-	if (self.runetime < time)
+	if (self.oldrunetime < time)
 	{
 		if (maybe_update_trap_count (self.owner, RN_HOLO))
 			sprint (self.owner, "A hologram burned out\n");
@@ -226,7 +226,7 @@ Holo_Think =
 	}
 
 	self.angles = self.owner.angles;
-	self.angles_y = self.angles_y + self.runevar;
+	self.angles_y = self.angles_y + self.oldrunevar;
 	self.frame = self.owner.frame;
 	self.nextthink = time + sys_ticrate;
 };
@@ -264,8 +264,8 @@ Rune_Holo =
 	hologram.nextthink = time;
 	sound (hologram, CHAN_BODY, "misc/basekey.wav", 1, ATTN_NORM);
 
-	hologram.runetime = time + 30;
-	hologram.runevar = crandom ()*360;
+	hologram.oldrunetime = time + 30;
+	hologram.oldrunevar = crandom ()*360;
 };
 
 void ()
@@ -307,14 +307,14 @@ Orb_Think =
 {
 	if (intermission_running)
 	{
-		remove (self.runent);
+		remove (self.aiment);
 		remove (self);
 		return;
 	}
 
 	if (self.owner.health < 1 || self.owner.runetype != RN_ORB)
 	{
-		remove (self.runent);
+		remove (self.aiment);
 
 		// Only do bouncies if you get killed with orb. Not
 		// dropping runes.
@@ -329,10 +329,10 @@ Orb_Think =
 		return;
 	}
 
-	setorigin (self.runent, self.owner.origin + '0 0 10');
-	makevectors (self.runent.angles);
+	setorigin (self.aiment, self.owner.origin + '0 0 10');
+	makevectors (self.aiment.angles);
 
-	traceline (self.runent.origin, self.runent.origin + v_forward*120, TRUE, world);
+	traceline (self.aiment.origin, self.aiment.origin + v_forward*120, TRUE, world);
 
 	setorigin (self, trace_endpos-v_forward*10);
 	trackvel (self.owner);
@@ -381,7 +381,7 @@ Orb_Spawn =
 	orb.nextthink = time;
 	orb.think = Orb_Think;
 	orb.classname = "deathorb";
-	orb.runent = axis;
+	orb.aiment = axis;
 };
 
 // This blink algorithm blinks you on top of one of the following types
@@ -474,7 +474,7 @@ Rune_Blink =
 	}
 
 	e = spawn ();
-	e.runevector = good_e.origin + SPAWN_ITEM_OFFSET;
+	e.oldrunevector = good_e.origin + SPAWN_ITEM_OFFSET;
 	e.owner = self;
 	e.think = maybe_reblink;
 	// I used to do this after one tick, but it would occasionally
@@ -522,7 +522,7 @@ maybe_reblink =
 {
 	local float d, reblink;
 
-	d = vlen (self.owner.origin - self.runevector);
+	d = vlen (self.owner.origin - self.oldrunevector);
 	reblink = d > 125;
 
 	if (0)
@@ -535,7 +535,7 @@ maybe_reblink =
 		bprint (" dist ");
 		bprint_float (d);
 		bprint (" targ ");
-		bprint_vec (self.runevector);
+		bprint_vec (self.oldrunevector);
 		bprint (" current ");
 		bprint_vec (self.owner.origin);
 		bprint ("\n");

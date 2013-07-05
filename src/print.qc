@@ -760,7 +760,7 @@ sprint_efficiency_e =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		if (!is_observer_e (e) || e.runevar)
+		if (!is_observer_e (e) || e.oldrunevar)
 			sprint_eff_player (to, e);
 
 		e = find (e, classname, "player");
@@ -827,7 +827,7 @@ sprint_killstats_e =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		if (!is_observer_e (e) || e.runevar)
+		if (!is_observer_e (e) || e.oldrunevar)
 			sprint_killstats_player (to, e);
 
 		e = find (e, classname, "player");
@@ -923,7 +923,7 @@ sprint_stats_e =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		if (!is_observer_e (e) || e.runevar)
+		if (!is_observer_e (e) || e.oldrunevar)
 			sprint_stats_player (to, e);
 
 		e = find (e, classname, "player");

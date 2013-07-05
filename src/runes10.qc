@@ -121,9 +121,9 @@ Rune_Regen =
 	{
 		if (self.runetime > time)
 			return;
-		if (0) // (!self.runevar)
+		if (0) // (!self.oldrunevar)
 		{
-			self.runevar = 1;
+			self.oldrunevar = 1;
 			self.armortype = ARMOR_TYPE_3;
 			self.items = self.items - (self.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + IT_ARMOR3;
 		}
@@ -461,7 +461,6 @@ Zap_Spawn =
 	temp.angles = '-90 0 0';
 	temp.think = Zap_Think;
 	temp.nextthink = time;
-	self.runent = temp;
 	self.runevar = 0;
 };
 

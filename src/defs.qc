@@ -293,15 +293,16 @@ float runespawntime;
 // Needed for spawn selection.
 entity runespawn;
 
+// for player entity, can only be shambler
+.entity runent;
+
 // Each players' rune type. Runes' runetype used for what they are.
-.float runetype;
+.float runetype1;
+.float runetype2;
 
 // Time at which you can drop your rune.  If negative, you've already
 // requested the drop, this is 0 - the time it will be dropped.
 .float dropdelay;
-
-// vars for 'special' things that different runes do.
-.entity runent;
 
 // For players, various functions based on rune.  For observers, time at
 // which to tell ridee of new rider.  For weapons, time at which it will
@@ -492,6 +493,18 @@ float RN_MAX		= 58;
 
 float RN_LITHIUM_HOOK	= 59;
 float RN_MAX_ALL	= 59;
+
+// the runevector array indices; one rune needs 3 array spaces
+
+float RVI_1 = %1;
+float RVI_2 = %4;
+float RVI_3 = %7;
+float RVI_4 = %10;
+float RVI_5 = %13;
+float RVI_6 = %16;
+float RVI_7 = %19;
+float RVI_8 = %22;
+float RVI_9 = %25;
 
 // impulses
 
