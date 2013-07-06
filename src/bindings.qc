@@ -631,6 +631,8 @@ console_aliases =
 	console_init_cvar_alias ("setafk",		CVAR_C2,	C2_SETAFK);
 	console_init_cvar_alias ("poweruphatson",	CVAR_C2,	C2_POWERUPHATSON);
 	console_init_cvar_alias ("poweruphatsoff",	CVAR_C2,	C2_POWERUPHATSOFF);
+	console_init_cvar_alias ("votehookon",		CVAR_C2,	C2_VOTEHOOKON);
+	console_init_cvar_alias ("votehookoff",		CVAR_C2,	C2_VOTEHOOKOFF);
 
 	level_aliases ();
 	spawn_custom_aliases ();
@@ -1382,6 +1384,24 @@ check_console_command =
 			}
 		}
 
+		else if (i == C2_VOTEHOOKON)
+		{
+			if (storage1 & VOTE_HOOK_DISABLED)
+			{
+				dprint_force ("Vote-hook enabled\n");
+				toggle_vote_hook ();
+			}
+		}
+
+		else if (i == C2_VOTEHOOKOFF)
+		{
+			if (!storage1 & VOTE_HOOK_DISABLED)
+			{
+				dprint_force ("Vote-hook disabled\n");
+				toggle_vote_hook ();
+			}
+		}
+
 		else
 			dprint_force ("Unknown command\n");
 
@@ -1700,8 +1720,8 @@ help_temp1 =
 	self_sprint (self, "\n");
 	//self_sprint (self, "\n   262144 free hook                     "); self_sprint_boolean (self, t1 & T1_FREE_HOOK);
 	//self_sprint (self, "\n   524288 Lithium hook                  "); self_sprint_boolean (self, t1 & T1_LITHIUM_HOOK);
-	self_sprint (self, "\n  1048576 no hook voting                "); self_sprint_boolean (self, t1 & T1_HOOK_NO_VOTE);
-	self_sprint (self, "\n");
+	//self_sprint (self, "\n  1048576 no hook voting                "); self_sprint_boolean (self, t1 & T1_HOOK_NO_VOTE);
+	//self_sprint (self, "\n");
 	i = t1 & T1_RUNE_DROP_DELAY_MASK;
 	self_sprint (self, "\n    65536 no rune drop delay            "); self_sprint_boolean (self, i == T1_RUNE_DROP_DELAY_0);
 	self_sprint (self, "\n    66048  15 second rune drop delay    "); self_sprint_boolean (self, i == T1_RUNE_DROP_DELAY_15);

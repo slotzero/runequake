@@ -566,7 +566,6 @@ toggle_shoot_buttons =
 	cvar_set_infokey (CVAR_C4, s);
 };
 
-
 void ()
 toggle_powerup_hats =
 {
@@ -597,4 +596,18 @@ toggle_powerup_hats =
 
 	s = ftos (options);
 	cvar_set_infokey (CVAR_C4, s);
+};
+
+void ()
+toggle_vote_hook =
+{
+	local string s;
+
+	if (storage1 & VOTE_HOOK_DISABLED)
+		storage1 = storage1 - storage1 & VOTE_HOOK_DISABLED;
+	else
+		storage1 = storage1 | VOTE_HOOK_DISABLED;
+
+	s = ftos (storage1);
+	cvar_set_infokey (CVAR_C5, s);
 };

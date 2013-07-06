@@ -78,9 +78,7 @@ vote_team_disabled =
 float (float tell)
 vote_hook_disabled =
 {
-	if (temp1 & T1_HOOK_NO_VOTE
-			|| VOTE_HOOK_PERCENTAGE	<= 0
-			|| VOTE_HOOK_PERCENTAGE > 1)
+	if (storage1 & VOTE_HOOK_DISABLED || VOTE_HOOK_PERCENTAGE <= 0 || VOTE_HOOK_PERCENTAGE > 1)
 	{
 		if (tell)
 			self_sprint (self, "Hook voting is disabled\n");
