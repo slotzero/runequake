@@ -124,7 +124,7 @@ Rune_Zombie =
 	self.angles = self.owner.angles;
 	self.oldrunevar = self.angles_y;	// preferred yaw
 	self.yaw_speed = 40;
-	self.runetime = time;
+	self.oldrunetime = time;
 
 	monster_zombie_1 (2);
 
@@ -134,8 +134,8 @@ Rune_Zombie =
 float ()
 maybe_remove_zombie_camper =
 {
-	if (self.owner.runetype != RN_ZOMBIE
-			|| self.owner.runetime > self.runetime)
+	if (!Has_Rune_e(self.owner, RN_ZOMBIE)
+			|| self.owner.runetime_array[RN_ZOMBIE * %1] > self.oldrunetime)
 	{
 		if (self.owner.health < 1)
 		{
@@ -158,7 +158,7 @@ monk_protect =
 {
 	local string s;
 
-	if (e.runevar)
+	if (e.runevar_array[RN_MONK * %1])
 	{
 		if (e.runevector_y > time)
 			return;
@@ -176,13 +176,13 @@ monk_protect =
 void ()
 monk_trance_on =
 {
-	self.runevar = 1;
+	self.runevar_array[RN_MONK * %1] = 1;
 };
 
 void ()
 monk_trance_off =
 {
-	self.runevar = 0;
+	self.runevar_array[RN_MONK * %1] = 0;
 };
 
 void ()
@@ -210,7 +210,7 @@ monk_think =
 	// to remain in trance (but one who pushes back gets a much
 	// larger velocity and leaves trance).
 	if (vlen (self.velocity) > 80)
-		self.runetime = time;
+		self.runetime_array[RN_MONK * %1] = time;
 
 	trance = 1;
 
@@ -225,10 +225,10 @@ monk_think =
 		sound (self, CHAN_BODY, "zombie/z_pain.wav", 1, ATTN_NORM);
 	}
 
-	if (self.runetime + MONK_MOVE_DELAY >= time)
+	if (self.runetime_array[RN_MONK * %1] + MONK_MOVE_DELAY >= time)
 		trance = 0;
 
-	if (!self.runevar && trance)
+	if (!self.runevar_array[RN_MONK * %1] && trance)
 		monk_trance_on ();
 	else if (self.runevar && !trance)
 		monk_trance_off ();
@@ -279,7 +279,7 @@ Torch_Trap_Think =
 {
 	local float i;
 
-	if (time >= self.runetime)
+	if (time >= self.oldrunetime)
 	{
 		// XXX swap torch-for-torch bug
 		if (maybe_update_trap_count (self.owner, RN_TORCH))
@@ -317,7 +317,7 @@ Torch_Trap_Think =
 		self.nextthink	= time + sys_ticrate;
 	else
 	{
-		self.runevar	= 1;
+		self.oldrunevar	= 1;
 		self.solid	= SOLID_TRIGGER;
 		self.nextthink	= self.runetime;
 		// Need to reset the size else you get "Error: Trigger
@@ -333,11 +333,15 @@ Torch_Trap_Touch =
 			|| other == world
 			|| !other.takedamage
 			|| other.runetype == RN_ENVIRO
-			|| other.items & IT_SUIT
-			|| other.runetype == RN_TORCH
-			|| other.runetype == RN_FIREWALK)
+			|| other.items & IT_SUIT)
 
 		return;
+
+        if (Has_Rune_e(other, RN_TORCH))
+                return;
+
+        if (Has_Rune_e(other, RN_FIREWALK))
+                return;
 
 	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;
@@ -354,9 +358,9 @@ Torch_Trap_Touch =
 	// fire!" is overwritten.
 	burn_start (other, self.owner, TORCH_TRAP_BURN_DURATION);
 
-	if (self.runevar && self.owner == other)
+	if (self.runevar_array[RN_TORCH * %1] && self.owner == other)
 		centerprint (other, "You ignited yourself, you big dummy!\n");
-	else if (self.runevar && other.classname == "player")
+	else if (self.runevar_array[RN_TORCH * %1] && other.classname == "player")
 	{
 		centerprint3 (other, "You've been ignited by ",
 				self.owner.netname,
@@ -383,7 +387,7 @@ Torch_Trap_Remove =
 void (float riders, entity of_e)
 Rune_Torch_sprint =
 {
-	rprint_numdesc (self, riders, of_e.runevar, "fire trap");
+	rprint_numdesc (self, riders, of_e.runevar_array[RN_TORCH * %1], "fire trap");
 	rprint (self, riders, " placed\n");
 };
 
@@ -393,7 +397,7 @@ Rune_Torch =
 	local entity e;
 	local string s, s1;
 
-	if (self.runevar >= MAX_TORCH)
+	if (self.runevar_array[RN_TORCH * %1] >= MAX_TORCH)
 	{
 		s = ftos (MAX_TORCH);
 		if (MAX_TORCH != 1)
@@ -401,7 +405,7 @@ Rune_Torch =
 		centerprint5 (self, "Only ", s, " fire trap", s1, " allowed");
 		return;
 	}
-	self.runevar = self.runevar + 1;
+	self.runevar_array[RN_TORCH * %1] = self.runevar_array[RN_TORCH * %1] + 1;
 
 	sound (self, CHAN_WEAPON, "hknight/hit.wav", 1, ATTN_NORM);
 
@@ -410,8 +414,8 @@ Rune_Torch =
 	e.owner		= self;
 	e.solid		= SOLID_TRIGGER;
 	e.movetype	= MOVETYPE_TOSS;
-	e.runetime	= time + TORCH_TRAP_DURATION;
-	e.runevar	= 0;	// 1 after stopping
+	e.oldrunetime	= time + TORCH_TRAP_DURATION;
+	e.oldrunevar	= 0;	// 1 after stopping
 
  	makevectors (self.v_angle);
 	e.velocity	= v_forward * 1000;
@@ -487,12 +491,12 @@ pack_rat_rune_touch =
 	local entity old_self;
 	local string s;
 
-	s = Rune_Tell_real (0, self.runetype, 0, 2);
+	s = Rune_Tell_real (0, self.oldrunetype, 0, 2);
 	sprint3 (other, "You've picked up", s, "\n");
 	old_self = self;
 	self = other;
 	cloaked_sound (self, CHAN_BODY, SOUND_RUNE_PICKUP, 1, ATTN_NORM);
-	self.runevar = self.runevar + 1;
+	self.runevar_array[RN_PACKRAT * %1] = self.runevar_array[RN_PACKRAT * %1] + 1;
 	pack_rat_sprint (1, self);
 	self = old_self;
 
@@ -502,13 +506,13 @@ pack_rat_rune_touch =
 	self.movetype		= MOVETYPE_NONE;
 	self.solid		= SOLID_NOT;
 	// calculates are as if player faces along positive Y axis
-	self.runevector_y	= -20 - 5 * random ();
-	self.runevector_x	= 15 * crandom ();
-	self.runevector_z	= 20 * crandom ();
+	self.oldrunevector_y	= -20 - 5 * random ();
+	self.oldrunevector_x	= 15 * crandom ();
+	self.oldrunevector_z	= 20 * crandom ();
 
 	// Link the rat's runes through runent.
-	self.runent = other.runent;
-	other.runent = self;
+	self.oldrunent = other.oldrunent;
+	other.oldrunent = self;
 
 	self.touch = SUB_Null;
 	self.think = pack_rat_rune_move;
@@ -528,7 +532,7 @@ pack_rat_rune_move =
 	// game.  The other cases call pack_rat_rune_drop().  I do it
 	// this way rather than doing a regular drop from there to mimic
 	// the normal client disconnection behavior (no backpack, eg).
-	if (self.owner.health < 0 || self.owner.runetype != RN_PACK_RAT)
+	if (self.owner.health < 0 || !Has_Rune_e(self.owner, RN_PACK_RAT))
 	{
 		remove (self);
 		if (runecurrent > 0)
@@ -539,9 +543,9 @@ pack_rat_rune_move =
 
 	makevectors (self.owner.v_angle);
 	setorigin (self, self.owner.origin
-				+ v_forward * self.runevector_y
-				+ v_right * self.runevector_x
-				+ v_up * self.runevector_z);
+				+ v_forward * self.oldrunevector_y
+				+ v_right * self.oldrunevector_x
+				+ v_up * self.oldrunevector_z);
 	trackvel (self.owner);
 	self.nextthink = time + sys_ticrate;
 };
@@ -555,14 +559,14 @@ pack_rat_rune_drop =
 	{
 		local string s, s2;
 
-		if (!self.runevar)
+		if (!self.runevar_array[RN_PACKRAT * %1])
 		{
 			// This can't actually happen ATM.
 			centerprint (self, "You haven't salted away any runes.");
 			return;
 		}
-		s = ftos (self.runevar);
-		if (self.runevar == 1)
+		s = ftos (self.runevar_array[RN_PACKRAT * %1]);
+		if (self.runevar_array[RN_PACKRAT * %1] == 1)
 			s2 = string_null;
 		else
 			s2 = "s";
@@ -570,18 +574,18 @@ pack_rat_rune_drop =
 	}
 
 	// Drop all the runes.
-	self.runevar	= 0;
-	e		= self.runent;
-	self.runent	= world;
+	self.runevar_array[RN_PACKRAT * %1]	= 0;
+	e		= self.oldrunent;
+	self.oldrunent	= world;
 	while (e)
 	{
-		next_e		= e.runent;
-		e.runent	= self;
+		next_e		= e.oldrunent;
+		e.oldrunent	= self;
 		e.lip		= time + 2;
 		e.owner		= world;
 		e.touch		= Rune_Touch;
 		e.think		= Rune_Move;
-		e.runetime	= time + 60 + random ()*60;
+		e.oldrunetime	= time + 60 + random ()*60;
 		e.nextthink	= e.runetime - 3;
 		e.flags		= e.flags - e.flags & FL_ONGROUND;
 		e.movetype	= MOVETYPE_TOSS;
@@ -738,7 +742,7 @@ jack_think =
 
 	if (self.runevector_x < time)
 	{
-		Rune_Regen ();
+		Rune_Regen (RN_JACK);
 		self.runevector_x = time + 0.6;
 	}
 

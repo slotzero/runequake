@@ -1132,29 +1132,32 @@ W_Attack =
 		haste_mult = 1;
 
 	//RUNE SERV: So much stuff here.. prevents lag.
-	if (self.runetype != 0)
+	if (self.runetype1 + self.runetype2)
 	{
-		if (self.runetype == RN_HASTE)
+		if (Has_Rune_e(self, RN_HASTE))
 			Haste_Sound ();
-		else if (self.runetype == RN_STRENGTH)
+		if (Has_Rune_e(self, RN_STRENGTH))
 			Strength_Sound ();
-		else if (self.runetype == RN_BERSERK)
+		if (Has_Rune_e(self, RN_BERSERK))
 			Strength_Sound ();
-		else if (self.runetype == RN_CLOAK)
+		if (Has_Rune_e(self, RN_CLOAK))
 			self.runetime = time + RECLOAK_DELAY;
 	IN_POQ([-
-		else if (self.runetype == RN_IMPACT)
+		if (Has_Rune_e(self, RN_IMPACT))
 			particle (self.origin, '0 0 10', PARTICLE_IMPACT, 250);
 	-])
-		else if (self.runetype == RN_JACK && self.runevar == 0)
+		if (Has_Rune_e(self, RN_JACK))
 		{
-			Strength_Sound ();
-			self.runevar = self.runevar + 1;
-		}
-		else if (self.runetype == RN_JACK && self.runevar == 2)
-		{
-			Haste_Sound ();
-			self.runevar = self.runevar + 1;
+                        if (self.runevar_array[RN_JACK * %1] == 0)
+                        {
+                                Strength_Sound ();
+                                self.runevar_array[RN_JACK * %1] = self.runevar_array[RN_JACK * %1] + 1;
+                        }
+                        else if (self.runevar_array[RN_JACK * %1] == 2)
+                        {
+                                Haste_Sound ();
+                                self.runevar_array[RN_JACK * %1] = self.runevar_array[RN_JACK * %1] + 1;
+                        }
 		}
 	}
 

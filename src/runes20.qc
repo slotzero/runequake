@@ -19,7 +19,7 @@
 void ()
 Bomb_Think =
 {
-	if (self.owner.runetype != RN_BOMB || intermission_running)
+	if (!Has_Rune_e(self.owner, RN_BOMB) || intermission_running)
 	{
 		remove (self);
 		return;
@@ -312,7 +312,7 @@ Orb_Think =
 		return;
 	}
 
-	if (self.owner.health < 1 || self.owner.runetype != RN_ORB)
+	if (self.owner.health < 1 || !Has_Rune_e(self.owner, RN_ORB))
 	{
 		remove (self.aiment);
 
@@ -559,17 +559,17 @@ maybe_remove_hat =
 {
 	if (intermission_running)
 		return TRUE;
-	else if (self.runetype && self.owner.runetype != self.runetype)
+	else if (self.oldrunetype && !Has_Rune_e(self.owner, self.oldrunetype))
 		return TRUE;
-	else if (self.runevar)
+	else if (self.oldrunevar)
 	{
 		if (!self.owner.health)
 			return TRUE;
-		if (self.runevar == ITEM_PENT && (self.owner.invincible_finished < time || options & NO_POWERUP_HATS))
+		if (self.oldrunevar == ITEM_PENT && (self.owner.invincible_finished < time || options & NO_POWERUP_HATS))
 			return TRUE;
-		if (self.runevar == ITEM_QUAD && (self.owner.super_damage_finished < time || options & NO_POWERUP_HATS))
+		if (self.oldrunevar == ITEM_QUAD && (self.owner.super_damage_finished < time || options & NO_POWERUP_HATS))
 			return TRUE;
-		if (self.runevar == 16 && !self.owner.rqstate & RQS_GUIDED_MISSILE)
+		if (self.oldrunevar == 16 && !self.owner.rqstate & RQS_GUIDED_MISSILE)
 			return TRUE;
 	}
 	return FALSE;
@@ -586,8 +586,8 @@ Hat_Think =
 		return;
 	}
 
-	if (self.runevar & ITEM_POWERUP_ANY)
-		setorigin (self, self.owner.origin + self.runevector);
+	if (self.oldrunevar & ITEM_POWERUP_ANY)
+		setorigin (self, self.owner.origin + self.oldrunevector);
 	else
 	{
 		// makevectors() uses e.v_angle-style angles rather than
@@ -596,9 +596,9 @@ Hat_Think =
 		a_x = 0 - a_x;
 		makevectors (a);
 		setorigin (self, self.owner.origin
-					+ self.runevector_x * v_forward
-					+ self.runevector_y * v_right
-					+ self.runevector_z * v_up);
+					+ self.oldrunevector_x * v_forward
+					+ self.oldrunevector_y * v_right
+					+ self.oldrunevector_z * v_up);
 
 		trackvel (self.owner);
 		self.angles = self.owner.angles + self.mangle;
@@ -606,6 +606,7 @@ Hat_Think =
 	self.nextthink = time + sys_ticrate;
 };
 
+// negative type for checking against owner's rune
 void (entity e, string tmodel, vector offs, vector ang, float type)
 Hat_Spawn =
 {
@@ -619,19 +620,19 @@ Hat_Spawn =
 	dot.solid	= SOLID_NOT;
 	dot.owner	= e;
 
-	if (type)
-		dot.runevar	= type;
+	if (type > 0)
+		dot.oldrunevar	= type;
 	else
-		dot.runetype	= e.runetype;
+		dot.oldrunetype	= 0 - type;
 
 	setorigin (dot, e.origin);
 	setsize (dot, VEC_ORIGIN, VEC_ORIGIN);
 	setmodel (dot, tmodel);
 
-	dot.runevector	= offs;
-	dot.mangle	= ang;
-	dot.think	= Hat_Think;
-	dot.nextthink	= time;
+	dot.oldrunevector	= offs;
+	dot.mangle	        = ang;
+	dot.think	        = Hat_Think;
+	dot.nextthink	        = time;
 };
 
 void ()
@@ -642,11 +643,11 @@ Rune_Camo =
 	// the way the rendering engine treats you when you have a null
 	// model.
 	if (self.velocity == VEC_ORIGIN && self.attack_finished < time
-			&& self.origin == self.runevector)
+			&& self.origin == Get_Runevector(self, RN_CAMO))
 		self.runevar = 1;
 	else
 		self.runevar = 0;
-	self.runevector = self.origin;
+	Set_Runevector(self, RN_CAMO, self.origin);
 };
 
 void ()
@@ -665,23 +666,24 @@ Rune_Jump =
 	head = findradius (self.origin, dist);
 	while (head)
 	{
-		if (head.health > 0 && !isfriend (head) && head.runetype != RN_ENVIRO
-				&& !head.items & IT_SUIT)
-		{
-			traceline (self.origin, head.origin + head.view_ofs, TRUE, self);
-			if ((trace_fraction >= 1) && (vlen (head.origin - self.origin) < dist))
-			{
-				selected = head;
+	        if (!isfriend (head))
+                        if (head.health > 0 && !Has_Rune_e(head, RN_ENVIRO)
+                                        && !head.items & IT_SUIT)
+                        {
+                                traceline (self.origin, head.origin + head.view_ofs, TRUE, self);
+                                if ((trace_fraction >= 1) && (vlen (head.origin - self.origin) < dist))
+                                {
+                                        selected = head;
 
-				if (selected != world && selected.flags & FL_ONGROUND)
-				{
-					selected.flags = selected.flags - FL_ONGROUND;
-					if (selected.classname == "player")
-						sound (selected, CHAN_JUMP, "player/plyrjmp8.wav", 1, ATTN_NORM);
-					selected.velocity_z = selected.velocity_z + 270;
-				}
-			}
-		}
+                                        if (selected != world && selected.flags & FL_ONGROUND)
+                                        {
+                                                selected.flags = selected.flags - FL_ONGROUND;
+                                                if (selected.classname == "player")
+                                                        sound (selected, CHAN_JUMP, "player/plyrjmp8.wav", 1, ATTN_NORM);
+                                                selected.velocity_z = selected.velocity_z + 270;
+                                        }
+                                }
+                        }
 		head = head.chain;
 	}
 };
@@ -752,7 +754,7 @@ Rune_Ammo_1 =
 void ()
 Vamp_Think =
 {
-	if (self.owner.health < 1 || self.owner.runetype != RN_VAMP)
+	if (self.owner.health < 1 || !Has_Rune_e(self.owner, RN_VAMP))
 	{
 		if (self.owner.health > 0)
 			decay_health_spawn (self.owner, 1);
@@ -840,7 +842,7 @@ Vamp_Resurrect =
 	while (e)
 	{
 		next = e.chain;
-		if (e.classname == "rune" && e.owner == self && e.runetype == RN_VAMP)
+		if (e.classname == "rune" && e.owner == self && Has_Rune_e(e, RN_VAMP))
 		{
 			runecurrent = runecurrent - 1;
 			remove (e);
@@ -853,11 +855,14 @@ Vamp_Resurrect =
 	// Spawn her a new vamp thinker if necessary.
 	found = 0;
 	e = find (world, classname, "vampthink");
-	while (e != world && !found)
+	while (e != world)
 	{
 		if (e.owner == self)
-			found = 1;
-		e = find (e, classname, "vampthink");
+                {
+                        found = 1;
+                        e = world;
+                } else
+                        e = find (e, classname, "vampthink");
 	}
 	if (!found)
 		Vamp_Spawn ();
@@ -890,23 +895,23 @@ takedamage_hack =
 void ()
 Shield_On =
 {
-	if (self.runevar == 1 && self.runetime <= time)
+	if (self.runevar_array[RN_SHIELD * %1] == 1 && self.runetime_array[RN_SHIELD * %1] <= time)
 	{
 		// shields are on and time ran out, turn them off
 		stuffcmd (self, CSHIFT_NONE);
 		self.effects = self.effects - self.effects & EF_BRIGHTFIELD;
-		self.runevar = 0;
-		self.runetime = time + RN_SHIELD_RECHARGE;	// recharge time
+		self.runevar_array[RN_SHIELD * %1] = 0;
+		self.runetime_array[RN_SHIELD * %1] = time + RN_SHIELD_RECHARGE;	// recharge time
 
 		// prevent overwriting takedamage in arena mode
 		if (takedamage_hack ())
 			self.takedamage = DAMAGE_AIM;
 	}
-	else if (self.runevar == 2 && self.runetime <= time)
+	else if (self.runevar_array[RN_SHIELD * %1] == 2 && self.runetime_array[RN_SHIELD * %1] <= time)
 	{
 		// shields finished recharging and a request is pending,
 		// turn them on
-		self.runevar = 0;
+		self.runevar_array[RN_SHIELD * %1] = 0;
 		// clear possible recharging message
 		centerprint (self, string_null);
 		Rune_Shield ();
@@ -916,24 +921,24 @@ Shield_On =
 void ()
 Rune_Shield =
 {
-	if (self.runevar == 0)
+	if (self.runevar_array[RN_SHIELD * %1] == 0)
 	{
-		if (self.runetime > time)
+		if (self.runetime_array[RN_SHIELD * %1] > time)
 		{
 			centerprint (self, "Shield recharging");
-			self.runevar = 2;
+			self.runevar_array[RN_SHIELD * %1] = 2;
 			return;
 		}
 		stuffcmd (self, CSHIFT_SHIELD);
 		sound (self, CHAN_BODY, "items/protect2.wav", 1, ATTN_NORM);
 		self.effects = self.effects | EF_BRIGHTFIELD;
-		self.runevar = 1;
+		self.runevar_array[RN_SHIELD * %1] = 1;
 		self.takedamage = DAMAGE_NO;
-		self.runetime = time + RN_SHIELD_DURATION;	// shield duration
+		self.runetime_array[RN_SHIELD * %1] = time + RN_SHIELD_DURATION;
 	}
-	else if (self.runevar == 2)
+	else if (self.runevar_array[RN_SHIELD * %1] == 2)
 	{
 		centerprint (self, "Pending shield canceled");
-		self.runevar = 0;
+		self.runevar_array[RN_SHIELD * %1] = 0;
 	}
 };

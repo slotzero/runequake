@@ -752,7 +752,7 @@ T_RadiusDamage =
 				if (head == attacker && monk_radius_hack)
 					points = points * 0.5;
 
-				if (Has_Rune_e(head.runetype == RN_MONK)
+				if (Has_Rune_e(head, RN_MONK)
                 {
 						if(head != attacker
                             && !Has_Rune_e(attacker, RN_BERSERK)

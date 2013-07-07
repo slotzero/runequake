@@ -121,7 +121,7 @@ toggle_armor =
 		if (mode)
 		{
 			e.skin		= e.impulse;
-			e.runetype	= time;
+			e.oldrunetype	= time;
 			e.think		= SUB_regen;
 			e.nextthink	= time;
 		}
@@ -193,7 +193,7 @@ setrunes =
 		e = find (world, classname, "player");
 		while (e)
 		{
-			if (e.runetype)
+			if (e.runetype1 + self.runetype2)
 			{
 				os	= self;
 				self	= e;

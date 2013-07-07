@@ -204,23 +204,27 @@ Rune_Blizzard =
 	e = findradius (self.origin, 1500);
 	while (e)
 	{
-		if (e.classname == "player" || is_pet_e (e))
-		{
-			if (!environmental (e) && e.runetype != RN_BLIZZARD)
-			{
-				if (e.runetype != RN_FREEZE && !(isfriend2 (self, e) && self != e) && !e.effects & EF_FROZEN)
-				{
-					if (e.health > 0 && e != self && e.owner != self)
-					{
-						if (CanDamage (e, self))
-						{
-							Blizzard_Freeze (e, 1.2);
-							i = i + 1;
-						}
-					}
-				}
-			}
-		}
+	        if (e.health > 0)
+                        if (e.classname == "player" || is_pet_e (e))
+                        {
+                                if (!environmental (e))
+                                {
+                                        if (!(isfriend2 (self, e) && self != e) && !e.effects & EF_FROZEN)
+                                        {
+                                                if (!Has_Rune_e(e, RN_FREEZE) && e != self && e.owner != self)
+                                                {
+                                                        if (!Has_Rune_e(e, RN_BLIZZARD))
+                                                        {
+                                                                if (CanDamage (e, self))
+                                                                {
+                                                                        Blizzard_Freeze (e, 1.2);
+                                                                        i = i + 1;
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
 		e = e.chain;
 	}
 
@@ -233,12 +237,12 @@ Rune_Blizzard =
 			sprint (self, "s");
 		sprint (self, "\n");
 
-		self.runetime = time + (BLIZZARD_RECHARGE * i);
+		self.runetime_array[RN_BLIZZARD * %1] = time + (BLIZZARD_RECHARGE * i);
 	}
 	else
-		self.runetime = time + 3;
+		self.runetime_array[RN_BLIZZARD * %1] = time + 3;
 
-	self.runevar = 1;
+	self.runevar_array[RN_BLIZZARD * %1] = 1;
 	sound (self, CHAN_AUTO, "enforcer/sight2.wav", 1, ATTN_NORM);
 };
 
@@ -257,7 +261,7 @@ Blizzard_Freeze =
 
 	freeze			= spawn ();
 	freeze.movetype		= MOVETYPE_FLY;
-	freeze.solid		= SOLID_TRIGGER;
+	freeze.solid		= SOLID_NOT;
 	freeze.owner		= self;
 	freeze.classname	= "freeze";
 	freeze.angles		= tofreeze.angles;
@@ -269,17 +273,15 @@ Blizzard_Freeze =
 
 	sound (freeze, CHAN_BODY, "shambler/smack.wav", 1, ATTN_NORM);
 
-	freeze.runent		= tofreeze;
-	freeze.runevar		= tofreeze.frame;
+	freeze.oldrunent	= tofreeze;
+	freeze.oldrunevar	= tofreeze.frame;
 	freeze.angles		= tofreeze.v_angle;
 	freeze.fixangle		= 1;
 
 	setorigin (freeze, tofreeze.origin);
 
-	freeze.touch		= SUB_Null;
-
 	// how long frozen
-	freeze.runetime		= time + freeze_time;
+	freeze.oldrunetime	= time + freeze_time;
 	freeze.nextthink	= time;
 	freeze.think		= Freeze_Frozen;
 };
@@ -287,9 +289,9 @@ Blizzard_Freeze =
 void ()
 Blizzard_Think =
 {
-	if (self.runevar && self.runetime < time)
+	if (self.runevar_array[RN_BLIZZARD * %1] && self.runetime_array[RN_BLIZZARD * %1] < time)
 	{
-		self.runevar = 0;
+		self.runevar_array[RN_BLIZZARD * %1] = 0;
 		centerprint (self, string_null);
 		sprint (self, "\{141} Blizzard recharged\n");
 	}
@@ -309,21 +311,25 @@ Blizzard_Think =
 void ()
 Blizzard_Touch =
 {
-	if (self.runetime > time)
+	if (self.runetime_array[RN_BLIZZARD * %1] > time)
 		return;
  	if (other.health <= 0)
 		return;
 	if (other.classname != "player" && !is_pet_e (other))
 		return;
-	if (environmental (other) || other.runetype == RN_BLIZZARD || other.runetype == RN_FREEZE)
+	if (environmental (other))
 		return;
+        if (Has_Rune_e(e, RN_BLIZZARD))
+                return;
+        if (Has_Rune_e(e, RN_FREEZE))
+                return;
 	if (isfriend (other) && self != other)
 		return;
 	if (other.effects & EF_FROZEN)
 		return;
 
 	other.effects = other.effects | EF_FROZEN;
-	self.runetime = time + 3;
+	self.runetime_array[RN_BLIZZARD * %1] = time + 3;
 	Blizzard_Freeze (other, 1);
 };
 
@@ -336,10 +342,10 @@ Rune_Thor =
 	if (self.ammo_cells >= MAX_CELLS)
 		return;
 
-	if (self.runetime > time)
+	if (self.runetime_array[RN_THOR * %1] > time)
 		return;
 
-	self.runetime = time + 0.6;
+	self.runetime_array[RN_THOR * %1] = time + 0.6;
 
 	if (self.ammo_cells < MAX_CELLS)
 		self.ammo_cells = self.ammo_cells + 1;
@@ -451,8 +457,8 @@ Rune_Sonar =
 					cloaked_sound (head, CHAN_WEAPON, "enforcer/sight3.wav", 1, ATTN_NORM);
 
 					// Pingee has cloak, make him visible.
-					if (head.runetype == RN_CLOAK)
-						head.runetime = time + 1;
+					if (Has_Rune_e(head, RN_CLOAK))
+						head.runetime_array[RN_CLOAK * %1] = time + 1;
 
 					dist = vlen (head.origin - self.origin);
 					dist = floor (dist / 32);

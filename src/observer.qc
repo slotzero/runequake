@@ -602,8 +602,8 @@ obs_become =
 	// Look for classname tests if you try changing this.
 	//self.classname	= "observer";
 	self.owner		= world;
-	self.runetype1		= 0;
-	self.runetype2      = 0;
+	self.runetype1          = 0;
+	self.runetype2          = 0;
 
 	// if 0 not a rider or rider but admin, if positive, time to
 	// notify ridee, if -1 ridee already notified, if -2 notify
@@ -743,7 +743,7 @@ obs_player_detect =
 		{
 			s = string_null;
 			s1 = wanted.netname;
-			s2 = Rune_Tell_real (0, wanted.runetype, 0, 2);
+			s2 = Rune_Tell_real (0, wanted.runetype1, 0, 2);
 			if (s2 == "No Rune")
 				s2 = string_null;
 		}
@@ -1078,7 +1078,7 @@ obs_rider_set =
 	show_ridee ();
 	sprint (self, "\n");
 	if (self.owner.aqflags & AQ_NO_HUD)
-		Rune_Tell (1, self.owner, self.owner.runetype, self.owner.aqflags & AQ_HOOK);
+		Rune_Tell (1, self.owner, self.owner.runetype1, self.owner.aqflags & AQ_HOOK);
 	else
 		draw_hud_e (self.owner, 1);
 	if (!self.aqflags & AQ_ADMIN || self.owner.aqflags & AQ_ADMIN)

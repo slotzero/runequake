@@ -112,12 +112,12 @@ Regen_Activate =
 	Rune_Delete (0);
 };
 
-void ()
+void (float rn)
 Rune_Regen =
 {
 	local float any, m;
 
-	if (self.runetype != RN_JACK)
+	if (rn != RN_JACK))
 	{
 		if (self.runetime > time)
 			return;
@@ -133,7 +133,7 @@ Rune_Regen =
 	any = 0;
 
 	m = get_max_armor ();
-	if (self.runetype == RN_JACK)
+	if (rn == RN_JACK)
 		m = rint (m * RN_JACK_REGEN_ARMOR);
 	if (self.armorvalue < m)
 	{
@@ -144,7 +144,7 @@ Rune_Regen =
 	}
 
 	m = self.max_health;
-	if (self.runetype == RN_JACK)
+	if (rn == RN_JACK)
 		m = rint (m * RN_JACK_REGEN_HEALTH);
 	if (self.health < m)
 	{
@@ -161,7 +161,7 @@ Rune_Regen =
 void (float riders, entity of_e)
 Rune_Fly_sprint =
 {
-	if (self.runevar)
+	if (self.runevar_array[RN_FLY * %1])
 		rprint (self, riders, "\{141} flight on");
 	else
 		rprint (self, riders, "\{141} flight off");
@@ -169,7 +169,7 @@ Rune_Fly_sprint =
 	if (FLY_TIMER_ON)
 	{
 		rprint (self, riders, " (");
-		rprint_numdesc (self, riders, of_e.class_cnt, "second");
+		rprint_numdesc (self, riders, of_e.oldrunetime, "second");
 		rprint (self, riders, " left)");
 	}
 	rprint (self, riders, "\n");
@@ -178,10 +178,10 @@ Rune_Fly_sprint =
 void ()
 Rune_Fly_Activate =
 {
-	if (self.runevar)
+	if (self.runevar_array[RN_FLY * %1])
 	{
 		self.movetype = MOVETYPE_WALK;
-		self.runevar = 0;
+		self.runevar_array[RN_FLY * %1] = 0;
 	}
 	else
 	{
@@ -193,7 +193,7 @@ Rune_Fly_Activate =
 		// you leave the liquid.
 		if (self.waterlevel == 1)
 			self.waterlevel = 0;
-		self.runevar = 1;
+		self.runevar_array[RN_FLY * %1] = 1;
 	}
 	Rune_Fly_sprint (1, self);
 };
@@ -203,19 +203,19 @@ Rune_Fly =
 {
 	if (FLY_TIMER_ON)
 	{
-		if (self.runetime <= time && self.runevar)
+		if (self.runetime_array[RN_FLY * %1] <= time && self.runevar_array[RN_FLY * %1])
 		{
-			self.class_cnt = self.class_cnt - 1;
-			self.runetime = time + 1;
+			self.oldrunetime = self.oldrunetime - 1;
+			self.runetime_array[RN_FLY * %1] = time + 1;
 		}
 
-		if (self.class_cnt <= 0)
+		if (self.oldrunetime <= 0)
 		{
 			sprint (self, "Rune timelimit expired, rune removed.\n");
 			Rune_Delete (0);
 		}
 	}
-	if (self.runevar)
+	if (self.runevar_array[RN_FLY * %1])
 		obs_fly ();
 };
 
@@ -234,10 +234,14 @@ GFire_Touch =
 	if (isfriend2 (self.owner, other))
 		return;
 
-	if (environmental (other)
-			|| other.runetype == RN_FIREWALK
-			|| other.runetype == RN_TORCH)
+	if (environmental (other))
 		return;
+
+        if (Has_Rune_e(other, RN_FIREWALK))
+                return;
+
+        if (Has_Rune_e(other, RN_TORCH)
+                return;
 
 	T_Damage (other, self, self.owner, 25, "gfire");
 	remove (self);
@@ -394,7 +398,7 @@ Rune_Zap =
 		head = head.chain;
 	}
 	if (selected != world
-			&& selected.runetype != RN_ENVIRO
+			&& !Has_Rune_e(selected, RN_ENVIRO)
 			&& !selected.items & IT_SUIT)
 	{
 		self.ammo_cells = self.ammo_cells - 1;
@@ -417,7 +421,7 @@ Rune_Zap =
 void ()
 Zap_Think =
 {
-	if (self.owner.runetype != RN_ZAP || intermission_running)
+	if (!Has_Rune_e(self.owner, RN_ZAP) || intermission_running)
 	{
 		remove (self);
 		return;

@@ -69,7 +69,7 @@ Ball_Touch2 =
 void ()
 Ball_Move =
 {
-	if (self.owner.runetype != RN_CLOUD || intermission_running)
+	if (!Has_Rune_e(self.owner, RN_CLOUD) || intermission_running)
 	{
 		remove (self);
 		return;
@@ -188,7 +188,7 @@ Cloud_Think =
 		return;
 	}
 
-	if (self.owner.runetype != RN_CLOUD)
+	if (!Has_Rune_e(self.owner, RN_CLOUD))
 	{
 		remove (self);
 		return;
@@ -343,7 +343,7 @@ Rune_ShamblerThink =
 		return;
 	}
 
-	if (self.owner.runetype != RN_SHAMB
+	if (!Has_Rune_e(self.owner, RN_SHAMB)
 			|| self.owner.runent != self.runent)
 	{
 		spawn_tfog (self.runent.origin);
@@ -383,7 +383,7 @@ delayed_shambler_spawn_think =
 	self.nextthink = time + 1;
 
 	self = self.owner;
-	if (self.runetype == RN_SHAMB && self.runent == world)
+	if (Has_Rune_e(self, RN_SHAMB) && self.runent == world)
 		Rune_ShamblerSpawn ();
 };
 

@@ -224,7 +224,7 @@ HookTouch =
 			return;
 	-])
 
-	runetest = other.runetype == RN_ENVIRO;
+	runetest = Has_Rune_e(other, RN_ENVIRO);
 
 	if (isfriend2 (self.owner, other)
 			|| (!d && other.takedamage == DAMAGE_AIM)

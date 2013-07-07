@@ -2957,12 +2957,12 @@ draw_hud =
 			lithhook = "Hook ";
 		else
 			lithhook = "     ";
-		if (self.runetype != 0 && self.dropdelay < 0)
+		if ((self.runetype1 + self.runetype2) && self.dropdelay < 0)
 			willdrop = "Ä";
 		else
 			willdrop = " ";
 
-		runedesc = Rune_Tell_real (0, self.runetype, 0, 2);
+		runedesc = Rune_Tell_real (0, self.runetype1, 0, 2);
 
 		s = string_null;
 		i = strlen (runedesc);
@@ -3081,7 +3081,7 @@ rune_tell_toggle =
 	if (self.waitmax)
 		rune_tell_stop (0);
 	else
-		Rune_Tell (riders, of_e, of_e.runetype, of_e.aqflags & AQ_HOOK);
+		Rune_Tell (riders, of_e, of_e.runetype1, of_e.aqflags & AQ_HOOK);
 };
 
 void ()
@@ -3250,7 +3250,17 @@ maybe_update_trap_count =
 			e.class_cnt = e.class_cnt - 1;
 		else if (e.runevar_array[type * %1] > 0)
 		{
-			e.runevar = e.runevar - 1;
+			e.runevar_array[type * %1] = e.runevar_array[type * %1] - 1;
+			return TRUE;
+		}
+	}
+	if (e.runetype2 == type)
+	{
+		if (e.class_cnt)
+			e.class_cnt = e.class_cnt - 1;
+		else if (e.runevar_array[type * %1] > 0)
+		{
+			e.runevar_array[type * %1] = e.runevar_array[type * %1] - 1;
 			return TRUE;
 		}
 	}

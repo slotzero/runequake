@@ -233,7 +233,7 @@ train_blocked =
 	T_Damage (other, self, self, self.dmg, "squish");
 
 	if (!other.takedamage
-			|| other.runetype == RN_ENVIRO
+			|| Has_Rune_e(other, RN_ENVIRO)
 			|| other.items & IT_SUIT)
 		train_next ();
 };

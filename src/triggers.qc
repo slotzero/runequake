@@ -368,9 +368,9 @@ tdeath_touch =
 			return;
 		}
 
-		if (other.runetype == RN_DEFLECT)
+		if (Has_Rune_e(other, RN_DEFLECT))
 		{
-			if (self.owner.invincible_finished > time || self.owner.runetype == RN_DEFLECT)
+			if (self.owner.invincible_finished > time || Has_Rune_e(self.owner, RN_DEFLECT))
 				T_Damage (other, self, self.owner, 50000, "teledeath2");
 
 			if (T_Damage (self.owner, self, other, 50000, "teledeath2") && other.health > 0)
@@ -451,7 +451,7 @@ teleport_touch =
 	SUB_UseTargets ();
 
 	// put a tfog where the player was unless cloaked
-	if (other.runetype != RN_CLOAK)
+	if (!Has_Rune_e(other, RN_CLOAK))
 		spawn_tfog (other.origin);
 
 	if (self.target)
@@ -471,7 +471,7 @@ teleport_touch =
 	makevectors (t.mangle);
 	org = t.origin + 32 * v_forward;
 
-	if (other.runetype != RN_CLOAK)
+	if (!Has_Rune_e(other, RN_CLOAK))
 		spawn_tfog (org);
 
 	spawn_tdeath (t.origin, other);
@@ -499,7 +499,7 @@ teleport_touch =
 		if (other.flags & FL_ONGROUND)
 			other.flags = other.flags - other.flags & FL_ONGROUND;
 
-		if (other.runetype == RN_DEFLECT)
+		if (Has_Rune_e(other, RN_DEFLECT))
 			other.velocity = VEC_ORIGIN;
 		else
 			other.velocity = v_forward * 300;

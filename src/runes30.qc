@@ -65,16 +65,16 @@ Radio_Think =
 				{
 					// heal the owner if she still
 					// has radiation
-					if (head.runetype == RN_RADIO)
+					if (Has_Rune_e(head, RN_RADIO))
 					{
 						if (T_Heal (head, RADIO_HEAL, 0))
 							sound (head, CHAN_AUTO, "items/r_item1.wav", 1, ATTN_NORM);
 					}
 				}
-				else if (head.runetype == RN_RADIO)
-					SUB_Null ();
+				else if (Has_Rune_e(head, RN_RADIO))
+					0;
 				else if (head.radsuit_finished > time)
-					SUB_Null ();
+					0;
 				else
 				{
 					if (T_Damage (head, self, self.owner,
@@ -349,7 +349,7 @@ Rune_Switch =
 
 	// Switch armor
 	tempf = switch.armortype;
-	if (switch.runetype != RN_ARMOR)
+	if (!Has_Rune_e(switch, RN_ARMOR))
 		switch.armortype = self.armortype;
 	self.armortype = tempf;
 	set_armor_items_e (self);
@@ -450,10 +450,12 @@ Unfreeze =
 void ()
 Freeze_Frozen =
 {
-	if (!self.runent.effects & EF_FROZEN)
-		self.runent.effects = self.runent.effects | EF_FROZEN;
+        local float save;
 
-	setorigin (self.runent, self.origin);
+	if (!self.oldrunent.effects & EF_FROZEN)
+		self.oldrunent.effects = self.oldrunent.effects | EF_FROZEN;
+
+	setorigin (self.oldrunent, self.origin);
 
 	self.runent.angles		= self.angles;
 	self.runent.fixangle		= 1;
@@ -479,28 +481,46 @@ Freeze_Frozen =
 		// trap was triggered, but people can start burning
 		// after they've been frozen, and stop before they are
 		// thawed.
-		if (self.runent.runetype == RN_FIREWALK
-				|| self.runent.runetype == RN_TORCH
-				|| self.runent.aqstate & AQS_BURNING)
-			self.runetime = self.runetime - 0.3;
-	}
+		if (self.oldrunent.aqstate & AQS_BURNING)
+			save = 0.3;
+                // can't be on fire if player has these runes
+                else
+                {
+                        if (Has_Rune_e(self.oldrunent, RN_FIREWALK))
+                                save = 0.3;
+                        else
+                                save = 0;
+
+                        if (Has_Rune_e(self.oldrunent, RN_TORCH))
+                                save = save + 0.3;
+                }
+
+                self.oldrunetime = self.oldrunetime - save;
+        }
+
+        save = 0;
+        if (Has_Rune_e(self.oldrunent, RN_FREEZE))
+                save = 1;
+        else if (Has_Rune_e(self.oldrunent, RN_ENVIRO)
+                save = 1;
+        else if (Has_Rune_e(self.oldrunent, RN_BLIZZARD))
+                if (Get_Runevector_x(self.oldrunent, RN_BLIZZARD) < time)
+                        save = 1;
 
 	// remove if time is out or dead
-	if (self.runetime < time
-			|| self.runent.health <= 0
-			|| self.runent.runetype == RN_FREEZE
-			|| self.runent.runetype == RN_ENVIRO
-			|| (self.runent.runetype == RN_BLIZZARD && Get_Runevector_x(self.runent, RN_BLIZZARD) < time)
-			|| self.runent.items & IT_SUIT)
+	if (self.oldrunetime < time || save
+			|| self.oldrunent.health <= 0
+			|| self.oldrunent.items & IT_SUIT)
 	{
-		self.runent.effects		= self.runent.effects - self.runent.effects & EF_FROZEN;
-		self.runent.attack_finished	= time + sys_ticrate;
+		self.oldrunent.effects		= self.oldrunent.effects - self.oldrunent.effects & EF_FROZEN;
+		self.oldrunent.attack_finished	= time + sys_ticrate;
 
-		if (self.runent.classname == "player")
+		if (self.oldrunent.classname == "player")
 		{
 			if (self.runent.health > 0)
 			{
-				if (self.owner.runetype == RN_BLIZZARD)
+			        // _TRIGGER is ice trap, _NOT is blizzard
+				if (self.solid == SOLID_NOT)
 				{
 					if (self.owner == self.runent)
 						centerprint (self.runent, "You've broken free!");
@@ -512,8 +532,8 @@ Freeze_Frozen =
 			}
 			stuffcmd (self.runent, CSHIFT_NONE);
 		}
-		else if (self.runent.classname == "shambler_slave")
-			self.runent.oldrunevar = 0;
+		else if (self.oldrunent.classname == "shambler_slave")
+			self.oldrunent.oldrunevar = 0;
 
 		sound (self, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
 		remove (self);
@@ -535,10 +555,10 @@ Freeze_Touch =
 	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;
 
-	if (environmental (other) || other.runetype == RN_FREEZE)
+	if (environmental (other) || Has_Rune_e(other, RN_FREEZE))
 		return;
 
-	if (other.runetype == RN_BLIZZARD)
+	if (Has_Rune_e(other, RN_BLIZZARD))
 	{
 		sprint (other, "you deactivated an ice trap\n");
 		if (maybe_update_trap_count (self.owner, RN_FREEZE))
@@ -574,7 +594,7 @@ Freeze_Touch =
 	}
 	else if (other.classname == "shambler_slave")
 	{
-		other.runevar = 2;
+		other.oldrunevar = 2;
 		sprint (other.owner, "Your shambler is frozen in ");
 		sprint (other.owner, self.owner.netname);
 		sprint (other.owner, "'s ice trap.\n");
@@ -585,7 +605,7 @@ Freeze_Touch =
 
 	sound (self, CHAN_BODY, "shambler/smack.wav", 1, ATTN_NORM);
 
-	self.runent	= other;
+	self.oldrunent	= other;
 	self.oldrunevar	= other.frame;
 
 	// If you use angles here you get batman villain syndrome if you're
@@ -601,7 +621,7 @@ Freeze_Touch =
 	-])
 
 	// how long frozen
-	self.runetime	= time + 13;
+	self.oldrunetime= time + 13;
 	self.nextthink	= time;
 	self.think	= Freeze_Frozen;
 };
@@ -634,7 +654,7 @@ Rune_Freeze =
 	local entity freeze;
 	local string s, s1;
 
-	if (self.runevar >= MAX_FREEZE)
+	if (self.runevar_array[RN_FREEZE * %1] >= MAX_FREEZE)
 	{
 		s = ftos (MAX_FREEZE);
 		if (MAX_FREEZE != 1)
@@ -642,7 +662,7 @@ Rune_Freeze =
 		centerprint5 (self, "Only ", s, " ice trap", s1, " allowed");
 		return;
 	}
-	self.runevar = self.runevar + 1;
+	self.runevar_array[RN_FREEZE * %1] = self.runevar_array[RN_FREEZE * %1] + 1;
 
 	freeze			= spawn ();
 	freeze.movetype		= MOVETYPE_FLY;
@@ -928,7 +948,7 @@ VengHead_Think =
 {
 	local vector a;
 
-	if (self.owner.runetype != RN_VENG || intermission_running)
+	if (!Has_Rune_e(self.owner, RN_VENG) || intermission_running)
 	{
 		remove (self);
 		return;
@@ -987,7 +1007,7 @@ ShubHat_Think =
 		return;
 	}
 
-	if (self.owner.runetype != RN_SHUB)
+	if (!Has_Rune_e(self.owner, RN_SHUB))
 	{
 		self.nextthink = time;
 		self.think = ShubHat_Bye;

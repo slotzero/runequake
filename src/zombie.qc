@@ -525,8 +525,8 @@ zombie_die =
 	// are prevent from dying by capping the amount of damage which
 	// can be done to them in T_Damage().
 	if (self.owner != world
-			&& self.owner.runetype == RN_ZOMBIE
-			&& self.owner.runevar > 0)
+			&& Has_Rune_e(self.owner, RN_ZOMBIE)
+			&& self.owner.runevar_array[RN_ZOMBIE * %1] > 0)
 	{
 		if (!self.owner.runetime > self.oldrunetime)
 		{
