@@ -631,6 +631,8 @@ console_aliases =
 	console_init_cvar_alias ("setafk",		CVAR_C2,	C2_SETAFK);
 	console_init_cvar_alias ("poweruphatson",	CVAR_C2,	C2_POWERUPHATSON);
 	console_init_cvar_alias ("poweruphatsoff",	CVAR_C2,	C2_POWERUPHATSOFF);
+	console_init_cvar_alias ("votehookon",		CVAR_C2,	C2_VOTEHOOKON);
+	console_init_cvar_alias ("votehookoff",		CVAR_C2,	C2_VOTEHOOKOFF);
 
 	level_aliases ();
 	spawn_custom_aliases ();
@@ -1248,7 +1250,7 @@ check_console_command =
 
 		else if (i == C2_FREEHOOKON)
 		{
-			if (hook_type (temp1) != 1)
+			if (hook_type (storage1) != 1)
 			{
 				dprint_force ("Free hook enabled\n");
 				free_hook ();
@@ -1257,7 +1259,7 @@ check_console_command =
 
 		else if (i == C2_LITHHOOKON)
 		{
-			if (hook_type (temp1) != 2)
+			if (hook_type (storage1) != 2)
 			{
 				dprint_force ("Lithium hook enabled\n");
 				lithium_hook ();
@@ -1266,7 +1268,7 @@ check_console_command =
 
 		else if (i == C2_HOOKOFF)
 		{
-			if (hook_type (temp1))
+			if (hook_type (storage1))
 			{
 				dprint_force ("Hook disabled\n");
 				toggle_free_hook ();
@@ -1379,6 +1381,24 @@ check_console_command =
 			{
 				dprint_force ("Powerup hats off\n");
 				toggle_powerup_hats ();
+			}
+		}
+
+		else if (i == C2_VOTEHOOKON)
+		{
+			if (storage1 & VOTE_HOOK_DISABLED)
+			{
+				dprint_force ("Vote-hook enabled\n");
+				toggle_vote_hook ();
+			}
+		}
+
+		else if (i == C2_VOTEHOOKOFF)
+		{
+			if (!storage1 & VOTE_HOOK_DISABLED)
+			{
+				dprint_force ("Vote-hook disabled\n");
+				toggle_vote_hook ();
 			}
 		}
 
@@ -1591,7 +1611,7 @@ help_options =
 	if (options & MODE_LOCKED)
 		self_sprint (self, "\b (locked)");
 
-	self_sprint (self, "\n\bhook          ");	self_sprint_boolean (self, temp1 & T1_HOOK_MASK);
+	self_sprint (self, "\n\bhook          ");	self_sprint_boolean (self, storage1 & HOOK_MASK);
 	self_sprint (self, "\b  hook-damage   ");	self_sprint_boolean (self, !options & NO_HOOK_DAMAGE);
 	self_sprint (self, "\n\bquad          ");	self_sprint_boolean (self, !options & NO_QUAD);
 	self_sprint (self, "\b  pent          ");	self_sprint_boolean (self, !options & NO_PENT);
@@ -1698,10 +1718,10 @@ help_temp1 =
 	self_sprint (self, "\n     4096 * max players                 "); i = max_players ();
 	if (!i) self_sprint (self, "off"); else self_sprint_float (self, i);
 	self_sprint (self, "\n");
-	self_sprint (self, "\n   262144 free hook                     "); self_sprint_boolean (self, t1 & T1_FREE_HOOK);
-	self_sprint (self, "\n   524288 Lithium hook                  "); self_sprint_boolean (self, t1 & T1_LITHIUM_HOOK);
-	self_sprint (self, "\n  1048576 no hook voting                "); self_sprint_boolean (self, t1 & T1_HOOK_NO_VOTE);
-	self_sprint (self, "\n");
+	//self_sprint (self, "\n   262144 free hook                     "); self_sprint_boolean (self, t1 & T1_FREE_HOOK);
+	//self_sprint (self, "\n   524288 Lithium hook                  "); self_sprint_boolean (self, t1 & T1_LITHIUM_HOOK);
+	//self_sprint (self, "\n  1048576 no hook voting                "); self_sprint_boolean (self, t1 & T1_HOOK_NO_VOTE);
+	//self_sprint (self, "\n");
 	i = t1 & T1_RUNE_DROP_DELAY_MASK;
 	self_sprint (self, "\n    65536 no rune drop delay            "); self_sprint_boolean (self, i == T1_RUNE_DROP_DELAY_0);
 	self_sprint (self, "\n    66048  15 second rune drop delay    "); self_sprint_boolean (self, i == T1_RUNE_DROP_DELAY_15);

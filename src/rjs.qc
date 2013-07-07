@@ -2201,9 +2201,9 @@ show_settings =
 	self_sprint (self, "\n  random models  ");	self_sprint_boolean (self, temp1 & T1_RANDOM_RUNE_MODELS);
 	self_sprint (self, "  fast spawn  ");		self_sprint_boolean (self, temp1 & T1_FAST_RUNE_SPAWN);
 	self_sprint (self, "\n  hook mode      ");
-	if (temp1 & T1_HOOK_MASK == T1_FREE_HOOK)
+	if (storage1 & HOOK_MASK == FREE_HOOK)
 		self_sprint (self, "free");
-	else if (temp1 & T1_HOOK_MASK == T1_LITHIUM_HOOK)
+	else if (storage1 & HOOK_MASK == LITHIUM_HOOK)
 		self_sprint (self, "lith");
 	else
 		self_sprint (self, "rune");

@@ -829,10 +829,10 @@ float T1_MAX_PLAYERS_MULT	= 4096;
 float T1_MAX_PLAYERS_MASK	= 61440;
 // drop delay			= 65536;
 // drop delay			= 131072;
-float T1_HOOK_MASK		= 786432;
-float T1_FREE_HOOK		= 262144;
-float T1_LITHIUM_HOOK		= 524288;
-float T1_HOOK_NO_VOTE		= 1048576;
+//float T1_HOOK_MASK		= 786432;
+//float T1_FREE_HOOK		= 262144;
+//float T1_LITHIUM_HOOK		= 524288;
+//float T1_HOOK_NO_VOTE		= 1048576;
 //float T1_HOOK_DEFAULT_ON	= 2097152;
 
 // Three bits set the rune drop delay, they're 512, 65536 and 131072.
@@ -1264,6 +1264,8 @@ float	C2_MAXRUNES		= 82;
 float	C2_SETAFK		= 83;
 float	C2_POWERUPHATSON	= 84;
 float	C2_POWERUPHATSOFF	= 85;
+float	C2_VOTEHOOKON		= 86;
+float	C2_VOTEHOOKOFF		= 87;
 
 // game mode
 float	gamemode;
@@ -1303,9 +1305,15 @@ float	CONSOLE_ALIASES		= 8388608;
 
 // storage1
 float storage1;
+float	FREE_HOOK		= 1;
+float	LITHIUM_HOOK		= 2;
+float	HOOK_MASK		= 3;
+float	VOTE_HOOK_DISABLED	= 4;
 float	AFK_TIME;
-float	SETAFK_MULTIPLIER	= 16;	// starting bit of mask  (16,32,64,128,256)
-float	SETAFK_MASK		= 496;	// bits 1, 2, 4, 8, 16
+float	SETAFK_MULTIPLIER	= 8;		// starting bit
+float	SETAFK_MASK		= 248;		// 8, 16, 32, 64, 128 (5 bits)
+float	DROP_DELAY_MUTLIPLIER	= 256;		// starting bit
+float	DROP_DELAY_MASK		= 65280;	// 256, 512, 1024, 2048, 4096, 8192, 16384, 32768 (8 bits)
 
 // options2
 float	options2;
