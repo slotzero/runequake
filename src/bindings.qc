@@ -1348,12 +1348,11 @@ check_console_command =
 				dprint_force ("Set 'skill' to a value between 0-30, then type setafk\n");
 			else
 			{
-				storage1 = cvar_infokey (CVAR_C5);
 				if (skill == 0) skill = 31; // zero bit hack
 				if (storage1 & SETAFK_MASK != skill)
 				{
 					storage1 = storage1 - storage1 & SETAFK_MASK;
-					storage1 = storage1 | skill * SETAFK_MULTIPLIER;
+					storage1 = storage1 | (skill * SETAFK_MULTIPLIER);
 					s = ftos (storage1);
 					cvar_set_infokey (CVAR_C5, s);
 				}
