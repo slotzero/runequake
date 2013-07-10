@@ -186,7 +186,7 @@ head_touch =
 
 	if (self.owner.movetarget == self)
 	{
-		if (Has_Rune_e(self.owner, RN_PHOENIX))
+		if (Has_Rune_e (self.owner, RN_PHOENIX))
 			return;
 
 		self.owner.health = 1;

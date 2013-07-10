@@ -38,6 +38,7 @@ info_intermission =
 void ()
 SetChangeParms =
 {
+
 	if (SET_PARMS_WITH_NEW_LEVEL)
 	{
 		SetParms ();
@@ -45,20 +46,20 @@ SetChangeParms =
 	}
 
 	if (self.health <= 0)
-    {
-        // Prevent SetNewParms() for dead phoenix rune holders.
-        if (Has_Rune_e(self, RN_PHOENIX))
-            self.health = 100;
-
-        // dead vamps can keep rune to next level, at cost
-        else if (Has_Rune_e(self, RN_VAMP))
-            self.health = 50;
-        else
         {
-            SetParms ();
-            return;
+                // Prevent SetNewParms() for dead phoenix rune holders.
+                if (Has_Rune_e (self, RN_PHOENIX))
+                        self.health = 100;
+
+                // dead vamps can keep rune to next level, at cost
+                else if (Has_Rune_e (self, RN_VAMP))
+                        self.health = 50;
+                else
+                {
+                        SetParms ();
+                        return;
+                }
         }
-    }
 
 	switchfire_off ();
 	// remove items
@@ -219,6 +220,7 @@ SetMidairParms =
 void ()
 DecodeLevelParms =
 {
+
 	if (gamemode == MODE_ARENA)
 		SetArenaParms ();
 	else if (gamemode == MODE_PRACTICE)
@@ -257,11 +259,14 @@ DecodeLevelParms =
 		// by dividing by 100 instead.
 		self.armortype = parm9 / 100;
 	}
+
+	if (parm10)
+                Rune_Activate (parm10, 0);
+	if (parm15)
+                Rune_Activate (parm15, 0);
+
 	self.runetype1 = parm10;
 	self.runetype2 = parm15;
-
-	Rune_Activate (parm10, 0);
-	Rune_Activate (parm15, 0);
 
 	self.aqflags			= parm11;
 	self.rqflags			= parm14;
@@ -569,7 +574,7 @@ respawn =
 	//RUNE SERV: remove color shifts
 	stuffcmd (self, CSHIFT_NONE);
 	//RUNE SERV: Phoenix rune
-	if (Has_Rune_e(self, RN_PHOENIX) && self.runevar_array[RN_PHOENIX * %1] > 0)
+	if (Has_Rune_e (self, RN_PHOENIX) && self.runevar_array[RN_PHOENIX * %1] > 0)
 	{
 	    if (gamemode == MODE_HEADS)
         {
@@ -930,7 +935,7 @@ PutClientInServer =
 	}
 	else
 	{
-		if ((deathmatch & DM_DM_MASK || coop) && !Has_Rune_e(self, RN_CLOAK))
+		if ((deathmatch & DM_DM_MASK || coop) && !Has_Rune_e (self, RN_CLOAK))
 		{
 			makevectors (self.angles);
 			spawn_tfog (self.origin + v_forward*20);
@@ -1199,7 +1204,7 @@ PlayerDeathThink =
 		if (!OLD_STYLE_PHOENIX)
 	-])
 	// Warn phoenix users.
-	if (Has_Rune_e(self, RN_PHOENIX))
+	if (Has_Rune_e (self, RN_PHOENIX))
 		centerprint (self, "\<\bwarning\b\>\nphoenix rune detected\nuse jump to respawn");
 
 	if (self.flags & FL_ONGROUND)
@@ -1235,12 +1240,12 @@ PlayerDeathThink =
 	-])
 	// Don't let phoenixes respawn until they come to a rest.
 	// Allows you to respawn if your corpse gets pushed outside the level.
-	if ((self.flags & FL_ONGROUND))
-        0; // do nothing (ignore return)
-    else if (pointcontents (self.origin) == CONTENT_SOLID)
-        0; // do nothing
-	else if (Has_Rune_e(self, RN_PHOENIX))
-		return;
+        if ((self.flags & FL_ONGROUND))
+                0; // do nothing (ignore return)
+        else if (pointcontents (self.origin) == CONTENT_SOLID)
+                0; // do nothing
+        else if (Has_Rune_e (self, RN_PHOENIX))
+                return;
 
 	// wait for all buttons released
 	if (self.deadflag == DEAD_DEAD)
@@ -1252,7 +1257,7 @@ PlayerDeathThink =
 	}
 
 	// Prevent phoenix holders from firing.
-	if (Has_Rune_e(self, RN_PHOENIX) IN_QW(&& !OLD_STYLE_PHOENIX))
+	if (Has_Rune_e (self, RN_PHOENIX) IN_QW(&& !OLD_STYLE_PHOENIX))
 	{
 		if (!self.button2 || self.aqflags & AQ_KICKED)
 			return;
@@ -1300,7 +1305,7 @@ PlayerJump =
 		return;
 	}
 
-	if (Has_Rune_e(self, RN_FLY) && self.runevar_array[RN_FLY * %1])
+	if (Has_Rune_e (self, RN_FLY) && self.runevar_array[RN_FLY * %1])
 	{
 		self.velocity_z = self.velocity_z + 270;
 		return;
@@ -1365,7 +1370,7 @@ WaterMove =
 		}
 
 		// electric rune: discharge in water
-		if (Has_Rune_e(self, RN_ZAP))
+		if (Has_Rune_e (self, RN_ZAP)
 				&& !ZAP_RUNE_SAFE_IN_WATER
 				&& self.ammo_cells > 0
 				&& self.radsuit_finished < time)
@@ -1379,14 +1384,14 @@ WaterMove =
 			return;
 		}
 		// environmental protection rune: heal in liquids
-		else if (Has_Rune_e(self, RN_ENVIRO))
+		else if (Has_Rune_e (self, RN_ENVIRO))
 		{
 			self.next_breath = time + 1;
 			self.dmgtime = time + 1;
 			Rune_Enviro ();
 		}
 		// human torch: injur in water
-		else if (Has_Rune_e(self, RN_TORCH))
+		else if (Has_Rune_e (self, RN_TORCH)
 				&& self.watertype == CONTENT_WATER
 				&& self.dmgtime < time
 				&& self.radsuit_finished < time)
@@ -1398,10 +1403,10 @@ WaterMove =
 		if (self.watertype == CONTENT_LAVA)
 		{
 			// human torch: allow lava baths
-			if (Has_Rune_e(self, RN_TORCH))
-                0; // do nothing
-            else if (Has_Rune_e(self, RN_FIREWALK) && self.waterlevel == 1)
-                0; // do nothing
+			if (Has_Rune_e (self, RN_TORCH))
+                                0; // do nothing
+                        else if (Has_Rune_e (self, RN_FIREWALK) && self.waterlevel == 1)
+                                0; // do nothing
 			else if (self.dmgtime < time
 					&& self.radsuit_finished < time)
 			{
@@ -1431,7 +1436,7 @@ WaterMove =
 	if (self.waterlevel != 3)
 	{
 		// environmental protection rune & suit: no gasp sound leaving water
-		if (!Has_Rune_e(self, RN_ENVIRO) && self.radsuit_finished < time)
+		if (!Has_Rune_e (self, RN_ENVIRO) && self.radsuit_finished < time)
 		{
 			if (self.air_finished < time)
 				sound (self, CHAN_VOICE, "player/gasp2.wav", 1, ATTN_NORM);
@@ -1440,9 +1445,9 @@ WaterMove =
 		}
 
 		// athletics & zen monk rune: larger lungs
-		if (Has_Rune_e(self, RN_ATHLETE))
+		if (Has_Rune_e (self, RN_ATHLETE))
 			self.air_finished = time + 24;
-        else if(Has_Rune_e(self, RN_MONK))
+                else if (Has_Rune_e (self, RN_MONK))
 			self.air_finished = time + 24;
 		else
 			self.air_finished = time + 12;
@@ -1832,14 +1837,14 @@ CheckPowerups =
 	}
 
 	//RUNE SERV: Cloaky rune thing.
-	else if (Has_Rune_e(self, RN_CLOAK) && self.runevar_array[RN_CLOAK * %1] == 1)
+	else if (Has_Rune_e (self, RN_CLOAK) && self.runevar_array[RN_CLOAK * %1] == 1)
 	{
 		self.frame = 0;
 		self.modelindex = modelindex_eyes;
 	}
 
 	//RUNE SERV: Camo rune.
-	else if (Has_Rune_e(self, RN_CAMO) && self.runevar_array[RN_CAMO * %1] == 1)
+	else if (Has_Rune_e (self, RN_CAMO) && self.runevar_array[RN_CAMO * %1] == 1)
 		self.modelindex = 0;
 
 	else
@@ -1972,7 +1977,7 @@ Called every frame after physics are run
 void ()
 PlayerPostThink =
 {
-    local float safefall;
+        local float safefall;
 
 	if (intermission_running)
 		return;
@@ -2001,20 +2006,19 @@ PlayerPostThink =
 	if ((self.jump_flag < -300) && (self.flags & FL_ONGROUND) && (self.health > 0))
 	{
 
-        else if (Has_Rune_e(self, RN_ENVIRO))
-            safefall = 1;
-        else if (Has_Rune_e(self, RN_FLY))
-            safefall = 1;
-        else if (Has_Rune_e(self, RN_MONK))
-            safefall = 1;
-        else if (Has_Rune_e(self, RN_ATHLETE))
-            safefall = self.jump_flag > -850;
+                if (Has_Rune_e (self, RN_ENVIRO))
+                        safefall = 1;
+                else if (Has_Rune_e (self, RN_FLY))
+                        safefall = 1;
+                else if (Has_Rune_e (self, RN_MONK))
+                        safefall = 1;
+                else if (Has_Rune_e (self, RN_ATHLETE))
+                        safefall = self.jump_flag > -850;
 
 		if (self.watertype == CONTENT_WATER)
 			sound (self, CHAN_JUMP, "player/h2ojump.wav", 1, ATTN_NORM);
-        else if (!self.items & IT_SUIT
-                && !safefall
-				&& self.jump_flag < -650)))
+                else if (!self.items & IT_SUIT
+                                && !safefall && self.jump_flag < -650)
 			T_Damage (self, world, world, 5, "falling");
 		else
 			sound (self, CHAN_VOICE, "player/land.wav", 1, ATTN_NORM);
@@ -2260,7 +2264,7 @@ ClientObituary =
 			bprint (targ.netname);
 			bprint (" was smashed by ");
 			bprint (attacker.owner.netname);
-			if (attacker.trigger_field.runevar)
+			if (attacker.trigger_field.oldrunevar)
 				bprint ("'s angry shambler\n");
 			else
 				bprint ("'s pet shambler\n");
@@ -2348,7 +2352,7 @@ ClientObituary =
 				f = 0;
 				bprint (" detonated in a blaze of glory\n");
 			}
-			else if (Has_Rune_e(attacker, RN_BOMB))
+			else if (Has_Rune_e (attacker, RN_BOMB))
 				bprint (" blew up after killing himself\n");
 			else if (dt == "teamchange")
 			{
@@ -2395,11 +2399,11 @@ ClientObituary =
 			// these more specific one takes precedence.
 			else if (attacker.super_damage_finished > time)
 				bprint (" was too powerful for his own good\n");
-			else if (Has_Rune_e(attacker, RN_STRENGTH))
+			else if (Has_Rune_e (attacker, RN_STRENGTH))
 				bprint (" didn't know his own strength\n");
-			else if (Has_Rune_e(attacker, RN_BERSERK))
+			else if (Has_Rune_e (attacker, RN_BERSERK))
 				bprint (" berserked himself into an early grave\n");
-			else if (Has_Rune_e(attacker, RN_PIERCING && targ.armorvalue > 0))
+			else if (Has_Rune_e (attacker, RN_PIERCING) && targ.armorvalue > 0)
 				bprint (" pierced himself to the core\n");
 			else if (dt == "sniped")
 				bprint (" sniped a little too much\n");
@@ -2572,7 +2576,7 @@ ClientObituary =
 			s1 = " exploded with ";
 			s2 = "'s barrel\n";
 		}
-		else if (Has_Rune_e(attacker, RN_PIERCING)
+		else if (Has_Rune_e (attacker, RN_PIERCING)
 				&& targ.armorvalue > 0)
 		{
 			s1 = " was pierced to the core by ";

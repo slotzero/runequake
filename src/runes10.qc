@@ -20,10 +20,10 @@
 void ()
 Haste_Sound =
 {
-	if (self.runetime > time)
+	if (self.runetime_array[RN_HASTE * %1] > time)
 		return;
 
-	self.runetime = time + 2;
+	self.runetime_array[RN_HASTE * %1] = time + 2;
 	sound (self, CHAN_AUTO, "boss1/sight1.wav", 1, ATTN_NORM);
 };
 
@@ -33,7 +33,7 @@ Rune_Enviro =
 	local float amt, dly;
 	local string snd;
 
-	if (self.runetime > time)
+	if (self.runetime_array[RN_ENVIRO * %1] > time)
 		return;
 
 	amt = 0;
@@ -58,7 +58,7 @@ Rune_Enviro =
 
 	if (amt > 0 && self.health < self.max_health)
 	{
-		self.runetime = time + dly;
+		self.runetime_array[RN_ENVIRO * %1] = time + dly;
 		self.health = self.health + amt;
 		if (self.health > self.max_health)
 			self.health = self.max_health;
@@ -117,9 +117,9 @@ Rune_Regen =
 {
 	local float any, m;
 
-	if (rn != RN_JACK))
+	if (rn != RN_JACK)
 	{
-		if (self.runetime > time)
+		if (self.runetime_array[RN_REGEN * %1] > time)
 			return;
 		if (0) // (!self.oldrunevar)
 		{
@@ -127,7 +127,7 @@ Rune_Regen =
 			self.armortype = ARMOR_TYPE_3;
 			self.items = self.items - (self.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + IT_ARMOR3;
 		}
-		self.runetime = time + 0.5;
+		self.runetime_array[RN_REGEN * %1] = time + 0.5;
 	}
 
 	any = 0;
@@ -237,10 +237,10 @@ GFire_Touch =
 	if (environmental (other))
 		return;
 
-        if (Has_Rune_e(other, RN_FIREWALK))
+        if (Has_Rune_e (other, RN_FIREWALK))
                 return;
 
-        if (Has_Rune_e(other, RN_TORCH)
+        if (Has_Rune_e (other, RN_TORCH))
                 return;
 
 	T_Damage (other, self, self.owner, 25, "gfire");
@@ -293,9 +293,9 @@ GFire_Spawn =
 void ()
 Rune_Firewalk =
 {
-	if (self.runetime > time)
+	if (self.runetime_array[RN_FIREWALK * %1] > time)
 		return;
-	self.runetime = time + 0.3;
+	self.runetime_array[RN_FIREWALK * %1] = time + 0.3;
 
 	GFire_Spawn ();
 };
@@ -303,14 +303,14 @@ Rune_Firewalk =
 void ()
 recall_point_erase =
 {
-	self.runevar = 0;
+	self.runevar_array[RN_RECALL * %1] = 0;
 	centerprint (self, "Recall point erased.");
 };
 
 void (float riders, entity of_e)
 Rune_Recall_sprint =
 {
-	if (of_e.runevar)
+	if (of_e.runevar_array[RN_RECALL * %1])
 		rprint (self, riders, "Recall point is set\n");
 	else
 		rprint (self, riders, "Recall point is not set\n");
@@ -319,16 +319,16 @@ Rune_Recall_sprint =
 void ()
 Rune_Recall =
 {
-	if (!self.runevar)
+	if (!self.runevar_array[RN_RECALL * %1])
 	{
-		self.runevector = self.origin;
+		Set_Runevector(self, self.origin, RN_RECALL);
 		self.pos1 = self.v_angle;
-		self.runevar = 1;
+		self.runevar_array[RN_RECALL * %1] = 1;
 		centerprint (self, "Recall point set.");
 		return;
 	}
 
-	if (self.origin == self.runevector)
+	if (self.origin == Get_Runevector(self, RN_RECALL))
 	{
 		recall_point_erase ();
 		return;
@@ -338,8 +338,8 @@ Rune_Recall =
 	HookOff_by_targ ();
 
 	spawn_tfog (self.origin);
-	spawn_tdeath (self.runevector, self);
-	setorigin (self, self.runevector);
+	spawn_tdeath (Get_Runevector(self, RN_RECALL), self);
+	setorigin (self, Get_Runevector(self, RN_RECALL));
 	self.angles = self.pos1;
 	self.fixangle = 1;
 	spawn_tfog (self.origin);
@@ -352,9 +352,9 @@ Rune_Zap =
 	local entity head, selected;
 	local float dist;
 
-	if (time > self.runevector_x)
+	if (time > Get_Runevector_x(self, RN_ZAP))
 	{
-		self.runevector_x = time + 5;
+		Set_Runevector_x (self, time + 5, RN_ZAP);
 		if (self.ammo_cells < MAX_CELLS)
 		{
 			self.ammo_cells = self.ammo_cells + 1;
@@ -366,13 +366,13 @@ Rune_Zap =
 		return;
 	if (self.ammo_cells < 1)
 		return;
-	if (self.runetime > time)
+	if (self.runetime_array[RN_ZAP * %1] > time)
 		return;
 
 	if ((random ()*100) > 60)
 		muzzleflash ();
 
-	self.runetime = time + 0.3;
+	self.runetime_array[RN_ZAP * %1] = time + 0.3;
 	dist = 200;
 
 	if (pointcontents (self.origin) != CONTENT_EMPTY)
@@ -398,7 +398,7 @@ Rune_Zap =
 		head = head.chain;
 	}
 	if (selected != world
-			&& !Has_Rune_e(selected, RN_ENVIRO)
+			&& !Has_Rune_e (selected, RN_ENVIRO)
 			&& !selected.items & IT_SUIT)
 	{
 		self.ammo_cells = self.ammo_cells - 1;
@@ -411,9 +411,9 @@ Rune_Zap =
 					selected.origin);
 		sound (self, CHAN_WEAPON, "weapons/lhit.wav", 1, ATTN_NORM);
 
-		self.runevar = 10;
+		self.runevar_array[RN_ZAP * %1] = 10;
 		LightningDamage (self.origin, selected.origin, self, 20, "zapped");
-		self.runevar = 0;
+		self.runevar_array[RN_ZAP * %1] = 0;
 		muzzleflash ();
 	}
 };
@@ -421,7 +421,7 @@ Rune_Zap =
 void ()
 Zap_Think =
 {
-	if (!Has_Rune_e(self.owner, RN_ZAP) || intermission_running)
+	if (!Has_Rune_e (self.owner, RN_ZAP) || intermission_running)
 	{
 		remove (self);
 		return;
@@ -447,7 +447,7 @@ Zap_Spawn =
 {
 	local entity temp;
 
-	self.runevector_x = time + 5;
+	Set_Runevector_x (self, time + 5, RN_ZAP);
 	if (is_new)
 	{
 		self.ammo_cells = self.ammo_cells + 10;
@@ -465,25 +465,25 @@ Zap_Spawn =
 	temp.angles = '-90 0 0';
 	temp.think = Zap_Think;
 	temp.nextthink = time;
-	self.runevar = 0;
+	self.runevar_array[RN_ZAP * %1] = 0;
 };
 
 void ()
 Rune_Cloak =
 {
-	if (self.runevar < 1 && self.runetime < time)
+	if (self.runevar_array[RN_CLOAK * %1] < 1 && self.runetime_array[RN_CLOAK * %1] < time)
 	{
 		stuffcmd (self, CSHIFT_CLOAK);
 		cloaked_sound (self, CHAN_AUTO, "items/inv1.wav", 1, ATTN_NORM);
 		sprint (self, "\{141} Cloaked.\n");
-		self.runevar = 1;
+		self.runevar_array[RN_CLOAK * %1] = 1;
 	}
-	if (self.runevar > 0 && self.runetime > time)
+	if (self.runevar_array[RN_CLOAK * %1] > 0 && self.runetime_array[RN_CLOAK * %1] > time)
 	{
 		stuffcmd (self, CSHIFT_NONE);
 		cloaked_sound (self, CHAN_AUTO, "misc/r_tele4.wav", 1, ATTN_NORM);
-		if (self.runetime < time + 3)
+		if (self.runetime_array[RN_CLOAK * %1] < time + 3)
 			sprint (self, "\{141} Uncloaked.\n");
-		self.runevar = 0;
+		self.runevar_array[RN_CLOAK * %1] = 0;
 	}
 };

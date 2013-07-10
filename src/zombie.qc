@@ -525,10 +525,10 @@ zombie_die =
 	// are prevent from dying by capping the amount of damage which
 	// can be done to them in T_Damage().
 	if (self.owner != world
-			&& Has_Rune_e(self.owner, RN_ZOMBIE)
+			&& Has_Rune_e (self.owner, RN_ZOMBIE)
 			&& self.owner.runevar_array[RN_ZOMBIE * %1] > 0)
 	{
-		if (!self.owner.runetime > self.oldrunetime)
+		if (!self.owner.runetime_array[RN_ZOMBIE * %1] > self.oldrunetime)
 		{
 			if (self.last_thought)
 				sprint (self.owner, "The Gods");
@@ -538,7 +538,7 @@ zombie_die =
 				sprint (self.owner, self.enemy.netname);
 			sprint (self.owner, " killed your zombie camper\n");
 
-			self.owner.runevar = self.owner.runevar - 1;
+			self.owner.runevar_array[RN_ZOMBIE * %1] = self.owner.runevar_array[RN_ZOMBIE * %1] - 1;
 		}
 	}
 	sound (self, CHAN_VOICE, "zombie/z_gib.wav", 1, ATTN_NORM);

@@ -303,7 +303,7 @@ health_touch =
 			return;
 	}
 
-	if (Has_Rune_e(other, RN_REQUIEM))
+	if (Has_Rune_e (other, RN_REQUIEM))
 	{
 		if (Get_Runevector_y(other, RN_REQUIEM) > time)
 			return;
@@ -323,17 +323,17 @@ health_touch =
 
 	if (is_mega)
 	{
-		if (Has_Rune_e(other, RN_REQUIEM))
+		if (Has_Rune_e (other, RN_REQUIEM))
 			amount = 25;
 	}
 	else
 	{
-		if (Has_Rune_e(other, RN_VAMP))
+		if (Has_Rune_e (other, RN_VAMP))
 		{
 			amount = 5;
 			s = "items/r_item1.wav";
 		}
-		else if (Has_Rune_e(other, RN_REQUIEM))
+		else if (Has_Rune_e (other, RN_REQUIEM))
 		{
 			amount = 15;
 			s = "items/r_item1.wav";
@@ -353,7 +353,7 @@ health_touch =
 	// health touch sound
 	item_sound (other, CHAN_ITEM, s, 1, ATTN_NORM);
 
-	if (Has_Rune_e(other, RN_REQUIEM))
+	if (Has_Rune_e (other, RN_REQUIEM))
 	{
 		Set_Runevector_y (other, time + RN_REQUIEM_RECHARGE, RN_REQUIEM);
 		if (is_mega)
@@ -408,9 +408,9 @@ armor_touch =
 	}
 
 	// Someone touched me, so don't cycle if configured.
-	self.oldrunetype = time + 5;
+	self.cnt = time + 5;
 
-	if (Has_Rune_e(other, RN_REQUIEM))
+	if (Has_Rune_e (other, RN_REQUIEM))
 	{
 		if (Get_Runevector_z(other, RN_REQUIEM) > time)
 			return;
@@ -444,17 +444,17 @@ armor_touch =
 	this_tot	= type * value;
 	other_tot	= other.armortype * other.armorvalue;
 
-    if (Has_Rune_e(other, RN_ARMOR))
+    if (Has_Rune_e (other, RN_ARMOR))
 	{
 		if (other.armorvalue >= get_max_armor_e (other))
 			return;
 	}
-	else if (Has_Rune_e(other, RN_REQUIEM))
+	else if (Has_Rune_e (other, RN_REQUIEM))
 	{
 		if (other.armorvalue && other.armortype >= type && other.armorvalue >= get_max_armor_e (other))
 			return;
 	}
-	else if (Has_Rune_e(other, RN_REGEN))
+	else if (Has_Rune_e (other, RN_REGEN))
 	{
 		// Don't go to a worse type if you have regen, even if
 		// there's more of it.
@@ -466,12 +466,12 @@ armor_touch =
 	else if (other_tot >= this_tot)
 		return;
 
-	if (Has_Rune_e(other, RN_ARMOR))
+	if (Has_Rune_e (other, RN_ARMOR))
 	{
 		other.armortype		= ARMOR_TYPE_3;
 		other.armorvalue	= other.armorvalue + value;
 	}
-	else if (Has_Rune_e(other, RN_REQUIEM))
+	else if (Has_Rune_e (other, RN_REQUIEM))
 	{
 		if (other.armortype > type)
 			type = other.armortype;
@@ -515,16 +515,16 @@ armor_touch =
 		other.armorvalue = max;
 
 	// Have to do this after capping armorvalue.
-	if (Has_Rune_e(other, RN_ARMOR))
+	if (Has_Rune_e (other, RN_ARMOR))
 		good_armor_set_armor_items_e (other);
 
 	if (!deathmatch & DM_DM_MASK)
-    {
-        if (random < 0.02)
-            sprint (other, "You got armour\n");
-        else
-            sprint (other, "You got armor\n");
-    }
+        {
+                if (random() < 0.02)
+                    sprint (other, "You got armour\n");
+                else
+                    sprint (other, "You got armor\n");
+        }
 
 	// armor touch sound
 	item_sound (other, CHAN_ITEM, "items/armor1.wav", 1, ATTN_NORM);
@@ -532,7 +532,7 @@ armor_touch =
 	// Stop burning, for levels with no water.
 	other.aqstate = other.aqstate - other.aqstate & AQS_BURNING;
 
-	if (Has_Rune_e(other, RN_REQUIEM))
+	if (Has_Rune_e (other, RN_REQUIEM))
 		Set_Runevector_z (other, time + RN_REQUIEM_RECHARGE, RN_REQUIEM);
 	else
 	{
@@ -559,7 +559,7 @@ armor_cycle =
 	if (!options & ARMOR_ROTATE)
 		return;
 
-	if (self.oldrunetype < time)
+	if (self.cnt < time)
 	{
 		if (ARMOR_ROTATE_RANDOM)
 			self.skin = rint (random () * 2);
@@ -704,7 +704,7 @@ weapon_touch =
 			return;
 	}
 
-	requiem = Has_Rune_e(other, RN_REQUIEM;)
+	requiem = Has_Rune_e (other, RN_REQUIEM);
 	if (requiem)
 	{
 		if (Get_Runevector_x(other, RN_REQUIEM) > time)
@@ -848,7 +848,7 @@ weapon_touch =
 	}
 
 	// remove it in single player, or setup for respawning in deathmatch
-	if (Has_Rune_e(other, RN_REQUIEM))
+	if (Has_Rune_e (other, RN_REQUIEM))
 		Set_Runevector_x (other, time + RN_REQUIEM_RECHARGE, RN_REQUIEM);
 	else
 	{
@@ -971,9 +971,9 @@ ammo_touch =
 
 	if (other.health <= 0)
 		return;
-	if (Has_Rune_e(other, RN_REQUIEM))
+	if (Has_Rune_e (other, RN_REQUIEM))
 	{
-		if (Get_Runevector_x(other, RN_REQUIEM > time)
+		if (Get_Runevector_x(other, RN_REQUIEM) > time)
 			return;
 
 		ammo_flag = 5;
@@ -1046,7 +1046,7 @@ ammo_touch =
 	self = stemp;
 
 	// remove it in single player, or setup for respawning in deathmatch
-	if (Has_Rune_e(other, RN_REQUIEM))
+	if (Has_Rune_e (other, RN_REQUIEM))
 		Set_Runevector_x (other, time + RN_REQUIEM_RECHARGE, RN_REQUIEM);
 	else
 	{

@@ -94,9 +94,9 @@ bomb_arm =
 
 	// dropdelay is tick time
 	// ltime is explode time
-	if (Has_Rune_e(self.owner, RN_HASTE))
+	if (Has_Rune_e (self.owner, RN_HASTE))
 		self.ltime = time + 2.5;
-	else if (Has_Rune_e(self.owner, RN_JACK))
+	else if (Has_Rune_e (self.owner, RN_JACK))
 		self.ltime = time + 4.375;
 	else
 		self.ltime = time + 5;
@@ -163,7 +163,7 @@ bomb_tick =
 
 	if (self.dropdelay <= time)
 	{
-		if (!Has_Rune_e(self.owner, RN_CLOAK))
+		if (!Has_Rune_e (self.owner, RN_CLOAK))
 		{
 			sound (self, CHAN_WEAPON, "doors/runetry.wav",
 				1, ATTN_NORM);

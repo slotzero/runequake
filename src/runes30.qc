@@ -20,10 +20,10 @@
 void ()
 Strength_Sound =
 {
-	if (self.runetime > time)
+	if (self.runetime_array[RN_STRENGTH * %1] > time)
 		return;
 
-	self.runetime = time + 1;
+	self.runetime_array[RN_STRENGTH * %1] = time + 1;
 	sound (self, CHAN_AUTO, "items/damage3.wav", 1, ATTN_NORM);
 };
 
@@ -32,7 +32,7 @@ Radio_Think =
 {
 	local entity head;
 
-	if (self.runetime < time)
+	if (self.oldrunetime < time)
 	{
 		if (maybe_update_trap_count (self.owner, RN_RADIO))
 			sprint (self.owner, "Your radiation expired\n");
@@ -41,9 +41,9 @@ Radio_Think =
 		return;
 	}
 
-	if (self.runevar)
+	if (self.oldrunevar)
 	{
-		self.runevar = 0;
+		self.oldrunevar = 0;
 		create_te_lavasplash (self.origin);
 	}
 
@@ -65,13 +65,13 @@ Radio_Think =
 				{
 					// heal the owner if she still
 					// has radiation
-					if (Has_Rune_e(head, RN_RADIO))
+					if (Has_Rune_e (head, RN_RADIO))
 					{
 						if (T_Heal (head, RADIO_HEAL, 0))
 							sound (head, CHAN_AUTO, "items/r_item1.wav", 1, ATTN_NORM);
 					}
 				}
-				else if (Has_Rune_e(head, RN_RADIO))
+				else if (Has_Rune_e (head, RN_RADIO))
 					0;
 				else if (head.radsuit_finished > time)
 					0;
@@ -94,7 +94,7 @@ Radio_Think =
 void (float riders, entity of_e)
 Rune_Radio_sprint =
 {
-	rprint_numdesc (self, riders, of_e.runevar, "radiation point");
+	rprint_numdesc (self, riders, of_e.runevar_array[RN_RADIO * %1], "radiation point");
 	rprint (self, riders, " active\n");
 };
 
@@ -105,7 +105,7 @@ Rune_Radio =
 	local entity head;
 	local string s, s1;
 
-	if (self.health > 0 && self.runevar >= MAX_RADIO)
+	if (self.health > 0 && self.runevar_array[RN_RADIO * %1] >= MAX_RADIO)
 	{
 		s = ftos (MAX_RADIO);
 		if (MAX_RADIO != 1)
@@ -130,7 +130,7 @@ Rune_Radio =
 		head = head.chain;
 	}
 
-	self.runevar = self.runevar + 1;
+	self.runevar_array[RN_RADIO * %1] = self.runevar_array[RN_RADIO * %1] + 1;
 
 	if (self.health > 0)
 	{
@@ -153,9 +153,9 @@ Rune_Radio =
 	radio.nextthink = time + 5;
 	sound (radio, CHAN_WEAPON, "items/damage.wav", 1, ATTN_NORM);
 
-	radio.runetime = time + RADIO_DURATION;
+	radio.oldrunetime = time + RADIO_DURATION;
 	radio.think = Radio_Think;
-	radio.runevar = 1;
+	radio.oldrunevar = 1;
 };
 
 void ()
@@ -349,7 +349,7 @@ Rune_Switch =
 
 	// Switch armor
 	tempf = switch.armortype;
-	if (!Has_Rune_e(switch, RN_ARMOR))
+	if (!Has_Rune_e (switch, RN_ARMOR))
 		switch.armortype = self.armortype;
 	self.armortype = tempf;
 	set_armor_items_e (self);
@@ -417,7 +417,7 @@ Freeze_Think =
 			particle (self.origin, '0 0 -10', particle_team, 10);
 		}
 	-])
-	if (self.runetime < time)
+	if (self.oldrunetime < time)
 	{
 		if (maybe_update_trap_count (self.owner, RN_FREEZE))
 			sprint (self.owner, "A freeze trap timed out\n");
@@ -452,15 +452,15 @@ Freeze_Frozen =
 {
         local float save;
 
-	if (!self.oldrunent.effects & EF_FROZEN)
-		self.oldrunent.effects = self.oldrunent.effects | EF_FROZEN;
+	if (!self.runent.effects & EF_FROZEN)
+		self.runent.effects = self.runent.effects | EF_FROZEN;
 
-	setorigin (self.oldrunent, self.origin);
+	setorigin (self.runent, self.origin);
 
 	self.runent.angles		= self.angles;
 	self.runent.fixangle		= 1;
 	self.runent.attack_finished	= time + 30;	// magic in W_WeaponFrame()
-	self.runent.frame		= self.runevar;
+	self.runent.frame		= self.oldrunevar;
 	self.runent.velocity		= VEC_ORIGIN;
 
 	self.nextthink = time + sys_ticrate;
@@ -481,17 +481,17 @@ Freeze_Frozen =
 		// trap was triggered, but people can start burning
 		// after they've been frozen, and stop before they are
 		// thawed.
-		if (self.oldrunent.aqstate & AQS_BURNING)
+		if (self.runent.aqstate & AQS_BURNING)
 			save = 0.3;
                 // can't be on fire if player has these runes
                 else
                 {
-                        if (Has_Rune_e(self.oldrunent, RN_FIREWALK))
+                        if (Has_Rune_e (self.runent, RN_FIREWALK))
                                 save = 0.3;
                         else
                                 save = 0;
 
-                        if (Has_Rune_e(self.oldrunent, RN_TORCH))
+                        if (Has_Rune_e (self.runent, RN_TORCH))
                                 save = save + 0.3;
                 }
 
@@ -499,23 +499,23 @@ Freeze_Frozen =
         }
 
         save = 0;
-        if (Has_Rune_e(self.oldrunent, RN_FREEZE))
+        if (Has_Rune_e (self.runent, RN_FREEZE))
                 save = 1;
-        else if (Has_Rune_e(self.oldrunent, RN_ENVIRO)
+        else if (Has_Rune_e (self.runent, RN_ENVIRO))
                 save = 1;
-        else if (Has_Rune_e(self.oldrunent, RN_BLIZZARD))
-                if (Get_Runevector_x(self.oldrunent, RN_BLIZZARD) < time)
+        else if (Has_Rune_e (self.runent, RN_BLIZZARD))
+                if (self.runetime_array[RN_BLIZZARD * %1] < time)
                         save = 1;
 
 	// remove if time is out or dead
 	if (self.oldrunetime < time || save
-			|| self.oldrunent.health <= 0
-			|| self.oldrunent.items & IT_SUIT)
+			|| self.runent.health <= 0
+			|| self.runent.items & IT_SUIT)
 	{
-		self.oldrunent.effects		= self.oldrunent.effects - self.oldrunent.effects & EF_FROZEN;
-		self.oldrunent.attack_finished	= time + sys_ticrate;
+		self.runent.effects		= self.runent.effects - self.runent.effects & EF_FROZEN;
+		self.runent.attack_finished	= time + sys_ticrate;
 
-		if (self.oldrunent.classname == "player")
+		if (self.runent.classname == "player")
 		{
 			if (self.runent.health > 0)
 			{
@@ -532,8 +532,8 @@ Freeze_Frozen =
 			}
 			stuffcmd (self.runent, CSHIFT_NONE);
 		}
-		else if (self.oldrunent.classname == "shambler_slave")
-			self.oldrunent.oldrunevar = 0;
+		else if (self.runent.classname == "shambler_slave")
+			self.runent.oldrunevar = 0;
 
 		sound (self, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
 		remove (self);
@@ -555,10 +555,10 @@ Freeze_Touch =
 	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;
 
-	if (environmental (other) || Has_Rune_e(other, RN_FREEZE))
+	if (environmental (other) || Has_Rune_e (other, RN_FREEZE))
 		return;
 
-	if (Has_Rune_e(other, RN_BLIZZARD))
+	if (Has_Rune_e (other, RN_BLIZZARD))
 	{
 		sprint (other, "you deactivated an ice trap\n");
 		if (maybe_update_trap_count (self.owner, RN_FREEZE))
@@ -605,7 +605,7 @@ Freeze_Touch =
 
 	sound (self, CHAN_BODY, "shambler/smack.wav", 1, ATTN_NORM);
 
-	self.oldrunent	= other;
+	self.runent	= other;
 	self.oldrunevar	= other.frame;
 
 	// If you use angles here you get batman villain syndrome if you're
@@ -630,7 +630,7 @@ void ()
 Freeze_Arm =
 {
 	self.nextthink	= time;
-	self.runetime	= time + 120;
+	self.oldrunetime= time + 120;
 	self.think	= Freeze_Think;
 	self.touch	= Freeze_Touch;
 	IN_POQ([-
@@ -644,7 +644,7 @@ Freeze_Arm =
 void (float riders, entity of_e)
 Rune_Freeze_sprint =
 {
-	rprint_numdesc (self, riders, of_e.runevar, "ice trap");
+	rprint_numdesc (self, riders, of_e.runevar_array[RN_FREEZE * %1], "ice trap");
 	rprint (self, riders, " active\n");
 };
 
@@ -723,7 +723,7 @@ Suck =
 void ()
 Suck_Think =
 {
-	if ((self.owner.runevar_array[RN_SUCK * %1] == 0 && Has_Rune_e(self.owner, RN_SUCK))
+	if ((self.owner.runevar_array[RN_SUCK * %1] == 0 && Has_Rune_e (self.owner, RN_SUCK))
 			|| self.oldrunetime < time)
 	{
 		spawn_tfog (self.origin);
@@ -732,7 +732,7 @@ Suck_Think =
 		return;
 	}
 
-	if (Has_Rune_e(self.owner, RN_SUCK))
+	if (Has_Rune_e (self.owner, RN_SUCK))
 		self.oldrunetime = time + 20;
 
 	// I used to set this to sys_ticrate but every time the rate changes
@@ -788,7 +788,7 @@ Suck_Spawn =
 void (float riders, entity of_e)
 Rune_Suck_sprint =
 {
-	if (of_e.runevar)
+	if (of_e.runevar_array[RN_SUCK * %1])
 		rprint (self, riders, "Gravity well is deployed\n");
 	else
 		rprint (self, riders, "Gravity well is not deployed\n");
@@ -828,10 +828,10 @@ Impact_Touch =
 		return;
 	if (other.takedamage != DAMAGE_AIM)
 		return;
-	if (self.runetime > time)
+	if (self.runetime_array[RN_IMPACT * %1] > time)
 		return;
 
-	self.runetime = time + 0.5;
+	self.runetime_array[RN_IMPACT * %1] = time + 0.5;
 
 	other.flags	= other.flags - (other.flags & FL_ONGROUND);
 	other.velocity	= other.velocity + '0 0 200' + self.velocity * 3;
@@ -852,9 +852,9 @@ Rune_Impact =
 	if (self.velocity == VEC_ORIGIN)
 		return;
 
-	if (self.runetime > time)
+	if (self.runetime_array[RN_IMPACT * %1] > time)
 		return;
-	self.runetime = time + 0.5;
+	self.runetime_array[RN_IMPACT * %1] = time + 0.5;
 
 	// XXX This can trigger as you're walking away from a guy.  Just
 	// stand next to him and back up to reproduce.
@@ -870,7 +870,7 @@ Rune_Impact =
 			self.velocity = self.velocity * -1;
 			sound (self, CHAN_AUTO, "zombie/z_miss.wav",
 				1, ATTN_NORM);
-			self.runevar = 10;
+			self.runevar_array[RN_IMPACT * %1] = 10;
 			T_Damage (head, self, self, 45 + 10 * random (),
 					"bodycheck");
 		}
@@ -948,7 +948,7 @@ VengHead_Think =
 {
 	local vector a;
 
-	if (!Has_Rune_e(self.owner, RN_VENG) || intermission_running)
+	if (!Has_Rune_e (self.owner, RN_VENG) || intermission_running)
 	{
 		remove (self);
 		return;
@@ -992,7 +992,7 @@ ShubHat_Bye =
 	setorigin (self, self.origin + '0 0 15');
 	self.angles_y = self.angles_y - 10;
 
-	if (self.runetime > time)
+	if (self.oldrunetime > time)
 		return;
 
 	remove (self);
@@ -1007,12 +1007,12 @@ ShubHat_Think =
 		return;
 	}
 
-	if (!Has_Rune_e(self.owner, RN_SHUB))
+	if (!Has_Rune_e (self.owner, RN_SHUB))
 	{
 		self.nextthink = time;
 		self.think = ShubHat_Bye;
 		self.flags = self.flags - FL_ONGROUND;
-		self.runetime = time + 10;
+		self.oldrunetime = time + 10;
 		return;
 	}
 
@@ -1045,16 +1045,16 @@ ShubHat_Spawn =
 void ()
 Rune_Repel =
 {
-	if (self.runetime > time)
+	if (self.runetime_array[RN_REPEL * %1] > time)
 		return;
 
 	// I used to set this to sys_ticrate but every time the rate changes
 	// PUSH_FORCE is either too weak or too strong.
-	self.runetime = self.runetime + 0.1;
+	self.runetime_array[RN_REPEL * %1] = self.runetime_array[RN_REPEL * %1] + 0.1;
 
 	local entity pushee;
 	local vector pushdir, pushforce;
-	local float pushdist, dist;
+	local float pushdist, dist, temp;
 
 	dist = 400;
 
@@ -1063,20 +1063,22 @@ Rune_Repel =
 	{
 		if ((pushee.health > 0 || !pushee.flags & FL_ONGROUND)
 				&& pushee.solid != SOLID_BSP
-				&& !environmental (pushee)
-				&& (!is_player_e(pushee)
-					|| !isfriend (pushee)))
+				&& !environmental (pushee))
 		{
-			// XXX This only affects non-players things with
-			// health.  Does that make sense?
-			if (pushee.classname != "player")
-				pushee.flags = pushee.flags - pushee.flags & FL_ONGROUND;
+                        temp = !isfriend(pushee);
+                        if (!is_player_e(pushee) || temp)
+                        {
+                                // XXX This only affects non-players things with
+                                // health.  Does that make sense?
+                                if (pushee.classname != "player")
+                                        pushee.flags = pushee.flags - pushee.flags & FL_ONGROUND;
 
-			pushdir		= self.origin - pushee.origin;
-			pushdist	= vlen (pushdir);
-			pushdir		= normalize (pushdir);
-			pushforce	= pushdir * PUSH_FORCE * (dist - pushdist);
-			pushee.velocity	= pushee.velocity - pushforce;
+                                pushdir		= self.origin - pushee.origin;
+                                pushdist	= vlen (pushdir);
+                                pushdir		= normalize (pushdir);
+                                pushforce	= pushdir * PUSH_FORCE * (dist - pushdist);
+                                pushee.velocity	= pushee.velocity - pushforce;
+                        }
 		}
 		pushee = pushee.chain;
 	}

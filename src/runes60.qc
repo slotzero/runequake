@@ -20,14 +20,14 @@
 void (float riders, entity of_e)
 Rune_Glue_sprint =
 {
-	rprint_numdesc (self, riders, of_e.runevar, "glue trap");
+	rprint_numdesc (self, riders, of_e.runevar_array[RN_GLUE * %1], "glue trap");
 	rprint (self, riders, " placed\n");
 };
 
 void()
 Glue_Think =
 {
-	if (self.runevar)
+	if (self.oldrunevar)
 	{
 		if (maybe_update_trap_count (self.owner, RN_GLUE))
 			sprint (self.owner, "A glue trap evaporated\n");
@@ -41,7 +41,7 @@ Glue_Think =
 		self.nextthink	= time + sys_ticrate;
 	else
 	{
-		self.runevar	= 1;
+		self.oldrunevar	= 1;
 		self.solid	= SOLID_TRIGGER;
 		self.nextthink	= time + 45;
 
@@ -55,7 +55,7 @@ Glue_Stuck =
 {
 	local float release;
 
-	if (self.runetime < time)
+	if (self.oldrunetime < time)
 	{
 		centerprint (self.runent, "Released from glue trap");
 		sound (self, CHAN_WEAPON, "blob/death1.wav", 1, ATTN_NORM);
@@ -98,7 +98,7 @@ Glue_Touch =
 	if (other.effects & EF_FROZEN)
 		return;
 
-	if (!self.runevar)
+	if (!self.oldrunevar)
 		return;
 
 	other.effects = other.effects | EF_FROZEN;
@@ -110,7 +110,7 @@ Glue_Touch =
 	self.think	= Glue_Stuck;
 	self.nextthink	= time;
 	self.runent	= other;
-	self.runetime	= time + 5;
+	self.oldrunetime= time + 5;
 
 	setorigin(self, other.origin);
 	self.frame	= 60;
@@ -147,7 +147,7 @@ Rune_Glue =
 	local entity glue;
 	local string s, s1;
 
-	if (self.runevar >= MAX_GLUE)
+	if (self.runevar_array[RN_GLUE * %1] >= MAX_GLUE)
 	{
 		s = ftos (MAX_GLUE);
 		if (MAX_GLUE != 1)
@@ -155,7 +155,7 @@ Rune_Glue =
 		centerprint5 (self, "Only ", s, " glue trap", s1, " allowed");
 		return;
 	}
-	self.runevar		= self.runevar + 1;
+	self.runevar_array[RN_GLUE * %1] = self.runevar_array[RN_GLUE * %1] + 1;
 
 	sound (self, CHAN_WEAPON, "blob/sight1.wav", 1, ATTN_NORM);
 
@@ -182,7 +182,7 @@ Rune_Glue =
 void (float riders)
 Rune_Blizzard_sprint =
 {
-	if (self.runevar)
+	if (self.runevar_array[RN_BLIZZARD * %1])
 		rprint (self, riders, "Recharging...\n");
 	else
 		rprint (self, riders, "Charged\n");
@@ -195,7 +195,7 @@ Rune_Blizzard =
 	local float i;
 
 	i = 0;
-	if (self.runetime > time)
+	if (self.runetime_array[RN_BLIZZARD * %1] > time)
 	{
 		centerprint (self, "Blizzard recharging");
 		return;
@@ -211,9 +211,9 @@ Rune_Blizzard =
                                 {
                                         if (!(isfriend2 (self, e) && self != e) && !e.effects & EF_FROZEN)
                                         {
-                                                if (!Has_Rune_e(e, RN_FREEZE) && e != self && e.owner != self)
+                                                if (!Has_Rune_e (e, RN_FREEZE) && e != self && e.owner != self)
                                                 {
-                                                        if (!Has_Rune_e(e, RN_BLIZZARD))
+                                                        if (!Has_Rune_e (e, RN_BLIZZARD))
                                                         {
                                                                 if (CanDamage (e, self))
                                                                 {
@@ -273,7 +273,7 @@ Blizzard_Freeze =
 
 	sound (freeze, CHAN_BODY, "shambler/smack.wav", 1, ATTN_NORM);
 
-	freeze.oldrunent	= tofreeze;
+	freeze.runent	        = tofreeze;
 	freeze.oldrunevar	= tofreeze.frame;
 	freeze.angles		= tofreeze.v_angle;
 	freeze.fixangle		= 1;
@@ -296,9 +296,9 @@ Blizzard_Think =
 		sprint (self, "\{141} Blizzard recharged\n");
 	}
 
-	if (self.watertype == CONTENT_WATER && self.runevector_x < time && !environmental (self))
+	if (self.watertype == CONTENT_WATER && self.runetime_array[RN_BLIZZARD * %1] < time && !environmental (self))
 	{
-		self.runevector_x = time + 3;
+		self.runetime_array[RN_BLIZZARD * %1] = time + 3;
 		Blizzard_Freeze (self, 1);
 	}
 
@@ -319,9 +319,9 @@ Blizzard_Touch =
 		return;
 	if (environmental (other))
 		return;
-        if (Has_Rune_e(e, RN_BLIZZARD))
+        if (Has_Rune_e (other, RN_BLIZZARD))
                 return;
-        if (Has_Rune_e(e, RN_FREEZE))
+        if (Has_Rune_e (other, RN_FREEZE))
                 return;
 	if (isfriend (other) && self != other)
 		return;
@@ -367,7 +367,7 @@ Sniper_Touch =
 		T_Damage (other, self, self.owner, SURE_KILL_DAMAGE, "sniped");
 
 		if (other.classname == "player")
-			self.owner.runevar = self.owner.runevar + 25;
+			self.owner.runevar_array[RN_SNIPER * %1] = self.owner.runevar_array[RN_SNIPER * %1] + 25;
 	}
 	else
 		create_te_spike (TE_SUPERSPIKE, self.origin);
@@ -378,13 +378,13 @@ Sniper_Touch =
 void ()
 Rune_Sniper =
 {
-	if (self.runetime > time)
+	if (self.runetime_array[RN_SNIPER * %1] > time)
 		return;
 
 	if (!W_CheckNoAmmo ())
 		return;
 
-	T_Damage (self, self, self, (25 + (random () * self.runevar)), "sniped");
+	T_Damage (self, self, self, (25 + (random () * self.runevar_array[RN_SNIPER * %1])), "sniped");
 	sound (self, CHAN_WEAPON, "weapons/ric3.wav", 1, ATTN_NORM);
 
 	makevectors (self.v_angle);
@@ -397,7 +397,7 @@ Rune_Sniper =
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
 
 	smallkick ();
-	self.runetime = time + 0.1;
+	self.runetime_array[RN_SNIPER * %1] = time + 0.1;
 };
 
 void (entity e, float dist, float is_next)
@@ -438,10 +438,10 @@ Rune_Sonar =
 	local entity head, e1, e2, e3, e4;
 	local float d1, d2, d3, d4, dist;
 
-	if (self.runetime > time)
+	if (self.runetime_array[RN_CLOAK * %1] > time)
 		return;
 
-	self.runetime = time + 4;
+	self.runetime_array[RN_CLOAK * %1] = time + 4;
 	// self.runevar = 0;
 
 	head = findradius (self.origin, 1600);
@@ -457,7 +457,7 @@ Rune_Sonar =
 					cloaked_sound (head, CHAN_WEAPON, "enforcer/sight3.wav", 1, ATTN_NORM);
 
 					// Pingee has cloak, make him visible.
-					if (Has_Rune_e(head, RN_CLOAK))
+					if (Has_Rune_e (head, RN_CLOAK))
 						head.runetime_array[RN_CLOAK * %1] = time + 1;
 
 					dist = vlen (head.origin - self.origin);
@@ -553,7 +553,7 @@ Rune_Sonar =
 void (float riders, entity of_e)
 Rune_AntiPack_sprint =
 {
-	rprint_numdesc (self, riders, of_e.runevar, "anti-pack");
+	rprint_numdesc (self, riders, of_e.runevar_array[RN_ANTIPACK * %1], "anti-pack");
 	rprint (self, riders, " placed\n");
 };
 
@@ -577,7 +577,7 @@ AntiPack_Think =
 		create_te_blood (self.origin + '0 0 10', 2);
 	-])
 
-	if (self.runetime < time)
+	if (self.oldrunetime < time)
 	{
 		if (maybe_update_trap_count (self.owner, RN_ANTIPACK))
 			self_sprint (self.owner, "An anti-pack expired\n");
@@ -662,7 +662,7 @@ void ()
 AntiPack_Arm =
 {
 	self.nextthink	= time;
-	self.runetime	= time + DROP_BACKPACK_DURATION;
+	self.oldrunetime= time + DROP_BACKPACK_DURATION;
 	self.think	= AntiPack_Think;
 	self.touch	= AntiPack_Touch;
 };
@@ -676,7 +676,7 @@ Rune_AntiPack =
 	if (gamemode == MODE_PRACTICE)
 		return centerprint (self, "Rune disabled in practice mode\n");
 
-	if (self.runevar >= MAX_ANTIPACK)
+	if (self.runevar_array[RN_ANTIPACK * %1] >= MAX_ANTIPACK)
 	{
 		s = ftos (MAX_ANTIPACK);
 		if (MAX_ANTIPACK != 1)
@@ -684,7 +684,7 @@ Rune_AntiPack =
 		centerprint5 (self, "Only ", s, " anti-pack", s1, " allowed");
 		return;
 	}
-	self.runevar		= self.runevar + 1;
+	self.runevar_array[RN_ANTIPACK * %1] = self.runevar_array[RN_ANTIPACK * %1] + 1;
 
 	antipack		= spawn ();
 	antipack.flags		= FL_ITEM;
@@ -807,7 +807,7 @@ Rune_Betty =
 {
 	local float nospam;
 
-	if (self.runevector_x > time)
+	if (self.runetime_array[RN_BETTY * %1] > time)
 		return;
 
 	nospam = 0;
@@ -824,7 +824,7 @@ Rune_Betty =
 		return;
 	}
 
-	self.runevector_x = time + 3 + nospam;
+	self.runetime_array[RN_BETTY * %1] = time + 3 + nospam;
 
 	W_FireGrenade ("betty");
 };
@@ -856,10 +856,10 @@ tornado_pull =
 
 	dist = 960;
 
-	if (self.runevar >= 512 && time < self.attack_finished + 0.5)
-		self.runevar = 512;
+	if (self.oldrunevar >= 512 && time < self.attack_finished + 0.5)
+		self.oldrunevar = 512;
 	else
-		self.runevar = self.runevar * 2;
+		self.oldrunevar = self.oldrunevar * 2;
 
 	if (time > self.attack_finished)
 	{
@@ -888,7 +888,7 @@ tornado_pull =
 						d = vlen (e.origin - self.origin);
 						percent = 1 - (d / dist);
 
-						e.velocity = e.velocity + '0 0 11' + normalize (self.origin - e.origin) * self.runevar * percent;
+						e.velocity = e.velocity + '0 0 11' + normalize (self.origin - e.origin) * self.oldrunevar * percent;
 						e.flags = e.flags - e.flags & FL_ONGROUND;
 
 						IN_POQ([-
@@ -924,7 +924,7 @@ tornado_touch =
 	if (isfriend2 (self.owner, other) && self.owner != other)
 		return;
 
-	T_Damage (other, self, self.owner, self.runevar / 2, "tornado");
+	T_Damage (other, self, self.owner, self.oldrunevar / 2, "tornado");
 };
 
 void ()
@@ -953,7 +953,7 @@ Rune_Tornado =
 	local entity tornado;
 	local float nospam;
 
-	if (self.runevector_x > time)
+	if (self.runetime_array[RN_TORNADO * %1] > time)
 		return;
 
 	if (gamemode == MODE_PRACTICE)
@@ -969,7 +969,7 @@ Rune_Tornado =
 		return;
 	}
 
- 	self.runevector_x	= time + 1.5 + nospam;
+ 	self.runetime_array[RN_TORNADO * %1] = time + 1.5 + nospam;
 
 	tornado 		= spawn();
 	tornado.classname	= "tornado";
@@ -977,7 +977,7 @@ Rune_Tornado =
 	tornado.solid		= SOLID_TRIGGER;
 	tornado.movetype	= MOVETYPE_TOSS;
 	tornado.angles		= '90 0 0';
-	tornado.runevar		= 1;
+	tornado.oldrunevar	= 1;
 
 	setorigin (tornado, self.origin + self.view_ofs);
 	setmodel(tornado, "progs/w_spike.mdl");

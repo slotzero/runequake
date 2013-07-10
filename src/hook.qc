@@ -20,7 +20,7 @@
 float (entity e)
 have_hook_e =
 {
-	return Has_Rune_e(e, RN_HOOK)
+	return Has_Rune_e (e, RN_HOOK)
 			|| e.aqflags & AQ_HOOK
 			|| temp1 & T1_HOOK_MASK == T1_FREE_HOOK;
 };
@@ -34,7 +34,7 @@ have_hook =
 float (entity e)
 hook_damage_e =
 {
-	if (Has_Rune_e(e, RN_HOOK))	return HOOK_DAMAGE_RUNE;
+	if (Has_Rune_e (e, RN_HOOK))	return HOOK_DAMAGE_RUNE;
 	else if (e.aqflags & AQ_HOOK)	return HOOK_DAMAGE_LITHIUM;
 	else if (temp1 & T1_HOOK_MASK == T1_FREE_HOOK)
 					return HOOK_DAMAGE_FREE;
@@ -118,9 +118,9 @@ HookPull =
 	local vector vel, spray;
 	local float v;
 
-	if (Has_Rune_e(self.owner, RN_CLOAK))
+	if (Has_Rune_e (self.owner, RN_CLOAK))
 		self.owner.runetime_array[RN_CLOAK * %1] = time + RECLOAK_DELAY;
-    if (Has_Rune_e(self.owner, RN_MONK))
+    if (Has_Rune_e (self.owner, RN_MONK))
 		self.owner.runetime_array[RN_MONK * %1] = time + MONK_MOVE_DELAY;
 
 	if (MaybeDropHook ())
@@ -224,7 +224,7 @@ HookTouch =
 			return;
 	-])
 
-	runetest = Has_Rune_e(other, RN_ENVIRO);
+	runetest = Has_Rune_e (other, RN_ENVIRO);
 
 	if (isfriend2 (self.owner, other)
 			|| (!d && other.takedamage == DAMAGE_AIM)
@@ -274,7 +274,7 @@ LaunchHook =
 	local vector chainvec;		// chain vector
 	local float chainlength;	// length of extended chain
 
-	if (Has_Rune_e(self.owner, RN_CLOAK))
+	if (Has_Rune_e (self.owner, RN_CLOAK))
 		self.owner.runetime_array[RN_CLOAK * %1] = time + RECLOAK_DELAY;
 
 	if (MaybeDropHook ())
@@ -302,7 +302,7 @@ HookOn =
 
 	spawn_protect_off ();
 
-	if (Has_Rune_e(self, RN_CLOAK))
+	if (Has_Rune_e (self, RN_CLOAK))
 		self.runetime_array[RN_CLOAK * %1] = time + RECLOAK_DELAY;
 
 	self.aqstate = self.aqstate | AQS_HOOK;
@@ -367,7 +367,7 @@ HookOff_by_targ_e =
 	this_e = find (world, classname, "hook-head");
 	while (this_e)
 	{
-		if (this_e.enemy == e && !Has_Rune_e(this_e.owner, RN_HOOK))
+		if (this_e.enemy == e && !Has_Rune_e (this_e.owner, RN_HOOK))
 		{
 			old_self = self;
 			self = this_e;
@@ -401,7 +401,7 @@ remove_hook_rune_from_players =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		if (Has_Rune_e(e, RN_HOOK))
+		if (Has_Rune_e (e, RN_HOOK))
 		{
 			os	= self;
 			self	= e;

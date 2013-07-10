@@ -34,7 +34,7 @@ W_FireAxe =
 	local float damage, reach;
 	local string dtype;
 
-	if (self.runetype == RN_LUMBER)
+	if (Has_Rune_e (self, RN_LUMBER))
 	{
 		reach	= AXE_REACH_LUMBER;
 		damage	= AXE_DAMAGE_LUMBER;
@@ -603,12 +603,13 @@ W_FireLightning =
 {
 	local	vector		org;
 	local	float		cells;
+	local   float           dist;
 
 	if (!W_CheckNoAmmo ())
 		return;
 
 	// explode if under water
-	if (self.runetype != RN_THOR && self.waterlevel > SAFE_DISCHARGE_WATERLEVEL)
+	if (!Has_Rune_e (self, RN_THOR) && self.waterlevel > SAFE_DISCHARGE_WATERLEVEL)
 	{
 		cells = self.ammo_cells;
 		self.ammo_cells = 0;
@@ -623,12 +624,12 @@ W_FireLightning =
 
 	use_ammo ();
 
-	if (self.runetype == RN_CLOAK)
-		self.runetime = time + RECLOAK_DELAY;
-	else if (self.runetype == RN_THOR)
+	if (Has_Rune_e (self, RN_CLOAK))
+		self.runetime_array[RN_CLOAK * %1] = time + RECLOAK_DELAY;
+	if (Has_Rune_e (self, RN_THOR))
 	{
-		if (self.runetime < time + 2)
-			self.runetime = time + 2;
+		if (self.runetime_array[RN_THOR * %1] < time + 2)
+			self.runetime_array[RN_THOR * %1] = time + 2;
 	}
 
 	if (self.t_width < time)
@@ -641,14 +642,15 @@ W_FireLightning =
 	makevectors (self.v_angle);
 
 	org = self.origin + PLAYER_WEAPON_OFFSET;
+	dist = 600;
 
 	//RUNE SERV: Haste makes lightning fire twices as far
-	if (self.runetype == RN_HASTE)
-		traceline (org, org + v_forward*1200, TRUE, self);
-	else if (self.runetype == RN_JACK)
-		traceline (org, org + v_forward*750, TRUE, self);
-	else
-		traceline (org, org + v_forward*600, TRUE, self);
+	if (Has_Rune_e (self, RN_HASTE))
+		dist = dist + 600;
+	if (Has_Rune_e (self, RN_JACK))
+		dist = dist + 150;
+
+	traceline (org, org + v_forward*dist, TRUE, self);
 	create_te_lightning (TE_LIGHTNING2, self, org, trace_endpos);
 	LightningDamage (self.origin, trace_endpos + v_forward*4, self, 30, "lightning");
 
@@ -791,6 +793,8 @@ Used for both the player and the ogre
 void (vector org, vector dir)
 launch_spike =
 {
+        local float newspeed;
+
 	newmis = spawn ();
 	newmis.owner = self;
 	newmis.movetype = MOVETYPE_FLYMISSILE;
@@ -806,13 +810,15 @@ launch_spike =
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
 	setorigin (newmis, org);
 
+        newspeed = 1000;
+
 	//RUNE SERV: Haste rune makes them fly faster
-	if (self.runetype == RN_HASTE)
-		newmis.velocity = dir * 2000;
-	else if (self.runetype == RN_JACK)
-		newmis.velocity = dir * 1250;
-	else
-		newmis.velocity = dir * 1000;
+	if (Has_Rune_e (self, RN_HASTE))
+		newspeed = newspeed + 1000;
+	if (Has_Rune_e (self, RN_JACK))
+		newspeed = newspeed + 250;
+
+	newmis.velocity = dir * newspeed;
 };
 
 void ()
@@ -838,8 +844,8 @@ W_FireSpikes =
 		return;
 	use_ammo ();
 
-	if (self.runetype == RN_CLOAK)
-		self.runetime = time + RECLOAK_DELAY;
+	if (Has_Rune_e (self, RN_CLOAK))
+		self.runetime_array[RN_CLOAK * %1] = time + RECLOAK_DELAY;
 
 	if (self.weapon == IT_SUPER_NAILGUN)
 	{
@@ -1001,7 +1007,7 @@ W_BestWeapon =
 	local	float	it, nw, alt;
 	local	entity	e;
 
-	if (self.runetype == RN_LUMBER)
+	if (Has_Rune_e (self, RN_LUMBER))
 	{
 		e = findradius (self.origin, AXE_REACH_LUMBER);
 		while (e)
@@ -1022,8 +1028,11 @@ W_BestWeapon =
 			if (weapon_it_have_min_ammo (WEAPON_BFG, 0))
 				return WEAPON_BFG;
 		}
-		else if ((nw || self.runetype == RN_THOR) && weapon_it_have_min_ammo (IT_LIGHTNING, 0))
-			return IT_LIGHTNING;
+		else if (nw || Has_Rune_e (self, RN_THOR))
+                {
+                        if (weapon_it_have_min_ammo (IT_LIGHTNING, 0))
+                                return IT_LIGHTNING;
+                }
 	}
 
 	if (it & IT_SUPER_NAILGUN && weapon_it_have_min_ammo (IT_SUPER_NAILGUN, 0))
@@ -1032,17 +1041,23 @@ W_BestWeapon =
 	if (it & IT_SUPER_SHOTGUN)
 	{
 		alt = weapon_it_is_alt (IT_SUPER_SHOTGUN);
-		if (nw && weapon_it_have_min_ammo (WEAPON_FLAMETHROWER, 0) && (self.runetype == RN_TORCH || alt))
-			return WEAPON_FLAMETHROWER;
-		else if (weapon_it_have_min_ammo (IT_SUPER_SHOTGUN, 0))
+		if (nw && weapon_it_have_min_ammo (WEAPON_FLAMETHROWER, 0))
+		{
+                        if (Has_Rune_e (self, RN_TORCH) || alt)
+                                return WEAPON_FLAMETHROWER;
+		}
+		if (weapon_it_have_min_ammo (IT_SUPER_SHOTGUN, 0))
 			return IT_SUPER_SHOTGUN;
 	}
 
 	if (it & IT_NAILGUN)
 	{
 		alt = weapon_it_is_alt (IT_NAILGUN);
-		if (nw && weapon_it_have_min_ammo (WEAPON_LAVA, 0) && (self.runetype == RN_TORCH || alt))
-			return WEAPON_LAVA;
+		if (nw && weapon_it_have_min_ammo (WEAPON_LAVA, 0))
+                {
+                        if (Has_Rune_e (self, RN_TORCH) || alt)
+                                return WEAPON_LAVA;
+                }
 		else if (weapon_it_have_min_ammo (IT_NAILGUN, 0))
 			return IT_NAILGUN;
 	}
@@ -1123,30 +1138,30 @@ W_Attack =
 		is_alt = 0;
 	else
 		is_alt = self.weapon & WEAPON_ALT;
+
+        haste_mult = 1;
 	t = 0;
-	if (self.runetype == RN_HASTE)
+	if (Has_Rune_e (self, RN_HASTE))
 		haste_mult = 0.5;
-	else if (self.runetype == RN_JACK)
-		haste_mult = 0.875;
-	else
-		haste_mult = 1;
+	if (Has_Rune_e (self, RN_JACK))
+		haste_mult = haste_mult * 0.875;
 
 	//RUNE SERV: So much stuff here.. prevents lag.
 	if (self.runetype1 + self.runetype2)
 	{
-		if (Has_Rune_e(self, RN_HASTE))
+		if (Has_Rune_e (self, RN_STRENGTH))
+			Strength_Sound ();
+		else if (Has_Rune_e (self, RN_HASTE))
 			Haste_Sound ();
-		if (Has_Rune_e(self, RN_STRENGTH))
+		else if (Has_Rune_e (self, RN_BERSERK))
 			Strength_Sound ();
-		if (Has_Rune_e(self, RN_BERSERK))
-			Strength_Sound ();
-		if (Has_Rune_e(self, RN_CLOAK))
-			self.runetime = time + RECLOAK_DELAY;
+		if (Has_Rune_e (self, RN_CLOAK))
+			self.runetime_array[RN_CLOAK * %1] = time + RECLOAK_DELAY;
 	IN_POQ([-
-		if (Has_Rune_e(self, RN_IMPACT))
+		if (Has_Rune_e (self, RN_IMPACT))
 			particle (self.origin, '0 0 10', PARTICLE_IMPACT, 250);
 	-])
-		if (Has_Rune_e(self, RN_JACK))
+		if (Has_Rune_e (self, RN_JACK))
 		{
                         if (self.runevar_array[RN_JACK * %1] == 0)
                         {
@@ -1166,7 +1181,7 @@ W_Attack =
 
 	if (base_weapon == IT_AXE)
 	{
-	    	if (self.runetype == RN_LUMBER)
+	    	if (Has_Rune_e (self, RN_LUMBER))
 			s = "knight/sword1.wav";
 		else
 			s = "weapons/ax1.wav";
@@ -1317,15 +1332,16 @@ ImpulseCommands =
 		local float wanted;
 
 		wanted = self.impulse - IMP_RUNE_CHEAT_BASE + 1;
-		if (wanted == self.runetype)
-			wanted = 0;
 		//if (wanted && self.runetype == RN_SHIELD && self.oldrunevar == 1)
 		//	wanted = 0;
 		// Let admins use camo to help spot cheaters.
-		if (wanted && deathmatch & DM_DM_MASK && !temp1 & T1_RUNE_CHEAT && (!self.aqflags & AQ_ADMIN || wanted != RN_CAMO))
-			wanted = 0;
-		if (wanted)
+		if (deathmatch & DM_DM_MASK && !temp1 & T1_RUNE_CHEAT && (!self.aqflags & AQ_ADMIN || wanted != RN_CAMO))
+			0; // do nothing
+		else
+                {
+                        Rune_Delete (0);
 			Rune_Activate (wanted, 1);
+                }
 	}
 
 	else if (self.impulse == IMP_RUNE_USE)
@@ -1336,14 +1352,14 @@ ImpulseCommands =
 
 	else if (self.impulse == IMP_RUNE_DELETE)
 	{
-		if (self.runetype == 0)
+		if (!(self.runetype1 + self.runetype2))
 		{
 			if (!self.aqflags & AQ_QUIET)
 				centerprint (self, "No rune");
 		}
-		else if (self.runetype == RN_RECALL && self.runevar)
+		else if (Has_Rune_e (self, RN_RECALL) && self.runevar_array[RN_RECALL * %1])
 			recall_point_erase ();
-		else if (self.runetype == RN_PACK_RAT && self.runevar)
+		else if (Has_Rune_e (self, RN_PACK_RAT) && self.runevar_array[RN_PACK_RAT * %1])
 			pack_rat_rune_drop (1);
 		else if (rune_drop_delay == -1)
 		{

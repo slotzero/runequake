@@ -600,7 +600,7 @@ PlayerDie =
 	self.radsuit_finished		= 0;
 	self.modelindex			= modelindex_player;	// don't use eyes
 
-	if ((deathmatch & DM_DM_MASK || coop) && self.runetype != RN_PHOENIX)
+	if ((deathmatch & DM_DM_MASK || coop) && !Has_Rune_e (self, RN_PHOENIX))
 	{
 		DropBackpack ();
 		drop_armor ();
@@ -620,17 +620,17 @@ PlayerDie =
 
 	if (self.runetype1 + self.runetype2)
 	{
-		if (Has_Rune_e(self, RN_BOMB) && self.runevar_array[RN_BOMB * %1] != -2)
+		if (Has_Rune_e (self, RN_BOMB) && self.runevar_array[RN_BOMB * %1] != -2)
 		{
 			create_te_explosion (self.origin, 0);
 			T_RadiusDamage (RADIUS_NORMAL, self, self, 300, self, "kamikilled");
 			self.health = -41;
 		}
-		else if (Has_Rune_e(self, RN_MONK))
+		else if (Has_Rune_e (self, RN_MONK))
 			monk_trance_off ();
-		else if (Has_Rune_e(self, RN_PACK_RAT))
+		else if (Has_Rune_e (self, RN_PACK_RAT))
 			pack_rat_rune_drop (0);
-		else if (Has_Rune_e(self, RN_BETTY))
+		else if (Has_Rune_e (self, RN_BETTY))
 		{
 			for (i = MAX_LAUNCH_BETTY; i >= 0; i = i - 1)
 				Launch_Betty ();

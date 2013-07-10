@@ -182,25 +182,25 @@ T_Damage =
 	if (attacker.runetype1 + attacker.runetype2)
 	{
 		// impact and lumberjack rune do more
-		if (Has_Rune_e(attacker, RN_IMPACT))
+		if (Has_Rune_e (attacker, RN_IMPACT))
             damage = damage * 1.1;
 
-        if (Has_Rune_e(attacker, RN_LUMBER))
+        if (Has_Rune_e (attacker, RN_LUMBER))
 			damage = damage * 1.1;
 
 		// Rune of Strength deals twice damage.
-		if (Has_Rune_e(attacker, RN_STRENGTH))
+		if (Has_Rune_e (attacker, RN_STRENGTH))
 			damage = damage * 2;
 
 		// Berserker rune
-		if (Has_Rune_e(attacker, RN_BERSERK))
+		if (Has_Rune_e (attacker, RN_BERSERK))
 			damage = damage * 6;
 
 		// Shambler Helper stuff
-		if (Has_Rune_e(attacker, RN_SHAMB) && targ == attacker.runent)
+		if (Has_Rune_e (attacker, RN_SHAMB) && targ == attacker.runent)
 			damage = 0;
 
-		if (Has_Rune_e(attacker, RN_JACK))
+		if (Has_Rune_e (attacker, RN_JACK))
 			damage = damage * RN_JACK_STRENGTH;
 	}
 
@@ -229,19 +229,19 @@ T_Damage =
 
 	if (targ.runetype1 + targ.runetype2)
 	{
-		if (Has_Rune_e(targ, RN_ATHLETE))
+		if (Has_Rune_e (targ, RN_ATHLETE))
 			damage = damage * 0.9;
 
-		if (Has_Rune_e(targ, RN_RESIST))
+		if (Has_Rune_e (targ, RN_RESIST))
 		{
 			damage = damage * 0.5;
 			sound (targ, CHAN_BODY, "items/protect3.wav", 1, ATTN_NORM);
 		}
 
-		if (Has_Rune_e(targ, RN_BERSERK))
+		if (Has_Rune_e (targ, RN_BERSERK))
 			damage = damage * 3;
 
-		if (Has_Rune_e(targ, RN_ZAP))
+		if (Has_Rune_e (targ, RN_ZAP))
 		{
 			if (dtype == "zapped" || dtype == "lightning")
 			{
@@ -258,14 +258,14 @@ T_Damage =
 			}
 		}
 
-		if (Has_Rune_e(targ, RN_CLOAK))
-			targ.runetime_array[RN_CLOCK * %1] = time + RECLOAK_DELAY;
+		if (Has_Rune_e (targ, RN_CLOAK))
+			targ.runetime_array[RN_CLOAK * %1] = time + RECLOAK_DELAY;
 
-		if (Has_Rune_e(targ, RN_MONK))
+		if (Has_Rune_e (targ, RN_MONK))
 		{
 			if (targ.runevar_array[RN_MONK * %1])
 			{
-				if (!Has_Rune_e(attacker, RN_BERSERK)
+				if (!Has_Rune_e (attacker, RN_BERSERK)
 						&& dtype != "kamikaze"
 						&& dtype != "bfgtouch"
 						&& dtype != "bfgblast"
@@ -279,10 +279,10 @@ T_Damage =
 			}
 		}
 
-		else if (Has_Rune_e(targ, RN_TORCH) && attacker.classname == "fireball")
+		else if (Has_Rune_e (targ, RN_TORCH) && attacker.classname == "fireball")
 			damage = 0;
 
-		else if (Has_Rune_e(targ, RN_JACK))
+		else if (Has_Rune_e (targ, RN_JACK))
 		{
 			damage = damage * RN_JACK_RESIST;
 			if (targ.runevar_array[RN_JACK * %1] == 1 && targ.runetime_array[RN_JACK * %1] < time)
@@ -307,7 +307,7 @@ T_Damage =
 		return 0;
 
 	// calculations based on adjusted damage
-	if (Has_Rune_e(attacker, RN_TORCH) && dtype != "burn")
+	if (Has_Rune_e (attacker, RN_TORCH) && dtype != "burn")
 	{
 		if (random () < TORCH_BURN_ATTACK_CHANCE * damage / 100)
 		{
@@ -350,12 +350,12 @@ T_Damage =
 
 	// figure momentum add
 	if (inflictor != world && targ.movetype == MOVETYPE_WALK
-			&& (!Has_Rune_e(targ, RN_MONK) || targ == attacker))
+			&& (!Has_Rune_e (targ, RN_MONK) || targ == attacker))
 	{
 		dir = targ.origin - (inflictor.absmin + inflictor.absmax) * 0.5;
 		dir = normalize (dir);
 
-		if (Has_Rune_e(attacker, RN_IMPACT))
+		if (Has_Rune_e (attacker, RN_IMPACT))
 			targ.velocity = targ.velocity + dir * damage * 70;
 		else
 			targ.velocity = targ.velocity + dir * damage * 8;
@@ -377,7 +377,7 @@ T_Damage =
 	{
 		// Activate self preservation after the momentum change so
 		// rocket jumping works.
-		if (Has_Rune_e(targ, RN_SELFPRES) && attacker == targ)
+		if (Has_Rune_e (targ, RN_SELFPRES) && attacker == targ)
 			damage = 0;
 
 		// Allow momentum change without damage when player is waiting for opponent.
@@ -426,12 +426,12 @@ T_Damage =
 		SUB_Null ();
 	else if (targ.armorvalue == 0)
 		SUB_Null ();
-	else if (Has_Rune_e(attacker, RN_PIERCING))
+	else if (Has_Rune_e (attacker, RN_PIERCING))
 		sound (targ, CHAN_AUTO, "weapons/ric1.wav", 1, ATTN_NORM);
 	else
 	{
 		save = ceil (targ.armortype * damage);
-		if (Has_Rune_e(attacker, RN_JACK))
+		if (Has_Rune_e (attacker, RN_JACK))
 		{
 			save = ceil (save * RN_JACK_PIERCING);
 			if (attacker.runevar_array[RN_JACK * %1] == 3)
@@ -462,7 +462,7 @@ T_Damage =
 		}
 
 		targ.armorvalue = targ.armorvalue - save;
-		if (Has_Rune_e(targ, RN_ARMOR))
+		if (Has_Rune_e (targ, RN_ARMOR))
 			good_armor_set_armor_items_e (targ);
 	}
 	take = damage - save;
@@ -510,19 +510,19 @@ T_Damage =
 	// try to respawn in the same spot?  I've also got reports that
 	// this happens to targs with rune types other than vamp so I
 	// just prevent healing on teledeath entirely.
-	if (Has_Rune_e(attacker, RN_VAMP) && dtype != "teledeath")
+	if (Has_Rune_e (attacker, RN_VAMP) && dtype != "teledeath")
 		Vamp_Heal (attacker, targ, real_take);
 
 	// Vengeance Rune does equal damage back to the attacker, but
 	// cap damage so it doesn't exceed targ's armor/health unless
 	// it is excessive.  (KILL_DAMAGE)
-	if (Has_Rune_e(targ, RN_VENG)
+	if (Has_Rune_e (targ, RN_VENG)
 			&& attacker != targ
 			&& attacker != world)
     {
-        if (Has_Rune_e(attacker, RN_VENG))
+        if (Has_Rune_e (attacker, RN_VENG))
             0; // do nothing
-        else if (Has_Rune_e(attacker, RN_SELFPRES))
+        else if (Has_Rune_e (attacker, RN_SELFPRES))
             0; // do nothing
 		else if (damage < KILL_DAMAGE)
 			T_Damage (attacker, targ, targ, real_take + save, "vengeance");
@@ -593,10 +593,10 @@ T_Damage =
 		}
 
 		if (targ.classname == "zombie_camper")
-            if (Has_Rune_e(targ.owner, RN_ZOMBIE)
+            if (Has_Rune_e (targ.owner, RN_ZOMBIE)
 				&& targ.owner.runetime_array[RN_ZOMBIE * %1] <= targ.runetime_array[RN_ZOMBIE * %1]
 				&& targ.owner.runevar_array[RN_ZOMBIE * %1] > 0)
-                    targ.owner.runevar = targ.owner.runevar - 1;
+                    targ.owner.runevar_array[RN_ZOMBIE * %1] = targ.owner.runevar_array[RN_ZOMBIE * %1] - 1;
 
 		if (targ.classname == "player")
 			stuffcmd (targ, CSHIFT_NONE);
@@ -604,7 +604,7 @@ T_Damage =
 		if (targ.runetype1 + targ.runetype2)
 		{
 			//RUNE SERV: Radioactive types irradiate when killed
-			if (Has_Rune_e(targ, RN_RADIO))
+			if (Has_Rune_e (targ, RN_RADIO))
 			{
 				local entity stemp;
 				stemp = self; self = targ;
@@ -613,7 +613,7 @@ T_Damage =
 			}
 
 			//RUNE SERV: Weird bubbles when killed
-			else if (Has_Rune_e(targ, RN_WEIRD))
+			else if (Has_Rune_e (targ, RN_WEIRD))
 			{
 				old_self = self;
 				self = targ;
@@ -621,26 +621,26 @@ T_Damage =
 				while (self.runevar_array[RN_WEIRD * %1] < 7)
 				{
 					self.runevar_array[RN_WEIRD * %1] = self.runevar_array[RN_WEIRD * %1] + 1;
-					Spawn_Weird ();
+					Spawn_Weird (0);
 					self.runent.nextthink = self.runent.nextthink + 5;
 				}
 				self = old_self;
 			}
 
-			else if (Has_Rune_e(targ, RN_SHAMB))
+			else if (Has_Rune_e (targ, RN_SHAMB))
 			{
 				shambler_slave_retribution (targ.runent,
 								attacker);
 			}
 
 			if (!(options & NO_DROP_ON_DEATH))
-            {
+                        {
 				// I disabled the bomb just because of
 				// the exploding aspect.  There's a good
 				// chance it would do bad things to
 				// gameplay as well, but I always had it
 				// disabled so I don't know empirically.
-                if (targ.runetype1 != RN_BOMB
+                                if (targ.runetype1 != RN_BOMB
 
 				// You can't drop this else the phoenix
 				// runes multiply (since she spawns with
@@ -652,13 +652,13 @@ T_Damage =
 				// get huge concentrations of death
 				// spots.
 					&& targ.runetype1 != RN_DSPOTS)
-                    Rune_Spawn (targ.origin, 0, 0, 0, targ.runetype1, targ, attacker);
+                                        Rune_Spawn (targ.origin, 0, 0, 0, targ.runetype1, targ, attacker);
 
-                if (targ.runetype2 != RN_BOMB
-					&& targ.runetype2 != RN_PHOENIX
-					&& targ.runetype2 != RN_DSPOTS)
-                    Rune_Spawn (targ.origin, 0, 0, 0, targ.runetype2, targ, attacker);
-            }
+                                        if (targ.runetype2 != RN_BOMB
+                                                && targ.runetype2 != RN_PHOENIX
+                                                && targ.runetype2 != RN_DSPOTS)
+                                        Rune_Spawn (targ.origin, 0, 0, 0, targ.runetype2, targ, attacker);
+                        }
 		}
 
 		Killed (targ, attacker, dtype);
@@ -752,17 +752,17 @@ T_RadiusDamage =
 				if (head == attacker && monk_radius_hack)
 					points = points * 0.5;
 
-				if (Has_Rune_e(head, RN_MONK)
-                {
-						if(head != attacker
-                            && !Has_Rune_e(attacker, RN_BERSERK)
-                            && monk_radius_hack)
-                        {
-                            points = 0;
-                            monk_protect (head);
-                        }
+				if (Has_Rune_e (head, RN_MONK))
+                                {
+                                        if(head != attacker
+                                                && !Has_Rune_e (attacker, RN_BERSERK)
+                                                && monk_radius_hack)
+                                        {
+                                            points = 0;
+                                            monk_protect (head);
+                                        }
 				}
-				else if (Has_Rune_e(head, RN_TORCH)
+				else if (Has_Rune_e (head, RN_TORCH)
 						&& dtype == "ftrapexplode")
 					points = 0;
 				else if (discharge_hack

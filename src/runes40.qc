@@ -69,7 +69,7 @@ Ball_Touch2 =
 void ()
 Ball_Move =
 {
-	if (!Has_Rune_e(self.owner, RN_CLOUD) || intermission_running)
+	if (!Has_Rune_e (self.owner, RN_CLOUD) || intermission_running)
 	{
 		remove (self);
 		return;
@@ -188,7 +188,7 @@ Cloud_Think =
 		return;
 	}
 
-	if (!Has_Rune_e(self.owner, RN_CLOUD))
+	if (!Has_Rune_e (self.owner, RN_CLOUD))
 	{
 		remove (self);
 		return;
@@ -294,7 +294,7 @@ Rune_ShamblerReloc =
 {
 	local entity old_self;
 
-	if (self.runent.runevar == 2)
+	if (self.runent.oldrunevar == 2)
 	{
 		sprint (self, "Your shambler is frozen!\n");
 		return;
@@ -309,7 +309,7 @@ Rune_ShamblerReloc =
 	self.angles = self.pos1 = self.owner.angles;
 	self.fixangle = 1;
 
-	self.runevar = by_player;
+	self.oldrunevar = by_player;
 	self.pausetime = 0;
 	self.goalentity = self.movetarget;
 	self.enemy = world;
@@ -322,7 +322,7 @@ void ()
 Rune_ShamblerThink =
 {
 	// Angry shambler for dead player.
-	if (self.runevar)
+	if (self.oldrunevar)
 	{
 		if (time > self.runent.super_damage_finished)
 		{
@@ -343,7 +343,7 @@ Rune_ShamblerThink =
 		return;
 	}
 
-	if (!Has_Rune_e(self.owner, RN_SHAMB)
+	if (!Has_Rune_e (self.owner, RN_SHAMB)
 			|| self.owner.runent != self.runent)
 	{
 		spawn_tfog (self.runent.origin);
@@ -354,14 +354,14 @@ Rune_ShamblerThink =
 
 	// Check to see that the shambler isn't stuck, but only if the
 	// shambler wasn't placed in a stuck place by the player.
-	if (!self.runent.runevar)
+	if (!self.runent.oldrunevar)
 	{
 		local entity old_self;
 
 		old_self = self;
 		self = self.runent;
 		if (walkmove (0, 0))
-			self.runevar = 1;
+			self.oldrunevar = 1;
 		else
 		{
 			// Stuck, and not placed here.  Move to the
@@ -383,7 +383,7 @@ delayed_shambler_spawn_think =
 	self.nextthink = time + 1;
 
 	self = self.owner;
-	if (Has_Rune_e(self, RN_SHAMB) && self.runent == world)
+	if (Has_Rune_e (self, RN_SHAMB) && self.runent == world)
 		Rune_ShamblerSpawn ();
 };
 
@@ -413,7 +413,7 @@ Rune_ShamblerSpawn =
 
 	sham.classname		= "shambler_slave";
 	sham.owner		= self;
-	sham.runevar		= 0;
+	sham.oldrunevar		= 0;
 	sham.flags		= sham.flags | FL_MONSTER;
 	sham.movetarget		= self;
 	sham.angles		= self.pos1 = self.angles;
@@ -437,7 +437,7 @@ Rune_ShamblerSpawn =
 	shamctrl.classname	= "shambler_control";
 	shamctrl.owner		= self;
 	shamctrl.runent		= sham;
-	shamctrl.runevar	= 0;
+	shamctrl.oldrunevar	= 0;
 	shamctrl.nextthink	= time + 1;
 	shamctrl.think		= Rune_ShamblerThink;
 
@@ -447,11 +447,11 @@ Rune_ShamblerSpawn =
 void ()
 Rune_Dual =
 {
-	local vector i_origin, i_angles;
+	local vector i_origin, i_angles, v;
 
-	if (self.runetime > time)
+	if (self.runetime_array[RN_DUAL * %1] > time)
 		return;
-	self.runetime = time + sys_ticrate;
+	self.runetime_array[RN_DUAL * %1] = time + sys_ticrate;
 
 	HookOff ();
 	HookOff_by_targ ();
@@ -459,11 +459,12 @@ Rune_Dual =
 	spawn_tfog (self.origin);
 	i_origin = self.origin;
 	i_angles = self.v_angle;
-	spawn_tdeath (self.runevector, self);
-	setorigin (self, self.runevector);
+	v = Get_Runevector (self, RN_DUAL);
+	spawn_tdeath (v, self);
+	setorigin (self, v);
 	self.angles = self.pos1;
 	self.fixangle = 1;
-	self.runevector = i_origin;
+	Set_Runevector (self, i_origin, RN_DUAL);
 	self.pos1 = i_angles;
 	spawn_tfog (self.origin);
 	self.velocity = VEC_ORIGIN;
@@ -527,12 +528,12 @@ Weird_Think =
 		local vector o;
 	-])
 
-	// Stop EP suit and rune from burning.
+	// Stop EP suit and rune from weirding.
 	if (environmental (self.runent))
-		self.runetime = time - 1;
+		self.oldrunetime = time - 1;
 
 	// Remove the weirder
-	if (self.runent.health < 1 || self.runetime < time || intermission_running)
+	if (self.runent.health < 1 || self.oldrunetime < time || intermission_running)
 	{
 		self.runent.effects = self.runent.effects - self.runent.effects & EF_WEIRD;
 		if (self.oldrunevar == WEIRD_SHROOMS) stuffcmd (self.runent, "v_idlescale 0\n"); else
@@ -664,7 +665,7 @@ Weird_Touch =
 		return;
 
 	self.runent	= other;
-	self.runetime	= time + 15;
+	self.oldrunetime= time + 15;
 	self.touch	= SUB_Null;
 	self.think	= Weird_Think;
 	self.nextthink	= time;
@@ -755,7 +756,7 @@ Weird_Touch =
 	sprint (self.owner, ".\n");
 };
 
-void ()
+void (float thrown)
 Spawn_Weird =
 {
 	local entity temp;
@@ -768,44 +769,48 @@ Spawn_Weird =
 	setmodel (temp, "progs/s_bubble.spr");
 	temp.think = Weird_WanderThink;
 	temp.touch = Weird_Touch;
-	temp.nextthink = time;
-	temp.runetime = time + 4 + random ()*3;
-	self.runent = temp;
+	temp.oldrunetime = time + 4 + random ()*3;
+
+	if (thrown)
+        {
+                makevectors (self.v_angle);
+                temp.velocity = 750 * normalize (v_forward);
+                // Explicitly thrown weird bubbles go further before their velocity
+                // is manipulated.
+                temp.nextthink = time + 2.5;
+        }
+        else
+        {
+                temp.nextthink = time;
+                temp.flags = temp.flags - (temp.flags & FL_ONGROUND);
+        }
 };
 
 void ()
 Rune_Weird =
 {
-	if (self.runetime > time)
+	if (self.runetime_array[RN_WEIRD * %1] > time)
 		return;
-	self.runetime = time + 2.5;
+	self.runetime_array[RN_WEIRD * %1] = time + 2.5;
 
-	Spawn_Weird ();
-
-	self.runent.flags = self.runent.flags-(self.runent.flags & FL_ONGROUND);
+	Spawn_Weird (0);
 };
 
 void ()
 Weird_Throw =
 {
-	if (self.runevar > time)
+	if (self.runevar_array[RN_WEIRD * %1] > time)
 		return;
-	self.runevar = time + 1;
-	self.runetime = time + 2;
+	self.runevar_array[RN_WEIRD * %1] = time + 1;
+	self.runetime_array[RN_WEIRD * %1] = time + 2;
 
-	Spawn_Weird ();
-
-	makevectors (self.v_angle);
-	self.runent.velocity = 750 * normalize (v_forward);
-	// Explicitly thrown weird bubbles go further before their velocity
-	// is manipulated.
-	self.runent.nextthink = time + 2.5;
+	Spawn_Weird (1);
 };
 
 void (float riders, entity of_e)
 Rune_Phoenix_sprint =
 {
-	rprint_numdesc (self, riders, of_e.runevar, "resurrection");
+	rprint_numdesc (self, riders, of_e.runevar_array[RN_PHOENIX * %1], "resurrection");
 	rprint (self, riders, " left\n");
 };
 
@@ -841,7 +846,7 @@ Resurrect =
 
 	if (is_phoenix)
 	{
-		self.runevar = self.runevar - 1;
+		self.runevar_array[RN_PHOENIX * %1] = self.runevar_array[RN_PHOENIX * %1] - 1;
 		self.max_health = MAX_HEALTH_NORMAL;
 		self.health = self.max_health;
 		self.super_time = -2;
@@ -913,16 +918,16 @@ Resurrect =
 		ThrowGib ("progs/gib3.mdl", (0 - self.health));
 
 		sprint (self, "You got the Quad Damage\n");
-		if (self.runevar == 0)
+		if (self.runevar_array[RN_PHOENIX * %1] == 0)
 		{
 			sprint (self, "No resurrections left, rune deleted.\n");
 			Rune_Delete (0);
 		}
 		else
 		{
-			sprint_float (self, self.runevar);
+			sprint_float (self, self.runevar_array[RN_PHOENIX * %1]);
 			sprint (self, " resurrection");
-			if (self.runevar != 1)
+			if (self.runevar_array[RN_PHOENIX * %1] != 1)
 				sprint (self, "s");
 			sprint (self, " left.\n");
 		}
@@ -932,9 +937,9 @@ Resurrect =
 void ()
 Berserk_Bleed =
 {
-	if (self.runevar > time)
+	if (self.runevar_array[RN_BERSERK * %1] > time)
 		return;
-	self.runevar = time + 0.2;
+	self.runevar_array[RN_BERSERK * %1] = time + 0.2;
 
 	IN_POQ([-
 		local float r1, r2;

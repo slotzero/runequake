@@ -93,14 +93,14 @@ burn_think =
 {
     local float runetest;
 
-    if (Has_Rune_e(self.enemy, RN_ENVIRO)
-        runetest = 1;
-    else if (Has_Rune_e(self.enemy, RN_FIREWALK)
-        runetest = 1;
-    else if (Has_Rune_e(self.enemy, RN_TORCH)
-        runetest = 1;
-    else
-        runetest = 0;
+        if (Has_Rune_e (self.enemy, RN_ENVIRO))
+                runetest = 1;
+        else if (Has_Rune_e (self.enemy, RN_FIREWALK))
+                runetest = 1;
+        else if (Has_Rune_e (self.enemy, RN_TORCH))
+                runetest = 1;
+        else
+                runetest = 0;
 
 	// Stop burning if appropriate.
 	if (self.oldrunevar < time
@@ -168,11 +168,11 @@ burn_start =
 	local entity e;
 	local float runetest;
 
-    if (Has_Rune_e(self.enemy, RN_ENVIRO)
+    if (Has_Rune_e (self.enemy, RN_ENVIRO))
         runetest = 1;
-    else if (Has_Rune_e(self.enemy, RN_FIREWALK)
+    else if (Has_Rune_e (self.enemy, RN_FIREWALK))
         runetest = 1;
-    else if (Has_Rune_e(self.enemy, RN_TORCH)
+    else if (Has_Rune_e (self.enemy, RN_TORCH))
         runetest = 1;
     else
         runetest = 0;
@@ -180,7 +180,7 @@ burn_start =
 	if (targ.items & IT_SUIT
 			|| (targ.waterlevel > 1
 			&& targ.watertype != CONTENT_LAVA)
-			|| (Has_Rune_e(targ, RN_SELFPRES) && targ == attacker))
+			|| (Has_Rune_e (targ, RN_SELFPRES) && targ == attacker))
 		return;
 
 	if (teamplay & TEAM_HEALTH_PROT
@@ -246,13 +246,13 @@ burn_radius =
 	local entity e;
 
 	// Torch does more damage with flame weapons.
-	if (Has_Rune_e(attacker, RN_TORCH))
+	if (Has_Rune_e (attacker, RN_TORCH))
 		damage = damage * 2;
 
 	e = findradius (inflictor.origin, 50);
 	while (e)
 	{
-		if (e.takedamage && !Has_Rune_e(e, RN_TORCH) && e != ignore)
+		if (e.takedamage && !Has_Rune_e (e, RN_TORCH) && e != ignore)
 		{
 			T_Damage (e, inflictor, attacker, damage, dtype);
 			if (random () < burn_chance)
@@ -348,9 +348,9 @@ W_FireFlameMissile =
 		newmis.pos1_z	= FLAMETHROWER_BURN_DURATION;
 		newmis.mdl	= "progs/s_explod.spr";
 
-		if (Has_Rune_e(self, RN_HASTE))
+		if (Has_Rune_e (self, RN_HASTE))
 			newmis.oldrunevar = time + 1.2;
-		else if (Has_Rune_e(self, RN_JACK))
+		else if (Has_Rune_e (self, RN_JACK))
 			newmis.oldrunevar = time + 0.75;
 		else
 			newmis.oldrunevar = time + 0.6;
@@ -361,7 +361,7 @@ W_FireFlameMissile =
 	else if (class == "lavagun")
 	{
 		snd		= "shambler/sboom.wav";
-		if (Has_Rune_e(self, RN_HASTE))
+		if (Has_Rune_e (self, RN_HASTE))
 			newmis.movetype = MOVETYPE_FLYMISSILE;
 		else
 			newmis.movetype	= MOVETYPE_TOSS;

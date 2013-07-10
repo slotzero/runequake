@@ -19,7 +19,7 @@
 void ()
 Bomb_Think =
 {
-	if (!Has_Rune_e(self.owner, RN_BOMB) || intermission_running)
+	if (!Has_Rune_e (self.owner, RN_BOMB) || intermission_running)
 	{
 		remove (self);
 		return;
@@ -33,22 +33,22 @@ Bomb_Think =
 void ()
 Rune_Bomb =
 {
-	if (self.runevar == -1 || self.runetime > time)
+	if (self.runevar_array[RN_BOMB * %1] == -1 || self.runetime_array[RN_BOMB * %1] > time)
 		return;
 
-	if (self.runevar > 0)
+	if (self.runevar_array[RN_BOMB * %1] > 0)
 	{
 		sprint (self, "\{133}");
-		sprint_float (self, self.runevar);
+		sprint_float (self, self.runevar_array[RN_BOMB * %1]);
 		sprint (self, "\{133} ");
 
-		self.runetime = time + 0.5;
-		self.runevar = self.runevar - 1;
+		self.runetime_array[RN_BOMB * %1] = time + 0.5;
+		self.runevar_array[RN_BOMB * %1] = self.runevar_array[RN_BOMB * %1] - 1;
 		sound (self, CHAN_BODY, "buttons/switch04.wav", 1, ATTN_NORM);
 		return;
 	}
 
-	self.runevar = -2;
+	self.runevar_array[RN_BOMB * %1] = -2;
 	create_te_explosion (self.origin, 0);
 	sprint (self, "\n");
 
@@ -59,8 +59,8 @@ Rune_Bomb =
 void ()
 Bomb_Arm =
 {
-	if (self.runevar == -1)
-		self.runevar = 3;
+	if (self.runevar_array[RN_BOMB * %1] == -1)
+		self.runevar_array[RN_BOMB * %1] = 3;
 };
 
 void ()
@@ -80,7 +80,7 @@ Bomb_Spawn =
 	temp.avelocity_z = crandom ()*360;
 	temp.think = Bomb_Think;
 	temp.nextthink = time;
-	self.runevar = -1;
+	self.runevar_array[RN_BOMB * %1] = -1;
 };
 
 void ()
@@ -147,14 +147,14 @@ DSpot_Think =
 	-], [-
 		create_te_gunshot (self.origin, 6);
 	-])
-	if (self.runetime < time)
+	if (self.oldrunetime < time)
 		DSpot_Blow ();
 };
 
 void ()
 DSpot_Arm =
 {
-	self.runetime	= time + 120;
+	self.oldrunetime= time + 120;
 	self.nextthink	= time;
 	self.think	= DSpot_Think;
 	self.touch	= DSpot_Touch;
@@ -170,7 +170,7 @@ DSpot_Arm =
 void (float riders, entity of_e)
 Rune_DSpots_sprint =
 {
-	rprint_numdesc (self, riders, of_e.runevar, "death spot");
+	rprint_numdesc (self, riders, of_e.runevar_array[RN_DSPOTS * %1], "death spot");
 	rprint (self, riders, " in use\n");
 };
 
@@ -180,7 +180,7 @@ Rune_DSpots =
 	local entity dspot;
 	local string s, s1;
 
-	if (self.runevar >= MAX_DSPOTS)
+	if (self.runevar_array[RN_DSPOTS * %1] >= MAX_DSPOTS)
 	{
 		s = ftos (MAX_DSPOTS);
 		if (MAX_DSPOTS != 1)
@@ -188,7 +188,7 @@ Rune_DSpots =
 		centerprint5 (self, "Only ", s, " death spot", s1, " allowed");
 		return;
 	}
-	self.runevar = self.runevar + 1;
+	self.runevar_array[RN_DSPOTS * %1] = self.runevar_array[RN_DSPOTS * %1] + 1;
 
 	T_Damage (self, self, self, 20, "dspotdrop");
 	dspot = spawn ();
@@ -234,7 +234,7 @@ Holo_Think =
 void (float riders, entity of_e)
 Rune_Holo_sprint =
 {
-	rprint_numdesc (self, riders, of_e.runevar, "hologram");
+	rprint_numdesc (self, riders, of_e.runevar_array[RN_HOLO * %1], "hologram");
 	rprint (self, riders, " active\n");
 };
 
@@ -243,12 +243,12 @@ Rune_Holo =
 {
 	local entity hologram;
 
-	if (self.runevar >= MAX_HOLO)
+	if (self.runevar_array[RN_HOLO * %1] >= MAX_HOLO)
 	{
 		centerprint (self, "Too many fakes!");
 		return;
 	}
-	self.runevar = self.runevar + 1;
+	self.runevar_array[RN_HOLO * %1] = self.runevar_array[RN_HOLO * %1] + 1;
 
 	hologram = spawn ();
 	hologram.movetype = MOVETYPE_NONE;
@@ -271,7 +271,7 @@ Rune_Holo =
 void ()
 Orb_WanderThink =
 {
-	if (self.runetime < time)
+	if (self.oldrunetime < time)
 	{
 		IN_POQ([-
 			particle (self.origin, '0 0 -10', PARTICLE_ORB_REMOVE, 253);
@@ -312,13 +312,14 @@ Orb_Think =
 		return;
 	}
 
-	if (self.owner.health < 1 || !Has_Rune_e(self.owner, RN_ORB))
+	if (self.owner.health < 1 || !Has_Rune_e (self.owner, RN_ORB))
 	{
 		remove (self.aiment);
 
 		// Only do bouncies if you get killed with orb. Not
 		// dropping runes.
-		if (self.owner.health < 1) self.runetime = time + 20;
+		if (self.owner.health < 1)
+                        self.oldrunetime = time + 20;
 
 		self.movetype	= MOVETYPE_BOUNCE;
 		self.nextthink	= time;
@@ -338,9 +339,9 @@ Orb_Think =
 	trackvel (self.owner);
 	self.nextthink = time + sys_ticrate;
 
-	if (self.runetime > time)
+	if (self.oldrunetime > time)
 		return;
-	self.runetime = self.runetime + 0.5;
+	self.oldrunetime = self.oldrunetime + 0.5;
 
 	T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 60, self.owner, "deathorb");
 };
@@ -423,9 +424,9 @@ Rune_Blink =
 	local entity e, good_e;
 	local float i, time_waited;
 
-	if (self.runetime > time)
+	if (self.runetime_array[RN_BLINK * %1] > time)
 	{
-		i = self.runetime - time;
+		i = self.runetime_array[RN_BLINK * %1] - time;
 		if (i > 0.5)
 		{
 			i = floor (i + 0.5);
@@ -480,7 +481,7 @@ Rune_Blink =
 	// I used to do this after one tick, but it would occasionally
 	// fail to detect a failed blink for some reason.
 	e.nextthink = time + 2 * sys_ticrate;
-	setorigin (self, e.runevector);
+	setorigin (self, e.oldrunevector);
 	muzzleflash ();
 	self.velocity = VEC_ORIGIN;
 	HookOff ();
@@ -493,28 +494,28 @@ Rune_Blink =
 	//
 	// self.runevar is the current delay.
 
-	time_waited = time - self.runetime;
+	time_waited = time - self.runetime_array[RN_BLINK * %1];
 	if (reblink)
 		SUB_Null ();
-	else if (self.runevar < 0.5)
-		self.runevar = 0.5;
-	else if (time_waited <= self.runevar)
-		self.runevar = self.runevar * 1.5;
-	else if (time_waited <= self.runevar * 1.5)
-		self.runevar = self.runevar * 0.75;
-	else if (time_waited <= self.runevar * 3)
-		self.runevar = self.runevar * 0.50;
-	else if (time_waited <= self.runevar * 4.5)
-		self.runevar = self.runevar * 0.25;
+	else if (self.runevar_array[RN_BLINK * %1] < 0.5)
+		self.runevar_array[RN_BLINK * %1] = 0.5;
+	else if (time_waited <= self.runevar_array[RN_BLINK * %1])
+		self.runevar_array[RN_BLINK * %1] = self.runevar_array[RN_BLINK * %1] * 1.5;
+	else if (time_waited <= self.runevar_array[RN_BLINK * %1] * 1.5)
+		self.runevar_array[RN_BLINK * %1] = self.runevar_array[RN_BLINK * %1] * 0.75;
+	else if (time_waited <= self.runevar_array[RN_BLINK * %1] * 3)
+		self.runevar_array[RN_BLINK * %1] = self.runevar_array[RN_BLINK * %1] * 0.50;
+	else if (time_waited <= self.runevar_array[RN_BLINK * %1] * 4.5)
+		self.runevar_array[RN_BLINK * %1] = self.runevar_array[RN_BLINK * %1] * 0.25;
 	else
-		self.runevar = 0;
+		self.runevar_array[RN_BLINK * %1] = 0;
 
-	if (self.runevar < 0.5)
-		self.runevar = 0.5;
-	else if (self.runevar > 10)
-		self.runevar = 10;
+	if (self.runevar_array[RN_BLINK * %1] < 0.5)
+		self.runevar_array[RN_BLINK * %1] = 0.5;
+	else if (self.runevar_array[RN_BLINK * %1] > 10)
+		self.runevar_array[RN_BLINK * %1] = 10;
 
-	self.runetime = time + self.runevar;
+	self.runetime_array[RN_BLINK * %1] = time + self.runevar_array[RN_BLINK * %1];
 };
 
 void ()
@@ -547,7 +548,7 @@ maybe_reblink =
 
 		oself = self;
 		self = self.owner;
-		self.runetime = time;
+		self.runetime_array[RN_BLINK * %1] = time;
 		Rune_Blink (1);
 		self = oself;
 	}
@@ -559,7 +560,7 @@ maybe_remove_hat =
 {
 	if (intermission_running)
 		return TRUE;
-	else if (self.oldrunetype && !Has_Rune_e(self.owner, self.oldrunetype))
+	else if (self.runetype1 && !Has_Rune_e (self.owner, self.runetype1))
 		return TRUE;
 	else if (self.oldrunevar)
 	{
@@ -623,7 +624,7 @@ Hat_Spawn =
 	if (type > 0)
 		dot.oldrunevar	= type;
 	else
-		dot.oldrunetype	= 0 - type;
+		dot.runetype1	= 0 - type;
 
 	setorigin (dot, e.origin);
 	setsize (dot, VEC_ORIGIN, VEC_ORIGIN);
@@ -644,10 +645,10 @@ Rune_Camo =
 	// model.
 	if (self.velocity == VEC_ORIGIN && self.attack_finished < time
 			&& self.origin == Get_Runevector(self, RN_CAMO))
-		self.runevar = 1;
+		self.runevar_array[RN_CAMO * %1] = 1;
 	else
-		self.runevar = 0;
-	Set_Runevector(self, RN_CAMO, self.origin);
+		self.runevar_array[RN_CAMO * %1] = 0;
+	Set_Runevector(self, self.origin, RN_CAMO);
 };
 
 void ()
@@ -656,9 +657,9 @@ Rune_Jump =
 	local entity head, selected;
 	local float dist;
 
-	if (self.runetime > time)
+	if (self.runetime_array[RN_JUMP * %1] > time)
 		return;
-	self.runetime = self.runetime + 0.2;
+	self.runetime_array[RN_JUMP * %1] = self.runetime_array[RN_JUMP * %1] + 0.2;
 
 	dist = 1000;
 
@@ -667,7 +668,7 @@ Rune_Jump =
 	while (head)
 	{
 	        if (!isfriend (head))
-                        if (head.health > 0 && !Has_Rune_e(head, RN_ENVIRO)
+                        if (head.health > 0 && !Has_Rune_e (head, RN_ENVIRO)
                                         && !head.items & IT_SUIT)
                         {
                                 traceline (self.origin, head.origin + head.view_ofs, TRUE, self);
@@ -693,13 +694,13 @@ Rune_Ammo =
 {
 	local float incl_rocket;
 
-	if (self.runetime > time)
+	if (self.runetime_array[RN_AMMO * %1] > time)
 		return;
-	self.runetime = time + 0.6;
+	self.runetime_array[RN_AMMO * %1] = time + 0.6;
 
-	if (self.runevar < time)
+	if (self.runevar_array[RN_AMMO * %1] < time)
 	{
-		self.runevar = time + 1.3;
+		self.runevar_array[RN_AMMO * %1] = time + 1.3;
 		incl_rocket = 1;
 	}
 	else
@@ -754,7 +755,7 @@ Rune_Ammo_1 =
 void ()
 Vamp_Think =
 {
-	if (self.owner.health < 1 || !Has_Rune_e(self.owner, RN_VAMP))
+	if (self.owner.health < 1 || !Has_Rune_e (self.owner, RN_VAMP))
 	{
 		if (self.owner.health > 0)
 			decay_health_spawn (self.owner, 1);
@@ -805,7 +806,7 @@ Vamp_Heal =
 	wasdead = vamp.health <= 0;
 
 	// prevent resurrect abuse
-	if (vamp.runevector_x < time)
+	if (Get_Runevector_x(vamp, RN_VAMP) < time)
 	{
 		if (victim.classname == "player")
 			vamp.health = vamp.health + (damage);
@@ -833,16 +834,18 @@ Vamp_Resurrect =
 	bprint (" comes back to life!\n");
 	Resurrect (0);
 
+	found = Get_Runevector_y (self, RN_VAMP); // temp
+
 	// prevent resurrect abuse
-	self.runevector_x = time + self.runevector_y;
-	self.runevector_y = self.runevector_y + 0.5;
+	Set_Runevector_x (self, time + found, RN_VAMP);
+	Set_Runevector_y (self, found + 0.5, RN_VAMP);
 
 	// Remove her rune and backpack if possible.
 	e = findradius (self.origin, 250);
 	while (e)
 	{
 		next = e.chain;
-		if (e.classname == "rune" && e.owner == self && Has_Rune_e(e, RN_VAMP))
+		if (e.classname == "rune" && e.owner == self && Has_Rune_e (e, RN_VAMP))
 		{
 			runecurrent = runecurrent - 1;
 			remove (e);

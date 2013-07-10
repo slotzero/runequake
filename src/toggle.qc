@@ -121,7 +121,7 @@ toggle_armor =
 		if (mode)
 		{
 			e.skin		= e.impulse;
-			e.oldrunetype	= time;
+			e.cnt   	= time;
 			e.think		= SUB_regen;
 			e.nextthink	= time;
 		}

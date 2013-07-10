@@ -114,7 +114,7 @@ dead_impulses =
 
 	// Allow dead people to remove a phoenix rune, to avoid somebody
 	// waiting for them to spawn.
-	else if (self.impulse == IMP_RUNE_DELETE && Has_Rune_e(self, RN_PHOENIX))
+	else if (self.impulse == IMP_RUNE_DELETE && Has_Rune_e (self, RN_PHOENIX))
 	{
 		self.runetype1 = 0;
 		self.runetype2 = 0;

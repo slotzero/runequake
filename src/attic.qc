@@ -527,7 +527,7 @@ T_RadiusLight =
 		self = head;
 		if (head.classname == "player")
 		{
-            if (Has_Rune_e(head, RN_ENVIRO)
+            if (Has_Rune_e (head, RN_ENVIRO)
                 0; // do nothing
 			else if (!head.items & IT_SUIT && infront (inflictor))
             {

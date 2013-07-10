@@ -52,7 +52,7 @@ is_zombie =
 void (float riders, entity of_e)
 Rune_Zombie_sprint =
 {
-	rprint_numdesc (self, riders, of_e.runevar, "zombie");
+	rprint_numdesc (self, riders, of_e.runevar_array[RN_ZOMBIE * %1], "zombie");
 	rprint (self, riders, " placed\n");
 };
 
@@ -88,7 +88,7 @@ Rune_Zombie =
 
 	// If she's already placed all her zombies, remove the oldest
 	// one before placing this one.
-	while (self.runevar >= MAX_ZOMBIE_CAMPERS)
+	while (self.runevar_array[RN_ZOMBIE * %1] >= MAX_ZOMBIE_CAMPERS)
 	{
 		action = "moved";
 		i = time;
@@ -97,11 +97,11 @@ Rune_Zombie =
 		while (e)
 		{
 			if (e.owner == self
-					&& self.runetime <= e.runetime
-					&& e.runetime < i)
+					&& self.runetime_array[RN_ZOMBIE * %1] <= e.oldrunetime
+					&& e.oldrunetime < i)
 			{
 				oldest = e;
-				i = oldest.runetime;
+				i = oldest.oldrunetime;
 			}
 			e = find (e, classname, "zombie_camper");
 		}
@@ -109,10 +109,10 @@ Rune_Zombie =
 			objerror ("no oldest zombie camper");
 		spawn_tfog (oldest.origin);
 		remove (oldest);
-		self.runevar = self.runevar - 1;
+		self.runevar_array[RN_ZOMBIE * %1] = self.runevar_array[RN_ZOMBIE * %1] - 1;
 	}
 
-	self.runevar = self.runevar + 1;
+	self.runevar_array[RN_ZOMBIE * %1] = self.runevar_array[RN_ZOMBIE * %1] + 1;
 	sound (self, CHAN_WEAPON, "zombie/z_hit.wav", 1, ATTN_NORM);
 	centerprint2 (self, "Zombie camper ", action);
 
@@ -134,7 +134,7 @@ Rune_Zombie =
 float ()
 maybe_remove_zombie_camper =
 {
-	if (!Has_Rune_e(self.owner, RN_ZOMBIE)
+	if (!Has_Rune_e (self.owner, RN_ZOMBIE)
 			|| self.owner.runetime_array[RN_ZOMBIE * %1] > self.oldrunetime)
 	{
 		if (self.owner.health < 1)
@@ -160,9 +160,9 @@ monk_protect =
 
 	if (e.runevar_array[RN_MONK * %1])
 	{
-		if (e.runevector_y > time)
+		if (Get_Runevector_y (e, RN_MONK) > time)
 			return;
-		e.runevector_y = time + 1.1;
+		Set_Runevector_y (e, time + 1.1, RN_MONK);
 		s = "zombie/z_pain1.wav";
 	}
 	else
@@ -217,11 +217,11 @@ monk_think =
 	if (self.attack_finished + MONK_ATTACK_DELAY >= time)
 	{
 		trance = 0;
-		self.runevector_x = 0;
+		Set_Runevector_x (self, 0, RN_MONK);
 	}
-	else if (!self.runevector_x)
+	else if (!Get_Runevector_x (self, RN_MONK))
 	{
-		self.runevector_x = 1;
+		Set_Runevector_x (self, 1, RN_MONK);
 		sound (self, CHAN_BODY, "zombie/z_pain.wav", 1, ATTN_NORM);
 	}
 
@@ -230,7 +230,7 @@ monk_think =
 
 	if (!self.runevar_array[RN_MONK * %1] && trance)
 		monk_trance_on ();
-	else if (self.runevar && !trance)
+	else if (self.runevar_array[RN_MONK * %1] && !trance)
 		monk_trance_off ();
 };
 
@@ -319,7 +319,7 @@ Torch_Trap_Think =
 	{
 		self.oldrunevar	= 1;
 		self.solid	= SOLID_TRIGGER;
-		self.nextthink	= self.runetime;
+		self.nextthink	= self.oldrunetime;
 		// Need to reset the size else you get "Error: Trigger
 		// in clipping list" crashes.
 		setsize (self, self.mins, self.maxs);
@@ -332,15 +332,15 @@ Torch_Trap_Touch =
 	if (!other.health
 			|| other == world
 			|| !other.takedamage
-			|| other.runetype == RN_ENVIRO
+			|| Has_Rune_e (other, RN_ENVIRO)
 			|| other.items & IT_SUIT)
 
 		return;
 
-        if (Has_Rune_e(other, RN_TORCH))
+        if (Has_Rune_e (other, RN_TORCH))
                 return;
 
-        if (Has_Rune_e(other, RN_FIREWALK))
+        if (Has_Rune_e (other, RN_FIREWALK))
                 return;
 
 	if (isfriend2 (self.owner, other) && self.owner != other)
@@ -447,7 +447,7 @@ pack_rat_frag_bonus_e =
 	local float f, max;
 
 	f = 0;
-	while (e.runevar >= (f+1) * PACK_RAT_BONUS_PERCENT * runemax)
+	while (e.runevar_array[RN_PACK_RAT * %1] >= (f+1) * PACK_RAT_BONUS_PERCENT * runemax)
 	{
 		f = f + 1;
 		// prevent loop crashes
@@ -470,7 +470,7 @@ pack_rat_sprint =
 	local float n;
 
 	rprint (self, riders, "Packed away ");
-	rprint_numdesc (self, riders, of_e.runevar, "rune");
+	rprint_numdesc (self, riders, of_e.runevar_array[RN_PACK_RAT * %1], "rune");
 	n = pack_rat_frag_bonus_e (of_e);
 	if (deathmatch & DM_DAMAGE_MATCH)
 	{
@@ -491,12 +491,12 @@ pack_rat_rune_touch =
 	local entity old_self;
 	local string s;
 
-	s = Rune_Tell_real (0, self.oldrunetype, 0, 2);
+	s = Rune_Tell_real (0, self.runetype1, 0, 2);
 	sprint3 (other, "You've picked up", s, "\n");
 	old_self = self;
 	self = other;
 	cloaked_sound (self, CHAN_BODY, SOUND_RUNE_PICKUP, 1, ATTN_NORM);
-	self.runevar_array[RN_PACKRAT * %1] = self.runevar_array[RN_PACKRAT * %1] + 1;
+	self.runevar_array[RN_PACK_RAT * %1] = self.runevar_array[RN_PACK_RAT * %1] + 1;
 	pack_rat_sprint (1, self);
 	self = old_self;
 
@@ -511,8 +511,8 @@ pack_rat_rune_touch =
 	self.oldrunevector_z	= 20 * crandom ();
 
 	// Link the rat's runes through runent.
-	self.oldrunent = other.oldrunent;
-	other.oldrunent = self;
+	self.runent = other.runent;
+	other.runent = self;
 
 	self.touch = SUB_Null;
 	self.think = pack_rat_rune_move;
@@ -532,7 +532,7 @@ pack_rat_rune_move =
 	// game.  The other cases call pack_rat_rune_drop().  I do it
 	// this way rather than doing a regular drop from there to mimic
 	// the normal client disconnection behavior (no backpack, eg).
-	if (self.owner.health < 0 || !Has_Rune_e(self.owner, RN_PACK_RAT))
+	if (self.owner.health < 0 || !Has_Rune_e (self.owner, RN_PACK_RAT))
 	{
 		remove (self);
 		if (runecurrent > 0)
@@ -559,14 +559,14 @@ pack_rat_rune_drop =
 	{
 		local string s, s2;
 
-		if (!self.runevar_array[RN_PACKRAT * %1])
+		if (!self.runevar_array[RN_PACK_RAT * %1])
 		{
 			// This can't actually happen ATM.
 			centerprint (self, "You haven't salted away any runes.");
 			return;
 		}
-		s = ftos (self.runevar_array[RN_PACKRAT * %1]);
-		if (self.runevar_array[RN_PACKRAT * %1] == 1)
+		s = ftos (self.runevar_array[RN_PACK_RAT * %1]);
+		if (self.runevar_array[RN_PACK_RAT * %1] == 1)
 			s2 = string_null;
 		else
 			s2 = "s";
@@ -574,19 +574,19 @@ pack_rat_rune_drop =
 	}
 
 	// Drop all the runes.
-	self.runevar_array[RN_PACKRAT * %1]	= 0;
-	e		= self.oldrunent;
-	self.oldrunent	= world;
+	self.runevar_array[RN_PACK_RAT * %1]	= 0;
+	e		= self.runent;
+	self.runent	= world;
 	while (e)
 	{
-		next_e		= e.oldrunent;
-		e.oldrunent	= self;
+		next_e		= e.runent;
+		e.runent	= self;
 		e.lip		= time + 2;
 		e.owner		= world;
 		e.touch		= Rune_Touch;
 		e.think		= Rune_Move;
 		e.oldrunetime	= time + 60 + random ()*60;
-		e.nextthink	= e.runetime - 3;
+		e.nextthink	= e.oldrunetime - 3;
 		e.flags		= e.flags - e.flags & FL_ONGROUND;
 		e.movetype	= MOVETYPE_TOSS;
 		e.solid		= SOLID_TRIGGER;
@@ -663,7 +663,7 @@ decay_armor_spawn =
 	this = spawn ();
 	this.classname = "decay_armor";
 	this.owner = e;
-	this.runevar = rate;
+	this.oldrunevar = rate;
 	this.think = decay_armor_think;
 	this.nextthink = time + 1;
 };
@@ -671,7 +671,7 @@ decay_armor_spawn =
 void ()
 decay_armor_think =
 {
-	if (decay_armor (self.owner, self.runevar))
+	if (decay_armor (self.owner, self.oldrunevar))
 		self.nextthink = time + 1;
 	else
 		remove (self);
@@ -680,16 +680,16 @@ decay_armor_think =
 void ()
 quad_activate =
 {
-	if (self.super_damage_finished >= time || self.runetime > time)
+	if (self.super_damage_finished >= time || self.runetime_array[RN_QUAD * %1] > time)
 	{
-		if (self.runevar)
+		if (self.runevar_array[RN_QUAD * %1])
 		{
-			self.runevar = 0;
+			self.runevar_array[RN_QUAD * %1] = 0;
 			centerprint (self, "Pending quad canceled");
 		}
 		else
 		{
-			self.runevar = 1;
+			self.runevar_array[RN_QUAD * %1] = 1;
 			if (self.super_damage_finished >= time)
 				centerprint (self, "Quad queued");
 			else
@@ -704,7 +704,7 @@ quad_activate =
 		sound (self, CHAN_AUTO, "items/damage.wav", 1, ATTN_NORM);
 		stuffcmd (self, "bf\n");
 	}
-	self.runevar	= 0;
+	self.runevar_array[RN_QUAD * %1]	= 0;
 	self.items	= self.items | IT_QUAD;
 	self.effects	= self.effects | EF_DIMLIGHT;
 	self.super_time	= -2;
@@ -713,21 +713,22 @@ quad_activate =
 		Hat_Spawn (self, "progs/quaddama.mdl", '0 0 30', VEC_ORIGIN, ITEM_QUAD);
 
 	self.super_damage_finished = time + RN_QUAD_DURATION;
-	self.runetime	= self.super_damage_finished + RN_QUAD_RECHARGE;
+	self.runetime_array[RN_QUAD * %1] = self.super_damage_finished + RN_QUAD_RECHARGE;
 };
 
 void ()
 quad_think =
 {
-	if (self.runevar
+	if (self.runevar_array[RN_QUAD * %1]
 			&& self.super_damage_finished < time
-			&& self.runetime <= time)
+			&& self.runetime_array[RN_QUAD * %1] <= time)
 		quad_activate ();
 };
 
 void ()
 jack_think =
 {
+        local float temp;
 	// runevar tells what kind of sound to make next.
 	//
 	//   0 strength
@@ -737,26 +738,28 @@ jack_think =
 	//
 	// Each of these increments it when they make their sound.
 
-	if (self.runevar > 3)
-		self.runevar = 0;
+	if (self.runevar_array[RN_JACK * %1] > 3)
+		self.runevar_array[RN_JACK * %1] = 0;
 
-	if (self.runevector_x < time)
+	if (Get_Runevector_x (self, RN_JACK) < time)
 	{
 		Rune_Regen (RN_JACK);
-		self.runevector_x = time + 0.6;
+		Set_Runevector_x (self, time + 0.6, RN_JACK);
 	}
 
-	if (self.runevector_y < time)
+	if (Get_Runevector_y (self, RN_JACK) < time)
 	{
-		if (self.runevector_z == 2)
+		if (Get_Runevector_z (self, RN_JACK) == 2)
 			Rune_Ammo_1 (1);
 		else
 			Rune_Ammo_1 (0);
 
-		self.runevector_y = time + 1.6;
-		self.runevector_z = self.runevector_z + 1;
+                temp = Get_Runevector_z (self, RN_JACK) + 1;
 
-		if (self.runevector_z > 2)
-			self.runevector_z = 0;
+		Set_Runevector_y (self, time + 1.6, RN_JACK);
+		Set_Runevector_z (self, temp, RN_JACK);
+
+		if (Get_Runevector_z (self, RN_JACK > 2))
+			Set_Runevector_z (self, 0, RN_JACK);
 	}
 };
