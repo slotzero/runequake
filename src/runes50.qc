@@ -242,7 +242,7 @@ monk_touch =
 {
 	local vector v;
 
-	misc_touch ();
+	// misc_touch ();
 
 	if (0 && self.aqflags & AQ_ADMIN && other != world)
 	{
@@ -432,7 +432,7 @@ Rune_Torch =
 void ()
 Torch_Touch =
 {
-	misc_touch ();
+	// misc_touch ();
 
 	if (other.takedamage && random () < TORCH_BURN_TOUCH_CHANCE)
 		burn_start (other, self, TORCH_BURN_TOUCH_DURATION);

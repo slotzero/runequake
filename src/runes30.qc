@@ -822,7 +822,7 @@ IN_POQ([-
 void ()
 Impact_Touch =
 {
-	misc_touch ();
+	// misc_touch ();
 
 	if (other == world)
 		return;

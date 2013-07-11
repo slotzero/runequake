@@ -662,6 +662,7 @@ float IMP_VOTE_HEADS		= 33;
 float IMP_VOTE_RANDOM_SPAWN	= 34;
 float IMP_VOTE_SHOOT_BUTTONS	= 35;
 float IMP_VOTE_POWERUP_HATS	= 36;
+float IMP_VOTE_DUALALITY	= 37;
 
 // extended impulses for votes
 float IMP_VOTE_MIN		= 800;
@@ -1311,6 +1312,7 @@ float	RANDOM_SPAWN		= 1048576;
 float	SHOOT_BUTTONS		= 2097152;
 float	NO_POWERUP_HATS		= 4194304;
 float	CONSOLE_ALIASES		= 8388608;
+float	NO_DUALALITY		= 16777216;
 
 // storage1
 float storage1;

@@ -926,7 +926,14 @@ Rune_Activate =
 	if (!self.runetype1)
                 self.runetype1 = type;
         else if (!self.runetype2)
+        {
+                if (options & NO_DUALALITY)
+                {
+                        dprint("Rune_Activate: self already had a rune (no_dualality)\n");
+                        return;
+                }
                 self.runetype2 = type;
+        }
         else
         {
                 dprint("Rune_Activate: self already had two runes\n");
@@ -1055,9 +1062,11 @@ Rune_Activate =
 
 	else if (type == RN_IMPACT)
 	{
+	        /* Zop: now handled in misc_touch
 		IN_POQ([-
 			self.touch = Impact_Touch;
 		-])
+		*/
 		Hat_Spawn (self, "progs/s_spike.mdl", '-8 1 30', VEC_ORIGIN, 0 - RN_IMPACT);
 	}
 
@@ -1072,13 +1081,14 @@ Rune_Activate =
 		}
 	}
 
-	// XXX This isn't ready yet.
+	/* XXX This isn't ready yet.
 	else if (type == RN_MONK)
 		self.touch = monk_touch;
+        */
 
 	else if (type == RN_TORCH)
 	{
-		self.touch = Torch_Touch;
+		// self.touch = Torch_Touch;
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar_array[RN_TORCH * %1] = count_classname_owner (self, "torchtrap");
 		else
@@ -1140,8 +1150,10 @@ Rune_Activate =
 			self.class_cnt = count_classname_owner (self, "glue");
 	}
 
+        /*
 	else if (type == RN_BLIZZARD)
 		self.touch = Blizzard_Touch;
+        */
 
 	else if (type == RN_ANTIPACK)
 	{
@@ -1205,7 +1217,7 @@ Rune_Delete =
 	self.oldrunevar         = 0;
 	self.class_cnt          = 0;
 	self.oldrunevector	= VEC_ORIGIN;
-	self.touch	        = misc_touch;
+	// self.touch	        = misc_touch;
 	stuffcmd (self, CSHIFT_NONE);
 
 	old_rune = self.runetype1;
@@ -1448,7 +1460,7 @@ Rune_Touch =
                         pack_rat_rune_touch ();
                 return;
 	}
-        else if (other.runetype1 && other.runetype2)
+        else if (other.runetype1 && (other.runetype2 || (options & NO_DUALALITY)))
                 return;
         else if (Has_Rune_e (other, self.runetype1))
         {

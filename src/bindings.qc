@@ -421,6 +421,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-suit",			IMP_VOTE_SUIT);
 	player_vote_impulse_alias ("vote-team",			IMP_VOTE_TEAM);
 	player_vote_impulse_alias ("vote-weapons-stay",		IMP_VOTE_WEAPONS_STAY);
+	player_vote_impulse_alias ("vote-dual",		        IMP_VOTE_DUALALITY);
 };
 
 void (string level, float imp)
@@ -1554,7 +1555,7 @@ help_vote =
 	self_sprint (self, "\bvote-mega       vote-match\n");
 	self_sprint (self, "\bvote-backpacks  vote-armor-drop\n");
 	self_sprint (self, "\bvote-rune-drop  vote-powerup-drop\n");
-	self_sprint (self, "\b                vote-lg-discharge\n");
+	self_sprint (self, "\bvote-dual       vote-lg-discharge\n");
 	self_sprint (self, "\b                vote-classic-mega\n");
 	self_sprint (self, "\b                vote-random-spawn\n");
 	self_sprint (self, "\b                vote-shoot-buttons\n");
@@ -1612,6 +1613,7 @@ help_options =
 	self_sprint (self, "\n\bbackpacks     ");	self_sprint_boolean (self, !options & NO_BACKPACKS);
 	self_sprint (self, "\b  random spawn  ");       self_sprint_boolean (self, options & RANDOM_SPAWN);
 	self_sprint (self, "\n\bshoot buttons ");	self_sprint_boolean (self, options & SHOOT_BUTTONS);
+	self_sprint (self, "\b  dual rune off ");	self_sprint_boolean (self, options & NO_DUALALITY);
 	self_sprint (self, "\n");
 };
 

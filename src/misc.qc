@@ -542,6 +542,20 @@ func_bossgate =
 void ()
 misc_touch =
 {
+        if (self.runetype1 + self.runetype2)
+        {
+                IN_POQ([-
+                if (Has_Rune_e(self, RN_IMPACT))
+                        Impact_Touch ();
+                -])
+                if (Has_Rune_e(self, RN_MONK))
+                        monk_touch ();
+                if (Has_Rune_e(self, RN_TORCH))
+                        Torch_Touch ();
+                if (Has_Rune_e(self, RN_BLIZZARD))
+                        Blizzard_Touch ();
+        }
+
 	if (other.classname != "player")
 		return;
 
@@ -550,6 +564,7 @@ misc_touch =
 
 	if (!other.flags & FL_ONGROUND && other.absmin_z >= self.absmax_z - 2)
 		other.flags = other.flags + FL_ONGROUND;
+
 };
 
 //============================================================================

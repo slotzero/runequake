@@ -1023,6 +1023,17 @@ vote =
 		else
 			e.noise1	= "disable";
 	}
+	else if (self.impulse == IMP_VOTE_DUALALITY)
+	{
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= toggle_dualality;
+		e.noise2	= " dual runes ";
+
+		if (options & NO_DUALALITY)
+			e.noise1	= "enable";
+		else
+			e.noise1	= "disable";
+	}
 	else
 		cancel = -1;
 
