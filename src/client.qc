@@ -576,11 +576,11 @@ respawn =
 	//RUNE SERV: Phoenix rune
 	if (Has_Rune_e (self, RN_PHOENIX) && self.runevar_array[RN_PHOENIX * %1] > 0)
 	{
-	    if (gamemode == MODE_HEADS)
-        {
-			if (self.movetarget.owner == self)
-				remove (self.movetarget);
-        }
+                if (gamemode == MODE_HEADS)
+                {
+                        if (self.movetarget.owner == self)
+                                remove (self.movetarget);
+                }
 		CopyToBodyQue (self);
 		Resurrect (1);
 		return;
@@ -1207,16 +1207,6 @@ PlayerDeathThink =
 	if (Has_Rune_e (self, RN_PHOENIX))
 		centerprint (self, "\<\bwarning\b\>\nphoenix rune detected\nuse jump to respawn");
 
-	if (self.flags & FL_ONGROUND)
-	{
-		forward = vlen (self.velocity);
-		forward = forward - 20;
-		if (forward <= 0)
-			self.velocity = VEC_ORIGIN;
-		else
-			self.velocity = forward * normalize (self.velocity);
-	}
-
 	// Make people who sit idle as corpses for too long into
 	// observers.
 	if (AUTO_CORPSE_OBSERVER > 0)
@@ -1224,7 +1214,7 @@ PlayerDeathThink =
 		if (!self.aflag)
 			self.aflag = time + AUTO_CORPSE_OBSERVER;
 		else if (time <= self.aflag)
-			SUB_Null ();
+			0; // do nothing
 		else
 		{
 			if (corpse_to_observer (2))
@@ -1240,10 +1230,19 @@ PlayerDeathThink =
 	-])
 	// Don't let phoenixes respawn until they come to a rest.
 	// Allows you to respawn if your corpse gets pushed outside the level.
-        if ((self.flags & FL_ONGROUND))
-                0; // do nothing (ignore return)
+        if (self.flags & FL_ONGROUND)
+	{
+		forward = vlen (self.velocity);
+		forward = forward - 20;
+		if (forward <= 0)
+			self.velocity = VEC_ORIGIN;
+		else
+			self.velocity = forward * normalize (self.velocity);
+
+                // this block also will ignore phoenix "return;" to allow respawn
+	}
         else if (pointcontents (self.origin) == CONTENT_SOLID)
-                0; // do nothing
+                0; // do nothing (ignore return)
         else if (Has_Rune_e (self, RN_PHOENIX))
                 return;
 
