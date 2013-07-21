@@ -659,7 +659,7 @@ W_FireLightning =
 	else
 		traceline (org, org + v_forward*600, TRUE, self);
 	create_te_lightning (TE_LIGHTNING2, self, org, trace_endpos);
-	LightningDamage (self.origin, trace_endpos + v_forward*4, self, 30, "lightning");
+	LightningDamage (org, trace_endpos + v_forward*4, self, 30, "lightning");
 
 	// efficiency
 	self.cell_dmg_max = self.cell_dmg_max + 30;
