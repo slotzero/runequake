@@ -898,7 +898,7 @@ Rune_Twalk =
 	{
 		create_te_teleport (self.origin);
 		setorigin (self, trace_endpos - v_forward*60);
-		droptofloor (0, 0);
+		droptofloor ();
 		return;
 	}
 

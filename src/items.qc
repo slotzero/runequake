@@ -140,7 +140,7 @@ PlaceItem =
 	self.velocity	= VEC_ORIGIN;
 	self.origin_z	= self.origin_z + 6;
 
-	if (!droptofloor(0,0))
+	if (!droptofloor ())
 	{
 		dprint ("Bonus item \"");
 		dprint (self.classname);
