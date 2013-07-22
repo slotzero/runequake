@@ -600,7 +600,11 @@ PlayerDie =
 	self.radsuit_finished		= 0;
 	self.modelindex			= modelindex_player;	// don't use eyes
 
-	if ((deathmatch & DM_DM_MASK || coop) && self.runetype != RN_PHOENIX)
+	// XXX Sometimes FL_ONGROUND doesn't get set quick enough (or at all) preventing phoenix
+	// holders from respawning.  I workaround this by allowing you to respawn after 5 seconds.
+	if (self.runetype == RN_PHOENIX)
+		self.runetime = time + 5;
+	else if (deathmatch & DM_DM_MASK || coop)
 	{
 		DropBackpack ();
 		drop_armor ();
