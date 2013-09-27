@@ -32,9 +32,6 @@ restore_gmissile_owner =
 	self.rqstate = self.rqstate - self.rqstate & RQS_GUIDED_MISSILE;
 	self.effects = self.effects - self.effects & EF_FROZEN;
 
-	// reset player view
-	self.view_ofs = PLAYER_VIEW_OFFSET;
-
 	// only update these if you're alive
 	if (self != os)
 	{
@@ -115,7 +112,4 @@ W_FireGuidedMissile =
 
 	// spawn a rocket hat
 	Hat_Spawn (self, "progs/missile.mdl", '-4 1 32', VEC_ORIGIN, 16);
-
-	// center view on rocket, reduces PVS stickyness.
-	self.view_ofs		= VEC_ORIGIN;
 };
