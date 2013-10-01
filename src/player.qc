@@ -600,7 +600,12 @@ PlayerDie =
 	self.radsuit_finished		= 0;
 	self.modelindex			= modelindex_player;	// don't use eyes
 
-	if ((deathmatch & DM_DM_MASK || coop) && !Has_Rune_e (self, RN_PHOENIX))
+	// XXX Sometimes FL_ONGROUND doesn't get set quick enough (or at all) preventing phoenix
+	// holders from respawning.  I workaround this by allowing you to respawn after 5 seconds.
+	if (Has_Rune_e (self, RN_PHOENIX))
+		/*self.runetime = time + 5;*/
+		SUB_Null (); // XXX FIX ME ZOP: runetime used correctly?
+	else if (deathmatch & DM_DM_MASK || coop)
 	{
 		DropBackpack ();
 		drop_armor ();

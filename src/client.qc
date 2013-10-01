@@ -1189,23 +1189,15 @@ PlayerDeathThink =
 	else if (gamemode == MODE_HEADS)
 		head_death_think ();
 
-	IN_QW([-
-		// XXX The phoenix rune allows you to respawn at odd locations.
-		// Occasionally you can get stuck in walls.  In addtion, when you
-		// die in liquid, you don't hit the ground immediately and since
-		// you can't fire until you've stopped moving, this can be annoying.
-		//
-		// Mr. Happy requested that I implement the old-style phoenix until
-		// a fix is implemented.
-		local float OLD_STYLE_PHOENIX = 1;
-	-])
-
-	IN_QW([-
-		if (!OLD_STYLE_PHOENIX)
-	-])
-	// Warn phoenix users.
-	if (Has_Rune_e (self, RN_PHOENIX))
-		centerprint (self, "\<\bwarning\b\>\nphoenix rune detected\nuse jump to respawn");
+	if (self.flags & FL_ONGROUND)
+	{
+		forward = vlen (self.velocity);
+		forward = forward - 20;
+		if (forward <= 0)
+			self.velocity = VEC_ORIGIN;
+		else
+			self.velocity = forward * normalize (self.velocity);
+	}
 
 	// Make people who sit idle as corpses for too long into
 	// observers.
@@ -1225,27 +1217,6 @@ PlayerDeathThink =
 		}
 	}
 
-	IN_QW([-
-		if (!OLD_STYLE_PHOENIX)
-	-])
-	// Don't let phoenixes respawn until they come to a rest.
-	// Allows you to respawn if your corpse gets pushed outside the level.
-        if (self.flags & FL_ONGROUND)
-	{
-		forward = vlen (self.velocity);
-		forward = forward - 20;
-		if (forward <= 0)
-			self.velocity = VEC_ORIGIN;
-		else
-			self.velocity = forward * normalize (self.velocity);
-
-                // this block also will ignore phoenix "return;" to allow respawn
-	}
-        else if (pointcontents (self.origin) == CONTENT_SOLID)
-                0; // do nothing (ignore return)
-        else if (Has_Rune_e (self, RN_PHOENIX))
-                return;
-
 	// wait for all buttons released
 	if (self.deadflag == DEAD_DEAD)
 	{
@@ -1256,8 +1227,21 @@ PlayerDeathThink =
 	}
 
 	// Prevent phoenix holders from firing.
-	if (Has_Rune_e (self, RN_PHOENIX) IN_QW(&& !OLD_STYLE_PHOENIX))
+	if (Has_Rune_e (self, RN_PHOENIX))
 	{
+		// Warn phoenix users.
+		centerprint (self, "\<\bwarning\b\>\nphoenix rune detected\nuse jump to respawn");
+
+		// Don't let phoenix holder respawn until she comes to a stop.
+		if (!self.flags & FL_ONGROUND)
+		{
+			// Allows you to respawn if your corpse gets pushed outside the level
+			// or takes too long to come to a complete stop.
+			/*if (self.runetime > time && pointcontents (self.origin) != CONTENT_SOLID)
+				return;*/
+			SUB_Null (); // XXX FIX ME ZOP: runetime used correctly?
+		}
+
 		if (!self.button2 || self.aqflags & AQ_KICKED)
 			return;
 	}

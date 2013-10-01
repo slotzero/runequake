@@ -566,7 +566,6 @@ toggle_shoot_buttons =
 	cvar_set_infokey (CVAR_C4, s);
 };
 
-
 void ()
 toggle_powerup_hats =
 {
@@ -600,73 +599,87 @@ toggle_powerup_hats =
 };
 
 void ()
+toggle_vote_hook =
+{
+	local string s;
+
+	if (storage1 & VOTE_HOOK_DISABLED)
+		storage1 = storage1 - storage1 & VOTE_HOOK_DISABLED;
+	else
+		storage1 = storage1 | VOTE_HOOK_DISABLED;
+
+	s = ftos (storage1);
+	cvar_set_infokey (CVAR_C5, s);
+};
+
+void ()
 toggle_dualality =
 {
-        local float old_rune;
-        local entity e, oself;
+	local float old_rune;
+	local entity e, oself;
 
 	if (options & NO_DUALALITY)
 	{
-	        options = options - options & NO_DUALALITY;
+		options = options - options & NO_DUALALITY;
 
 	} else {
-                options = options | NO_DUALALITY;
+		options = options | NO_DUALALITY;
 
 		e = find (world, classname, "player");
 		while (e)
 		{
-                        old_rune = e.runetype2;
-                        e.runetype2 = 0;
+			old_rune = e.runetype2;
+			e.runetype2 = 0;
 
-                        oself = self;
-                        self = e;
-                        if (old_rune == RN_PACK_RAT)
-                                pack_rat_rune_drop (0);
-                        else if (old_rune == RN_HOOK)
-                                HookOff ();
-                        else if (old_rune == RN_MONK)
-                                monk_trance_off ();
-                        self = oself;
+			oself = self;
+			self = e;
+			if (old_rune == RN_PACK_RAT)
+				pack_rat_rune_drop (0);
+			else if (old_rune == RN_HOOK)
+				HookOff ();
+			else if (old_rune == RN_MONK)
+				monk_trance_off ();
+			self = oself;
 
-                        // This has to run after max_health is reset else no rotting
-                        // will take place.
-                        if (old_rune == RN_HEALTH
-                                        || old_rune == RN_LUMBER
-                                        || old_rune == RN_JACK
-                                        || old_rune == RN_ATHLETE)
-                        {
-                                if (old_rune == RN_HEALTH)
-                                        e.max_health = e.max_health - (MAX_HEALTH_GOOD_HEALTH - 250);
-                                else if (old_rune == RN_LUMBER)
-                                        e.max_health = e.max_health - (MAX_HEALTH_LUMBER - 250);
-                                else if (old_rune == RN_JACK)
-                                        e.max_health = e.max_health - (MAX_HEALTH_JACK - 250);
-                                else if (old_rune == RN_ATHLETE)
-                                        e.max_health = e.max_health - (MAX_HEALTH_ATHLETE - 250);
-                                decay_health_spawn (e, 1);
-                        }
-                        else if (old_rune == RN_ARMOR)
-                        {
-                                decay_armor_spawn (e, ARMOR_DECAY_RATE);
-                                set_armor_items_e (e);
-                        }
-                        else if (old_rune == RN_SHIELD)
-                        {
-                                if (e.effects & EF_BRIGHTFIELD)
-                                        e.effects = e.effects - e.effects & EF_BRIGHTFIELD;
-                                if (!e.takedamage)
-                                        e.takedamage = DAMAGE_AIM;
-                        }
+			// This has to run after max_health is reset else no rotting
+			// will take place.
+			if (old_rune == RN_HEALTH
+					|| old_rune == RN_LUMBER
+					|| old_rune == RN_JACK
+					|| old_rune == RN_ATHLETE)
+			{
+				if (old_rune == RN_HEALTH)
+					e.max_health = e.max_health - (MAX_HEALTH_GOOD_HEALTH - 250);
+				else if (old_rune == RN_LUMBER)
+					e.max_health = e.max_health - (MAX_HEALTH_LUMBER - 250);
+				else if (old_rune == RN_JACK)
+					e.max_health = e.max_health - (MAX_HEALTH_JACK - 250);
+				else if (old_rune == RN_ATHLETE)
+					e.max_health = e.max_health - (MAX_HEALTH_ATHLETE - 250);
+				decay_health_spawn (e, 1);
+			}
+			else if (old_rune == RN_ARMOR)
+			{
+				decay_armor_spawn (e, ARMOR_DECAY_RATE);
+				set_armor_items_e (e);
+			}
+			else if (old_rune == RN_SHIELD)
+			{
+				if (e.effects & EF_BRIGHTFIELD)
+					e.effects = e.effects - e.effects & EF_BRIGHTFIELD;
+				if (!e.takedamage)
+					e.takedamage = DAMAGE_AIM;
+			}
 
-                        /* XXX
-                                self.movetype           = MOVETYPE_WALK;
-                                self.runent             = world;
-                                self.oldrunetime	= time;
-                                self.oldrunevar         = 0;
-                                self.class_cnt          = 0;
-                                self.oldrunevector	= VEC_ORIGIN;
-                                stuffcmd (self, CSHIFT_NONE);
-                        */
+			/* XXX
+				self.movetype	   = MOVETYPE_WALK;
+				self.runent	     = world;
+				self.oldrunetime	= time;
+				self.oldrunevar	 = 0;
+				self.class_cnt	  = 0;
+				self.oldrunevector	= VEC_ORIGIN;
+				stuffcmd (self, CSHIFT_NONE);
+			*/
 			e = find (e, classname, "player");
 		}
 	}

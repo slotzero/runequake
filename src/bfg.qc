@@ -1,5 +1,4 @@
-/*  $Id: bfg.qc,v 1.12 2006/07/06 06:03:41 slotzero Exp $
-
+/*
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
     This program is free software; you can redistribute it and/or modify
@@ -100,7 +99,7 @@ BFG_Warmup =
 	local float number;
 
 	// Abort if she died or lost her lightning gun.
-	if (self.owner.health <= 0 || !self.owner.items & IT_LIGHTNING)
+	if (self.owner.health <= 0 || !self.owner.items & IT_LIGHTNING || intermission_running)
 	{
 		self.owner.effects = self.owner.effects
 			- (self.owner.effects & EF_BRIGHTLIGHT);

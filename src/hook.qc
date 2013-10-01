@@ -1,5 +1,4 @@
-/*  $Id: hook.qc,v 1.33 2010/10/27 05:12:59 slotzero Exp $
-
+/*
     Copyright (C) 1998  Jared 'KnyteHawkk' Larsen.
 
     This program is free software; you can redistribute it and/or modify
@@ -22,7 +21,7 @@ have_hook_e =
 {
 	return Has_Rune_e (e, RN_HOOK)
 			|| e.aqflags & AQ_HOOK
-			|| temp1 & T1_HOOK_MASK == T1_FREE_HOOK;
+			|| storage1 & HOOK_MASK == FREE_HOOK;
 };
 
 float ()
@@ -36,7 +35,7 @@ hook_damage_e =
 {
 	if (Has_Rune_e (e, RN_HOOK))	return HOOK_DAMAGE_RUNE;
 	else if (e.aqflags & AQ_HOOK)	return HOOK_DAMAGE_LITHIUM;
-	else if (temp1 & T1_HOOK_MASK == T1_FREE_HOOK)
+	else if (storage1 & HOOK_MASK == FREE_HOOK)
 					return HOOK_DAMAGE_FREE;
 	else				return 0;
 };
@@ -97,6 +96,10 @@ MaybeDropHook =
 
 	// active button
 	else if (self.enemy.classname == "func_button" && self.enemy.state)
+		dropit = 1;
+
+	// intermission
+	else if (intermission_running)
 		dropit = 1;
 
 	if (HOOK_CAMP_PROT)
@@ -430,19 +433,19 @@ toggle_free_hook =
 {
 	local string new;
 
-	if (!temp1 & T1_HOOK_MASK || temp1 & T1_HOOK_MASK == T1_HOOK_MASK)
+	if (!storage1 & HOOK_MASK || storage1 & HOOK_MASK == HOOK_MASK)
 	{
-		if (temp1 & T1_HOOK_MASK == T1_HOOK_MASK)
-			temp1 = temp1 - temp1 & T1_LITHIUM_HOOK;
+		if (storage1 & HOOK_MASK == HOOK_MASK)
+			storage1 = storage1 - storage1 & LITHIUM_HOOK;
 		else
-			temp1 = temp1 | T1_FREE_HOOK;
+			storage1 = storage1 | FREE_HOOK;
 	}
 	else
 	{
-		if (temp1 & T1_FREE_HOOK)
-			temp1 = temp1 - temp1 & T1_FREE_HOOK;
-		if (temp1 & T1_LITHIUM_HOOK)
-			temp1 = temp1 - temp1 & T1_LITHIUM_HOOK;
+		if (storage1 & FREE_HOOK)
+			storage1 = storage1 - storage1 & FREE_HOOK;
+		if (storage1 & LITHIUM_HOOK)
+			storage1 = storage1 - storage1 & LITHIUM_HOOK;
 	}
 
 	// remove lithium hooks from level
@@ -454,22 +457,22 @@ toggle_free_hook =
 	// remove rune
 	remove_hook_rune_from_players ();
 
-	dprint ("new_temp1(");
-	dprint_float (temp1);
+	dprint ("new_storage1(");
+	dprint_float (storage1);
 	dprint (")\n");
 
-	new = ftos (temp1);
-	cvar_set_infokey ("temp1", new);
+	new = ftos (storage1);
+	cvar_set_infokey (CVAR_C5, new);
 };
 
 void ()
 free_hook =
 {
-	if (temp1 & T1_LITHIUM_HOOK)
-		temp1 = temp1 - temp1 & T1_LITHIUM_HOOK;
+	if (storage1 & LITHIUM_HOOK)
+		storage1 = storage1 - storage1 & LITHIUM_HOOK;
 
-	if (temp1 & T1_FREE_HOOK)
-		temp1 = temp1 - temp1 & T1_FREE_HOOK;
+	if (storage1 & FREE_HOOK)
+		storage1 = storage1 - storage1 & FREE_HOOK;
 
 	toggle_free_hook ();
 };
@@ -479,20 +482,20 @@ lithium_hook =
 {
 	local string new;
 
-	if (temp1 & T1_FREE_HOOK)
-		temp1 = temp1 - temp1 & T1_FREE_HOOK;
+	if (storage1 & FREE_HOOK)
+		storage1 = storage1 - storage1 & FREE_HOOK;
 
-	if (!temp1 & T1_LITHIUM_HOOK)
-		temp1 = temp1 | T1_LITHIUM_HOOK;
+	if (!storage1 & LITHIUM_HOOK)
+		storage1 = storage1 | LITHIUM_HOOK;
 
 	remove_hook_rune_from_players ();
 
-	dprint ("new_temp1(");
-	dprint_float (temp1);
+	dprint ("new_storage1(");
+	dprint_float (storage1);
 	dprint (")\n");
 
-	new = ftos (temp1);
-	cvar_set_infokey ("temp1", new);
+	new = ftos (storage1);
+	cvar_set_infokey (CVAR_C5, new);
 };
 
 // 0 off
@@ -502,11 +505,11 @@ lithium_hook =
 float (float bits)
 hook_type =
 {
-	if (!bits & T1_HOOK_MASK || bits & T1_HOOK_MASK == T1_HOOK_MASK)
+	if (!bits & HOOK_MASK || bits & HOOK_MASK == HOOK_MASK)
 		return 0;
-	if (bits & T1_FREE_HOOK)
+	if (bits & FREE_HOOK)
 		return 1;
-	if (bits & T1_LITHIUM_HOOK)
+	if (bits & LITHIUM_HOOK)
 		return 2;
 	return 0;
 };
@@ -514,7 +517,7 @@ hook_type =
 void (float type)
 set_hook =
 {
-	if (type != hook_type (temp1))
+	if (type != hook_type (storage1))
 	{
 		if (type == 0)
 			toggle_free_hook ();

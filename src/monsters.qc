@@ -87,7 +87,7 @@ void ()
 walkmonster_start_go =
 {
 	self.origin_z = self.origin_z + 1;	// raise off floor a bit
-	droptofloor (0, 0);
+	droptofloor ();
 
 	//RUNE SERV: I hate this error with the shamblers
 	if (!is_pet ()) if (!walkmove (0, 0))

@@ -167,7 +167,7 @@ misc_explobox =
 
 	self.origin_z	= self.origin_z + 2;
 	oldz = self.origin_z;
-	droptofloor (0, 0);
+	droptofloor ();
 	if (oldz - self.origin_z > 250)
 	{
 		dprint ("item fell out of level at ");
@@ -202,7 +202,7 @@ misc_explobox2 =
 
 	self.origin_z	= self.origin_z + 2;
 	oldz = self.origin_z;
-	droptofloor (0, 0);
+	droptofloor ();
 	if (oldz - self.origin_z > 250)
 	{
 		dprint ("item fell out of level at ");

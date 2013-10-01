@@ -377,12 +377,21 @@ BecomeExplosion =
 	s_explode1 ();
 };
 
-// reflect rocket
+// explosion effect with radius damage
 void ()
 RocketDamageExplosion =
 {
+	local float damg;
+
+	if (self.classname == "gmissile")
+		damg = GUIDED_MISSILE_DAMAGE;
+	else if (self.classname == "reflect")
+		damg = REFLECT_DAMAGE;
+	else
+		damg = 120;
+
 	monk_radius_hack = 1;
-	T_RadiusDamage (RADIUS_NORMAL, self, self.owner, REFLECT_DAMAGE, other, self.classname);
+	T_RadiusDamage (RADIUS_NORMAL, self, self.owner, damg, world, self.classname);
 	monk_radius_hack = 0;
 
 	create_te_explosion (self.origin, 1);
@@ -652,7 +661,7 @@ W_FireLightning =
 
 	traceline (org, org + v_forward*dist, TRUE, self);
 	create_te_lightning (TE_LIGHTNING2, self, org, trace_endpos);
-	LightningDamage (self.origin, trace_endpos + v_forward*4, self, 30, "lightning");
+	LightningDamage (org, trace_endpos + v_forward*4, self, 30, "lightning");
 
 	// efficiency
 	self.cell_dmg_max = self.cell_dmg_max + 30;
@@ -1414,7 +1423,7 @@ ImpulseCommands =
 			if (self.impulse != IMP_HOOK_OFF)
 			{
 				sprint (self, "No hook");
-				if (temp1 & T1_HOOK_MASK == T1_LITHIUM_HOOK)
+				if (storage1 & HOOK_MASK == LITHIUM_HOOK)
 					sprint (self, ", find one first");
 				else if (!vote_hook_disabled (0))
 					sprint (self, ", use vote-hook");
