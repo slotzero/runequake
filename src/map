@@ -588,7 +588,7 @@ print "\t\tif (!match.state)\n\t\t\treturn;\n";
 print "\t\te_team = colors_to_pants (e.team_colors / %1) + 1;\n";
 print "\t}\n";
 print "\tif (deathmatch & DM_DAMAGE_MATCH && !damage_match_hack) return;\n";
-print "\tif (e.runetype == RN_PACK_RAT && f > 0 && !deathmatch & DM_DAMAGE_MATCH) f = f + f * pack_rat_frag_bonus_e (e);\n";
+print "\tif (Has_Rune_e (e, RN_PACK_RAT) && f > 0 && !deathmatch & DM_DAMAGE_MATCH) f = f + f * pack_rat_frag_bonus_e (e);\n";
 print "\te.frags = e.frags + f;\n";
 print "\te.recent_frags = e.recent_frags + f;\n";
 $else = '';
