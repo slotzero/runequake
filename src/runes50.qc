@@ -107,6 +107,7 @@ Rune_Zombie =
 		}
 		if (!oldest)
 			objerror ("no oldest zombie camper");
+		oldest.health = 0;
 		spawn_tfog (oldest.origin);
 		remove (oldest);
 		self.runevar = self.runevar - 1;
@@ -137,15 +138,12 @@ maybe_remove_zombie_camper =
 	if (self.owner.runetype != RN_ZOMBIE
 			|| self.owner.runetime > self.runetime)
 	{
-		if (self.owner.health < 1)
-		{
-			// This will call zombie_die, which decrements
-			// self.owner.runevar.
-			self.health = 0;
+		if (self.owner.health <= 0)
 			Killed (self, self.owner, string_null);
-		}
 		else
 			spawn_tfog (self.origin);
+
+		self.health = 0;
 		remove (self);
 		return TRUE;
 	}

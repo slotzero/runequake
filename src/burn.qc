@@ -1,5 +1,4 @@
-/*  $Id: burn.qc,v 1.13 2006/07/06 06:03:41 slotzero Exp $
-
+/*
     Copyright (C) 1998-2001  Roderick Schertler.
 
     This program is free software; you can redistribute it and/or modify
@@ -95,7 +94,7 @@ burn_think =
 	if (self.runevar < time
 			|| (self.enemy.waterlevel > 1 &&
 				self.enemy.watertype != CONTENT_LAVA)
-			|| self.enemy.health < 1
+			|| self.enemy.health <= 0
 			|| !self.enemy.aqstate & AQS_BURNING
 			|| self.enemy.runetype == RN_ENVIRO
 			|| self.enemy.items & IT_SUIT

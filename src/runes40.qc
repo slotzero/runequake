@@ -343,6 +343,7 @@ Rune_ShamblerThink =
 	if (self.owner.runetype != RN_SHAMB
 			|| self.owner.runent != self.runent)
 	{
+		self.runent.health = 0;
 		spawn_tfog (self.runent.origin);
 		remove (self.runent);
 		remove (self);
