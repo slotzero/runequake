@@ -239,12 +239,8 @@ shambler_slave_respawn =
 		return;
 	}
 
-	// Shambler is frozen; unfreeze her.
-	if (sham.oldrunevar == 2)
+	if (sham.effects & EF_FROZEN)
 		Unfreeze (sham);
-
-	// Reset the runevar so he'll be unstuck.
-	sham.oldrunevar = 0;
 
 	HookOff_by_targ_e (sham);
 
@@ -294,7 +290,7 @@ Rune_ShamblerReloc =
 {
 	local entity old_self;
 
-	if (self.runent.oldrunevar == 2)
+	if (self.runent.effects & EF_FROZEN)
 	{
 		sprint (self, "Your shambler is frozen!\n");
 		return;
@@ -346,6 +342,7 @@ Rune_ShamblerThink =
 	if (!Has_Rune_e (self.owner, RN_SHAMB)
 			|| self.owner.runent != self.runent)
 	{
+		self.runent.health = 0;
 		spawn_tfog (self.runent.origin);
 		remove (self.runent);
 		remove (self);

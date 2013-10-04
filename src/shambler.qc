@@ -1,5 +1,4 @@
-/*  $Id: shambler.qc,v 1.13 2005/05/08 03:12:16 slotzero Exp $
-
+/*
     Copyright (C) 1996, 1997  Id Software, Inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -227,7 +226,7 @@ sham_melee =
 {
 	local float chance;
 
-	if (self.oldrunevar == 2)
+	if (self.effects & EF_FROZEN)
 		return;
 
 	chance = random ();

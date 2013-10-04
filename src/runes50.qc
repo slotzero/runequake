@@ -106,7 +106,11 @@ Rune_Zombie =
 			e = find (e, classname, "zombie_camper");
 		}
 		if (!oldest)
+		{
 			objerror ("no oldest zombie camper");
+			return;
+		}
+		oldest.health = 0;
 		spawn_tfog (oldest.origin);
 		remove (oldest);
 		self.runevar_array[RN_ZOMBIE * %1] = self.runevar_array[RN_ZOMBIE * %1] - 1;
@@ -137,15 +141,12 @@ maybe_remove_zombie_camper =
 	if (!Has_Rune_e (self.owner, RN_ZOMBIE)
 			|| self.owner.runetime_array[RN_ZOMBIE * %1] > self.oldrunetime)
 	{
-		if (self.owner.health < 1)
-		{
-			// This will call zombie_die, which decrements
-			// self.owner.runevar.
-			self.health = 0;
+		if (self.owner.health <= 0)
 			Killed (self, self.owner, string_null);
-		}
 		else
 			spawn_tfog (self.origin);
+
+		self.health = 0;
 		remove (self);
 		return TRUE;
 	}
