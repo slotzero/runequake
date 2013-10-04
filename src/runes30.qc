@@ -1,5 +1,4 @@
-/*  $Id: runes30.qc,v 1.44 2008/08/21 06:34:43 slotzero Exp $
-
+/*
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
     This program is free software; you can redistribute it and/or modify
@@ -512,8 +511,6 @@ Freeze_Frozen =
 			}
 			stuffcmd (self.runent, CSHIFT_NONE);
 		}
-		else if (self.runent.classname == "shambler_slave")
-			self.runent.runevar = 0;
 
 		sound (self, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
 		remove (self);
@@ -526,7 +523,7 @@ Freeze_Touch =
 	if (other == world)
 		return;
 
-	if (other.classname != "player" && !is_pet_e (other))
+	if (other.classname != "player" && other.classname != "shambler_slave")
 		return;
 
 	if (!other.takedamage || other.health <= 0)
@@ -574,7 +571,6 @@ Freeze_Touch =
 	}
 	else if (other.classname == "shambler_slave")
 	{
-		other.runevar = 2;
 		sprint (other.owner, "Your shambler is frozen in ");
 		sprint (other.owner, self.owner.netname);
 		sprint (other.owner, "'s ice trap.\n");
