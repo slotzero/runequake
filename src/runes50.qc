@@ -106,7 +106,10 @@ Rune_Zombie =
 			e = find (e, classname, "zombie_camper");
 		}
 		if (!oldest)
+		{
 			objerror ("no oldest zombie camper");
+			return;
+		}
 		oldest.health = 0;
 		spawn_tfog (oldest.origin);
 		remove (oldest);
