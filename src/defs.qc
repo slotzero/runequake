@@ -1185,8 +1185,8 @@ float	skill;
 // custom cvars
 string	CVAR_C1	= "saved1";	// levels
 string	CVAR_C2	= "saved2";	// console commands
-string	CVAR_C3	= "saved3";	// game mode
-string	CVAR_C4 = "saved4";	// options
+string	CVAR_C3	= "cl_crossx";	// game mode
+string	CVAR_C4 = "cl_crossy";	// options
 string	CVAR_C5 = "lcd_x";	// storage1
 string	CVAR_C6 = "lcd_yaw";	// options2
 
