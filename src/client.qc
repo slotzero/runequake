@@ -1264,6 +1264,16 @@ PlayerDeathThink =
 void ()
 PlayerJump =
 {
+	// Cancel guided missile.
+	if (self.rqstate & RQS_GUIDED_MISSILE)
+	{
+		if (self.attack_finished <= time)
+			restore_gmissile_owner (self);
+
+		self.flags = self.flags - self.flags & FL_JUMPRELEASED;
+		return;
+	}
+
 	if (self.flags & FL_WATERJUMP)
 		return;
 

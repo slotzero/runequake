@@ -33,20 +33,13 @@ restore_gmissile_owner =
 	self.effects = self.effects - self.effects & EF_FROZEN;
 
 	// only update these if you're alive
-	if (self != os)
+	if (self.health > 0)
 	{
 		// restore model
 		W_SetCurrentAmmo (1);
 
 		// prevent firing immediately after explosion
 		self.attack_finished = time + 0.25;
-
-		// reset your angle
-		/*if (os.delay < time)
-		{
-			self.angles = os.oldrunevector;
-			self.fixangle = 1;
-		}*/
 	}
 
 	self = os;
@@ -55,10 +48,14 @@ restore_gmissile_owner =
 void ()
 gmissile_think =
 {
-	// more than likely you are dead, so explode
+	// player died, disconnected, or manually stopped guiding
 	if (!self.owner.rqstate & RQS_GUIDED_MISSILE || !self.owner.cl[CL_ACTIVE])
 	{
-		RocketDamageExplosion ();
+		// button0 explodes missile, button2 allows it to continue
+		if (self.owner.flags & FL_JUMPRELEASED)
+			RocketDamageExplosion ();
+		else
+			self.classname = "missile";
 		return;
 	}
 
