@@ -1098,6 +1098,13 @@ W_Attack =
 			return;
 	}
 
+	// Cancel guided missile.
+	if (self.rqstate & RQS_GUIDED_MISSILE)
+	{
+		restore_gmissile_owner (self);
+		return;
+	}
+
 	spawn_protect_off ();
 
 	if (!W_CheckNoAmmo ())
@@ -1260,7 +1267,7 @@ W_Attack =
 			if (MOD_PROTOCOL) // XXX add a server command option to turn on
 			{
 				W_FireRocket ("gmissile");
-				t = 99999999;
+				t = 0.5;
 			}
 			else
 			{
