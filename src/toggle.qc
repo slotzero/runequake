@@ -611,3 +611,12 @@ toggle_vote_hook =
 	s = ftos (storage1);
 	cvar_set_infokey (CVAR_C5, s);
 };
+
+void ()
+set_gamemode_default =
+{
+	if (scratch1 & S1_NO_DEFAULT)
+		return;
+
+	gamemode_default (gamemode);
+};

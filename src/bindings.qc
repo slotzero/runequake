@@ -395,6 +395,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-armor-drop",		IMP_VOTE_ARMOR_DROP);
 	player_vote_impulse_alias ("vote-backpacks",		IMP_VOTE_BACKPACKS);
 	player_vote_impulse_alias ("vote-classic-mega",		IMP_VOTE_CLASSIC_MEGA);
+	player_vote_impulse_alias ("vote-default",		IMP_VOTE_DEFAULT);
 	player_vote_impulse_alias ("vote-exit",			IMP_VOTE_EXIT);
 	player_vote_impulse_alias ("vote-free",			IMP_VOTE_FREE);
 	player_vote_impulse_alias ("vote-heads",		IMP_VOTE_HEADS);
@@ -633,6 +634,7 @@ console_aliases =
 	console_init_cvar_alias ("poweruphatsoff",	CVAR_C2,	C2_POWERUPHATSOFF);
 	console_init_cvar_alias ("votehookon",		CVAR_C2,	C2_VOTEHOOKON);
 	console_init_cvar_alias ("votehookoff",		CVAR_C2,	C2_VOTEHOOKOFF);
+	console_init_cvar_alias ("setdefault",		CVAR_C2,	C2_SETDEFAULT);
 
 	level_aliases ();
 	spawn_custom_aliases ();
@@ -1401,6 +1403,16 @@ check_console_command =
 			}
 		}
 
+		else if (i == C2_SETDEFAULT)
+		{
+			if (scratch1 & S1_NO_DEFAULT)
+				dprint_force ("Remove 'S1_NO_DEFAULT' from 'scratch1' to use this feature\n");
+			else
+			{
+				gamemode_default (gamemode);
+				dprint_force ("Gamemode defaults have been set\n");
+			}
+		}
 		else
 			dprint_force ("Unknown command\n");
 
@@ -1426,7 +1438,7 @@ console_commands =
 	self_sprint (self, "mutelist            muteip              unmuteip            conprint\n");
 	self_sprint (self, "eff                 killstats           stats               help-deathmatch\n");
 	self_sprint (self, "help-teamplay       help-noexit         help-temp1          help-scratch1\n");
-	self_sprint (self, "maxrunes            setafk\n");
+	self_sprint (self, "maxrunes            setafk              setdefaults\n");
 
 	self_sprint (self, "\n");
 	self_sprint (self, "normal              practice            match               arena\n");
@@ -1739,6 +1751,7 @@ help_scratch1 =
 
 	s1 = cvar_infokey ("scratch1");
 
+	self_sprint (self, "         [YOU MUST RESTART THE LEVEL FOR THESE CHANGES TO TAKE EFFECT!]\n");
 	self_sprint (self, "scratch1 = "); self_sprint_float (self, (s1));
 	self_sprint (self, "\n");
 
