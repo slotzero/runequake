@@ -1688,3 +1688,5 @@ float	UPDATE_CLIENT_PINGS;
 float	MOD_PROTOCOL;
 
 .entity viewentity;
+
+float	maybe_bprint_option_hack;
