@@ -55,7 +55,11 @@ gmissile_think =
 		if (self.owner.flags & FL_JUMPRELEASED)
 			RocketDamageExplosion ();
 		else
+		{
 			self.classname = "missile";
+			self.nextthink = time + 5;
+			self.think = SUB_Remove;
+		}
 		return;
 	}
 

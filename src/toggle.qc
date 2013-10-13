@@ -53,7 +53,7 @@ setquad =
 
 	toggle_powerup ("item_artifact_super_damage", options & NO_QUAD);
 
-	if (options & NO_QUAD)
+	if (maybe_bprint_option (options & NO_QUAD, 0, "quad"))
 		options = options - options & NO_QUAD;
 	else
 		options = options | NO_QUAD;
@@ -69,7 +69,7 @@ setpent =
 
 	toggle_powerup ("item_artifact_invulnerability", options & NO_PENT);
 
-	if (options & NO_PENT)
+	if (maybe_bprint_option (options & NO_PENT, 0, "pent"))
 		options = options - options & NO_PENT;
 	else
 		options = options | NO_PENT;
@@ -85,7 +85,7 @@ setring =
 
 	toggle_powerup ("item_artifact_invisibility", options & NO_RING);
 
-	if (options & NO_RING)
+	if (maybe_bprint_option (options & NO_RING, 0, "ring"))
 		options = options - options & NO_RING;
 	else
 		options = options | NO_RING;
@@ -101,7 +101,7 @@ setsuit =
 
 	toggle_powerup ("item_artifact_envirosuit", options & NO_SUIT);
 
-	if (options & NO_SUIT)
+	if (maybe_bprint_option (options & NO_SUIT, 0, "suit"))
 		options = options - options & NO_SUIT;
 	else
 		options = options | NO_SUIT;
@@ -142,7 +142,7 @@ setarmor =
 
 	toggle_armor (options & NO_ARMOR);
 
-	if (options & NO_ARMOR)
+	if (maybe_bprint_option (options & NO_ARMOR, 0, "armor"))
 		options = options - options & NO_ARMOR;
 	else
 		options = options | NO_ARMOR;
@@ -161,7 +161,7 @@ setrotate =
 
 	toggle_armor (1);
 
-	if (options & ARMOR_ROTATE)
+	if (maybe_bprint_option (options & ARMOR_ROTATE, 1, "rotating armor"))
 		options = options - options & ARMOR_ROTATE;
 	else
 		options = options | ARMOR_ROTATE;
@@ -176,7 +176,7 @@ setrunes =
 	local entity e, os;
 	local string s;
 
-	if (options & NO_RUNES)
+	if (maybe_bprint_option (options & NO_RUNES, 0, "runes"))
 		options = options - options & NO_RUNES;
 	else
 		options = options | NO_RUNES;
@@ -218,7 +218,7 @@ setalts =
 	local entity e, os;
 	local string s;
 
-	if (options & NO_ALT_WEAPONS)
+	if (maybe_bprint_option (options & NO_ALT_WEAPONS, 0, "alternate weapons"))
 		options = options - options & NO_ALT_WEAPONS;
 	else
 		options = options | NO_ALT_WEAPONS;
@@ -246,7 +246,7 @@ setshields =
 {
 	local string s;
 
-	if (options & NO_SPAWN_SHIELDS)
+	if (maybe_bprint_option (options & NO_SPAWN_SHIELDS, 0, "spawn shields"))
 		options = options - options & NO_SPAWN_SHIELDS;
 	else
 		options = options | NO_SPAWN_SHIELDS;
@@ -260,7 +260,7 @@ sethookdamage =
 {
 	local string s;
 
-	if (options & NO_HOOK_DAMAGE)
+	if (maybe_bprint_option (options & NO_HOOK_DAMAGE, 0, "hook damage"))
 		options = options - options & NO_HOOK_DAMAGE;
 	else
 		options = options | NO_HOOK_DAMAGE;
@@ -311,7 +311,7 @@ setmega =
 
 	toggle_health ("item_health", 2, options & NO_MEGA);
 
-	if (options & NO_MEGA)
+	if (maybe_bprint_option (options & NO_MEGA, 0, "mega-health boxes"))
 		options = options - options & NO_MEGA;
 	else
 		options = options | NO_MEGA;
@@ -344,7 +344,7 @@ toggle_weapons_stay =
 		e = nextent (e);
 	}
 
-	if (options & WEAPONS_STAY)
+	if (maybe_bprint_option (options & WEAPONS_STAY, 1, "weapons stay"))
 		options = options - options & WEAPONS_STAY;
 	else
 		options = options | WEAPONS_STAY;
@@ -358,7 +358,7 @@ toggle_armor_drop =
 {
 	local string s;
 
-	if (options & NO_DROP_ARMOR)
+	if (maybe_bprint_option (options & NO_DROP_ARMOR, 0, "armor drop"))
 		options = options - options & NO_DROP_ARMOR;
 	else
 	{
@@ -375,7 +375,7 @@ setfaststart =
 {
 	local string s;
 
-	if (options & FASTSTART)
+	if (maybe_bprint_option (options & FASTSTART, 1, "fast match starts"))
 		options = options - options & FASTSTART;
 	else
 		options = options | FASTSTART;
@@ -395,7 +395,7 @@ setbackpacks =
 {
 	local string s;
 
-	if (options & NO_BACKPACKS)
+	if (maybe_bprint_option (options & NO_BACKPACKS, 0, "backpacks"))
 		options = options - options & NO_BACKPACKS;
 	else
 		options = options | NO_BACKPACKS;
@@ -412,7 +412,7 @@ toggle_powerup_drop =
 {
 	local string s;
 
-	if (options & NO_DROP_POWERUP)
+	if (maybe_bprint_option (options & NO_DROP_POWERUP, 0, "powerup drop"))
 		options = options - options & NO_DROP_POWERUP;
 	else
 	{
@@ -430,7 +430,7 @@ toggle_rune_drop =
 	local entity e;
 	local string s;
 
-	if (options & NO_DROP_ON_DEATH)
+	if (maybe_bprint_option (options & NO_DROP_ON_DEATH, 0, "rune dropping"))
 		options = options - options & NO_DROP_ON_DEATH;
 	else
 	{
@@ -454,7 +454,7 @@ toggle_lightning_discharge =
 {
 	local string s;
 
-	if (options & NO_DISCHARGE)
+	if (maybe_bprint_option (options & NO_DISCHARGE, 0, "lightning discharge"))
 		options = options - options & NO_DISCHARGE;
 	else
 		options = options | NO_DISCHARGE;
@@ -494,7 +494,7 @@ setclassicmega =
 		e = find (e, classname, "decay_health");
 	}
 
-	if (options & CLASSIC_MEGA)
+	if (maybe_bprint_option (options & CLASSIC_MEGA, 1, "classic mega"))
 		options = options - options & CLASSIC_MEGA;
 	else
 		options = options | CLASSIC_MEGA;
@@ -522,7 +522,7 @@ toggle_random_spawn =
 {
 	local string s;
 
-	if (options & RANDOM_SPAWN)
+	if (maybe_bprint_option (options & RANDOM_SPAWN, 1, "random spawn"))
 		options = options - options & RANDOM_SPAWN;
 	else
 		options = options | RANDOM_SPAWN;
@@ -557,7 +557,7 @@ toggle_shoot_buttons =
 		e = find (e, netname, "func_button_shootable");
 	}
 
-	if (options & SHOOT_BUTTONS)
+	if (maybe_bprint_option (options & SHOOT_BUTTONS, 1, "shootable buttons"))
 		options = options - options & SHOOT_BUTTONS;
 	else
 		options = options | SHOOT_BUTTONS;
@@ -572,7 +572,7 @@ toggle_powerup_hats =
 	local entity e;
 	local string s;
 
-	if (options & NO_POWERUP_HATS)
+	if (maybe_bprint_option (options & NO_POWERUP_HATS, 0, "powerup hats"))
 	{
 		options = options - options & NO_POWERUP_HATS;
 
@@ -618,11 +618,10 @@ toggle_dualality =
 	local float old_rune;
 	local entity e, oself;
 
-	if (options & NO_DUALALITY)
-	{
+	if (maybe_bprint_option (options & NO_DUALALITY, 0, "dual runes"))
 		options = options - options & NO_DUALALITY;
-
-	} else {
+	else
+	{
 		options = options | NO_DUALALITY;
 
 		e = find (world, classname, "player");
@@ -683,4 +682,38 @@ toggle_dualality =
 			e = find (e, classname, "player");
 		}
 	}
+};
+
+void ()
+set_gamemode_default =
+{
+	if (scratch1 & S1_NO_DEFAULT)
+		return;
+
+	maybe_bprint_option_hack = 1;
+	gamemode_default (gamemode);
+	maybe_bprint_option_hack = 0;
+};
+
+float (float type, float neg, string desc)
+maybe_bprint_option =
+{
+	local string s;
+	local float i;
+
+	if (!maybe_bprint_option_hack)
+		return type;
+
+	i = type;
+	if (neg) i = !type;
+
+	if (i)
+		s = " enabled\n";
+	else
+		s = " disabled\n";
+
+	bprint (desc);
+	bprint (s);
+
+	return type;
 };

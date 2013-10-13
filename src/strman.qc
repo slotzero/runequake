@@ -391,7 +391,7 @@ stof =
 	if (MOD_PROTOCOL)
 		return xstof (s);
 
-	cvar_set ("lcd_x", s);
-	return cvar ("lcd_x");
+	cvar_set ("skill", s);
+	return cvar ("skill");
 };
 -])

@@ -662,11 +662,12 @@ float IMP_VOTE_HEADS		= 33;
 float IMP_VOTE_RANDOM_SPAWN	= 34;
 float IMP_VOTE_SHOOT_BUTTONS	= 35;
 float IMP_VOTE_POWERUP_HATS	= 36;
-float IMP_VOTE_DUALALITY	= 37;
+float IMP_VOTE_DEFAULT		= 37;
+float IMP_VOTE_DUALALITY	= 38;
 
 // extended impulses for votes
 float IMP_VOTE_MIN		= 800;
-float IMP_VOTE_MAX		= 836;
+float IMP_VOTE_MAX		= 838;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;
@@ -1278,6 +1279,7 @@ float	C2_POWERUPHATSON	= 84;
 float	C2_POWERUPHATSOFF	= 85;
 float	C2_VOTEHOOKON		= 86;
 float	C2_VOTEHOOKOFF		= 87;
+float	C2_SETDEFAULT		= 88;
 
 // game mode
 float	gamemode;
@@ -1710,3 +1712,5 @@ float	UPDATE_CLIENT_PINGS;
 float	MOD_PROTOCOL;
 
 .entity viewentity;
+
+float	maybe_bprint_option_hack;
