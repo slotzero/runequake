@@ -1026,6 +1026,10 @@ ShubHat_Spawn =
 void ()
 Rune_Repel =
 {
+	local entity pushee;
+	local vector pushdir, pushforce;
+	local float pushdist, dist, isplayer;
+
 	if (self.runetime > time)
 		return;
 
@@ -1033,31 +1037,28 @@ Rune_Repel =
 	// PUSH_FORCE is either too weak or too strong.
 	self.runetime = self.runetime + 0.1;
 
-	local entity pushee;
-	local vector pushdir, pushforce;
-	local float pushdist, dist;
-
 	dist = 400;
 
 	pushee = findradius (self.origin, dist); // Find the victims.
 	while (pushee)
 	{
-		if ((pushee.health > 0 || !pushee.flags & FL_ONGROUND)
-				&& pushee.solid != SOLID_BSP
-				&& !environmental (pushee)
-				&& (!is_player_e(pushee)
-					|| !isfriend (pushee)))
+		if (pushee.health > 0 || !pushee.flags & FL_ONGROUND)
 		{
-			// XXX This only affects non-players things with
-			// health.  Does that make sense?
-			if (pushee.classname != "player")
-				pushee.flags = pushee.flags - pushee.flags & FL_ONGROUND;
+			isplayer = is_player_e (pushee);
+			if (pushee.solid != SOLID_BSP && (!isplayer || !isfriend (pushee)))
+			{
+				if (!environmental (pushee))
+				{
+					if (pushee.classname != "player")
+						pushee.flags = pushee.flags - pushee.flags & FL_ONGROUND;
 
-			pushdir		= self.origin - pushee.origin;
-			pushdist	= vlen (pushdir);
-			pushdir		= normalize (pushdir);
-			pushforce	= pushdir * PUSH_FORCE * (dist - pushdist);
-			pushee.velocity	= pushee.velocity - pushforce;
+					pushdir		= self.origin - pushee.origin;
+					pushdist	= vlen (pushdir);
+					pushdir		= normalize (pushdir);
+					pushforce	= pushdir * PUSH_FORCE * (dist - pushdist);
+					pushee.velocity	= pushee.velocity - pushforce;
+				}
+			}
 		}
 		pushee = pushee.chain;
 	}

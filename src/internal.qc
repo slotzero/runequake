@@ -1,5 +1,4 @@
-/*  $Id: internal.qc,v 1.42 2008/09/02 06:01:01 slotzero Exp $
-
+/*
     Copyright (C) 2000  J.P. Grossman.
 
     This program is free software; you can redistribute it and/or modify
@@ -544,9 +543,6 @@ SearchHunkThink =
 		SearchHunk();
 	else
 	{
-		lasth = self;
-		self = world;
-
 		// newly spawned server settings
 		if (server_time () < 10)
 			hunk_storage_init ();
@@ -558,7 +554,7 @@ SearchHunkThink =
 		if (gamemode == MODE_MATCH)
 			match_hunk_init ();
 
-		remove (lasth);
+		remove (self);
 		return;
 	}
 
