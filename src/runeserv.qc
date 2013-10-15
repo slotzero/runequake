@@ -1192,10 +1192,12 @@ Rune_Activate =
 void (float tell)
 Rune_Delete =
 {
-        local float best, old_rune;
+        local float best, old_rune, runes;
 
         if (!(self.runetype1 + self.runetype2))
                 return;
+
+        runes = !!self.runetype2;
 
         //Rune_Activate (0, tell);
         best = W_BestWeapon ();
@@ -1265,7 +1267,10 @@ Rune_Delete =
 
         if (!self.aqflags & AQ_QUIET)
         {
-                centerprint (self, "Rune Removed");
+                if (runes)
+                        centerprint (self, "Runes Removed");
+                else
+                        centerprint (self, "Rune Removed");
                 rune_tell_stop (1);
         }
         else

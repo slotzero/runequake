@@ -621,8 +621,8 @@ T_Damage =
 				while (self.runevar_array[RN_WEIRD * %1] < 7)
 				{
 					self.runevar_array[RN_WEIRD * %1] = self.runevar_array[RN_WEIRD * %1] + 1;
-					Spawn_Weird (0);
-					self.runent.nextthink = self.runent.nextthink + 5;
+					Spawn_Weird (2);
+					// self.runent.nextthink = self.runent.nextthink + 5;
 				}
 				self = old_self;
 			}

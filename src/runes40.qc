@@ -774,7 +774,9 @@ Spawn_Weird =
                 temp.velocity = 750 * normalize (v_forward);
                 // Explicitly thrown weird bubbles go further before their velocity
                 // is manipulated.
-                temp.nextthink = time + 2.5;
+
+                // thrown is 2 when killed with weird
+                temp.nextthink = time + 2.5 * thrown;
         }
         else
         {

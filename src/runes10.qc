@@ -319,6 +319,8 @@ Rune_Recall_sprint =
 void ()
 Rune_Recall =
 {
+        local vector o;
+
 	if (!self.runevar_array[RN_RECALL * %1])
 	{
 		Set_Runevector(self, self.origin, RN_RECALL);
@@ -338,8 +340,9 @@ Rune_Recall =
 	HookOff_by_targ ();
 
 	spawn_tfog (self.origin);
-	spawn_tdeath (Get_Runevector(self, RN_RECALL), self);
-	setorigin (self, Get_Runevector(self, RN_RECALL));
+	o = Get_Runevector(self, RN_RECALL);
+	spawn_tdeath (o, self);
+	setorigin (self, o);
 	self.angles = self.pos1;
 	self.fixangle = 1;
 	spawn_tfog (self.origin);
