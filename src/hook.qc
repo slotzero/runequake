@@ -98,6 +98,10 @@ MaybeDropHook =
 	else if (self.enemy.classname == "func_button" && self.enemy.state)
 		dropit = 1;
 
+	// intermission
+	else if (intermission_running)
+		dropit = 1;
+
 	if (HOOK_CAMP_PROT)
 	{
 		if (self.dropdelay && self.dropdelay < time)

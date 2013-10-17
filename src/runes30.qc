@@ -1,5 +1,4 @@
-/*  $Id: runes30.qc,v 1.44 2008/08/21 06:34:43 slotzero Exp $
-
+/*
     Copyright (C) 1996, 1997  Nick 'SiNGE' Bousman.
 
     This program is free software; you can redistribute it and/or modify
@@ -512,8 +511,6 @@ Freeze_Frozen =
 			}
 			stuffcmd (self.runent, CSHIFT_NONE);
 		}
-		else if (self.runent.classname == "shambler_slave")
-			self.runent.runevar = 0;
 
 		sound (self, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
 		remove (self);
@@ -526,7 +523,7 @@ Freeze_Touch =
 	if (other == world)
 		return;
 
-	if (other.classname != "player" && !is_pet_e (other))
+	if (other.classname != "player" && other.classname != "shambler_slave")
 		return;
 
 	if (!other.takedamage || other.health <= 0)
@@ -574,7 +571,6 @@ Freeze_Touch =
 	}
 	else if (other.classname == "shambler_slave")
 	{
-		other.runevar = 2;
 		sprint (other.owner, "Your shambler is frozen in ");
 		sprint (other.owner, self.owner.netname);
 		sprint (other.owner, "'s ice trap.\n");
@@ -898,7 +894,7 @@ Rune_Twalk =
 	{
 		create_te_teleport (self.origin);
 		setorigin (self, trace_endpos - v_forward*60);
-		droptofloor (0, 0);
+		droptofloor ();
 		return;
 	}
 
@@ -1030,6 +1026,10 @@ ShubHat_Spawn =
 void ()
 Rune_Repel =
 {
+	local entity pushee;
+	local vector pushdir, pushforce;
+	local float pushdist, dist, isplayer;
+
 	if (self.runetime > time)
 		return;
 
@@ -1037,31 +1037,28 @@ Rune_Repel =
 	// PUSH_FORCE is either too weak or too strong.
 	self.runetime = self.runetime + 0.1;
 
-	local entity pushee;
-	local vector pushdir, pushforce;
-	local float pushdist, dist;
-
 	dist = 400;
 
 	pushee = findradius (self.origin, dist); // Find the victims.
 	while (pushee)
 	{
-		if ((pushee.health > 0 || !pushee.flags & FL_ONGROUND)
-				&& pushee.solid != SOLID_BSP
-				&& !environmental (pushee)
-				&& (!is_player_e(pushee)
-					|| !isfriend (pushee)))
+		if (pushee.health > 0 || !pushee.flags & FL_ONGROUND)
 		{
-			// XXX This only affects non-players things with
-			// health.  Does that make sense?
-			if (pushee.classname != "player")
-				pushee.flags = pushee.flags - pushee.flags & FL_ONGROUND;
+			isplayer = is_player_e (pushee);
+			if (pushee.solid != SOLID_BSP && (!isplayer || !isfriend (pushee)))
+			{
+				if (!environmental (pushee))
+				{
+					if (pushee.classname != "player")
+						pushee.flags = pushee.flags - pushee.flags & FL_ONGROUND;
 
-			pushdir		= self.origin - pushee.origin;
-			pushdist	= vlen (pushdir);
-			pushdir		= normalize (pushdir);
-			pushforce	= pushdir * PUSH_FORCE * (dist - pushdist);
-			pushee.velocity	= pushee.velocity - pushforce;
+					pushdir		= self.origin - pushee.origin;
+					pushdist	= vlen (pushdir);
+					pushdir		= normalize (pushdir);
+					pushforce	= pushdir * PUSH_FORCE * (dist - pushdist);
+					pushee.velocity	= pushee.velocity - pushforce;
+				}
+			}
 		}
 		pushee = pushee.chain;
 	}

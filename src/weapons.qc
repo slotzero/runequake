@@ -659,7 +659,7 @@ W_FireLightning =
 	else
 		traceline (org, org + v_forward*600, TRUE, self);
 	create_te_lightning (TE_LIGHTNING2, self, org, trace_endpos);
-	LightningDamage (self.origin, trace_endpos + v_forward*4, self, 30, "lightning");
+	LightningDamage (org, trace_endpos + v_forward*4, self, 30, "lightning");
 
 	// efficiency
 	self.cell_dmg_max = self.cell_dmg_max + 30;
@@ -1098,6 +1098,13 @@ W_Attack =
 			return;
 	}
 
+	// Cancel guided missile.
+	if (self.rqstate & RQS_GUIDED_MISSILE)
+	{
+		restore_gmissile_owner (self);
+		return;
+	}
+
 	spawn_protect_off ();
 
 	if (!W_CheckNoAmmo ())
@@ -1260,7 +1267,7 @@ W_Attack =
 			if (MOD_PROTOCOL) // XXX add a server command option to turn on
 			{
 				W_FireRocket ("gmissile");
-				t = 99999999;
+				t = 0.5;
 			}
 			else
 			{

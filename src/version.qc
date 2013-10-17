@@ -1,5 +1,4 @@
-/*  $Id: version.qc,v 1.314 2013-05-02 18:35:07 slotzero Exp $
-
+/*
     Copyright (C) 1998-2001  Roderick Schertler.
 
     This program is free software; you can redistribute it and/or modify
@@ -17,4 +16,4 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-string version = "1.3.86";
+string version = "1.3.93";

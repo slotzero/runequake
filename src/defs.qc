@@ -651,10 +651,11 @@ float IMP_VOTE_HEADS		= 33;
 float IMP_VOTE_RANDOM_SPAWN	= 34;
 float IMP_VOTE_SHOOT_BUTTONS	= 35;
 float IMP_VOTE_POWERUP_HATS	= 36;
+float IMP_VOTE_DEFAULT		= 37;
 
 // extended impulses for votes
 float IMP_VOTE_MIN		= 800;
-float IMP_VOTE_MAX		= 836;
+float IMP_VOTE_MAX		= 837;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;
@@ -1173,8 +1174,8 @@ float	skill;
 // custom cvars
 string	CVAR_C1	= "saved1";	// levels
 string	CVAR_C2	= "saved2";	// console commands
-string	CVAR_C3	= "saved3";	// game mode
-string	CVAR_C4 = "saved4";	// options
+string	CVAR_C3	= "cl_crossx";	// game mode
+string	CVAR_C4 = "cl_crossy";	// options
 string	CVAR_C5 = "lcd_x";	// storage1
 string	CVAR_C6 = "lcd_yaw";	// options2
 
@@ -1266,6 +1267,7 @@ float	C2_POWERUPHATSON	= 84;
 float	C2_POWERUPHATSOFF	= 85;
 float	C2_VOTEHOOKON		= 86;
 float	C2_VOTEHOOKOFF		= 87;
+float	C2_SETDEFAULT		= 88;
 
 // game mode
 float	gamemode;
@@ -1563,7 +1565,7 @@ void	()					traceoff	= #30;
 void	(entity e)				eprint		= #31;	// prints an entire edict
 float	(float yaw, float dist)			walkmove	= #32;	// returns TRUE or FALSE
 //								= #33;	[removed]
-float	(float yaw, float dist)			droptofloor	= #34;	// TRUE if landed on floor
+float	()					droptofloor	= #34;	// TRUE if landed on floor
 void	(float style, string value)		lightstyle	= #35;
 float	(float v)				rint		= #36;	// round to nearest int
 float	(float v)				floor		= #37;	// largest integer <= v
@@ -1697,3 +1699,5 @@ float	UPDATE_CLIENT_PINGS;
 float	MOD_PROTOCOL;
 
 .entity viewentity;
+
+float	maybe_bprint_option_hack;

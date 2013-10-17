@@ -32,24 +32,14 @@ restore_gmissile_owner =
 	self.rqstate = self.rqstate - self.rqstate & RQS_GUIDED_MISSILE;
 	self.effects = self.effects - self.effects & EF_FROZEN;
 
-	// reset player view
-	self.view_ofs = PLAYER_VIEW_OFFSET;
-
 	// only update these if you're alive
-	if (self != os)
+	if (self.health > 0)
 	{
 		// restore model
 		W_SetCurrentAmmo (1);
 
 		// prevent firing immediately after explosion
 		self.attack_finished = time + 0.25;
-
-		// reset your angle
-		/*if (os.delay < time)
-		{
-			self.angles = os.runevector;
-			self.fixangle = 1;
-		}*/
 	}
 
 	self = os;
@@ -58,10 +48,18 @@ restore_gmissile_owner =
 void ()
 gmissile_think =
 {
-	// more than likely you are dead, so explode
+	// player died, disconnected, or manually stopped guiding
 	if (!self.owner.rqstate & RQS_GUIDED_MISSILE || !self.owner.cl[CL_ACTIVE])
 	{
-		RocketDamageExplosion ();
+		// button0 explodes missile, button2 allows it to continue
+		if (self.owner.flags & FL_JUMPRELEASED)
+			RocketDamageExplosion ();
+		else
+		{
+			self.classname = "missile";
+			self.nextthink = time + 5;
+			self.think = SUB_Remove;
+		}
 		return;
 	}
 
@@ -115,7 +113,4 @@ W_FireGuidedMissile =
 
 	// spawn a rocket hat
 	Hat_Spawn (self, "progs/missile.mdl", '-4 1 32', VEC_ORIGIN, 16);
-
-	// center view on rocket, reduces PVS stickyness.
-	self.view_ofs		= VEC_ORIGIN;
 };
