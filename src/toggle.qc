@@ -627,15 +627,12 @@ float (float type, float neg, string desc)
 maybe_bprint_option =
 {
 	local string s;
-	local float i;
 
 	if (!maybe_bprint_option_hack)
 		return type;
 
-	i = type;
-	if (neg) i = !type;
-
-	if (i)
+	// parens needed
+	if (!(!type) - !(!neg))
 		s = " enabled\n";
 	else
 		s = " disabled\n";
