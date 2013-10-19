@@ -21,7 +21,7 @@ have_hook_e =
 {
 	return e.runetype == RN_HOOK
 			|| e.aqflags & AQ_HOOK
-			|| storage1 & HOOK_MASK == FREE_HOOK;
+			|| options2 & HOOK_MASK == FREE_HOOK;
 };
 
 float ()
@@ -35,7 +35,7 @@ hook_damage_e =
 {
 	if (e.runetype == RN_HOOK)	return HOOK_DAMAGE_RUNE;
 	else if (e.aqflags & AQ_HOOK)	return HOOK_DAMAGE_LITHIUM;
-	else if (storage1 & HOOK_MASK == FREE_HOOK)
+	else if (options2 & HOOK_MASK == FREE_HOOK)
 					return HOOK_DAMAGE_FREE;
 	else				return 0;
 };
@@ -432,19 +432,19 @@ toggle_free_hook =
 {
 	local string new;
 
-	if (!storage1 & HOOK_MASK || storage1 & HOOK_MASK == HOOK_MASK)
+	if (!options2 & HOOK_MASK || options2 & HOOK_MASK == HOOK_MASK)
 	{
-		if (storage1 & HOOK_MASK == HOOK_MASK)
-			storage1 = storage1 - storage1 & LITHIUM_HOOK;
+		if (options2 & HOOK_MASK == HOOK_MASK)
+			options2 = options2 - options2 & LITHIUM_HOOK;
 		else
-			storage1 = storage1 | FREE_HOOK;
+			options2 = options2 | FREE_HOOK;
 	}
 	else
 	{
-		if (storage1 & FREE_HOOK)
-			storage1 = storage1 - storage1 & FREE_HOOK;
-		if (storage1 & LITHIUM_HOOK)
-			storage1 = storage1 - storage1 & LITHIUM_HOOK;
+		if (options2 & FREE_HOOK)
+			options2 = options2 - options2 & FREE_HOOK;
+		if (options2 & LITHIUM_HOOK)
+			options2 = options2 - options2 & LITHIUM_HOOK;
 	}
 
 	// remove lithium hooks from level
@@ -456,22 +456,22 @@ toggle_free_hook =
 	// remove rune
 	remove_hook_rune_from_players ();
 
-	dprint ("new_storage1(");
-	dprint_float (storage1);
+	dprint ("new_options2(");
+	dprint_float (options2);
 	dprint (")\n");
 
-	new = ftos (storage1);
+	new = ftos (options2);
 	cvar_set_infokey (CVAR_C5, new);
 };
 
 void ()
 free_hook =
 {
-	if (storage1 & LITHIUM_HOOK)
-		storage1 = storage1 - storage1 & LITHIUM_HOOK;
+	if (options2 & LITHIUM_HOOK)
+		options2 = options2 - options2 & LITHIUM_HOOK;
 
-	if (storage1 & FREE_HOOK)
-		storage1 = storage1 - storage1 & FREE_HOOK;
+	if (options2 & FREE_HOOK)
+		options2 = options2 - options2 & FREE_HOOK;
 
 	toggle_free_hook ();
 };
@@ -481,19 +481,19 @@ lithium_hook =
 {
 	local string new;
 
-	if (storage1 & FREE_HOOK)
-		storage1 = storage1 - storage1 & FREE_HOOK;
+	if (options2 & FREE_HOOK)
+		options2 = options2 - options2 & FREE_HOOK;
 
-	if (!storage1 & LITHIUM_HOOK)
-		storage1 = storage1 | LITHIUM_HOOK;
+	if (!options2 & LITHIUM_HOOK)
+		options2 = options2 | LITHIUM_HOOK;
 
 	remove_hook_rune_from_players ();
 
-	dprint ("new_storage1(");
-	dprint_float (storage1);
+	dprint ("new_options2(");
+	dprint_float (options2);
 	dprint (")\n");
 
-	new = ftos (storage1);
+	new = ftos (options2);
 	cvar_set_infokey (CVAR_C5, new);
 };
 
@@ -516,7 +516,7 @@ hook_type =
 void (float type)
 set_hook =
 {
-	if (type != hook_type (storage1))
+	if (type != hook_type (options2))
 	{
 		if (type == 0)
 			toggle_free_hook ();

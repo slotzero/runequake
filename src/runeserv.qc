@@ -1311,7 +1311,7 @@ Rune_Spawn =
 float (float type)
 Rune_Type_Allowed =
 {
-	if (type == RN_HOOK && storage1 & HOOK_MASK)		return 0;
+	if (type == RN_HOOK && options2 & HOOK_MASK)		return 0;
 	if (type == RN_SUCK && sv_gravity != DEFAULT_GRAVITY)	return 0;
 	if (type == RN_SELFPRES && teamplay & TEAM_SELF_HEALTH_PROT
 			&& teamplay & TEAM_SELF_ARMOR_PROT)	return 0;
@@ -1381,7 +1381,7 @@ spawn_runes =
 				Rune_SpawnAll (1);
 		}
 
-		if (storage1 & HOOK_MASK == LITHIUM_HOOK)
+		if (options2 & HOOK_MASK == LITHIUM_HOOK)
 		{
 			i = count_players (0);
 			i = ceil (i / 3);

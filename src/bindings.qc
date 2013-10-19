@@ -516,9 +516,9 @@ custom_aliases_think =
 
 	if (self.count > 2)
 	{
-		options = options | CONSOLE_ALIASES;
-		s = ftos (options);
-		cvar_set_infokey (CVAR_C4, s);
+		storage = storage | CONSOLE_ALIASES;
+		s = ftos (storage);
+		cvar_set_infokey (CVAR_C6, s);
 		remove (self);
 		return;
 	}
@@ -1252,7 +1252,7 @@ check_console_command =
 
 		else if (i == C2_FREEHOOKON)
 		{
-			if (hook_type (storage1) != 1)
+			if (hook_type (options2) != 1)
 			{
 				dprint_force ("Free hook enabled\n");
 				free_hook ();
@@ -1261,7 +1261,7 @@ check_console_command =
 
 		else if (i == C2_LITHHOOKON)
 		{
-			if (hook_type (storage1) != 2)
+			if (hook_type (options2) != 2)
 			{
 				dprint_force ("Lithium hook enabled\n");
 				lithium_hook ();
@@ -1270,7 +1270,7 @@ check_console_command =
 
 		else if (i == C2_HOOKOFF)
 		{
-			if (hook_type (storage1))
+			if (hook_type (options2))
 			{
 				dprint_force ("Hook disabled\n");
 				toggle_free_hook ();
@@ -1351,12 +1351,12 @@ check_console_command =
 			else
 			{
 				if (skill == 0) skill = 31; // zero bit hack
-				if (storage1 & SETAFK_MASK != skill)
+				if (storage & SETAFK_MASK != skill)
 				{
-					storage1 = storage1 - storage1 & SETAFK_MASK;
-					storage1 = storage1 | (skill * SETAFK_MULTIPLIER);
-					s = ftos (storage1);
-					cvar_set_infokey (CVAR_C5, s);
+					storage = storage - storage & SETAFK_MASK;
+					storage = storage | (skill * SETAFK_MULTIPLIER);
+					s = ftos (storage);
+					cvar_set_infokey (CVAR_C6, s);
 				}
 				dprint_force ("Setafk set to ");
 				if (skill == 31) skill = 0; // zero bit hack
@@ -1387,7 +1387,7 @@ check_console_command =
 
 		else if (i == C2_VOTEHOOKON)
 		{
-			if (storage1 & VOTE_HOOK_DISABLED)
+			if (options2 & VOTE_HOOK_DISABLED)
 			{
 				dprint_force ("Vote-hook enabled\n");
 				toggle_vote_hook ();
@@ -1396,7 +1396,7 @@ check_console_command =
 
 		else if (i == C2_VOTEHOOKOFF)
 		{
-			if (!storage1 & VOTE_HOOK_DISABLED)
+			if (!options2 & VOTE_HOOK_DISABLED)
 			{
 				dprint_force ("Vote-hook disabled\n");
 				toggle_vote_hook ();
@@ -1622,7 +1622,7 @@ help_options =
 	if (options & MODE_LOCKED)
 		self_sprint (self, "\b (locked)");
 
-	self_sprint (self, "\n\bhook          ");	self_sprint_boolean (self, storage1 & HOOK_MASK);
+	self_sprint (self, "\n\bhook          ");	self_sprint_boolean (self, options2 & HOOK_MASK);
 	self_sprint (self, "\b  hook-damage   ");	self_sprint_boolean (self, !options & NO_HOOK_DAMAGE);
 	self_sprint (self, "\n\bquad          ");	self_sprint_boolean (self, !options & NO_QUAD);
 	self_sprint (self, "\b  pent          ");	self_sprint_boolean (self, !options & NO_PENT);
