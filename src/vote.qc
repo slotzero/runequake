@@ -78,7 +78,7 @@ vote_team_disabled =
 float (float tell)
 vote_hook_disabled =
 {
-	if (storage1 & VOTE_HOOK_DISABLED || VOTE_HOOK_PERCENTAGE <= 0 || VOTE_HOOK_PERCENTAGE > 1)
+	if (options2 & VOTE_HOOK_DISABLED || VOTE_HOOK_PERCENTAGE <= 0 || VOTE_HOOK_PERCENTAGE > 1)
 	{
 		if (tell)
 			self_sprint (self, "Hook voting is disabled\n");
@@ -515,7 +515,7 @@ vote =
 		e.think1	= toggle_free_hook;
 		e.noise2	= " free hook ";
 
-		i = hook_type (storage1);
+		i = hook_type (options2);
 		if (i)
 		{
 			if (i == 2)
@@ -533,7 +533,7 @@ vote =
 		e.noise1	= "enable";
 		e.noise2	= " free hook ";
 
-		if (hook_type (storage1) == 1)
+		if (hook_type (options2) == 1)
 		{
 			if (!cancel)
 				self_sprint (self, "free hook already enabled\n");
@@ -548,7 +548,7 @@ vote =
 		e.noise1	= "enable";
 		e.noise2	= " lithium hook ";
 
-		if (hook_type (storage1) == 2)
+		if (hook_type (options2) == 2)
 		{
 			if (!cancel)
 				self_sprint (self, "lithium hook already enabled\n");
@@ -747,7 +747,7 @@ vote =
 		else
 			e.noise1	= "disable";
 
-		i = hook_type (storage1);
+		i = hook_type (options2);
 		if ((i == 1 && !HOOK_DAMAGE_FREE)
 				|| (i == 2 && !HOOK_DAMAGE_LITHIUM)
 				|| (!i && !HOOK_DAMAGE_RUNE))

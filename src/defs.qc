@@ -1176,8 +1176,8 @@ string	CVAR_C1	= "saved1";	// levels
 string	CVAR_C2	= "saved2";	// console commands
 string	CVAR_C3	= "cl_crossx";	// game mode
 string	CVAR_C4 = "cl_crossy";	// options
-string	CVAR_C5 = "lcd_x";	// storage1
-string	CVAR_C6 = "lcd_yaw";	// options2
+string	CVAR_C5 = "lcd_x";	// options2
+string	CVAR_C6 = "lcd_yaw";	// storage
 
 // console commands
 float	C2_UPDATE_BINDINGS	= 1;
@@ -1303,22 +1303,23 @@ float	NO_DISCHARGE		= 524288;
 float	RANDOM_SPAWN		= 1048576;
 float	SHOOT_BUTTONS		= 2097152;
 float	NO_POWERUP_HATS		= 4194304;
-float	CONSOLE_ALIASES		= 8388608;
+//float	[FREE]			= 8388608;
 
-// storage1
-float storage1;
+// options2
+float	options2;
 float	FREE_HOOK		= 1;
 float	LITHIUM_HOOK		= 2;
 float	HOOK_MASK		= 3;
 float	VOTE_HOOK_DISABLED	= 4;
+
+// storage
+float storage;
+float	CONSOLE_ALIASES		= 1;
 float	AFK_TIME;
 float	SETAFK_MULTIPLIER	= 8;		// starting bit
 float	SETAFK_MASK		= 248;		// 8, 16, 32, 64, 128 (5 bits)
 float	DROP_DELAY_MUTLIPLIER	= 256;		// starting bit
 float	DROP_DELAY_MASK		= 65280;	// 256, 512, 1024, 2048, 4096, 8192, 16384, 32768 (8 bits)
-
-// options2
-float	options2;
 
 IN_QW([-
 //
