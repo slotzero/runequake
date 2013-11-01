@@ -452,8 +452,7 @@ GetHunkName =
 	(*p)[%1] = (*h)[%3];
 };
 
-float (float h)
-PrintHunk =
+float (float h) PrintHunk =
 {
 	local float samecount;
 	local float samesize;
@@ -462,7 +461,7 @@ PrintHunk =
 	samecount = 0;
 	samesize = 0;
 
-	// dprint("--- HUNK ---\n");
+	dprint("--- HUNK ---\n");
 
 	h2 = h;
 	while (1)
@@ -477,10 +476,8 @@ PrintHunk =
 		{
 			if (samecount)
 			{
-				if (prevname == "context")
-					HUNK_CONTEXT_MAX = samesize;
-				// dprint(ftos(samecount), " x ", prevname, " : ");
-				// dprint(ftos(samesize / %1), "\n");
+				dprint(ftos(samecount), " x ", prevname, " : ");
+				dprint(ftos(samesize / %1), "\n");
 			}
 			samecount = 1;
 			samesize = (*h)[%1];
@@ -490,7 +487,6 @@ PrintHunk =
 
 		h = AddInt(h, (*h)[%1]);
 	}
-	return FALSE;
 };
 
 void ()
@@ -519,11 +515,14 @@ SearchHunk =
 				if (hname == "iplog")
 					HUNK_IPLOG = SubInt (4 * i, self.count * %131072);
 				else if (hname == "context")
+				{
 					HUNK_CONTEXT = SubInt (4 * i, self.count * %131072);
+					HUNK_CONTEXT_MAX = currh[i + %1];
+				}
 				else if (hname == "zone")
 				{
 					HUNK_ZONE = SubInt (4 * i, self.count * %131072);
-					PrintHunk(&lasth);
+					//PrintHunk(&lasth);
 					dprint("Found start of hunk in ");
 					dprint(ftos(self.count), " frames\n");
 					lasth = *0;

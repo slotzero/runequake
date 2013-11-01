@@ -19,7 +19,10 @@
 
 /*	HUNK CONTEXT ALLOCATION [quake: 4096 / proquake: 16384]
 
-	%0 - %9		= [DO NOT USE]
+	// SET BY ENGINE -- DO NOT MODIFY
+	%0		= HUNK_SENTINAL
+	%1		= CON_TEXTSIZE
+	%2 - %3		= "context"
 
 	// hunked.qc
 	%10		= float time
