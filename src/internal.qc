@@ -487,6 +487,7 @@ float (float h) PrintHunk =
 
 		h = AddInt(h, (*h)[%1]);
 	}
+	return FALSE;
 };
 
 void ()

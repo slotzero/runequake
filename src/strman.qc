@@ -1,6 +1,5 @@
-/*  $Id: strman.qc,v 1.53 2008/09/03 08:52:11 slotzero Exp $
-
-    Copyright (C) 2001, 2002  David 'Slot Zero' Roberts.
+/*
+    Copyright (C) 2001-2013  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,6 +25,12 @@ string STRING_256 =	"                                                           
 			"                                                                "
 			"                                                                "
 			"                                                               ";
+
+// allocate_string_size() [source string -- do not overwrite!]
+string STRING_257 =	"                                                                "
+			"                                                                "
+			"                                                                "
+			"                                                                ";
 
 // PlayerPreThink()
 string READY_NAME_16 =	"READY_NAME_1601":"READY_NAME_1602":"READY_NAME_1603":"READY_NAME_1604":
@@ -55,7 +60,7 @@ strlen_qc =
 		i = i + %1;
 	}
 
-	dprint_force ("strlen_qc(): string too big\n");
+	dprint ("strlen_qc(): string too big\n");
 
 	return 0;
 };
@@ -68,14 +73,11 @@ strlen_qc =
 float (string s)
 strlen =
 {
-	IN_POQ([-
-		if (MOD_PROTOCOL)
-		{
-			return xstof (s, 1);
-		}
-	-], [-
+	IN_QW([-
 		return strlen_qc (s);
 	-])
+	if (MOD_PROTOCOL)
+		return xstof (s, 1);
 
 	strcpy (STRING_256, s);
 	return strlen_qc (STRING_256);
@@ -89,69 +91,54 @@ float ALLOCATE_HUNK_MAX		= %4000;
 
 float ALLOCATE_HUNK, ALLOCATE_HUNK_NEXT;
 
-void (float bytes)
+float (float bytes)
 allocate_hunk =
 {
+	local float f, dword;
+
+	f = bytes / 4;
+	dword = ceil (f);
+	if (dword == f)
+		dword = dword + 1;
+	dword = dword * %1;
+
 	ALLOCATE_HUNK = ALLOCATE_HUNK_NEXT;
 	if (ALLOCATE_HUNK_NEXT)
-		ALLOCATE_HUNK_NEXT = ALLOCATE_HUNK_NEXT + (ceil (bytes / 4) * %1) + %1;
+		ALLOCATE_HUNK_NEXT = ALLOCATE_HUNK_NEXT + dword;
 
 	if (!ALLOCATE_HUNK_NEXT || ALLOCATE_HUNK_NEXT > ALLOCATE_HUNK_MAX)
 	{
 		ALLOCATE_HUNK = ALLOCATE_HUNK_BASE;
-		ALLOCATE_HUNK_NEXT = ALLOCATE_HUNK_BASE + (ceil (bytes / 4) * %1) + %1;
+		ALLOCATE_HUNK_NEXT = ALLOCATE_HUNK_BASE + dword;
 	}
+
+	return ALLOCATE_HUNK;
 };
 
 string (float bytes)
 allocate_string_size =
 {
 	local entity array;
-	local float p, i, dword;
+	local float p, alloc_hunk;
 
 	if (bytes < 1 || bytes > 255)
 	{
-		dprint_force ("allocate_string_size(): bytes < 1 or bytes > 255\n");
+		dprint ("allocate_string_size(): bytes < 1 or bytes > 255\n");
 		return string_null;
 	}
 
-	allocate_hunk (bytes);
-	array = Get_Hunk (HUNK_CONTEXT, ALLOCATE_HUNK);
+	alloc_hunk = allocate_hunk (bytes);
+	array = Get_Hunk (HUNK_CONTEXT, alloc_hunk);
 	if (!array)
 	{
-		dprint_force ("allocate_string_size(): array is null\n");
+		dprint ("allocate_string_size(): array is null\n");
 		return string_null;
 	}
 
-	p = AddInt (&"    ":"  ", PSTRING_TO_PQUAKEC);
-	dword = floor (bytes / 4) * %1;
-	for (i = %0; i < dword; i = i + %1)
-		array[i] = (*p)[%0];
+	p = AddInt (&array, PQUAKEC_TO_PSTRING);
+	strcpy (@p, STRING_257[(256 - bytes) * %1]);
 
-	if (bytes > 3)
-	{
-		bytes = bytes / 4;
-		bytes = bytes - floor (bytes);
-
-		if (bytes == 0.25)
-			bytes = 1;
-		else if (bytes == 0.50)
-			bytes = 2;
-		else if (bytes == 0.75)
-			bytes = 3;
-		else
-			bytes = 0;
-	}
-
- 	if (bytes)
-	{
-		p = AddInt (p, (4 - bytes) * %1);
-		array[i] = (*p)[%0];
- 	}
-	else
-		array[i] = (*p)[%1];
-
-	return (@AddInt (&array, PQUAKEC_TO_PSTRING));
+	return @p;
 };
 
 string (string s)
@@ -168,32 +155,29 @@ allocate_string =
 string (string s1, string s2)
 strcat =
 {
-	local entity hunk;
-	local float L1, L2, total, alloc_hunk;
+	local float p, len1, len2, total;
+	local string dst;
 
-	if (s1)
-	{
-		L1 = strlen (s1);
-		if (!L1) s1 = string_null;
-	}
-	if (s2)
-	{
-		L2 = strlen (s2);
-		if (!L2) s2 = string_null;
-	}
+	len1 = strlen (s1);
+	if (!len1) s1 = string_null;
 
-	total = L1 + L2;
+	len2 = strlen (s2);
+	if (!len2) s2 = string_null;
+
+	total = len1 + len2;
 	if (!total) return string_null;
 
-	allocate_hunk (total);
-	alloc_hunk = ALLOCATE_HUNK;
-	hunk = Get_Hunk (HUNK_CONTEXT, alloc_hunk);
-	if (!hunk) return string_null;
+	dst = allocate_string_size (total);
+	if (!dst) return string_null;
 
-	if (s1) { Write_Hunk_String_e (hunk, s1); }
-	if (s2) { hunk = *AddInt (L1 * %1, &hunk); Write_Hunk_String_e (hunk, s2); }
+	if (s1) strcpy (dst, s1);
+	if (s2)
+	{
+		p = AddInt(AddInt(&dst, PSTRING_TO_PQUAKEC), len1 * %1);
+		strcpy (@AddInt(p, PQUAKEC_TO_PSTRING), s2);
+	}
 
-	return Read_Hunk_String (HUNK_CONTEXT, alloc_hunk);
+	return dst;
 };
 
 //
@@ -208,7 +192,7 @@ string (string expr, float offset, float length)
 substr =
 {
 	local entity hunk;
-	local float i;
+	local float i, alloc_hunk;
 	local string s;
 
 	if (offset < 0)
@@ -228,8 +212,8 @@ substr =
 	if (offset > i)
 		return string_null;
 
-	allocate_hunk (i);
-	hunk = Get_Hunk (HUNK_CONTEXT, ALLOCATE_HUNK);
+	alloc_hunk = allocate_hunk (i);
+	hunk = Get_Hunk (HUNK_CONTEXT, alloc_hunk);
 	if (!hunk)
 		return string_null;
 
@@ -284,8 +268,7 @@ substr_replace =
 		}
 	}
 
-	allocate_hunk (L1 + L2);
-	alloc_hunk = ALLOCATE_HUNK;
+	alloc_hunk = allocate_hunk (L1 + L2);
 	hunk = Get_Hunk (HUNK_CONTEXT, alloc_hunk);
 	if (!hunk)
 		return string_null;
