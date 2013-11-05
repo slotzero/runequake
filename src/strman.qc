@@ -43,7 +43,7 @@ string READY_NAME_16 =	"READY_NAME_1601":"READY_NAME_1602":"READY_NAME_1603":"RE
 //-------------------------------------------------------------------
 
 //
-//  S T R I N G _ Q C
+//  S T R L E N _ Q C
 //
 //  Return the length of a string (&s must be positive and less than 2^24)
 //
@@ -155,7 +155,8 @@ allocate_string =
 string (string s1, string s2)
 strcat =
 {
-	local float p, len1, len2, total;
+	local entity hunk;
+	local float p, len1, len2, total, alloc_hunk;
 	local string dst;
 
 	len1 = strlen (s1);
@@ -167,14 +168,16 @@ strcat =
 	total = len1 + len2;
 	if (!total) return string_null;
 
-	dst = allocate_string_size (total);
-	if (!dst) return string_null;
+	alloc_hunk = allocate_hunk (total);
+	hunk = Get_Hunk (HUNK_CONTEXT, alloc_hunk);
+	if (!hunk) return string_null;
 
+	dst = @AddInt(&hunk, PQUAKEC_TO_PSTRING);
 	if (s1) strcpy (dst, s1);
 	if (s2)
 	{
-		p = AddInt(AddInt(&dst, PSTRING_TO_PQUAKEC), len1 * %1);
-		strcpy (@AddInt(p, PQUAKEC_TO_PSTRING), s2);
+		p = AddInt (&dst, len1 * %1);
+		strcpy (@p, s2);
 	}
 
 	return dst;
@@ -187,13 +190,12 @@ strcat =
 //  at 'offset' characters from the front of the string.  If 'length' is greater
 //  than the remaining length of 'expr', everything to the end of the string is
 //  returned.
-
+//
 string (string expr, float offset, float length)
 substr =
 {
 	local entity hunk;
-	local float i, alloc_hunk;
-	local string s;
+	local float i, p1, p2, alloc_hunk;
 
 	if (offset < 0)
 		return string_null;
@@ -202,12 +204,7 @@ substr =
 		return string_null;
 
 	i = strlen (expr);
-	if (!i)
-	{
-		if (expr)
-			dprint ("substr(): string too big\n");
-		return string_null;
-	}
+	if (!i) return string_null;
 
 	if (offset > i)
 		return string_null;
@@ -217,17 +214,17 @@ substr =
 	if (!hunk)
 		return string_null;
 
-	Write_Hunk_String_e (hunk, expr);
-	hunk = *AddInt (&hunk, offset * %1);
-	s = Read_Hunk_String_e (hunk);
+	p1 = AddInt (&hunk, PQUAKEC_TO_PSTRING);
+	strcpy (@p1, expr);
 
+	p1 = AddInt (p1, offset * %1);
 	if (length >= (i - offset))
-		return s;
+		return @p1;
 
- 	hunk = *AddInt (&hunk, length * %1);
-	Write_Hunk_String_e (hunk, string_null);
+	p2 = AddInt (p1, length * %1);
+	strcpy (@p2, string_null);
 
-	return s;
+	return @p1;
 };
 
 //
@@ -241,8 +238,7 @@ string (string expr, float offset, float length, string replace)
 substr_replace =
 {
 	local entity hunk;
-	local float L1, L2, alloc_hunk;
-	local string s;
+	local float p1, p2, p3, len1, len2, alloc_hunk;
 
 	if (offset < 0)
 		return string_null;
@@ -250,51 +246,41 @@ substr_replace =
 	if (length < 0)
 		return string_null;
 
-	L1 = strlen (expr);
-	if (!L1)
-	{
-		if (expr)
-			dprint ("substr_replace(expr): string too big\n");
+	len1 = strlen (expr);
+	if (!len1)
 		return string_null;
-	}
 
-	if (replace)
+	//  'if (replace)' always true when 'replace' not defined in qc
+	if (replace != string_null)
 	{
-		L2 = strlen (replace);
-		if (!L2)
-		{
-			dprint ("substr_replace(replace): string too big\n");
+		len2 = strlen (replace);
+		if (!len2)
 			return string_null;
-		}
 	}
 
-	alloc_hunk = allocate_hunk (L1 + L2);
+	alloc_hunk = allocate_hunk (len1 + len2);
 	hunk = Get_Hunk (HUNK_CONTEXT, alloc_hunk);
 	if (!hunk)
 		return string_null;
 
-	Write_Hunk_String_e (hunk, expr);
+	p1 = p3 = AddInt (&hunk, PQUAKEC_TO_PSTRING);
+	strcpy (@p1, expr);
 
-	if (offset)
-	{
-		if (offset > L1)
-			offset = L1;
-		hunk = *AddInt (&hunk, offset * %1);
-	}
+	if (offset > len1) offset = len1;
+	p1 = AddInt (p1, offset * %1);
 
-	if (replace)
-	{
-		Write_Hunk_String_e (hunk, replace);
-		hunk = *AddInt (L2 * %1, &hunk);
-	}
+	if (replace != string_null) strcpy (@p1, replace);
+	p1 = AddInt (p1, len2 * %1);
 
-	if (offset + length < L1)
-		L1 = offset + length;
+	if (offset + length > len1)
+		length = len1 - offset;
 
-	s = @AddInt (AddInt (AddInt (&expr, PSTRING_TO_PQUAKEC), L1 * %1), PQUAKEC_TO_PSTRING);
-	Write_Hunk_String_e (hunk, s);
+	p2 = AddInt (&expr, PSTRING_TO_PQUAKEC);
+	p2 = AddInt (p2, (offset + length) * %1);
+	p2 = AddInt (p2, PQUAKEC_TO_PSTRING);
+	strcpy (@p1, @p2);
 
-	return Read_Hunk_String (HUNK_CONTEXT, alloc_hunk);
+	return @p3;
 };
 
 //
