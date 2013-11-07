@@ -252,8 +252,8 @@ count_votes =
 	// who vote note, 1 vote is taken away.  This can be kind of pointless though
 	// because it's essentially a race between votes.. a race which can be repeated
 	// vote after vote...  Again, I have to see how this works out.
-	// lack = lack + floor (no * 0.50);
-	lack = lack + no;
+	// lack = lack + no;
+	lack = lack + floor (no * 0.50);
 
 	if (is_queue)
 		maybe_print_votes (vip, type, is_queue, voted);
