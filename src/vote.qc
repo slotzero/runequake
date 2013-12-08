@@ -1024,7 +1024,7 @@ vote =
 	else if (self.impulse == IMP_VOTE_DEFAULT)
 	{
 		cancel		= scratch1 & S1_NO_DEFAULT;
-		e.frag_rate	= 0.51; // XXX
+		e.frag_rate	= 0.33; // XXX [Lowered this for Sprax, was 51]
 		e.think1	= set_gamemode_default;
 		e.noise2	= "reset all vote options to default";
 		e.noise4	= "Resetting all gamemode vote options\n"; // XXX To which mode?
