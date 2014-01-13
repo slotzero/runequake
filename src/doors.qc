@@ -183,7 +183,7 @@ door_use =
 				if (e.oldorigin == '-88.0 496.0 -519.96875')
 				{
 					e.oldorigin = '-88.0 496.0 -1072.0';
-					e.runetime = e.nextthink = time + 60;
+					e.oldrunetime = e.nextthink = time + 60;
 				}
 				e = find (e, classname, "weapon_supernailgun");
 			}
