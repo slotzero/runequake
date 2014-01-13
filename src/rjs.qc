@@ -304,10 +304,8 @@ process_storage_cvars =
 {
 	local float wanted;
 
-	storage1 = cvar_infokey (CVAR_C5);
-
 	// AFK_TIME
-	wanted = storage1 & SETAFK_MASK / SETAFK_MULTIPLIER;
+	wanted = storage & SETAFK_MASK / SETAFK_MULTIPLIER;
 	if (wanted)
 	{
 		if (wanted == 31)
@@ -334,12 +332,13 @@ rjs_worldspawn =
 	scratch1	= cvar_infokey ("scratch1");
 	gamemode	= cvar_infokey (CVAR_C3);
 	options		= cvar_infokey (CVAR_C4);
-	options2	= cvar_infokey (CVAR_C6);
+	options2	= cvar_infokey (CVAR_C5);
+	storage		= cvar_infokey (CVAR_C6);
 	MOD_PROTOCOL	= cvar_infokey ("mod_protocol"); // requires manquake dedicated server
 
 	// I only send console aliases when the server spawns.  You can use
 	// update-bindings to refresh them.  I need to set the gamemode too.
-	if (!options & CONSOLE_ALIASES)
+	if (!storage & CONSOLE_ALIASES)
 	{
 		console_aliases ();
 		temp1 = cvar_infokey ("temp1");
@@ -2215,9 +2214,9 @@ show_settings =
 	self_sprint (self, "\n  random models  ");	self_sprint_boolean (self, temp1 & T1_RANDOM_RUNE_MODELS);
 	self_sprint (self, "  fast spawn  ");		self_sprint_boolean (self, temp1 & T1_FAST_RUNE_SPAWN);
 	self_sprint (self, "\n  hook mode      ");
-	if (storage1 & HOOK_MASK == FREE_HOOK)
+	if (options2 & HOOK_MASK == FREE_HOOK)
 		self_sprint (self, "free");
-	else if (storage1 & HOOK_MASK == LITHIUM_HOOK)
+	else if (options2 & HOOK_MASK == LITHIUM_HOOK)
 		self_sprint (self, "lith");
 	else
 		self_sprint (self, "rune");

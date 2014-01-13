@@ -603,12 +603,12 @@ toggle_vote_hook =
 {
 	local string s;
 
-	if (storage1 & VOTE_HOOK_DISABLED)
-		storage1 = storage1 - storage1 & VOTE_HOOK_DISABLED;
+	if (options2 & VOTE_HOOK_DISABLED)
+		options2 = options2 - options2 & VOTE_HOOK_DISABLED;
 	else
-		storage1 = storage1 | VOTE_HOOK_DISABLED;
+		options2 = options2 | VOTE_HOOK_DISABLED;
 
-	s = ftos (storage1);
+	s = ftos (options2);
 	cvar_set_infokey (CVAR_C5, s);
 };
 
@@ -699,15 +699,12 @@ float (float type, float neg, string desc)
 maybe_bprint_option =
 {
 	local string s;
-	local float i;
 
 	if (!maybe_bprint_option_hack)
 		return type;
 
-	i = type;
-	if (neg) i = !type;
-
-	if (i)
+	// parens needed
+	if (!(!type) - !(!neg))
 		s = " enabled\n";
 	else
 		s = " disabled\n";

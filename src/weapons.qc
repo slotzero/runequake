@@ -1430,7 +1430,7 @@ ImpulseCommands =
 			if (self.impulse != IMP_HOOK_OFF)
 			{
 				sprint (self, "No hook");
-				if (storage1 & HOOK_MASK == LITHIUM_HOOK)
+				if (options2 & HOOK_MASK == LITHIUM_HOOK)
 					sprint (self, ", find one first");
 				else if (!vote_hook_disabled (0))
 					sprint (self, ", use vote-hook");

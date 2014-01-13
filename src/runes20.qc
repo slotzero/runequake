@@ -732,7 +732,7 @@ Rune_Ammo_1 =
 		new_it = new_it | IT_LIGHTNING;
 	if (self.ammo_rockets >= MAX_ROCKETS)
 		new_it = new_it | IT_GRENADE_LAUNCHER | IT_ROCKET_LAUNCHER;
-	if ((storage1 & HOOK_MASK == LITHIUM_HOOK)
+	if ((options2 & HOOK_MASK == LITHIUM_HOOK)
 			&& self.ammo_nails >= MAX_NAILS
 			&& self.ammo_shells >= MAX_SHELLS
 			&& self.ammo_cells >= MAX_CELLS

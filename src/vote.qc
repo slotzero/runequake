@@ -78,7 +78,7 @@ vote_team_disabled =
 float (float tell)
 vote_hook_disabled =
 {
-	if (storage1 & VOTE_HOOK_DISABLED || VOTE_HOOK_PERCENTAGE <= 0 || VOTE_HOOK_PERCENTAGE > 1)
+	if (options2 & VOTE_HOOK_DISABLED || VOTE_HOOK_PERCENTAGE <= 0 || VOTE_HOOK_PERCENTAGE > 1)
 	{
 		if (tell)
 			self_sprint (self, "Hook voting is disabled\n");
@@ -252,8 +252,8 @@ count_votes =
 	// who vote note, 1 vote is taken away.  This can be kind of pointless though
 	// because it's essentially a race between votes.. a race which can be repeated
 	// vote after vote...  Again, I have to see how this works out.
-	// lack = lack + floor (no * 0.50);
-	lack = lack + no;
+	// lack = lack + no;
+	lack = lack + floor (no * 0.50);
 
 	if (is_queue)
 		maybe_print_votes (vip, type, is_queue, voted);
@@ -515,7 +515,7 @@ vote =
 		e.think1	= toggle_free_hook;
 		e.noise2	= " free hook ";
 
-		i = hook_type (storage1);
+		i = hook_type (options2);
 		if (i)
 		{
 			if (i == 2)
@@ -533,7 +533,7 @@ vote =
 		e.noise1	= "enable";
 		e.noise2	= " free hook ";
 
-		if (hook_type (storage1) == 1)
+		if (hook_type (options2) == 1)
 		{
 			if (!cancel)
 				self_sprint (self, "free hook already enabled\n");
@@ -548,7 +548,7 @@ vote =
 		e.noise1	= "enable";
 		e.noise2	= " lithium hook ";
 
-		if (hook_type (storage1) == 2)
+		if (hook_type (options2) == 2)
 		{
 			if (!cancel)
 				self_sprint (self, "lithium hook already enabled\n");
@@ -747,7 +747,7 @@ vote =
 		else
 			e.noise1	= "disable";
 
-		i = hook_type (storage1);
+		i = hook_type (options2);
 		if ((i == 1 && !HOOK_DAMAGE_FREE)
 				|| (i == 2 && !HOOK_DAMAGE_LITHIUM)
 				|| (!i && !HOOK_DAMAGE_RUNE))
@@ -1024,7 +1024,7 @@ vote =
 	else if (self.impulse == IMP_VOTE_DEFAULT)
 	{
 		cancel		= scratch1 & S1_NO_DEFAULT;
-		e.frag_rate	= 0.51; // XXX
+		e.frag_rate	= 0.33; // XXX [Lowered this for Sprax, was 51]
 		e.think1	= set_gamemode_default;
 		e.noise2	= "reset all vote options to default";
 		e.noise4	= "Resetting all gamemode vote options\n"; // XXX To which mode?

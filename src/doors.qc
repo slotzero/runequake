@@ -1,5 +1,4 @@
-/*  $Id: doors.qc,v 1.9 2003/06/24 22:17:37 slotzero Exp $
-
+/*
     Copyright (C) 1996, 1997  Id Software, Inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -114,13 +113,7 @@ door_go_up =
 	sound (self, CHAN_VOICE, self.noise2, 1, ATTN_NORM);
 	self.state	= STATE_UP;
 
-	// Speed up the crusher on E4M5.
-	if (!scratch1 & S1_ORIGINAL_LEVELS && world.model == "maps/e4m5.bsp"
-			&& self.targetname == "t87")
-		SUB_CalcMove (self.pos2, 150, door_hit_top);
-	else
-		SUB_CalcMove (self.pos2, self.speed, door_hit_top);
-
+	SUB_CalcMove (self.pos2, self.speed, door_hit_top);
 	SUB_UseTargets ();
 };
 
@@ -177,7 +170,29 @@ door_fire =
 void ()
 door_use =
 {
-	local entity old_self;
+	local entity e, old_self;
+
+	if (!scratch1 & S1_ORIGINAL_LEVELS)
+	{
+		// SNG fix for E2M6.
+		if (mapname == "e2m6" && self.targetname == "t32")
+		{
+			e = find (world, classname, "weapon_supernailgun");
+			while (e)
+			{
+				if (e.oldorigin == '-88.0 496.0 -519.96875')
+				{
+					e.oldorigin = '-88.0 496.0 -1072.0';
+					e.runetime = e.nextthink = time + 60;
+				}
+				e = find (e, classname, "weapon_supernailgun");
+			}
+		}
+
+		// Speed up the crusher on E4M5.
+		if (mapname == "e4m5" && self.targetname == "t87")
+			self.speed = 150;
+	}
 
 	self.message		= string_null; // door message are for touch only
 	self.owner.message	= string_null;
