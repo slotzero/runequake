@@ -1,4 +1,49 @@
-$Id: Changes,v 1.97 2011/02/08 09:20:19 slotzero Exp $
+
+Version 1.4  Mon Sep 08 17:24:21 EST 2014
+
+    - Bug Fixes
+
+        - I stopped using the saved[3,4] cvars for game mode and options because they don't get reset
+          each time they're used like levels and console commands.
+
+        - Fixed a potential crash with the houngan rune.
+
+        - Provided a workaround for a bug that prevented you from respawning while holding the phoenix rune.
+          Thanks to Mr. Happy (qw) and Cobalt (poq) for reporting the bug.
+
+        - Fixed the trace damage of the lightning gun so that it starts at the gun and not at the waist.
+
+        - Drop hook during intermission fix for Cobalt.
+
+        - Logic fix for 'setafk' console command.
+
+        - BFG warm-up during intermission fix from Cobalt.
+
+    - Changes
+
+        - I halved the weight of a 'no' vote so that it now takes 2 'no' votes to cancel a 'yes' vote.
+
+        - Pet zombies can no longer be frozen.
+
+        - Prevent a shambler or zombie from burning, freezing, etc., when its owner drops the rune
+          or leaves the server.
+
+        - Removed the temp1 bit setting to prevent vote-hook. Use votehookon/votehookoff instead
+          from the console or startlevel.cfg.
+
+        - You can no longer change hook type with temp1 bit setting. Instead, use hookon, lithhookon,
+          or hookoff from the console or in startlevel.cfg.
+
+        - Added gib to head in head hunters mode when head has timed out. Also randomized
+          its timeout at the altar.
+
+        - Added a new vote option: vote-powerup-hats.
+
+        - Prevent voting for shootable buttons on levels without them.
+
+        - Replaced reflective rockets with guided missile.  [requires manquake]
+
+        - Prevent exiting level until round is over and next opponent selected in rocket arena mode.
 
 Version 1.3.79  Tue May 07 15:15:08 EST 2013
 
@@ -8,7 +53,7 @@ Version 1.3.79  Tue May 07 15:15:08 EST 2013
 
     - ManQuake Source Code
 
-        - ManQuake Dedicated Server, a modified version of ProQuake that I use for my server, is now availabe
+        - ManQuake Dedicated Server, a modified version of ProQuake that I use for my server, is now available
           on github: https://github.com/slotzero/manquake
 
     - Changes
