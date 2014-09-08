@@ -252,8 +252,8 @@ count_votes =
 	// who vote note, 1 vote is taken away.  This can be kind of pointless though
 	// because it's essentially a race between votes.. a race which can be repeated
 	// vote after vote...  Again, I have to see how this works out.
-	// lack = lack + floor (no * 0.50);
-	lack = lack + no;
+	// lack = lack + no;
+	lack = lack + floor (no * 0.50);
 
 	if (is_queue)
 		maybe_print_votes (vip, type, is_queue, voted);
@@ -1024,7 +1024,7 @@ vote =
 	else if (self.impulse == IMP_VOTE_DEFAULT)
 	{
 		cancel		= scratch1 & S1_NO_DEFAULT;
-		e.frag_rate	= 0.51; // XXX
+		e.frag_rate	= 0.33; // XXX [Lowered this for Sprax, was 51]
 		e.think1	= set_gamemode_default;
 		e.noise2	= "reset all vote options to default";
 		e.noise4	= "Resetting all gamemode vote options\n"; // XXX To which mode?
