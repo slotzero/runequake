@@ -365,6 +365,10 @@ When the player presses attack or jump, change to the next level
 void ()
 IntermissionThink =
 {
+	// Reset viewport for rider during intermission.
+	if (self.viewentity)
+		set_viewport (self);
+
 	// If you go into intermission with the lightning or nail
 	// guns switchfiring they'll keep right on firing until the
 	// intermission exits without this.
