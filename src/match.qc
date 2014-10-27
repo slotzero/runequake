@@ -1,6 +1,5 @@
-/*  $Id: match.qc,v 1.51 2010/10/27 05:13:00 slotzero Exp $
-
-    Copyright (C) 2005  David 'Slot Zero' Roberts.
+/*
+    Copyright (C) 2005-2014  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,18 +16,23 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-float HUNK_TEAMS = %500;
-float HUNK_MATCH_TIMELIMIT = %517;
-float TEAMS_PRESENT;
-float MATCH_LOCKED;
+float HUNK_MATCH_TIMELIMIT = %500;
 
 void ()
 match_hunk_init =
 {
+	dprint ("match_hunk_init()\n");
 	local float i;
 
+	// spawn and offset array
+	if (!active_colors)
+	{
+		active_colors = spawn ();
+		active_colors = *(&active_colors + %400);
+	}
+
 	for (i = %1; i <= %16; i = i + %1)
-		Write_Hunk_Float (HUNK_CONTEXT, HUNK_TEAMS + i, 0);
+		active_colors[i] = 0;
 };
 
 void (entity e)
@@ -41,8 +45,8 @@ match_client_init =
 
 	for (i = %1; i <= %16; i = i + %1)
 	{
-		colors = Read_Hunk_Float (HUNK_CONTEXT, HUNK_TEAMS + i) / %1;
-  		if (colors && colors != 0x20202020)
+		colors = active_colors[i] / %1;
+  		if (colors)
 		{
 			pqc_new_team (e, colors);
 			pants = colors_to_pants (colors);
@@ -640,7 +644,7 @@ match_obs_join_game =
 	{
 		bprint (s);
 		bprint (" team created\n");
-		Write_Hunk_Float (HUNK_CONTEXT, HUNK_TEAMS + (self.team * %1), self.cl[CL_COLORS]);
+		active_colors[self.team * %1] = self.cl[CL_COLORS];
 		TEAMS_PRESENT = TEAMS_PRESENT | bit;
 		pqc_new_team (world, self.cl[CL_COLORS] / %1);
 	}
@@ -828,7 +832,7 @@ remove_team =
 	}
 
 	pqc_erase_team (tm - 1);
-	Write_Hunk_Float (HUNK_CONTEXT, HUNK_TEAMS + (tm * %1), 0);
+	active_colors[tm * %1] = 0;
 
 	bit = num_to_bit (tm);
 	TEAMS_PRESENT = TEAMS_PRESENT - TEAMS_PRESENT & bit;

@@ -1638,26 +1638,25 @@ void	(vector where, float set)		multicast	= #82; // sends the temp message to a 
 
 //============================================================================
 
-// development
-
-.float	grenade_spam_time;
-.float	afk;
-.string address;
-
-.entity cl;
-.entity	netconnection;
-
-entity	last_teleport;
-
-float	LAST_VOTE_IMPULSE;
-string	LAST_VOTE_LEVEL;
-
+// arena mode
 entity	arena;
+
+// match mode
+.float	team_colors;
 entity	match;
+entity	active_colors;
+float	MATCHLOCK;
+float	MATCH_LOCKED;
+float	TEAMS_PRESENT;
+float	VOTE_TIMESET;
+string	timeset = "5\{0}":"10":"15":"20":"25":"30";
+string	timeset_gold = "\5\{0}":"\1\0":"\1\5":"\2\0":"\2\5":"\3\0";
 
-.vector	subnet;
-.float	packed;
+// head hunters mode
+.float	num_heads;
+.entity	head_chain;
 
+// eff, kill, killstats
 .float	shell_dmg_max;
 .float	shell_dmg;
 .float	nail_dmg_max;
@@ -1666,28 +1665,34 @@ entity	match;
 .float	rocket_dmg;
 .float	cell_dmg_max;
 .float	cell_dmg;
-
-.float	team_colors;
-
-float	MATCHLOCK;
-float	VOTE_TIMESET;
-string	timeset = "5\{0}":"10":"15":"20":"25":"30";
-string	timeset_gold = "\5\{0}":"\1\0":"\1\5":"\2\0":"\2\5":"\3\0";
-
-float	UPDATE_CLIENT_PINGS;
-
 .float	suicide;
 .float	enemy_kills;
 .float	mate_kills;
 .float	killed;
 
-.float	last_vote;
+// net functions
+.entity cl;
+.entity	netconnection;
+.vector	subnet;
+.float	packed;
+.string address;
 
-.float	num_heads;
-.entity	head_chain;
+// proquake client
+float	UPDATE_CLIENT_PINGS;
 
+// manquake dedicated server
+.entity viewentity;
 float	MOD_PROTOCOL;
 
-.entity viewentity;
-
+// vote
+.float	last_vote;
+float	LAST_VOTE_IMPULSE;
+string	LAST_VOTE_LEVEL;
 float	maybe_bprint_option_hack;
+
+//misc
+.float	grenade_spam_time;
+.float	afk;
+entity	last_teleport;
+
+// development
