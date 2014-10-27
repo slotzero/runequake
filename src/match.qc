@@ -21,7 +21,6 @@ float HUNK_MATCH_TIMELIMIT = %500;
 void ()
 match_hunk_init =
 {
-	dprint ("match_hunk_init()\n");
 	local float i;
 
 	// spawn and offset array
