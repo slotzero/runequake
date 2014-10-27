@@ -286,16 +286,21 @@ kick =
 float ()
 kick_suicider =
 {
+	if (gamemode & MODE_ARENA)
+		return 0;
+
 	if (self.last_suicide && time - self.last_suicide < 60)
 	{
 		kick ("for suiciding too often", string_null);
 		return 1;
 	}
+
 	if (!self.aqflags & AQ_ADMIN)
 	{
 		sprint (self, "You will be kicked if you suicide again within a minute\n");
 		self.last_suicide = time;
 	}
+
 	return 0;
 };
 

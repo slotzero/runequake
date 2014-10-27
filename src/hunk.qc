@@ -1,6 +1,5 @@
-/*  $Id: hunk.qc,v 1.45 2008/07/04 04:27:56 slotzero Exp $
-
-    Copyright (C) 2003  David 'Slot Zero' Roberts.
+/*
+    Copyright (C) 2003-2014  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -39,8 +38,7 @@
 	%499		= float large levels left in map rotation
 
 	// match.qc
-	%500 - %516	= float keep track of team colors in match mode
-	%517		= float match timelimit (set by timeset)
+	%500		= float match timelimit (set by timeset)
 
 	// vote.qc
 	%520 - %529	= string[%2] last 5 levels played

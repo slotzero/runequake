@@ -365,6 +365,10 @@ When the player presses attack or jump, change to the next level
 void ()
 IntermissionThink =
 {
+	// Reset viewport for rider during intermission.
+	if (self.viewentity)
+		set_viewport (self);
+
 	// If you go into intermission with the lightning or nail
 	// guns switchfiring they'll keep right on firing until the
 	// intermission exits without this.
@@ -599,6 +603,8 @@ Player entered the suicide command
 void ()
 ClientKill =
 {
+	local string dt;
+
 	if (intermission_running)
 		return;
 
@@ -608,11 +614,17 @@ ClientKill =
 		return;
 	}
 
+	// allow frozen and glued players to suicide without being kicked
+	if (!self.rqstate & RQS_GUIDED_MISSILE && self.effects & EF_FROZEN)
+		dt = "trapavoid";
+	else
+		dt = "suicide";
+
 	see_damage (self, self, self.health + self.armorvalue);
 	self.health = 0;
-	Killed (self, self, "suicide");
+	Killed (self, self, dt);
 
-	if (!gamemode & MODE_ARENA)
+	if (dt == "suicide")
 		kick_suicider ();
 };
 
@@ -2290,6 +2302,8 @@ ClientObituary =
 
 			if (dt == "suicide")
 				bprint (" suicides\n");
+			else if (dt == "trapavoid")
+				bprint (" suicides to avoid a trap\n");
 			else if (dt == "kamiself")
 			{
 				f = 0;
