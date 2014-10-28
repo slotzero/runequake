@@ -791,7 +791,7 @@ teamscores_off =
 
 		if (e.cl[CL_ACTIVE] == %1)
 		{
-			svc_updatename (msg_type, i, e.netname);
+			svc_updatename_hack (client, e);
 			svc_updatefrags (msg_type, i, e.frags);
 			svc_updatecolors (msg_type, i, e.cl[CL_COLORS] / %1);
 		}

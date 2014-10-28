@@ -99,7 +99,7 @@ match_obs_become =
 	if (type)
 	{
 		maybe_remove_team ();
-		update_showscores_name (world, self);
+		svc_updatename_hack (world, self);
 	}
 };
 
@@ -332,7 +332,7 @@ match_unready_names =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		update_showscores_name (world, e);
+		svc_updatename_hack (world, e);
 		e = find (e, classname, "player");
 	}
 };
@@ -540,34 +540,34 @@ audit_match =
 		match_stop_countdown ();
 };
 
-void (entity e, entity w)
-update_showscores_name =
+void (entity client, entity e)
+svc_updatename_hack =
 {
 	local float msg_type;
 	local string match_name;
 	local string s;
 
-	if (e.cl[CL_ACTIVE] == %1)
+	if (client.cl[CL_ACTIVE] == %1)
 	{
-		msg_entity = e;
+		msg_entity = client;
 		msg_type = MSG_ONE;
 	}
 	else
 		msg_type = MSG_ALL;
 
-	if (w.rqstate & RQS_AFK)
+	if (e.rqstate & RQS_AFK)
 		s = "\bAFK";
-	else if (!match.state && w.rqstate & RQS_READY)
+	else if (!match.state && e.rqstate & RQS_READY)
 		s = "\bREADY";
 	else
 	{
-		svc_updatename (MSG_ALL, w.colormap - 1, w.netname);
+		svc_updatename (msg_type, e.colormap - 1, e.netname);
 		return;
 	}
 
-	match_name = flen (w.netname, -16);
+	match_name = flen (e.netname, -16);
 	match_name = strcat (match_name, s);
-	svc_updatename (msg_type, w.colormap - 1, match_name);
+	svc_updatename (msg_type, e.colormap - 1, match_name);
 };
 
 float ()
@@ -654,7 +654,7 @@ match_obs_join_game =
 	bprint ("\n");
 
 	audit_match ();
-	update_showscores_name (world, self);
+	svc_updatename_hack (world, self);
 
 	return TRUE;
 };
@@ -905,7 +905,7 @@ match_notready =
 	}
 
 	maybe_remove_team ();
-	update_showscores_name (world, self);
+	svc_updatename_hack (world, self);
 };
 
 void ()

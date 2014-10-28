@@ -1600,7 +1600,7 @@ PlayerPreThink =
 			if (self.afk + 5 > time)
 			{
 				self.rqstate = self.rqstate - self.rqstate & RQS_AFK;
-				update_showscores_name (world, self);
+				svc_updatename_hack (world, self);
 			}
 		}
 		else
@@ -1610,7 +1610,7 @@ PlayerPreThink =
 				if (self.afk < time - AFK_TIME * 60 && !is_qsmack () IN_QW(&& 0))
 				{
 					self.rqstate = self.rqstate | RQS_AFK;
-					update_showscores_name (world, self);
+					svc_updatename_hack (world, self);
 				}
 			}
 		}
@@ -1621,7 +1621,7 @@ PlayerPreThink =
 			if (self.netname != READY_NAME_16[((self.colormap - 1) * %1) * 16])
 			{
 				strcpy (READY_NAME_16[((self.colormap - 1) * %1) * 16], self.netname);
-				update_showscores_name (world, self);
+				svc_updatename_hack (world, self);
 			}
 		}
 	}

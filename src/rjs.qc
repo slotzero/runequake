@@ -1854,7 +1854,7 @@ player_init =
 	while (e)
 	{
 		if (e.rqstate & RQS_AFK || (!match.state && e.rqstate & RQS_READY))
-			update_showscores_name (self, e);
+			svc_updatename_hack (self, e);
 		e = find (e, classname, "player");
 	}
 
