@@ -789,3 +789,24 @@ spawn_altar =
 	altar.think		= altar_spit;
 	altar.nextthink		= time;
 };
+
+void ()
+heads_tell =
+{
+	local float heads;
+
+	heads = self.num_heads;
+
+	if (!heads)
+		self_sprint (self, "You aren't carrying any heads\n");
+	else if (heads == 1)
+		self_sprint (self, "Carrying 1 head (1 frag)\n");
+	else
+	{
+		self_sprint (self, "Carrying ");
+		self_sprint_float (self, heads);
+		self_sprint (self, " heads (");
+		self_sprint_float (self, (heads - 1) * heads * 0.5 + heads);
+		self_sprint (self, " frags)\n");
+	}
+};

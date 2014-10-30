@@ -1396,9 +1396,12 @@ show_riders =
 			return;
 		}
 
-		// Display rate with show-riders.
+		// Display rate and head info with show-riders.
 		if (!is_observer ())
 		{
+			if (gamemode == MODE_HEADS)
+				heads_tell ();
+
 			self_sprint (self, "Your rate is ");
 			self_sprint_float_f (self, self.frag_rate, 0, 2);
 			self_sprint (self, "\n");
