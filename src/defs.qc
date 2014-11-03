@@ -1644,7 +1644,6 @@ entity	arena;
 // match mode
 .float	team_colors;
 entity	match;
-entity	active_colors;
 float	MATCHLOCK;
 float	MATCH_LOCKED;
 float	TEAMS_PRESENT;

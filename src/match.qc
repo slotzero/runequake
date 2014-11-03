@@ -18,20 +18,25 @@
 
 float HUNK_MATCH_TIMELIMIT = %500;
 
+// match entity
+//
+// match.state		= 1 (match in progress) | 0 (waiting | countdown)
+// match.count		= match timer
+// match.cnt		= countdown
+// match.frags		= match timelimit
+// match.aimtent[]	= stores active team colors
+
 void ()
 match_hunk_init =
 {
 	local float i;
 
 	// spawn and offset array
-	if (!active_colors)
-	{
-		active_colors = spawn ();
-		active_colors = *(&active_colors + %400);
-	}
+	if (!match.aiment)
+		match.aiment = *(&match + %400);
 
-	for (i = %1; i <= %16; i = i + %1)
-		active_colors[i] = 0;
+	for (i = %1; i <= %14; i = i + %1)
+		match.aiment[i] = 0;
 };
 
 void (entity e)
@@ -42,9 +47,9 @@ match_client_init =
 	if (!*HUNK_CONTEXT)
 		return;
 
-	for (i = %1; i <= %16; i = i + %1)
+	for (i = %1; i <= %14; i = i + %1)
 	{
-		colors = active_colors[i] / %1;
+		colors = match.aiment[i] / %1;
   		if (colors)
 		{
 			pqc_new_team (e, colors);
@@ -642,8 +647,8 @@ match_obs_join_game =
 	if (!TEAMS_PRESENT & bit)
 	{
 		bprint (s);
-		bprint (" team created\n");
-		active_colors[self.team * %1] = self.cl[CL_COLORS];
+		bprint (" created\n");
+		match.aiment[self.team * %1] = self.cl[CL_COLORS];
 		TEAMS_PRESENT = TEAMS_PRESENT | bit;
 		pqc_new_team (world, self.cl[CL_COLORS] / %1);
 	}
@@ -831,7 +836,7 @@ remove_team =
 	}
 
 	pqc_erase_team (tm - 1);
-	active_colors[tm * %1] = 0;
+	match.aiment[tm * %1] = 0;
 
 	bit = num_to_bit (tm);
 	TEAMS_PRESENT = TEAMS_PRESENT - TEAMS_PRESENT & bit;
