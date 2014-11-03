@@ -24,7 +24,8 @@ float HUNK_MATCH_TIMELIMIT = %500;
 // match.count		= match timer
 // match.cnt		= countdown
 // match.frags		= match timelimit
-// match.aimtent[]	= stores active team colors
+// match.class_cnt	= teams present
+// match.aimtent[1-14]	= team colors
 
 void ()
 match_hunk_init =
@@ -106,39 +107,6 @@ match_obs_become =
 		maybe_remove_team ();
 		svc_updatename_hack (world, self);
 	}
-};
-
-float (float bits)
-bits_set =
-{
-	local float n;
-
-	n = 0;
-	if (bits & 1)		n = n + 1;
-	if (bits & 2)		n = n + 1;
-	if (bits & 4)		n = n + 1;
-	if (bits & 8)		n = n + 1;
-	if (bits & 16)		n = n + 1;
-	if (bits & 32)		n = n + 1;
-	if (bits & 64)		n = n + 1;
-	if (bits & 128)		n = n + 1;
-	if (bits & 256)		n = n + 1;
-	if (bits & 512)		n = n + 1;
-	if (bits & 1024)	n = n + 1;
-	if (bits & 2048)	n = n + 1;
-	if (bits & 4096)	n = n + 1;
-	if (bits & 8192)	n = n + 1;
-	if (bits & 16384)	n = n + 1;
-	if (bits & 32768)	n = n + 1;
-	if (bits & 65536)	n = n + 1;
-	if (bits & 131072)	n = n + 1;
-	if (bits & 262144)	n = n + 1;
-	if (bits & 524288)	n = n + 1;
-	if (bits & 1048576)	n = n + 1;
-	if (bits & 2097152)	n = n + 1;
-	if (bits & 4194304)	n = n + 1;
-	if (bits & 8388608)	n = n + 1;
-	return n;
 };
 
 float (float c)
@@ -235,8 +203,8 @@ match_pre_think =
 void ()
 match_abort =
 {
-	match.state = 0;
-	TEAMS_PRESENT = 0;
+	match.state	= 0;
+	match.class_cnt	= 0;
 
 	bprint ("Match aborted!\n");
 	pqc_match_time (world, 255, 0);
@@ -278,7 +246,7 @@ match_timer =
 	if (seconds <= 0)
 	{
 		match.state	= 0;
-		TEAMS_PRESENT	= 0;
+		match.class_cnt	= 0;
 
 		bprint ("The match is over\n");
 		team_stats (1);
@@ -520,7 +488,7 @@ audit_match =
 {
 	local float teams;
 
-	teams = bits_set (TEAMS_PRESENT);
+	teams = match.class_cnt;
 
 	if (match.state)
 	{
@@ -578,7 +546,6 @@ svc_updatename_hack =
 float ()
 match_obs_join_game =
 {
-	local float bit;
 	local string s;
 
 	if (!HUNK_CONTEXT_MAX)
@@ -629,9 +596,8 @@ match_obs_join_game =
 	}
 
 	// Clean up last match.
-	if (!TEAMS_PRESENT)
+	if (!match.class_cnt)
 	{
-		TEAMS_PRESENT = 0;
 		match_hunk_init ();
 		frag_init ();
 		pqc_match_time (world, 255, 0);
@@ -641,15 +607,14 @@ match_obs_join_game =
 	self.team_colors	= self.cl[CL_COLORS];
 	self.rqstate		= self.rqstate | RQS_READY;
 	self.frags		= 0;
-
-	bit			= num_to_bit (self.team);
 	s			= team_to_name (self.team);
-	if (!TEAMS_PRESENT & bit)
+
+	if (!match.aiment[self.team * %1])
 	{
 		bprint (s);
 		bprint (" created\n");
 		match.aiment[self.team * %1] = self.cl[CL_COLORS];
-		TEAMS_PRESENT = TEAMS_PRESENT | bit;
+		match.class_cnt = match.class_cnt + 1;
 		pqc_new_team (world, self.cl[CL_COLORS] / %1);
 	}
 
@@ -821,12 +786,10 @@ maybe_remove_team =
 void (float tm)
 remove_team =
 {
-	local float bit;
-
 	if (!*HUNK_CONTEXT)
 		return;
 
-	if (!TEAMS_PRESENT)
+	if (!match.class_cnt)
 		return;
 
 	if (match.state)
@@ -837,9 +800,7 @@ remove_team =
 
 	pqc_erase_team (tm - 1);
 	match.aiment[tm * %1] = 0;
-
-	bit = num_to_bit (tm);
-	TEAMS_PRESENT = TEAMS_PRESENT - TEAMS_PRESENT & bit;
+	match.class_cnt = match.class_cnt - 1;
 
 	audit_match ();
 };

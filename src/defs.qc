@@ -1646,7 +1646,6 @@ entity	arena;
 entity	match;
 float	MATCHLOCK;
 float	MATCH_LOCKED;
-float	TEAMS_PRESENT;
 float	VOTE_TIMESET;
 string	timeset = "5\{0}":"10":"15":"20":"25":"30";
 string	timeset_gold = "\5\{0}":"\1\0":"\1\5":"\2\0":"\2\5":"\3\0";
