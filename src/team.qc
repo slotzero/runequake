@@ -713,11 +713,29 @@ num_to_bit =
 	else			return 0;
 };
 
+// This function will refresh the scoreboard for all players with +teamscores active each time
+// pqc_match_time() is called so that the timer is synchronized.
+void ()
+teamscores_update =
+{
+	local entity e;
+	local float i;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (e.rqflags & RQ_TEAMSCORES_ON)
+			e.lefty = time;
+
+		e = find (e, classname, "player");
+	}
+};
+
 void (entity client)
 teamscores_on =
 {	IN_QW(return;)
 	local entity e;
-	local float i, tf, bit, bits, n_teams, msg_type;
+	local float i, n, tf, bit, bits, n_teams, msg_type;
 	local string s;
 
 	if (client == world)
@@ -738,7 +756,64 @@ teamscores_on =
 		if (e.classname == "bodyque")
 			return;
 
-		if (e.cl[CL_ACTIVE] == %1)
+		if (gamemode == MODE_MATCH)
+		{
+			// normal scoreboard
+			if ((!(match.state || match.cnt || match.delay))) // parens needed
+			{
+				if (e.cl[CL_ACTIVE] == %1)
+				{
+					svc_updatename_hack (client, e);
+					svc_updatefrags (msg_type, i, e.frags);
+					svc_updatecolors (msg_type, i, e.cl[CL_COLORS] / %1);
+				}
+				else
+					svc_updatename (msg_type, i, string_null);
+			}
+			// countdown
+			else if (match.cnt && !i)
+			{
+				s = ftos (match.cnt);
+				s = strcat ("T Minus ",  s);
+				svc_updatename (msg_type, i, s);
+				svc_updatefrags (msg_type, i, -99);
+				svc_updatecolors (msg_type, i, 0);
+			}
+			// match in progress / match over
+			else if ((match.state && i < match.class_cnt) || (match.delay && i < match.delay))
+			{
+				for (n = %1;n <= %14;n = n + %1)
+				{
+					bit = match.aiment[n];
+					if (bit)
+					{
+						tf = colors_to_pants (bit / %1);
+						s = color_to_name (tf);
+						tf = color_to_teamfrags (tf);
+						svc_updatename (msg_type, i, s);
+						svc_updatefrags (msg_type, i, tf);
+						svc_updatecolors (msg_type, i, bit / %1);
+						i = i + 1;
+					}
+				}
+
+				if (match.delay)
+					s = "Match Over";
+				else
+				{
+					s = parse_time ((match.count + 1) - time);
+					s = strcat (s, " remaining");
+				}
+
+				svc_updatename (msg_type, i, s);
+				svc_updatefrags (msg_type, i, -99);
+				svc_updatecolors (msg_type, i, 0);
+
+			}
+			else
+				svc_updatename (msg_type, i, string_null);
+		}
+		else if (e.cl[CL_ACTIVE] == %1)
 		{
 			bit = num_to_bit (e.team);
 

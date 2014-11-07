@@ -25,6 +25,7 @@ float HUNK_MATCH_TIMELIMIT = %500;
 // match.cnt		= countdown
 // match.frags		= match timelimit
 // match.class_cnt	= teams present
+// match.delay		= teamscores hack
 // match.aimtent[1-14]	= team colors
 
 void ()
@@ -245,6 +246,7 @@ match_timer =
 	seconds = rint (match.count - time);
 	if (seconds <= 0)
 	{
+		match.delay	= match.class_cnt;
 		match.state	= 0;
 		match.class_cnt	= 0;
 
@@ -598,6 +600,7 @@ match_obs_join_game =
 	// Clean up last match.
 	if (!match.class_cnt)
 	{
+		match.delay = 0;
 		match_hunk_init ();
 		frag_init ();
 		pqc_match_time (world, 255, 0);
