@@ -719,7 +719,6 @@ void ()
 teamscores_update =
 {
 	local entity e;
-	local float i;
 
 	e = find (world, classname, "player");
 	while (e)
