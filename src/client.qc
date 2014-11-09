@@ -2120,13 +2120,6 @@ ClientDisconnect =
 
 	qsmack_status_valid = 0;
 
-	if (gamemode == MODE_MATCH)
-		match_client_disconnect ();
-	else if (gamemode & MODE_ARENA)
-		arena_client_disconnect ();
-	else if (gamemode == MODE_HEADS)
-		head_drop ();
-
 	i = !self.cl[CL_ACTIVE] / %1;
 
 	// Don't print the disconnect message for players forwarding or
@@ -2147,6 +2140,13 @@ ClientDisconnect =
 		bprint (" frags\n");
 		sound (self, CHAN_BODY, "player/tornoff2.wav", 1, ATTN_NONE);
 	}
+
+	if (gamemode == MODE_MATCH)
+		match_client_disconnect ();
+	else if (gamemode & MODE_ARENA)
+		arena_client_disconnect ();
+	else if (gamemode == MODE_HEADS)
+		head_drop ();
 
 	spawn_protect_off ();
 	forget_rune_owner ();

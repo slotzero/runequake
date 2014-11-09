@@ -550,10 +550,6 @@ SearchHunkThink =
 		// keep track of recent levels
 		track_last_level (mapname);
 
-		// initialize match mode
-		if (gamemode == MODE_MATCH)
-			match_hunk_init ();
-
 		remove (self);
 		return;
 	}

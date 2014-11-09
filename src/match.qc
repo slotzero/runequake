@@ -208,6 +208,7 @@ match_abort =
 	match.class_cnt	= 0;
 
 	bprint ("Match aborted!\n");
+	match_hunk_init ();
 	pqc_match_time (world, 255, 0);
 	pqc_match_reset ();
 	match_remove_ghosts (world);
@@ -490,20 +491,17 @@ audit_match =
 {
 	local float teams;
 
-	teams = match.class_cnt;
-
 	if (match.state)
 	{
 		if (!count_players (0))
-			match_abort ();
-		else if (!teams)
 		{
-			bprint ("No teams present\n");
+			bprint ("No players present\n");
 			match_abort ();
 		}
 		return;
 	}
 
+	teams = match.class_cnt;
 	if (!teams)
 		bprint ("No teams present\n");
 	else if (teams == 1)
@@ -752,11 +750,18 @@ match_restore_ghost =
 void ()
 match_client_disconnect =
 {
-	if (!self.rqstate & RQS_READY)
+	if (is_observer_e (self))
 		return;
 
-	if (match.state)
-		match_spawn_ghost ();
+	if (self.rqstate & RQS_READY)
+	{
+		if (match.state)
+			match_spawn_ghost ();
+	}
+
+	// I had to set this early in order for audit_match() to work properly
+	// when players disconnect.
+	self.classname = "deader";
 
 	maybe_remove_team ();
 };
@@ -764,42 +769,53 @@ match_client_disconnect =
 void ()
 maybe_remove_team =
 {
-	local entity w;
-	local float e_pants, w_pants;
+	local entity e;
+	local float tm;
+
+	// If ready check fails, this is her second time here.  Go straight to audit.
+	if (!self.rqstate & RQS_READY)
+	{
+		audit_match ();
+		return;
+	}
 
 	self.rqstate = self.rqstate - self.rqstate & RQS_READY;
+	tm = colors_to_pants (self.team_colors / %1) + 1;
 	self.team_colors = 0;
-	e_pants = colors_to_pants (self.cl[CL_COLORS] / %1);
-	w = find (world, classname, "player");
-	while (w)
-	{
-		w_pants = colors_to_pants (w.cl[CL_COLORS] / %1);
-		if (self != w && e_pants == w_pants && w.rqstate & RQS_READY)
-		{
-			audit_match ();
-			return;
-		}
-		w = find (w, classname, "player");
-	}
-	remove_team (self.team);
 
-	return;
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (e.rqstate & RQS_READY)
+		{
+			if (tm == e.team)
+			{
+				audit_match ();
+				return;
+			}
+		}
+		e = find (e, classname, "player");
+	}
+
+	remove_team (tm);
 };
 
 void (float tm)
 remove_team =
 {
-	if (!*HUNK_CONTEXT)
-		return;
-
-	if (!match.class_cnt)
-		return;
-
 	if (match.state)
 	{
 		audit_match ();
 		return;
 	}
+
+	// safety net
+	if (!match.class_cnt)
+		return;
+
+	// safety net
+	if (!match.aiment[tm * %1])
+		return;
 
 	pqc_erase_team (tm - 1);
 	match.aiment[tm * %1] = 0;
