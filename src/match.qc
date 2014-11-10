@@ -29,7 +29,7 @@ float HUNK_MATCH_TIMELIMIT = %500;
 // match.aimtent[1-14]	= team colors
 
 void ()
-match_hunk_init =
+match_init =
 {
 	local float i;
 
@@ -45,9 +45,6 @@ void (entity e)
 match_client_init =
 {
 	local float i, c, pants, colors;
-
-	if (!*HUNK_CONTEXT)
-		return;
 
 	for (i = %1; i <= %14; i = i + %1)
 	{
@@ -208,7 +205,7 @@ match_abort =
 	match.class_cnt	= 0;
 
 	bprint ("Match aborted!\n");
-	match_hunk_init ();
+	match_init ();
 	pqc_match_time (world, 255, 0);
 	pqc_match_reset ();
 	match_remove_ghosts (world);
@@ -599,7 +596,7 @@ match_obs_join_game =
 	if (!match.class_cnt)
 	{
 		match.delay = 0;
-		match_hunk_init ();
+		match_init ();
 		frag_init ();
 		pqc_match_time (world, 255, 0);
 		pqc_match_reset ();

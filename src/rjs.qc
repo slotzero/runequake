@@ -370,7 +370,10 @@ rjs_worldspawn =
 	if (gamemode & MODE_ARENA)
 		arena	= spawn ();
 	else if (gamemode == MODE_MATCH)
+	{
 		match	= spawn ();
+		match_init ();
+	}
 
 	timelimit_countdown_spawn ();
 	process_storage_cvars ();
