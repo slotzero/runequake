@@ -119,6 +119,12 @@ colors_to_pants =
 	return c & 15;
 };
 
+float (float c)
+colors_to_team =
+{
+	return colors_to_pants (c) + 1;
+};
+
 void (entity e, float c)
 restore_colors =
 {
@@ -277,6 +283,7 @@ match_timer =
 		{
 			if (minutes == match.frags)
 			{
+				bprint_populous (0);
 				bprint_float (minutes);
 				bprint (" minutes remaining\n");
 			}
@@ -331,6 +338,76 @@ reset_efficiency_all =
 		reset_efficiency_e (e);
 		e = find (e, classname, "player");
 	}
+};
+
+float (float tm)
+players_on_team =
+{
+	local entity e;
+	local float players;
+
+	// check if team exits
+	if (!match.aiment[tm * %1])
+		return 0;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (e.rqstate & RQS_READY)
+		{
+			// I used to use e.team but this is safer.
+			if (tm == colors_to_team (e.team_colors / %1))
+				players = players + 1;
+		}
+		e = find (e, classname, "player");
+	}
+
+	return players;
+};
+
+float ()
+max_players_per_team =
+{
+	local float i, tm, max, players;
+
+	for (i = %1;i < %14;i = i + %1)
+	{
+		tm = colors_to_team (match.aiment[i] / %1);
+		if (tm)
+		{
+			players = players_on_team (tm);
+			if (players > max)
+				max = players;
+		}
+	}
+
+	return max;
+};
+
+// XXX This is a bit messy, maybe use string arrays with gold numbers.
+void (float countdown)
+bprint_populous =
+{
+	local string s;
+	local float i, n;
+
+	i = max_players_per_team ();
+	if (countdown)
+		bprint ("Match is currently ");
+	else
+		bprint ("Match is ");
+	s = ftos (i);
+	bprint (s);
+	bprint ("v");
+	s = ftos (i);
+	bprint (s);
+	for (n = match.class_cnt;n > 2;n = n - 1)
+	{
+		bprint ("v");
+		s = ftos (i);
+		bprint (s);
+	}
+	bprint ("\n");
 };
 
 void ()
@@ -389,7 +466,7 @@ match_countdown =
 	else if (self.frags == 20)
 	{
 		if (seconds == 12)
-			bprint ("Match is currently 1v1\n"); // XXX Fix me!!
+			bprint_populous (1);
 		else if (seconds == 15)
 		{
 			match_respawn_all_items ();
@@ -410,7 +487,7 @@ match_countdown =
 	{
 		if (seconds == 20)
 		{
-			bprint ("Match is currently 1v1\n"); // XXX Fix me!!
+			bprint_populous (1);
 			bprint ("Match begins in 20 seconds\n");
 		}
 		else if (seconds == 30)
@@ -777,21 +854,13 @@ maybe_remove_team =
 	}
 
 	self.rqstate = self.rqstate - self.rqstate & RQS_READY;
-	tm = colors_to_pants (self.team_colors / %1) + 1;
+	tm = colors_to_team (self.team_colors / %1);
 	self.team_colors = 0;
 
-	e = find (world, classname, "player");
-	while (e)
+	if (players_on_team (tm))
 	{
-		if (e.rqstate & RQS_READY)
-		{
-			if (tm == e.team)
-			{
-				audit_match ();
-				return;
-			}
-		}
-		e = find (e, classname, "player");
+		audit_match ();
+		return;
 	}
 
 	remove_team (tm);
