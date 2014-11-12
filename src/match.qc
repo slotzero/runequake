@@ -25,8 +25,9 @@ float HUNK_MATCH_TIMELIMIT = %500;
 // match.cnt		= countdown
 // match.frags		= match timelimit
 // match.class_cnt	= teams present
-// match.delay		= teamscores hack
+// match.delay		= tracks teams present after match (+teamscores hack)
 // match.aimtent[1-14]	= team colors
+// match.frag_rate	= max players per team
 
 void ()
 match_init =
@@ -196,6 +197,7 @@ match_pre_think =
 	if (self.search_time > time)
 		return;
 
+	// XXX Allow players to change shirt colors?
 	if (*self.cl[CL_COLORS] != *self.team_colors)
 	{
 		self.search_time = time + 0.1;
@@ -368,20 +370,21 @@ players_on_team =
 float ()
 max_players_per_team =
 {
-	local float i, tm, max, players;
+	local float i, tm, players;
 
+	match.frag_rate = 0;
 	for (i = %1;i < %14;i = i + %1)
 	{
 		tm = colors_to_team (match.aiment[i] / %1);
 		if (tm)
 		{
 			players = players_on_team (tm);
-			if (players > max)
-				max = players;
+			if (players > match.frag_rate)
+				match.frag_rate = players;
 		}
 	}
 
-	return max;
+	return match.frag_rate;
 };
 
 // XXX This is a bit messy, maybe use string arrays with gold numbers.
@@ -621,6 +624,7 @@ float ()
 match_obs_join_game =
 {
 	local string s;
+	local float i, tm, allow;
 
 	if (!HUNK_CONTEXT_MAX)
 	{
@@ -642,6 +646,7 @@ match_obs_join_game =
 
 	if (match.state)
 	{
+		// XXX Prevent ghost from joining when full.
 		if (match_find_ghost ())
 		{
 			self.rqstate = self.rqstate | RQS_RESTORE_GHOST;
@@ -649,20 +654,44 @@ match_obs_join_game =
 		}
 	}
 
-	// XXX CRMOD allows players to join teams with fewer players.
-	if (match.cnt && match.cnt < 6)
-	{
-		self_sprint (self, "Team locked at T-5 seconds\nCannot join unless someone unreadies\n");
-		return FALSE;
- 	}
-
 	if (self.team == 1)
 	{
 		self_sprint (self, "invalid pants color\n");
 		return FALSE;
 	}
 
-	if (match.state && MATCHLOCK)
+	if (match.aiment[self.team * %1])
+	{
+		if (players_on_team (self.team) < match.frag_rate)
+			allow = 1;
+	}
+
+	if (match.cnt && match.cnt < 6 && !allow)
+	{
+		self_sprint (self, "Team locked at T-5 seconds\nCannot join unless someone unreadies\n");
+		return FALSE;
+ 	}
+
+	if (match.state && !match.aiment[self.team * %1])
+	{
+		self_sprint (self, "There are already enough teams:\n");
+		for (i = %1;i <= %14;i = i + %1)
+		{
+			if (match.aiment[i])
+			{
+				tm = match.aiment[i];
+				tm = colors_to_team (tm / %1);
+				s = team_to_name (tm);
+				self_sprint (self, s);
+				self_sprint (self, " (color ");
+				self_sprint_float (self, tm - 1);
+				self_sprint (self, ")\n");
+			}
+		}
+		return FALSE;
+	}
+
+	if (match.state && MATCHLOCK && !allow)
 	{
 		self_sprint (self, "Team full.  A player must enter 'unlock' in console to let you join\n");
 		restore_colors (self, self.team_colors / %1);
@@ -843,7 +872,6 @@ match_client_disconnect =
 void ()
 maybe_remove_team =
 {
-	local entity e;
 	local float tm;
 
 	// If ready check fails, this is her second time here.  Go straight to audit.
