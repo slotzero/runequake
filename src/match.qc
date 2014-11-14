@@ -74,6 +74,7 @@ match_obs_init =
 
 		self_stuffcmd (self.owner, "color 0\n");
 		self.owner.frags = -99;
+		self.owner.team_colors = 0;
 
 		// When a player becomes an observer using the 'observer' command
 		// and without being dead, CheckPowerups() overwrites the modelindex
@@ -123,7 +124,7 @@ colors_to_pants =
 float (float c)
 colors_to_team =
 {
-	return colors_to_pants (c) + 1;
+	return c & 15 + 1;
 };
 
 void (entity e, float c)
@@ -285,7 +286,7 @@ match_timer =
 		{
 			if (minutes == match.frags)
 			{
-				bprint_populous (0);
+				bprint_teamsize (0);
 				bprint_float (minutes);
 				bprint (" minutes remaining\n");
 			}
@@ -387,16 +388,22 @@ max_players_per_team =
 	return match.frag_rate;
 };
 
-// XXX This is a bit messy, maybe use string arrays with gold numbers.
 void (float countdown)
-bprint_populous =
+bprint_teamsize =
 {
 	local string s;
-	local float i, n;
+	local float i;
 
 	i = max_players_per_team ();
-	if (countdown)
+	if (countdown == 1)
 		bprint ("Match is currently ");
+	else if (countdown == 2)
+	{
+		bprint ("Match teamsize set to ");
+		bprint_float (i);
+		bprint ("\n");
+		return;
+	}
 	else
 		bprint ("Match is ");
 	s = ftos (i);
@@ -404,12 +411,6 @@ bprint_populous =
 	bprint ("v");
 	s = ftos (i);
 	bprint (s);
-	for (n = match.class_cnt;n > 2;n = n - 1)
-	{
-		bprint ("v");
-		s = ftos (i);
-		bprint (s);
-	}
 	bprint ("\n");
 };
 
@@ -465,11 +466,15 @@ match_countdown =
 			bprint (" second\n");
 		else
 			bprint (" seconds\n");
+
+		// update teamsize (match.frag_rate)
+		if (seconds == 5)
+			max_players_per_team ();
 	}
 	else if (self.frags == 20)
 	{
 		if (seconds == 12)
-			bprint_populous (1);
+			bprint_teamsize (1);
 		else if (seconds == 15)
 		{
 			match_respawn_all_items ();
@@ -490,7 +495,7 @@ match_countdown =
 	{
 		if (seconds == 20)
 		{
-			bprint_populous (1);
+			bprint_teamsize (1);
 			bprint ("Match begins in 20 seconds\n");
 		}
 		else if (seconds == 30)
@@ -853,6 +858,9 @@ match_restore_ghost =
 void ()
 match_client_disconnect =
 {
+	if (match.delay)
+		return;
+
 	if (is_observer_e (self))
 		return;
 

@@ -388,6 +388,8 @@ void ()
 setmatchlock =
 {
 	MATCHLOCK = !MATCHLOCK;
+	if (MATCHLOCK)
+		bprint_teamsize (2);
 };
 
 void ()

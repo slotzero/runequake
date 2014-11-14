@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2003-2013  David 'Slot Zero' Roberts.
+    Copyright (C) 2003-2014  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -495,6 +495,13 @@ vote =
 		}
 		else
 			e.noise2	= " to a random map";
+
+		if (gamemode == MODE_MATCH && match.state)
+		{
+			self_sprint (self, "Cannot change level while match is in progress\n");
+			LAST_VOTE_LEVEL = forced_nextmap = string_null;
+			cancel = 1;
+		}
 	}
 	else if (self.impulse == IMP_VOTE_TEAM)
 	{
