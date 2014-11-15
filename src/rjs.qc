@@ -206,7 +206,7 @@ random_sound2 =
 float (entity e)
 isteammate =
 {
-	return (teamplay & TEAM_TEAM_MASK && e.team == self.team);
+	return (teamplay & (TEAM_TEAM_MASK | TEAM_MODE_MATCH) && e.team == self.team);
 };
 
 float (entity e)
