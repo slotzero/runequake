@@ -400,6 +400,21 @@ admin_rename =
 	bprint ("\n");
 	//sprint_admin2 (newname, " by ");
 	//sprint_admin2 (self.netname, "\n");
+
+	// XXX bprint doesn't print to console in poq by default
+	IN_POQ([-
+	dprint_force (e.netname);
+	dprint_force (" was renamed to ");
+	self_stuffcmd (e, "name \"");
+	newname = random_name ();
+	self_stuffcmd (e, newname);
+	self_stuffcmd (e, "\"\n");
+	dprint_force (newname);
+	dprint_force (" by ");
+	dprint_force (self.netname);
+	dprint_force ("\n");
+	-])
+
 };
 
 void ()
@@ -507,6 +522,14 @@ admin_unbind =
 	bprint ("'s keys unbound by ");
 	bprint (self.netname);
 	bprint ("\n");
+
+	// XXX bprint doesn't print to console in poq by default
+	IN_POQ([-
+	dprint_force (e.netname);
+	dprint_force ("'s keys unbound by ");
+	dprint_force (self.netname);
+	dprint_force ("\n");
+	-])
 
 	//sprint_admin2 (e.netname, "'s keys unbound by ");
 	//sprint_admin2 (self.netname, "\n");
