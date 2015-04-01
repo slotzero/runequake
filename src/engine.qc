@@ -399,6 +399,10 @@ pqc_match_time =
 {	IN_QW(return;)
 	local float msg_type;
 
+	// sync +teamscores
+	if (!e)
+		teamscores_update ();
+
 	if (e.cl[CL_ACTIVE] == %1)
 	{
 		msg_entity = e;

@@ -271,7 +271,8 @@ T_Damage =
 						&& dtype != "bfgblast"
 						&& dtype != "teledeath"
 						&& dtype != "teledeath2"
-						&& dtype != "lumber")
+						&& dtype != "lumber"
+						&& damage < SURE_KILL_DAMAGE)
 				{
 					damage = 0;
 					monk_protect (targ);

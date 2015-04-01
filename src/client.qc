@@ -387,6 +387,10 @@ When the player presses attack or jump, change to the next level
 void ()
 IntermissionThink =
 {
+	// Reset viewport for rider during intermission.
+	if (self.viewentity)
+		set_viewport (self);
+
 	// If you go into intermission with the lightning or nail
 	// guns switchfiring they'll keep right on firing until the
 	// intermission exits without this.
@@ -619,6 +623,8 @@ Player entered the suicide command
 void ()
 ClientKill =
 {
+	local string dt;
+
 	if (intermission_running)
 		return;
 
@@ -628,11 +634,17 @@ ClientKill =
 		return;
 	}
 
+	// allow frozen and glued players to suicide without being kicked
+	if (!self.rqstate & RQS_GUIDED_MISSILE && self.effects & EF_FROZEN)
+		dt = "trapavoid";
+	else
+		dt = "suicide";
+
 	see_damage (self, self, self.health + self.armorvalue);
 	self.health = 0;
-	Killed (self, self, "suicide");
+	Killed (self, self, dt);
 
-	if (!gamemode & MODE_ARENA)
+	if (dt == "suicide")
 		kick_suicider ();
 };
 
@@ -1613,7 +1625,7 @@ PlayerPreThink =
 			if (self.afk + 5 > time)
 			{
 				self.rqstate = self.rqstate - self.rqstate & RQS_AFK;
-				update_showscores_name (world, self);
+				svc_updatename_hack (world, self);
 			}
 		}
 		else
@@ -1623,7 +1635,7 @@ PlayerPreThink =
 				if (self.afk < time - AFK_TIME * 60 && !is_qsmack () IN_QW(&& 0))
 				{
 					self.rqstate = self.rqstate | RQS_AFK;
-					update_showscores_name (world, self);
+					svc_updatename_hack (world, self);
 				}
 			}
 		}
@@ -1634,7 +1646,7 @@ PlayerPreThink =
 			if (self.netname != READY_NAME_16[((self.colormap - 1) * %1) * 16])
 			{
 				strcpy (READY_NAME_16[((self.colormap - 1) * %1) * 16], self.netname);
-				update_showscores_name (world, self);
+				svc_updatename_hack (world, self);
 			}
 		}
 	}
@@ -2149,13 +2161,6 @@ ClientDisconnect =
 
 	qsmack_status_valid = 0;
 
-	if (gamemode == MODE_MATCH)
-		match_client_disconnect ();
-	else if (gamemode & MODE_ARENA)
-		arena_client_disconnect ();
-	else if (gamemode == MODE_HEADS)
-		head_drop ();
-
 	i = !self.cl[CL_ACTIVE] / %1;
 
 	// Don't print the disconnect message for players forwarding or
@@ -2176,6 +2181,13 @@ ClientDisconnect =
 		bprint (" frags\n");
 		sound (self, CHAN_BODY, "player/tornoff2.wav", 1, ATTN_NONE);
 	}
+
+	if (gamemode == MODE_MATCH)
+		match_client_disconnect ();
+	else if (gamemode & MODE_ARENA)
+		arena_client_disconnect ();
+	else if (gamemode == MODE_HEADS)
+		head_drop ();
 
 	if (self.runevar_array)
 		remove(self.runevar_array);
@@ -2340,6 +2352,8 @@ ClientObituary =
 
 			if (dt == "suicide")
 				bprint (" suicides\n");
+			else if (dt == "trapavoid")
+				bprint (" suicides to avoid a trap\n");
 			else if (dt == "kamiself")
 			{
 				f = 0;

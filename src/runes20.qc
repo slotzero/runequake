@@ -137,7 +137,7 @@ DSpot_Think =
 	self.nextthink = time + 0.6;
 	IN_POQ([-
 		particle (self.origin, VEC_ORIGIN, PARTICLE_DEATH_SPOT, 40);
-		if (teamplay & TEAM_TEAM_MASK)
+		if (teamplay & (TEAM_TEAM_MASK | TEAM_MODE_MATCH))
 		{
 			local float particle_team;
 

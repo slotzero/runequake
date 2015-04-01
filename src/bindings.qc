@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2003-2013  David 'Slot Zero' Roberts.
+    Copyright (C) 2003-2014  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -1576,14 +1576,17 @@ help_vote =
 	self_sprint (self, "\bvote-exit       <mapname>\b (ex: start)\n");
 	self_sprint (self, "\bvote-hook       vote-hook-damage\n");
 	self_sprint (self, "\bvote-free       vote-lithium\n");
-	self_sprint (self, "\bvote-team       vote-arena\n");
-	self_sprint (self, "\bvote-practice   vote-normal\n");
+	self_sprint (self, "\bvote-team       vote-match\n");
+	self_sprint (self, "\bvote-normal     vote-practice\n");
+	self_sprint (self, "\bvote-arena      vote-heads\n");
+	self_sprint (self, "\bvote-midair     vote-random-spawn\n");
 	self_sprint (self, "\bvote-quad       vote-pent\n");
 	self_sprint (self, "\bvote-ring       vote-suit\n");
 	self_sprint (self, "\bvote-armor      vote-rotate\n");
-	self_sprint (self, "\bvote-runes      vote-alt-weapons\n");
-	self_sprint (self, "\bvote-shields    vote-weapons-stay\n");
-	self_sprint (self, "\bvote-mega       vote-match\n");
+	self_sprint (self, "\bvote-alts       vote-weapons-stay\n");
+	self_sprint (self, "\bvote-runes      vote-rune-drop\n");
+	self_sprint (self, "\bvote-shields    vote-lg-discharge\n");
+	self_sprint (self, "\bvote-mega       vote-classic-mega\n");
 	self_sprint (self, "\bvote-backpacks  vote-armor-drop\n");
 	self_sprint (self, "\bvote-rune-drop  vote-powerup-drop\n");
 	self_sprint (self, "\bvote-dual       vote-lg-discharge\n");
@@ -1591,7 +1594,6 @@ help_vote =
 	self_sprint (self, "\b                vote-random-spawn\n");
 	self_sprint (self, "\b                vote-shoot-buttons\n");
 	self_sprint (self, "\b                vote-powerup-hats\n");
-	// self_sprint (self, "\n");
 };
 
 void ()
@@ -1645,6 +1647,7 @@ help_options =
 	self_sprint (self, "\b  random spawn  ");       self_sprint_boolean (self, options & RANDOM_SPAWN);
 	self_sprint (self, "\n\bshoot buttons ");	self_sprint_boolean (self, options & SHOOT_BUTTONS);
 	self_sprint (self, "\b  dual rune off ");	self_sprint_boolean (self, options & NO_DUALALITY);
+	self_sprint (self, "\b  powerup hats  ");	self_sprint_boolean (self, !options & NO_POWERUP_HATS);
 	self_sprint (self, "\n");
 };
 

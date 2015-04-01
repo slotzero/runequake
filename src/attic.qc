@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2001-2013  David 'Slot Zero' Roberts.
+    Copyright (C) 2001-2014  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -802,3 +802,36 @@ float MORTAR_REFIRE		= 1.4;
 float MORTAR_DAMAGE		= 90;
 float MORTAR_RADIUS		= 100;
 float MORTAR_TAPER		= 0.1;
+
+float (float bits)
+bits_set =
+{
+	local float n;
+
+	n = 0;
+	if (bits & 1)		n = n + 1;
+	if (bits & 2)		n = n + 1;
+	if (bits & 4)		n = n + 1;
+	if (bits & 8)		n = n + 1;
+	if (bits & 16)		n = n + 1;
+	if (bits & 32)		n = n + 1;
+	if (bits & 64)		n = n + 1;
+	if (bits & 128)		n = n + 1;
+	if (bits & 256)		n = n + 1;
+	if (bits & 512)		n = n + 1;
+	if (bits & 1024)	n = n + 1;
+	if (bits & 2048)	n = n + 1;
+	if (bits & 4096)	n = n + 1;
+	if (bits & 8192)	n = n + 1;
+	if (bits & 16384)	n = n + 1;
+	if (bits & 32768)	n = n + 1;
+	if (bits & 65536)	n = n + 1;
+	if (bits & 131072)	n = n + 1;
+	if (bits & 262144)	n = n + 1;
+	if (bits & 524288)	n = n + 1;
+	if (bits & 1048576)	n = n + 1;
+	if (bits & 2097152)	n = n + 1;
+	if (bits & 4194304)	n = n + 1;
+	if (bits & 8388608)	n = n + 1;
+	return n;
+};

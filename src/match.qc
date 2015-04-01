@@ -1,6 +1,5 @@
-/*  $Id: match.qc,v 1.51 2010/10/27 05:13:00 slotzero Exp $
-
-    Copyright (C) 2005  David 'Slot Zero' Roberts.
+/*
+    Copyright (C) 2005-2014  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,18 +16,30 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-float HUNK_TEAMS = %500;
-float HUNK_MATCH_TIMELIMIT = %517;
-float TEAMS_PRESENT;
-float MATCH_LOCKED;
+float HUNK_MATCH_TIMELIMIT = %500;
+
+// match entity
+//
+// match.state		= 1 (match in progress) | 0 (waiting | countdown)
+// match.count		= match timer
+// match.cnt		= countdown
+// match.frags		= match timelimit
+// match.class_cnt	= teams present
+// match.delay		= tracks teams present after match (+teamscores hack)
+// match.aimtent[1-14]	= team colors
+// match.frag_rate	= max players per team
 
 void ()
-match_hunk_init =
+match_init =
 {
 	local float i;
 
-	for (i = %1; i <= %16; i = i + %1)
-		Write_Hunk_Float (HUNK_CONTEXT, HUNK_TEAMS + i, 0);
+	// spawn and offset array
+	if (!match.aiment)
+		match.aiment = *(&match + %400);
+
+	for (i = %1; i <= %14; i = i + %1)
+		match.aiment[i] = 0;
 };
 
 void (entity e)
@@ -36,13 +47,10 @@ match_client_init =
 {
 	local float i, c, pants, colors;
 
-	if (!*HUNK_CONTEXT)
-		return;
-
-	for (i = %1; i <= %16; i = i + %1)
+	for (i = %1; i <= %14; i = i + %1)
 	{
-		colors = Read_Hunk_Float (HUNK_CONTEXT, HUNK_TEAMS + i) / %1;
-  		if (colors && colors != 0x20202020)
+		colors = match.aiment[i] / %1;
+  		if (colors)
 		{
 			pqc_new_team (e, colors);
 			pants = colors_to_pants (colors);
@@ -66,6 +74,7 @@ match_obs_init =
 
 		self_stuffcmd (self.owner, "color 0\n");
 		self.owner.frags = -99;
+		self.owner.team_colors = 0;
 
 		// When a player becomes an observer using the 'observer' command
 		// and without being dead, CheckPowerups() overwrites the modelindex
@@ -96,41 +105,8 @@ match_obs_become =
 	if (type)
 	{
 		maybe_remove_team ();
-		update_showscores_name (world, self);
+		svc_updatename_hack (world, self);
 	}
-};
-
-float (float bits)
-bits_set =
-{
-	local float n;
-
-	n = 0;
-	if (bits & 1)		n = n + 1;
-	if (bits & 2)		n = n + 1;
-	if (bits & 4)		n = n + 1;
-	if (bits & 8)		n = n + 1;
-	if (bits & 16)		n = n + 1;
-	if (bits & 32)		n = n + 1;
-	if (bits & 64)		n = n + 1;
-	if (bits & 128)		n = n + 1;
-	if (bits & 256)		n = n + 1;
-	if (bits & 512)		n = n + 1;
-	if (bits & 1024)	n = n + 1;
-	if (bits & 2048)	n = n + 1;
-	if (bits & 4096)	n = n + 1;
-	if (bits & 8192)	n = n + 1;
-	if (bits & 16384)	n = n + 1;
-	if (bits & 32768)	n = n + 1;
-	if (bits & 65536)	n = n + 1;
-	if (bits & 131072)	n = n + 1;
-	if (bits & 262144)	n = n + 1;
-	if (bits & 524288)	n = n + 1;
-	if (bits & 1048576)	n = n + 1;
-	if (bits & 2097152)	n = n + 1;
-	if (bits & 4194304)	n = n + 1;
-	if (bits & 8388608)	n = n + 1;
-	return n;
 };
 
 float (float c)
@@ -143,6 +119,12 @@ float (float c)
 colors_to_pants =
 {
 	return c & 15;
+};
+
+float (float c)
+colors_to_team =
+{
+	return c & 15 + 1;
 };
 
 void (entity e, float c)
@@ -216,6 +198,7 @@ match_pre_think =
 	if (self.search_time > time)
 		return;
 
+	// XXX Allow players to change shirt colors?
 	if (*self.cl[CL_COLORS] != *self.team_colors)
 	{
 		self.search_time = time + 0.1;
@@ -227,10 +210,11 @@ match_pre_think =
 void ()
 match_abort =
 {
-	match.state = 0;
-	TEAMS_PRESENT = 0;
+	match.state	= 0;
+	match.class_cnt	= 0;
 
 	bprint ("Match aborted!\n");
+	match_init ();
 	pqc_match_time (world, 255, 0);
 	pqc_match_reset ();
 	match_remove_ghosts (world);
@@ -269,8 +253,9 @@ match_timer =
 	seconds = rint (match.count - time);
 	if (seconds <= 0)
 	{
+		match.delay	= match.class_cnt;
 		match.state	= 0;
-		TEAMS_PRESENT	= 0;
+		match.class_cnt	= 0;
 
 		bprint ("The match is over\n");
 		team_stats (1);
@@ -301,6 +286,7 @@ match_timer =
 		{
 			if (minutes == match.frags)
 			{
+				bprint_teamsize (0);
 				bprint_float (minutes);
 				bprint (" minutes remaining\n");
 			}
@@ -329,7 +315,7 @@ match_unready_names =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		update_showscores_name (world, e);
+		svc_updatename_hack (world, e);
 		e = find (e, classname, "player");
 	}
 };
@@ -355,6 +341,77 @@ reset_efficiency_all =
 		reset_efficiency_e (e);
 		e = find (e, classname, "player");
 	}
+};
+
+float (float tm)
+players_on_team =
+{
+	local entity e;
+	local float players;
+
+	// check if team exits
+	if (!match.aiment[tm * %1])
+		return 0;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (e.rqstate & RQS_READY)
+		{
+			// I used to use e.team but this is safer.
+			if (tm == colors_to_team (e.team_colors / %1))
+				players = players + 1;
+		}
+		e = find (e, classname, "player");
+	}
+
+	return players;
+};
+
+float ()
+max_players_per_team =
+{
+	local float i, tm, players;
+
+	match.frag_rate = 0;
+	for (i = %1;i < %14;i = i + %1)
+	{
+		tm = colors_to_team (match.aiment[i] / %1);
+		if (tm)
+		{
+			players = players_on_team (tm);
+			if (players > match.frag_rate)
+				match.frag_rate = players;
+		}
+	}
+
+	return match.frag_rate;
+};
+
+void (float countdown)
+bprint_teamsize =
+{
+	local string s;
+	local float i;
+
+	i = max_players_per_team ();
+	if (countdown == 1)
+		bprint ("Match is currently ");
+	else if (countdown == 2)
+	{
+		bprint ("Match teamsize set to ");
+		bprint_float (i);
+		bprint ("\n");
+		return;
+	}
+	else
+		bprint ("Match is ");
+	s = ftos (i);
+	bprint (s);
+	bprint ("v");
+	s = ftos (i);
+	bprint (s);
+	bprint ("\n");
 };
 
 void ()
@@ -409,11 +466,15 @@ match_countdown =
 			bprint (" second\n");
 		else
 			bprint (" seconds\n");
+
+		// update teamsize (match.frag_rate)
+		if (seconds == 5)
+			max_players_per_team ();
 	}
 	else if (self.frags == 20)
 	{
 		if (seconds == 12)
-			bprint ("Match is currently 1v1\n"); // XXX Fix me!!
+			bprint_teamsize (1);
 		else if (seconds == 15)
 		{
 			match_respawn_all_items ();
@@ -434,7 +495,7 @@ match_countdown =
 	{
 		if (seconds == 20)
 		{
-			bprint ("Match is currently 1v1\n"); // XXX Fix me!!
+			bprint_teamsize (1);
 			bprint ("Match begins in 20 seconds\n");
 		}
 		else if (seconds == 30)
@@ -512,20 +573,17 @@ audit_match =
 {
 	local float teams;
 
-	teams = bits_set (TEAMS_PRESENT);
-
 	if (match.state)
 	{
 		if (!count_players (0))
-			match_abort ();
-		else if (!teams)
 		{
-			bprint ("No teams present\n");
+			bprint ("No players present\n");
 			match_abort ();
 		}
 		return;
 	}
 
+	teams = match.class_cnt;
 	if (!teams)
 		bprint ("No teams present\n");
 	else if (teams == 1)
@@ -537,41 +595,41 @@ audit_match =
 		match_stop_countdown ();
 };
 
-void (entity e, entity w)
-update_showscores_name =
+void (entity client, entity e)
+svc_updatename_hack =
 {
 	local float msg_type;
 	local string match_name;
 	local string s;
 
-	if (e.cl[CL_ACTIVE] == %1)
+	if (client.cl[CL_ACTIVE] == %1)
 	{
-		msg_entity = e;
+		msg_entity = client;
 		msg_type = MSG_ONE;
 	}
 	else
 		msg_type = MSG_ALL;
 
-	if (w.rqstate & RQS_AFK)
+	if (e.rqstate & RQS_AFK)
 		s = "\bAFK";
-	else if (!match.state && w.rqstate & RQS_READY)
+	else if (!match.state && e.rqstate & RQS_READY)
 		s = "\bREADY";
 	else
 	{
-		svc_updatename (MSG_ALL, w.colormap - 1, w.netname);
+		svc_updatename (msg_type, e.colormap - 1, e.netname);
 		return;
 	}
 
-	match_name = flen (w.netname, -16);
+	match_name = flen (e.netname, -16);
 	match_name = strcat (match_name, s);
-	svc_updatename (msg_type, w.colormap - 1, match_name);
+	svc_updatename (msg_type, e.colormap - 1, match_name);
 };
 
 float ()
 match_obs_join_game =
 {
-	local float bit;
 	local string s;
+	local float i, tm, allow;
 
 	if (!HUNK_CONTEXT_MAX)
 	{
@@ -593,6 +651,7 @@ match_obs_join_game =
 
 	if (match.state)
 	{
+		// XXX Prevent ghost from joining when full.
 		if (match_find_ghost ())
 		{
 			self.rqstate = self.rqstate | RQS_RESTORE_GHOST;
@@ -600,20 +659,44 @@ match_obs_join_game =
 		}
 	}
 
-	// XXX CRMOD allows players to join teams with fewer players.
-	if (match.cnt && match.cnt < 6)
-	{
-		self_sprint (self, "Team locked at T-5 seconds\nCannot join unless someone unreadies\n");
-		return FALSE;
- 	}
-
 	if (self.team == 1)
 	{
 		self_sprint (self, "invalid pants color\n");
 		return FALSE;
 	}
 
-	if (match.state && MATCHLOCK)
+	if (match.aiment[self.team * %1])
+	{
+		if (players_on_team (self.team) < match.frag_rate)
+			allow = 1;
+	}
+
+	if (match.cnt && match.cnt < 6 && !allow)
+	{
+		self_sprint (self, "Team locked at T-5 seconds\nCannot join unless someone unreadies\n");
+		return FALSE;
+ 	}
+
+	if (match.state && !match.aiment[self.team * %1])
+	{
+		self_sprint (self, "There are already enough teams:\n");
+		for (i = %1;i <= %14;i = i + %1)
+		{
+			if (match.aiment[i])
+			{
+				tm = match.aiment[i];
+				tm = colors_to_team (tm / %1);
+				s = team_to_name (tm);
+				self_sprint (self, s);
+				self_sprint (self, " (color ");
+				self_sprint_float (self, tm - 1);
+				self_sprint (self, ")\n");
+			}
+		}
+		return FALSE;
+	}
+
+	if (match.state && MATCHLOCK && !allow)
 	{
 		self_sprint (self, "Team full.  A player must enter 'unlock' in console to let you join\n");
 		restore_colors (self, self.team_colors / %1);
@@ -621,10 +704,10 @@ match_obs_join_game =
 	}
 
 	// Clean up last match.
-	if (!TEAMS_PRESENT)
+	if (!match.class_cnt)
 	{
-		TEAMS_PRESENT = 0;
-		match_hunk_init ();
+		match.delay = 0;
+		match_init ();
 		frag_init ();
 		pqc_match_time (world, 255, 0);
 		pqc_match_reset ();
@@ -633,15 +716,14 @@ match_obs_join_game =
 	self.team_colors	= self.cl[CL_COLORS];
 	self.rqstate		= self.rqstate | RQS_READY;
 	self.frags		= 0;
-
-	bit			= num_to_bit (self.team);
 	s			= team_to_name (self.team);
-	if (!TEAMS_PRESENT & bit)
+
+	if (!match.aiment[self.team * %1])
 	{
 		bprint (s);
-		bprint (" team created\n");
-		Write_Hunk_Float (HUNK_CONTEXT, HUNK_TEAMS + (self.team * %1), self.cl[CL_COLORS]);
-		TEAMS_PRESENT = TEAMS_PRESENT | bit;
+		bprint (" created\n");
+		match.aiment[self.team * %1] = self.cl[CL_COLORS];
+		match.class_cnt = match.class_cnt + 1;
 		pqc_new_team (world, self.cl[CL_COLORS] / %1);
 	}
 
@@ -651,7 +733,7 @@ match_obs_join_game =
 	bprint ("\n");
 
 	audit_match ();
-	update_showscores_name (world, self);
+	svc_updatename_hack (world, self);
 
 	return TRUE;
 };
@@ -776,11 +858,21 @@ match_restore_ghost =
 void ()
 match_client_disconnect =
 {
-	if (!self.rqstate & RQS_READY)
+	if (match.delay)
 		return;
 
-	if (match.state)
-		match_spawn_ghost ();
+	if (is_observer_e (self))
+		return;
+
+	if (self.rqstate & RQS_READY)
+	{
+		if (match.state)
+			match_spawn_ghost ();
+	}
+
+	// I had to set this early in order for audit_match() to work properly
+	// when players disconnect.
+	self.classname = "deader";
 
 	maybe_remove_team ();
 };
@@ -788,50 +880,48 @@ match_client_disconnect =
 void ()
 maybe_remove_team =
 {
-	local entity w;
-	local float e_pants, w_pants;
+	local float tm;
+
+	// If ready check fails, this is her second time here.  Go straight to audit.
+	if (!self.rqstate & RQS_READY)
+	{
+		audit_match ();
+		return;
+	}
 
 	self.rqstate = self.rqstate - self.rqstate & RQS_READY;
+	tm = colors_to_team (self.team_colors / %1);
 	self.team_colors = 0;
-	e_pants = colors_to_pants (self.cl[CL_COLORS] / %1);
-	w = find (world, classname, "player");
-	while (w)
-	{
-		w_pants = colors_to_pants (w.cl[CL_COLORS] / %1);
-		if (self != w && e_pants == w_pants && w.rqstate & RQS_READY)
-		{
-			audit_match ();
-			return;
-		}
-		w = find (w, classname, "player");
-	}
-	remove_team (self.team);
 
-	return;
+	if (players_on_team (tm))
+	{
+		audit_match ();
+		return;
+	}
+
+	remove_team (tm);
 };
 
 void (float tm)
 remove_team =
 {
-	local float bit;
-
-	if (!*HUNK_CONTEXT)
-		return;
-
-	if (!TEAMS_PRESENT)
-		return;
-
 	if (match.state)
 	{
 		audit_match ();
 		return;
 	}
 
-	pqc_erase_team (tm - 1);
-	Write_Hunk_Float (HUNK_CONTEXT, HUNK_TEAMS + (tm * %1), 0);
+	// safety net
+	if (!match.class_cnt)
+		return;
 
-	bit = num_to_bit (tm);
-	TEAMS_PRESENT = TEAMS_PRESENT - TEAMS_PRESENT & bit;
+	// safety net
+	if (!match.aiment[tm * %1])
+		return;
+
+	pqc_erase_team (tm - 1);
+	match.aiment[tm * %1] = 0;
+	match.class_cnt = match.class_cnt - 1;
 
 	audit_match ();
 };
@@ -902,7 +992,7 @@ match_notready =
 	}
 
 	maybe_remove_team ();
-	update_showscores_name (world, self);
+	svc_updatename_hack (world, self);
 };
 
 void ()

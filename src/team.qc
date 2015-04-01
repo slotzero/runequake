@@ -713,11 +713,28 @@ num_to_bit =
 	else			return 0;
 };
 
+// This function will refresh the scoreboard for all players with +teamscores active each time
+// pqc_match_time() is called so that the timer is synchronized.
+void ()
+teamscores_update =
+{
+	local entity e;
+
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (e.rqflags & RQ_TEAMSCORES_ON)
+			e.lefty = time;
+
+		e = find (e, classname, "player");
+	}
+};
+
 void (entity client)
 teamscores_on =
 {	IN_QW(return;)
 	local entity e;
-	local float i, tf, bit, bits, n_teams, msg_type;
+	local float i, n, tm, tf, bit, bits, ignore, n_teams, msg_type;
 	local string s;
 
 	if (client == world)
@@ -731,14 +748,121 @@ teamscores_on =
 
 	n_teams = enforced_teams ();
 
-	bits = 0;
+	if (gamemode == MODE_MATCH)
+	{
+		bits = 1; // include white for remaining time / match over
+		for (i = %1;i <= %14;i = i + %1)
+		{
+			if (match.aiment[i])
+				bits = bits | num_to_bit (i / %1);
+		}
+	}
+
 	e = nextent (world);
 	for (i = 0; i < 16; i = i + 1)
 	{
 		if (e.classname == "bodyque")
 			return;
 
-		if (e.cl[CL_ACTIVE] == %1)
+		if (gamemode == MODE_MATCH)
+		{
+			// normal scoreboard
+			if ((!(match.state || match.cnt || match.delay))) // parens needed
+			{
+				if (e.cl[CL_ACTIVE] == %1)
+				{
+					svc_updatename_hack (client, e);
+					svc_updatefrags (msg_type, i, e.frags);
+					svc_updatecolors (msg_type, i, e.cl[CL_COLORS] / %1);
+				}
+				else
+					svc_updatename (msg_type, i, string_null);
+			}
+			// countdown
+			else if (match.cnt)
+			{
+				if (!e.team_colors && !ignore)
+				{
+					ignore = 1;
+					s = ftos (match.cnt);
+					s = strcat ("T Minus ",  s);
+					svc_updatename (msg_type, i, s);
+					svc_updatefrags (msg_type, i, -99);
+					svc_updatecolors (msg_type, i, 0);
+				}
+				else
+					svc_updatename (msg_type, i, string_null);
+			}
+			// match in progress | match over
+			else if ((match.state || match.delay) && bits)
+			{
+				// XXX In CRMod, only clients with active colors are shown in the teamscores
+				// scoreboard.  So, if it's 1v1 and someone disconnects, only one team name
+				// will appear.  I workaround this by forcing the colors on to a disconnected
+				// client.  This also works when the match is over so that team scores are preserved
+				// even after everyone leaves.  This method is far from perfect, and can still
+				// produce missing scoreboard names if there are too many players and teams with
+				// mismatched colors.  [Further testing is needed to make sure colors don't switch
+				// when clients connect/disconnect.  If that happens, abandon this method]
+
+				// active client
+				if (e.cl[CL_ACTIVE] == %1)
+				{
+					bit = 0;
+					tm = colors_to_team (e.team_colors / %1);
+					if (tm == e.team)
+						bit = num_to_bit (tm);
+				}
+				// disconnected client
+				else
+				{
+					for (n = 1;n <= 14; n = n + 1)
+					{
+						bit = num_to_bit (n);
+						if (bits & bit)
+						{
+							tm = n;
+							n = 16;
+						}
+					}
+				}
+
+				if (bits & bit)
+				{
+					bits = bits - bits & bit;
+					// time reminaing / match over
+					if (tm == 1)
+					{
+						if (match.delay)
+							s = "Match Over";
+						else
+						{
+							s = parse_time ((match.count + 1) - time);
+							s = strcat (s, " remaining");
+						}
+
+						svc_updatename (msg_type, i, s);
+						svc_updatefrags (msg_type, i, -99);
+						svc_updatecolors (msg_type, i, 0);
+					}
+					// team names
+					else
+					{
+						s = team_to_name (tm);
+						tf = team_to_teamfrags (tm);
+						svc_updatename (msg_type, i, s);
+						svc_updatefrags (msg_type, i, tf);
+						svc_updatecolors (msg_type, i, match.aiment[tm * %1] / %1);
+					}
+				}
+				else
+					svc_updatename (msg_type, i, string_null);
+
+			}
+			else
+				svc_updatename (msg_type, i, string_null);
+		}
+		else if (e.cl[CL_ACTIVE] == %1)
 		{
 			bit = num_to_bit (e.team);
 
@@ -750,9 +874,8 @@ teamscores_on =
 					svc_updatename (msg_type, i, string_null);
 				else
 				{
-					s	= team_to_name (e.team);
-					tf	= team_to_teamfrags (e.team);
-
+					s = team_to_name (e.team);
+					tf = team_to_teamfrags (e.team);
 					svc_updatename (msg_type, i, s);
 					svc_updatefrags (msg_type, i, tf);
 					svc_updatecolors (msg_type, i, e.cl[CL_COLORS] / %1);
@@ -791,7 +914,7 @@ teamscores_off =
 
 		if (e.cl[CL_ACTIVE] == %1)
 		{
-			svc_updatename (msg_type, i, e.netname);
+			svc_updatename_hack (client, e);
 			svc_updatefrags (msg_type, i, e.frags);
 			svc_updatecolors (msg_type, i, e.cl[CL_COLORS] / %1);
 		}

@@ -408,7 +408,7 @@ Freeze_Think =
 	IN_POQ([-
 		particle (self.origin, '0 0 -10', PARTICLE_FREEZE_TRAP, 20);
 
-		if (teamplay & TEAM_TEAM_MASK)
+		if (teamplay & (TEAM_TEAM_MASK | TEAM_MODE_MATCH))
 		{
 			local float particle_team;
 

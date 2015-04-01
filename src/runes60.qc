@@ -564,7 +564,7 @@ AntiPack_Think =
 	IN_POQ([-
 
 
-		if (teamplay & TEAM_TEAM_MASK)
+		if (teamplay & (TEAM_TEAM_MASK | TEAM_MODE_MATCH))
 		{
 			local float particle_team;
 
@@ -893,7 +893,7 @@ tornado_pull =
 
 						IN_POQ([-
 							// Fire those particles toward the tornado
-							if (teamplay & TEAM_TEAM_MASK)
+							if (teamplay & (TEAM_TEAM_MASK | TEAM_MODE_MATCH))
 							{
 								local float particle_team;
 

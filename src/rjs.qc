@@ -206,7 +206,7 @@ random_sound2 =
 float (entity e)
 isteammate =
 {
-	return (teamplay & TEAM_TEAM_MASK && e.team == self.team);
+	return (teamplay & (TEAM_TEAM_MASK | TEAM_MODE_MATCH) && e.team == self.team);
 };
 
 float (entity e)
@@ -286,16 +286,21 @@ kick =
 float ()
 kick_suicider =
 {
+	if (gamemode & MODE_ARENA)
+		return 0;
+
 	if (self.last_suicide && time - self.last_suicide < 60)
 	{
 		kick ("for suiciding too often", string_null);
 		return 1;
 	}
+
 	if (!self.aqflags & AQ_ADMIN)
 	{
 		sprint (self, "You will be kicked if you suicide again within a minute\n");
 		self.last_suicide = time;
 	}
+
 	return 0;
 };
 
@@ -365,7 +370,10 @@ rjs_worldspawn =
 	if (gamemode & MODE_ARENA)
 		arena	= spawn ();
 	else if (gamemode == MODE_MATCH)
+	{
 		match	= spawn ();
+		match_init ();
+	}
 
 	timelimit_countdown_spawn ();
 	process_storage_cvars ();
@@ -1863,7 +1871,7 @@ player_init =
 	while (e)
 	{
 		if (e.rqstate & RQS_AFK || (!match.state && e.rqstate & RQS_READY))
-			update_showscores_name (self, e);
+			svc_updatename_hack (self, e);
 		e = find (e, classname, "player");
 	}
 
