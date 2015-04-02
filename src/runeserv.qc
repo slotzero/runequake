@@ -902,7 +902,7 @@ Rune_Tell_sprint =
 void (float type, float tell)
 Rune_Activate =
 {
-	local float best;
+	local float best, runeslot;
 
 	// spawn_protect_off ();
 
@@ -924,6 +924,7 @@ Rune_Activate =
 
 	if (!self.runetype1)
                 self.runetype1 = type;
+                //runeslot = 1;
         else if (!self.runetype2)
         {
                 if (options & NO_DUALALITY)
@@ -932,6 +933,7 @@ Rune_Activate =
                         return;
                 }
                 self.runetype2 = type;
+                runeslot = 2;
         }
         else
         {
@@ -989,7 +991,10 @@ Rune_Activate =
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar_array[RN_DSPOTS * %1] = count_classname_owner (self, "dspot");
 		else
-			self.class_cnt = count_classname_owner (self, "dspot");
+			if (runeslot == 2)
+				self.class_cnt2 = count_classname_owner (self, "dspot");
+			else
+				self.class_cnt1 = count_classname_owner (self, "dspot");
 	}
 
 	else if (type == RN_HOLO)
@@ -997,7 +1002,10 @@ Rune_Activate =
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar_array[RN_HOLO * %1] = count_classname_owner (self, "hologram");
 		else
-			self.class_cnt = count_classname_owner (self, "hologram");
+			if (runeslot == 2)
+				self.class_cnt2 = count_classname_owner (self, "hologram");
+			else
+				self.class_cnt1 = count_classname_owner (self, "hologram");
 	}
 
 	else if (type == RN_ORB)
@@ -1011,7 +1019,10 @@ Rune_Activate =
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar_array[RN_RADIO * %1] = count_classname_owner (self, "radioactive");
 		else
-			self.class_cnt = count_classname_owner (self, "radioactive");
+			if (runeslot == 2)
+				self.class_cnt2 = count_classname_owner (self, "radioactive");
+			else
+				self.class_cnt1 = count_classname_owner (self, "radioactive");
 	}
 
 	else if (type == RN_FREEZE)
@@ -1019,7 +1030,10 @@ Rune_Activate =
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar_array[RN_FREEZE * %1] = count_classname_owner (self, "freeze");
 		else
-			self.class_cnt = count_classname_owner (self, "freeze");
+			if (runeslot == 2)
+				self.class_cnt2 = count_classname_owner (self, "freeze");
+			else
+				self.class_cnt1 = count_classname_owner (self, "freeze");
 	}
 
 	else if (type == RN_VENG)
@@ -1091,7 +1105,10 @@ Rune_Activate =
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar_array[RN_TORCH * %1] = count_classname_owner (self, "torchtrap");
 		else
-			self.class_cnt = count_classname_owner (self, "torchtrap");
+			if (runeslot == 2)
+				self.class_cnt2 = count_classname_owner (self, "torchtrap");
+			else
+				self.class_cnt1 = count_classname_owner (self, "torchtrap");
 		Hat_Spawn (self, "progs/flame2.mdl", '-4 1 35', VEC_ORIGIN, 0 - RN_TORCH);
 	}
 
@@ -1146,7 +1163,10 @@ Rune_Activate =
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar_array[RN_GLUE * %1] = count_classname_owner (self, "glue");
 		else
-			self.class_cnt = count_classname_owner (self, "glue");
+			if (runeslot == 2)
+				self.class_cnt2 = count_classname_owner (self, "glue");
+			else
+				self.class_cnt1 = count_classname_owner (self, "glue");
 	}
 
         /*
@@ -1159,7 +1179,10 @@ Rune_Activate =
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar_array[RN_ANTIPACK * %1] = count_classname_owner (self, "antipack");
 		else
-			self.class_cnt = count_classname_owner (self, "antipack");
+			if (runeslot == 2)
+				self.class_cnt2 = count_classname_owner (self, "antipack");
+			else
+				self.class_cnt1 = count_classname_owner (self, "antipack");
 	}
 
 	else if (type == RN_DEFLECT)
