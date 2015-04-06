@@ -1237,10 +1237,12 @@ Rune_Delete =
 	self.max_health 	= MAX_HEALTH_NORMAL;
 	self.movetype           = MOVETYPE_WALK;
 	self.runent             = world;
+
+	// are these even necessary?
 	self.oldrunetime	= time;
 	self.oldrunevar         = 0;
-	self.class_cnt          = 0;
 	self.oldrunevector	= VEC_ORIGIN;
+
 	// self.touch	        = misc_touch;
 	stuffcmd (self, CSHIFT_NONE);
 
@@ -1267,6 +1269,9 @@ Rune_Delete =
 			self.takedamage = DAMAGE_AIM;
 	}
 
+	self.runetime_array[old_rune * %1] = time;
+	self.runevar_array[old_rune * %1] = 0;
+
 	old_rune = self.runetype2;
 	self.runetype2 = 0;
 
@@ -1287,6 +1292,9 @@ Rune_Delete =
 		if (!self.takedamage)
 			self.takedamage = DAMAGE_AIM;
 	}
+
+	self.runetime_array[old_rune * %1] = time;
+	self.runevar_array[old_rune * %1] = 0;
 
         if (!self.aqflags & AQ_QUIET)
         {
