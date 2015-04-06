@@ -3252,8 +3252,8 @@ maybe_update_trap_count =
 {
 	if (e.runetype1 == type)
 	{
-		if (e.class_cnt1)
-			e.class_cnt1 = e.class_cnt1 - 1;
+		if (e.class_cnt)
+			e.class_cnt = e.class_cnt - 1;
 		else if (e.runevar_array[type * %1] > 0)
 		{
 			e.runevar_array[type * %1] = e.runevar_array[type * %1] - 1;
@@ -3262,8 +3262,8 @@ maybe_update_trap_count =
 	}
 	if (e.runetype2 == type)
 	{
-		if (e.class_cnt2)
-			e.class_cnt2 = e.class_cnt2 - 1;
+		if (e.class_cnt)
+			e.class_cnt = e.class_cnt - 1;
 		else if (e.runevar_array[type * %1] > 0)
 		{
 			e.runevar_array[type * %1] = e.runevar_array[type * %1] - 1;

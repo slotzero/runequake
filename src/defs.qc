@@ -341,10 +341,8 @@ entity runespawn;
 // the last suicide.
 .float last_suicide;
 
-// length of time to centerprint display player identification.
-.float class_cnt;
-
 // For players, keeps count of existing rune related entities.  For observers,
+// length of time to centerprint display player identification.
 .float class_cnt1;
 .float class_cnt2;
 
