@@ -343,7 +343,8 @@ entity runespawn;
 
 // For players, keeps count of existing rune related entities.  For observers,
 // length of time to centerprint display player identification.
-.float class_cnt;
+.float class_cnt1;
+.float class_cnt2;
 
 // For players, holds the number of the player to perform an admin action against.
 .float admin_victim_num;
