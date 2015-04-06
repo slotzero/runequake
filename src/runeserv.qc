@@ -991,10 +991,13 @@ Rune_Activate =
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar_array[RN_DSPOTS * %1] = count_classname_owner (self, "dspot");
 		else
+		{
+			self.runevar_array[RN_DSPOTS * %1] = 0;
 			if (runeslot == 2)
 				self.class_cnt2 = count_classname_owner (self, "dspot");
 			else
 				self.class_cnt1 = count_classname_owner (self, "dspot");
+		}
 	}
 
 	else if (type == RN_HOLO)
@@ -1002,10 +1005,13 @@ Rune_Activate =
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar_array[RN_HOLO * %1] = count_classname_owner (self, "hologram");
 		else
+		{
+			self.runevar_array[RN_HOLO * %1] = 0;
 			if (runeslot == 2)
 				self.class_cnt2 = count_classname_owner (self, "hologram");
 			else
 				self.class_cnt1 = count_classname_owner (self, "hologram");
+		}
 	}
 
 	else if (type == RN_ORB)
@@ -1019,10 +1025,13 @@ Rune_Activate =
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar_array[RN_RADIO * %1] = count_classname_owner (self, "radioactive");
 		else
+		{
+			self.runevar_array[RN_RADIO * %1] = 0;
 			if (runeslot == 2)
 				self.class_cnt2 = count_classname_owner (self, "radioactive");
 			else
 				self.class_cnt1 = count_classname_owner (self, "radioactive");
+		}
 	}
 
 	else if (type == RN_FREEZE)
@@ -1030,10 +1039,13 @@ Rune_Activate =
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar_array[RN_FREEZE * %1] = count_classname_owner (self, "freeze");
 		else
+		{
+			self.runevar_array[RN_FREEZE * %1] = 0;
 			if (runeslot == 2)
 				self.class_cnt2 = count_classname_owner (self, "freeze");
 			else
 				self.class_cnt1 = count_classname_owner (self, "freeze");
+		}
 	}
 
 	else if (type == RN_VENG)
@@ -1105,10 +1117,13 @@ Rune_Activate =
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar_array[RN_TORCH * %1] = count_classname_owner (self, "torchtrap");
 		else
+		{
+			self.runevar_array[RN_TORCH * %1] = 0;
 			if (runeslot == 2)
 				self.class_cnt2 = count_classname_owner (self, "torchtrap");
 			else
 				self.class_cnt1 = count_classname_owner (self, "torchtrap");
+		}
 		Hat_Spawn (self, "progs/flame2.mdl", '-4 1 35', VEC_ORIGIN, 0 - RN_TORCH);
 	}
 
@@ -1163,10 +1178,13 @@ Rune_Activate =
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar_array[RN_GLUE * %1] = count_classname_owner (self, "glue");
 		else
+		{
+			self.runevar_array[RN_GLUE * %1] = 0;
 			if (runeslot == 2)
 				self.class_cnt2 = count_classname_owner (self, "glue");
 			else
 				self.class_cnt1 = count_classname_owner (self, "glue");
+		}
 	}
 
         /*
@@ -1179,10 +1197,13 @@ Rune_Activate =
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar_array[RN_ANTIPACK * %1] = count_classname_owner (self, "antipack");
 		else
+		{
+			self.runevar_array[RN_ANTIPACK * %1] = 0;
 			if (runeslot == 2)
 				self.class_cnt2 = count_classname_owner (self, "antipack");
 			else
 				self.class_cnt1 = count_classname_owner (self, "antipack");
+		}
 	}
 
 	else if (type == RN_DEFLECT)
@@ -1239,7 +1260,8 @@ Rune_Delete =
 	self.runent             = world;
 	self.oldrunetime	= time;
 	self.oldrunevar         = 0;
-	self.class_cnt          = 0;
+	self.class_cnt1         = 0;
+	self.class_cnt2         = 0;
 	self.oldrunevector	= VEC_ORIGIN;
 	// self.touch	        = misc_touch;
 	stuffcmd (self, CSHIFT_NONE);
