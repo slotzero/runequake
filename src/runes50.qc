@@ -508,9 +508,9 @@ pack_rat_rune_touch =
 	self.oldrunevector_x	= 15 * crandom ();
 	self.oldrunevector_z	= 20 * crandom ();
 
-	// Link the rat's runes through runent.
-	self.runent = other.runent;
-	other.runent = self;
+	// Link the rat's runes through trigger_field
+	self.trigger_field = other.trigger_field;
+	other.trigger_field = self;
 
 	self.touch = SUB_Null;
 	self.think = pack_rat_rune_move;
@@ -572,13 +572,13 @@ pack_rat_rune_drop =
 	}
 
 	// Drop all the runes.
-	self.runevar_array[RN_PACK_RAT * %1]	= 0;
-	e		= self.runent;
-	self.runent	= world;
+	self.runevar_array[RN_PACK_RAT * %1]= 0;
+	e = self.trigger_field;
+	self.trigger_field = world;
 	while (e)
 	{
-		next_e		= e.runent;
-		e.runent	= self;
+		next_e		= e.trigger_field;
+		e.oldenemy	= self;
 		e.lip		= time + 2;
 		e.owner		= world;
 		e.touch		= Rune_Touch;
