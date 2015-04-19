@@ -1036,6 +1036,12 @@ Rune_Activate =
 				self.class_cnt1 = count_classname_owner (self, "freeze");
 	}
 
+	else if (type == RN_SUCK)
+	{
+		self.runevar_array[RN_SUCK * %1] = 0;
+		self.runetime_array[RN_SUCK * %1] = 0;
+	}
+
 	else if (type == RN_VENG)
 		VengHead_Spawn ();
 

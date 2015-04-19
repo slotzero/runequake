@@ -719,8 +719,8 @@ Suck =
 void ()
 Suck_Think =
 {
-	if ((self.owner.runevar_array[RN_SUCK * %1] == 0 && Has_Rune_e (self.owner, RN_SUCK))
-			|| self.oldrunetime < time)
+	// array holds last player's toggle, whether RN_SUCK is a currently held rune or not
+	if (self.oldrunetime < time || self.owner.runevar_array[RN_SUCK * %1] == 0)
 	{
 		spawn_tfog (self.origin);
 		remove (self);
@@ -806,8 +806,15 @@ Suck_Button =
 	}
 	else
 	{
-		self.runevar_array[RN_SUCK * %1] = 0;
-		centerprint (self, "Gravity well recalled");
+		if (self.runevar_array[RN_SUCK * %1])
+		{
+			self.runevar_array[RN_SUCK * %1] = 0;
+			centerprint (self, "Gravity well recalled");
+		}
+		else
+		{
+			centerprint (self, "Gravity well recalling");
+		}
 	}
 };
 
