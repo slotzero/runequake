@@ -345,12 +345,14 @@ Torch_Trap_Touch =
 	// XXX swap torch-for-torch bug
 	maybe_update_trap_count (self.owner, RN_TORCH);
 
-	T_Damage (other, self, self.owner, TORCH_TRAP_TOUCH_DAMAGE,
-			"ftraptouch");
-
-	// Start burning before the centerprint(), so the "You are on
-	// fire!" is overwritten.
-	burn_start (other, self.owner, TORCH_TRAP_BURN_DURATION);
+	// XXX This is a hack to prevent shambler from catching fire after he dies from his initial
+	// encounter with a fire trap.
+	if (T_Damage (other, self, self.owner, TORCH_TRAP_TOUCH_DAMAGE, "ftraptouch") < 2)
+	{
+		// Start burning before the centerprint(), so the "You are on
+		// fire!" is overwritten.
+		burn_start (other, self.owner, TORCH_TRAP_BURN_DURATION);
+	}
 
 	if (self.runevar && self.owner == other)
 		centerprint (other, "You ignited yourself, you big dummy!\n");

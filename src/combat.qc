@@ -582,7 +582,7 @@ T_Damage =
 		if (targ.classname == "shambler_slave")
 		{
 			shambler_slave_respawn (targ, 1);
-			return 1;
+			return 2; // hack, indicates killed
 		}
 
 		if (targ.classname == "zombie_camper"

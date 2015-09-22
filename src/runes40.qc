@@ -239,6 +239,10 @@ shambler_slave_respawn =
 	if (sham.effects & EF_FROZEN)
 		Unfreeze (sham);
 
+	// stop burning
+	if (sham.aqstate & AQS_BURNING)
+		sham.aqstate = sham.aqstate - sham.aqstate & AQS_BURNING;
+
 	HookOff_by_targ_e (sham);
 
 	sham.health = sham.max_health;
@@ -292,6 +296,10 @@ Rune_ShamblerReloc =
 		sprint (self, "Your shambler is frozen!\n");
 		return;
 	}
+
+	// Stop burning when recalled in water or acid.
+	if (self.runent.owner.waterlevel > 1 && self.runent.owner.watertype != CONTENT_LAVA)
+		self.runent.aqstate = self.runent.aqstate - self.runent.aqstate & AQS_BURNING;
 
 	old_self = self;
 	self = self.runent;
