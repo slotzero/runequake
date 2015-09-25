@@ -1228,9 +1228,8 @@ count_hooks =
 	return n_ent + n_player;
 };
 
-// XXX FIXME
-void (string class, vector orig, float all)
-xremove_classname_origin =
+void (string class, vector orig, float dist)
+remove_classname_origin_dist =
 {
 	local entity e, next_e;
 
@@ -1239,13 +1238,22 @@ xremove_classname_origin =
 	{
 		next_e = find (e, classname, class);
 
-		if (all)
+		// remove all
+		if (dist < 0)
 			remove (e);
-		else if (e.origin == orig)
+		// distance (0 = exact)
+		else if (vlen (e.origin - orig) <= dist)
 		{
+			dprint ("removing ");
+			dprint (class);
+			dprint (" at ");
+			dprint_vec (e.origin);
+			dprint ("\n");
+
 			remove (e);
 			return;
 		}
+
 		e = next_e;
 	}
 };
@@ -1253,13 +1261,13 @@ xremove_classname_origin =
 void (string class, vector orig)
 remove_classname_origin =
 {
-	xremove_classname_origin (class, orig, FALSE);
+	remove_classname_origin_dist (class, orig, 0);
 };
 
 void (string class)
 remove_classname =
 {
-	xremove_classname_origin (class, VEC_ORIGIN, TRUE);
+	remove_classname_origin_dist (class, VEC_ORIGIN, -1);
 };
 
 // Batman villain syndrome is when your view is permanantly tilted.  It

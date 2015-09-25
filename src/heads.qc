@@ -1,6 +1,5 @@
-/*  $Id: heads.qc,v 1.18 2010/10/27 05:12:59 slotzero Exp $
-
-    Copyright (C) 2008  David 'Slot Zero' Roberts.
+/*
+    Copyright (C) 2008-2015  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,7 +22,7 @@ HEAD DEVELOPMENT:
 
 	* maybe draw head spike and head > value
 	* how to implement max heads?
-	* command to see how many heads,or use rune-tell?
+	* command to see how many heads,or use rune-tell? (currently in show-riders)
 	* quakenbake found himself 1/2 way in the floor, movetarget issue?
 	* evaluate the dead head carry code, will this cause problems?
 	* investigate pickup/dropoff sound, maybe chan_auto not good?
@@ -111,6 +110,23 @@ void (vector spot)
 altar_create =
 {
 	local entity altar;
+
+	// don't spawn altar outside level
+	if (pointcontents (spot) == CONTENT_SOLID)
+		return dprint ("altar_create: invalid pointcontents\n");
+
+	// don't place altars on top of each other
+	altar = findradius (spot, 50);
+	while (altar)
+	{
+		if (altar.classname == "altar")
+			return dprint ("altar_create: too close to existing altar\n");
+		altar = altar.chain;
+	}
+
+	dprint ("altar created at ");
+	dprint_vec (spot);
+	dprint ("\n");
 
 	altar		= spawn ();
 	setorigin (altar, spot);
@@ -523,19 +539,32 @@ bprint_head_touch =
 		bprint ("\n");
 };
 
-// XXX Use a custom file for this using an x,y,z method via cvar so servers can move these without recompiling.
+// This function only gets called if the map doesn't have a hard-coded altar.  I run it a few seconds after
+// I exec the altar config file to allow it time to load.  If no altar was created by the config, it places
+// one at info_player_start().
+void ()
+delayed_altar_place =
+{
+	if (!find (world, classname, "altar"))
+		altar_create (self.origin); // info_player_start
+
+	remove (self);
+};
 
 float place_my_altars;
 
 void ()
 altar_place =
 {
-	dprint ("altar_place\n");
-
 	if (place_my_altars)
 		return;
 
 	place_my_altars = 1;
+
+	// custom altars
+	localcmd ("exec altars/");
+	localcmd (mapname);
+	localcmd (".alt\n");
 
 	if (world.model == "maps/dm1.bsp")
 	{
@@ -575,7 +604,7 @@ altar_place =
 	}
 	else if (world.model == "maps/e1m3.bsp")
 	{
-		altar_create ('1177 -350 190');
+		altar_create ('1177 -350 -190');
 		altar_create ('-1216 -160 -60');
 	}
 	else if (world.model == "maps/e1m4.bsp")
@@ -636,7 +665,7 @@ altar_place =
 	else if (world.model == "maps/e3m2.bsp")
 	{
 		altar_create ('190 502 24');
-		altar_create ('193 904 -30');
+		altar_create ('193 -904 -30');
 	}
 	else if (world.model == "maps/e3m4.bsp")
 	{
@@ -771,8 +800,13 @@ altar_place =
 	}
 	else
 	{
-		// XXX fix this
-		altar_create (self.origin);
+		// wait for custom altars to process
+		local entity e;
+
+		e		= spawn ();
+		e.origin	= self.origin;
+		e.nextthink	= time + 1.5;
+		e.think		= delayed_altar_place;
 	}
 };
 
@@ -782,7 +816,7 @@ spawn_altar =
 	local entity altar;
 
 	altar			= spawn ();
-	altar.classname		= "altar";
+	altar.classname		= "altar_fake";
 
 	setorigin (altar, spot);
 

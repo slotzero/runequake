@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2003-2014  David 'Slot Zero' Roberts.
+    Copyright (C) 2003-2015  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -635,6 +635,8 @@ console_aliases =
 	console_init_cvar_alias ("votehookon",		CVAR_C2,	C2_VOTEHOOKON);
 	console_init_cvar_alias ("votehookoff",		CVAR_C2,	C2_VOTEHOOKOFF);
 	console_init_cvar_alias ("setdefault",		CVAR_C2,	C2_SETDEFAULT);
+	console_init_cvar_alias ("create_altar",	CVAR_C2,	C2_CREATE_ALTAR);
+	console_init_cvar_alias ("remove_altar",	CVAR_C2,	C2_REMOVE_ALTAR);
 
 	level_aliases ();
 	spawn_custom_aliases ();
@@ -1412,6 +1414,20 @@ check_console_command =
 				gamemode_default (gamemode);
 				dprint_force ("Gamemode defaults have been set\n");
 			}
+		}
+		else if (i == C2_CREATE_ALTAR)
+		{
+			v_x = cvar ("scr_ofsx");
+			v_y = cvar ("scr_ofsy");
+			v_z = cvar ("scr_ofsz");
+			altar_create (v);
+		}
+		else if (i == C2_REMOVE_ALTAR)
+		{
+			v_x = cvar ("scr_ofsx");
+			v_y = cvar ("scr_ofsy");
+			v_z = cvar ("scr_ofsz");
+			remove_classname_origin_dist ("altar", v, 32);
 		}
 		else
 			dprint_force ("Unknown command\n");

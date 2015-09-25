@@ -1257,6 +1257,8 @@ float	C2_POWERUPHATSOFF	= 85;
 float	C2_VOTEHOOKON		= 86;
 float	C2_VOTEHOOKOFF		= 87;
 float	C2_SETDEFAULT		= 88;
+float	C2_CREATE_ALTAR		= 89;
+float	C2_REMOVE_ALTAR		= 90;
 
 // game mode
 float	gamemode;
