@@ -649,10 +649,16 @@ admin_impulse_map =
 			return;
 		}
 
+		// allow players to specify map when a random vote is called
 		if (is_player () && !self.vote_flags & VOTE_YES)
 		{
-			// XXX Confusing.... fix me.
 			forced_nextmap = m;
+			if (vip)
+			{
+				// update vote message
+				vip.noise2 = " map to ";
+				vip.noise3 = forced_nextmap;
+			}
 			vote ();
 		}
 		else if (is_observer () && !self.vote_flags & VOTE_YES)
