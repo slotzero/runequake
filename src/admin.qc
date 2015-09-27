@@ -1,5 +1,4 @@
-/*  $Id: admin.qc,v 1.57 2013/02/09 06:02:56 slotzero Exp $
-
+/*
     Copyright (C) 1998-2001  Roderick Schertler.
 
     This program is free software; you can redistribute it and/or modify
@@ -382,14 +381,18 @@ admin_rename =
 {
 	local entity e;
 	local string newname;
+	local float old_scratch1;
 
 	e = admin_player_pick (ADMIN_PLAYER_TYPE_ANY);
 	if (!e)
 		return;
 
+	// hack to force bprint to console
+	old_scratch1 = scratch1;
+	scratch1 = scratch1 | S1_BPRINT_TO_CONSOLE;
+
 	bprint (e.netname);
 	bprint (" was renamed to ");
-	//sprint_admin2 (e.netname, " was renamed to ");
 	self_stuffcmd (e, "name \"");
 	newname = random_name ();
 	self_stuffcmd (e, newname);
@@ -398,23 +401,8 @@ admin_rename =
 	bprint (" by ");
 	bprint (self.netname);
 	bprint ("\n");
-	//sprint_admin2 (newname, " by ");
-	//sprint_admin2 (self.netname, "\n");
 
-	// XXX bprint doesn't print to console in poq by default
-	IN_POQ([-
-	dprint_force (e.netname);
-	dprint_force (" was renamed to ");
-	self_stuffcmd (e, "name \"");
-	newname = random_name ();
-	self_stuffcmd (e, newname);
-	self_stuffcmd (e, "\"\n");
-	dprint_force (newname);
-	dprint_force (" by ");
-	dprint_force (self.netname);
-	dprint_force ("\n");
-	-])
-
+	scratch1 = old_scratch1;
 };
 
 void ()
@@ -510,6 +498,7 @@ void ()
 admin_unbind =
 {
 	local entity e;
+	local float old_scratch1;
 
 	e = admin_player_pick (ADMIN_PLAYER_TYPE_ANY);
 	if (!e)
@@ -518,21 +507,16 @@ admin_unbind =
 	self_stuffcmd (e, "unbindall\n");
 	self_stuffcmd (e, "sensitivity 0\n");
 
+	// hack to force bprint to console
+	old_scratch1 = scratch1;
+	scratch1 = scratch1 | S1_BPRINT_TO_CONSOLE;
+
 	bprint (e.netname);
 	bprint ("'s keys unbound by ");
 	bprint (self.netname);
 	bprint ("\n");
 
-	// XXX bprint doesn't print to console in poq by default
-	IN_POQ([-
-	dprint_force (e.netname);
-	dprint_force ("'s keys unbound by ");
-	dprint_force (self.netname);
-	dprint_force ("\n");
-	-])
-
-	//sprint_admin2 (e.netname, "'s keys unbound by ");
-	//sprint_admin2 (self.netname, "\n");
+	scratch1 = old_scratch1;
 };
 
 void (string m)
