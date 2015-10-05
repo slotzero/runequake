@@ -397,29 +397,29 @@ bprint_altar_touch =
 		}
 		else
 		{
-			num = random ();
-			if (num < 0.2)
+			num = rint (random () * 5);
+			if (num == 1)
 			{
 				bprint (other.netname);
 				bprint (" presented ");
 				bprint_head_owner (other.head_chain);
 				bprint ("'s head at the altar!!\n");
 			}
-			else if (num < 0.4)
+			else if (num == 2)
 			{
 				bprint (other.netname);
 				bprint (" donates ");
 				bprint_head_owner (other.head_chain);
 				bprint ("'s head to the gods!!\n");
 			}
-			else if (num < 0.6)
+			else if (num == 3)
 			{
 				bprint_head_owner (other.head_chain);
 				bprint ("'s head gains favor for ");
 				bprint (other.netname);
 				bprint ("!!\n");
 			}
-			else if (num < 0.8)
+			else if (num == 4)
 			{
 				bprint (other.netname);
 				bprint (" blesses the altar with ");
@@ -461,24 +461,24 @@ bprint_head_touch =
 	local float num;
 
 	bprint (other.netname);
-	num = random ();
-	if (num < 0.1)
+	num = rint (random () * 10);
+	if (num == 1)
 		bprint (" picked up ");
-	else if (num < 0.2)
+	else if (num == 2)
 		bprint (" grabbed ");
-	else if (num < 0.3)
+	else if (num == 3)
 		bprint (" looted ");
-	else if (num < 0.4)
+	else if (num == 4)
 		bprint (" latched onto ");
-	else if (num < 0.5)
+	else if (num == 5)
 		bprint (" scooped up ");
-	else if (num < 0.6)
+	else if (num == 6)
 		bprint (" found ");
-	else if (num < 0.7)
+	else if (num == 7)
 		bprint (" took ");
-	else if (num < 0.8)
+	else if (num == 8)
 		bprint (" came upon ");
-	else if (num < 0.9)
+	else if (num == 9)
 		bprint (" was lucky to find ");
 	else
 		bprint (" plucked up ");
@@ -491,40 +491,40 @@ bprint_head_touch =
 		bprint ("'s ");
 	}
 
-	num = random ();
-	if (num < 0.1)
+	num = rint (random () * 11);
+	if (num == 1)
 		bprint ("worm infested");
-	else if (num < 0.2)
+	else if (num == 2)
 		bprint ("bloody");
-	else if (num < 0.3)
+	else if (num == 3)
 		bprint ("empty");
-	else if (num < 0.4)
+	else if (num == 4)
 		bprint ("ugly");
-	else if (num < 0.5)
+	else if (num == 5)
 		bprint ("putrid");
-	else if (num < 0.6)
+	else if (num == 6)
 		bprint ("deformed");
-	else if (num < 0.7)
+	else if (num == 7)
 		bprint ("bloated");
-	else if (num < 0.8)
+	else if (num == 8)
 		bprint ("crusty");
-	else if (num < 0.9)
+	else if (num == 9)
 		bprint ("slimey");
-	else if (num < 0.95)
+	else if (num == 10)
 		bprint ("poor excuse for a");
 	else
 		bprint ("lifeless");
 
-	num = random ();
-	if (num < 0.2)
+	num = rint (random () * 6);
+	if (num == 1)
 		bprint (" skull.");
-	else if (num < 0.36)
+	else if (num == 2)
 		bprint (" noggin.");
-	else if (num < 0.5)
+	else if (num == 3)
 		bprint (" brain.");
-	else if (num < 0.65)
+	else if (num == 4)
 	 	bprint (" melon.");
-	else if (num < 0.8)
+	else if (num == 5)
 		bprint (" cranium.");
 	else
 		bprint (" head.");
