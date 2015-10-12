@@ -952,6 +952,9 @@ current_gamemode =
 void (float mode)
 gamemode_default =
 {
+	if (scratch1 & S1_NO_DEFAULT)
+		return;
+
 	if (mode == MODE_NORMAL)
 		normal_defaults ();
 
