@@ -1454,7 +1454,7 @@ console_commands =
 	self_sprint (self, "mutelist            muteip              unmuteip            conprint\n");
 	self_sprint (self, "eff                 killstats           stats               help-deathmatch\n");
 	self_sprint (self, "help-teamplay       help-noexit         help-temp1          help-scratch1\n");
-	self_sprint (self, "maxrunes            setafk              setdefaults\n");
+	self_sprint (self, "maxrunes            setafk              setdefault\n");
 
 	self_sprint (self, "\n");
 	self_sprint (self, "normal              practice            match               arena\n");
@@ -1473,7 +1473,7 @@ console_commands =
 	self_sprint (self, "runeson             runesoff            runedropon          runedropoff\n");
 	self_sprint (self, "backpackson         backpacksoff        faststarton         faststartoff\n");
 	self_sprint (self, "randomspawnon       randomspawnoff      shootbuttonson      shootbuttonsoff\n");
-	self_sprint (self, "poweruphatson       poweruphatsoff\n");
+	self_sprint (self, "poweruphatson       poweruphatsoff      votehookon          votehookoff\n");
 };
 
 void ()
