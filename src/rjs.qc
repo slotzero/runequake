@@ -421,43 +421,39 @@ set_runemax =
 void ()
 set_gamemode =
 {
-	// XXX Right now this is being set regardless if it's the correct
-	// gamemode.  If it isn't, it'll be called again from change_mode_to().
-	gamemode_default (gamemode);
+	local float i;
+	local string s;
 
-	if (options & MODE_LOCKED)
-		return;
-
-	// XXX Make this it's own function and return the mode
-	// expect.  We can compare with gamemode and determine
-	// if we want to process gamemode_default().
-	if (scratch1 & S1_MATCH_DEFAULT)
-	{
-		if (gamemode != MODE_MATCH)
-			change_mode_to (MODE_MATCH);
-	}
- 	else if (scratch1 & S1_ARENA_DEFAULT)
-	{
-		if (gamemode != MODE_ARENA)
-			change_mode_to (MODE_ARENA);
-	}
+	// get default from scratch1
+	if (scratch1 & S1_NORMAL_DEFAULT)
+		i = MODE_NORMAL;
 	else if (scratch1 & S1_PRACTICE_DEFAULT)
-	{
-		if (gamemode != MODE_PRACTICE)
-			change_mode_to (MODE_PRACTICE);
-		else if (mapname != "dm6")
-			admin_changelevel_now ("dm6");
-	}
+		i = MODE_PRACTICE;
+	else if (scratch1 & S1_ARENA_DEFAULT)
+		i = MODE_ARENA;
+	else if (scratch1 & S1_MATCH_DEFAULT)
+		i = MODE_MATCH;
+	else if (scratch1 & S1_MIDAIR_DEFAULT)
+		i = MODE_MIDAIR;
 	else if (scratch1 & S1_HEADS_DEFAULT)
+		i = MODE_HEADS;
+	else
+		i = gamemode;
+
+	// reset options only when gamemode is correct or mode is locked
+	if (i == gamemode || options & MODE_LOCKED)
 	{
-		if (gamemode != MODE_HEADS)
-			change_mode_to (MODE_HEADS);
+		gamemode_default (i);
+		// switch to gamemode starting map
+		s = gamemode_map (i);
+		if (s != mapname)
+			admin_changelevel_now (s);
 	}
 	else
-	{
-		if (gamemode != MODE_NORMAL)
-			change_mode_to (MODE_NORMAL);
-	}
+		change_mode_to (i);
+
+	// no need to keep calling this function until something changes
+	gamemode_set = 1;
 };
 
 void ()
@@ -493,10 +489,6 @@ process_misc =
 	if (intermission_running)
 		return;
 
- 	// superceeds all other mode defaults
-	if (scratch1 & S1_NO_DEFAULT)
-		return;
-
 	// Only process the remaining functions if the server is empty.
 	if (count_valid_players (0))
 		return;
@@ -505,11 +497,13 @@ process_misc =
 	if (time > 21600)
 		admin_changelevel_now (mapname);
 
-	// vote-team (disabled default for this)
-	//if (VOTE_TEAM_MODE_DEFAULT)
-	//	toggle_teamplay (VOTE_TEAM_MODE_DEFAULT);
+ 	// no default mode or options
+	if (scratch1 & S1_NO_DEFAULT)
+		return;
 
-	set_gamemode ();
+	// update gamemode and options
+	if (!gamemode_set)
+		set_gamemode ();
 };
 
 void ()

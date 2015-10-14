@@ -850,13 +850,14 @@ float S1_ORIGINAL_LEVELS	= 16;
 float S1_MAX_TRAPS_FOR_LEVEL	= 32;
 float S1_BASIC_RUNES		= 64;
 float S1_CUSTOM_EXITS		= 128;
-//float S1_NOQUAD		= 256;	// removed
-//float S1_NOPENT		= 512;	// removed
-float S1_NO_DEFAULT		= 1024; // temporary
-float S1_ARENA_DEFAULT		= 2048; // temporary
-float S1_PRACTICE_DEFAULT	= 4096; // temporary
-float S1_MATCH_DEFAULT		= 8192; // temporary
-float S1_HEADS_DEFAULT		= 16384;
+float S1_NO_DEFAULT		= 256;
+float S1_DEFAULT_USES_CONFIGS	= 512;
+float S1_NORMAL_DEFAULT		= 1024;
+float S1_PRACTICE_DEFAULT	= 2048;
+float S1_ARENA_DEFAULT		= 4096;
+float S1_MATCH_DEFAULT		= 8192;
+float S1_MIDAIR_DEFAULT		= 16384;
+float S1_HEADS_DEFAULT		= 32768;
 
 // vote flags
 float VOTE_YES			= 1;
@@ -1696,3 +1697,4 @@ float	maybe_bprint_option_hack;
 entity	last_teleport;
 
 // development
+float	gamemode_set;

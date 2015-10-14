@@ -1779,10 +1779,13 @@ help_scratch1 =
 	self_sprint (self, "\n    32 limit maximum traps per rune     "); self_sprint_boolean (self, s1 & S1_MAX_TRAPS_FOR_LEVEL);
 	self_sprint (self, "\n    64 basic/lite runes                 "); self_sprint_boolean (self, s1 & S1_BASIC_RUNES);
 	self_sprint (self, "\n   128 custom exits                     "); self_sprint_boolean (self, s1 & S1_CUSTOM_EXITS);
-	self_sprint (self, "\n  1024 no default mode                  "); self_sprint_boolean (self, s1 & S1_NO_DEFAULT);
-	self_sprint (self, "\n  2048 default mode arena               "); self_sprint_boolean (self, s1 & S1_ARENA_DEFAULT);
-	self_sprint (self, "\n  4096 default mode practice            "); self_sprint_boolean (self, s1 & S1_PRACTICE_DEFAULT);
+	self_sprint (self, "\n   256 no default mode                  "); self_sprint_boolean (self, s1 & S1_NO_DEFAULT);
+	self_sprint (self, "\n   512 default uses config files        "); self_sprint_boolean (self, s1 & S1_DEFAULT_USES_CONFIGS);
+	self_sprint (self, "\n  1024 default mode normal              "); self_sprint_boolean (self, s1 & S1_NORMAL_DEFAULT);
+	self_sprint (self, "\n  2048 default mode practice            "); self_sprint_boolean (self, s1 & S1_PRACTICE_DEFAULT);
+	self_sprint (self, "\n  4096 default mode arena               "); self_sprint_boolean (self, s1 & S1_ARENA_DEFAULT);
 	self_sprint (self, "\n  8192 default mode match               "); self_sprint_boolean (self, s1 & S1_MATCH_DEFAULT);
-	self_sprint (self, "\n 16384 default mode heads               "); self_sprint_boolean (self, s1 & S1_HEADS_DEFAULT);
+	self_sprint (self, "\n 16384 default mode midair              "); self_sprint_boolean (self, s1 & S1_MIDAIR_DEFAULT);
+	self_sprint (self, "\n 32768 default mode heads               "); self_sprint_boolean (self, s1 & S1_HEADS_DEFAULT);
 	self_sprint (self, "\n");
 };

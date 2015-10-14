@@ -131,6 +131,9 @@ vote_action =
 	else
 		dprint ("vote_action: think1 is null\n");
 
+	// an option may have changed, so force set_gamemode() when all players leave
+	gamemode_set = 0;
+
 	remove_bit_from_players (vote_flags, VOTE_YES | VOTE_NO | VOTE_LAST_YES | VOTE_LAST_NO);
 	remove (vip);
 };

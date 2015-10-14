@@ -926,6 +926,30 @@ teamscores_off =
 };
 
 string (float mode)
+gamemode_map =
+{
+	//if (mode == MODE_NORMAL)
+	//	return
+
+	if (mode == MODE_PRACTICE)
+		return "dm6";
+
+	//if (mode == MODE_ARENA)
+	//	return
+
+	//if (mode == MODE_MATCH)
+	//	return
+
+	//if (mode == MODE_MIDAIR)
+	//	return
+
+	//if (mode == MODE_HEADS)
+	//	return
+
+	return mapname;
+};
+
+string (float mode)
 current_gamemode =
 {
 	if (mode == MODE_NORMAL)
@@ -954,6 +978,27 @@ gamemode_default =
 {
 	if (scratch1 & S1_NO_DEFAULT)
 		return;
+
+	if (scratch1 & S1_DEFAULT_USES_CONFIGS)
+	{
+		local float i;
+		local string s;
+
+		// XXX put directory in settings.qc
+		localcmd ("exec defaults/");
+		s = current_gamemode (mode);
+		localcmd (s);
+		// this only works with manquake 1.00-2.75 or later
+		/*i = cvar ("port");
+		if (i)
+		{
+			localcmd ("-");
+			s = ftos (i);
+			localcmd (s);
+		}*/
+		localcmd (".cfg\n");
+		return;
+	}
 
 	if (mode == MODE_NORMAL)
 		normal_defaults ();
@@ -992,7 +1037,9 @@ change_mode_to =
 
 	s = ftos (mode);
 	cvar_set_infokey (CVAR_C3, s);
-	admin_changelevel_now (mapname);
+
+	s = gamemode_map (mode);
+	admin_changelevel_now (s);
 };
 
 void ()
