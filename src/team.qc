@@ -981,7 +981,7 @@ gamemode_default =
 
 	if (scratch1 & S1_DEFAULT_USES_CONFIGS)
 	{
-		local float i;
+		//local float i;
 		local string s;
 
 		// XXX put directory in settings.qc
