@@ -502,7 +502,7 @@ pack_rat_rune_touch =
 	self.movetype		= MOVETYPE_NONE;
 	self.solid		= SOLID_NOT;
 	// calculates are as if player faces along positive Y axis
-	self.runevector_y	= -20 - 5 * random ();
+	self.runevector_y	= 20 - 5 * random ();
 	self.runevector_x	= 15 * crandom ();
 	self.runevector_z	= 20 * crandom ();
 
