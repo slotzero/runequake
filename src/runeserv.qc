@@ -254,10 +254,10 @@ Rune_Tell_real =
 	}
 	else if (type == RN_JUMP)
 	{
-		desc_l = "Rune of Uncontrollable Jumping";
-		desc_s = " Jumpng";
+		desc_l = "Rune of Uncontrollable Firing";
+		desc_s = " Firing";
 
-		d1 = "Enemies jump uncontrollably\n"
+		d1 = "Enemies fire uncontrollably\n"
 			"when in sight";
 	}
 	else if (type == RN_AMMO)

@@ -545,7 +545,7 @@ float MAX_FREEZE		= 3;
 
 // The intensity of the gravity well.
 
-float SUCK_FORCE		= IN_QW(0.35, 0.25);
+float SUCK_FORCE		= IN_QW(0.35, 0.15);
 
 // The intensity of the repulsion rune.
 

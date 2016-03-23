@@ -671,14 +671,14 @@ Suck =
 	local vector suckdir, suckforce;
 	local float suckdist, dist;
 
-	dist = 700;
+	dist = 1200;
 
 	suckee = findradius (sucker.origin, dist); // find the victims
 	while (suckee)
 	{
 		if (suckee.health || !suckee.flags & FL_ONGROUND)
 		{
-			if (suckee.solid != SOLID_BSP && !isfriend2 (sucker.owner, suckee) && sucker != suckee)
+			if (suckee.solid != SOLID_BSP && sucker != suckee)
 			{
 				if (suckee.classname != "player")
 					suckee.flags = suckee.flags - suckee.flags & FL_ONGROUND;
@@ -699,10 +699,25 @@ Suck =
 void ()
 Suck_Think =
 {
+	local float sv_gravity;
+	local string s;
+
 	if ((self.owner.runevar == 0 && self.owner.runetype == RN_SUCK)
 			|| self.runetime < time)
 	{
 		spawn_tfog (self.origin);
+
+		if (mapname == "e1m8")
+			sv_gravity = 100;
+		else if (mapname == "bunmoo3")
+			sv_gravity = 150;
+		else if (mapname == "lowgrav")
+			sv_gravity = 150;
+		else
+			sv_gravity = DEFAULT_GRAVITY;
+		s = ftos (sv_gravity);
+		cvar_set ("sv_gravity", s, 2);
+
 		remove (self);
 		if (self.owner.runetype == RN_SUCK)
 			self.owner.class_cnt = 0;
@@ -762,6 +777,7 @@ Suck_Spawn =
 	suck.touch = Suck_Touch;
 
 	centerprint (self, "Gravity well dropped");
+	cvar_set ("sv_gravity", "10", 2);
 };
 
 void (float riders, entity of_e)

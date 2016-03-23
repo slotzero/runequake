@@ -652,7 +652,7 @@ Rune_Camo =
 void ()
 Rune_Jump =
 {
-	local entity head, selected;
+	local entity head, oself;
 	local float dist;
 
 	if (self.runetime > time)
@@ -661,24 +661,24 @@ Rune_Jump =
 
 	dist = 1000;
 
-	selected = world;
 	head = findradius (self.origin, dist);
 	while (head)
 	{
 		if (head.health > 0 && !isfriend (head) && head.runetype != RN_ENVIRO
 				&& !head.items & IT_SUIT)
 		{
-			traceline (self.origin, head.origin + head.view_ofs, TRUE, self);
-			if ((trace_fraction >= 1) && (vlen (head.origin - self.origin) < dist))
+			if (head.classname == "player")
 			{
-				selected = head;
-
-				if (selected != world && selected.flags & FL_ONGROUND)
+				if (time > head.attack_finished)
 				{
-					selected.flags = selected.flags - FL_ONGROUND;
-					if (selected.classname == "player")
-						sound (selected, CHAN_JUMP, "player/plyrjmp8.wav", 1, ATTN_NORM);
-					selected.velocity_z = selected.velocity_z + 270;
+					traceline (self.origin, head.origin + head.view_ofs, TRUE, self);
+					if (trace_fraction >= 1)
+					{
+						oself = self;
+						self = head;
+						W_Attack ();
+						self = oself;
+					}
 				}
 			}
 		}
