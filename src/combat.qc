@@ -231,7 +231,7 @@ T_Damage =
 
 		else if (targ.runetype == RN_RESIST)
 		{
-			damage = damage * 0.5;
+			damage = damage * 0.1;
 			sound (targ, CHAN_BODY, "items/protect3.wav", 1, ATTN_NORM);
 		}
 

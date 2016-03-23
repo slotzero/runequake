@@ -2385,6 +2385,8 @@ ClientObituary =
 				bprint (" decided to use his rocket as a suppository\n");
 			else if (dt == "bfgblast")
 				bprint (" was too close to his own BFG\n");
+			else if (dt == "shambfgblast")
+				bprint (" was too close to his own shambler's BFG\n");
 			else if (dt == "grenade" || dt == "gasbomb")
 				bprint (" tries to put the pin back in\n");
 			else if (dt == "lavagun")
@@ -2646,6 +2648,21 @@ ClientObituary =
 		{
 			s1 = " was too close to ";
 			s2 = "'s BFG\n";
+		}
+		else if (dt == "shambfgzap")
+		{
+			s1 = " was zapped by ";
+			s2 = "'s shambler's BFG\n";
+		}
+		else if (dt == "shambfgtouch")
+		{
+			s1 = " made a connection with ";
+			s2 = "'s shambler's BFG\n";
+		}
+		else if (dt == "shambfgblast")
+		{
+			s1 = " was too close to ";
+			s2 = "'s shambler's BFG\n";
 		}
 		else if (dt == "burn")
 		{

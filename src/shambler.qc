@@ -257,6 +257,109 @@ CastLightning =
 	LightningDamage (org, trace_endpos, self, 10, string_null);
 };
 
+void (entity targ)
+Sham_BFG_Lightning =
+{
+	local vector org;
+
+	org = self.origin + PLAYER_WEAPON_OFFSET;
+	traceline (org, targ.origin, 1, self);
+	create_te_lightning (TE_LIGHTNING2, self, org, trace_endpos);
+	T_Damage (targ, self, self.owner.owner, BFG_ZAP_DAMAGE, "shambfgzap");
+};
+
+void ()
+Sham_BFG_Zap =
+{
+	local entity head;
+	local float i;
+
+	if (self.lip < time)
+	{
+		BecomeExplosion ();
+		return;
+	}
+
+	head = findradius (self.origin, BFG_ZAP_RANGE);
+	while (head)
+	{
+		if (head.takedamage == DAMAGE_AIM
+				&& head != self.owner
+				&& head.last_bfg_zap + 0.5 < time)
+		{
+			if (!isfriend2 (head, self.owner.owner))
+			{
+				if (CanDamage (head, self))
+				{
+					head.last_bfg_zap = time;
+					Sham_BFG_Lightning (head);
+				}
+			}
+		}
+		head = head.chain;
+	}
+	self.nextthink = time + BFG_ZAP_TIME;
+};
+
+void ()
+Sham_BFG_Touch =
+{
+	if (other == self.owner)
+		return;
+
+	if (pointcontents (self.origin) == CONTENT_SKY)
+	{
+		remove (self);
+		return;
+	}
+
+	T_Damage (other, self, self.owner.owner, BFG_TOUCH_DAMAGE, "shambfgtouch");
+	T_RadiusDamage (RADIUS_NORMAL, self, self.owner.owner, BFG_RADIUS_DAMAGE, other, "shambfgblast");
+
+	self.origin = self.origin - 8*normalize (self.velocity);
+	create_te_explosion (self.origin, 1);
+};
+
+void ()
+Sham_BFG_Warmup =
+{
+	local float number;
+
+	if (self.owner.health <= 0 || intermission_running)
+	{
+		remove (self);
+		return;
+	}
+
+	// if shambler was killed and respawned
+	if (self.owner.health > self.health)
+	{
+		remove (self);
+		return;
+	}
+	self.health = self.owner.health;
+
+	self.nextthink = time + sys_ticrate;
+
+	if (time < self.ltime + 0.75 * self.count)
+		return;
+
+	self.count = self.count + 1;
+	if (self.count < 4)
+	{
+		sound (self.owner, CHAN_AUTO, "weapons/lstart.wav", 1, ATTN_NORM);
+		return;
+	}
+
+	sound (self, CHAN_WEAPON, "weapons/sgun1.wav", 1, ATTN_NORM);
+	self.movetype = MOVETYPE_FLYMISSILE;
+	self.velocity = normalize(self.owner.enemy.origin - self.origin) * 400;
+	self.touch = Sham_BFG_Touch;
+	self.lip = time + 15;
+	self.nextthink = time + sys_ticrate;
+	self.think = Sham_BFG_Zap;
+};
+
 // magic
 void () sham_magic1	= [$magic1,	sham_magic2]
 {
@@ -270,42 +373,39 @@ void ()	sham_magic3	= [$magic3,	sham_magic4]
 	local entity o;
 
 	ai_face ();
-	self.nextthink	= time + 0.2;
-
-	muzzleflash ();
-	ai_face ();
-
-	//RUNE SERV: Changing this around JUST for the sake of the shambler slaves
-	// using '.runent' instead of '.owner'
-	// self.owner = spawn ();
-	//o = self.owner;
+	self.nextthink	= time + 2;
 
 	self.runent	= spawn ();
 	o		= self.runent;
 
-	setmodel (o, "progs/s_light.mdl");
-	setorigin (o, self.origin);
+	o.owner		= self;
+	o.movetype	= MOVETYPE_NONE;
+	o.solid		= SOLID_BBOX;
+	o.classname	= "bfg";
+	o.count		= 0;
+	o.health	= self.health;
+	o.ltime		= time;
 
+	setmodel (o, "progs/lavaball.mdl");
+	setsize (o, VEC_ORIGIN, VEC_ORIGIN);
+
+	makevectors(self.angles);
+	setorigin (o, self.origin + '0 0 78' + (v_forward * 16) + (v_right * 16));
 	o.angles	= self.angles;
-	o.nextthink	= time + 0.7;
-	o.think		= SUB_Remove;
+
+	o.effects = o.effects | EF_BRIGHTLIGHT;
+	o.nextthink	= time;
+	o.think		= Sham_BFG_Warmup;
 };
-void ()	sham_magic4	= [$magic4,	sham_magic5]	{ muzzleflash (); self.runent.frame = 1; };
-void ()	sham_magic5	= [$magic5,	sham_magic6]	{ muzzleflash (); self.runent.frame = 2; };
-void ()	sham_magic6	= [$magic6,	sham_magic9]
-{
-	remove (self.runent);
-	CastLightning ();
-	sound (self, CHAN_WEAPON, "shambler/sboom.wav", 1, ATTN_NORM);
-};
-void ()	sham_magic9	= [$magic9,	sham_magic10]	{ CastLightning ();	};
-void ()	sham_magic10	= [$magic10,	sham_magic11]	{ CastLightning ();	};
-void ()	sham_magic11	= [$magic11,	sham_magic12]
-{
-	if (skill == 3)
-		CastLightning ();
-};
-void ()	sham_magic12	= [$magic12,	sham_run1]	{};
+void ()	sham_magic4	= [$magic4,	sham_magic5] {};
+void ()	sham_magic5	= [$magic5,	sham_magic6] {};
+void ()	sham_magic6	= [$magic5,	sham_magic7] {};
+void ()	sham_magic7	= [$magic6,	sham_magic8] {};
+void ()	sham_magic8	= [$magic6,	sham_magic9] {};
+void ()	sham_magic9	= [$magic9,	sham_magic10] {};
+void ()	sham_magic10 = [$magic10, sham_magic11] {};
+void ()	sham_magic11 = [$magic11, sham_magic12] {};
+void ()	sham_magic12 = [$magic12, sham_run1]	{};
 
 // pain
 void ()	sham_pain1	= [$pain1,	sham_pain2]	{};
