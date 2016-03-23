@@ -412,6 +412,25 @@ T_Damage =
 		}
 	}
 
+	if (attacker.runetype == RN_VAMP)
+	{
+		targ.health = targ.health + damage;
+
+		if (damage < 25)
+			sound (attacker, CHAN_BODY, "items/r_item1.wav", 1, ATTN_NORM);
+		else if (damage < 100)
+			sound (attacker, CHAN_BODY, "items/r_item2.wav", 1, ATTN_NORM);
+		else
+			sound (attacker, CHAN_BODY, "items/health1.wav", 1, ATTN_NORM);
+
+		if (targ.health > (targ.max_health + MAX_OVER_HEALTH))
+			targ.health = targ.max_health + MAX_OVER_HEALTH;
+		if (targ.health > targ.max_health)
+			decay_health_spawn (targ, 1);
+
+		return 1;
+	}
+
 	// save damage based on the target's armor level
 	save = 0;
 
@@ -508,8 +527,8 @@ T_Damage =
 	// try to respawn in the same spot?  I've also got reports that
 	// this happens to targs with rune types other than vamp so I
 	// just prevent healing on teledeath entirely.
-	if (attacker.runetype == RN_VAMP && dtype != "teledeath")
-		Vamp_Heal (attacker, targ, real_take);
+	//if (attacker.runetype == RN_VAMP && dtype != "teledeath")
+	//	Vamp_Heal (attacker, targ, real_take);
 
 	// Vengeance Rune does equal damage back to the attacker, but
 	// cap damage so it doesn't exceed targ's armor/health unless
@@ -571,6 +590,7 @@ T_Damage =
 
 	// do the damage
 	targ.health = targ.health - take;
+
 
 	// useful for determining player pain and death sounds
 	if (targ.classname == "player")

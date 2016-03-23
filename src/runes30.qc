@@ -1037,7 +1037,7 @@ Rune_Repel =
 	// PUSH_FORCE is either too weak or too strong.
 	self.runetime = self.runetime + 0.1;
 
-	dist = 400;
+	dist = 500;
 
 	pushee = findradius (self.origin, dist); // Find the victims.
 	while (pushee)
@@ -1052,7 +1052,7 @@ Rune_Repel =
 					if (pushee.classname != "player")
 						pushee.flags = pushee.flags - pushee.flags & FL_ONGROUND;
 
-					pushdir		= self.origin - pushee.origin;
+					pushdir		= pushee.origin - self.origin;
 					pushdist	= vlen (pushdir);
 					pushdir		= normalize (pushdir);
 					pushforce	= pushdir * PUSH_FORCE * (dist - pushdist);

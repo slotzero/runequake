@@ -815,7 +815,6 @@ Vamp_Heal =
 
 	if (wasdead && vamp.health > 0)
 		Vamp_Resurrect (vamp);
-	sound (vamp, CHAN_BODY, "wizard/wpain.wav", 1, ATTN_NORM);
 };
 
 void (entity vamp)
