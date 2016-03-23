@@ -370,11 +370,7 @@ tdeath_touch =
 
 		if (other.runetype == RN_DEFLECT)
 		{
-			if (self.owner.invincible_finished > time || self.owner.runetype == RN_DEFLECT)
-				T_Damage (other, self, self.owner, 50000, "teledeath2");
-
-			if (T_Damage (self.owner, self, other, 50000, "teledeath2") && other.health > 0)
-				Rune_Deflect_Telefrag ();
+			T_Damage (other, self, self.owner, 50000, "teledeath2");
 			return;
 		}
 

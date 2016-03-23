@@ -553,7 +553,7 @@ float PUSH_FORCE		= 0.65;
 
 // The number of zombie campers a houngan gets.
 
-float MAX_ZOMBIE_CAMPERS	= 5;
+float MAX_ZOMBIE_CAMPERS	= 20;
 
 // How long it takes a monk to achieve the meditative state.
 

@@ -707,6 +707,87 @@ Rune_Deflect_Telefrag =
 	centerprint (other, "You deflected a telefrag!");
 };
 
+// lazy coding
+void ()
+Launch_Betty2 =
+{
+	newmis			= spawn ();
+
+	if (!self.owner)
+		newmis.owner	= self;
+	else
+		newmis.owner	= self.owner;
+
+	newmis.movetype		= MOVETYPE_BOUNCE;
+	newmis.solid		= SOLID_BBOX;
+
+	newmis.touch		= GrenadeTouch;
+	newmis.classname	= "betty";
+	newmis.think		= GrenadeExplode;
+
+	newmis.nextthink	= time + 0.75 + random ();
+
+	// Assign a random direction for the shrapnel to fly in
+	newmis.velocity_x	= 5 * (110 * random () - 55);
+	newmis.velocity_y	= 5 * (110 * random () - 55);
+	newmis.velocity_z	= 10 * (50 * random () - 25);
+
+	newmis.avelocity_x	= 250 + (random () * 150);
+	newmis.avelocity_y	= 250 + (random () * 150);
+	newmis.avelocity_z	= 250 + (random () * 150);
+
+	setmodel (newmis, "progs/grenade.mdl");
+	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
+	setorigin (newmis, self.origin + '0 0 -1');
+};
+
+// This code segment detonates the 'second stage' of the grenade
+// (After it has popped up)
+void ()
+Betty_Package_Explode2 =
+{
+	local float i;
+
+        monk_radius_hack = 1;
+        T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 200, world, "betty");
+	monk_radius_hack = 0;
+
+	for (i = MAX_LAUNCH_BETTY; i >= 0; i = i - 1)
+		Launch_Betty2 ();
+
+	create_te_explosion (self.origin, 1);
+};
+
+void ()
+Launch_Betty_Package2 =
+{
+	local entity missile;
+
+	sound (self, CHAN_WEAPON, "weapons/grenade.wav", 1, ATTN_NORM);
+
+	// Spawn and animate the 'second stage'
+	missile			= spawn ();
+	missile.owner		= self.owner;
+	missile.movetype	= MOVETYPE_BOUNCE;
+	missile.solid		= SOLID_BBOX;
+	missile.classname	= "betty-package";
+
+	// Set speed
+	missile.velocity	= '0 0 650';
+	missile.angles		= vectoangles (missile.velocity);
+	missile.touch		= Betty_Touch;
+
+	// Set Duration
+	missile.nextthink	= time + 0.5;
+	missile.think		= Betty_Package_Explode2;
+
+	setmodel (missile, "progs/missile.mdl");
+	setsize (missile, VEC_ORIGIN, VEC_ORIGIN);
+	setorigin (missile, self.origin);
+
+	BecomeExplosion ();
+};
+
 void ()
 Launch_Betty =
 {
@@ -722,7 +803,7 @@ Launch_Betty =
 
 	newmis.touch		= GrenadeTouch;
 	newmis.classname	= "betty";
-	newmis.think		= GrenadeExplode;
+	newmis.think		= Launch_Betty_Package2;
 
 	newmis.nextthink	= time + 0.75 + random ();
 

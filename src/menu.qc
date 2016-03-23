@@ -256,7 +256,7 @@ aq_menu_print_n =
 	{
 		aq_menu_print_help (
 			//----------------------------------*------
-			"Welcome to Rune Quake!  These     \n"
+			"Welcome to Fools Quake!  These    \n"
 			"instructions are highly           \n"
 			"abbreviated.  For the complete    \n"
 			"documentation visit,              \n\n"
