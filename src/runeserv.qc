@@ -91,6 +91,7 @@ Rune_Button =
 	else if (self.runetype == RN_ANTIPACK)		Rune_AntiPack ();
 	else if (self.runetype == RN_BETTY)		Rune_Betty ();
 	else if (self.runetype == RN_TORNADO)		Rune_Tornado ();
+	else if (self.runetype == RN_JACK)		Rune_Jack ();
 };
 
 // This doesn't always tell the riders because it can be triggered both
@@ -530,7 +531,7 @@ Rune_Tell_real =
 
 		d1 = "A smattering of other\n"
 			"runes' abilities\n"
-			"in less potent form";
+			"(now with an activation)";
 	}
 	else if (type == RN_GLUE)
 	{

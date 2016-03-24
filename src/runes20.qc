@@ -498,14 +498,14 @@ Rune_Blink =
 		return;
 	}
 
-	e = spawn ();
-	e.runevector = good_e.origin + SPAWN_ITEM_OFFSET;
-	e.owner = self;
-	e.think = maybe_reblink;
+	// e = spawn ();
+	// e.runevector = good_e.origin;
+	// e.owner = self;
+	// e.think = maybe_reblink;
 	// I used to do this after one tick, but it would occasionally
 	// fail to detect a failed blink for some reason.
-	e.nextthink = time + 2 * sys_ticrate;
-	setorigin (self, e.runevector);
+	// e.nextthink = time + 2 * sys_ticrate;
+	setorigin (self, good_e.origin - '0 0 8');
 	muzzleflash ();
 	self.velocity = VEC_ORIGIN;
 	HookOff ();

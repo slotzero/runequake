@@ -39,7 +39,7 @@ void ()
 Athlete_Run =
 {
 	if ((self.cl[CL_CMD_FORWARD] || self.cl[CL_CMD_SIDE]) && self.flags & FL_ONGROUND)
-		self.velocity = self.velocity + self.velocity * 0.10;
+		self.velocity = self.velocity + self.velocity;
 };
 
 float ()
@@ -187,6 +187,7 @@ void ()
 monk_think =
 {
 	local float trance;
+	local entity e;
 
 	local float i;
 	i = vlen (self.velocity);
@@ -230,6 +231,31 @@ monk_think =
 		monk_trance_on ();
 	else if (self.runevar && !trance)
 		monk_trance_off ();
+
+	if (trance)
+	{
+		if (self.runevector_y < time)
+		{
+			e = findradius(self.origin, 150);
+			while (e)
+			{
+				if (e.movetype)
+				{
+					if (e.movetype == MOVETYPE_TOSS && e.velocity != VEC_ORIGIN)
+						e.movetype = MOVETYPE_FLYMISSILE;
+					else if (e.movetype == MOVETYPE_BOUNCE && e.velocity != VEC_ORIGIN)
+						e.movetype = MOVETYPE_FLYMISSILE;
+
+					if (e.movetype == MOVETYPE_FLYMISSILE)
+					{
+						e.velocity = (vlen(self.origin - e.origin) / 400) * vlen(e.velocity) * normalize(e.velocity);
+					}
+				}
+				e = e.chain;
+			}
+			self.runevector_y = time + 0.1;
+		}
+	}
 };
 
 // Allow players to slowly push monks out of the way so they can't stand
@@ -714,7 +740,7 @@ quad_activate =
 			e.super_time = -2;
 
 			if (e.super_damage_finished < time)
-				Hat_Spawn (self, "progs/quaddama.mdl", '0 0 30', VEC_ORIGIN, ITEM_QUAD);
+				Hat_Spawn (e, "progs/quaddama.mdl", '0 0 30', VEC_ORIGIN, ITEM_QUAD);
 			e.super_damage_finished = time + RN_QUAD_DURATION + random () + random ();
 		}
 
@@ -766,5 +792,47 @@ jack_think =
 
 		if (self.runevector_z > 2)
 			self.runevector_z = 0;
+	}
+
+	if (self.dest_y)
+	{
+		if (self.dest_y < time)
+		{
+			stuffcmd (self, CSHIFT_NONE);
+			self.effects = self.effects - self.effects & EF_BRIGHTFIELD;
+			if (takedamage_hack ())
+				self.takedamage = DAMAGE_AIM;
+
+			self.dest_y = 0;
+		}
+	}
+};
+
+void () Rune_Jack = {
+
+	if (self.dest_x > time)
+	{
+		centerprint(self, "Rune recharging");
+		return;
+	}
+	self.dest_x = time + RN_SHIELD_RECHARGE + RN_QUAD_DURATION;
+
+	if (self.invincible_finished < time)
+	{
+		stuffcmd (self, CSHIFT_SHIELD);
+		sound (self, CHAN_AUTO, "items/protect2.wav", 1, ATTN_NORM);
+		self.effects = self.effects | EF_BRIGHTFIELD;
+		self.takedamage = DAMAGE_NO;
+		self.dest_y = time + RN_SHIELD_DURATION - random ();
+	}
+
+	if (self.super_damage_finished < time)
+	{
+		sound (self, CHAN_AUTO, "items/damage.wav", 1, ATTN_NORM);
+		self.items	= self.items | IT_QUAD;
+		self.effects = self.effects | EF_DIMLIGHT;
+		self.super_time = -2;
+		Hat_Spawn (self, "progs/quaddama.mdl", '0 0 30', VEC_ORIGIN, ITEM_QUAD);
+		self.super_damage_finished = time + RN_QUAD_DURATION - random ();
 	}
 };
