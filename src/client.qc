@@ -2679,6 +2679,16 @@ ClientObituary =
 			s1 = " was ax-murdered by ";
 			s2 = "\n";
 		}
+		else if (dt == "mjolnir")
+		{
+			s1 = " was slammed by ";
+			s2 = "'s mighty hammer\n";
+		}
+		else if (dt == "mjolnirzap")
+		{
+			s1 = " was zapped by ";
+			s2 = "'s mjolnir\n";
+		}
 		else if (dt == "shotgun")
 		{
 			s1 = " chewed on ";

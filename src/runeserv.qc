@@ -75,7 +75,7 @@ Rune_Button =
 	else if (self.runetype == RN_SUCK)		Suck_Button ();
 	else if (self.runetype == RN_ENVIRO)		Enviro_Jump ();
 	else if (self.runetype == RN_TWALK)		Rune_Twalk ();
-	else if (self.runetype == RN_PHASE)		Wall_Check ();
+	// else if (self.runetype == RN_PHASE)		Wall_Check ();
 	else if (self.runetype == RN_SHAMB)		Rune_ShamblerReloc (1);
 	else if (self.runetype == RN_DUAL)		Rune_Dual ();
 	else if (self.runetype == RN_WEIRD)		Weird_Throw ();
@@ -558,7 +558,7 @@ Rune_Tell_real =
 
 		d1 = "Lightning gun and constant\n"
 			"supply of ammo\n"
-			"Shaft works under water!";
+			"Now with Mjolnir (axe)!";
 	}
 	else if (type == RN_SNIPER)
 	{
@@ -954,7 +954,10 @@ Rune_Activate =
 			good_armor_set_armor_items_e (self);
 		}
 	}
-
+	else if (type == RN_PHASE)
+	{
+		self.movetype = MOVETYPE_NOCLIP;
+	}
 	else if (self.runetype == RN_ATHLETE)
 	{
 		self.max_health = MAX_HEALTH_ATHLETE;

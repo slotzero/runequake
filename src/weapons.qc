@@ -22,6 +22,215 @@ crandom =
 	return 2 * (random () - 0.5);
 };
 
+void (vector p1, vector p2, entity from, float damage) HIP_HammerDamage =
+{
+	local entity e1, e2;
+	local vector f;
+
+	f = p2 - p1;
+	normalize (f);
+	f_x = 0 - f_y;
+	f_y = f_x;
+	f_z = 0;
+	f = f*16;
+
+	e1 = e2 = world;
+
+	traceline (p1, p2, FALSE, self);
+
+	if (trace_ent.takedamage && !environmental (trace_ent))
+	{
+		IN_POQ([-
+			particle (trace_endpos, '0 0 100', 225, damage * 4);
+		-], [-
+			create_te_lightningblood (trace_endpos);
+		-])
+
+		T_Damage (trace_ent, from, from, damage, "mjolnirzap");
+	}
+	e1 = trace_ent;
+
+	traceline (p1 + f, p2 + f, FALSE, self);
+
+	if (trace_ent != e1 && trace_ent.takedamage &&
+		!environmental (trace_ent))
+	{
+		IN_POQ([-
+			particle (trace_endpos, '0 0 100', 225, damage * 4);
+		-], [-
+			create_te_lightningblood (trace_endpos);
+		-])
+		T_Damage (trace_ent, from, from, damage, "mjolnirzap");
+	}
+	e2 = trace_ent;
+
+	traceline (p1 - f, p2 - f, FALSE, self);
+
+	if (trace_ent != e1 && trace_ent != e2 && trace_ent.takedamage &&
+		!environmental (trace_ent))
+	{
+		IN_POQ([-
+			particle (trace_endpos, '0 0 100', 225, damage * 4);
+		-], [-
+			create_te_lightningblood (trace_endpos);
+		-])
+		T_Damage (trace_ent, from, from, damage, "mjolnirzap");
+	}
+};
+
+void () HIP_LightningThink =
+{
+	local vector org, dst;
+	local entity head, selected;
+	local float cur_dist, head_dist;
+	local vector vec;
+	local float dot, oldstate, dam;
+
+	if (time > self.delay)
+	{
+		remove(self);
+		return;
+	}
+
+	oldstate = self.state;
+	if (self.state == 0)
+	{
+		// look in our immediate vicinity
+		self.enemy = world;
+		selected = world;
+		cur_dist = 350;
+		head = findradius(self.owner.origin, 350);
+		while(head)
+		{
+			if ((head.flags & FL_MONSTER) || ((head.flags & FL_CLIENT) && !(head.frame >= 29 && head.frame <= 40)))
+			{
+				if ((visible(head)) && (head != self.owner.owner) && (head.health > 0))
+				{
+					if (selected == world)
+						head_dist = 1000;
+					else
+						head_dist = vlen(head.origin - selected.origin);
+
+					if (head_dist > cur_dist)
+					{
+						selected = head;
+						cur_dist = head_dist;
+					}
+				}
+			}
+			head = head.chain;
+		}
+
+		if (selected != world)
+		{
+			self.state = 1;
+			self.enemy = selected;
+		} else
+		{
+			local vector org, end;
+
+			sound (self.owner, CHAN_AUTO, "shambler/sattck1.wav", 1, ATTN_NORM);
+			makevectors(self.v_angle);
+			org = self.owner.origin;
+			end = org + v_forward * 200;
+			end = end + (((400*random()) - 200) * v_right);
+
+			traceline (org, end, TRUE, self);
+
+			WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+			WriteByte (MSG_BROADCAST, TE_LIGHTNING2);
+			WriteEntity (MSG_BROADCAST, self);
+			WriteCoord (MSG_BROADCAST, org_x);
+			WriteCoord (MSG_BROADCAST, org_y);
+			WriteCoord (MSG_BROADCAST, org_z);
+			WriteCoord (MSG_BROADCAST, trace_endpos_x);
+			WriteCoord (MSG_BROADCAST, trace_endpos_y);
+			WriteCoord (MSG_BROADCAST, trace_endpos_z);
+
+			self.nextthink = time + 0.1;
+			return;
+		}
+	}
+
+	org = self.runent.origin;
+	dst = self.enemy.absmin + 0.25 * (self.enemy.absmax-self.enemy.absmin);
+	dst = dst + (random() * 0.5 * (self.enemy.absmax-self.enemy.absmin));
+	traceline (org, dst, TRUE, self.owner.owner);
+
+	if (trace_fraction != 1.0 || self.enemy.health <= 0)
+	{
+		self.state = 0;
+		self.nextthink = time + 0.1;
+		return;
+	}
+
+	sound (self.owner, CHAN_AUTO, "shambler/sattck1.wav", 1, ATTN_NORM);
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_LIGHTNING2);
+	WriteEntity (MSG_BROADCAST, self);
+	WriteCoord (MSG_BROADCAST, org_x);
+	WriteCoord (MSG_BROADCAST, org_y);
+	WriteCoord (MSG_BROADCAST, org_z);
+	WriteCoord (MSG_BROADCAST, trace_endpos_x);
+	WriteCoord (MSG_BROADCAST, trace_endpos_y);
+	WriteCoord (MSG_BROADCAST, trace_endpos_z);
+	vec = normalize(self.enemy.origin - self.owner.origin);
+	dot = vec * self.owner.movedir;
+
+	// oself
+	head = self;
+	self = self.owner.owner;
+	if (oldstate == 0)
+		dam = 80;
+	else
+		dam = 30;
+
+	if (dot > 0.3)
+		HIP_HammerDamage (org, trace_endpos, self, dam);
+	else
+		HIP_HammerDamage (org, trace_endpos, self, dam*0.5);
+
+	self = head;
+
+	self.nextthink = time + 0.2;
+};
+
+void (entity prev, entity own, float dst) HIP_SpawnMjolnirLightning =
+{
+	local entity e;
+
+	e = spawn();
+	e.delay = time + 0.8;
+	e.state = 0;
+	e.runent = prev;
+	e.owner = own;
+	e.v_angle = self.angles;
+	e.v_angle_x = 0;
+	e.v_angle_z = 0;
+	e.origin = own.origin;
+	e.think = HIP_LightningThink;
+	e.nextthink = time;
+};
+
+void (vector v) HIP_SpawnMjolnirBase =
+{
+	local entity base;
+
+	base = spawn();
+	base.origin = v;
+	base.flags = 0;
+	base.owner = self;
+	base.think = SUB_Remove;
+	base.nextthink = time + 1;
+	sound (base, CHAN_AUTO, "shambler/sattck1.wav", 1, ATTN_NORM);
+	makevectors(self.v_angle);
+	base.movedir = v_forward;
+	HIP_SpawnMjolnirLightning(base, base, 350);
+	HIP_SpawnMjolnirLightning(base, base, 350);
+	HIP_SpawnMjolnirLightning(base, base, 350);
+	HIP_SpawnMjolnirLightning(base, base, 350);
+};
+
 /*
 ================
 W_FireAxe
@@ -59,12 +268,25 @@ W_FireAxe =
 	if (trace_ent.takedamage)
 	{
 		SpawnBlood (org, VEC_ORIGIN, IN_POQ(20, 1));
-		T_Damage (trace_ent, self, self, damage, dtype);
+		if (self.runetype == RN_THOR)
+		{
+			T_Damage (trace_ent, self, self, 40, "mjolnir");
+			HIP_SpawnMjolnirBase (trace_ent.origin);
+			self.attack_finished = time + 1.5;
+		} else
+			T_Damage (trace_ent, self, self, damage, dtype);
 	}
 	else
 	{
-		sound (self, CHAN_BODY, "player/axhit2.wav", 1, ATTN_NORM);
-		create_te_gunshot (org, 1);
+		if (self.runetype == RN_THOR)
+		{
+			HIP_SpawnMjolnirBase (trace_endpos);
+			self.attack_finished = time + 1.5;
+		} else
+		{
+			sound (self, CHAN_BODY, "player/axhit2.wav", 1, ATTN_NORM);
+			create_te_gunshot (org, 1);
+		}
 	}
 };
 
