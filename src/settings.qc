@@ -633,7 +633,7 @@ float AMMO_TORNADO		= 30;
 
 // Requiem Rune
 
-float RN_REQUIEM_RECHARGE	= 0.5;
+float RN_REQUIEM_RECHARGE	= 0.1;
 
 // red, green, blue, scale
 

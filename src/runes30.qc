@@ -360,6 +360,14 @@ Rune_Switch =
 	set_armor_items_e (self);
 	set_armor_items_e (switch);
 
+	// Switch frags
+	if (switch.classname == "player")
+	{
+		tempf = switch.frags;
+		switch.frags = self.frags;
+		self.frags = tempf;
+	}
+
 	// Switch head count
 	tempf = switch.num_heads;
 	switch.num_heads = self.num_heads;

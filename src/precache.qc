@@ -171,7 +171,8 @@ precaches =
 	precache_model ("progs/w_spike.mdl");		// tornado model
 	precache_model ("progs/zom_gib.mdl");		// zombie gib
 	precache_model ("progs/zombie.mdl");		// zombie
-
+	precache_model ("progs/ogre.mdl");
+	precache_model ("progs/hknight.mdl");
 	// shalrath/
 	precache_sound ("shalrath/sight.wav");		// player connect
 

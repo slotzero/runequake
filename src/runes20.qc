@@ -227,7 +227,13 @@ Holo_Think =
 
 	self.angles = self.owner.angles;
 	self.angles_y = self.angles_y + self.runevar;
-	self.frame = self.owner.frame;
+	if (time > self.ltime)
+	{
+		self.frame = self.frame + 1;
+		if (self.frame > self.weaponframe)
+			self.frame = self.impulse;
+		self.ltime = time + 0.1;
+	}
 	self.nextthink = time + sys_ticrate;
 };
 
@@ -255,13 +261,32 @@ Rune_Holo =
 	hologram.solid = SOLID_NOT;
 	hologram.owner = self;
 	hologram.classname = "hologram";
-	setmodel (hologram, "progs/player.mdl");
+	if (random () > 0.6)
+	{
+		setmodel (hologram, "progs/ogre.mdl");
+		hologram.frame = 25;
+		hologram.impulse = 25;
+		hologram.weaponframe = 32;
+	} else if (random () > 0.2)
+	{
+		setmodel (hologram, "progs/hknight.mdl");
+		hologram.frame = 29;
+		hologram.impulse = 29;
+		hologram.weaponframe = 36;
+	} else
+	{
+		setmodel (hologram, "progs/shambler.mdl");
+		hologram.frame = 29;
+		hologram.impulse = 29;
+		hologram.weaponframe = 34;
+	}
 	setorigin (hologram, self.origin);
 	setsize (hologram, VEC_ORIGIN, VEC_ORIGIN);
 	hologram.angles = self.angles;
-	hologram.colormap = self.colormap;
+
 	hologram.think = Holo_Think;
 	hologram.nextthink = time;
+	hologram.ltime = time + 0.1;
 	sound (hologram, CHAN_BODY, "misc/basekey.wav", 1, ATTN_NORM);
 
 	hologram.runetime = time + 30;

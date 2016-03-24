@@ -676,6 +676,8 @@ decay_armor_think =
 void ()
 quad_activate =
 {
+	local entity e;
+
 	if (self.super_damage_finished >= time || self.runetime > time)
 	{
 		if (self.runevar)
@@ -701,14 +703,24 @@ quad_activate =
 		stuffcmd (self, "bf\n");
 	}
 	self.runevar	= 0;
-	self.items	= self.items | IT_QUAD;
-	self.effects	= self.effects | EF_DIMLIGHT;
-	self.super_time	= -2;
 
-	if (self.super_damage_finished < time)
-		Hat_Spawn (self, "progs/quaddama.mdl", '0 0 30', VEC_ORIGIN, ITEM_QUAD);
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (e.health > 0)
+		{
+			e.items	= e.items | IT_QUAD;
+			e.effects = e.effects | EF_DIMLIGHT;
+			e.super_time = -2;
 
-	self.super_damage_finished = time + RN_QUAD_DURATION;
+			if (e.super_damage_finished < time)
+				Hat_Spawn (self, "progs/quaddama.mdl", '0 0 30', VEC_ORIGIN, ITEM_QUAD);
+			e.super_damage_finished = time + RN_QUAD_DURATION + random () + random ();
+		}
+
+		e = find (e, classname, "player");
+	}
+
 	self.runetime	= self.super_damage_finished + RN_QUAD_RECHARGE;
 };
 
