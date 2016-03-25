@@ -580,6 +580,52 @@ ROCKETS
 
 ==============================================================================
 */
+void (entity targ, entity attacker, float duration) burn_start;
+
+void () explodefire_touch = {
+	if (!other.health
+			|| other == world
+			|| !other.takedamage
+			|| other.runetype == RN_ENVIRO
+			|| other.items & IT_SUIT
+			|| other.runetype == RN_TORCH
+			|| other.runetype == RN_FIREWALK)
+		return;
+
+	if (random () > 0.9)
+		burn_start (other, self.owner, 2.5);
+	T_Damage (other, self, self.owner, 14, "explodefire");
+	remove (self);
+};
+
+void () explodefire = {
+	local entity e;
+	local float i;
+
+	i = 5;
+
+	while (i > 0)
+	{
+		e = spawn ();
+		e.owner = self.owner;
+		e.classname	= "explodefire";
+		e.movetype = MOVETYPE_TOSS;
+		e.velocity_x = 150 - (random () * 300);
+		e.velocity_y = 150 - (random () * 300);
+		e.velocity_z = 150 + (random () * 200);
+		self.angles = vectoangles (e.velocity);
+		setmodel (e, "progs/flame2.mdl");
+		setsize (e, '-4 -4 -4', '4 4 4');
+		setorigin (e, self.origin);
+
+		e.nextthink	= time + 4 + random () + random ();
+		e.think		= SUB_Remove;
+
+		e.solid		= SOLID_TRIGGER;
+		e.touch		= explodefire_touch;
+		i = i - 1;
+	}
+};
 
 void ()	s_explode1 = [0, s_explode2] {};
 void ()	s_explode2 = [1, s_explode3] {};
@@ -596,6 +642,8 @@ BecomeExplosion =
 	self.touch	= SUB_Null;
 	setmodel (self, "progs/s_explod.spr");
 	self.solid	= SOLID_NOT;
+	if (self.runetype == RN_TORCH)
+		explodefire();
 	s_explode1 ();
 };
 
@@ -762,7 +810,6 @@ W_FireRocket =
 	// set missile speed
 	makevectors (self.v_angle);
 	newmis.velocity		= v_forward * 1000;
-	newmis.angles		= vectoangles (newmis.velocity);
 
 	newmis.touch		= T_MissileTouch;
 
@@ -770,7 +817,18 @@ W_FireRocket =
 	newmis.nextthink	= time + 5;
 	newmis.think		= SUB_Remove;
 
-	setmodel (newmis, "progs/missile.mdl");
+	if (self.runetype == RN_TORCH)
+	{
+		newmis.runetype = RN_TORCH;
+		setmodel (newmis, "progs/flame2.mdl");
+		newmis.angles = '90 0 0' + vectoangles (v_forward);
+	}
+	else
+	{
+		setmodel (newmis, "progs/missile.mdl");
+		newmis.angles = vectoangles (v_forward);
+	}
+
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
 	setorigin (newmis, self.origin + v_forward * 8 + PLAYER_WEAPON_OFFSET);
 
@@ -1005,7 +1063,14 @@ W_FireGrenade =
 		newmis.think		= GrenadeExplode;
 	}
 
-	setmodel (newmis, "progs/grenade.mdl");
+	if (self.runetype == RN_TORCH)
+	{
+		newmis.runetype = RN_TORCH;
+		setmodel (newmis, "progs/flame2.mdl");
+	}
+	else
+		setmodel (newmis, "progs/grenade.mdl");
+
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
 	setorigin (newmis, self.origin);
 };
@@ -1401,10 +1466,16 @@ W_Attack =
 
 	if (base_weapon == IT_AXE)
 	{
-	    	if (self.runetype == RN_LUMBER)
+		if (self.runetype == RN_LUMBER)
+		{
 			s = "knight/sword1.wav";
+			t = 0.2;
+		}
 		else
+		{
 			s = "weapons/ax1.wav";
+			t = 0.5 * haste_mult;
+		}
 		sound (self, CHAN_WEAPON, s, 1, ATTN_NORM);
 		r = random ();
 		if (r < 0.25)
@@ -1415,7 +1486,6 @@ W_Attack =
 			player_axec1 ();
 		else
 			player_axed1 ();
-		t = 0.5 * haste_mult;
 	}
 	else if (base_weapon == IT_SHOTGUN)
 	{

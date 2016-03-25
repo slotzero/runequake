@@ -315,31 +315,9 @@ Rune_Recall_sprint =
 void ()
 Rune_Recall =
 {
-	if (!self.runevar)
-	{
-		self.runevector = self.origin;
-		self.pos1 = self.v_angle;
-		self.runevar = 1;
-		centerprint (self, "Recall point set.");
-		return;
-	}
-
-	if (self.origin == self.runevector)
-	{
-		recall_point_erase ();
-		return;
-	}
-
-	HookOff ();
-	HookOff_by_targ ();
-
+	Rune_Delete (0);
 	spawn_tfog (self.origin);
-	spawn_tdeath (self.runevector, self);
-	setorigin (self, self.runevector);
-	self.angles = self.pos1;
-	self.fixangle = 1;
-	spawn_tfog (self.origin);
-	self.velocity = VEC_ORIGIN;
+	centerprint (self, "You forget your recall rune");
 };
 
 void ()
