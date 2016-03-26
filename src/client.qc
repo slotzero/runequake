@@ -2689,6 +2689,11 @@ ClientObituary =
 			s1 = " was zapped by ";
 			s2 = "'s mjolnir\n";
 		}
+		else if (dt == "explodefire")
+		{
+			s1 = " was burned by ";
+			s2 = "'s firey chaff\n";
+		}
 		else if (dt == "shotgun")
 		{
 			s1 = " chewed on ";

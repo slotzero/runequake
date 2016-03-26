@@ -136,7 +136,7 @@ Rune_Tell_real =
 		desc_l = "Rune of Resistance";
 		desc_s = " Resist";
 
-		d1 = "You take half damage";
+		d1 = "You take 10% damage";
 	}
 	else if (type == RN_HASTE)
 	{
@@ -756,7 +756,8 @@ Rune_Activate =
 		decay_armor_spawn (self, ARMOR_DECAY_RATE);
 		set_armor_items_e (self);
 	}
-	else if (old_rune == RN_SHIELD)
+
+	if (old_rune == RN_SHIELD || old_rune == RN_JACK)
 	{
 		if (self.effects & EF_BRIGHTFIELD)
 			self.effects = self.effects - self.effects & EF_BRIGHTFIELD;
@@ -1189,7 +1190,13 @@ Rune_Touch =
 	}
 
 	if (other == world)
-		sound (self, CHAN_WEAPON, "weapons/tink1.wav", 1.0, ATTN_NORM);
+	{
+		if (self.wait < time)
+		{
+			sound (self, CHAN_WEAPON, "weapons/tink1.wav", 1.0, ATTN_NORM);
+			self.wait = time + 1;
+		}
+	}
 
 	if (other.classname != "player")
 		return;

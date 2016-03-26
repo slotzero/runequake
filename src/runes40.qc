@@ -301,6 +301,9 @@ Rune_ShamblerReloc =
 	if (self.runent.owner.waterlevel > 1 && self.runent.owner.watertype != CONTENT_LAVA)
 		self.runent.aqstate = self.runent.aqstate - self.runent.aqstate & AQS_BURNING;
 
+	if (self.runent.runent != world)
+		self.runent.runent.think = SUB_Remove;
+
 	old_self = self;
 	self = self.runent;
 

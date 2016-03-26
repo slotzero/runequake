@@ -536,8 +536,11 @@ Rune_Blink =
 
 	if (self.runevar < 0.5)
 		self.runevar = 0.5;
-	else if (self.runevar > 10)
-		self.runevar = 10;
+	else if (self.runevar > 5)
+	{
+		self.runevar = 5;
+		sprint (self, "April Fools!\n");
+	}
 
 	self.runetime = time + self.runevar;
 };
@@ -678,15 +681,13 @@ void ()
 Rune_Jump =
 {
 	local entity head, oself;
-	local float dist;
+	local float i;
 
 	if (self.runetime > time)
 		return;
-	self.runetime = self.runetime + 0.2;
+	self.runetime = self.runetime + 0.1;
 
-	dist = 1000;
-
-	head = findradius (self.origin, dist);
+	head = findradius (self.origin, 1000);
 	while (head)
 	{
 		if (head.health > 0 && !isfriend (head) && head.runetype != RN_ENVIRO
@@ -701,6 +702,7 @@ Rune_Jump =
 					{
 						oself = self;
 						self = head;
+						head.button0 = 1;
 						W_Attack ();
 						self = oself;
 					}

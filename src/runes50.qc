@@ -241,19 +241,23 @@ monk_think =
 			{
 				if (e.movetype)
 				{
-					if (e.movetype == MOVETYPE_TOSS && e.velocity != VEC_ORIGIN)
+					if (e.think == flamemissile_think) // alt-3, alt-4 weapons
 						e.movetype = MOVETYPE_FLYMISSILE;
-					else if (e.movetype == MOVETYPE_BOUNCE && e.velocity != VEC_ORIGIN)
+					else if (e.classname == "grenade" || e.classname == "gasbomb")
 						e.movetype = MOVETYPE_FLYMISSILE;
 
 					if (e.movetype == MOVETYPE_FLYMISSILE)
 					{
-						e.velocity = (vlen(self.origin - e.origin) / 400) * vlen(e.velocity) * normalize(e.velocity);
+						trance = vlen(e.velocity);
+						if (trance > 20)
+							e.velocity = (vlen(self.origin - e.origin) / 300) * trance * normalize(e.velocity);
+						else
+							e.velocity = VEC_ORIGIN;
 					}
 				}
 				e = e.chain;
 			}
-			self.runevector_y = time + 0.1;
+			self.runevector_y = time + 0.05;
 		}
 	}
 };
@@ -747,6 +751,7 @@ quad_activate =
 		e = find (e, classname, "player");
 	}
 
+	bprint ("\{141} Someone used the Quad Rune!\n");
 	self.runetime	= self.super_damage_finished + RN_QUAD_RECHARGE;
 };
 
@@ -828,7 +833,6 @@ void () Rune_Jack = {
 
 	if (self.super_damage_finished < time)
 	{
-		sound (self, CHAN_AUTO, "items/damage.wav", 1, ATTN_NORM);
 		self.items	= self.items | IT_QUAD;
 		self.effects = self.effects | EF_DIMLIGHT;
 		self.super_time = -2;

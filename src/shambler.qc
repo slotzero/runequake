@@ -397,13 +397,13 @@ void ()	sham_magic3	= [$magic3,	sham_magic4]
 	o.nextthink	= time;
 	o.think		= Sham_BFG_Warmup;
 };
-void ()	sham_magic4	= [$magic4,	sham_magic5] {};
-void ()	sham_magic5	= [$magic5,	sham_magic6] {};
-void ()	sham_magic6	= [$magic5,	sham_magic7] {};
-void ()	sham_magic7	= [$magic6,	sham_magic8] {};
-void ()	sham_magic8	= [$magic6,	sham_magic9] {};
-void ()	sham_magic9	= [$magic9,	sham_magic10] {};
-void ()	sham_magic10 = [$magic10, sham_magic11] {};
+void ()	sham_magic4	= [$magic4,	sham_magic5] {ai_face ();};
+void ()	sham_magic5	= [$magic5,	sham_magic6] {ai_face ();};
+void ()	sham_magic6	= [$magic5,	sham_magic7] {ai_face ();};
+void ()	sham_magic7	= [$magic6,	sham_magic8] {ai_face ();};
+void ()	sham_magic8	= [$magic6,	sham_magic9] {ai_face ();};
+void ()	sham_magic9	= [$magic9,	sham_magic10] {ai_face ();};
+void ()	sham_magic10 = [$magic10, sham_magic11] {ai_face ();};
 void ()	sham_magic11 = [$magic11, sham_magic12] {};
 void ()	sham_magic12 = [$magic12, sham_run1]	{};
 

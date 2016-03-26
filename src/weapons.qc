@@ -667,6 +667,19 @@ RocketDamageExplosion =
 	create_te_explosion (self.origin, 1);
 };
 
+// give zen monk rune a "Matrix" touch
+void () SUB_Proj_Remove = {
+	if (self.velocity != VEC_ORIGIN)
+		remove(self);
+	else
+	{
+		self.touch = SUB_Null;
+		self.movetype = MOVETYPE_BOUNCE;
+		self.think = SUB_Remove;
+		self.nextthink = time + 2;
+	}
+};
+
 // reflect rocket
 void ()
 reflect_projectile =
@@ -815,7 +828,7 @@ W_FireRocket =
 
 	// set missile duration
 	newmis.nextthink	= time + 5;
-	newmis.think		= SUB_Remove;
+	newmis.think		= SUB_Proj_Remove;
 
 	if (self.runetype == RN_TORCH)
 	{
@@ -1096,7 +1109,7 @@ launch_spike =
 
 	newmis.touch = spike_touch;
 	newmis.classname = "spike";
-	newmis.think = SUB_Remove;
+	newmis.think = SUB_Proj_Remove;
 	newmis.nextthink = time + 6;
 	setmodel (newmis, "progs/spike.mdl");
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
@@ -1583,9 +1596,12 @@ W_Attack =
 		}
 		else
 		{
+			if (!self.t_width)
+			{
+				sound (self, CHAN_AUTO, "weapons/lstart.wav", 1, ATTN_NORM);
+			}
 			player_light1 ();
 			t = 0.1;
-			sound (self, CHAN_AUTO, "weapons/lstart.wav", 1, ATTN_NORM);
 			do_ammo = 0;
 		}
 	}
@@ -1787,8 +1803,13 @@ W_WeaponFrame =
 		SuperDamageSound ();
 		W_Attack ();
 	}
-	else if (self.weapon == WEAPON_HOOK && self.aqstate & AQS_HOOK)
-		HookOff ();
+	else
+	{
+		if (self.t_width < time)
+			self.t_width = 0; // reset lightning sound timer
+		if (self.weapon == WEAPON_HOOK && self.aqstate & AQS_HOOK)
+			HookOff ();
+	}
 };
 
 /*
