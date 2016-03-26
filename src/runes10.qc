@@ -17,6 +17,11 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
+void () Rune_Strength =
+{
+	self.super_damage_finished = time + 3.5;
+};
+
 void ()
 Haste_Sound =
 {

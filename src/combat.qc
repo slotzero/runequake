@@ -148,6 +148,8 @@ Killed =
 	self		= old_self;
 };
 
+void (entity from, float amt) drop_armor_shard;
+
 /*
 ============
 T_Damage
@@ -412,25 +414,6 @@ T_Damage =
 		}
 	}
 
-	if (attacker.runetype == RN_VAMP)
-	{
-		targ.health = targ.health + damage;
-
-		if (damage < 25)
-			sound (attacker, CHAN_BODY, "items/r_item1.wav", 1, ATTN_NORM);
-		else if (damage < 100)
-			sound (attacker, CHAN_BODY, "items/r_item2.wav", 1, ATTN_NORM);
-		else
-			sound (attacker, CHAN_BODY, "items/health1.wav", 1, ATTN_NORM);
-
-		if (targ.health > (targ.max_health + MAX_OVER_HEALTH))
-			targ.health = targ.max_health + MAX_OVER_HEALTH;
-		if (targ.health > targ.max_health)
-			decay_health_spawn (targ, 1);
-
-		return 1;
-	}
-
 	// save damage based on the target's armor level
 	save = 0;
 
@@ -480,7 +463,10 @@ T_Damage =
 
 		targ.armorvalue = targ.armorvalue - save;
 		if (targ.runetype == RN_ARMOR)
+		{
+			drop_armor_shard (targ, save);
 			good_armor_set_armor_items_e (targ);
+		}
 	}
 	take = damage - save;
 
@@ -530,18 +516,25 @@ T_Damage =
 	//if (attacker.runetype == RN_VAMP && dtype != "teledeath")
 	//	Vamp_Heal (attacker, targ, real_take);
 
-	// Vengeance Rune does equal damage back to the attacker, but
-	// cap damage so it doesn't exceed targ's armor/health unless
-	// it is excessive.  (KILL_DAMAGE)
 	if (targ.runetype == RN_VENG
 			&& attacker != targ
-			&& attacker != world
-			&& attacker.runetype != RN_VENG
-			&& attacker.runetype != RN_SELFPRES)
-		if (damage < KILL_DAMAGE)
-			T_Damage (attacker, targ, targ, real_take + save, "vengeance");
+			&& attacker != world)
+	{
+
+		attacker.health = attacker.health + damage;
+
+		if (damage < 25)
+			sound (targ, CHAN_BODY, "items/r_item1.wav", 1, ATTN_NORM);
+		else if (damage < 100)
+			sound (targ, CHAN_BODY, "items/r_item2.wav", 1, ATTN_NORM);
 		else
-			T_Damage (attacker, targ, targ, SURE_KILL_DAMAGE, "vengeance");
+			sound (targ, CHAN_BODY, "items/health1.wav", 1, ATTN_NORM);
+
+		if (attacker.health > (attacker.max_health + MAX_OVER_HEALTH))
+			attacker.health = attacker.max_health + MAX_OVER_HEALTH;
+		if (attacker.health > attacker.max_health)
+			decay_health_spawn (targ, 1);
+	}
 
 	// add to the damage total for clients, which will be sent as a
 	// single message at the end of the frame

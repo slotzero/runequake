@@ -418,6 +418,9 @@ armor_touch =
 
 	if (self.runevar)
 	{
+		// dropper can't pick up straight away...
+		if (other == self.owner && (self.cnt + 2 > time))
+			return;
 		type	= self.armortype;
 		value	= self.armorvalue;
 		bit	= self.aqstate;
@@ -464,6 +467,17 @@ armor_touch =
 		if (other.armorvalue && other.armortype >= type && other.armorvalue >= get_max_armor_e (other))
 			return;
 	}
+	else if (self.runevar == 2) // Rune of Good Armor droppings
+	{
+		if (!other.armortype)
+			other.armortype = ARMOR_TYPE_3;
+		if (other.armortype	== ARMOR_TYPE_3)
+			other.armorvalue = other.armorvalue + value;
+		else
+			other.armorvalue = other.armorvalue + (value * 1.5);
+		if (other.armorvalue > 255)
+			other.armorvalue = 255;
+	}
 	else if (other_tot >= this_tot)
 		return;
 
@@ -506,16 +520,22 @@ armor_touch =
 			}
 		}*/
 
-		other.armortype		= type;
-		other.armorvalue	= value;
-		other.items		= other.items - (other.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + bit;
+		if (self.runevar != 2)
+		{
+			other.armortype		= type;
+			other.armorvalue	= value;
+			other.items		= other.items - (other.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + bit;
+		}
 	}
 
 	// Bound the armor in case she got good armor dropped by a rune
 	// holder, or she's got good armor.
-	max = get_max_armor_e (other);
-	if (other.armorvalue > max)
-		other.armorvalue = max;
+	if (self.runevar != 2)
+	{
+		max = get_max_armor_e (other);
+		if (other.armorvalue > max)
+			other.armorvalue = max;
+	}
 
 	// Have to do this after capping armorvalue.
 	if (other.runetype == RN_ARMOR)

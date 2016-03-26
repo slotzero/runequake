@@ -20,6 +20,7 @@ void ()
 Rune_Think =
 {
 	if	(self.runetype == RN_REGEN)		Rune_Regen ();
+	else if (self.runetype == RN_STRENGTH)		Rune_Strength ();
 	else if (self.runetype == RN_FIREWALK)		Rune_Firewalk ();
 	else if (self.runetype == RN_ZAP)		Rune_Zap ();
 	else if (self.runetype == RN_BOMB)		Rune_Bomb ();
@@ -290,7 +291,7 @@ Rune_Tell_real =
 		desc_l = "Rune of Strength";
 		desc_s = " Strgth";
 
-		d1 = "Your attacks do double damage";
+		d1 = "Your attacks do quad damage";
 	}
 	else if (type == RN_RADIO)
 	{
@@ -802,7 +803,15 @@ Rune_Activate =
 	else
 		self.dropdelay = time;
 
-	if (self.runetype == RN_HEALTH)
+	if (self.runetype == RN_STRENGTH)
+	{
+		if (self.super_damage_finished < time)
+			Hat_Spawn (self, "progs/quaddama.mdl", '0 0 30', VEC_ORIGIN, ITEM_QUAD);
+		self.super_time = -1;
+		self.super_damage_finished = time + 5;
+		self.super_sound = time + 1;
+	}
+	else if (self.runetype == RN_HEALTH)
 	{
 		self.max_health = MAX_HEALTH_GOOD_HEALTH;
 		if (tell && self.health < self.max_health)

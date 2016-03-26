@@ -704,6 +704,60 @@ decay_armor_think =
 };
 
 void ()
+armor_shard_think =
+{
+	IN_POQ([-
+		particle (self.origin, '0 0 40', PARTICLE_BLOOD, 38);
+	-], [-
+		create_te_blood (self.origin, 19);
+	-])
+
+	if (time > self.cnt + 7)
+		remove (self);
+	else
+		self.nextthink = time + 0.25;
+
+};
+
+void (entity from, float amt)
+drop_armor_shard =
+{
+	local entity item;
+
+	if (options & NO_DROP_ARMOR)
+		return;
+
+	if (amt <= 10)
+		return;
+
+	item		= spawn ();
+	item.owner	= from;
+	item.runevar	= 2;
+	item.classname	= "dropped_armor";
+	item.armortype	= from.armortype;
+	item.armorvalue	= amt;
+	item.origin	= from.origin;
+	item.velocity_z	= 300;
+	item.velocity_x	= -100 + (random () * 200);
+	item.velocity_y	= -100 + (random () * 200);
+	item.flags	= FL_ITEM;
+	item.solid	= SOLID_TRIGGER;
+	item.movetype	= MOVETYPE_TOSS;
+	item.mdl	= "progs/armor.mdl";
+
+	item.aqstate = IT_ARMOR3;
+	item.skin = 2;
+
+	setmodel (item, item.mdl);
+	setsize (item, '-16 -16 0', '16 16 56');
+
+	item.touch	= armor_touch;
+	item.cnt	= time;
+	item.think	= armor_shard_think;
+	item.nextthink	= time;
+};
+
+void ()
 quad_activate =
 {
 	local entity e;

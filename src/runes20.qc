@@ -374,39 +374,48 @@ void ()
 Orb_Spawn =
 {
 	local entity axis, orb;
+	local float ave, i;
 
-	axis = spawn ();
-	axis.movetype = MOVETYPE_FLY;
-	axis.solid = SOLID_NOT;
-	axis.owner = self;
-	setorigin (axis, self.origin);
-	setsize (axis, VEC_ORIGIN, VEC_ORIGIN);
-	setmodel (axis, string_null);
+ 	if (random () > 0.5)
+		ave = 55;
+ 	else
+		ave = -55;
 
-	if (random () > 0.5)
-		axis.avelocity_y = 55;
-	else
-		axis.avelocity_y = -55;
+	while (i < 3)
+	{
+		axis = spawn ();
+		axis.movetype = MOVETYPE_FLY;
+		axis.solid = SOLID_NOT;
+		axis.owner = self;
+		setorigin (axis, self.origin);
+		setsize (axis, VEC_ORIGIN, VEC_ORIGIN);
+		setmodel (axis, string_null);
 
-	orb = spawn ();
-	orb.movetype = MOVETYPE_FLY;
-	orb.solid = SOLID_NOT;
-	orb.owner = self;
-	setorigin (orb, self.origin);
-	IN_POQ([-
-		orb.flags = orb.flags | FL_ONGROUND;
-		orb.effects = orb.effects | EF_BRIGHTFIELD;
-		setmodel (orb, "progs/s_light.spr");
-	-], [-
-		orb.avelocity_x = crandom ()*360;
-		orb.avelocity_y = crandom ()*360;
-		orb.avelocity_z = crandom ()*360;
-		setmodel (orb, "progs/teleport.mdl");
-	-])
-	orb.nextthink = time;
-	orb.think = Orb_Think;
-	orb.classname = "deathorb";
-	orb.runent = axis;
+		axis.avelocity_y = ave;
+		axis.angles_y = 120 * i;
+
+		orb = spawn ();
+		orb.movetype = MOVETYPE_FLY;
+		orb.solid = SOLID_NOT;
+		orb.owner = self;
+		setorigin (orb, self.origin);
+		IN_POQ([-
+			orb.flags = orb.flags | FL_ONGROUND;
+			orb.effects = orb.effects | EF_BRIGHTFIELD;
+			setmodel (orb, "progs/s_light.spr");
+		-], [-
+			orb.avelocity_x = crandom ()*360;
+			orb.avelocity_y = crandom ()*360;
+			orb.avelocity_z = crandom ()*360;
+			setmodel (orb, "progs/teleport.mdl");
+		-])
+		orb.nextthink = time;
+		orb.think = Orb_Think;
+		orb.classname = "deathorb";
+		orb.runent = axis;
+
+		i = i + 1;
+	}
 };
 
 // This blink algorithm blinks you on top of one of the following types

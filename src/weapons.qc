@@ -222,7 +222,7 @@ void (vector v) HIP_SpawnMjolnirBase =
 	base.owner = self;
 	base.think = SUB_Remove;
 	base.nextthink = time + 1;
-	sound (base, CHAN_AUTO, "shambler/sattck1.wav", 1, ATTN_NORM);
+	sound (base, CHAN_AUTO, "weapons/lstart.wav", 1, ATTN_NORM);
 	makevectors(self.v_angle);
 	base.movedir = v_forward;
 	HIP_SpawnMjolnirLightning(base, base, 350);
@@ -1452,8 +1452,6 @@ W_Attack =
 	{
 		if (self.runetype == RN_HASTE)
 			Haste_Sound ();
-		else if (self.runetype == RN_STRENGTH)
-			Strength_Sound ();
 		else if (self.runetype == RN_BERSERK)
 			Strength_Sound ();
 		else if (self.runetype == RN_CLOAK)
