@@ -149,7 +149,7 @@ precaches =
 	precache_model ("progs/laser.mdl");		// wall traps/sniper rune
 	precache_model ("progs/lavaball.mdl");		// lavaballs/bfg projectile
 	precache_model ("progs/missile.mdl");		// rocket/alt weapon bomb/betty
-	precache_model ("progs/oldone.mdl");		// shub hat
+	precache_model ("progs/boss.mdl");		// shub hat
 	precache_model ("progs/player.mdl");		// player model/hologram
 	precache_model ("progs/quaddama.mdl");		// quad (model/hat)
 	precache_model ("progs/s_bubble.spr");		// drowning bubbles/extinguished fire/weirdness

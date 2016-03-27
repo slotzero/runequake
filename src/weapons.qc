@@ -1448,7 +1448,7 @@ W_Attack =
 		is_alt = self.weapon & WEAPON_ALT;
 	t = 0;
 	if (self.runetype == RN_HASTE)
-		haste_mult = 0.5;
+		haste_mult = 0.33;
 	else if (self.runetype == RN_JACK)
 		haste_mult = 0.875;
 	else

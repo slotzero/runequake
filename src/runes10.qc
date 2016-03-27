@@ -118,6 +118,33 @@ Regen_Activate =
 };
 
 void ()
+Rune_Degen =
+{
+	if (self.runetime > time)
+		return;
+	self.runetime = time + 0.5;
+
+	if (self.armorvalue)
+	{
+		self.armorvalue = self.armorvalue - 1;
+		if (!self.armorvalue)
+		{
+			self.armortype = 0;
+			self.items = self.items - (self.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3));
+		}
+	}
+
+	if (self.health > 5)
+	{
+		any = 1;
+		self.health = self.health - 1;
+	}
+
+	if (any)
+		sound (self, CHAN_AUTO, "items/r_item1.wav", 1, ATTN_NORM);
+};
+
+void ()
 Rune_Regen =
 {
 	local float any, m;

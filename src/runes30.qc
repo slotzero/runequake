@@ -1002,6 +1002,35 @@ ShubHat_Bye =
 	remove (self);
 };
 
+void () ShubHat_MissileTouch = {
+	if (other == self.owner.owner)
+		return;
+
+	monk_radius_hack = 1;
+	T_RadiusDamage (RADIUS_NORMAL, self, self.owner.owner, 90, self.owner.owner, "shubhat");
+	monk_radius_hack = 0;
+
+	create_te_explosion (self.origin, 1);
+};
+
+void (vector p) ShubHat_Missile = {
+
+	local vector offang;
+	local vector org;
+	local vector d;
+	local float t;
+
+	makevectors (self.angles);
+	org = self.origin + (p_x * v_forward) + (p_y * v_right) + p_z * '0 0 1';
+	launch_spike (org, v_forward);
+	setmodel (newmis,"progs/lavaball.mdl");
+	newmis.avelocity = '200 120 300';
+	setsize (newmis,VEC_ORIGIN,VEC_ORIGIN);
+	newmis.velocity = v_forward * 250;
+	newmis.touch = ShubHat_MissileTouch;
+	sound (self,CHAN_WEAPON,"boss1/throw.wav",TRUE,ATTN_NORM);
+};
+
 void ()
 ShubHat_Think =
 {
@@ -1020,9 +1049,23 @@ ShubHat_Think =
 		return;
 	}
 
-	setorigin (self, self.owner.origin);
+	if (self.wait < time)
+	{
+		self.frame = self.frame + 1;
+		if (self.frame == 65)
+			ShubHat_Missile ('100.000 100.000 200.000');
+		else if (self.frame == 76)
+			ShubHat_Missile ('100.000 -100.000 200.000');
+		else if (self.frame > 79)
+			self.frame = 57;
+		self.wait = time + 0.1;
+	}
+
+	setorigin (self, self.owner.origin - '0 0 16');
 	trackvel (self.owner);
+
 	self.nextthink = time + sys_ticrate;
+
 };
 
 void ()
@@ -1035,8 +1078,8 @@ ShubHat_Spawn =
 	temp.solid = SOLID_NOT;
 	temp.owner = self;
 	setorigin (temp, self.origin);
-	setsize (temp, '-160 -128 -24', '160 128 256');
-	setmodel (temp, "progs/oldone.mdl");
+	setsize (temp, '0 0 0', '0 0 0');
+	setmodel (temp, "progs/boss.mdl");
 	temp.think = ShubHat_Think;
 	temp.nextthink = time;
 	if (random () > 0.5)
@@ -1044,6 +1087,7 @@ ShubHat_Spawn =
 	else
 		temp.avelocity_y = -100;
 	temp.colormap = self.colormap;
+	temp.frame = 57;
 	self.runent = temp;
 };
 

@@ -19,7 +19,7 @@
 void ()
 Rune_Think =
 {
-	if	(self.runetype == RN_REGEN)		Rune_Regen ();
+	if	(self.runetype == RN_REGEN)		Rune_Degen ();
 	else if (self.runetype == RN_STRENGTH)		Rune_Strength ();
 	else if (self.runetype == RN_FIREWALK)		Rune_Firewalk ();
 	else if (self.runetype == RN_ZAP)		Rune_Zap ();
@@ -124,10 +124,10 @@ Rune_Tell_real =
 	}
 	else if (type == RN_REGEN)
 	{
-		desc_l = "Rune of Regeneration";
-		desc_s = " Regen";
+		desc_l = "Rune of Degeneration";
+		desc_s = " Degen";
 
-		d1 = "Health and armor regenerate\n"
+		d1 = "Health and armor degenerate\n"
 			"Activate to instantly\n"
 			"increase health and armor\n"
 			"Rune is removed when activated";

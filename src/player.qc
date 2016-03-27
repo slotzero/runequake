@@ -210,6 +210,8 @@ player_nail1 = [$nailatt1, player_nail2]
 	W_FireSpikes (4);
 
 	self.attack_finished = time + NAIL_ATTACK_DURATION;
+	if (self.runetype == RN_HASTE)
+		self.nextthink = time + 0.05;
 };
 void ()
 player_nail2 = [$nailatt2, player_nail1]
@@ -225,6 +227,8 @@ player_nail2 = [$nailatt2, player_nail1]
 	W_FireSpikes (-4);
 
 	self.attack_finished = time + NAIL_ATTACK_DURATION;
+	if (self.runetype == RN_HASTE)
+		self.nextthink = time + 0.05;
 };
 
 //============================================================================

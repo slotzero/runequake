@@ -2552,6 +2552,11 @@ ClientObituary =
 			s1 = " was there when ";
 			s2 = "'s fire trap exploded\n";
 		}
+		else if (dt == "shubhat")
+		{
+			s1 = " was beat by ";
+			s2 = "'s boss\n";
+		}
 		// Put weapon-specific messages after this.
 		else if (dt == "nail")
 		{
