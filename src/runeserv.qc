@@ -86,7 +86,7 @@ Rune_Button =
 	else if (self.runetype == RN_TORCH)		Rune_Torch ();
 	else if (self.runetype == RN_QUAD)		quad_activate ();
 	else if (self.runetype == RN_GLUE)		Rune_Glue ();
-	else if (self.runetype == RN_BLIZZARD)		Rune_Blizzard ();
+	else if (self.runetype == RN_BLIZZARD)		Rune_Popsicle ();
 	else if (self.runetype == RN_SNIPER)		Rune_Sniper ();
 	else if (self.runetype == RN_CLOAK)		Rune_Sonar ();
 	else if (self.runetype == RN_ANTIPACK)		Rune_AntiPack ();
@@ -550,7 +550,7 @@ Rune_Tell_real =
 		desc_l = "Blizzard Rune";
 		desc_s = " Blizrd";
 
-		d1 = "Activate to freeze everyone in sight\n"
+		d1 = "Activate to shoot a freezing particle\n"
 			"Walk over ice traps to deactivate them";
 	}
 	else if (type == RN_THOR)

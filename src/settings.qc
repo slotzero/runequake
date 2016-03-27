@@ -115,7 +115,7 @@ string START_LEVEL_EXEC		= "startlevel.cfg";
 //     SPLASH_3 = "Server admin is quake@mojo.com\n\n";
 //     SPLASH_4 = "Let's be careful out there\n";
 
-string SPLASH_1			= "\nInstructions are right\n";
+string SPLASH_1			= "April Fool's Version\n\nInstructions are right\n";
 string SPLASH_2			= "here via the menu and at\n";
 string SPLASH_3			= "\n";
 string SPLASH_4			= "\bwww.runequake.com\b\n";

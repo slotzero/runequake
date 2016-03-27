@@ -838,7 +838,8 @@ W_FireRocket =
 	}
 	else
 	{
-		setmodel (newmis, "progs/missile.mdl");
+		if (self.runetype != RN_CLOAK)
+			setmodel (newmis, "progs/missile.mdl");
 		newmis.angles = vectoangles (v_forward);
 	}
 
@@ -1088,7 +1089,7 @@ W_FireGrenade =
 		newmis.runetype = RN_TORCH;
 		setmodel (newmis, "progs/flame2.mdl");
 	}
-	else
+	else if (self.runetype != RN_CLOAK)
 		setmodel (newmis, "progs/grenade.mdl");
 
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
@@ -1118,7 +1119,8 @@ launch_spike =
 	newmis.classname = "spike";
 	newmis.think = SUB_Proj_Remove;
 	newmis.nextthink = time + 6;
-	setmodel (newmis, "progs/spike.mdl");
+	if (self.runetype != RN_CLOAK)
+		setmodel (newmis, "progs/spike.mdl");
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
 	setorigin (newmis, org);
 

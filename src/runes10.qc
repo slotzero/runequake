@@ -120,12 +120,15 @@ Regen_Activate =
 void ()
 Rune_Degen =
 {
+	local float any;
+
 	if (self.runetime > time)
 		return;
 	self.runetime = time + 0.5;
 
 	if (self.armorvalue)
 	{
+		any = 1;
 		self.armorvalue = self.armorvalue - 1;
 		if (!self.armorvalue)
 		{

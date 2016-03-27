@@ -50,6 +50,7 @@ precaches =
 	precache_sound ("doors/airdoor2.wav");		// enviro-jump
 	precache_sound ("doors/meduse.wav");		// tornado toss
 	precache_sound ("doors/runetry.wav");		// bomb tick
+	precache_sound ("doors/ddoor2.wav");
 
 	// enforcer/
 	precache_sound ("enforcer/sight2.wav");		// (ice/blizzard) placed

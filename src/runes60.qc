@@ -247,18 +247,13 @@ Blizzard_Freeze =
 {
 	local entity freeze;
 
-	if (tofreeze.classname == "player")
-	{
-		if (tofreeze == self)
-			sprint (tofreeze, "Ice crystals are forming around you!\n");
-		else
-			sprint (tofreeze, "You're caught in a blizzard!\n");
-	}
+	if (tofreeze.classname == "player" && tofreeze == self)
+		sprint (tofreeze, "Ice crystals are forming around you!\n");
 
 	freeze			= spawn ();
 	freeze.movetype		= MOVETYPE_FLY;
 	freeze.solid		= SOLID_TRIGGER;
-	freeze.owner		= self;
+	freeze.owner		= self.owner;
 	freeze.classname	= "freeze";
 	freeze.angles		= tofreeze.angles;
 	freeze.v_angle		= tofreeze.v_angle;
@@ -284,14 +279,98 @@ Blizzard_Freeze =
 	freeze.think		= Freeze_Frozen;
 };
 
+// thanks to Honey
+void ()
+Popsicle_Touch =
+{
+	local float i;
+
+	if (other == world)
+	{
+		if (!self.runetime)
+		{
+			self.runetime = time + 3;
+			self.velocity = VEC_ORIGIN;
+		}
+		return;
+	}
+
+	if (other == self.owner)
+		return;
+
+	if (other.classname == "player" || is_pet_e (other))
+	{
+		if (!environmental (other) && other.runetype != RN_BLIZZARD)
+		{
+			if (other.runetype != RN_FREEZE && !(isfriend2 (self, other) && self != other) && !other.effects & EF_FROZEN)
+			{
+				if (other.health > 0)
+				{
+					i = random ();
+					Blizzard_Freeze (other, i);
+					self.owner.runetime = self.owner.runetime + i;
+				}
+			}
+		}
+	}
+	remove (self);
+};
+
+void ()
+Popsicle_Think =
+{
+	IN_POQ([-
+		particle (self.origin, '0 0 4', PARTICLE_FREEZE_TRAP, 1);
+		if (random () > 0.25)
+			particle (self.origin, '0 0 -4', PARTICLE_FREEZE_TRAP, 1);
+		if (random () > 0.5)
+			particle (self.origin, self.angles, PARTICLE_FREEZE_TRAP, 1);
+		if (random () > 0.5)
+			particle (self.origin, self.mangle, PARTICLE_FREEZE_TRAP, 1);
+	-])
+
+	self.nextthink = time + 0.1;
+
+	if (self.runetime)
+		Weird_WanderThink();
+};
+
+void ()
+Rune_Popsicle =
+{
+	if (self.runetime > time)
+	{
+		centerprint (self, "Blizzard recharging");
+		return;
+	}
+	self.runetime = time + 0.25;
+
+	sound (self, CHAN_WEAPON, "doors/ddoor2.wav", 1, ATTN_NORM);
+
+	makevectors (self.v_angle);
+	launch_spike (self.origin + PLAYER_WEAPON_OFFSET, v_forward);
+
+	newmis.touch = Popsicle_Touch;
+	setmodel (newmis, "progs/s_bubble.spr");
+	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
+
+	newmis.think = Popsicle_Think;
+	newmis.nextthink = time + 0.1;
+	newmis.angles = v_right * 4;
+	newmis.mangle = '0 0 0' - v_right * 4;
+
+	smallkick ();
+};
+
+
 void ()
 Blizzard_Think =
 {
 	if (self.runevar && self.runetime < time)
 	{
 		self.runevar = 0;
-		centerprint (self, string_null);
-		sprint (self, "\{141} Blizzard recharged\n");
+		//centerprint (self, string_null);
+		//sprint (self, "\{141} Blizzard recharged\n");
 	}
 
 	if (self.watertype == CONTENT_WATER && self.runevector_x < time && !environmental (self))
