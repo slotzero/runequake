@@ -467,6 +467,10 @@ Rune_Dual =
 	spawn_tdeath (self.runevector, self);
 	setorigin (self, self.runevector);
 	self.angles = self.pos1;
+	if (self.angles_y > 180)
+		self.angles_y = self.angles_y - 180;
+	else
+		self.angles_y = self.angles_y + 180;
 	self.fixangle = 1;
 	self.runevector = i_origin;
 	self.pos1 = i_angles;
@@ -849,14 +853,11 @@ Resurrect =
 		self.runevar = self.runevar - 1;
 		self.max_health = MAX_HEALTH_NORMAL;
 		self.health = self.max_health;
-		self.super_time = -2;
 
-		if (self.super_damage_finished < time)
-			Hat_Spawn (self, "progs/quaddama.mdl", '0 0 30', VEC_ORIGIN, ITEM_QUAD);
-
-		self.super_damage_finished = time + 15;
-		self.items = self.items | IT_QUAD;
-		self.effects = EF_DIMLIGHT;
+		sound (self, CHAN_AUTO, "items/suit.wav", 1.0, ATTN_NORM);
+		self.items = self.items | IT_SUIT;
+		self.rad_time = -1;
+		self.radsuit_finished = time + 30;
 	}
 
 	// Set the weapon.  This is required because right now it isn't

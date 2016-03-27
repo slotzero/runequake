@@ -725,7 +725,7 @@ Launch_Betty2 =
 	newmis.classname	= "betty";
 	newmis.think		= GrenadeExplode;
 
-	newmis.nextthink	= time + 0.75 + random ();
+	newmis.nextthink	= time + 0.5 + random () + random();
 
 	// Assign a random direction for the shrapnel to fly in
 	newmis.velocity_x	= 5 * (110 * random () - 55);
@@ -899,7 +899,7 @@ Rune_Betty =
 		return;
 	}
 
-	self.runevector_x = time + 3 + nospam;
+	self.runevector_x = time + 5 + nospam;
 
 	W_FireGrenade ("betty");
 };

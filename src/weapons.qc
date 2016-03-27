@@ -973,7 +973,11 @@ GrenadeExplode_targ =
 	T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 120, targ, self.classname);
 	monk_radius_hack = 0;
 
-	create_te_explosion (self.origin, 1);
+	// cut down on sounds
+	if (self.classname != "betty" || random () > 0.5)
+		create_te_explosion (self.origin, 1);
+	else
+		BecomeExplosion ();
 };
 
 void ()
@@ -1052,12 +1056,15 @@ W_FireGrenade =
 
 	makevectors (self.v_angle);
 
-	if (self.v_angle_x)
-		newmis.velocity = v_forward * 600 + v_up * 200 + crandom () * v_right * 10 + crandom () * v_up * 10;
-	else
+	if (pointcontents (self.origin) != CONTENT_SOLID)
 	{
-		newmis.velocity = v_forward * 600;
-		newmis.velocity_z = 200;
+		if (self.v_angle_x)
+			newmis.velocity = v_forward * 600 + v_up * 200 + crandom () * v_right * 10 + crandom () * v_up * 10;
+		else
+		{
+			newmis.velocity = v_forward * 600;
+			newmis.velocity_z = 200;
+		}
 	}
 
 	newmis.avelocity	= '300 300 300';
