@@ -1551,7 +1551,6 @@ Player takes no damage from water or slime for 30 seconds
 void ()
 item_artifact_envirosuit =
 {
-	precache_sound ("items/suit2.wav");
 	powerup_set ("progs/suit.mdl", "items/suit.wav", "Biosuit", IT_SUIT);
 };
 

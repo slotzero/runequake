@@ -426,7 +426,7 @@ T_Damage =
 		SUB_Null ();
 	else if (targ.armorvalue == 0)
 		SUB_Null ();
-	else if (attacker.runetype == RN_PIERCING)
+	else if (targ.runetype == RN_PIERCING)
 		sound (targ, CHAN_AUTO, "weapons/ric1.wav", 1, ATTN_NORM);
 	else
 	{

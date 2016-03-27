@@ -67,6 +67,8 @@ precaches =
 	precache_sound ("items/damage.wav");		// quad pickup/radiation set
 	precache_sound ("items/damage2.wav");		// (quad/phoenix) wears off
 	precache_sound ("items/damage3.wav");		// (quad/berserk/strength/phoenix) does damage
+	precache_sound ("items/suit.wav");
+	precache_sound ("items/suit2.wav");
 	precache_sound ("items/inv1.wav");		// ring/death spot actived/cloaked
 	precache_sound ("items/itembk2.wav");		// item respawn sound
 	precache_sound ("items/protect2.wav");		// (pent/shield) off

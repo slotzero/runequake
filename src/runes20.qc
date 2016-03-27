@@ -680,9 +680,15 @@ Rune_Camo =
 	// model.
 	if (self.velocity == VEC_ORIGIN && self.attack_finished < time
 			&& self.origin == self.runevector)
+	{
 		self.runevar = 1;
+		self.solid = SOLID_NOT;
+	}
 	else
+	{
 		self.runevar = 0;
+		self.solid = SOLID_SLIDEBOX;
+	}
 	self.runevector = self.origin;
 };
 
