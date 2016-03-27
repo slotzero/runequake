@@ -27,10 +27,11 @@ Ball_Touch =
 
 	if ((other.health > 0) && !isfriend2 (other, self.owner) && other.solid != SOLID_BSP)
 	{
-		T_Damage (other, self, self.owner, 40, "spikeball");
+		T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 45, self.owner, "spikeball");
 		other.flags = other.flags-(other.flags & FL_ONGROUND);
 		other.velocity_z = other.velocity_z + 270;
-		sound (other, CHAN_AUTO, "zombie/z_miss.wav", 1, ATTN_NORM);
+		// sound (other, CHAN_AUTO, "zombie/z_miss.wav", 1, ATTN_NORM);
+		create_te_explosion (self.origin, 0);
 
 		self.touch = SUB_Null;
 		setmodel (self, string_null);
@@ -54,11 +55,11 @@ Ball_Touch2 =
 
 	if ((other.health > 0) && !isfriend2 (other, self.owner) && other.solid != SOLID_BSP)
 	{
-		T_Damage (other, self, self.owner, 40, "spikeball");
+		T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 45, self.owner, "spikeball");
 		other.flags = other.flags-(other.flags & FL_ONGROUND);
 		other.velocity_z = other.velocity_z + 270;
-		sound (other, CHAN_AUTO, "zombie/z_miss.wav", 1, ATTN_NORM);
-		remove (self);
+		// sound (other, CHAN_AUTO, "zombie/z_miss.wav", 1, ATTN_NORM);
+		create_te_explosion (self.origin, 1);
 	}
 };
 

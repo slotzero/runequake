@@ -430,6 +430,21 @@ Rune_Thor =
 };
 
 void ()
+reflect_snipe =
+{
+	if (self.velocity == VEC_ORIGIN || self.runevar > random () * 8)
+	{
+		create_te_spike (TE_SUPERSPIKE, self.origin);
+		remove (self);
+		return;
+	}
+
+	self.angles = vectoangles (self.velocity);
+	random_sound2 (self, CHAN_WEAPON, "weapons/ric2.wav", "weapons/ric3.wav", 1, ATTN_NORM);
+	self.movetype = MOVETYPE_FLYMISSILE;
+};
+
+void ()
 Sniper_Touch =
 {
 	if (other.solid == SOLID_TRIGGER)
@@ -443,9 +458,13 @@ Sniper_Touch =
 			self.owner.runevar = self.owner.runevar + 25;
 	}
 	else
-		create_te_spike (TE_SUPERSPIKE, self.origin);
-
-	remove (self);
+	{
+		self.runevar = self.runevar + 1;
+		self.movetype = MOVETYPE_BOUNCE;
+		self.nextthink = time;
+		self.think = reflect_snipe;
+		self.velocity = self.velocity * 1.4;
+	}
 };
 
 void ()

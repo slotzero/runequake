@@ -468,9 +468,9 @@ float BFG_ZAP_DAMAGE		= 50;
 // Axe settings
 
 float AXE_REACH_NORMAL		= 64;
-float AXE_REACH_LUMBER		= 280;
+float AXE_REACH_LUMBER		= 240;
 float AXE_DAMAGE_NORMAL		= 20;
-float AXE_DAMAGE_LUMBER		= 100;	// also gets lumberjack adjustment
+float AXE_DAMAGE_LUMBER		= 80;	// also gets lumberjack adjustment
 
 // The guided missile only works with manquake dedicated server.
 
