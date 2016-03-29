@@ -759,35 +759,6 @@ Rune_Ammo_1 =
 	if (self.ammo_rockets < MAX_ROCKETS && incl_rocket)
 		self.ammo_rockets = self.ammo_rockets + 1;
 
-	new_it = 0;
-	if (self.ammo_nails >= MAX_NAILS)
-	{
-		new_it = new_it | IT_NAILGUN | IT_SUPER_NAILGUN;
-		self.ammo_nails = MAX_NAILS;
-	}
-	if (self.ammo_shells >= MAX_SHELLS)
-		new_it = new_it | IT_SUPER_SHOTGUN;
-	if (self.ammo_cells >= MAX_CELLS)
-		new_it = new_it | IT_LIGHTNING;
-	if (self.ammo_rockets >= MAX_ROCKETS)
-		new_it = new_it | IT_GRENADE_LAUNCHER | IT_ROCKET_LAUNCHER;
-	if ((options2 & HOOK_MASK == LITHIUM_HOOK)
-			&& self.ammo_nails >= MAX_NAILS
-			&& self.ammo_shells >= MAX_SHELLS
-			&& self.ammo_cells >= MAX_CELLS
-			&& self.ammo_rockets >= MAX_ROCKETS
-			&& !self.aqflags & AQ_HOOK)
-		Rune_Activate (RN_LITHIUM_HOOK, 1);
-	if (self.items & new_it != new_it)
-	{
-		local float was_best;
-
-		was_best = (self.weapon == W_BestWeapon ());
-		self.items = self.items | new_it;
-		if (was_best)
-			set_weapon (W_BestWeapon ());
-	}
-
 	set_current_ammo ();
 };
 

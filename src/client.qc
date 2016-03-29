@@ -1289,7 +1289,7 @@ PlayerJump =
 		return;
 	}
 
-	if (self.runetype == RN_FLY && self.runevar)
+	if (self.runetype == RN_VAMP && self.runevar)
 	{
 		self.velocity_z = self.velocity_z + 270;
 		return;
@@ -1987,7 +1987,7 @@ PlayerPostThink =
 			sound (self, CHAN_JUMP, "player/h2ojump.wav", 1, ATTN_NORM);
 		else if (self.runetype != RN_ENVIRO
 				&& !self.items & IT_SUIT
-				&& self.runetype != RN_FLY
+				&& self.runetype != RN_VAMP
 				&& self.runetype != RN_MONK
 				&& (self.jump_flag < -850
 				|| (self.runetype != RN_ATHLETE

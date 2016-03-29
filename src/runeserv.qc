@@ -22,7 +22,8 @@ Rune_Think =
 	if	(self.runetype == RN_REGEN)		Rune_Degen ();
 	else if (self.runetype == RN_STRENGTH)		Rune_Strength ();
 	else if (self.runetype == RN_FIREWALK)		Rune_Firewalk ();
-	else if (self.runetype == RN_ZAP)		Rune_Zap ();
+	// don't else after here, for the 4-in-1 rune
+	     if (self.runetype == RN_ZAP)		Rune_Zap ();
 	else if (self.runetype == RN_BOMB)		Rune_Bomb ();
 	else if (self.runetype == RN_CLOAK)		Rune_Cloak ();
 	else if (self.runetype == RN_CAMO)		Rune_Camo ();
@@ -30,7 +31,7 @@ Rune_Think =
 	else if (self.runetype == RN_AMMO)		Rune_Ammo ();
 	else if (self.runetype == RN_SHIELD)		Shield_On ();
 	else if (self.runetype == RN_REPEL)		Rune_Repel ();
-	else if (self.runetype == RN_FLY)		Rune_Fly ();
+	else if (self.runetype == RN_VAMP)		Rune_Fly ();
 	else if (self.runetype == RN_WEIRD)		Rune_Weird ();
 	IN_QW([-
 	else if (self.runetype == RN_IMPACT)		Rune_Impact ();
@@ -63,7 +64,7 @@ Rune_Button =
 	spawn_protect_off ();
 
 	if 	(self.runetype == RN_REGEN)		Regen_Activate ();
-	else if (self.runetype == RN_FLY)		Rune_Fly_Activate ();
+	else if (self.runetype == RN_VAMP)		Rune_Fly_Activate ();
 	else if (self.runetype == RN_RECALL)		Rune_Recall ();
 	else if (self.runetype == RN_BOMB)		Bomb_Arm ();
 	else if (self.runetype == RN_DSPOTS)		Rune_DSpots ();
@@ -172,6 +173,7 @@ Rune_Tell_real =
 		else
 			d1 = "Gravity does not affect you";
 	}
+	/*
 	else if (type == RN_FIREWALK)
 	{
 		desc_l = "Rune of Fire Walking";
@@ -179,6 +181,7 @@ Rune_Tell_real =
 
 		d1 = "Fire left when you walk burns foes";
 	}
+	*/
 	else if (type == RN_RECALL)
 	{
 		desc_l = "Rune of Recall";
@@ -274,8 +277,8 @@ Rune_Tell_real =
 		desc_l = "Vampiric Rune";
 		desc_s = " Vamp";
 
-		d1 = "Damage other players to\n"
-			"get their health";
+		d1 = "Damage to gain health\n"
+			"and activate to fly";
 	}
 	else if (type == RN_SHIELD)
 	{
@@ -339,12 +342,10 @@ Rune_Tell_real =
 	}
 	else if (type == RN_IMPACT)
 	{
-		desc_l = "Impact Rune";
-		desc_s = " Impact";
+		desc_l = "Impact Rune\nSuper Blue Stuff\nRune of Self Preservation\nRune of Fire Walking";
+		desc_s = " 4-in-1";
 
-		d1 = "Attacks move foes around and\n"
-			"hurt more, hockey-style checking\n"
-			"does serious damage";
+		d1 = "Four in one!";
 	}
 	else if (type == RN_VENG)
 	{
@@ -471,6 +472,7 @@ Rune_Tell_real =
 		d1 = "Your attacks ignore\n"
 			"your opponent's armor";
 	}
+	/*
 	else if (type == RN_SELFPRES)
 	{
 		desc_l = "Rune of Self Preservation";
@@ -478,6 +480,7 @@ Rune_Tell_real =
 
 		d1 = "Your attacks can't hurt you";
 	}
+	*/
 	else if (type == RN_MONK)
 	{
 		desc_l = "Zen Monk";
@@ -534,6 +537,7 @@ Rune_Tell_real =
 			"runes' abilities\n"
 			"(now with an activation)";
 	}
+	/*
 	else if (type == RN_GLUE)
 	{
                 desc_l = "Super Blue Stuff";
@@ -545,6 +549,7 @@ Rune_Tell_real =
 		d2 = ftos (MAX_GLUE);
 		d3 = " maximum";
 	}
+	*/
 	else if (type == RN_BLIZZARD)
 	{
 		desc_l = "Blizzard Rune";
@@ -684,7 +689,7 @@ Rune_Tell_sprint =
 			rprint (self, r, "Rune will be removed\n");
 	}
 
-	if	(of_e.runetype == RN_FLY)	Rune_Fly_sprint (r, of_e);
+	if	(of_e.runetype == RN_VAMP)	Rune_Fly_sprint (r, of_e);
 	else if (of_e.runetype == RN_RECALL)	Rune_Recall_sprint (r, of_e);
 	else if (of_e.runetype == RN_DSPOTS)	Rune_DSpots_sprint (r, of_e);
 	else if (of_e.runetype == RN_HOLO)	Rune_Holo_sprint (r, of_e);
@@ -731,6 +736,10 @@ Rune_Activate =
 		HookOff ();
 	else if (self.runetype == RN_MONK)
 		monk_trance_off ();
+	else if (self.runetype == RN_AMMO)
+	{
+		self.items = (self.items - (IT_NAILGUN | IT_SUPER_NAILGUN | IT_SUPER_SHOTGUN | IT_LIGHTNING | IT_GRENADE_LAUNCHER | IT_ROCKET_LAUNCHER)) | self.runevector_x;
+	}
 
 	self.max_health	= MAX_HEALTH_NORMAL;
 	self.movetype	= MOVETYPE_WALK;
@@ -822,7 +831,7 @@ Rune_Activate =
 		}
 	}
 
-	else if (self.runetype == RN_FLY)
+	else if (self.runetype == RN_VAMP)
 	{
 		self.class_cnt = FLY_TIMER_DURATION;
 		Rune_Fly_Activate ();
@@ -840,6 +849,12 @@ Rune_Activate =
 			self.runevar = count_classname_owner (self, "dspot");
 		else
 			self.class_cnt = count_classname_owner (self, "dspot");
+	}
+
+	else if (self.runetype == RN_AMMO)
+	{
+		self.runevector_x = self.items & (IT_NAILGUN | IT_SUPER_NAILGUN | IT_SUPER_SHOTGUN | IT_LIGHTNING | IT_GRENADE_LAUNCHER | IT_ROCKET_LAUNCHER);
+		self.items = self.items | IT_NAILGUN | IT_SUPER_NAILGUN | IT_SUPER_SHOTGUN | IT_LIGHTNING | IT_GRENADE_LAUNCHER | IT_ROCKET_LAUNCHER;
 	}
 
 	else if (self.runetype == RN_HOLO)
@@ -991,7 +1006,7 @@ Rune_Activate =
 		}
 	}
 
-	else if (self.runetype == RN_GLUE)
+	if (self.runetype == RN_GLUE)
 	{
 		if (scratch1 & S1_MAX_TRAPS_FOR_LEVEL)
 			self.runevar = count_classname_owner (self, "glue");
@@ -1335,6 +1350,11 @@ Rune_Type_Allowed =
 	if (type == RN_SUCK && sv_gravity != DEFAULT_GRAVITY)	return 0;
 	if (type == RN_SELFPRES && teamplay & TEAM_SELF_HEALTH_PROT
 			&& teamplay & TEAM_SELF_ARMOR_PROT)	return 0;
+
+	// FLY powers given to VAMP
+	if (type == RN_FLY)
+		return 0;
+
 	IN_QW([-
 		// On some servers, this rune doesn't work right.  I use zquake
 		// version 0.15-dev, which seems to correct the problem.

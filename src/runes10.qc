@@ -236,7 +236,9 @@ Rune_Fly_Activate =
 void ()
 Rune_Fly =
 {
-	if (FLY_TIMER_ON)
+	// if (FLY_TIMER_ON)
+	// VAMP has permaflight
+	if (0)
 	{
 		if (self.runetime <= time && self.runevar)
 		{

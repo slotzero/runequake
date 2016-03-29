@@ -162,8 +162,8 @@ burn_start =
 			|| targ.runetype == RN_FIREWALK
 			|| targ.runetype == RN_TORCH
 			|| (targ.waterlevel > 1
-			&& targ.watertype != CONTENT_LAVA)
-			|| (targ.runetype == RN_SELFPRES && targ == attacker))
+			&& targ.watertype != CONTENT_LAVA))
+			// || (targ.runetype == RN_SELFPRES && targ == attacker)) 4-in-1 rune will work via RN_FIREWALK here
 		return;
 
 	if (teamplay & TEAM_HEALTH_PROT
