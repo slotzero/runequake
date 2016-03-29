@@ -479,8 +479,8 @@ teleport_touch =
 	// move the player and lock him down for a little while
 	if (!other.health)
 	{
-		other.origin	= t.origin;
-		other.velocity	= (v_forward * other.velocity_x) + (v_forward * other.velocity_y);
+		other.origin    = t.origin;
+		other.velocity  = (v_forward * other.velocity_x) + (v_forward * other.velocity_y);
 		return;
 	}
 
@@ -488,10 +488,16 @@ teleport_touch =
 
 	other.angles = t.mangle;
 
+	if (other.classname == "shambler_slave") // Cobalt , fix Shambler from re-entering back to back telporters
+	{
+		other.teleport_time = time + 2.5;
+		other.velocity = v_forward * 600;
+	}
+
 	if (other.classname == "player")
 	{
-		other.fixangle		= TRUE; // turn this way immediately
-		other.teleport_time	= time + 0.7;
+		other.fixangle          = TRUE; // turn this way immediately
+		other.teleport_time     = time + 0.7;
 
 		HookOff_e (other);
 		HookOff_by_targ_e (other);
