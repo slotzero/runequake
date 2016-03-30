@@ -1182,8 +1182,8 @@ Rune_Touch =
 	if (Rune_Must_Move ())
 	{
 		self.nextthink = time;
-		if(self.classname == "player")
-			bprint("Rune is moving, exiting early\n");
+		if(other.classname == "player")
+			bprint("Rune not added to HUD...");
 		return;
 	}
 
@@ -1252,8 +1252,8 @@ Rune_Touch =
 	else if (self.model == "progs/end4.mdl")
 		other.items2 = 256;
 
-	if(self.classname == "player")
-		bprint("Rune_Touch()...should have added rune\n");
+	if(other.classname == "player")
+		bprint("Rune should be added now...");
 
 	remove (self);
 };
