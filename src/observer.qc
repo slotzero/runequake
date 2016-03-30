@@ -474,6 +474,8 @@ obs_post_think =
 		if (self.weaponframe != self.owner.weaponframe)
 			self.weaponframe = self.owner.weaponframe;
 
+		self.items2 = self.owner.items2;
+
 		if (!self.owner.aqflags & AQ_RIDER_HIDE || !ALLOW_RIDER_HIDE)
 		{
 			if (deathmatch & DM_DM_MASK)

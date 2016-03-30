@@ -1026,6 +1026,7 @@ Rune_Activate =
 void (float tell)
 Rune_Delete =
 {
+	self.items2 = 0;
 	if (self.runetype) // && !(self.runetype == RN_SHIELD && self.runevar == 1))
 		Rune_Activate (0, tell);
 };
