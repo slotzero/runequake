@@ -116,7 +116,7 @@ dead_impulses =
 	// waiting for them to spawn.
 	else if (self.impulse == IMP_RUNE_DELETE && self.runetype == RN_PHOENIX)
 	{
-		self.runetype = 0;
+		self.runetype = self.items2 = 0; // Cobalt modified for rune in hud
 		centerprint (self, "Rune Removed");
 	}
 

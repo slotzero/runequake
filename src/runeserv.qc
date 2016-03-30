@@ -1238,6 +1238,16 @@ Rune_Touch =
 
 	if (self.runetype != RN_LITHIUM_HOOK)
 		runecurrent = runecurrent - 1;
+		// Cobalt - Rune shows in hud
+        if (self.model == "progs/end1.mdl")
+        other.items2 = 32;
+        else if (self.model == "progs/end2.mdl")
+        other.items2 = 64;
+        else if (self.model == "progs/end3.mdl")
+        other.items2 = 128;
+        else if (self.model == "progs/end4.mdl")
+        other.items2 = 256;
+
 	remove (self);
 };
 
