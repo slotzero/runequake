@@ -1182,8 +1182,6 @@ Rune_Touch =
 	if (Rune_Must_Move ())
 	{
 		self.nextthink = time;
-		if(other.classname == "player")
-			bprint("Rune not added to HUD...");
 		return;
 	}
 
@@ -1246,17 +1244,14 @@ Rune_Touch =
 		runecurrent = runecurrent - 1;
 
 	// Cobalt - Rune shows in hud
-	if (self.model == "progs/end1.mdl")
+	if (self.mdl == "progs/end1.mdl")
 		other.items2 = 32;
-	else if (self.model == "progs/end2.mdl")
+	else if (self.mdl == "progs/end2.mdl")
 		other.items2 = 64;
-	else if (self.model == "progs/end3.mdl")
+	else if (self.mdl == "progs/end3.mdl")
 		other.items2 = 128;
-	else if (self.model == "progs/end4.mdl")
+	else if (self.mdl == "progs/end4.mdl")
 		other.items2 = 256;
-
-	if(other.classname == "player")
-		bprint("Rune should be added now...");
 
 	remove (self);
 };
