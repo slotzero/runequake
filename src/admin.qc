@@ -417,7 +417,7 @@ admin_rune_delete =
 	if (e.deadflag)
 		return;
 
-	self.items2 = 0;
+	e.items2 = 0;
 	old_self	= self;
 	self		= e;
 
