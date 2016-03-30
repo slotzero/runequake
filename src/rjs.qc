@@ -1659,6 +1659,7 @@ sure_kill =
 	spawn_protect_off ();
 	self.takedamage = DAMAGE_AIM;
 	self.invincible_finished = 0;
+	self.items2 = 0; //Remove rune from HUD
 	// With old teamplay 1 rules you couldn't kill yourself this way
 	// (a workaround is set the attacker to world).
 	T_Damage (self, self, self, SURE_KILL_DAMAGE, dt);
