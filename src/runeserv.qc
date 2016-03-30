@@ -1182,6 +1182,8 @@ Rune_Touch =
 	if (Rune_Must_Move ())
 	{
 		self.nextthink = time;
+		if(self.classname == "player")
+			bprint("Rune is moving, exiting early\n");
 		return;
 	}
 
@@ -1239,15 +1241,19 @@ Rune_Touch =
 
 	if (self.runetype != RN_LITHIUM_HOOK)
 		runecurrent = runecurrent - 1;
-		// Cobalt - Rune shows in hud
-        if (self.model == "progs/end1.mdl")
-        other.items2 = 32;
-        else if (self.model == "progs/end2.mdl")
-        other.items2 = 64;
-        else if (self.model == "progs/end3.mdl")
-        other.items2 = 128;
-        else if (self.model == "progs/end4.mdl")
-        other.items2 = 256;
+
+	// Cobalt - Rune shows in hud
+	if (self.model == "progs/end1.mdl")
+		other.items2 = 32;
+	else if (self.model == "progs/end2.mdl")
+		other.items2 = 64;
+	else if (self.model == "progs/end3.mdl")
+		other.items2 = 128;
+	else if (self.model == "progs/end4.mdl")
+		other.items2 = 256;
+
+	if(self.classname == "player")
+		bprint("Rune_Touch()...should have added rune\n");
 
 	remove (self);
 };
