@@ -104,6 +104,9 @@ Killed =
 		return;
 	}
 
+	if (self.runetype != RN_PHOENIX)
+		self.items2 = 0;
+
 	self.effects	= 0;	// quad glow &c
 	self.enemy	= attacker;
 
