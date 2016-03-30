@@ -22,6 +22,7 @@ Rune_Think =
 	if	(self.runetype == RN_REGEN)		Rune_Degen ();
 	else if (self.runetype == RN_STRENGTH)		Rune_Strength ();
 	else if (self.runetype == RN_FIREWALK)		Rune_Firewalk ();
+	else if (self.runetype == RN_PHASE)		Phase_Walk ();
 	// don't else after here, for the 4-in-1 rune
 	     if (self.runetype == RN_ZAP)		Rune_Zap ();
 	else if (self.runetype == RN_BOMB)		Rune_Bomb ();
@@ -357,12 +358,11 @@ Rune_Tell_real =
   	}
 	else if (type == RN_SHUB)
 	{
-		desc_l = "Shub Hat";
-		desc_s = " Shub";
+		desc_l = "Chthon Hat";
+		desc_s = " Chth";
 
-		d1 = "A hologram of Shub-Niggurath\n"
-			"surrounds you, most people\n"
-			"should delete this rune";
+		d1 = "A hologram of Chthon\n"
+			"surrounds you!";
 	}
 	else if (type == RN_REPEL)
 	{
@@ -427,7 +427,7 @@ Rune_Tell_real =
 		desc_l = "Phasing Rune";
 		desc_s = " Phase";
 
-		d1 = "Activate to walk through walls";
+		d1 = "Walk through walls";
 	}
 	else if (type == RN_HOOK)
 	{
@@ -1353,6 +1353,13 @@ Rune_Type_Allowed =
 
 	// FLY powers given to VAMP
 	if (type == RN_FLY)
+		return 0;
+
+	if (type == 37)
+		return 0;
+	if (type == 43)
+		return 0;
+	if (type == 50)
 		return 0;
 
 	IN_QW([-

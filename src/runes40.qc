@@ -998,6 +998,47 @@ Berserk_Bleed =
 };
 
 void ()
+Phase_Walk =
+{
+	local float invcos, nvp, nvpmax, sp, svz;
+	local vector f, vp, vs;
+
+	if (self.velocity == VEC_ORIGIN)
+		return;
+
+	svz = self.velocity_z * 0.75;
+	self.velocity_z = 0;
+
+	// v_forward is already normalized
+	makevectors (self.v_angle);
+	f_x = v_forward_x;
+	f_y = v_forward_y;
+	f_z = 0;
+	invcos = vlen (f);
+	if (invcos)
+		invcos = 1 / invcos;
+	else
+		invcos = 0;
+	f = f * invcos; // normalize f
+
+	sp = f * self.velocity;
+	vp = sp*f;
+	nvp = vlen (vp);
+	if (sp<0)
+		nvp = 0 - nvp;
+	vs = self.velocity - vp;
+
+	vp = v_forward * (nvp * invcos);
+	vp_z = vp_z + svz;
+	nvp = vlen (vp);
+	nvpmax = (320 - 100*(v_forward * '0 0 1'));
+	if (nvp > nvpmax)
+		vp = vp * (nvpmax/nvp);
+
+	self.velocity = vp + vs;
+};
+
+void ()
 Wall_Check =
 {
 	// Allow phased holder in lava to blink.

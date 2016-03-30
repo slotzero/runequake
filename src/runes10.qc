@@ -200,13 +200,14 @@ Rune_Fly_sprint =
 		rprint (self, riders, "\{141} flight on");
 	else
 		rprint (self, riders, "\{141} flight off");
-
+/*
 	if (FLY_TIMER_ON)
 	{
 		rprint (self, riders, " (");
 		rprint_numdesc (self, riders, of_e.class_cnt, "second");
 		rprint (self, riders, " left)");
 	}
+*/
 	rprint (self, riders, "\n");
 };
 
@@ -429,6 +430,14 @@ Rune_Zap =
 	}
 };
 
+void (entity e)
+Zap_Angles =
+{
+	e.angles_x = crandom () * 360;
+	e.angles_y = crandom () * 360;
+	e.angles_z = crandom () * 360;
+};
+
 void ()
 Zap_Think =
 {
@@ -448,9 +457,73 @@ Zap_Think =
 		return;
 	}
 
-	self.angles_x = crandom ()*360;
-	self.angles_y = crandom ()*360;
-	self.angles_z = crandom ()*360;
+	Zap_Angles (self);
+};
+
+void ()
+Zap_Someone =
+{
+	local entity e;
+
+	e = findradius(self.origin, 80);
+	while (e)
+	{
+		if (e.takedamage)
+		{
+			if (!environmental(e) && e.runetype != RN_ZAP && e.runetype != RN_THOR)
+			{
+				if (CanDamage(self, e))
+				{
+					sound (self, CHAN_WEAPON, "weapons/lhit.wav", 1, ATTN_NORM);
+					create_te_lightning (TE_LIGHTNING2, self, self.origin, e.origin);
+					T_Damage (e, self, self.owner, 20, "projzap");
+					self.wait = time + 0.5;
+				}
+			}
+		}
+		e = e.chain;
+	}
+};
+
+void ()
+ZapRocketThink =
+{
+	local entity e;
+	if (random () > 0.7)
+	{
+		e = spawn ();
+		setorigin (e, self.origin + '0 0 8' * crandom());
+		setmodel (e, "progs/bolt2.mdl");
+		e.velocity = self.velocity * 0.5;
+		Zap_Angles(e);
+		e.think = SUB_Remove;
+		e.nextthink = time + 0.1;
+	}
+
+	if (random () > 0.7)
+		muzzleflash ();
+
+	Zap_Angles (self);
+	if (self.wait < time)
+		Zap_Someone ();
+
+	self.nextthink = time + sys_ticrate;
+};
+
+void ()
+ZapGrenadeThink =
+{
+	if (self.runevar < time)
+		self.think = GrenadeExplode;
+
+	if (random () > 0.7)
+		muzzleflash ();
+
+	Zap_Angles (self);
+	if (self.wait < time)
+		Zap_Someone ();
+
+	self.nextthink = time + sys_ticrate;
 };
 
 void (float is_new)

@@ -830,15 +830,21 @@ W_FireRocket =
 	newmis.nextthink	= time + 5;
 	newmis.think		= SUB_Proj_Remove;
 
+	newmis.runetype = self.runetype;
 	if (self.runetype == RN_TORCH)
 	{
-		newmis.runetype = RN_TORCH;
 		setmodel (newmis, "progs/flame2.mdl");
 		newmis.angles = '90 0 0' + vectoangles (v_forward);
 	}
 	else
 	{
-		if (self.runetype != RN_CLOAK)
+		if (self.runetype == RN_ZAP)
+		{
+			setmodel (newmis, "progs/bolt2.mdl");
+			newmis.think = ZapRocketThink;
+			newmis.nextthink = time;
+		}
+		else if (self.runetype != RN_CLOAK)
 			setmodel (newmis, "progs/missile.mdl");
 		newmis.angles = vectoangles (v_forward);
 	}
@@ -1088,6 +1094,14 @@ W_FireGrenade =
 	{
 		newmis.runetype = RN_TORCH;
 		setmodel (newmis, "progs/flame2.mdl");
+	}
+	else if (self.runetype == RN_ZAP)
+	{
+		setmodel (newmis, "progs/bolt2.mdl");
+		setsize (newmis, '-8 -8 -8', '8 8 8');
+		newmis.runevar = time + 2.5;
+		newmis.think = ZapGrenadeThink;
+		newmis.nextthink = time;
 	}
 	else if (self.runetype != RN_CLOAK)
 		setmodel (newmis, "progs/grenade.mdl");

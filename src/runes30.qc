@@ -1007,7 +1007,7 @@ void () ShubHat_MissileTouch = {
 		return;
 
 	monk_radius_hack = 1;
-	T_RadiusDamage (RADIUS_NORMAL, self, self.owner.owner, 90, self.owner.owner, "shubhat");
+	T_RadiusDamage (RADIUS_NORMAL, self, self.owner.owner, 110, self.owner.owner, "shubhat");
 	monk_radius_hack = 0;
 
 	create_te_explosion (self.origin, 1);
@@ -1061,7 +1061,7 @@ ShubHat_Think =
 		self.wait = time + 0.1;
 	}
 
-	setorigin (self, self.owner.origin - '0 0 16');
+	setorigin (self, self.owner.origin - '0 0 32');
 	trackvel (self.owner);
 
 	self.nextthink = time + sys_ticrate;

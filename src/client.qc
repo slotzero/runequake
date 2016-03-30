@@ -2654,6 +2654,11 @@ ClientObituary =
 			s1 = " was too close to ";
 			s2 = "'s BFG\n";
 		}
+		else if (dt == "projzap")
+		{
+			s1 = " was zapped by ";
+			s2 = "'s electric projectile\n";
+		}
 		else if (dt == "shambfgzap")
 		{
 			s1 = " was zapped by ";

@@ -115,7 +115,7 @@ string START_LEVEL_EXEC		= "startlevel.cfg";
 //     SPLASH_3 = "Server admin is quake@mojo.com\n\n";
 //     SPLASH_4 = "Let's be careful out there\n";
 
-string SPLASH_1			= "April Fool's Version\n\nInstructions are right\n";
+string SPLASH_1			= "\bApril Fool's Version\b\n\nInstructions are right\n";
 string SPLASH_2			= "here via the menu and at\n";
 string SPLASH_3			= "\n";
 string SPLASH_4			= "\bwww.runequake.com\b\n";
@@ -495,7 +495,7 @@ string SOUND_RUNE_PICKUP	= "buttons/switch21.wav";
 
 float MAX_HEALTH_NORMAL		= 100;
 float MAX_HEALTH_LUMBER		= 250;
-float MAX_HEALTH_GOOD_HEALTH	= 666;
+float MAX_HEALTH_GOOD_HEALTH	= 1666;
 float MAX_HEALTH_JACK		= 150;
 float MAX_HEALTH_ATHLETE	= 125;
 float MAX_HEALTH_MIDAIR		= 250;

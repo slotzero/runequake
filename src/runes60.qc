@@ -307,7 +307,7 @@ Popsicle_Touch =
 				if (other.health > 0)
 				{
 					i = random ();
-					Blizzard_Freeze (other, i);
+					Blizzard_Freeze (other, i + random());
 					self.owner.runetime = self.owner.runetime + i;
 				}
 			}
@@ -329,10 +329,13 @@ Popsicle_Think =
 			particle (self.origin, self.mangle, PARTICLE_FREEZE_TRAP, 1);
 	-])
 
-	self.nextthink = time + 0.1;
-
 	if (self.runetime)
 		Weird_WanderThink();
+
+	if (self.wait < time)
+		remove(self);
+	else
+		self.nextthink = time + 0.1;
 };
 
 void ()
@@ -343,7 +346,7 @@ Rune_Popsicle =
 		centerprint (self, "Blizzard recharging");
 		return;
 	}
-	self.runetime = time + 0.25;
+	self.runetime = time + 0.2;
 
 	sound (self, CHAN_WEAPON, "doors/ddoor2.wav", 1, ATTN_NORM);
 
@@ -358,6 +361,7 @@ Rune_Popsicle =
 	newmis.nextthink = time + 0.1;
 	newmis.angles = v_right * 4;
 	newmis.mangle = '0 0 0' - v_right * 4;
+	newmis.wait = time + 10;
 
 	smallkick ();
 };

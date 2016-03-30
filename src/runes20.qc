@@ -545,9 +545,9 @@ Rune_Blink =
 
 	if (self.runevar < 0.5)
 		self.runevar = 0.5;
-	else if (self.runevar > 5)
+	else if (self.runevar > 3)
 	{
-		self.runevar = 5;
+		self.runevar = 3;
 		sprint (self, "April Fools!\n");
 	}
 

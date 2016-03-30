@@ -129,6 +129,7 @@ precaches =
 	precache_sound ("player/udeath.wav");		// gibbed
 
 	// progs/
+	precache_model ("progs/suit.mdl");
 	precache_model ("progs/armor.mdl");		// armor drop
 	precache_model ("progs/backpack.mdl");		// backpack/antipack
 	precache_model ("progs/bolt.mdl");		// *** TE_LIGHTNING1
