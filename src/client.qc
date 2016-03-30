@@ -657,9 +657,8 @@ SelectSpawnPoint =
 	else if (deathmatch & DM_DM_MASK)
 	{
 	//~ random respawn start
-	 local float freespots, totalspots;
-	 local entity lastfreespot;
-
+	 local float freespots, totalspots, pcount;
+	 local entity lastfreespot, thing;
 	 totalspots = 0;
 
 	 // DRS: This loop checks to find an area clear of players
