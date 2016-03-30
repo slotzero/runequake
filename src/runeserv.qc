@@ -1191,8 +1191,6 @@ Rune_Touch =
 	if (other.classname != "player")
 		return;
 
-	eprint(self);
-
 	if (other.health <= 0)
 		return;
 	if (other == self.runent && time < self.lip)
