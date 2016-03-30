@@ -79,6 +79,7 @@ SetChangeParms =
 	parm12 = 0;	// observers, negative duration in game queue
 	parm13 = 0;	// observers, ridee
 	parm14 = self.rqflags;
+	parm15 = self.items2;
 
 	if (is_observer ())
 	{
@@ -248,6 +249,8 @@ DecodeLevelParms =
 	Rune_Activate (parm10, 0);
 	self.aqflags			= parm11;
 	self.rqflags			= parm14;
+	self.items2				= parm15; //Carry the rune over in the HUD
+
 };
 
 /*
