@@ -116,11 +116,19 @@ DSpot_Touch =
 	if (environmental (other))
 		return;
 
+	if (other == self.enemy)
+		return;
+
+	sound (self, CHAN_AUTO, "boss2/idle.wav", 1, ATTN_NORM);
+	self.enemy = other;
+	self.nextthink	= time + 1.5;
+
+	if (other != self.goalentity)
+		return;
+
 	maybe_update_trap_count (self.owner, RN_DSPOTS);
 
 	T_Damage (other, self, self.owner, KILL_DAMAGE, "dspot");
-
-	sound (self, CHAN_AUTO, "boss2/idle.wav", 1, ATTN_NORM);
 
 	self.solid	= SOLID_NOT;
 	self.movetype	= MOVETYPE_NONE;
@@ -128,12 +136,17 @@ DSpot_Touch =
 	setmodel (self, string_null);
 
 	self.think	= SUB_Remove;
-	self.nextthink	= time + 1;
 };
 
 void ()
 DSpot_Think =
 {
+	if (self.enemy)
+	{
+		self.goalentity = self.enemy;
+		self.enemy = world;
+	}
+
 	self.nextthink = time + 0.6;
 	IN_POQ([-
 		particle (self.origin, VEC_ORIGIN, PARTICLE_DEATH_SPOT, 40);

@@ -514,6 +514,72 @@ Freeze_Frozen =
 };
 
 void ()
+Freeze_Slowed =
+{
+	local float diff;
+
+	self.nextthink = time + 0.1;
+
+	if (self.runent.attack_finished > self.attack_finished)
+	{
+		diff = self.runent.attack_finished - time;
+		self.attack_finished = self.runent.attack_finished = time + diff + diff + 0.1;
+	}
+
+	if (self.runevar != self.runent.frame)
+	{
+		self.runevar = self.runent.frame;
+		self.runent.nextthink = time + 0.2;
+	}
+
+	if (self.runent.flags & FL_ONGROUND)
+	{
+		self.runent.velocity_x = self.runent.velocity_x * -0.7;
+		self.runent.velocity_y = self.runent.velocity_y * -0.7;
+	}
+	else
+	{
+		self.runent.velocity_x = self.runent.velocity_x * 0.3;
+		self.runent.velocity_y = self.runent.velocity_y * 0.3;
+	}
+
+	IN_POQ([-
+		particle (self.runent.origin + '0 0 16', '0 0 -10', PARTICLE_FREEZE_TRAP, 20);
+
+		if (teamplay & (TEAM_TEAM_MASK | TEAM_MODE_MATCH))
+		{
+			local float particle_team;
+
+			particle_team = team_to_particle (self.owner.team);
+			particle (self.runent.origin + '0 0 16', '0 0 -10', particle_team, 10);
+		}
+	-])
+
+	if (self.runetime < time
+			|| self.runent.health <= 0
+			|| self.runent.runetype == RN_FREEZE
+			|| self.runent.runetype == RN_ENVIRO
+			|| (self.runent.runetype == RN_BLIZZARD && self.runent.runevector_x < time)
+			|| self.runent.items & IT_SUIT)
+	{
+		self.runent.effects		= self.runent.effects - self.runent.effects & EF_FROZEN;
+		self.runent.attack_finished	= time + sys_ticrate;
+
+		if (self.runent.classname == "player")
+		{
+			if (self.runent.health > 0)
+				centerprint (self.runent, "Released from ice trap");
+			stuffcmd (self.runent, CSHIFT_NONE);
+			self.runent.rqstate = self.runent.rqstate - (self.runent.rqstate & RQS_SLOWED);
+		} else
+			self.runent.effects = self.runent.effects - (self.runent.effects & EF_FROZEN);
+
+		sound (self, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
+		remove (self);
+	}
+};
+
+void ()
 Freeze_Touch =
 {
 	if (other == world)
@@ -544,48 +610,59 @@ Freeze_Touch =
 		return;
 	}
 
-	if (other.effects & EF_FROZEN)
+	if (other.rqstate & RQS_SLOWED || other.effects & EF_FROZEN)
 		return;
 
-	other.effects = other.effects | EF_FROZEN;
 	maybe_update_trap_count (self.owner, RN_FREEZE);
 
 	if (other.classname == "player")
 	{
+		other.rqstate = other.rqstate | RQS_SLOWED;
 		stuffcmd (other, CSHIFT_FREEZE);
 		if (self.owner == other)
-			centerprint (other, "You froze yourself,\nyou big dummy!\n");
+			centerprint (other, "You slowed yourself,\nyou big dummy!\n");
 		else
 		{
-			centerprint3 (other, "You've been frozen\nby ",
+			centerprint3 (other, "You've been slowed\nby ",
 						self.owner.netname,
 						// fastqcc chokes on "!"
 						"! ");
 			sprint (self.owner, other.netname);
-			sprint (self.owner, " is frozen in your ice trap.\n");
+			sprint (self.owner, " is slowed by your ice trap.\n");
 		}
 	}
 	else if (other.classname == "shambler_slave")
 	{
+		other.effects = other.effects | EF_FROZEN;
 		sprint (other.owner, "Your shambler is frozen in ");
 		sprint (other.owner, self.owner.netname);
 		sprint (other.owner, "'s ice trap.\n");
 
 		sprint (self.owner, other.owner.netname);
 		sprint (self.owner, "'s shambler is frozen in your ice trap.\n");
+
+		self.runent	= other;
+		self.runevar = other.frame;
+		self.angles	= other.v_angle;
+
+		setorigin (self, other.origin);
+		self.touch	= SUB_Null;
+		IN_QW([-
+		setmodel (self, string_null);
+		-])
+
+		// how long frozen
+		self.runetime	= time + 13;
+		self.nextthink	= time;
+		self.think	= Freeze_Frozen;
+		return;
 	}
+
 
 	sound (self, CHAN_BODY, "shambler/smack.wav", 1, ATTN_NORM);
 
 	self.runent	= other;
-	self.runevar	= other.frame;
-
-	// If you use angles here you get batman villain syndrome if you're
-	// frozen while in the middle of a roll.
-	self.angles	= other.v_angle;
-	self.fixangle	= 1;
-
-	setorigin (self, other.origin);
+	self.attack_finished = other.attack_finished;
 
 	self.touch	= SUB_Null;
 	IN_QW([-
@@ -595,7 +672,7 @@ Freeze_Touch =
 	// how long frozen
 	self.runetime	= time + 13;
 	self.nextthink	= time;
-	self.think	= Freeze_Frozen;
+	self.think	= Freeze_Slowed;
 };
 
 void ()

@@ -163,6 +163,9 @@ HookPull =
 		vel = normalize (vel) * v * 7;
 	else
 		vel = normalize (vel) * 700;
+
+	if (self.owner.rqstate & RQS_SLOWED)
+		vel = vel * 0.1;
 	self.owner.velocity = vel;
 	self.nextthink = time + sys_ticrate;
 };
@@ -309,13 +312,22 @@ HookOn =
 	newhook = spawn ();
 	newhook.classname = "hook-head";
 	newhook.owner = self;
-	newhook.movetype = MOVETYPE_FLY;
 	newhook.solid = SOLID_BBOX;
 	setmodel (newhook, "progs/v_spike.mdl");
 	setsize (newhook, VEC_ORIGIN, VEC_ORIGIN);
 	makevectors (self.v_angle);
+	if (self.rqstate & RQS_SLOWED)
+	{
+		newhook.velocity = v_forward * 200;
+		newhook.movetype = MOVETYPE_TOSS;
+	}
+	else
+	{
+		newhook.velocity = v_forward * HOOK_TRAVEL_SPEED;
+		newhook.movetype = MOVETYPE_FLY;
+	}
 	setorigin (newhook, self.origin + (v_forward*16) + PLAYER_WEAPON_OFFSET);
-	newhook.velocity = v_forward * HOOK_TRAVEL_SPEED;
+
 	newhook.angles = vectoangles (newhook.velocity);
 	newhook.avelocity = '0 0 600';
 	sound (self, CHAN_AUTO, "weapons/ax1.wav", 1, ATTN_NORM);

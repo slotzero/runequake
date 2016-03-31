@@ -750,6 +750,7 @@ float RQS_AFK			= 4;
 float RQS_RESTORE_GHOST		= 8;
 float RQS_TIMESET_OVERRIDE	= 16;
 float RQS_GUIDED_MISSILE	= 32;
+float RQS_SLOWED        = 64;
 
 // aqstate flags (not saved across levels)
 float AQS_MENU_MASK		= 31;
