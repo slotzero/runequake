@@ -40,7 +40,8 @@ Rune_Bomb =
 	{
 		sprint (self, "\{133}");
 		sprint_float (self, self.runevar);
-		sprint (self, "\{133} ");
+		sprint (self, "\{133}");
+		sprint (self, "\n");
 
 		self.runetime = time + 0.5;
 		self.runevar = self.runevar - 1;
