@@ -31,20 +31,8 @@ Radio_Think =
 {
 	local entity head;
 
-	if (self.runetime < time)
-	{
-		if (maybe_update_trap_count (self.owner, RN_RADIO))
-			sprint (self.owner, "Your radiation expired\n");
-
-		remove (self);
+	if (self.runetime > time)
 		return;
-	}
-
-	if (self.runevar)
-	{
-		self.runevar = 0;
-		create_te_lavasplash (self.origin);
-	}
 
 	head = findradius (self.origin, RADIO_DIST);
 	while (head)
@@ -60,7 +48,7 @@ Radio_Think =
 				-])
 				// don't harm the owner or anyone with a
 				// radiation rune or a rad suit
-				if (head == self.owner)
+				if (head == self)
 				{
 					// heal the owner if she still
 					// has radiation
@@ -76,25 +64,25 @@ Radio_Think =
 					SUB_Null ();
 				else
 				{
-					if (T_Damage (head, self, self.owner,
+					if (T_Damage (head, self, self,
 							RADIO_DAMAGE,
 							"radioactive")
 							&& head.classname
 								== "player")
-						sprint (head, "\{141} This area is radioactive!\n");
+						sprint (head, "\{141} Someone is radioactive!\n");
 				}
 			}
 		}
 		head = head.chain;
 	}
-	self.nextthink = time + RADIO_INTERVAL;
+	self.runetime = time + RADIO_INTERVAL;
 };
 
 void (float riders, entity of_e)
 Rune_Radio_sprint =
 {
-	rprint_numdesc (self, riders, of_e.runevar, "radiation point");
-	rprint (self, riders, " active\n");
+	// rprint_numdesc (self, riders, of_e.runevar, "radiation point");
+	// rprint (self, riders, " active\n");
 };
 
 void ()

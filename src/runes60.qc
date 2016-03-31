@@ -649,7 +649,7 @@ Rune_Sonar =
 void (float riders, entity of_e)
 Rune_AntiPack_sprint =
 {
-	rprint_numdesc (self, riders, of_e.runevar, "anti-pack");
+	rprint_numdesc (self, riders, of_e.runevar, "antifrag-pack");
 	rprint (self, riders, " placed\n");
 };
 
@@ -676,7 +676,7 @@ AntiPack_Think =
 	if (self.runetime < time)
 	{
 		if (maybe_update_trap_count (self.owner, RN_ANTIPACK))
-			self_sprint (self.owner, "An anti-pack expired\n");
+			self_sprint (self.owner, "An antifrag-pack expired\n");
 
 		remove (self);
 	}
@@ -717,39 +717,18 @@ AntiPack_Touch =
 
 	maybe_update_trap_count (self.owner, RN_ANTIPACK);
 
-	centerprint (other, "You picked up an anti-pack!");
+	centerprint (other, "You picked up an antifrag-pack!");
 	bprint (other.netname);
 	bprint (" picked up ");
 	bprint (self.owner.netname);
-	bprint ("'s anti-pack!\n");
+	bprint ("'s antifrag-pack!\n");
 
 	sound (other, CHAN_ITEM, "weapons/lock4.wav", 1, ATTN_NORM);
 	sound (other, CHAN_BODY, "demon/ddeath.wav", 1, ATTN_NORM);
 
 	stuffcmd (other, "bf\n");
 
-	antipack_maybe_remove_ammo (ammo_shells);
-	antipack_maybe_remove_ammo (ammo_nails);
-	antipack_maybe_remove_ammo (ammo_rockets);
-	antipack_maybe_remove_ammo (ammo_cells);
-
-	for (i = 8; i > 2; i = i - 1)
-	{
-		it = weapon_num_to_it (i);
-		if (other.items & it)
-		{
-			other.items = other.items - other.items & it;
-			i = -1;
-		}
-	}
-
-	if (other.weapon & it)
-	{
-		os = self;
-		self = other;
-		set_weapon (W_BestWeapon ());
-		self = os;
-	}
+	other.frags = other.frags - 1;
 
 	remove (self);
 };
@@ -1058,9 +1037,7 @@ tornado_pull =
 		{
 			if (!environmental (e))
 			{
-				if (!isfriend2 (self.owner, e) || self.owner == e)
-				{
-					if (e.movetype != MOVETYPE_NONE && e.movetype != MOVETYPE_PUSH && e.movetype != MOVETYPE_NOCLIP && e.health > 0)
+					if (e.movetype != MOVETYPE_NONE && e.movetype != MOVETYPE_PUSH && e.movetype != MOVETYPE_NOCLIP)
 					{
 						d = vlen (e.origin - self.origin);
 						percent = 1 - (d / dist);
@@ -1081,7 +1058,6 @@ tornado_pull =
 								particle (e.origin + v_up * random () * 30, e.velocity, 96, 3);
 						-])
 					}
-				}
 			}
 		}
 		e = e.chain;

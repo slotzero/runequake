@@ -30,6 +30,7 @@ Rune_Think =
 	else if (self.runetype == RN_CAMO)		Rune_Camo ();
 	else if (self.runetype == RN_JUMP)		Rune_Jump ();
 	else if (self.runetype == RN_AMMO)		Rune_Ammo ();
+	else if (self.runetype == RN_RADIO)		Radio_Think ();
 	else if (self.runetype == RN_SHIELD)		Shield_On ();
 	else if (self.runetype == RN_REPEL)		Rune_Repel ();
 	else if (self.runetype == RN_VAMP)		Rune_Fly ();
@@ -72,7 +73,6 @@ Rune_Button =
 	else if (self.runetype == RN_HOLO)		Rune_Holo ();
 	else if (self.runetype == RN_BLINK)		Rune_Blink (0);
 	else if (self.runetype == RN_SHIELD)		Rune_Shield ();
-	else if (self.runetype == RN_RADIO)		Rune_Radio ();
 	else if (self.runetype == RN_SWITCH)		Rune_Switch ();
 	else if (self.runetype == RN_FREEZE)		Rune_Freeze ();
 	else if (self.runetype == RN_SUCK)		Suck_Button ();
@@ -302,10 +302,8 @@ Rune_Tell_real =
 		desc_l = "Rune of Radioactivity";
 		desc_s = " Radio";
 
-		d1 = "Irradiate areas, opponents die\n"
-			"slowly but you are healed\n";
-		d2 = ftos (MAX_RADIO);
-		d3 = " maximum";
+		d1 = "You irradiate areas; opponents die\n"
+			"slowly, but you are healed\n";
 	}
 	else if (type == RN_SWITCH)
 	{
@@ -587,11 +585,11 @@ Rune_Tell_real =
 	}*/
 	else if (type == RN_ANTIPACK)
 	{
-		desc_l = "Anti-Pack Rune";
+		desc_l = "Antifrag-Pack Rune";
 		desc_s = " AntiPk";
 
 		d1 = "Drop backpacks that\n"
-			"take away weapons and ammo";
+			"take away a player's frag";
 	}
 	else if (type == RN_DEFLECT)
 	{

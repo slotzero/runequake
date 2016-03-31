@@ -902,6 +902,10 @@ takedamage_hack =
 void ()
 Shield_On =
 {
+	local entity pushee;
+	local float isplayer, pushdist;
+	local vector pushdir;
+
 	if (self.runevar == 1 && self.runetime <= time)
 	{
 		// shields are on and time ran out, turn them off
@@ -922,6 +926,31 @@ Shield_On =
 		// clear possible recharging message
 		centerprint (self, string_null);
 		Rune_Shield ();
+	}
+
+	if (self.effects & EF_BRIGHTFIELD)
+	{
+		pushee = findradius (self.origin, 400);
+		while (pushee)
+		{
+			if (pushee.health > 0 || !pushee.flags & FL_ONGROUND)
+			{
+				isplayer = is_player_e (pushee);
+				if (pushee.solid != SOLID_BSP && (!isplayer || !isfriend (pushee)))
+				{
+					if (!environmental (pushee))
+					{
+						if (pushee.classname != "player")
+							pushee.flags = pushee.flags - pushee.flags & FL_ONGROUND;
+
+						pushdir		= self.origin - pushee.origin;
+						pushdist	= vlen (pushdir);
+						pushee.velocity	= pushee.velocity - (normalize (pushdir) * PUSH_FORCE * (400 - pushdist));
+					}
+				}
+			}
+			pushee = pushee.chain;
+		}
 	}
 };
 

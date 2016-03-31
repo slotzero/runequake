@@ -98,13 +98,13 @@ void () HIP_LightningThink =
 		// look in our immediate vicinity
 		self.enemy = world;
 		selected = world;
-		cur_dist = 350;
-		head = findradius(self.owner.origin, 350);
+		cur_dist = 300;
+		head = findradius(self.owner.origin, 300);
 		while(head)
 		{
-			if ((head.flags & FL_MONSTER) || ((head.flags & FL_CLIENT) && !(head.frame >= 29 && head.frame <= 40)))
+			if (head.health > 0)
 			{
-				if ((visible(head)) && (head != self.owner.owner) && (head.health > 0))
+				if (visible (head) && head != self.owner.owner && head.last_bfg_zap < time)
 				{
 					if (selected == world)
 						head_dist = 1000;
@@ -164,6 +164,8 @@ void () HIP_LightningThink =
 		return;
 	}
 
+	// repurposed .yaw_speed like .last_bfg_zap, but monsters actually use this field
+	self.enemy.last_bfg_zap = time + 0.5;
 	sound (self.owner, CHAN_AUTO, "shambler/sattck1.wav", 1, ATTN_NORM);
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, TE_LIGHTNING2);
@@ -181,9 +183,9 @@ void () HIP_LightningThink =
 	head = self;
 	self = self.owner.owner;
 	if (oldstate == 0)
-		dam = 80;
+		dam = 20;
 	else
-		dam = 30;
+		dam = 10;
 
 	if (dot > 0.3)
 		HIP_HammerDamage (org, trace_endpos, self, dam);

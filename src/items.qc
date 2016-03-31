@@ -26,6 +26,7 @@ SUB_regen =
 	self.solid = SOLID_TRIGGER; // allow it to be touched again
 
 	sound (self, CHAN_VOICE, "items/itembk2.wav", 1, ATTN_NORM); // play respawn sound
+	setorigin (self, self.oldorigin);
 
 	if (self.touch == armor_touch)
 		armor_cycle ();
@@ -152,15 +153,14 @@ PlaceItem =
 		return;
 	}
 
+	self.oldorigin = self.origin;
+
 	// Get weapons up right away in weapons-stay mode.  Without this
 	// they don't go up until after somebody gets them for the first
 	// time (weapon_touch sets it up).  Since I have this init step
 	// I set oldorigin here only.
 	if (self.touch == weapon_touch)
 	{
-		// Save the origin no matter what in case WEAPONS_STAY
-		// is turned on later.
-		self.oldorigin = self.origin;
 		if (options & WEAPONS_STAY || coop)
 		{
 			self.runetime	= time;
