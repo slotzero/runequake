@@ -127,6 +127,7 @@ precaches =
 	precache_sound ("player/teledth1.wav");		// telefragged
 	precache_sound ("player/tornoff2.wav");		// player disconnect
 	precache_sound ("player/udeath.wav");		// gibbed
+	precache_sound ("ambience/windfly.wav");
 
 	// progs/
 	precache_model ("progs/suit.mdl");

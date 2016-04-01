@@ -370,7 +370,7 @@ tdeath_touch =
 
 		if (other.runetype == RN_DEFLECT)
 		{
-			sprint(other, "April Fools!\n");
+			centerprint (other, "April Fools!\n");
 			T_Damage (other, self, self.owner, 50000, "teledeath2");
 			return;
 		}

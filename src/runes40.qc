@@ -699,70 +699,70 @@ Weird_Touch =
 	if (self.runevar == WEIRD_SHROOMS)
 	{
 		if (!notplayer)
-			stuffcmd(other, "say I love shrooms!\n");
+			self_stuffcmd(other, "say I love shrooms!\n");
 		 self_desc = "shrooms";
 		other_desc = "SHROOM MODE!";
 	}
 	else if (self.runevar == WEIRD_DRUNK)
 	{
 		if (!notplayer)
-			stuffcmd(other, "say I love drinking!\n");
+			self_stuffcmd(other, "say I love drinking!\n");
 		 self_desc = "drunken walk";
 		other_desc = "DRUNKEN WALK!";
 	}
 	else if (self.runevar == WEIRD_TWIRLY)
 	{
 		if (!notplayer)
-			stuffcmd(other, "say I love to twirl!\n");
+			self_stuffcmd(other, "say I love to twirl!\n");
 		 self_desc = "twirly head";
 		other_desc = "TWIRLY HEAD!";
 	}
 	else if (self.runevar == WEIRD_TWITCHING)
 	{
 		if (!notplayer)
-			stuffcmd(other, "say I love to twitch!\n");
+			self_stuffcmd(other, "say I love to twitch!\n");
 		 self_desc = "twitching";
 		other_desc = "RANDOM TWITCHING!";
 	}
 	else if (self.runevar == WEIRD_COFFEE)
 	{
 		if (!notplayer)
-			stuffcmd(other, "say I love coffee!\n");
+			self_stuffcmd(other, "say I love coffee!\n");
 		 self_desc = "too much coffee";
 		other_desc = "TOO MUCH COFFEE!";
 	}
 	else if (self.runevar == WEIRD_STICKY)
 	{
 		if (!notplayer)
-			stuffcmd(other, "say I love feet!\n");
+			self_stuffcmd(other, "say I love feet!\n");
 		 self_desc = "sticky feet";
 		other_desc = "STICKY FEET!";
 	}
 	else if (self.runevar == WEIRD_SHOOTPHOB)
 	{
 		if (!notplayer)
-			stuffcmd(other, "say I hate guns!\n");
+			self_stuffcmd(other, "say I hate guns!\n");
 		 self_desc = "shootphobia";
 		other_desc = "HOW DO I SHOOT?!";
 	}
 	else if (self.runevar == WEIRD_VERTIGO)
 	{
 		if (!notplayer)
-			stuffcmd(other, "say I hate heights!\n");
+			self_stuffcmd(other, "say I hate heights!\n");
 		 self_desc = "vertigo";
 		other_desc = "VERTIGO!";
 	}
 	else if (self.runevar == WEIRD_BLIND)
 	{
 		if (!notplayer)
-			stuffcmd(other, "say I can't see!\n");
+			self_stuffcmd(other, "say I can't see!\n");
 		 self_desc = "blindness";
 		other_desc = "I'M BLIND! I'M BLIND!";
 	}
 	else
 	{
 		if (!notplayer)
-			stuffcmd(other, "say I love to jump!\n");
+			self_stuffcmd(other, "say I love to jump!\n");
 		 self_desc = "jumping";
 		other_desc = "UNCONTROLLABLE JUMPING!";
 	}

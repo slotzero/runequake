@@ -241,7 +241,7 @@ Rune_Tell_real =
 		desc_l = "Orb of Death";
 		desc_s = " Orb";
 
-		d1 = "Sphere of death circles you and\n"
+		d1 = "Spheres of death circles you and\n"
 			"damages enemies upon contact";
 	}
 	else if (type == RN_BLINK)
@@ -302,8 +302,8 @@ Rune_Tell_real =
 		desc_l = "Rune of Radioactivity";
 		desc_s = " Radio";
 
-		d1 = "You irradiate areas; opponents die\n"
-			"slowly, but you are healed\n";
+		d1 = "You irradiate areas; opponents\n"
+			"die and you are healed\n";
 	}
 	else if (type == RN_SWITCH)
 	{
@@ -319,7 +319,7 @@ Rune_Tell_real =
 		desc_s = " Ice";
 
 		d1 = "Leave icy traps which\n"
-			"immobilize when touched\n";
+			"slow when touched\n";
 		d2 = ftos (MAX_FREEZE);
 		d3 = " maximum";
 	}
@@ -328,16 +328,16 @@ Rune_Tell_real =
 		desc_l = "Gravity Rune";
 		desc_s = " Grav";
 
-		d1 = "Sphere of gravity sucks\n"
-			"in enemies and items";
+		d1 = "A sphere to control\n"
+			"all gravity";
   	}
 	else if (type == RN_TWALK)
 	{
 		desc_l = "The Teleport Shuffle";
 		desc_s = " Telprt";
 
-		d1 = "Teleport anywhere you can see\n"
-			"Telefrag your enemies";
+		d1 = "Shuffle everyone's locations\n"
+			"but only once";
 	}
 	else if (type == RN_IMPACT)
 	{
@@ -443,7 +443,7 @@ Rune_Tell_real =
 
 		d1 = "Jump Higher\n"
 			"Swim Farther\n"
-			"Run Faster\n"
+			"Run FASTER\n"
 			"Live Longer";
 	}
 	else if (type == RN_LUMBER)
@@ -734,6 +734,12 @@ Rune_Activate =
 		HookOff ();
 	else if (self.runetype == RN_MONK)
 		monk_trance_off ();
+	else if (self.runetype == RN_BOMB)
+	{
+		self.frame = 17;
+		self.think = player_stand;
+		self.attack_finished = time + 0.2;
+	}
 	else if (self.runetype == RN_AMMO)
 	{
 		self.items = (self.items - (IT_NAILGUN | IT_SUPER_NAILGUN | IT_SUPER_SHOTGUN | IT_LIGHTNING | IT_GRENADE_LAUNCHER | IT_ROCKET_LAUNCHER)) | self.runevector_x;
@@ -741,6 +747,7 @@ Rune_Activate =
 
 	self.max_health	= MAX_HEALTH_NORMAL;
 	self.movetype	= MOVETYPE_WALK;
+	self.solid = SOLID_SLIDEBOX;
 	self.runent	= world;
 	self.runetime	= time;
 	self.runevar	= 0;

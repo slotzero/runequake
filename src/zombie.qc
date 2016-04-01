@@ -219,13 +219,10 @@ ZombieGrenadeTouch =
 			dodamage = 10;
 		T_Damage (other, self, self.owner, dodamage, "");
 		sound (self, CHAN_WEAPON, "zombie/z_hit.wav", 1, ATTN_NORM);
-		remove (self);
 		return;
 	}
 	sound (self, CHAN_WEAPON, "zombie/z_miss.wav", 1, ATTN_NORM);	// bounce sound
-	self.velocity	= VEC_ORIGIN;
-	self.avelocity	= VEC_ORIGIN;
-	self.touch	= SUB_Remove;
+	remove (self);
 };
 
 /*
@@ -543,8 +540,11 @@ zombie_die =
 	}
 	sound (self, CHAN_VOICE, "zombie/z_gib.wav", 1, ATTN_NORM);
 	// ThrowHead ("progs/h_zombie.mdl", self.health);
-	ThrowGib ("progs/gib1.mdl", self.health);
-	ThrowGib ("progs/gib2.mdl", self.health);
+	if (self.owner == world)
+	{
+		ThrowGib ("progs/gib1.mdl", self.health);
+		ThrowGib ("progs/gib2.mdl", self.health);
+	}
 	ThrowGib ("progs/gib3.mdl", self.health);
 
 	remove (self);

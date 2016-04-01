@@ -46,8 +46,7 @@ Radio_Think =
 				-], [-
 					create_te_lightningblood (head.origin);
 				-])
-				// don't harm the owner or anyone with a
-				// radiation rune or a rad suit
+
 				if (head == self)
 				{
 					// heal the owner if she still
@@ -64,12 +63,18 @@ Radio_Think =
 					SUB_Null ();
 				else
 				{
-					if (T_Damage (head, self, self,
-							RADIO_DAMAGE,
-							"radioactive")
-							&& head.classname
-								== "player")
-						sprint (head, "\{141} Someone is radioactive!\n");
+					if (self.owner.flags & FL_CLIENT)
+					{
+						if (T_Damage (head, self.owner, self, RADIO_DAMAGE, "radioactive")
+								&& head.classname == "player")
+							sprint (head, "\{141} Someone is radioactive!\n");
+					}
+					else
+					{
+						if (T_Damage (head, self, self, RADIO_DAMAGE, "radioactive")
+								&& head.classname == "player")
+							sprint (head, "\{141} Someone is radioactive!\n");
+					}
 				}
 			}
 		}
@@ -85,56 +90,18 @@ Rune_Radio_sprint =
 	// rprint (self, riders, " active\n");
 };
 
-void ()
+void (entity o)
 Rune_Radio =
 {
+	// XXX implement after death radio spot. use seperate function?
+	return;
+
 	local entity radio;
-	local entity head;
-	local string s, s1;
-
-	if (self.health > 0 && self.runevar >= MAX_RADIO)
-	{
-		s = ftos (MAX_RADIO);
-		if (MAX_RADIO != 1)
-			s1 = "s";
-		centerprint4 (self, "You can only irradiate ", s, " area", s1);
-		return;
-	}
-
-	head = findradius (self.origin, RADIO_DIST);
-	while (head)
-	{
-		if (head.classname == "radioactive")
-		{
-			traceline (self.origin, head.origin, TRUE, self);
-			if (trace_fraction == 1)
-			{
-				if (self.health > 0)
-					centerprint (self, "This area is already radioactive");
-				return;
-			}
-		}
-		head = head.chain;
-	}
-
-	self.runevar = self.runevar + 1;
-
-	if (self.health > 0)
-	{
-		// This is Matthew's gag.
-		if (random () >= 0.9)
-			centerprint (self, "5 seconds to Irritation");
-		else
-			centerprint (self, "5 seconds to Irradiation");
-	}
 
 	radio = spawn ();
-	radio.movetype = MOVETYPE_NONE;
-	// This can't be SOLID_NOT the findradius() won't see it.
-	radio.solid = SOLID_TRIGGER;
-	radio.owner = self;
+	radio.owner = o;
 	radio.classname = "radioactive";
-	setorigin (radio, self.origin);
+	setorigin (radio, o.origin);
 	setsize (radio, VEC_ORIGIN, VEC_ORIGIN);
 
 	radio.nextthink = time + 5;
@@ -142,7 +109,6 @@ Rune_Radio =
 
 	radio.runetime = time + RADIO_DURATION;
 	radio.think = Radio_Think;
-	radio.runevar = 1;
 };
 
 void ()
@@ -508,7 +474,7 @@ Freeze_Frozen =
 			stuffcmd (self.runent, CSHIFT_NONE);
 		}
 
-		sound (self, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
+		sound (self.runent, CHAN_BODY, "blob/death1.wav", 1, ATTN_NORM);
 		remove (self);
 	}
 };
@@ -519,19 +485,23 @@ Freeze_Slowed =
 	local float diff;
 
 	self.nextthink = time + 0.1;
+	stuffcmd (self.runent, CSHIFT_FREEZE);
 
+	// increase weapon delay
 	if (self.runent.attack_finished > self.attack_finished)
 	{
 		diff = self.runent.attack_finished - time;
 		self.attack_finished = self.runent.attack_finished = time + diff + diff + 0.1;
 	}
 
+	// increase animation delay
 	if (self.runevar != self.runent.frame)
 	{
 		self.runevar = self.runent.frame;
 		self.runent.nextthink = time + 0.2;
 	}
 
+	// speed is updated more often than this, so go extreme
 	if (self.runent.flags & FL_ONGROUND)
 	{
 		self.runent.velocity_x = self.runent.velocity_x * -0.7;
@@ -618,7 +588,6 @@ Freeze_Touch =
 	if (other.classname == "player")
 	{
 		other.rqstate = other.rqstate | RQS_SLOWED;
-		stuffcmd (other, CSHIFT_FREEZE);
 		if (self.owner == other)
 			centerprint (other, "You slowed yourself,\nyou big dummy!\n");
 		else
@@ -950,65 +919,58 @@ Rune_Impact =
 void ()
 Rune_Twalk =
 {
-	local vector org, place, f, p1, p2;
-	local entity switch;
+	local entity switch, curr;
+	local vector place;
+	local float i;
 
-	org = self.origin + '0 0 15';
-	makevectors (self.v_angle);
+	curr = find (world, classname, "player");
+	while (curr)
+	{
+		i = i + 1;
+		curr = find (curr, classname, "player");
+	}
 
-	p1 = org;
-	p2 = org + v_forward*1500;
-	f = p2 - p1;
-	normalize (f);
-	f_x = 0 - f_y;
-	f_y = f_x;
-	f_z = 0;
-	f = f*16;
+	curr = self;
 
-	traceline (p1, p2, FALSE, self);
-	switch = trace_ent;
+	// get a random player
+	switch = find(world, classname, "player");
+	while (random () > 0.3)
+		switch = find(switch, classname, "player");
 
-	IN_POQ([-
-		particle (trace_endpos, VEC_ORIGIN, PARTICLE_TELEPORT_SHUFFLE, 100);
-	-], [-
-		create_te_gunshot (trace_endpos, 5);
-	-])
-
-	makevectors (self.angles);
-
-	HookOff ();
-	HookOff_by_targ ();
-
+	// in case we looped
 	if (switch == world)
+		switch = find(switch, classname, "player");
+
+	while (i > 1)
 	{
-		create_te_teleport (self.origin);
-		setorigin (self, trace_endpos - v_forward*60);
-		droptofloor ();
-		return;
+		if (switch.health > 0)
+		{
+			HookOff_e (switch);
+			HookOff_by_targ_e (switch);
+
+			spawn_tfog (curr.origin);
+			spawn_tfog (switch.origin);
+
+			place = switch.origin;
+			setorigin (switch, curr.origin);
+			setorigin (curr, place);
+
+			curr = switch;
+			i = i - (random () + random ());
+		}
+
+		// get a random player
+		switch = find(world, classname, "player");
+		while (random () > 0.3)
+			switch = find(switch, classname, "player");
+
+		// in case we looped
+		if (switch == world)
+			switch = find(switch, classname, "player");
 	}
 
-	if (switch.flags & FL_ITEM)
-	{
-		setorigin (self, switch.origin);
-		return;
-	}
-
-	if (switch.health > 0 && switch.solid != SOLID_BSP && switch.movetype != MOVETYPE_NONE)
-	{
-		spawn_tfog (self.origin);
-		spawn_tfog (switch.origin);
-
-		if (random () < 0.3)
-			spawn_tdeath (self.origin, self);
-		else if (switch.classname == "player")
-			centerprint (switch, "Someone tried to telefrag you!");
-
-		place = switch.origin;
-		setorigin (switch, self.origin);
-		setorigin (self, place);
-
-		return;
-	}
+	bprint ("\{141} Someone used the Shuffle Rune!\n");
+	Rune_Delete (0);
 };
 
 void ()

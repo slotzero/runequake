@@ -1134,7 +1134,7 @@ launch_spike =
 	newmis.touch = spike_touch;
 	newmis.classname = "spike";
 	newmis.think = SUB_Proj_Remove;
-	newmis.nextthink = time + 6;
+	newmis.nextthink = time + 5;
 	if (self.runetype != RN_CLOAK)
 		setmodel (newmis, "progs/spike.mdl");
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);

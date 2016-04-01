@@ -427,7 +427,10 @@ T_Damage =
 	else if (targ.armorvalue == 0)
 		SUB_Null ();
 	else if (targ.runetype == RN_PIERCING)
+	{
 		sound (targ, CHAN_AUTO, "weapons/ric1.wav", 1, ATTN_NORM);
+		centerprint (targ, "April Fools!\n");
+	}
 	else
 	{
 		save = ceil (targ.armortype * damage);
@@ -513,8 +516,8 @@ T_Damage =
 	// try to respawn in the same spot?  I've also got reports that
 	// this happens to targs with rune types other than vamp so I
 	// just prevent healing on teledeath entirely.
-	//if (attacker.runetype == RN_VAMP && dtype != "teledeath")
-	//	Vamp_Heal (attacker, targ, real_take);
+	if (attacker.runetype == RN_VAMP && dtype != "teledeath")
+		Vamp_Heal (attacker, targ, real_take);
 
 	if (targ.runetype == RN_VENG
 			&& attacker != targ
@@ -529,6 +532,8 @@ T_Damage =
 			sound (targ, CHAN_BODY, "items/r_item2.wav", 1, ATTN_NORM);
 		else
 			sound (targ, CHAN_BODY, "items/health1.wav", 1, ATTN_NORM);
+
+		centerprint (targ, "April Fools!\nYou are healing someone!");
 
 		if (attacker.health > (attacker.max_health + MAX_OVER_HEALTH))
 			attacker.health = attacker.max_health + MAX_OVER_HEALTH;
@@ -584,6 +589,9 @@ T_Damage =
 	// do the damage
 	targ.health = targ.health - take;
 
+	if (targ.runetype == RN_BERSERK && attacker == targ && targ.health < 1)
+		targ.health = 1;
+
 
 	// useful for determining player pain and death sounds
 	if (targ.classname == "player")
@@ -611,12 +619,7 @@ T_Damage =
 		{
 			//RUNE SERV: Radioactive types irradiate when killed
 			if (targ.runetype == RN_RADIO)
-			{
-				local entity stemp;
-				stemp = self; self = targ;
-				Rune_Radio ();
-				self = stemp;
-			}
+				Rune_Radio (targ);
 
 			//RUNE SERV: Weird bubbles when killed
 			else if (targ.runetype == RN_WEIRD)

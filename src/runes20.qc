@@ -31,16 +31,53 @@ Bomb_Think =
 };
 
 void ()
+Bomb_Touch =
+{
+	if (other.health < 0 && other != world)
+		return;
+
+	sure_kill ("kamiself");
+	T_RadiusDamage (RADIUS_NORMAL, self, self, 10000, self, "kamikaze");
+};
+
+void ()
+Bomb_Animate =
+{
+	self.nextthink = time + 0.1;
+	if (self.frame < 73)
+		self.frame = self.frame + 1;
+	if (self.frame == 22)
+		self.frame = 70;
+};
+
+void ()
 Rune_Bomb =
 {
 	if (self.runevar == -1 || self.runetime > time)
 		return;
 
+	self.attack_finished = time + 15;
+
+	if (self.fly_sound < time)
+	{
+		self.fly_sound = time + 0.5;
+		sound (self, CHAN_AUTO, "ambience/windfly.wav", 1, ATTN_NORM);
+	}
+
 	if (self.runevar > 0)
 	{
 		sprint (self, "\{133}");
-		sprint_float (self, self.runevar);
-		sprint (self, "\{133} ");
+		if (self.runevar == 3)
+		{
+			sprint (self, "Ready");
+			self.think = Bomb_Animate;
+			self.frame = 17;
+		}
+		else if (self.runevar == 2)
+			sprint (self, "Aim");
+		else if (self.runevar == 1)
+			sprint (self, "FIRE");
+		sprint (self, "\{133}\n");
 
 		self.runetime = time + 0.5;
 		self.runevar = self.runevar - 1;
@@ -48,12 +85,18 @@ Rune_Bomb =
 		return;
 	}
 
-	self.runevar = -2;
-	create_te_explosion (self.origin, 0);
-	sprint (self, "\n");
+	if (self.runevar != -2)
+	{
+		self.touch = Bomb_Touch;
+		self.movetype = MOVETYPE_FLY;
+		setsize (self, '-4 -4 -4', '4 4 4');
+		self.runevar = -2;
+	}
 
-	sure_kill ("kamiself");
-	T_RadiusDamage (RADIUS_NORMAL, self, self, 10000, self, "kamikaze");
+	HookOff ();
+	self.attack_finished = time + 15;
+	makevectors(self.v_angle);
+	self.velocity = self.velocity + v_forward * 250;
 };
 
 void ()
@@ -61,6 +104,7 @@ Bomb_Arm =
 {
 	if (self.runevar == -1)
 		self.runevar = 3;
+	self.attack_finished = time + 15;
 };
 
 void ()
@@ -561,7 +605,7 @@ Rune_Blink =
 	else if (self.runevar > 3)
 	{
 		self.runevar = 3;
-		sprint (self, "April Fools!\n");
+		centerprint (self, "April Fools!\n");
 	}
 
 	self.runetime = time + self.runevar;

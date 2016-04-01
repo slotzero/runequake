@@ -470,7 +470,10 @@ armor_touch =
 	else if (self.runevar == 2) // Rune of Good Armor droppings
 	{
 		if (!other.armortype)
+		{
 			other.armortype = ARMOR_TYPE_3;
+			other.items = other.items | IT_ARMOR3;
+		}
 		if (other.armortype	== ARMOR_TYPE_3)
 			other.armorvalue = other.armorvalue + value;
 		else
@@ -828,6 +831,11 @@ weapon_touch =
 	}
 	// weapon touch sound
 	item_sound (other, CHAN_ITEM, "weapons/pkup.wav", 1, ATTN_NORM);
+
+	if (other.runetype == RN_AMMO)
+	{
+		other.runevector_x = other.runevector_x | new;
+	}
 
 	if (requiem && other.items & new)
 		charged = 0;
