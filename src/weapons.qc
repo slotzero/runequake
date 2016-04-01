@@ -1385,6 +1385,8 @@ ImpulseCommands =
 			}
 			self.dropdelay = 0 - self.dropdelay;
 		}
+		self.items2 = 0; // Cobalt, rune removed from hud
+
 		draw_hud (1);
 		rune_tell_stop (1);
 	}

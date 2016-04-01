@@ -79,6 +79,7 @@ SetChangeParms =
 	parm12 = 0;	// observers, negative duration in game queue
 	parm13 = 0;	// observers, ridee
 	parm14 = self.rqflags;
+	parm15 = self.items2;
 
 	if (is_observer ())
 	{
@@ -248,6 +249,8 @@ DecodeLevelParms =
 	Rune_Activate (parm10, 0);
 	self.aqflags			= parm11;
 	self.rqflags			= parm14;
+	self.items2				= parm15; //Carry the rune over in the HUD
+
 };
 
 /*
@@ -654,7 +657,194 @@ SelectSpawnPoint =
 		if (lastspawn != world)
 			return lastspawn;
 	}
+	else if (deathmatch & DM_DM_MASK)
+	{
+	//~ random respawn start
+	 local float freespots, totalspots, pcount;
+	 local entity lastfreespot, thing;
+	 totalspots = 0;
 
+	 // DRS: This loop checks to find an area clear of players
+	 // within 1000qu.  No visibility checks are performed in order
+	 // to assure that you are in a relativly unpopulated area...
+	 freespots = 0;
+	 lastfreespot = world;
+
+	 spot = find(world, classname, "info_player_deathmatch");
+	 while (spot)
+	 {
+	  totalspots = totalspots + 1;
+
+	  if (spot != lastspawn)
+	  {
+	   pcount = 0;
+	   thing = findradius(spot.origin, 1000);  // search for players // 84
+	   while (thing != world && pcount == 0)
+	   {
+	    if (thing.classname == "player" && !thing.deadflag) // player found
+	     pcount = 1;
+	    thing = thing.chain;
+	   }
+	   if (!pcount)     // this is a free spot
+	   {
+	    spot.goalentity = lastfreespot;  // create reverse free spot list
+	    lastfreespot = spot;   // begin of reverse free spot list
+	    freespots = freespots + 1;
+	   }
+	  }
+
+	  // Get the next spot in the chain
+	  spot = find(spot, classname, "info_player_deathmatch");
+	 }
+
+	 if (totalspots)
+	 {
+	  if (freespots)
+	  {
+	   // We now have the number of frre spots available on the map
+	   // Generate a random number between 0 and (freespots - 1)
+	   freespots = freespots - 0.01; // random() result varies between 0.0 and (n-1).99
+	   freespots = floor(random() * freespots);
+
+	   spot = lastfreespot;
+	   while (freespots)
+	   {
+	    spot = spot.goalentity;
+	    freespots = freespots - 1;
+	   }
+	   lastspawn = spot;
+	   return spot;
+	  }
+	 }
+
+	 // DRS: This loop checks to find an area clear of players
+	 // within 1000qu.  Visibilty check is performed to at least
+	 // try and give you a relatively clear start...a failsafe for
+	 // the first loop, or if you are playing on a small level.
+	 freespots = 0;
+	 lastfreespot = world;
+
+	 spot = find(world, classname, "info_player_deathmatch");
+	 while (spot)
+	 {
+	  totalspots = totalspots + 1;
+
+	  if (spot != lastspawn)
+	  {
+	   pcount = 0;
+	   thing = findradius(spot.origin, 1000);  // search for players // 84
+	   while ( (thing!=world) && (pcount == 0) )
+	   {
+	    if (thing.classname == "player" && !thing.deadflag) // player found
+	    {
+	    local entity save;
+	    save = self;
+	                                  self = spot;
+	    if (visible(thing))
+	    pcount = 1;
+	          self = save;
+	    }
+	    thing = thing.chain;
+	   }
+	   if (!pcount)     // this is a free spot
+	   {
+	    spot.goalentity = lastfreespot;  // create reverse free spot list
+	    lastfreespot = spot;   // begin of reverse free spot list
+	    freespots = freespots + 1;
+	   }
+	  }
+
+	  // Get the next spot in the chain
+	  spot = find(spot, classname, "info_player_deathmatch");
+	 }
+
+	 if (totalspots)
+	 {
+	  if (freespots)
+	  {
+	   // We now have the number of frre spots available on the map
+	   // Generate a random number between 0 and (freespots - 1)
+	   freespots = freespots - 0.01; // random() result varies between 0.0 and (n-1).99
+	   freespots = floor(random() * freespots);
+
+	   spot = lastfreespot;
+	   while (freespots)
+	   {
+	    spot = spot.goalentity;
+	    freespots = freespots - 1;
+	   }
+	   lastspawn = spot;
+	   return spot;
+	  }
+	 }
+	  // DRS: This failsafe attempts to find a spot without
+	  // Telefragging.
+	  // ack, they are all guarded
+	  // loop through all spots to find free spots (radius 32)
+	  freespots = 0;
+	  lastfreespot = world;
+
+	  spot = find(world, classname, "info_player_deathmatch");
+	  while (spot)
+	  {
+	   if (spot != lastspawn)
+	   {
+	    pcount = 0;
+	    thing = findradius(spot.origin, 32);  // search for players
+	    while ( (thing!=world) && (pcount == 0) )
+	    {
+	     if (thing.classname == "player" && !thing.deadflag) // player found
+	      pcount = 1;
+	     thing = thing.chain;
+	    }
+	    if (!pcount)     // this is a free spot
+	    {
+	     spot.goalentity = lastfreespot;  // create reverse free spot list
+	     lastfreespot = spot;   // begin of reverse free spot list
+	     freespots = freespots + 1;
+	    }
+	   }
+
+	   // Get the next spot in the chain
+	   spot = find(spot, classname, "info_player_deathmatch");
+	  }
+
+	  if (freespots)
+	  {
+	   // We now have the number of free spots available on the map
+	   // Generate a random number between 0 and (freespots - 1)
+	   freespots = freespots - 0.01; // random() result varies between 0.0 and (n-1).99
+	   freespots = floor(random() * freespots);
+
+	   spot = lastfreespot;
+	   while (freespots)
+	   {
+	    spot = spot.goalentity;
+	    freespots = freespots - 1;
+	   }
+	   lastspawn = spot;
+	   return spot;
+	  }
+
+	  // DRS: This is the last failsafe, pick a random spot,
+	  // Telefragging is guaranteed
+	  // ack, they are all full, just pick one at random
+	  // Generate a random number between 0 and (totalspots - 1)
+	  totalspots = totalspots - 0.01; // random() result varies between 0.0 and (n-1).99
+	  totalspots = floor(random() * totalspots);
+
+	  spot = find(world, classname, "info_player_deathmatch");
+	  while (totalspots)
+	  {
+	   totalspots = totalspots - 1;
+	   spot = find(spot, classname, "info_player_deathmatch");
+	  }
+	  lastspawn = spot;
+	  return spot;
+
+	 //~ end random
+	}
+/*
 	else if (deathmatch & DM_DM_MASK)
 	{
 		// If all the spawn spots are taken, try spawning on
@@ -709,6 +899,7 @@ SelectSpawnPoint =
 		lastspawn = spot;
 		return spot;
 	}
+*/
 
 	if (serverflags & SERVERFLAGS_RUNE_MASK)
 	{	// return with a rune to start

@@ -1026,6 +1026,7 @@ Rune_Activate =
 void (float tell)
 Rune_Delete =
 {
+	self.items2 = 0;
 	if (self.runetype) // && !(self.runetype == RN_SHIELD && self.runevar == 1))
 		Rune_Activate (0, tell);
 };
@@ -1189,6 +1190,7 @@ Rune_Touch =
 
 	if (other.classname != "player")
 		return;
+
 	if (other.health <= 0)
 		return;
 	if (other == self.runent && time < self.lip)
@@ -1238,6 +1240,17 @@ Rune_Touch =
 
 	if (self.runetype != RN_LITHIUM_HOOK)
 		runecurrent = runecurrent - 1;
+
+	// Cobalt - Rune shows in hud
+	if (self.mdl == "progs/end1.mdl")
+		other.items2 = 32;
+	else if (self.mdl == "progs/end2.mdl")
+		other.items2 = 64;
+	else if (self.mdl == "progs/end3.mdl")
+		other.items2 = 128;
+	else if (self.mdl == "progs/end4.mdl")
+		other.items2 = 256;
+
 	remove (self);
 };
 

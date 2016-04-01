@@ -116,7 +116,7 @@ dead_impulses =
 	// waiting for them to spawn.
 	else if (self.impulse == IMP_RUNE_DELETE && self.runetype == RN_PHOENIX)
 	{
-		self.runetype = 0;
+		self.runetype = self.items2 = 0; // Cobalt modified for rune in hud
 		centerprint (self, "Rune Removed");
 	}
 
@@ -473,6 +473,8 @@ obs_post_think =
 			self.weaponmodel = self.owner.weaponmodel;
 		if (self.weaponframe != self.owner.weaponframe)
 			self.weaponframe = self.owner.weaponframe;
+
+		self.items2 = self.owner.items2;
 
 		if (!self.owner.aqflags & AQ_RIDER_HIDE || !ALLOW_RIDER_HIDE)
 		{
