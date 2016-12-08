@@ -416,17 +416,9 @@ ogre_melee =
 		ogre_swing1 ();
 };
 
-/*QUAKED monster_ogre (1 0 0) (-32 -32 -24) (32 32 64) Ambush
-
-*/
 void ()
-monster_ogre =
+PrecacheOgre =
 {
-	if (deathmatch & DM_DM_MASK)
-	{
-		remove (self);
-		return;
-	}
 	precache_model ("progs/ogre.mdl");
 	precache_model ("progs/h_ogre.mdl");
 	precache_model ("progs/grenade.mdl");
@@ -438,6 +430,20 @@ monster_ogre =
 	precache_sound ("ogre/ogpain1.wav");
 	precache_sound ("ogre/ogsawatk.wav");
 	precache_sound ("ogre/ogwake.wav");
+};
+
+/*QUAKED monster_ogre (1 0 0) (-32 -32 -24) (32 32 64) Ambush
+*/
+void ()
+monster_ogre =
+{
+	if (deathmatch & DM_DM_MASK)
+	{
+		remove (self);
+		return;
+	}
+
+	PrecacheOgre ();
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

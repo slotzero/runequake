@@ -414,16 +414,9 @@ hknight_melee =
 	}
 };
 
-/*QUAKED monster_hell_knight (1 0 0) (-16 -16 -24) (16 16 40) Ambush
-*/
 void ()
-monster_hell_knight =
+PrecacheHellKnight =
 {
-	if (deathmatch & DM_DM_MASK)
-	{
-		remove (self);
-		return;
-	}
 	precache_model ("progs/hknight.mdl");
 	precache_model ("progs/k_spike.mdl");
 	precache_model ("progs/h_hellkn.mdl");
@@ -439,6 +432,20 @@ monster_hell_knight =
 
 	precache_sound ("knight/sword1.wav");
 	precache_sound ("knight/sword2.wav");
+};
+
+/*QUAKED monster_hell_knight (1 0 0) (-16 -16 -24) (16 16 40) Ambush
+*/
+void ()
+monster_hell_knight =
+{
+	if (deathmatch & DM_DM_MASK)
+	{
+		remove (self);
+		return;
+	}
+
+	PrecacheHellKnight ();
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

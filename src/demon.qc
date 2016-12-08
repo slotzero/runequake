@@ -192,6 +192,20 @@ Demon_MeleeAttack =
 	demon1_atta1 ();
 };
 
+void ()
+PrecacheDemon =
+{
+	precache_model ("progs/demon.mdl");
+	precache_model ("progs/h_demon.mdl");
+
+	precache_sound ("demon/ddeath.wav");
+	precache_sound ("demon/dhit2.wav");
+	precache_sound ("demon/djump.wav");
+	precache_sound ("demon/dpain1.wav");
+	precache_sound ("demon/idle1.wav");
+	precache_sound ("demon/sight2.wav");
+};
+
 /*QUAKED monster_demon1 (1 0 0) (-32 -32 -24) (32 32 64) Ambush
 
 */
@@ -203,15 +217,8 @@ monster_demon1 =
 		remove (self);
 		return;
 	}
-	precache_model ("progs/demon.mdl");
-	precache_model ("progs/h_demon.mdl");
 
-	precache_sound ("demon/ddeath.wav");
-	precache_sound ("demon/dhit2.wav");
-	precache_sound ("demon/djump.wav");
-	precache_sound ("demon/dpain1.wav");
-	precache_sound ("demon/idle1.wav");
-	precache_sound ("demon/sight2.wav");
+	PrecacheDemon ();
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

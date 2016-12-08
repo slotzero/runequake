@@ -189,7 +189,16 @@ void ()	tbaby_die2	=[	$exp,		tbaby_run1	]
 	BecomeExplosion ();
 };
 
-//=============================================================================
+void ()
+PrecacheTarbaby =
+{
+	precache_model ("progs/tarbaby.mdl");
+
+	precache_sound ("blob/death1.wav");
+	precache_sound ("blob/hit1.wav");
+	precache_sound ("blob/land1.wav");
+	precache_sound ("blob/sight1.wav");
+};
 
 /*QUAKED monster_tarbaby (1 0 0) (-16 -16 -24) (16 16 24) Ambush
 */
@@ -201,12 +210,8 @@ monster_tarbaby =
 		remove (self);
 		return;
 	}
-	precache_model ("progs/tarbaby.mdl");
 
-	precache_sound ("blob/death1.wav");
-	precache_sound ("blob/hit1.wav");
-	precache_sound ("blob/land1.wav");
-	precache_sound ("blob/sight1.wav");
+	PrecacheTarbaby ();
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

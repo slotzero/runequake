@@ -341,10 +341,20 @@ DogCheckAttack =
 	return FALSE;
 };
 
-//===========================================================================
+void ()
+PrecacheDog =
+{
+	precache_model ("progs/h_dog.mdl");
+	precache_model ("progs/dog.mdl");
+
+	precache_sound ("dog/dattack1.wav");
+	precache_sound ("dog/ddeath.wav");
+	precache_sound ("dog/dpain1.wav");
+	precache_sound ("dog/dsight.wav");
+	precache_sound ("dog/idle.wav");
+};
 
 /*QUAKED monster_dog (1 0 0) (-32 -32 -24) (32 32 40) Ambush
-
 */
 void ()
 monster_dog =
@@ -354,14 +364,8 @@ monster_dog =
 		remove (self);
 		return;
 	}
-	precache_model ("progs/h_dog.mdl");
-	precache_model ("progs/dog.mdl");
 
-	precache_sound ("dog/dattack1.wav");
-	precache_sound ("dog/ddeath.wav");
-	precache_sound ("dog/dpain1.wav");
-	precache_sound ("dog/dsight.wav");
-	precache_sound ("dog/idle.wav");
+	PrecacheDog ();
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

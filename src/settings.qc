@@ -346,7 +346,7 @@ float AUTO_CORPSE_OBSERVER	= 90;
 // full game (as not everybody will have reconnected yet).  Places which
 // test that sort of thing give this many seconds as a grace period.
 
-float LEVEL_RECONNECT_ALLOWANCE	= 15;
+float LEVEL_RECONNECT_ALLOWANCE	= 3;
 
 // If this is set to a value greater than 0, runes and weapons will not
 // carry over when you start a new level.

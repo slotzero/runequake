@@ -268,16 +268,9 @@ boss_awake =
 	boss_rise1 ();
 };
 
-/*QUAKED monster_boss (1 0 0) (-128 -128 -24) (128 128 256)
-*/
 void ()
-monster_boss =
+PrecacheBoss =
 {
-	if (deathmatch & DM_DM_MASK)
-	{
-		remove (self);
-		return;
-	}
 	precache_model ("progs/boss.mdl");
 	precache_model ("progs/lavaball.mdl");
 
@@ -288,6 +281,20 @@ monster_boss =
 	precache_sound ("boss1/throw.wav");
 	precache_sound ("boss1/pain.wav");
 	precache_sound ("boss1/death.wav");
+};
+
+/*QUAKED monster_boss (1 0 0) (-128 -128 -24) (128 128 256)
+*/
+void ()
+monster_boss =
+{
+	if (deathmatch & DM_DM_MASK)
+	{
+		remove (self);
+		return;
+	}
+
+	PrecacheBoss ();
 
 	total_monsters = total_monsters + 1;
 

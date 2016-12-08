@@ -246,6 +246,20 @@ knight_die =
 		knight_dieb1 ();
 };
 
+void ()
+PrecacheKnight =
+{
+	precache_model ("progs/knight.mdl");
+	precache_model ("progs/h_knight.mdl");
+
+	precache_sound ("knight/kdeath.wav");
+	precache_sound ("knight/khurt.wav");
+	precache_sound ("knight/ksight.wav");
+	precache_sound ("knight/sword1.wav");
+	precache_sound ("knight/sword2.wav");
+	precache_sound ("knight/idle.wav");
+};
+
 /*QUAKED monster_knight (1 0 0) (-16 -16 -24) (16 16 40) Ambush
 */
 void ()
@@ -256,15 +270,8 @@ monster_knight =
 		remove (self);
 		return;
 	}
-	precache_model ("progs/knight.mdl");
-	precache_model ("progs/h_knight.mdl");
 
-	precache_sound ("knight/kdeath.wav");
-	precache_sound ("knight/khurt.wav");
-	precache_sound ("knight/ksight.wav");
-	precache_sound ("knight/sword1.wav");
-	precache_sound ("knight/sword2.wav");
-	precache_sound ("knight/idle.wav");
+	PrecacheKnight ();
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

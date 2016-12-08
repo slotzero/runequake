@@ -335,7 +335,8 @@ rjs_worldspawn =
 	if (!sys_ticrate) sys_ticrate = 0.1;
 
 	scratch1	= cvar_infokey ("scratch1");
-	gamemode	= cvar_infokey (CVAR_C3);
+	//gamemode	= cvar_infokey (CVAR_C3);
+	gamemode = MODE_SURVIVAL; // Zop: for testing
 	options		= cvar_infokey (CVAR_C4);
 	options2	= cvar_infokey (CVAR_C5);
 	storage		= cvar_infokey (CVAR_C6);
@@ -373,6 +374,13 @@ rjs_worldspawn =
 	{
 		match	= spawn ();
 		match_init ();
+	}
+	else if (gamemode == MODE_SURVIVAL)
+	{
+		DirectorPrecaches ();
+		director = spawn ();
+		director.think = DirectorFirstThink;
+		director.nextthink = time + 3;
 	}
 
 	timelimit_countdown_spawn ();

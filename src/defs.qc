@@ -1269,6 +1269,7 @@ float	MODE_ARENA		= 2;
 float	MODE_MATCH		= 4;
 float	MODE_MIDAIR		= 10;
 float	MODE_HEADS		= 16;
+float   MODE_SURVIVAL   = 32;
 
 // options
 float	options;
@@ -1656,6 +1657,9 @@ string	timeset_gold = "\5\{0}":"\1\0":"\1\5":"\2\0":"\2\5":"\3\0";
 // head hunters mode
 .float	num_heads;
 .entity	head_chain;
+
+// survival mode
+entity director;
 
 // eff, kill, killstats
 .float	shell_dmg_max;

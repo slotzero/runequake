@@ -253,7 +253,16 @@ nopain =
 	self.health = 40000;
 };
 
-//============================================================================
+void ()
+PrecacheShub =
+{
+	precache_model ("progs/oldone.mdl");
+
+	precache_sound ("boss2/death.wav");
+	precache_sound ("boss2/idle.wav");
+	precache_sound ("boss2/sight.wav");
+	precache_sound ("boss2/pop2.wav");
+};
 
 /*QUAKED monster_oldone (1 0 0) (-16 -16 -24) (16 16 32)
 */
@@ -266,12 +275,7 @@ monster_oldone =
 		return;
 	}
 
-	precache_model ("progs/oldone.mdl");
-
-	precache_sound ("boss2/death.wav");
-	precache_sound ("boss2/idle.wav");
-	precache_sound ("boss2/sight.wav");
-	precache_sound ("boss2/pop2.wav");
+	PrecacheShub ();
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

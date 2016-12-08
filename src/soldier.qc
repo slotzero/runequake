@@ -254,16 +254,9 @@ army_die =
 		army_cdie1 ();
 };
 
-/*QUAKED monster_army (1 0 0) (-16 -16 -24) (16 16 40) Ambush
-*/
 void ()
-monster_army =
+PrecacheSoldier =
 {
-	if (deathmatch & DM_DM_MASK)
-	{
-		remove (self);
-		return;
-	}
 	precache_model ("progs/soldier.mdl");
 	precache_model ("progs/h_guard.mdl");
 	precache_model ("progs/gib1.mdl");
@@ -278,6 +271,20 @@ monster_army =
 	precache_sound ("soldier/sight1.wav");
 
 	precache_sound ("player/udeath.wav");		// gib death
+};
+
+/*QUAKED monster_army (1 0 0) (-16 -16 -24) (16 16 40) Ambush
+*/
+void ()
+monster_army =
+{
+	if (deathmatch & DM_DM_MASK)
+	{
+		remove (self);
+		return;
+	}
+
+	PrecacheSoldier ();
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

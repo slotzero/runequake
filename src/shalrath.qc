@@ -204,7 +204,20 @@ ShalMissileTouch =
 	create_te_explosion (self.origin, 1);
 };
 
-//=================================================================
+void ()
+PrecacheShalrath =
+{
+	precache_model ("progs/shalrath.mdl");
+	precache_model ("progs/h_shal.mdl");
+	precache_model ("progs/v_spike.mdl");
+
+	precache_sound ("shalrath/attack.wav");
+	precache_sound ("shalrath/attack2.wav");
+	precache_sound ("shalrath/death.wav");
+	precache_sound ("shalrath/idle.wav");
+	precache_sound ("shalrath/pain.wav");
+	precache_sound ("shalrath/sight.wav");
+};
 
 /*QUAKED monster_shalrath (1 0 0) (-32 -32 -24) (32 32 48) Ambush
 */
@@ -216,16 +229,8 @@ monster_shalrath =
 		remove (self);
 		return;
 	}
-	precache_model ("progs/shalrath.mdl");
-	precache_model ("progs/h_shal.mdl");
-	precache_model ("progs/v_spike.mdl");
 
-	precache_sound ("shalrath/attack.wav");
-	precache_sound ("shalrath/attack2.wav");
-	precache_sound ("shalrath/death.wav");
-	precache_sound ("shalrath/idle.wav");
-	precache_sound ("shalrath/pain.wav");
-	precache_sound ("shalrath/sight.wav");
+	PrecacheShalrath ();
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

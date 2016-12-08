@@ -259,17 +259,9 @@ enf_die =
 		enf_fdie1 ();
 };
 
-/*QUAKED monster_enforcer (1 0 0) (-16 -16 -24) (16 16 40) Ambush
-
-*/
 void ()
-monster_enforcer =
+PrecacheEnforcer =
 {
-	if (deathmatch & DM_DM_MASK)
-	{
-		remove (self);
-		return;
-	}
 	precache_model ("progs/enforcer.mdl");
 	precache_model ("progs/h_mega.mdl");
 	precache_model ("progs/laser.mdl");
@@ -284,6 +276,20 @@ monster_enforcer =
 	precache_sound ("enforcer/sight2.wav");
 	precache_sound ("enforcer/sight3.wav");
 	precache_sound ("enforcer/sight4.wav");
+};
+
+/*QUAKED monster_enforcer (1 0 0) (-16 -16 -24) (16 16 40) Ambush
+*/
+void ()
+monster_enforcer =
+{
+	if (deathmatch & DM_DM_MASK)
+	{
+		remove (self);
+		return;
+	}
+
+	PrecacheEnforcer ();
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

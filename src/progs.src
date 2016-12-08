@@ -60,23 +60,19 @@ plats.qc
 misc.qc
 light.qc
 spawn.qc
-
-// The //nomonster comments are used by the Makefile to build the version
-// with monsters.
-
-nomonst.qc
-//nomonster ogre.qc
-//nomonster demon.qc
+ogre.qc
+demon.qc
 shambler.qc
-//nomonster knight.qc
-//nomonster soldier.qc
-//nomonster wizard.qc
-//nomonster dog.qc
+knight.qc
+soldier.qc
+wizard.qc
+dog.qc
 zombie.qc
-//nomonster boss.qc
-//nomonster tarbaby.qc		// registered
-//nomonster hknight.qc		// registered
-//nomonster fish.qc		    // registered
-//nomonster shalrath.qc		// registered
-//nomonster enforcer.qc		// registered
-//nomonster oldone.qc		// registered
+boss.qc
+tarbaby.qc
+hknight.qc
+fish.qc
+shalrath.qc
+enforcer.qc
+oldone.qc
+survival.qc

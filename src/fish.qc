@@ -168,6 +168,16 @@ fish_pain =
 	f_pain1 ();
 };
 
+void ()
+PrecacheFish =
+{
+	precache_model ("progs/fish.mdl");
+
+	precache_sound ("fish/death.wav");
+	precache_sound ("fish/bite.wav");
+	precache_sound ("fish/idle.wav");
+};
+
 /*QUAKED monster_fish (1 0 0) (-16 -16 -24) (16 16 24) Ambush
 */
 void ()
@@ -178,11 +188,8 @@ monster_fish =
 		remove (self);
 		return;
 	}
-	precache_model ("progs/fish.mdl");
 
-	precache_sound ("fish/death.wav");
-	precache_sound ("fish/bite.wav");
-	precache_sound ("fish/idle.wav");
+    PrecacheFish ();
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

@@ -12,3 +12,5 @@ iplog.dat
 qconsole.log
 banlog.dat
 config.cfg
+maps/
+settings.qc

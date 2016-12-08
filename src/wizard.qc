@@ -389,16 +389,9 @@ Wiz_Missile =
 	wiz_fast1 ();
 };
 
-/*QUAKED monster_wizard (1 0 0) (-16 -16 -24) (16 16 40) Ambush
-*/
 void ()
-monster_wizard =
+PrecacheWizard =
 {
-	if (deathmatch & DM_DM_MASK)
-	{
-		remove (self);
-		return;
-	}
 	precache_model ("progs/wizard.mdl");
 	precache_model ("progs/h_wizard.mdl");
 	precache_model ("progs/w_spike.mdl");
@@ -410,6 +403,20 @@ monster_wizard =
 	precache_sound ("wizard/widle2.wav");
 	precache_sound ("wizard/wpain.wav");
 	precache_sound ("wizard/wsight.wav");
+};
+
+/*QUAKED monster_wizard (1 0 0) (-16 -16 -24) (16 16 40) Ambush
+*/
+void ()
+monster_wizard =
+{
+	if (deathmatch & DM_DM_MASK)
+	{
+		remove (self);
+		return;
+	}
+
+	PrecacheWizard ();
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;
