@@ -46,10 +46,13 @@ void (entity e) DirectorSpawnWalker = {
 	e.nextthink = time + random ()*0.5;
 };
 
+// ==== ====
+
 void () SpawnDog = {
     local entity e;
     e = spawn ();
 
+    e.classname = "monster_dog";
 	setmodel (e, "progs/dog.mdl");
 	setsize (e, '-32 -32 -24', '32 32 40');
 	e.health = 25;
@@ -69,6 +72,7 @@ void () SpawnSoldier = {
     local entity e;
     e = spawn ();
 
+    e.classname = "monster_soldier";
 	setmodel (e, "progs/soldier.mdl");
 	setsize (e, '-16 -16 -24', '16 16 40');
 	e.health = 30;
@@ -83,6 +87,69 @@ void () SpawnSoldier = {
 	DirectorSpawnWalker(e);
 };
 
+void () SpawnKnight = {
+    local entity e;
+    e = spawn ();
+
+    e.classname = "monster_knight";
+	setmodel (e, "progs/knight.mdl");
+
+	setsize (e, '-16 -16 -24', '16 16 40');
+	e.health = 75;
+
+	e.th_stand = knight_stand1;
+	e.th_walk = knight_walk1;
+	e.th_run = knight_run1;
+	e.th_melee = knight_atk1;
+	e.th_pain = knight_pain;
+	e.th_die = knight_die;
+
+	DirectorSpawnWalker(e);
+};
+
+void () SpawnEnforcer = {
+    local entity e;
+    e = spawn ();
+
+    e.classname = "monster_enforcer";
+	setmodel (e, "progs/enforcer.mdl");
+
+	setsize (e, '-16 -16 -24', '16 16 40');
+	e.health = 80;
+
+	e.th_stand = enf_stand1;
+	e.th_walk = enf_walk1;
+	e.th_run = enf_run1;
+	e.th_pain = enf_pain;
+	e.th_die = enf_die;
+	e.th_missile = enf_atk1;
+
+	DirectorSpawnWalker(e);
+};
+
+void () SpawnOgre = {
+    local entity e;
+    e = spawn ();
+
+    e.classname = "monster_ogre";
+	setmodel (e, "progs/ogre.mdl");
+
+	setsize (e, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	e.health = 200;
+
+	e.th_stand = ogre_stand1;
+	e.th_walk = ogre_walk1;
+	e.th_run = ogre_run1;
+	e.th_die = ogre_die;
+	e.th_melee = ogre_melee;
+	e.th_missile = ogre_nail1;
+	e.th_pain = ogre_pain;
+
+	DirectorSpawnWalker(e);
+};
+
+// ===== =====
+
 void () SpawnSomething = {
     local float i;
 
@@ -92,11 +159,20 @@ void () SpawnSomething = {
         SpawnDog ();
     else if (i == 1)
         SpawnSoldier ();
+    else if (i == 2)
+        SpawnEnforcer ();
+    else if (i == 3)
+        SpawnKnight ();
+    else if (i == 4)
+        SpawnOgre ();
     else
         // shouldn't happen
         return;
 
     total_monsters = total_monsters + 1;
+    WriteByte (MSG_ALL, 3); // 3 = svc_updatestat
+    WriteByte (MSG_ALL, 12); // 12 = STAT_TOTALMONSTERS
+    WriteLong (MSG_ALL, total_monsters);
 
     if (self.aqstate & 1)
     {
@@ -125,7 +201,10 @@ void () DirectorThink = {
 
     // no players in game
     if (self.enemy == world)
+    {
+        dprint ("No enemies\n");
         return;
+    }
 
     if (killed_monsters == total_monsters)
     {
@@ -134,7 +213,7 @@ void () DirectorThink = {
 };
 
 void () DirectorFirstThink = {
-    self.max_health = 2; // number of valid monsters coded
+    self.max_health = 5; // number of valid monsters coded
 
     self.goalentity = find (world, classname, "info_player_deathmatch");
     if (self.goalentity == world)
