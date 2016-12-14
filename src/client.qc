@@ -2398,6 +2398,9 @@ ClientObituary =
 
 			if (f)
 			{
+				if (gamemode & MODE_SURVIVAL)
+					f = f * 100;
+
 				add_frag (attacker, f);
 				attacker.suicide = attacker.suicide + 1; // killstats
 			}
@@ -2695,7 +2698,11 @@ ClientObituary =
 		return;
 	}
 
-	add_frag (targ, -1);
+	if (gamemode & MODE_SURVIVAL)
+		add_frag (targ, -50);
+	else
+		add_frag (targ, -1);
+
 	targ.suicide = targ.suicide + 1; // killstats
 	bprint (targ.netname);
 

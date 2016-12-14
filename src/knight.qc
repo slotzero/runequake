@@ -209,7 +209,7 @@ void ()	knight_die6	=[	$death6,	knight_die7	] {};
 void ()	knight_die7	=[	$death7,	knight_die8	] {};
 void ()	knight_die8	=[	$death8,	knight_die9	] {};
 void ()	knight_die9	=[	$death9,	knight_die10] {};
-void ()	knight_die10=[	$death10,	knight_die10] {};
+void ()	knight_die10=[	$death10,	monster_die] {};
 
 void ()	knight_dieb1	=[	$deathb1,	knight_dieb2	] {};
 void ()	knight_dieb2	=[	$deathb2,	knight_dieb3	] {};
@@ -222,7 +222,7 @@ void ()	knight_dieb7	=[	$deathb7,	knight_dieb8	] {};
 void ()	knight_dieb8	=[	$deathb8,	knight_dieb9	] {};
 void ()	knight_dieb9	=[	$deathb9,	knight_dieb10] {};
 void ()	knight_dieb10 = [	$deathb10,	knight_dieb11] {};
-void ()	knight_dieb11 = [	$deathb11,	knight_dieb11] {};
+void ()	knight_dieb11 = [	$deathb11,	monster_die] {};
 
 void ()
 knight_die =
@@ -231,7 +231,7 @@ knight_die =
 	if (self.health < -40)
 	{
 		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
-		ThrowHead ("progs/h_knight.mdl", self.health);
+		ThrowMonsterHead ("progs/h_knight.mdl", self.health);
 		ThrowGib ("progs/gib1.mdl", self.health);
 		ThrowGib ("progs/gib2.mdl", self.health);
 		ThrowGib ("progs/gib3.mdl", self.health);

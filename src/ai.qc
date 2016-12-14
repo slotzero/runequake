@@ -554,18 +554,18 @@ CheckAnyAttack =
 {
 	if (!enemy_vis)
 		return FALSE;
-//nomonster	if (self.classname == "monster_army")
-//nomonster		return SoldierCheckAttack ();
-//nomonster	if (self.classname == "monster_ogre")
-//nomonster		return OgreCheckAttack ();
+	if (self.classname == "monster_army")
+		return SoldierCheckAttack ();
+	if (self.classname == "monster_ogre")
+		return OgreCheckAttack ();
 	if (is_shambler ())
 		return ShamCheckAttack ();
-//nomonster	if (self.classname == "monster_demon1")
-//nomonster		return DemonCheckAttack ();
-//nomonster	if (self.classname == "monster_dog")
-//nomonster		return DogCheckAttack ();
-//nomonster	if (self.classname == "monster_wizard")
-//nomonster		return WizardCheckAttack ();
+	if (self.classname == "monster_demon1")
+		return DemonCheckAttack ();
+	if (self.classname == "monster_dog")
+		return DogCheckAttack ();
+	if (self.classname == "monster_wizard")
+		return WizardCheckAttack ();
 	return CheckAttack ();
 };
 

@@ -64,10 +64,10 @@ CheckAttack =
 	{	// melee attack
 		if (self.th_melee)
 		{
-//nomonster			if (self.classname == "monster_knight")
-//nomonster				knight_attack ();
-//nomonster			else
-			self.th_melee ();
+			if (self.classname == "monster_knight")
+				knight_attack ();
+			else
+				self.th_melee ();
 			return TRUE;
 		}
 	}

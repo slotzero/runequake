@@ -1,6 +1,6 @@
 // director's floats
 //
-// director.state =
+// director.state = number of spawnpoints
 // director.delay =
 // director.max_health = number of monster types
 // director.armortype =
@@ -29,6 +29,7 @@
 // ==== Spawns ====
 
 void (entity e) DirectorSpawnWalker = {
+	setsize (e, '-16 -16 -24', '16 16 40'); // some spawnpoints would put ogres in walls
 	e.solid = SOLID_SLIDEBOX;
 	e.movetype = MOVETYPE_STEP;
 	e.takedamage = DAMAGE_AIM;
@@ -38,6 +39,25 @@ void (entity e) DirectorSpawnWalker = {
 	e.view_ofs = '0 0 25';
 	e.use = monster_use;
 	e.flags	= self.flags | FL_MONSTER;
+    setorigin (e, director.goalentity.origin);
+    e.angles = director.goalentity.angles;
+
+	e.enemy = director.enemy;
+	e.think = HuntTarget;
+	e.nextthink = time + random ()*0.25;
+};
+
+void (entity e) DirectorSpawnFlyer = {
+	setsize (e, '-16 -16 -24', '16 16 40');
+	e.solid = SOLID_SLIDEBOX;
+	e.movetype = MOVETYPE_STEP;
+	e.takedamage = DAMAGE_AIM;
+
+	e.ideal_yaw	= e.angles * '0 1 0';
+	e.yaw_speed = 20;
+	e.view_ofs = '0 0 25';
+	e.use = monster_use;
+	e.flags	= self.flags | FL_MONSTER | FL_FLY;
     setorigin (e, director.goalentity.origin);
     e.angles = director.goalentity.angles;
 
@@ -52,9 +72,9 @@ void () SpawnDog = {
     local entity e;
     e = spawn ();
 
+    e.frags = 1;
     e.classname = "monster_dog";
 	setmodel (e, "progs/dog.mdl");
-	setsize (e, '-32 -32 -24', '32 32 40');
 	e.health = 25;
 
 	e.th_stand = dog_stand1;
@@ -72,9 +92,9 @@ void () SpawnSoldier = {
     local entity e;
     e = spawn ();
 
+    e.frags = 2;
     e.classname = "monster_soldier";
 	setmodel (e, "progs/soldier.mdl");
-	setsize (e, '-16 -16 -24', '16 16 40');
 	e.health = 30;
 
 	e.th_stand = army_stand1;
@@ -91,10 +111,9 @@ void () SpawnKnight = {
     local entity e;
     e = spawn ();
 
+    e.frags = 1;
     e.classname = "monster_knight";
 	setmodel (e, "progs/knight.mdl");
-
-	setsize (e, '-16 -16 -24', '16 16 40');
 	e.health = 75;
 
 	e.th_stand = knight_stand1;
@@ -111,10 +130,9 @@ void () SpawnEnforcer = {
     local entity e;
     e = spawn ();
 
+    e.frags = 2;
     e.classname = "monster_enforcer";
 	setmodel (e, "progs/enforcer.mdl");
-
-	setsize (e, '-16 -16 -24', '16 16 40');
 	e.health = 80;
 
 	e.th_stand = enf_stand1;
@@ -131,10 +149,9 @@ void () SpawnOgre = {
     local entity e;
     e = spawn ();
 
+    e.frags = 5;
     e.classname = "monster_ogre";
 	setmodel (e, "progs/ogre.mdl");
-
-	setsize (e, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	e.health = 200;
 
 	e.th_stand = ogre_stand1;
@@ -148,10 +165,167 @@ void () SpawnOgre = {
 	DirectorSpawnWalker(e);
 };
 
+void () SpawnDemon = {
+    local entity e;
+    e = spawn ();
+
+    e.frags = 6;
+    e.classname = "monster_demon1";
+	setmodel (e, "progs/demon.mdl");
+	e.health = 300;
+
+	e.th_stand = demon1_stand1;
+	e.th_walk = demon1_walk1;
+	e.th_run = demon1_run1;
+	e.th_die = demon_die;
+	e.th_melee = Demon_MeleeAttack;
+	e.th_missile = demon1_jump1;
+	e.th_pain = demon1_pain;
+
+	DirectorSpawnWalker(e);
+};
+
+void () SpawnTarbaby = {
+    local entity e;
+    e = spawn ();
+
+    e.frags = 4;
+    e.classname = "monster_tarbaby";
+	setmodel (e, "progs/tarbaby.mdl");
+	e.health = 80;
+
+	e.th_stand = tbaby_stand1;
+	e.th_walk = tbaby_walk1;
+	e.th_run = tbaby_run1;
+	e.th_missile = tbaby_jump1;
+	e.th_melee = tbaby_jump1;
+	e.th_die = tbaby_die1;
+
+	DirectorSpawnWalker(e);
+};
+
+void () SpawnWizard = {
+    local entity e;
+    e = spawn ();
+
+    e.frags = 4;
+    e.classname = "monster_wizard";
+	setmodel (e, "progs/wizard.mdl");
+	e.health = 80;
+
+	e.th_stand = wiz_stand1;
+	e.th_walk = wiz_walk1;
+	e.th_run = wiz_run1;
+	e.th_missile = Wiz_Missile;
+	e.th_pain = Wiz_Pain;
+	e.th_die = wiz_die;
+
+	DirectorSpawnFlyer(e);
+};
+
+void () SpawnFish = {
+    local entity e;
+    e = spawn ();
+
+    e.frags = 1;
+    e.classname = "monster_fish";
+	setmodel (e, "progs/fish.mdl");
+
+	e.health = 25;
+
+	e.th_stand = f_stand1;
+	e.th_walk = f_walk1;
+	e.th_run = f_run1;
+	e.th_die = f_death1;
+	e.th_pain = fish_pain;
+	e.th_melee = f_attack1;
+
+	DirectorSpawnFlyer(e);
+	setsize (e, '-16 -16 -24', '16 16 24');
+};
+
+void () SpawnHellKnight = {
+    local entity e;
+    e = spawn ();
+
+    e.frags = 5;
+    e.classname = "monster_hell_knight";
+	setmodel (e, "progs/hknight.mdl");
+	e.health = 250;
+
+	e.th_stand = hknight_stand1;
+	e.th_walk = hknight_walk1;
+	e.th_run = hknight_run1;
+	e.th_melee = hknight_melee;
+	e.th_missile = hknight_magicc1;
+	e.th_pain = hknight_pain;
+	e.th_die = hknight_die;
+
+	DirectorSpawnWalker(e);
+};
+
+void () SpawnZombie = {
+    local entity e;
+    e = spawn ();
+
+    e.frags = 1;
+    e.classname = "monster_hell_knight";
+	setmodel (e, "progs/zombie.mdl");
+	e.max_health = 60;
+	e.health = 60;
+
+	e.th_stand = zombie_stand1;
+	e.th_walk = zombie_walk1;
+	e.th_run = zombie_run1;
+	e.th_pain = zombie_pain;
+	e.th_die = zombie_die;
+	e.th_missile = zombie_missile;
+
+	DirectorSpawnWalker(e);
+};
+
 // ===== =====
 
 void () SpawnSomething = {
     local float i;
+    local entity e;
+
+    // find next spawnpoint
+    if (self.aqstate & 1)
+    {
+        self.goalentity = find (self.goalentity, classname, "info_player_start");
+        if (self.goalentity == world)
+            self.goalentity = find (self.goalentity, classname, "info_player_start");
+
+        // anything in the way?
+        e = findradius (self.goalentity.origin, 48);
+        while (e != world)
+        {
+            if (e.health)
+                if (!(e.flags & FL_ITEM))
+                    return;
+            e = e.chain;
+        }
+    } else
+    {
+        self.goalentity = find (self.goalentity, classname, "info_player_deathmatch");
+        if (self.goalentity == world)
+            self.goalentity = find (self.goalentity, classname, "info_player_deathmatch");
+
+        // anything in the way?
+        e = findradius (self.goalentity.origin, 48);
+        while (e != world)
+        {
+            if (e.health)
+                if (!(e.flags & FL_ITEM))
+                    return;
+            e = e.chain;
+        }
+    }
+
+    self.enemy = find (self.enemy, classname, "player");
+    if (self.enemy == world)
+        self.enemy = find (self.enemy, classname, "player");
 
     i = floor(random () * self.max_health);
 
@@ -165,6 +339,18 @@ void () SpawnSomething = {
         SpawnKnight ();
     else if (i == 4)
         SpawnOgre ();
+    else if (i == 5)
+        SpawnDemon ();
+    else if (i == 6)
+        SpawnTarbaby ();
+    else if (i == 7)
+        SpawnWizard ();
+    else if (i == 8)
+        SpawnFish ();
+    else if (i == 9)
+        SpawnHellKnight ();
+    else if (i == 10)
+        SpawnZombie ();
     else
         // shouldn't happen
         return;
@@ -173,22 +359,6 @@ void () SpawnSomething = {
     WriteByte (MSG_ALL, 3); // 3 = svc_updatestat
     WriteByte (MSG_ALL, 12); // 12 = STAT_TOTALMONSTERS
     WriteLong (MSG_ALL, total_monsters);
-
-    if (self.aqstate & 1)
-    {
-        self.goalentity = find (self.goalentity, classname, "info_player_start");
-        if (self.goalentity == world)
-            self.goalentity = find (self.goalentity, classname, "info_player_start");
-    } else
-    {
-        self.goalentity = find (self.goalentity, classname, "info_player_deathmatch");
-        if (self.goalentity == world)
-            self.goalentity = find (self.goalentity, classname, "info_player_deathmatch");
-    }
-
-    self.enemy = find (self.enemy, classname, "player");
-    if (self.enemy == world)
-        self.enemy = find (self.enemy, classname, "player");
 };
 
 // ==== Thinks ====
@@ -206,19 +376,21 @@ void () DirectorThink = {
         return;
     }
 
-    if (killed_monsters == total_monsters)
+    if (total_monsters - killed_monsters < 50)
     {
         SpawnSomething ();
     }
 };
 
 void () DirectorFirstThink = {
-    self.max_health = 5; // number of valid monsters coded
+    local float i;
+
+    self.max_health = 11; // number of valid monsters coded
 
     self.goalentity = find (world, classname, "info_player_deathmatch");
     if (self.goalentity == world)
     {
-        bprint("Director: No dm spawns found.\n");
+        dprint("Director: No dm spawns found.\n");
         self.aqstate = 1;
         self.goalentity = find(world, classname, "info_player_start");
         if (self.goalentity == world)
@@ -227,8 +399,18 @@ void () DirectorFirstThink = {
             remove (self);
             return;
         }
-    }
+    } else
+    {
+        while (self.goalentity != world)
+        {
+            i = i + 1;
+            self.goalentity = find (self.goalentity, classname, "info_player_deathmatch");
+        }
 
+        self.state = i;
+        // self.goalentity is world, but it will be skipped
+        // self.goalentity = find (self.goalentity, classname, "info_player_deathmatch");
+    }
     self.think = DirectorThink;
     self.nextthink = time + 1;
 };
@@ -246,4 +428,5 @@ void () DirectorPrecaches = {
     PrecacheShub ();
 	PrecacheSoldier ();
     PrecacheTarbaby ();
+    PrecacheWizard ();
 };

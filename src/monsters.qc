@@ -254,3 +254,35 @@ swimmonster_start =
 	self.think = swimmonster_start_go;
 	total_monsters = total_monsters + 1;
 };
+
+void ()
+monster_die =
+{
+	self.think = SUB_Remove;
+	self.nextthink = time + 10;
+};
+
+void (string gibname, float dm)
+ThrowMonsterHead =
+{
+	if (gamemode == MODE_HEADS)
+	{
+		head_throw (gibname, dm);
+		return;
+	}
+
+	setmodel (self, gibname);
+	self.frame = 0;
+	self.movetype = MOVETYPE_BOUNCE;
+	self.takedamage = DAMAGE_NO;
+	self.solid = SOLID_NOT;
+	self.view_ofs = '0 0 8';
+	setsize (self, '-16 -16 0', '16 16 56');
+	self.velocity = VelocityForDamage (dm);
+	self.origin_z = self.origin_z - 24;
+	self.flags = self.flags - (self.flags & FL_ONGROUND);
+	self.avelocity = crandom () * '0 600 0';
+
+	self.think = SUB_Remove;
+	self.nextthink	= time + 10;
+};

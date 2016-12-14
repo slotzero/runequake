@@ -166,7 +166,7 @@ void ()	demon1_die6		=[	$death6,		demon1_die7	]
 {self.solid = SOLID_NOT;};
 void ()	demon1_die7		=[	$death7,		demon1_die8	] {};
 void ()	demon1_die8		=[	$death8,		demon1_die9	] {};
-void ()	demon1_die9		=[	$death9,		demon1_die9 ] {};
+void ()	demon1_die9		=[	$death9,		monster_die ] {};
 
 void ()
 demon_die =
@@ -175,7 +175,7 @@ demon_die =
 	if (self.health < -80)
 	{
 		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
-		ThrowHead ("progs/h_demon.mdl", self.health);
+		ThrowMonsterHead ("progs/h_demon.mdl", self.health);
 		ThrowGib ("progs/gib1.mdl", self.health);
 		ThrowGib ("progs/gib1.mdl", self.health);
 		ThrowGib ("progs/gib1.mdl", self.health);

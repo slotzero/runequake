@@ -354,7 +354,7 @@ void ()	wiz_death4	=[	$death4,		wiz_death5	] {};
 void ()	wiz_death5	=[	$death5,		wiz_death6	] {};
 void ()	wiz_death6	=[	$death6,		wiz_death7	] {};
 void ()	wiz_death7	=[	$death7,		wiz_death8	] {};
-void ()	wiz_death8	=[	$death8,		wiz_death8	] {};
+void ()	wiz_death8	=[	$death8,		monster_die	] {};
 
 void ()
 wiz_die =
@@ -363,7 +363,7 @@ wiz_die =
 	if (self.health < -40)
 	{
 		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
-		ThrowHead ("progs/h_wizard.mdl", self.health);
+		ThrowMonsterHead ("progs/h_wizard.mdl", self.health);
 		ThrowGib ("progs/gib2.mdl", self.health);
 		ThrowGib ("progs/gib2.mdl", self.health);
 		ThrowGib ("progs/gib2.mdl", self.health);

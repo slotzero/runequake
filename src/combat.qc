@@ -111,7 +111,7 @@ Killed =
 	if (self.flags & FL_MONSTER)
 	{
 		if (gamemode & MODE_SURVIVAL)
-			director.nextthink = time;
+			attacker.frags = attacker.frags + self.frags;
 
 		killed_monsters = killed_monsters + 1;
 		WriteByte (MSG_ALL, SVC_KILLEDMONSTER);

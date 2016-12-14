@@ -521,9 +521,6 @@ void ()	zombie_paine30	= [$paine30,	zombie_run1]	{};
 void ()
 zombie_die =
 {
-	// This can't really be triggered any more since zombie campers
-	// are prevent from dying by capping the amount of damage which
-	// can be done to them in T_Damage().
 	if (self.owner != world
 			&& self.owner.runetype == RN_ZOMBIE
 			&& self.owner.runevar > 0)
@@ -542,7 +539,7 @@ zombie_die =
 		}
 	}
 	sound (self, CHAN_VOICE, "zombie/z_gib.wav", 1, ATTN_NORM);
-	// ThrowHead ("progs/h_zombie.mdl", self.health);
+	ThrowMonsterHead ("progs/h_zombie.mdl", self.health);
 	ThrowGib ("progs/gib1.mdl", self.health);
 	ThrowGib ("progs/gib2.mdl", self.health);
 	ThrowGib ("progs/gib3.mdl", self.health);
