@@ -2194,6 +2194,12 @@ ClientObituary =
 	{
 		if (!match.state)
 			return;
+	} else
+	if (gamemode & MODE_SURVIVAL)
+	{
+		self_sprint(targ, "\n--You died with ");
+		self_sprint_float(targ, targ.frags);
+		self_sprint(targ, " points\n");
 	}
 
 	attacker_player = (attacker.classname == "player"

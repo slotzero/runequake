@@ -93,7 +93,7 @@ void () SpawnSoldier = {
     e = spawn ();
 
     e.frags = 2;
-    e.classname = "monster_soldier";
+    e.classname = "monster_army";
 	setmodel (e, "progs/soldier.mdl");
 	e.health = 30;
 
@@ -269,7 +269,7 @@ void () SpawnZombie = {
     e = spawn ();
 
     e.frags = 1;
-    e.classname = "monster_hell_knight";
+    e.classname = "monster_zombie";
 	setmodel (e, "progs/zombie.mdl");
 	e.max_health = 60;
 	e.health = 60;
@@ -280,6 +280,48 @@ void () SpawnZombie = {
 	e.th_pain = zombie_pain;
 	e.th_die = zombie_die;
 	e.th_missile = zombie_missile;
+
+	DirectorSpawnWalker(e);
+};
+
+void () SpawnShalrath = {
+    local entity e;
+    e = spawn ();
+
+    e.frags = 8;
+    e.classname = "monster_shalrath";
+	setmodel (e, "progs/shalrath.mdl");
+	e.health = 400;
+
+	e.th_stand = shal_stand;
+	e.th_walk = shal_walk1;
+	e.th_run = shal_run1;
+	e.th_die = shalrath_die;
+	e.th_pain = shalrath_pain;
+	e.th_missile = shal_attack1;
+
+	DirectorSpawnWalker(e);
+};
+
+void () SpawnShambler = {
+    local entity e;
+    e = spawn ();
+
+    // doubt this is necessary
+	// self.touch = misc_touch;
+
+    e.frags = 12;
+    e.classname = "monster_shambler";
+	setmodel (e, "progs/shambler.mdl");
+    e.health = 600;
+
+	e.th_stand = sham_stand1;
+	e.th_walk = sham_walk1;
+	e.th_run = sham_run1;
+	e.th_die = sham_die;
+	e.th_melee = sham_melee;
+	e.th_missile = sham_magic1;
+	e.th_pain = sham_pain;
 
 	DirectorSpawnWalker(e);
 };
@@ -351,6 +393,20 @@ void () SpawnSomething = {
         SpawnHellKnight ();
     else if (i == 10)
         SpawnZombie ();
+    else if (i == 11)
+    {
+        if (random () > 0.5)
+            SpawnShalrath ();
+        else
+            SpawnHellKnight ();
+    }
+    else if (i == 12)
+    {
+        if (random () > 0.5)
+            SpawnShambler ();
+        else
+            SpawnOgre ();
+    }
     else
         // shouldn't happen
         return;
@@ -364,15 +420,14 @@ void () SpawnSomething = {
 // ==== Thinks ====
 
 void () DirectorThink = {
-    self.nextthink = time + 0.5;
-
     if (!is_valid_player_e(self.enemy))
         self.enemy = find (self.enemy, classname, "player");
 
     // no players in game
     if (self.enemy == world)
     {
-        dprint ("No enemies\n");
+        self.nextthink = time + 5;
+        // dprint ("No player enemies\n");
         return;
     }
 
@@ -380,12 +435,14 @@ void () DirectorThink = {
     {
         SpawnSomething ();
     }
+
+    self.nextthink = time + 0.5;
 };
 
 void () DirectorFirstThink = {
     local float i;
 
-    self.max_health = 11; // number of valid monsters coded
+    self.max_health = 13; // number of valid monsters coded
 
     self.goalentity = find (world, classname, "info_player_deathmatch");
     if (self.goalentity == world)
@@ -408,7 +465,7 @@ void () DirectorFirstThink = {
         }
 
         self.state = i;
-        // self.goalentity is world, but it will be skipped
+        // self.goalentity is now world, but it will be skipped
         // self.goalentity = find (self.goalentity, classname, "info_player_deathmatch");
     }
     self.think = DirectorThink;
@@ -416,7 +473,7 @@ void () DirectorFirstThink = {
 };
 
 void () DirectorPrecaches = {
-    PrecacheBoss ();
+    // PrecacheBoss ();
     PrecacheDemon ();
     PrecacheDog ();
     PrecacheEnforcer ();
@@ -425,7 +482,8 @@ void () DirectorPrecaches = {
     PrecacheKnight ();
     PrecacheOgre ();
     PrecacheShalrath ();
-    PrecacheShub ();
+    // PrecacheShambler (); already done by RuneQuake
+    // PrecacheShub ();
 	PrecacheSoldier ();
     PrecacheTarbaby ();
     PrecacheWizard ();
