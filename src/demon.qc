@@ -212,6 +212,13 @@ PrecacheDemon =
 void ()
 monster_demon1 =
 {
+	if (gamemode & MODE_SURVIVAL)
+	{
+		SUB_UseTargets ();
+		remove (self);
+		return;
+	}
+
 	if (deathmatch & DM_DM_MASK)
 	{
 		remove (self);

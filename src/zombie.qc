@@ -656,6 +656,13 @@ If crucified, stick the bounding box 12 pixels back into a wall to look right.
 void ()
 monster_zombie =
 {
+	if (gamemode & MODE_SURVIVAL)
+	{
+		SUB_UseTargets ();
+		remove (self);
+		return;
+	}
+
 	if (deathmatch & DM_DM_MASK)
 	{
 		remove (self);

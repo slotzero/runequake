@@ -98,7 +98,8 @@ OgreFireGrenade
 void ()
 OgreFireGrenade =
 {
-	local	entity missile, mpuff;
+	local entity missile, mpuff;
+	local vector nozdistancedelta, distancedelta;
 
 	muzzleflash ();
 	sound (self, CHAN_WEAPON, "weapons/grenade.wav", 1, ATTN_NORM);
@@ -108,22 +109,20 @@ OgreFireGrenade =
 	missile.movetype = MOVETYPE_BOUNCE;
 	missile.solid = SOLID_BBOX;
 
-	// set missile speed
-
-	makevectors (self.angles);
-
-	missile.velocity = normalize (self.enemy.origin - self.origin);
+	// _Smith_ said that Entar and DrLabman made this code block
+	distancedelta = self.enemy.origin - self.origin;
+	nozdistancedelta = distancedelta;
+	nozdistancedelta_z = 0;
+	missile.velocity = normalize(distancedelta);
 	missile.velocity = missile.velocity * 600;
-	missile.velocity_z = 200;
+	missile.velocity_z = missile.velocity_z + 150 + vlen(nozdistancedelta)*0.22*(1 + (0.3*(random())));
 
-	missile.avelocity = '300 300 300';
-
+	missile.avelocity = '285 310 295';
 	missile.angles = vectoangles (missile.velocity);
-
 	missile.touch = OgreGrenadeTouch;
 
 	// set missile duration
-	missile.nextthink = time + 2.5;
+	missile.nextthink = time + 2.25 + 0.50 * random ();
 	missile.think = OgreGrenadeExplode;
 
 	setmodel (missile, "progs/grenade.mdl");
@@ -437,6 +436,13 @@ PrecacheOgre =
 void ()
 monster_ogre =
 {
+	if (gamemode & MODE_SURVIVAL)
+	{
+		SUB_UseTargets ();
+		remove (self);
+		return;
+	}
+
 	if (deathmatch & DM_DM_MASK)
 	{
 		remove (self);

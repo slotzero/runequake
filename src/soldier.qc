@@ -278,6 +278,13 @@ PrecacheSoldier =
 void ()
 monster_army =
 {
+	if (gamemode & MODE_SURVIVAL)
+	{
+		SUB_UseTargets ();
+		remove (self);
+		return;
+	}
+
 	if (deathmatch & DM_DM_MASK)
 	{
 		remove (self);
