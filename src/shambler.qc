@@ -315,7 +315,7 @@ void ()	sham_pain4	= [$pain4,	sham_pain5]	{};
 void ()	sham_pain5	= [$pain5,	sham_pain6]	{};
 void ()	sham_pain6	= [$pain6,	sham_run1]	{};
 
-void (float damage)
+void (entity attacker, float damage)
 sham_pain =
 {
 	sound (self, CHAN_VOICE, "shambler/shurt2.wav", 1, ATTN_NORM);
@@ -328,6 +328,10 @@ sham_pain =
 
 	if (self.pain_finished > time)
 		return;
+
+	// prevent frikqcc warning
+	if (0)
+		attacker = attacker;
 
 	self.pain_finished = time + 2;
 
