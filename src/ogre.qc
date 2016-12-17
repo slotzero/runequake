@@ -328,30 +328,17 @@ ogre_pain =
 	r = random ();
 
 	if (r < 0.25)
-	{
 		ogre_pain1 ();
-		self.pain_finished = time + 1;
-	}
 	else if (r < 0.5)
-	{
 		ogre_painb1 ();
-		self.pain_finished = time + 1;
-	}
 	else if (r < 0.75)
-	{
 		ogre_painc1 ();
-		self.pain_finished = time + 1;
-	}
 	else if (r < 0.88)
-	{
 		ogre_paind1 ();
-		self.pain_finished = time + 2;
-	}
 	else
-	{
 		ogre_paine1 ();
-		self.pain_finished = time + 2;
-	}
+
+	self.pain_finished = time + 4;
 };
 
 void ()	ogre_die1	=[	$death1,	ogre_die2	] {};

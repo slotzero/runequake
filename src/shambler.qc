@@ -230,15 +230,37 @@ sham_melee =
 		return;
 
 	chance = random ();
-	if (chance > 0.6 || self.health == self.max_health)
+	if (chance > 0.7 || self.health == self.max_health)
 		sham_smash1 ();
-	else if (chance > 0.3)
+	else if (chance > 0.4)
 		sham_swingr1 ();
-	else
+	else if (chance > 0.1)
 		sham_swingl1 ();
+	else
+		sham_smashmagic1 ();
 };
 
 //============================================================================
+
+void () SpawnMagic =
+{
+	local entity o;
+
+	//RUNE SERV: Changing this around JUST for the sake of the shambler slaves
+	// using '.runent' instead of '.owner'
+	// self.owner = spawn ();
+	//o = self.owner;
+
+	self.runent	= spawn ();
+	o		= self.runent;
+
+	setmodel (o, "progs/s_light.mdl");
+	setorigin (o, self.origin);
+
+	o.angles	= self.angles;
+	o.nextthink	= time + 0.7;
+	o.think		= SUB_Remove;
+};
 
 void ()
 CastLightning =
@@ -258,54 +280,142 @@ CastLightning =
 };
 
 // magic
-void () sham_magic1	= [$magic1,	sham_magic2]
+void ()	sham_magic1	= [$magic1,	sham_magic2]
 {
 	ai_face ();
 	SuperDamageSound ();
 	sound (self, CHAN_WEAPON, "shambler/sattck1.wav", 1, ATTN_NORM);
 };
-void ()	sham_magic2	= [$magic2,	sham_magic3]	{ ai_face ();	};
-void ()	sham_magic3	= [$magic3,	sham_magic4]
+void ()	sham_magic2	= [$magic2,	sham_magic3d]	{ ai_face (); };
+void ()sham_magic3d = [$magic3,	sham_magic3]	{ ai_face (); SpawnMagic (); if (random () < 0.3) self.think = sham_magic9alt;};
+void ()	sham_magic3	= [$magic3,	sham_magic4]	{ ai_face (); muzzleflash (); self.runent.frame = 2; };
+void ()	sham_magic4	= [$magic4,	sham_magic5]	{ ai_face (); muzzleflash (); self.runent.frame = 1; self.runent.angles = self.angles; };
+void ()	sham_magic5	= [$magic5,	sham_magic6]	{ ai_face (); muzzleflash (); self.runent.frame = 2; self.runent.angles = self.angles; };
+void ()	sham_magic6	= [$magic6,	sham_magic7]
 {
-	local entity o;
-
-	ai_face ();
-	self.nextthink	= time + 0.2;
-
-	muzzleflash ();
-	ai_face ();
-
-	//RUNE SERV: Changing this around JUST for the sake of the shambler slaves
-	// using '.runent' instead of '.owner'
-	// self.owner = spawn ();
-	//o = self.owner;
-
-	self.runent	= spawn ();
-	o		= self.runent;
-
-	setmodel (o, "progs/s_light.mdl");
-	setorigin (o, self.origin);
-
-	o.angles	= self.angles;
-	o.nextthink	= time + 0.7;
-	o.think		= SUB_Remove;
+	CastLightning ();
+	sound (self, CHAN_WEAPON, "shambler/sboom.wav", 1, ATTN_NORM);
 };
-void ()	sham_magic4	= [$magic4,	sham_magic5]	{ muzzleflash (); self.runent.frame = 1; };
-void ()	sham_magic5	= [$magic5,	sham_magic6]	{ muzzleflash (); self.runent.frame = 2; };
-void ()	sham_magic6	= [$magic6,	sham_magic9]
+void ()	sham_magic7	= [$magic7,	sham_magic8]	{ remove (self.runent); CastLightning (); };
+void ()	sham_magic8	= [$magic8,	sham_magic9]	{ CastLightning (); };
+void ()	sham_magic9	= [$magic9,	sham_magic10]	{ CastLightning (); };
+void ()	sham_magic9alt	= [$magic9,	sham_magic10]
 {
 	remove (self.runent);
 	CastLightning ();
 	sound (self, CHAN_WEAPON, "shambler/sboom.wav", 1, ATTN_NORM);
 };
-void ()	sham_magic9	= [$magic9,	sham_magic10]	{ CastLightning ();	};
-void ()	sham_magic10	= [$magic10,	sham_magic11]	{ CastLightning ();	};
-void ()	sham_magic11	= [$magic11,	sham_magic12]
-{
-	if (skill == 3)
-		CastLightning ();
-};
+void ()	sham_magic10	= [$magic10,	sham_magic11]	{};
+void ()	sham_magic11	= [$magic11,	sham_magic12]	{};
 void ()	sham_magic12	= [$magic12,	sham_run1]	{};
+
+// fireball smash magic
+void () explodefire_touch = {
+	if (!other.health
+			|| other == self.owner
+			|| other == world
+			|| !other.takedamage
+			|| other.runetype == RN_ENVIRO
+			|| other.items & IT_SUIT
+			|| other.runetype == RN_TORCH
+			|| other.runetype == RN_FIREWALK)
+		return;
+
+	if (random () > 0.9)
+		burn_start (other, self.owner, 2.5);
+	T_Damage (other, self, self.owner, 14, "explodefire");
+	remove (self);
+};
+
+void () explodefire = {
+	local entity e;
+	local float i;
+
+	monk_radius_hack = 1;
+	T_RadiusDamage (RADIUS_NORMAL, self, self, 110, self.owner, "shamexplode");
+	monk_radius_hack = 0;
+
+	while (i < 7)
+	{
+		e = spawn ();
+		e.owner = self.owner;
+		e.classname	= "explodefire";
+		e.movetype = MOVETYPE_TOSS;
+		e.velocity_x = 250 - (random () * 500);
+		e.velocity_y = 250 - (random () * 500);
+		e.velocity_z = 250 + (random () * 200);
+		e.angles = ('1 0 0' * 30 * random ()) + ('0 1 0' * 30 * random ());
+		setmodel (e, "progs/flame2.mdl");
+		setsize (e, '-5 -5 -5', '5 5 5');
+		setorigin (e, self.origin);
+
+		e.nextthink	= time + 2 + 3 * random ();
+		e.think		= SUB_Remove;
+
+		e.solid		= SOLID_TRIGGER;
+		e.touch		= explodefire_touch;
+		i = i + 1;
+	}
+};
+
+void () MagicFlameTouch =
+{
+	if (other == self.owner)
+		return;
+
+	create_te_explosion (self.origin, 0);
+	explodefire ();
+	remove (self);
+};
+
+void () MagicFlameThrow =
+{
+	if (self.enemy != self.owner.enemy)
+	{
+		remove (self);
+		return;
+	}
+	self.movetype = MOVETYPE_FLYMISSILE;
+	self.solid = SOLID_BBOX;
+	self.velocity = (self.v_angle * 75) + '0 0 -600';
+	self.touch = MagicFlameTouch;
+	self.think = SUB_Remove;
+	self.nextthink = time + 1;
+};
+
+void () SpawnFlame =
+{
+	local entity e;
+
+	self.runent	= spawn ();
+	e = self.runent;
+
+	e.classname = "shamfireorb";
+	e.effects = EF_BRIGHTFIELD;
+	setmodel (e, "progs/s_light.spr");
+	setsize (e, VEC_ORIGIN, VEC_ORIGIN);
+	e.owner = self;
+	e.enemy = self.enemy;
+
+	makevectors(self.angles);
+	e.v_angle = v_forward; // store for later
+	self.v_angle = v_right;
+	setorigin (e, self.origin + '0 0 80' + (v_forward * 20) + (v_right * 12));
+	e.oldorigin = e.origin;
+
+	e.think = MagicFlameThrow;
+	e.nextthink = time + 0.5;
+};
+
+void ()	sham_smashmagic1 = [$magic1,	sham_smashmagic2] { ai_face (); };
+void ()	sham_smashmagic2 = [$magic2,	sham_smashmagic3] { ai_face (); };
+void ()	sham_smashmagic3 = [$magic3,	sham_smashmagic4] { ai_face (); muzzleflash (); SpawnFlame (); self.nextthink = time + 0.3; };
+void ()	sham_smashmagic4 = [$magic4,	sham_smashmagic5] { ai_face (); muzzleflash (); };
+void ()	sham_smashmagic5 = [$magic5,	sham_smashmagic6] { muzzleflash (); self.runent.origin = self.runent.origin - self.v_angle * 3 + self.runent.v_angle * 3; };
+void ()	sham_smashmagic6 = [$smash9,	sham_smashmagic7] { muzzleflash (); self.runent.origin = self.runent.origin - self.v_angle * 6 + self.runent.v_angle * 6; };
+void ()	sham_smashmagic7 = [$smash10,	sham_smashmagic8] { muzzleflash (); };
+void ()	sham_smashmagic8 = [$smash11,	sham_smashmagic9] {};
+void ()	sham_smashmagic9 = [$smash12,	sham_run1] {};
 
 // pain
 void ()	sham_pain1	= [$pain1,	sham_pain2]	{};
@@ -315,7 +425,7 @@ void ()	sham_pain4	= [$pain4,	sham_pain5]	{};
 void ()	sham_pain5	= [$pain5,	sham_pain6]	{};
 void ()	sham_pain6	= [$pain6,	sham_run1]	{};
 
-void (float damage)
+void (entity attacker, float damage)
 sham_pain =
 {
 	sound (self, CHAN_VOICE, "shambler/shurt2.wav", 1, ATTN_NORM);

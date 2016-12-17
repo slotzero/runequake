@@ -103,10 +103,13 @@ void () shal_death5      =[      $death5,        shal_death6     ] {};
 void () shal_death6      =[      $death6,        shal_death7     ] {};
 void () shal_death7      =[      $death7,        shal_death7    ] {};
 
-void ()
+void (entity attacker, float damage)
 shalrath_pain =
 {
 	if (self.pain_finished > time)
+		return;
+
+	if (random () * 400 > damage)
 		return;
 
 	sound (self, CHAN_VOICE, "shalrath/pain.wav", 1, ATTN_NORM);

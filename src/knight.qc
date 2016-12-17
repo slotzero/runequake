@@ -172,15 +172,10 @@ knight_pain =
 
 	sound (self, CHAN_VOICE, "knight/khurt.wav", 1, ATTN_NORM);
 	if (r < 0.85)
-	{
 		knight_pain1 ();
-		self.pain_finished = time + 1;
-	}
 	else
-	{
 		knight_painb1 ();
-		self.pain_finished = time + 1;
-	}
+	self.pain_finished = time + 1 + random ();
 
 };
 
