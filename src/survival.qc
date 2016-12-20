@@ -62,7 +62,7 @@ void (entity e) DirectorSpawnFlyer = {
     e.angles = director.goalentity.angles;
 
 	e.enemy = director.enemy;
-	e.think = e.th_run;
+	e.think = HuntTarget;
 	e.nextthink = time + random ()*0.5;
 };
 
@@ -257,7 +257,7 @@ void () SpawnHellKnight = {
 	e.th_walk = hknight_walk1;
 	e.th_run = hknight_run1;
 	e.th_melee = hknight_melee;
-	e.th_missile = hknight_magicc1;
+	e.th_missile = hknight_missile;
 	e.th_pain = hknight_pain;
 	e.th_die = hknight_die;
 
@@ -369,7 +369,8 @@ void () SpawnSomething = {
     if (self.enemy == world)
         self.enemy = find (self.enemy, classname, "player");
 
-    i = floor(random () * self.max_health);
+    //i = floor(random () * self.max_health);
+    i = 8;
 
     if (i == 0)
         SpawnDog ();
@@ -431,7 +432,7 @@ void () DirectorThink = {
         return;
     }
 
-    if (total_monsters - killed_monsters < 50)
+    if (total_monsters == killed_monsters)
     {
         SpawnSomething ();
     }

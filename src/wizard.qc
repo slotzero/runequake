@@ -206,6 +206,24 @@ FAST ATTACKS
 */
 
 void ()
+Wiz_spitthink =
+{
+	local vector ideal;
+
+	if (self.runevar < time)
+	{
+		remove(self);
+		return;
+	}
+
+	ideal = normalize(self.enemy.origin - self.origin);
+	self.velocity = normalize(self.velocity);
+	self.velocity = 450*self.velocity + 150*ideal;
+	self.angles = vectoangles (self.velocity);
+	self.nextthink = time + 0.1;
+};
+
+void ()
 Wiz_FastFire =
 {
 	local vector		vec;
@@ -226,6 +244,11 @@ Wiz_FastFire =
 		newmis.classname = "wizspike";
 		setmodel (newmis, "progs/w_spike.mdl");
 		setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
+
+		newmis.enemy = self.enemy;
+		newmis.runevar = time + 6;
+		newmis.think = Wiz_spitthink;
+		newmis.nextthink = time + 0.25;
 	}
 
 	remove (self);

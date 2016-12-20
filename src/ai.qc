@@ -671,6 +671,7 @@ ai_run =
 			self.goalentity = self.movetarget;
 		self.enemy = world;
 	}
+
 	if (!self.enemy)
 	{
 	// FIXME: look all around for other targets
@@ -695,7 +696,7 @@ ai_run =
 	// check knowledge of enemy
 	enemy_vis = visible (self.enemy);
 	if (enemy_vis)
-		self.search_time = time + 5;
+		self.search_time = time + 3;
 
 	// look for other coop players
 	if ((coop || deathmatch & DM_DM_MASK) && self.search_time < time)
@@ -714,6 +715,7 @@ ai_run =
 		ai_run_missile ();
 		return;
 	}
+
 	if (self.attack_state == AS_MELEE)
 	{
 		//dprint ("ai_run_melee\n");

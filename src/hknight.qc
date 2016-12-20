@@ -70,14 +70,15 @@ $frame w_attack21 w_attack22
 $frame magicc1 magicc2 magicc3 magicc4 magicc5 magicc6 magicc7 magicc8
 $frame magicc9 magicc10 magicc11
 
-void (float offset)
+void (float h_offset, float v_offset, float soundflag)
 hknight_shot =
 {
 	local	vector	offang;
 	local	vector	org, vec;
 
 	offang = vectoangles (self.enemy.origin - self.origin);
-	offang_y = offang_y + offset * 6;
+	offang_y = offang_y + h_offset * 6;
+	offang_z = offang_z + h_offset * 4;
 
 	makevectors (offang);
 
@@ -92,7 +93,8 @@ hknight_shot =
 	setmodel (newmis, "progs/k_spike.mdl");
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
 	newmis.velocity = vec*300;
-	sound (self, CHAN_WEAPON, "hknight/attack1.wav", 1, ATTN_NORM);
+	if (soundflag)
+		sound (self, CHAN_WEAPON, "hknight/attack1.wav", 1, ATTN_NORM);
 };
 
 void ()
@@ -244,12 +246,12 @@ void ()	hknight_magica3 =[	$magica3,	hknight_magica4	] {ai_face ();};
 void ()	hknight_magica4 =[	$magica4,	hknight_magica5	] {ai_face ();};
 void ()	hknight_magica5 =[	$magica5,	hknight_magica6	] {ai_face ();};
 void ()	hknight_magica6 =[	$magica6,	hknight_magica7	] {ai_face ();};
-void ()	hknight_magica7 =[	$magica7,	hknight_magica8	] {hknight_shot (-2);};
-void ()	hknight_magica8 =[	$magica8,	hknight_magica9	] {hknight_shot (-1);};
-void ()	hknight_magica9 =[	$magica9,	hknight_magica10] {hknight_shot (0);};
-void ()	hknight_magica10 =[	$magica10,	hknight_magica11] {hknight_shot (1);};
-void ()	hknight_magica11 =[	$magica11,	hknight_magica12] {hknight_shot (2);};
-void ()	hknight_magica12 =[	$magica12,	hknight_magica13] {hknight_shot (3);};
+void ()	hknight_magica7 =[	$magica7,	hknight_magica8	] {};
+void ()	hknight_magica8 =[	$magica8,	hknight_magica9	] {};
+void ()	hknight_magica9 =[	$magica9,	hknight_magica10] {}; // hit player
+void ()	hknight_magica10 =[	$magica10,	hknight_magica11] {}; // hit ground
+void ()	hknight_magica11 =[	$magica11,	hknight_magica12] {};
+void ()	hknight_magica12 =[	$magica12,	hknight_magica13] {};
 void ()	hknight_magica13 =[	$magica13,	hknight_magica14] {ai_face ();};
 void ()	hknight_magica14 =[	$magica14,	hknight_run1	] {ai_face ();};
 
@@ -259,14 +261,14 @@ void ()	hknight_magicb1 =[	$magicb1,	hknight_magicb2	] {ai_face ();};
 void ()	hknight_magicb2 =[	$magicb2,	hknight_magicb3	] {ai_face ();};
 void ()	hknight_magicb3 =[	$magicb3,	hknight_magicb4	] {ai_face ();};
 void ()	hknight_magicb4 =[	$magicb4,	hknight_magicb5	] {ai_face ();};
-void ()	hknight_magicb5 =[	$magicb5,	hknight_magicb6	] {ai_face ();};
+void ()	hknight_magicb5 =[	$magicb5,	hknight_magicb6	] {ai_face ();}; // first hands together frame
 void ()	hknight_magicb6 =[	$magicb6,	hknight_magicb7	] {ai_face ();};
-void ()	hknight_magicb7 =[	$magicb7,	hknight_magicb8	] {hknight_shot (-2);};
-void ()	hknight_magicb8 =[	$magicb8,	hknight_magicb9	] {hknight_shot (-1);};
-void ()	hknight_magicb9 =[	$magicb9,	hknight_magicb10] {hknight_shot (0);};
-void ()	hknight_magicb10 =[	$magicb10,	hknight_magicb11] {hknight_shot (1);};
-void ()	hknight_magicb11 =[	$magicb11,	hknight_magicb12] {hknight_shot (2);};
-void ()	hknight_magicb12 =[	$magicb12,	hknight_magicb13] {hknight_shot (3);};
+void ()	hknight_magicb7 =[	$magicb7,	hknight_magicb8	] {};
+void ()	hknight_magicb8 =[	$magicb8,	hknight_magicb9	] {hknight_shot (0, 0, 0); hknight_shot (-1, 0, 0); hknight_shot (1, -1, 1); hknight_shot (1, 0, 0); hknight_shot (-1, 1, 1);}; // slightly pushed back
+void ()	hknight_magicb9 =[	$magicb9,	hknight_magicb10] {};
+void ()	hknight_magicb10 =[	$magicb10,	hknight_magicb11] {}; // last frame of hands together
+void ()	hknight_magicb11 =[	$magicb11,	hknight_magicb12] {};
+void ()	hknight_magicb12 =[	$magicb12,	hknight_magicb13] {};
 void ()	hknight_magicb13 =[	$magicb13,	hknight_run1] {ai_face ();};
 
 //============================================================================
@@ -275,13 +277,13 @@ void ()	hknight_magicc1 =[	$magicc1,	hknight_magicc2	] {ai_face ();};
 void ()	hknight_magicc2 =[	$magicc2,	hknight_magicc3	] {ai_face ();};
 void ()	hknight_magicc3 =[	$magicc3,	hknight_magicc4	] {ai_face ();};
 void ()	hknight_magicc4 =[	$magicc4,	hknight_magicc5	] {ai_face ();};
-void ()	hknight_magicc5 =[	$magicc5,	hknight_magicc6	] {ai_face ();};
-void ()	hknight_magicc6 =[	$magicc6,	hknight_magicc7	] {hknight_shot (-2);};
-void ()	hknight_magicc7 =[	$magicc7,	hknight_magicc8	] {hknight_shot (-1);};
-void ()	hknight_magicc8 =[	$magicc8,	hknight_magicc9	] {hknight_shot (0);};
-void ()	hknight_magicc9 =[	$magicc9,	hknight_magicc10] {hknight_shot (1);};
-void ()	hknight_magicc10 =[	$magicc10,	hknight_magicc11] {hknight_shot (2);};
-void ()	hknight_magicc11 =[	$magicc11,	hknight_run1] {hknight_shot (3);};
+void ()	hknight_magicc5 =[	$magicc5,	hknight_magicc6	] {hknight_shot (-3, 0, 1); self.nextthink = time + 0.03; ai_face ();};
+void ()	hknight_magicc6 =[	$magicc6,	hknight_magicc7	] {hknight_shot (-2, 0, 1); self.nextthink = time + 0.03; };
+void ()	hknight_magicc7 =[	$magicc7,	hknight_magicc8	] {hknight_shot (-1, 0, 1); self.nextthink = time + 0.03; };
+void ()	hknight_magicc8 =[	$magicc8,	hknight_magicc9	] {hknight_shot (0, 0, 1); self.nextthink = time + 0.03; ai_face ();};
+void ()	hknight_magicc9 =[	$magicc9,	hknight_magicc10] {hknight_shot (1, 0, 1); self.nextthink = time + 0.03; };
+void ()	hknight_magicc10 =[	$magicc10,	hknight_magicc11] {hknight_shot (2, 0, 1); self.nextthink = time + 0.03; };
+void ()	hknight_magicc11 =[	$magicc11,	hknight_run1] {hknight_shot (3, 0, 1);};
 
 //===========================================================================
 
@@ -381,13 +383,6 @@ hknight_pain =
 
 	sound (self, CHAN_VOICE, "hknight/pain1.wav", 1, ATTN_NORM);
 
-	if (time - self.pain_finished > 5)
-	{	// allways go into pain frame if it has been a while
-		hknight_pain1 ();
-		self.pain_finished = time + 1;
-		return;
-	}
-
 	if ((random ()*30 > damage))
 		return;		// didn't flinch
 
@@ -395,23 +390,28 @@ hknight_pain =
 	hknight_pain1 ();
 };
 
-float hknight_type;
-
 void ()
 hknight_melee =
 {
-	hknight_type = hknight_type + 1;
+	local float type;
+	type = floor(random () * 3);
 
 	sound (self, CHAN_WEAPON, "hknight/slash1.wav", 1, ATTN_NORM);
-	if (hknight_type == 1)
+	if (type == 1)
 		hknight_slice1 ();
-	else if (hknight_type == 2)
+	else if (type == 2)
 		hknight_smash1 ();
-	else if (hknight_type == 3)
-	{
+	else
 		hknight_watk1 ();
-		hknight_type = 0;
-	}
+};
+
+void ()
+hknight_missile =
+{
+	if (random () > 0.7)
+		hknight_magicc1 ();
+	else
+		hknight_magicb1 ();
 };
 
 void ()
@@ -466,7 +466,7 @@ monster_hell_knight =
 	self.th_walk = hknight_walk1;
 	self.th_run = hknight_run1;
 	self.th_melee = hknight_melee;
-	self.th_missile = hknight_magicc1;
+	self.th_missile = hknight_missile;
 	self.th_pain = hknight_pain;
 	self.th_die = hknight_die;
 
