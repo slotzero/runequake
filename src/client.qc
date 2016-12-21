@@ -182,6 +182,28 @@ SetArenaParms =
 };
 
 void ()
+SetSurvivalParms =
+{
+	self.items		= IT_AXE | IT_SHOTGUN | IT_SUPER_SHOTGUN | IT_NAILGUN
+						| IT_GRENADE_LAUNCHER | IT_LIGHTNING
+						| IT_ARMOR1;
+
+	self.health		= MAX_HEALTH_NORMAL;
+	self.armorvalue		= 100;
+	self.ammo_shells	= 50;
+	self.ammo_nails		= 100;
+	self.ammo_rockets	= 10;
+	self.ammo_cells		= 15;
+
+	// Setting self.weapon is necessary because
+	self.weapon		= 0;
+
+	set_weapon (IT_LIGHTNING);
+
+	self.armortype		= ARMOR_TYPE_3;
+};
+
+void ()
 SetMidairParms =
 {
 	self.items		= IT_AXE | IT_ROCKET_LAUNCHER | IT_ARMOR3;
@@ -208,6 +230,8 @@ DecodeLevelParms =
 {
 	if (gamemode == MODE_ARENA)
 		SetArenaParms ();
+	else if (gamemode == MODE_SURVIVAL)
+		SetSurvivalParms ();
 	else if (gamemode == MODE_PRACTICE)
 		SetPracticeParms ();
 	else if (gamemode == MODE_MIDAIR)
@@ -2274,7 +2298,7 @@ ClientObituary =
 				&& targ != attacker)
 		{
 			if (gamemode & MODE_SURVIVAL)
-				add_frag (attacker, -50);
+				add_frag (attacker, -100);
 			else
 				add_frag (attacker, -1);
 			attacker.mate_kills = attacker.mate_kills + 1; // killstats
@@ -2297,7 +2321,7 @@ ClientObituary =
 		else
 		{
 			if (gamemode & MODE_SURVIVAL)
-				add_frag (targ, -50);
+				add_frag (targ, -100);
 			else
 				add_frag (targ, -1);
 			targ.suicide = targ.suicide + 1; // killstats
@@ -2442,7 +2466,7 @@ ClientObituary =
 		}
 
 		if (gamemode & MODE_SURVIVAL)
-			add_frag (attacker, -50);
+			add_frag (attacker, -100);
 		else if (gamemode != MODE_HEADS)
 			add_frag (attacker, 1);
 
@@ -2716,7 +2740,7 @@ ClientObituary =
 	}
 
 	if (gamemode & MODE_SURVIVAL)
-		add_frag (targ, -50);
+		add_frag (targ, -100);
 	else
 		add_frag (targ, -1);
 
@@ -2726,7 +2750,11 @@ ClientObituary =
 	// killed by a montser?
 	if (attacker.flags & FL_MONSTER)
 	{
-		if (attacker.classname == "monster_army")
+		if (dt == "shamexplode")
+			bprint (" was boomed by a Shambler\n");
+		else if (dt == "explodefire")
+			bprint (" was burnt by a Shambler's flame\n");
+		else if (attacker.classname == "monster_army")
 			bprint (" was shot by a Grunt\n");
 		else if (attacker.classname == "monster_demon1")
 			bprint (" was eviscerated by a Fiend\n");

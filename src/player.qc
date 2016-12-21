@@ -604,7 +604,7 @@ PlayerDie =
 	// holders from respawning.  I workaround this by allowing you to respawn after 5 seconds.
 	if (self.runetype == RN_PHOENIX)
 		self.runetime = time + 5;
-	else if (deathmatch & DM_DM_MASK || coop)
+	else if (!(gamemode & MODE_SURVIVAL) && (deathmatch & DM_DM_MASK || coop))
 	{
 		DropBackpack ();
 		drop_armor ();

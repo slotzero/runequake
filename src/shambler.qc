@@ -332,7 +332,7 @@ void () explodefire = {
 	local float i;
 
 	monk_radius_hack = 1;
-	T_RadiusDamage (RADIUS_NORMAL, self, self, 110, self.owner, "shamexplode");
+	T_RadiusDamage (RADIUS_NORMAL, self, self.owner, 110, self.owner, "shamexplode");
 	monk_radius_hack = 0;
 
 	while (i < 7)

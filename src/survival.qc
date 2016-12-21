@@ -2,7 +2,7 @@
 //
 // director.state = number of spawnpoints
 // director.delay =
-// director.max_health = number of monster types
+// director.max_health = number of monster types coded
 // director.armortype =
 // director.armorvalue =
 // director.runevar =
@@ -44,7 +44,7 @@ void (entity e) DirectorSpawnWalker = {
 
 	e.enemy = director.enemy;
 	e.think = HuntTarget;
-	e.nextthink = time + random ()*0.25;
+	e.nextthink = time;
 };
 
 void (entity e) DirectorSpawnFlyer = {
@@ -63,7 +63,7 @@ void (entity e) DirectorSpawnFlyer = {
 
 	e.enemy = director.enemy;
 	e.think = HuntTarget;
-	e.nextthink = time + random ()*0.5;
+	e.nextthink = time;
 };
 
 // ==== ====
@@ -273,6 +273,7 @@ void () SpawnZombie = {
 	setmodel (e, "progs/zombie.mdl");
 	e.max_health = 60;
 	e.health = 60;
+	e.owner = e; // zombie chunks check owners to prevent rune pet damage
 
 	e.th_stand = zombie_stand1;
 	e.th_walk = zombie_walk1;
@@ -306,9 +307,6 @@ void () SpawnShalrath = {
 void () SpawnShambler = {
     local entity e;
     e = spawn ();
-
-    // doubt this is necessary
-	// self.touch = misc_touch;
 
     e.frags = 12;
     e.classname = "monster_shambler";
@@ -369,8 +367,7 @@ void () SpawnSomething = {
     if (self.enemy == world)
         self.enemy = find (self.enemy, classname, "player");
 
-    //i = floor(random () * self.max_health);
-    i = 8;
+    i = floor(random () * self.max_health);
 
     if (i == 0)
         SpawnDog ();
@@ -432,7 +429,7 @@ void () DirectorThink = {
         return;
     }
 
-    if (total_monsters == killed_monsters)
+    if (total_monsters - killed_monsters < 50)
     {
         SpawnSomething ();
     }
@@ -466,7 +463,7 @@ void () DirectorFirstThink = {
         }
 
         self.state = i;
-        // self.goalentity is now world, but it will be skipped
+        // self.goalentity is now world, but it will be skipped on the next search
         // self.goalentity = find (self.goalentity, classname, "info_player_deathmatch");
     }
     self.think = DirectorThink;
@@ -483,7 +480,7 @@ void () DirectorPrecaches = {
     PrecacheKnight ();
     PrecacheOgre ();
     PrecacheShalrath ();
-    // PrecacheShambler (); already done by RuneQuake
+    // PrecacheShambler (); // already done by RuneQuake
     // PrecacheShub ();
 	PrecacheSoldier ();
     PrecacheTarbaby ();
