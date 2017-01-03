@@ -200,8 +200,7 @@ Rune_Switch =
 		return;
 
 	if (switch.classname != "player"
-			&& switch.classname != "shambler_slave"
-			&& switch.classname != "zombie_camper")
+			&& !(switch.flags & FL_MONSTER))
 		return;
 
 	if (switch.solid == SOLID_BSP)

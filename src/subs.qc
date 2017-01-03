@@ -313,6 +313,14 @@ SUB_UseTargets =
 
 };
 
+void ()
+SUB_UseTargetsRemove =
+{
+	SUB_UseTargets ();
+
+	remove (self);
+};
+
 /*
 
 in nightmare mode, all attack_finished times become 0

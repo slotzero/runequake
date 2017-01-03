@@ -441,8 +441,8 @@ monster_hell_knight =
 {
 	if (gamemode & MODE_SURVIVAL)
 	{
-		SUB_UseTargets ();
-		remove (self);
+		self.think = SUB_UseTargetsRemove;
+		self.nextthink = time + sys_ticrate;
 		return;
 	}
 

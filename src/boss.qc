@@ -288,6 +288,13 @@ PrecacheBoss =
 void ()
 monster_boss =
 {
+	if (gamemode & MODE_SURVIVAL)
+	{
+		self.think = SUB_UseTargetsRemove;
+		self.nextthink = time + sys_ticrate;
+		return;
+	}
+
 	if (deathmatch & DM_DM_MASK)
 	{
 		remove (self);

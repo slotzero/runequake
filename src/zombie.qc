@@ -658,8 +658,8 @@ monster_zombie =
 {
 	if (gamemode & MODE_SURVIVAL)
 	{
-		SUB_UseTargets ();
-		remove (self);
+		self.think = SUB_UseTargetsRemove;
+		self.nextthink = time + sys_ticrate;
 		return;
 	}
 
