@@ -195,8 +195,13 @@ door_use =
 	}
 
 	self.message		= string_null; // door message are for touch only
-	self.owner.message	= string_null;
-	self.enemy.message	= string_null;
+
+	// self.owner can be world when automatically triggered?
+	if (self.owner)
+		self.owner.message	= string_null;
+
+	if (self.enemy)
+		self.enemy.message	= string_null;
 
 	old_self		= self;
 	self			= self.owner;

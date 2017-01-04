@@ -280,7 +280,7 @@ monster_army =
 	if (gamemode & MODE_SURVIVAL)
 	{
 		self.think = SUB_UseTargetsRemove;
-		self.nextthink = time + sys_ticrate;
+		self.nextthink = time + 0.5;
 		return;
 	}
 
