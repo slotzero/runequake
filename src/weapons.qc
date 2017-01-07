@@ -1304,6 +1304,31 @@ W_Attack =
 		use_ammo ();
 };
 
+void ()
+printmapsize =
+{
+	local float c, i;
+	local vector v;
+	local string s;
+
+	while (i < 5000)
+	{
+		v_x = random () * 8192 - 4096;
+		v_y = random () * 8192 - 4096;
+		v_z = random () * 8192 - 4096;
+		if (pointcontents (v) != CONTENT_SOLID)
+		{
+			c = c + 1;
+		}
+		i = i + 1;
+	}
+
+	s = ftos(c);
+	bprint ("+++ Level open ratio: ");
+	bprint (s);
+	bprint (" / 5000\n");
+};
+
 /*
 ============
 ImpulseCommands
@@ -1324,6 +1349,9 @@ ImpulseCommands =
 
 	else if (self.impulse == 12)
 		CycleWeaponReverseCommand ();
+
+	else if (self.impulse == 30)
+		printmapsize ();
 
 	else if (self.impulse >= IMP_RUNE_CHEAT_BASE && self.impulse < IMP_RUNE_CHEAT_BASE + RN_MAX_ALL)
 	{

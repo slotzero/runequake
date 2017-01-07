@@ -39,13 +39,13 @@ float SV_EDICTS			= %877;
 float SV_STATE			= %878;
 float SV_DATAGRAM		= %879;
 float SV_DATAGRAM_BUF		= %884;
-float SV_RELIABLE_DATAGRAM	= %1140;
-float SV_RELIABLE_DATAGRAM_BUF	= %1145;
-float SV_SIGNON			= %1401;
-float SV_SIGNON_DATA		= %1403;
-float SV_SIGNON_MAXSIZE		= %1404;
-float SV_SIGNON_CURSIZE		= %1405;
-float SV_SIGNON_BUF		= %1406;
+float SV_RELIABLE_DATAGRAM; // joezopquake has larger buffers
+float SV_RELIABLE_DATAGRAM_BUF;
+float SV_SIGNON;
+float SV_SIGNON_DATA;
+float SV_SIGNON_MAXSIZE;
+float SV_SIGNON_CURSIZE;
+float SV_SIGNON_BUF;
 
 float CL_ACTIVE			;// = %0; - might need to change this for linux/mac
 float CL_SPAWNED		;// = %1; - might need to change this for linux/mac

@@ -383,6 +383,21 @@ void () MagicFlameThrow =
 	self.nextthink = time + 1;
 };
 
+void () MagicFlameThink =
+{
+	if (self.owner.health <= 0)
+	{
+		create_te_explosion (self.origin, 0);
+		explodefire ();
+		remove (self);
+		return;
+	}
+
+	if (self.runevar <= time)
+		self.think = MagicFlameThrow;
+	self.nextthink = time + 0.1;
+};
+
 void () SpawnFlame =
 {
 	local entity e;
@@ -403,8 +418,9 @@ void () SpawnFlame =
 	setorigin (e, self.origin + '0 0 80' + (v_forward * 20) + (v_right * 12));
 	e.oldorigin = e.origin;
 
-	e.think = MagicFlameThrow;
-	e.nextthink = time + 0.5;
+	e.runevar = time + 0.5;
+	e.think = MagicFlameThink;
+	e.nextthink = time + 0.1;
 };
 
 void ()	sham_smashmagic1 = [$magic1,	sham_smashmagic2] { ai_face (); };

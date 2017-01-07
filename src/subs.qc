@@ -314,11 +314,17 @@ SUB_UseTargets =
 };
 
 void ()
-SUB_UseTargetsRemove =
+SUB_UseTargetsRemoveDelay =
 {
 	SUB_UseTargets ();
-
 	remove (self);
+};
+
+void ()
+SUB_UseTargetsRemove =
+{
+	self.think = SUB_UseTargetsRemoveDelay;
+	self.nextthink = time + 1;
 };
 
 /*
