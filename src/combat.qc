@@ -78,8 +78,9 @@ Killed
 void (entity targ, entity attacker, string dtype)
 Killed =
 {
-	local entity old_self, old_other;
+	local entity old_self, old_other, delayent;
 	local string x;
+	local float len;
 
 	old_self	= self;
 	self		= targ;
@@ -106,16 +107,6 @@ Killed =
 
 	self.effects	= 0;	// quad glow &c
 	self.enemy	= attacker;
-
-	// bump the monster counter
-	if (self.flags & FL_MONSTER)
-	{
-		if (gamemode & MODE_SURVIVAL)
-			attacker.frags = attacker.frags + self.frags;
-
-		killed_monsters = killed_monsters + 1;
-		WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
-	}
 
 	if (gamemode & MODE_ARENA)
 		arena_death (targ, attacker, dtype);
@@ -147,6 +138,36 @@ Killed =
 
 	monster_death_use ();
 	self.th_die ();
+
+	// bump the monster counter
+	if (self.flags & FL_MONSTER)
+	{
+		if (gamemode & MODE_SURVIVAL)
+		{
+			attacker.frags = attacker.frags + self.frags;
+			if (random () > 0.8)
+			{
+				len = vlen(self.origin - attacker.origin);
+				if (len > 200) // don't spawn hydras on player
+				{
+					if (self.think1)
+					{
+						// somehow creating the new mobs here would allow them to get damaged by the
+						// radiusdamage() that is calling this very function. "somehow" since
+						// findradius() was already called, so .chain shouldn't contain these new mobs...
+						delayent = spawn ();
+						delayent.think1 = self.think1;
+						delayent.origin = self.origin;
+						delayent.think = SpawnHydras;
+						delayent.nextthink = time + 0.1;
+					}
+				}
+			}
+		}
+
+		killed_monsters = killed_monsters + 1;
+		WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
+	}
 
 	self		= old_self;
 };

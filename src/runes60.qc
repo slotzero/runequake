@@ -83,10 +83,7 @@ Glue_Stuck =
 void()
 Glue_Touch =
 {
-	if (other.classname != "player" && !is_pet_e (other))
-		return;
-
-	if (other.health <= 0)
+	if (!other.takedamage || other.health <= 0)
 		return;
 
 	if (environmental (other))
@@ -311,9 +308,7 @@ Blizzard_Touch =
 {
 	if (self.runetime > time)
 		return;
- 	if (other.health <= 0)
-		return;
-	if (other.classname != "player" && !is_pet_e (other))
+ 	if (!other.takedamage || other.health <= 0)
 		return;
 	if (environmental (other) || other.runetype == RN_BLIZZARD || other.runetype == RN_FREEZE)
 		return;

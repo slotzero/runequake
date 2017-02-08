@@ -104,9 +104,6 @@ DSpot_Touch =
 	if (other == world)
 		return;
 
-	if (other.classname != "player" && !is_pet_e (other))
-		return;
-
 	if (!other.takedamage || other.health <= 0)
 		return;
 

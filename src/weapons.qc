@@ -1311,11 +1311,12 @@ printmapsize =
 	local vector v;
 	local string s;
 
-	while (i < 5000)
+	self.runevar = self.runevar + 1;
+	while (i < 2000)
 	{
-		v_x = random () * 8192 - 4096;
-		v_y = random () * 8192 - 4096;
-		v_z = random () * 8192 - 4096;
+		v_x = self.origin_x + random () * 2048 - 1024;
+		v_y = self.origin_y + random () * 2048 - 1024;
+		v_z = self.origin_z + random () * 2048 - 1024;
 		if (pointcontents (v) != CONTENT_SOLID)
 		{
 			c = c + 1;
@@ -1323,10 +1324,75 @@ printmapsize =
 		i = i + 1;
 	}
 
-	s = ftos(c);
+	while (i < 1500)
+	{
+		v_x = self.origin_x + random () * 2048 + 2048;
+		v_y = self.origin_y + random () * 2048 + 2048;
+		v_z = self.origin_z + random () * 2048 + 2048;
+		if (pointcontents (v) != CONTENT_SOLID)
+		{
+			c = c + 2;
+		}
+		i = i + 1; // further out means probably bigger level
+	}
+
+	while (i < 1500)
+	{
+		v_x = self.origin_x + random () * 2048 - 4096;
+		v_y = self.origin_y + random () * 2048 - 4096;
+		v_z = self.origin_z + random () * 2048 - 4096;
+		if (pointcontents (v) != CONTENT_SOLID)
+		{
+			c = c + 2;
+		}
+		i = i + 1; // further out means probably bigger level
+	}
+
+	self.runetime = self.runetime + c;
+
+	s = ftos(self.runetime / self.runevar);
 	bprint ("+++ Level open ratio: ");
 	bprint (s);
 	bprint (" / 5000\n");
+
+	if (self.runevar > 100)
+		remove (self);
+	else
+		self.nextthink = time + sys_ticrate;
+};
+
+void ()
+spawnmapsize =
+{
+	local entity e;
+	local float c;
+	local vector v;
+	local string s;
+
+	e = find (world, classname, "info_player_deathmatch");
+	while (e)
+	{
+		c = c + 1;
+		v_x = v_x + e.origin_x;
+		v_y = v_y + e.origin_y;
+		v_z = v_z + e.origin_z;
+		e = find (e, classname, "info_player_deathmatch");
+	}
+
+	e = spawn ();
+
+	if (c)
+	{
+		v = v * (1 / c);
+	}
+	setorigin (e, v);
+	s = vtos (v);
+	bprint("Average spawn: ");
+	bprint(s);
+	bprint("\n");
+
+	e.think = printmapsize;
+	e.nextthink = time + sys_ticrate;
 };
 
 /*
@@ -1351,7 +1417,7 @@ ImpulseCommands =
 		CycleWeaponReverseCommand ();
 
 	else if (self.impulse == 30)
-		printmapsize ();
+		spawnmapsize ();
 
 	else if (self.impulse >= IMP_RUNE_CHEAT_BASE && self.impulse < IMP_RUNE_CHEAT_BASE + RN_MAX_ALL)
 	{

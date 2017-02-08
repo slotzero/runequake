@@ -66,6 +66,25 @@ void (entity e) DirectorSpawnFlyer = {
 	e.nextthink = time;
 };
 
+void () SpawnHydras = {
+    local float z;
+
+    z = self.origin_z;
+    director.goalentity = self;
+
+    self.think1 ();
+    self.origin = self.origin + (v_forward * 80); // v_forward is "random" here
+    self.origin_z = z;
+    self.think1 ();
+
+    total_monsters = total_monsters + 2;
+    WriteByte (MSG_ALL, 3); // 3 = svc_updatestat
+    WriteByte (MSG_ALL, 12); // 12 = STAT_TOTALMONSTERS
+    WriteLong (MSG_ALL, total_monsters);
+
+    remove (self);
+};
+
 // ==== ====
 
 void () SpawnDog = {
@@ -84,6 +103,7 @@ void () SpawnDog = {
 	e.th_die = dog_die;
 	e.th_melee = dog_atta1;
 	e.th_missile = dog_leap1;
+	e.think1 = SpawnDog;
 
 	DirectorSpawnWalker(e);
 };
@@ -103,6 +123,7 @@ void () SpawnSoldier = {
 	e.th_missile = army_atk1;
 	e.th_pain = army_pain;
 	e.th_die = army_die;
+	e.think1 = SpawnSoldier;
 
 	DirectorSpawnWalker(e);
 };
@@ -122,6 +143,7 @@ void () SpawnKnight = {
 	e.th_melee = knight_atk1;
 	e.th_pain = knight_pain;
 	e.th_die = knight_die;
+	e.think1 = SpawnKnight;
 
 	DirectorSpawnWalker(e);
 };
@@ -141,6 +163,7 @@ void () SpawnEnforcer = {
 	e.th_pain = enf_pain;
 	e.th_die = enf_die;
 	e.th_missile = enf_atk1;
+	e.think1 = SpawnEnforcer;
 
 	DirectorSpawnWalker(e);
 };
@@ -161,6 +184,7 @@ void () SpawnOgre = {
 	e.th_melee = ogre_melee;
 	e.th_missile = ogre_nail1;
 	e.th_pain = ogre_pain;
+	e.think1 = SpawnOgre;
 
 	DirectorSpawnWalker(e);
 };
@@ -181,6 +205,7 @@ void () SpawnDemon = {
 	e.th_melee = Demon_MeleeAttack;
 	e.th_missile = demon1_jump1;
 	e.th_pain = demon1_pain;
+	e.think1 = SpawnDemon;
 
 	DirectorSpawnWalker(e);
 };
@@ -200,6 +225,7 @@ void () SpawnTarbaby = {
 	e.th_missile = tbaby_jump1;
 	e.th_melee = tbaby_jump1;
 	e.th_die = tbaby_die1;
+	// e.think1 = SpawnTarbaby; // this can theoretically crash
 
 	DirectorSpawnWalker(e);
 };
@@ -219,6 +245,7 @@ void () SpawnWizard = {
 	e.th_missile = Wiz_Missile;
 	e.th_pain = Wiz_Pain;
 	e.th_die = wiz_die;
+	e.think1 = SpawnWizard;
 
 	DirectorSpawnFlyer(e);
 };
@@ -239,6 +266,7 @@ void () SpawnFish = {
 	e.th_die = f_death1;
 	e.th_pain = fish_pain;
 	e.th_melee = f_attack1;
+	e.think1 = SpawnFish;
 
 	DirectorSpawnFlyer(e);
 	setsize (e, '-16 -16 -24', '16 16 24');
@@ -260,6 +288,7 @@ void () SpawnHellKnight = {
 	e.th_missile = hknight_missile;
 	e.th_pain = hknight_pain;
 	e.th_die = hknight_die;
+	e.think1 = SpawnHellKnight;
 
 	DirectorSpawnWalker(e);
 };
@@ -281,6 +310,7 @@ void () SpawnZombie = {
 	e.th_pain = zombie_pain;
 	e.th_die = zombie_die;
 	e.th_missile = zombie_missile;
+	e.think1 = SpawnZombie;
 
 	DirectorSpawnWalker(e);
 };
@@ -300,6 +330,7 @@ void () SpawnShalrath = {
 	e.th_die = shalrath_die;
 	e.th_pain = shalrath_pain;
 	e.th_missile = shal_attack1;
+	e.think1 = SpawnShalrath;
 
 	DirectorSpawnWalker(e);
 };
@@ -320,6 +351,7 @@ void () SpawnShambler = {
 	e.th_melee = sham_melee;
 	e.th_missile = sham_magic1;
 	e.th_pain = sham_pain;
+	e.think1 = SpawnShambler;
 
 	DirectorSpawnWalker(e);
 };
