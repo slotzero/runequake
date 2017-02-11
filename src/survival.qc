@@ -29,11 +29,11 @@
 // ==== Spawns ====
 
 void (entity e) DirectorSpawnWalker = {
+
 	setsize (e, '-16 -16 -24', '16 16 40'); // some spawnpoints would put ogres in walls
 	e.solid = SOLID_SLIDEBOX;
 	e.movetype = MOVETYPE_STEP;
 	e.takedamage = DAMAGE_AIM;
-
 	e.ideal_yaw	= e.angles * '0 1 0';
 	e.yaw_speed = 20;
 	e.view_ofs = '0 0 25';
@@ -52,7 +52,6 @@ void (entity e) DirectorSpawnFlyer = {
 	e.solid = SOLID_SLIDEBOX;
 	e.movetype = MOVETYPE_STEP;
 	e.takedamage = DAMAGE_AIM;
-
 	e.ideal_yaw	= e.angles * '0 1 0';
 	e.yaw_speed = 20;
 	e.view_ofs = '0 0 25';
@@ -69,12 +68,19 @@ void (entity e) DirectorSpawnFlyer = {
 void () SpawnHydras = {
     local float z;
 
-    z = self.origin_z;
     director.goalentity = self;
 
-    self.think1 ();
-    self.origin = self.origin + (v_forward * 80); // v_forward is "random" here
-    self.origin_z = z;
+    self.think1 (); // spawn a clone
+
+    if (random () > 0.5)
+        self.origin = self.origin + '0 40 0';
+    else
+        self.origin = self.origin - '0 40 0';
+    if (random () > 0.5)
+        self.origin = self.origin + '40 0 0';
+    else
+        self.origin = self.origin - '40 0 0';
+
     self.think1 ();
 
     total_monsters = total_monsters + 2;
@@ -461,7 +467,7 @@ void () DirectorThink = {
         return;
     }
 
-    if (total_monsters - killed_monsters < 50)
+    if (total_monsters - killed_monsters < self.delay)
     {
         SpawnSomething ();
     }
@@ -473,6 +479,11 @@ void () DirectorFirstThink = {
     local float i;
 
     self.max_health = 13; // number of valid monsters coded
+    self.delay = map_size(mapname); // store max monster count based on size
+    if (self.delay) //
+        self.delay = self.delay * 30;
+    else
+        self.delay = 50; // 0 means custom level
 
     self.goalentity = find (world, classname, "info_player_deathmatch");
     if (self.goalentity == world)

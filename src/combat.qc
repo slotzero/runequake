@@ -136,16 +136,13 @@ Killed =
 	self.touch	= SUB_Null;
 	self.effects	= 0;
 
-	monster_death_use ();
-	self.th_die ();
-
 	// bump the monster counter
 	if (self.flags & FL_MONSTER)
 	{
 		if (gamemode & MODE_SURVIVAL)
 		{
-			attacker.frags = attacker.frags + self.frags;
-			if (random () > 0.8)
+			add_frag (attacker, self.frags);
+			if (random () > 0.9)
 			{
 				len = vlen(self.origin - attacker.origin);
 				if (len > 200) // don't spawn hydras on player
@@ -168,6 +165,9 @@ Killed =
 		killed_monsters = killed_monsters + 1;
 		WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
 	}
+
+	monster_death_use ();
+	self.th_die ();
 
 	self		= old_self;
 };
