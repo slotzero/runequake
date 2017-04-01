@@ -1184,8 +1184,9 @@ Rune_Touch =
 		return;
 	}
 
-	if (other == world)
+	if (other == world && self.last_thought < time)
 		sound (self, CHAN_WEAPON, "weapons/tink1.wav", 1.0, ATTN_NORM);
+	self.last_thought = time + sys_ticrate;
 
 	if (other.classname != "player")
 		return;
@@ -1281,6 +1282,7 @@ Rune_Spawn =
 	rune.runevar = 0;		// |1 = dropper told, |2 = killer told
 	rune.runent = world;		// link for pack rat chain
 	rune.lip = 0;			// pack rat pickup time
+	rune.last_thought = 0;		// don't tink so much
 
 	if (type == RN_LITHIUM_HOOK)
 		ix = -1;
