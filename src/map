@@ -474,7 +474,7 @@ print "};\n";
 
 
 print "\n";
-print "string ()\n";
+print "string (float imp)\n";
 print "impulse_to_map =\n";
 print "{\n";
 
@@ -484,7 +484,7 @@ for my $map (map { @$_ } @lev ) {
     elsif ($map eq 'start')	{ $impulse = 57 }
     elsif ($map eq 'end')	{ $impulse = 58 }
     else 			{ $impulse =~ tr/0-9//cd or die "oops `$map'" };
-    print "\tif (self.impulse == $impulse) { return \"$map\"; }\n";
+    print "\tif (imp == $impulse) { return \"$map\"; }\n";
 }
 my $impulse = 59;
 for my $map (map { @$_ } @custom_lev) {
