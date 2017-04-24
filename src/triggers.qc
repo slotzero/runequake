@@ -473,18 +473,15 @@ teleport_touch =
 
 	spawn_tdeath (t.origin, other);
 
-	// move the player and lock him down for a little while
-	if (!other.health)
-	{
-		other.origin	= t.origin;
-		other.velocity	= (v_forward * other.velocity_x) + (v_forward * other.velocity_y);
-		return;
-	}
+	// fix shambler from constantly teleporting
+	if (other.classname == "shambler_slave")
+		t.origin = t.origin + 8 * v_forward;
 
 	setorigin (other, t.origin);
 
 	other.angles = t.mangle;
 
+	// move the player and lock him down for a little while
 	if (other.classname == "player")
 	{
 		other.fixangle		= TRUE; // turn this way immediately

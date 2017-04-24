@@ -99,7 +99,7 @@ all: $(progs_all)
 map-auto.qc: map
 	rm -f $@
 	./map > $@
-	chmod -w $@
+	chmod a-w $@
 
 func: $(foreach type,$(types),$(src_m4_$(type)))
 	rm -f $(foreach type,$(types),$(dir_$(type))/func.qc)

@@ -574,7 +574,7 @@ admin_impulse_map =
 
 	impulse_override_cancel ();
 	aq_menu_set (0);
-	m = impulse_to_map ();
+	m = impulse_to_map (self.impulse);
 
 	if (!admin_menu)
 	{

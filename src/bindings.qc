@@ -655,8 +655,7 @@ check_console_command =
 		cvar_set_infokey (CVAR_C1, "0");
 		IN_POQ(if (!HUNK_CONTEXT_MAX) i = 0;)
 
-		&%IN_POQ(368,376) = i;
-		s = impulse_to_map ();
+		s = impulse_to_map (i);
 		if (s)
 			admin_changelevel_now (s);
 		else

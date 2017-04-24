@@ -1,6 +1,5 @@
-/*  $Id: hunked.qc,v 1.68 2011/03/09 04:14:37 slotzero Exp $
-
-    Copyright (C) 2003  David 'Slot Zero' Roberts.
+/*
+    Copyright (C) 2003-2017  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -232,15 +231,15 @@ float (float ip)
 ban_check =
 {
 	local float i;
-	local float hunk_ip;
+	local entity hunk_ip;
 
    	if (!ip)
 		return -1;
 
+	hunk_ip = Get_Hunk (HUNK_CONTEXT, HUNK_BAN_OFFSET);
 	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
 	{
-		hunk_ip = Read_Hunk_Float (HUNK_CONTEXT, HUNK_BAN_OFFSET + i);
-		if (hunk_ip == ip)
+		if (hunk_ip[i] == ip)
 			return i;
 	}
 
@@ -253,20 +252,20 @@ ban_list =
 	if (MOD_PROTOCOL)
 		return self_sprint (self, "Type '\bban\b' from console for list\n");
 	local float i;
-	local float hunk_ip;
+	local entity hunk_ip;
 
 	self_sprint (self, "\bBan List\n\n");
 
+	hunk_ip = Get_Hunk (HUNK_CONTEXT, HUNK_BAN_OFFSET);
 	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
 	{
-		hunk_ip = Read_Hunk_Float (HUNK_CONTEXT, HUNK_BAN_OFFSET + i);
-		if (hunk_ip)
+		if (hunk_ip[i])
 		{
-			self_sprint_float (self, hunk_ip & 255);
+			self_sprint_float (self, hunk_ip[i] & 255);
 			self_sprint (self, ".");
-			self_sprint_float (self, hunk_ip & 65280 / 256);
+			self_sprint_float (self, hunk_ip[i] & 65280 / 256);
 			self_sprint (self, ".");
-			self_sprint_float (self, hunk_ip & 16711680 / 65536);
+			self_sprint_float (self, hunk_ip[i] & 16711680 / 65536);
 			self_sprint (self, ".xxx\n");
 		}
 	}
@@ -358,19 +357,19 @@ ban_add =
 	if (MOD_PROTOCOL)
 		return self_sprint (self, "Type '\bban <ip address>\b' from console to ban IP\n");
 	local float i;
-	local float hunk_ip;
+	local entity hunk_ip;
 
 	// check to make sure ban doesn't exist
 	if (ban_check (ip) >= 0)
 		return self_sprint (self, "ip already banned\n");
 
 	// check hunk for available slot
+	hunk_ip = Get_Hunk (HUNK_CONTEXT, HUNK_BAN_OFFSET);
 	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
 	{
-		hunk_ip = Read_Hunk_Float (HUNK_CONTEXT, HUNK_BAN_OFFSET + i);
-		if (!hunk_ip)
+		if (!hunk_ip[i])
 		{
-			Write_Hunk_Float (HUNK_CONTEXT, HUNK_BAN_OFFSET + i, ip);
+			hunk_ip[i] = ip;
 			return self_sprint (self, "ip added to the ban list\n");
 		}
 	}
@@ -385,15 +384,15 @@ float (float ip)
 mute_check =
 {
 	local float i;
-	local float hunk_ip;
+	local entity hunk_ip;
 
    	if (!ip)
 		return -1;
 
+	hunk_ip = Get_Hunk (HUNK_CONTEXT, HUNK_MUTE_OFFSET);
 	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
 	{
-		hunk_ip = Read_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + i);
-		if (hunk_ip == ip)
+		if (hunk_ip[i] == ip)
 			return i;
 	}
 
@@ -404,20 +403,20 @@ void ()
 mute_list =
 {
 	local float i;
-	local float hunk_ip;
+	local entity hunk_ip;
 
 	self_sprint (self, "\bMute List\n\n");
 
+	hunk_ip = Get_Hunk (HUNK_CONTEXT, HUNK_MUTE_OFFSET);
 	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
 	{
-		hunk_ip = Read_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + i);
-		if (hunk_ip)
+		if (hunk_ip[i])
 		{
-			self_sprint_float (self, hunk_ip & 255);
+			self_sprint_float (self, hunk_ip[i] & 255);
 			self_sprint (self, ".");
-			self_sprint_float (self, hunk_ip & 65280 / 256);
+			self_sprint_float (self, hunk_ip[i] & 65280 / 256);
 			self_sprint (self, ".");
-			self_sprint_float (self, hunk_ip & 16711680 / 65536);
+			self_sprint_float (self, hunk_ip[i] & 16711680 / 65536);
 			self_sprint (self, ".xxx\n");
 		}
 	}
@@ -440,19 +439,19 @@ void (float ip)
 mute_add =
 {
 	local float i;
-	local float hunk_ip;
+	local entity hunk_ip;
 
 	// check to make sure ban doesn't exist
 	if (mute_check (ip) >= 0)
 		return self_sprint (self, "ip already banned\n");
 
 	// check hunk for available slot
+	hunk_ip = Get_Hunk (HUNK_CONTEXT, HUNK_MUTE_OFFSET);
 	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
 	{
-		hunk_ip = Read_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + i);
-		if (!hunk_ip)
+		if (!hunk_ip[i])
 		{
-			Write_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + i, ip);
+			hunk_ip[i] = ip;
 			return self_sprint (self, "ip added to the mute list\n");
 		}
 	}
