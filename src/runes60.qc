@@ -697,9 +697,6 @@ antipack_maybe_remove_ammo =
 void ()
 AntiPack_Touch =
 {
-	local entity os;
-	local float i, it;
-
 	if (other == world)
 		return;
 

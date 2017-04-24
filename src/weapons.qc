@@ -127,7 +127,7 @@ void () HIP_LightningThink =
 			self.enemy = selected;
 		} else
 		{
-			local vector org, end;
+			local vector end;
 
 			sound (self.owner, CHAN_AUTO, "shambler/sattck1.wav", 1, ATTN_NORM);
 			makevectors(self.v_angle);
@@ -197,7 +197,7 @@ void () HIP_LightningThink =
 	self.nextthink = time + 0.2;
 };
 
-void (entity prev, entity own, float dst) HIP_SpawnMjolnirLightning =
+void (entity prev, entity own) HIP_SpawnMjolnirLightning =
 {
 	local entity e;
 
@@ -227,10 +227,10 @@ void (vector v) HIP_SpawnMjolnirBase =
 	sound (base, CHAN_AUTO, "weapons/lstart.wav", 1, ATTN_NORM);
 	makevectors(self.v_angle);
 	base.movedir = v_forward;
-	HIP_SpawnMjolnirLightning(base, base, 350);
-	HIP_SpawnMjolnirLightning(base, base, 350);
-	HIP_SpawnMjolnirLightning(base, base, 350);
-	HIP_SpawnMjolnirLightning(base, base, 350);
+	HIP_SpawnMjolnirLightning(base, base);
+	HIP_SpawnMjolnirLightning(base, base);
+	HIP_SpawnMjolnirLightning(base, base);
+	HIP_SpawnMjolnirLightning(base, base);
 };
 
 /*

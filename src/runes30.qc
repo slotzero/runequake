@@ -86,8 +86,11 @@ Radio_Think =
 void (float riders, entity of_e)
 Rune_Radio_sprint =
 {
-	// rprint_numdesc (self, riders, of_e.runevar, "radiation point");
-	// rprint (self, riders, " active\n");
+	if (0)
+	{
+		rprint_numdesc (self, riders, of_e.runevar, "radiation point");
+		rprint (self, riders, " active\n");
+	}
 };
 
 void (entity o)
@@ -741,7 +744,6 @@ Suck =
 void ()
 Suck_Think =
 {
-	local float sv_gravity;
 	local string s;
 
 	if ((self.owner.runevar == 0 && self.owner.runetype == RN_SUCK)
@@ -908,8 +910,7 @@ Rune_Impact =
 			sound (self, CHAN_AUTO, "zombie/z_miss.wav",
 				1, ATTN_NORM);
 			self.runevar = 10;
-			T_Damage (head, self, self, 45 + 10 * random (),
-					"bodycheck");
+			T_Damage (head, self, self, 45 + 10 * random (), "bodycheck");
 		}
 		head = head.chain;
 	}
@@ -921,7 +922,7 @@ Rune_Twalk =
 {
 	local entity switch, curr;
 	local vector place;
-	local float i;
+	local float i, rnd;
 
 	curr = find (world, classname, "player");
 	while (curr)
@@ -956,7 +957,9 @@ Rune_Twalk =
 			setorigin (curr, place);
 
 			curr = switch;
-			i = i - (random () + random ());
+			rnd = random (); // shutup frikqcc
+			i = i - (rnd + random ());
+
 		}
 
 		// get a random player

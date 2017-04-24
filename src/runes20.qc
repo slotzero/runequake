@@ -753,7 +753,6 @@ void ()
 Rune_Jump =
 {
 	local entity head, oself;
-	local float i;
 
 	if (self.runetime > time)
 		return;
@@ -808,8 +807,6 @@ Rune_Ammo =
 void (float incl_rocket)
 Rune_Ammo_1 =
 {
-	local float new_it;
-
 	if (self.ammo_shells < MAX_SHELLS) self.ammo_shells = self.ammo_shells + 1;
 	if (self.ammo_cells < MAX_CELLS) self.ammo_cells = self.ammo_cells + 1;
 	if (self.ammo_nails < MAX_NAILS) self.ammo_nails = self.ammo_nails + 2;

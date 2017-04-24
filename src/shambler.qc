@@ -272,7 +272,6 @@ void ()
 Sham_BFG_Zap =
 {
 	local entity head;
-	local float i;
 
 	if (self.lip < time)
 	{
@@ -323,8 +322,6 @@ Sham_BFG_Touch =
 void ()
 Sham_BFG_Warmup =
 {
-	local float number;
-
 	if (self.owner.health <= 0 || intermission_running)
 	{
 		remove (self);
