@@ -488,7 +488,7 @@ for my $map (map { @$_ } @lev ) {
 }
 my $impulse = 59;
 for my $map (map { @$_ } @custom_lev) {
-    print "\tif (self.impulse == $impulse) { return \"$map\"; }\n";
+    print "\tif (imp == $impulse) { return \"$map\"; }\n";
     $impulse++;
 }
 
