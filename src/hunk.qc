@@ -221,9 +221,6 @@ Read_Hunk_String_Exact_e =
 	pdata	= AddInt (&data, PSTRING_TO_PQUAKEC);
 	dword	= floor (bytes / 4) * %1;
 
-	//while (bytes > 3)
-	//	bytes = bytes - 4;
-
 	if (bytes > 3)
 	{
 		bytes = bytes / 4;
@@ -244,11 +241,10 @@ Read_Hunk_String_Exact_e =
 
  	if (bytes)
 	{
-		bytes = NegInt ((4 - bytes) * %1);
-		hunk = *AddInt (&hunk, bytes);
-		pdata = AddInt (pdata, bytes);
+		bytes = (4 - bytes) * %1;
+		hunk = *SubInt (&hunk, bytes);
+		pdata = SubInt (pdata, bytes);
 		(*pdata)[i] = hunk[i];
-		bytes = NegInt (bytes);
 		hunk = *AddInt (&hunk, bytes);
 		pdata = AddInt (pdata, bytes);
  	}
@@ -370,11 +366,9 @@ Write_Hunk_String_Exact_E =
 	strcpy (@AddInt(&hunk, PQUAKEC_TO_PSTRING), data);
 };
 
-// This is a very slow but accurate way to write string data to the hunk.  When
-// bytes is less than four, a null termination is written which increases the
-// actual size of bytes by one (1=2, 2=3, 3=4, 4=4, 5=5).  If bytes is larger
-// than data, only data (including termination) is written.  To write a string
-// without termination, bytes must be equal to the length of data and over 3 bytes.
+// This is a very slow but accurate way to write string data to the hunk.  If bytes
+// is larger than data, only data (including termination) is written.  To write a string
+// without termination, bytes must be less than or equal to the length of data.
 void (entity hunk, string data, float bytes)
 Write_Hunk_String_Exact_e =
 {
@@ -387,14 +381,8 @@ Write_Hunk_String_Exact_e =
 	if (bytes > i)
 		bytes = i + 1;
 
-	dword	= floor (bytes / 4) * %1;
-	if (!dword)
-		return Write_Hunk_String_Exact_E (hunk, data, bytes);
-
+	dword = floor (bytes / 4) * %1;
 	pdata = AddInt (&data, PSTRING_TO_PQUAKEC);
-
-	//while (bytes > 3)
-	//	bytes = bytes - 4;
 
 	if (bytes > 3)
 	{
@@ -416,21 +404,18 @@ Write_Hunk_String_Exact_e =
 
  	if (bytes)
 	{
-		bytes = NegInt ((4 - bytes) * %1);
-		hunk = *AddInt (&hunk, bytes);
-		pdata = AddInt (pdata, bytes);
+		bytes = (4 - bytes) * %1;
+		hunk = *SubInt (&hunk, bytes);
+		pdata = SubInt (pdata, bytes);
 		hunk[i] = (*pdata)[i];
-		bytes = NegInt (bytes);
 		hunk = *AddInt (&hunk, bytes);
 		pdata = AddInt (pdata, bytes);
  	}
 };
 
-// This is a very slow but accurate way to write string data to the hunk.  When
-// bytes is less than four, a null termination is written which increases the
-// actual size of bytes by one (1=2, 2=3, 3=4, 4=4, 5=5).  If bytes is larger
-// than data, only data (including termination) is written.  To write a string
-// without termination, bytes must be equal to the length of data and over 3 bytes.
+// This is a very slow but accurate way to write string data to the hunk.  If bytes
+// is larger than data, only data (including termination) is written.  To write a string
+// without termination, bytes must be less than or equal to the length of data.
 void (float type, float offset, string data, float bytes)
 Write_Hunk_String_Exact =
 {
