@@ -281,7 +281,7 @@ my @arena_lev = (
 );
 
 # Uncomment if you want arena maps.
-@custom_lev = @arena_lev;
+#@custom_lev = @arena_lev;
 
 # Construct %wan, the list of levels which aren't in %lan.
 my %wan;
