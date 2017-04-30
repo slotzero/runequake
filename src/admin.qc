@@ -535,7 +535,7 @@ admin_changelevel =
 void (string m)
 admin_changelevel_now =
 {
-	&%IN_POQ(368,376) = -1;
+	console_warp = 1;
 	admin_changelevel (m);
 };
 

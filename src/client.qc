@@ -472,8 +472,7 @@ execute_changelevel =
 
 	proto_intermission (MSG_ALL);
 
-	// hack
-	if (world.impulse)
+	if (console_warp)
 		GotoNextMap ();
 };
 

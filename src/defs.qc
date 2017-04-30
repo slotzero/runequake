@@ -1698,3 +1698,4 @@ entity	last_teleport;
 
 // development
 float	gamemode_set;
+float	console_warp;
