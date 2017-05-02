@@ -2225,7 +2225,7 @@ ClientObituary =
 				bprint ("'s pet shambler\n");
 			add_frag (attacker.owner, 1);
 			IN_QW(logfrag (attacker.owner, targ);)
-			attacker.enemy_kills = attacker.enemy_kills + 1; // killstats
+			attacker.owner.enemy_kills = attacker.owner.enemy_kills + 1; // killstats
 			targ.killed = targ.killed + 1; // killstats
 		}
 		else
@@ -2247,7 +2247,7 @@ ClientObituary =
 			bprint ("'s zombies\n");
 			add_frag (attacker.owner, 1);
 			IN_QW(logfrag (attacker.owner, targ);)
-			attacker.enemy_kills = attacker.enemy_kills + 1; // killstats
+			attacker.owner.enemy_kills = attacker.owner.enemy_kills + 1; // killstats
 			targ.killed = targ.killed + 1; // killstats
 		}
 		else
