@@ -26,7 +26,7 @@ float HUNK_CLIENT_DISCONNECT	= %100;
 float HUNK_LAST_LEVEL		= %520;
 float HUNK_LAST_LEVEL_POS	= %530;
 float HUNK_BAN_OFFSET		= %800;
-float HUNK_MUTE_OFFSET		= %1200;
+float HUNK_MUTE_OFFSET		= %1000;
 
 float ()
 server_time =
@@ -225,7 +225,7 @@ Client_Disconnect_Log =
 		self_sprint (self, "No entries found.\n");
 };
 
-float BAN_LIST_SIZE = %50;
+float BAN_LIST_SIZE = %50; // MAX %200
 
 float (float ip)
 ban_check =
@@ -378,7 +378,7 @@ ban_add =
 	return self_sprint (self, "ban list is full\n");
 };
 
-float MUTE_LIST_SIZE = %20;
+float MUTE_LIST_SIZE = %20; // MAX %100
 
 float (float ip)
 mute_check =
@@ -495,16 +495,19 @@ void ()
 hunk_storage_init =
 {
 	local float i;
+	local entity hunk;
 
 	custom_maps ();
 
 	// initialize storage for ban
+	hunk = Get_Hunk (HUNK_CONTEXT, HUNK_BAN_OFFSET);
 	for (i = 0; i < BAN_LIST_SIZE; i = i + %1)
-		Write_Hunk_Float (HUNK_CONTEXT, HUNK_BAN_OFFSET + i, 0);
+		hunk[i] = 0;
 
 	// initialize storage for mute
+	hunk = Get_Hunk (HUNK_CONTEXT, HUNK_MUTE_OFFSET);
 	for (i = 0; i < MUTE_LIST_SIZE; i = i + %1)
-		Write_Hunk_Float (HUNK_CONTEXT, HUNK_MUTE_OFFSET + i, 0);
+		hunk[i] = 0;
 
 	if (MOD_PROTOCOL)
 		localcmd ("exec mute.txt\n");

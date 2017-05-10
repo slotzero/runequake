@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2003-2014  David 'Slot Zero' Roberts.
+    Copyright (C) 2003-2017  David 'Slot Zero' Roberts.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -45,10 +45,10 @@
 	%530		= float last level position
 
 	// hunked.qc
-	%800 - %998	= float banned ip addresses [199 MAX]
+	%800 - %999	= float banned ip addresses [200 MAX]
 
 	// hunked.qc
-	%1200 - ?	= float muted ip addresses [? MAX]
+	%1000 - 1099	= float muted ip addresses [100 MAX]
 
 	// strman.qc
 	%3000 - %4000	= memory for string manipulation functions
