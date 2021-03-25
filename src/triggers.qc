@@ -478,9 +478,11 @@ teleport_touch =
 
 	// fix shambler from constantly teleporting
 	if (other.classname == "shambler_slave")
-		t.origin = t.origin + 8 * v_forward;
+		org = t.origin + 8 * v_forward;
+	else
+		org = t.origin;
 
-	setorigin (other, t.origin);
+	setorigin (other, org);
 
 	other.angles = t.mangle;
 
