@@ -328,6 +328,12 @@ arena_results =
 		}
 
 		add_frag (winner, 1);
+		IN_QW([-
+			if (winner == self.enemy)
+				logfrag (self.enemy, self.runent);
+			else
+				logfrag (self.runent, self.enemy);
+		-])
 		bprint (winner.netname);
 		bprint (" won the round");
 

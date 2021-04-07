@@ -472,8 +472,7 @@ execute_changelevel =
 
 	proto_intermission (MSG_ALL);
 
-	// hack
-	if (world.impulse)
+	if (console_warp)
 		GotoNextMap ();
 };
 
@@ -2225,7 +2224,8 @@ ClientObituary =
 			else
 				bprint ("'s pet shambler\n");
 			add_frag (attacker.owner, 1);
-			attacker.enemy_kills = attacker.enemy_kills + 1; // killstats
+			IN_QW(logfrag (attacker.owner, targ);)
+			attacker.owner.enemy_kills = attacker.owner.enemy_kills + 1; // killstats
 			targ.killed = targ.killed + 1; // killstats
 		}
 		else
@@ -2246,7 +2246,8 @@ ClientObituary =
 			bprint (attacker.owner.netname);
 			bprint ("'s zombies\n");
 			add_frag (attacker.owner, 1);
-			attacker.enemy_kills = attacker.enemy_kills + 1; // killstats
+			IN_QW(logfrag (attacker.owner, targ);)
+			attacker.owner.enemy_kills = attacker.owner.enemy_kills + 1; // killstats
 			targ.killed = targ.killed + 1; // killstats
 		}
 		else
@@ -2266,6 +2267,7 @@ ClientObituary =
 				&& targ != attacker)
 		{
 			add_frag (attacker, -1);
+			IN_QW(logfrag (attacker, attacker);)
 			attacker.mate_kills = attacker.mate_kills + 1; // killstats
 			bprint (attacker_name);
 			bprint (" squishes teammate ");
@@ -2275,6 +2277,7 @@ ClientObituary =
 		else if (attacker_player && targ != attacker)
 		{
 			add_frag (attacker, 1);
+			IN_QW(logfrag (attacker, targ);)
 			attacker.enemy_kills = attacker.enemy_kills + 1; // killstats
 			targ.killed = targ.killed + 1; // killstats
 			bprint (attacker_name);
@@ -2285,6 +2288,7 @@ ClientObituary =
 		else
 		{
 			add_frag (targ, -1);
+			IN_QW(logfrag (targ, targ);)
 			targ.suicide = targ.suicide + 1; // killstats
 			bprint (targ.netname);
 			bprint (" was squished\n");
@@ -2401,6 +2405,7 @@ ClientObituary =
 			if (f)
 			{
 				add_frag (attacker, f);
+				IN_QW(logfrag (attacker, attacker);)
 				attacker.suicide = attacker.suicide + 1; // killstats
 			}
 			return;
@@ -2421,12 +2426,16 @@ ClientObituary =
 			bprint (attacker_name);
 			bprint (s1);
 			add_frag (attacker, -1);
+			IN_QW(logfrag (attacker, attacker);)
 			attacker.mate_kills = attacker.mate_kills + 1; // killstats
 			return;
 		}
 
 		if (gamemode != MODE_HEADS)
+		{
 			add_frag (attacker, 1);
+			IN_QW(logfrag (attacker, targ);)
+		}
 
 		attacker.enemy_kills = attacker.enemy_kills + 1; // killstats
 		targ.killed = targ.killed + 1; // killstats
@@ -2738,6 +2747,7 @@ ClientObituary =
 	}
 
 	add_frag (targ, -1);
+	IN_QW(logfrag (targ, targ);)
 	targ.suicide = targ.suicide + 1; // killstats
 	bprint (targ.netname);
 
