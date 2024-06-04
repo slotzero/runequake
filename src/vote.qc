@@ -1042,6 +1042,21 @@ vote =
 		if (cancel)
 			self_sprint (self, "this feature is disabled on this server\n");
 	}
+	else if (self.impulse == IMP_VOTE_GLSPAM_PROTECT)
+	{
+		cancel		= gamemode == MODE_PRACTICE;
+		e.frag_rate	= 0.51; // XXX
+		e.think1	= toggle_glspam_protect;
+		e.noise2	= " grenade spam protection ";
+
+		if (options2 & GLSPAM_PROTECT)
+			e.noise1	= "disable";
+		else
+			e.noise1	= "enable";
+
+		if (cancel)
+			self_sprint (self, "disabled for this gamemode\n");
+	}
 	else
 		cancel = -1;
 

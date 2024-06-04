@@ -480,11 +480,6 @@ float GUIDED_MISSILE_DAMAGE	= 90;
 
 float REFLECT_DAMAGE		= 90;
 
-// Set this to a value other than zero to turn on grenade spam protection
-// in all modes.
-
-float GRENADE_SPAM_OVERRIDE	= 0;
-
 //-----------------------------------------------------------------------------
 // Runes
 //-----------------------------------------------------------------------------

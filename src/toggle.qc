@@ -625,6 +625,20 @@ set_gamemode_default =
 	maybe_bprint_option_hack = 0;
 };
 
+void ()
+toggle_glspam_protect =
+{
+	local string s;
+
+	if (options2 & GLSPAM_PROTECT)
+		options2 = options2 - options2 & GLSPAM_PROTECT;
+	else
+		options2 = options2 | GLSPAM_PROTECT;
+
+	s = ftos (options2);
+	cvar_set_infokey (CVAR_C5, s);
+};
+
 float (float type, float neg, string desc)
 maybe_bprint_option =
 {

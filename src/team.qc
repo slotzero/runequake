@@ -1169,6 +1169,10 @@ match_defaults =
 	// powerup hats off
 	if (!options & NO_POWERUP_HATS)
 		toggle_powerup_hats ();
+
+	// glspam protect off
+	if (options2 & GLSPAM_PROTECT)
+		toggle_glspam_protect ();
 };
 
 void ()
@@ -1258,6 +1262,10 @@ arena_defaults =
 	// powerup hats on
 	if (options & NO_POWERUP_HATS)
 		toggle_powerup_hats ();
+
+	// glspam protect off
+	if (options2 & GLSPAM_PROTECT)
+		toggle_glspam_protect ();
 };
 
 void ()
@@ -1347,6 +1355,10 @@ practice_defaults =
 	// powerup hats off
 	if (!options & NO_POWERUP_HATS)
 		toggle_powerup_hats ();
+
+	// glspam protect on
+	if (!options2 & GLSPAM_PROTECT)
+		toggle_glspam_protect ();
 };
 
 void ()
@@ -1436,4 +1448,8 @@ normal_defaults =
 	// powerup hats on
 	if (options & NO_POWERUP_HATS)
 		toggle_powerup_hats ();
+
+	// glspam protect off
+	if (options2 & GLSPAM_PROTECT)
+		toggle_glspam_protect ();
 };

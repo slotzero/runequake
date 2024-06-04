@@ -422,6 +422,7 @@ vote_aliases =
 	player_vote_impulse_alias ("vote-suit",			IMP_VOTE_SUIT);
 	player_vote_impulse_alias ("vote-team",			IMP_VOTE_TEAM);
 	player_vote_impulse_alias ("vote-weapons-stay",		IMP_VOTE_WEAPONS_STAY);
+	player_vote_impulse_alias ("vote-glspam-protect",	IMP_VOTE_GLSPAM_PROTECT);
 };
 
 void (string level, float imp)
@@ -637,6 +638,8 @@ console_aliases =
 	console_init_cvar_alias ("setdefault",		CVAR_C2,	C2_SETDEFAULT);
 	console_init_cvar_alias ("create_altar",	CVAR_C2,	C2_CREATE_ALTAR);
 	console_init_cvar_alias ("remove_altar",	CVAR_C2,	C2_REMOVE_ALTAR);
+	console_init_cvar_alias ("glspamprotecton",	CVAR_C2,	C2_GLSPAMPROTECTON);
+	console_init_cvar_alias ("glspamprotectoff",	CVAR_C2,	C2_GLSPAMPROTECTOFF);
 
 	level_aliases ();
 	spawn_custom_aliases ();
@@ -1428,6 +1431,16 @@ check_console_command =
 			v_z = cvar ("scr_ofsz");
 			remove_classname_origin_dist ("altar", v, 32);
 		}
+		else if (i == C2_GLSPAMPROTECTON)
+		{
+			if (!options2 & GLSPAM_PROTECT)
+				toggle_glspam_protect ();
+		}
+		else if (i == C2_GLSPAMPROTECTOFF)
+		{
+			if (options2 & GLSPAM_PROTECT)
+				toggle_glspam_protect ();
+		}
 		else
 			dprint_force ("Unknown command\n");
 
@@ -1473,6 +1486,7 @@ console_commands =
 	self_sprint (self, "backpackson         backpacksoff        faststarton         faststartoff\n");
 	self_sprint (self, "randomspawnon       randomspawnoff      shootbuttonson      shootbuttonsoff\n");
 	self_sprint (self, "poweruphatson       poweruphatsoff      votehookon          votehookoff\n");
+	self_sprint (self, "glspamprotecton     glspamprotectoff\n");
 };
 
 void ()
@@ -1605,6 +1619,7 @@ help_vote =
 	self_sprint (self, "\bvote-default    vote-powerup-drop\n");
 	self_sprint (self, "\b                vote-shoot-buttons\n");
 	self_sprint (self, "\b                vote-powerup-hats\n");
+	self_sprint (self, "\b                vote-glspam-protect\n");
 };
 
 void ()
@@ -1658,6 +1673,7 @@ help_options =
 	self_sprint (self, "\b  random spawn  ");       self_sprint_boolean (self, options & RANDOM_SPAWN);
 	self_sprint (self, "\n\bshoot buttons ");	self_sprint_boolean (self, options & SHOOT_BUTTONS);
 	self_sprint (self, "\b  powerup hats  ");	self_sprint_boolean (self, !options & NO_POWERUP_HATS);
+	self_sprint (self, "\n\bglspam prot   ");	self_sprint_boolean (self, options2 & GLSPAM_PROTECT);
 	self_sprint (self, "\n");
 };
 

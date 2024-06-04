@@ -641,10 +641,11 @@ float IMP_VOTE_RANDOM_SPAWN	= 34;
 float IMP_VOTE_SHOOT_BUTTONS	= 35;
 float IMP_VOTE_POWERUP_HATS	= 36;
 float IMP_VOTE_DEFAULT		= 37;
+float IMP_VOTE_GLSPAM_PROTECT	= 38;
 
 // extended impulses for votes
 float IMP_VOTE_MIN		= 800;
-float IMP_VOTE_MAX		= 837;
+float IMP_VOTE_MAX		= 838;
 
 // deathmatch flags
 float DM_RESPAWN		= 1;
@@ -1260,6 +1261,8 @@ float	C2_VOTEHOOKOFF		= 87;
 float	C2_SETDEFAULT		= 88;
 float	C2_CREATE_ALTAR		= 89;
 float	C2_REMOVE_ALTAR		= 90;
+float	C2_GLSPAMPROTECTON	= 91;
+float	C2_GLSPAMPROTECTOFF	= 92;
 
 // game mode
 float	gamemode;
@@ -1303,6 +1306,7 @@ float	FREE_HOOK		= 1;
 float	LITHIUM_HOOK		= 2;
 float	HOOK_MASK		= 3;
 float	VOTE_HOOK_DISABLED	= 4;
+float	GLSPAM_PROTECT		= 8;
 
 // storage
 float storage;

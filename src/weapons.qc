@@ -726,7 +726,7 @@ W_FireGrenade =
 		eff	= 0;
 	}
 
-	if (gamemode == MODE_PRACTICE || GRENADE_SPAM_OVERRIDE)
+	if (options2 & GLSPAM_PROTECT)
 	{
 		if (self.grenade_spam_time > time)
 		{
